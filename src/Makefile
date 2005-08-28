@@ -74,7 +74,7 @@ tag-kal.fst: ../bin/tag-kal.fst
 	@echo
 	@printf "read regex < tag-kal.regex \n\
 	save stack ../bin/tag-kal.fst \n\
-	quit \n" ../tmp/tag-kal-script
+	quit \n" > ../tmp/tag-kal-script
 	@xfst < ../tmp/tag-kal-script
 	@rm -f ../tmp/tag-kal-script
 
