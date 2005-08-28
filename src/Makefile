@@ -7,7 +7,7 @@
 # It is dependent upon kal.save
 
 ikal.fst: ../bin/ikal.fst
-../bin/ikal.fst: ../bin/kal.fst
+../bin/ikal.fst: ../bin/kal.fst ../bin/g-kal.fst ../bin/d-kal.fst
 	@echo
 	@echo "*** Building the inverse ikal.fst ***"
 	@echo
@@ -17,6 +17,66 @@ ikal.fst: ../bin/ikal.fst
 	quit \n" > ../tmp/ikal-fst-script
 	@xfst -utf8 < ../tmp/ikal-fst-script
 	@rm -f ../tmp/ikal-fst-script
+
+
+# We want an analyzer with Danish tags. It takes the linguistic 
+# kal.fst as input and gives us an alternate d-kal.fst
+
+d-kal.fst: ../bin/d-kal.fst
+../bin/d-kal.fst: ../bin/kal.fst ../bin/tag-da.fst
+	@echo
+	@echo "*** Building d-kal.fst, kal.fst with Danish tags ***"
+	@echo
+	@printf "read regex [[@\"../bin/tag-da.fst\"] .o. \
+	[@\"../bin/kal.fst\"]] ; \n\
+	save stack ../bin/d-kal.fst \n\
+	quit \n" > ../tmp/d-kal-fst-script
+	@xfst < ../tmp/d-kal-fst-script
+	@rm -f ../tmp/d-kal-fst-script
+
+
+# In order to make d-kal.fst we need a binary tag-da.fst
+# This goal depends on tag-da.regex
+
+tag-da.fst: ../bin/tag-da.fst
+../bin/tag-da.fst: tag-da.regex
+	@echo
+	@echo "*** Building tag-da.fst ***" ;
+	@echo
+	@printf "read regex < tag-da.regex \n\
+	save stack ../bin/tag-da.fst \n\
+	quit \n" > ../tmp/kal-tag-da-script
+	@xfst < ../tmp/kal-tag-da-script
+	@rm -f ../tmp/kal-tag-da-script
+
+# We also want an analyzer with Greenlandic tags. It takes the linguistic 
+# kal.fst as input and gives us an alternate g-kal.fst
+
+g-kal.fst: ../bin/g-kal.fst
+../bin/g-kal.fst: ../bin/kal.fst ../bin/tag-kal.fst
+	@echo
+	@echo "*** Building g-kal.fst, kal.fst with Sami tags ***"
+	@echo
+	@printf "read regex [[@\"../bin/tag-kal.fst\"] .o. \
+	[@\"../bin/kal.fst\"]] ; \n\
+	save stack ../bin/g-kal.fst \n\
+	quit \n" > ../tmp/g-kal-fst-script
+	@xfst < ../tmp/g-kal-fst-script
+	@rm -f ../tmp/g-kal-fst-script
+ 
+# In order to make g-kal.fst we need a binary tag-kal.fst
+# This goal depends on tag-kal.regex
+
+tag-kal.fst: ../bin/tag-kal.fst
+../bin/tag-kal.fst: tag-kal.regex
+	@echo
+	@echo "*** Building tag-kal.fst ***" ;
+	@echo
+	@printf "read regex < tag-kal.regex \n\
+	save stack ../bin/tag-kal.fst \n\
+	quit \n" ../tmp/tag-kal-script
+	@xfst < ../tmp/tag-kal-script
+	@rm -f ../tmp/tag-kal-script
 
 
 # This goal is to build the final analyser. It depends on all the files.
