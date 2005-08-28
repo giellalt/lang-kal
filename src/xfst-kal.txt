@@ -7,7 +7,7 @@ echo << Vi definerer vokalerne... >>
 
 define Vow [ a | e | i | o | u | y | æ | ø | å |
              A | E | I | O | U | Y | Æ | Ø | Å |
-                i2 ] ;
+                i2 | i3 ] ;
  
 echo << Vi definerer konsonanterne... >>
  
@@ -22,24 +22,40 @@ define Uvular [ q | r ] ;
 define NonUvular [ Cns - Uvular ] ;
  
 echo << Vi definerer Dummy-symboler >>
-define Dummy [ %> | %< ] ;
+define Dummy [ %> | %< | %^M | %CLIT ] ;
  
 ! Assimilationsrægler
 ! - - - - - - - - - - 
+
+echo << Nogle arkifonemer >>
+define TVow [ t2 -> s || Vow %> _ ] ;
+define TCns [ t2 -> t || Cns %> _ ] ;
  
 echo << Vi definerer regressiv assimilation >>
 define mAssimilation [ NonUvular -> m || Vow _ %> m ] ; ! panik > panimmik
 define nAssimilation [ NonUvular -> n || Vow _ %> n ] ; ! panik > paninnik
-define kSlet [ k -> 0 || _ %> Vow ] ;
-define frikativisering [ q -> r || _ %> ] ;
+ define kAssimilation [ NonUvular -> k || Vow _ %> k ] ; 
+define lAssimilation [ NonUvular -> l || Vow _ %> l ] ; 
+define pAssimilation [ NonUvular -> p || Vow _ %> p ] ; 
+define rAssimilation [ NonUvular -> r || Vow _ %> r ] ; 
+define sAssimilation [ NonUvular -> s || Vow _ %> s ] ; 
+define tAssimilation [ NonUvular -> t || Vow _ %> t ] ; 
+define vAssimilation [ NonUvular -> v || Vow _ %> v ] ; 
+define qAssimilation [ NonUvular -> q || Vow _ %> q ] ; 
+
+echo << Vi definerer så en del andre rægler >>
+
+define qgFusion [ q %> g -> r ] ;
+define frikativisering [ q -> r || _ %> Segment ] ;
+define trunkering [ Cns -> 0 || _ %> %^M ] ; 
  
 echo << Vi definerer vokalregler >>
-define i2C [ i2 -> i || _ %> Cns , s _ .#. ] ;
-define i2V [ i2 -> a || _ %> Vow ] ;
-define i2NULL [ i2 -> 0 || t %>  _ .#. ] ;
-
-define radikalisering [ i -> e, u -> o || _ %> Uvular ] ;
-                                                                     
+define schwaC [ [ i2 | i3 ] -> i || _ %> ( %^M ) Cns ] ;
+define schwaV [ [ i2 | i3 ] -> a || _ %> ( %^M ) Vow ] ;
+define schwaNULL [ i3 -> 0 || t _ [ .#. | %CLIT ] ] ;
+define radikalisering [ i -> e, u -> o || _ ( %> ) ( %^M ) Uvular ] ;
+define progressivVassimilering [ Vow -> a || a %> ( %^M ) _ ] ; 
+                                                                    
 echo << Vi rydder op >>
                                                                       
 define DummyDeletion [ Dummy -> 0 ] ;
@@ -47,20 +63,46 @@ define DummyDeletion [ Dummy -> 0 ] ;
 echo << Vi sætter ting sammen >>
                                                                       
 read regex [
+TCns
+.o.
+TVow
+!.o.
+!TCns
+.o.
 mAssimilation 
 .o.
 nAssimilation 
 .o.
-kSlet 
+kAssimilation
+.o.
+lAssimilation
+.o.
+pAssimilation
+.o.
+rAssimilation
+.o.
+sAssimilation
+.o.
+tAssimilation
+.o.
+vAssimilation
+.o.
+qAssimilation
+.o.
+qgFusion
 .o.
 frikativisering 
 .o.
-!i2c];
-!.o.
-!i2v
-!.o.
-!i2NULL
-!.o.
+trunkering
+.o.
+schwaC
+.o.
+schwaV
+.o.
+schwaNULL
+.o.
 radikalisering
+.o.
+progressivVassimilering
 .o.
 DummyDeletion ] ;
