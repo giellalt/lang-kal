@@ -15,7 +15,7 @@ ikal.fst: ../bin/ikal.fst
 	invert net \n\
 	save stack ../bin/ikal.fst \n\
 	quit \n" > ../tmp/ikal-fst-script
-	@xfst < ../tmp/ikal-fst-script
+	@xfst -utf8 < ../tmp/ikal-fst-script
 	@rm -f ../tmp/ikal-fst-script
 
 
@@ -30,7 +30,7 @@ kal.fst: ../bin/kal.fst
 	[@\"../bin/caseconv.fst\"]] ; \n\
 	save stack ../bin/kal.fst \n\
 	quit \n" > ../tmp/kal-fst-script
-	@xfst < ../tmp/kal-fst-script
+	@xfst -utf8 < ../tmp/kal-fst-script
 	@rm -f ../tmp/kal-fst-script
 
 
@@ -45,7 +45,7 @@ caseconv.fst: ../bin/caseconv.fst
 	@printf "read regex < case.regex \n\
 	save stack ../bin/caseconv.fst \n\
 	quit \n" > ../tmp/caseconv-script
-	@xfst < ../tmp/caseconv-script
+	@xfst -utf8 < ../tmp/caseconv-script
 	@rm -f ../tmp/caseconv-script
 
 
@@ -59,7 +59,7 @@ kal.save: ../bin/kal.save
 	[@\"../bin/xfst-kal.bin\"]] ; \n\
 	save stack ../bin/kal.save \n\
 	quit \n" > ../tmp/kal-save-script
-	@xfst < ../tmp/kal-save-script
+	@xfst -utf8 < ../tmp/kal-save-script
 	@rm -f ../tmp/kal-save-script
 
 # The first goal is to build kal-lex.save
@@ -75,7 +75,7 @@ kal-lex.save: ../bin/kal-lex.save
 	prt-kal-lex.txt verb-kal-lex.txt \n\
 	save-source ../bin/kal-lex.save \n\
 	quit \n" > ../tmp/kal-lex-save-script
-	@lexc < ../tmp/kal-lex-save-script
+	@lexc -utf8 < ../tmp/kal-lex-save-script
 	rm -f ../tmp/kal-lex-save-script
 
 # The second goal is to build xfst-kal.bin
@@ -89,7 +89,7 @@ xfst-kal.bin: ../bin/xfst-kal.bin
 	@printf "source xfst-kal.txt \n\
 	save stack ../bin/xfst-kal.bin \n\
 	quit \n" > ../tmp/xfst-kal-script
-	@xfst < ../tmp/xfst-kal-script
+	@xfst -utf8 < ../tmp/xfst-kal-script
 	@rm -f ../tmp/xfst-kal-script
 
 clean:
