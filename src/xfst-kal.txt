@@ -1,0 +1,66 @@
+! ==================================================== !
+! Fil for at generere de morfofonologiske reglerne til !
+!             vor grønlandske analysator               !
+! ==================================================== !
+
+echo << Vi definerer vokalerne... >>
+
+define Vow [ a | e | i | o | u | y | æ | ø | å |
+             A | E | I | O | U | Y | Æ | Ø | Å |
+                i2 ] ;
+ 
+echo << Vi definerer konsonanterne... >>
+ 
+define Cns [ t2 | b | c | d | f | g | h | j | k | l | m |
+             n | p | q | r | s | t | v | w | x | z |
+             B | C | D | F | G | H | J | K | L | M |
+             N | P | Q | R | S | T | V | W | X | Z   ]  ;
+ 
+echo << Vi definerer sæt af segmenter... >>
+define Segment [ Cns | Vow ] ;
+define Uvular [ q | r ] ;
+define NonUvular [ Cns - Uvular ] ;
+ 
+echo << Vi definerer Dummy-symboler >>
+define Dummy [ %> | %< ] ;
+ 
+! Assimilationsrægler
+! - - - - - - - - - - 
+ 
+echo << Vi definerer regressiv assimilation >>
+define mAssimilation [ NonUvular -> m || Vow _ %> m ] ; ! panik > panimmik
+define nAssimilation [ NonUvular -> n || Vow _ %> n ] ; ! panik > paninnik
+define kSlet [ k -> 0 || _ %> Vow ] ;
+define frikativisering [ q -> r || _ %> ] ;
+ 
+echo << Vi definerer vokalregler >>
+define i2C [ i2 -> i || _ %> Cns , s _ .#. ] ;
+define i2V [ i2 -> a || _ %> Vow ] ;
+define i2NULL [ i2 -> 0 || t %>  _ .#. ] ;
+
+define radikalisering [ i -> e, u -> o || _ %> Uvular ] ;
+                                                                     
+echo << Vi rydder op >>
+                                                                      
+define DummyDeletion [ Dummy -> 0 ] ;
+
+echo << Vi sætter ting sammen >>
+                                                                      
+read regex [
+mAssimilation 
+.o.
+nAssimilation 
+.o.
+kSlet 
+.o.
+frikativisering 
+.o.
+!i2c];
+!.o.
+!i2v
+!.o.
+!i2NULL
+!.o.
+radikalisering
+.o.
+DummyDeletion ] ;
