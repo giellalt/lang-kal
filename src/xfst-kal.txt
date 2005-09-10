@@ -24,15 +24,19 @@ define NonUvular [ Cns - Uvular ] ;
 echo << Vi definerer Dummy-symboler >>
 define Dummy [ %> | %< | %^M | %CLIT ] ;
  
-! Assimilationsrægler
-! - - - - - - - - - - 
-
+echo << Vi definerer morfofonemiske regler >>
 echo << Nogle arkifonemer >>
 define TVow [ t2 -> s || Vow ( \Cns ) %> _ ] ; 
 define TCns [ t2 -> t || Cns ( \Vow ) %> _ ] ;
        ! "ikke Cns" og "ikke Vow" for at tillade flags imellem
- 
-define IndikativVu [ v -> p || Cns %> _ u ] ; 
+define InfinitivLu [ l -> l l || [ a | u | i ] %> _ ] ;
+define IndikativVu [ v -> p || [ p | r ] %> _ [ u | i | a ] ] ;
+define xOprydning [ x -> 0 || Cns %> _ ] ;
+define xAssimilation [ x -> p || [ a | i | u ] %> _ ] ;
+
+! Assimilationsrægler
+! - - - - - - - - - - 
+
 echo << Vi definerer regressiv assimilation >>
 define mAssimilation [ NonUvular -> m || Vow _ %> m ] ; ! panik > panimmik
 define nAssimilation [ NonUvular -> n || Vow _ %> n ] ; ! panik > paninnik
@@ -44,13 +48,19 @@ define sAssimilation [ NonUvular -> s || Vow _ %> s ] ;
 define tAssimilation [ NonUvular -> t || Vow _ %> t ] ; 
 define vAssimilation [ NonUvular -> v || Vow _ %> v ] ; 
 define qAssimilation [ NonUvular -> q || Vow _ %> q ] ; 
+define gAssimilation [ g -> k || [p | k ] %> _ ] ;
 
 echo << Vi definerer så en del andre rægler >>
 
-define qgFusion [ q %> g -> r ] ;
+define qgFusion [ [ r | q ] %> g -> r ] ;
 define frikativisering [ q -> r || _ %> Segment ] ;
 define trunkering [ Cns -> 0 || _ %> %^M ] ; 
- 
+define TclitisU [ t -> n || _ %CLIT u ] ;
+define Tclitisg1 [ [ t | p | k ] -> n || _ %CLIT g ] ;
+define Tclitisg2 [ g -> n g || n %CLIT _ ] ;
+define clitisAssimilation [ Cns -> l || _ %CLIT l ] ;
+define clitisVAssimilation [ Vow -> a || a %CLIT _ ] ;
+
 echo << Vi definerer vokalregler >>
 define schwaC [ [ i2 | i3 ] -> i || _ %> ( %^M ) Cns ] ;
 define schwaV [ [ i2 | i3 ] -> a || _ %> ( %^M ) Vow ] ;
@@ -70,7 +80,17 @@ TCns
 .o.
 TVow
 .o.
+InfinitivLu
+.o.
 IndikativVu
+.o.
+xOprydning
+.o.
+xAssimilation
+.o.
+qgFusion
+.o.
+gAssimilation
 .o.
 mAssimilation 
 .o.
@@ -92,8 +112,6 @@ vAssimilation
 .o.
 qAssimilation
 .o.
-qgFusion
-.o.
 frikativisering 
 .o.
 trunkering
@@ -107,6 +125,16 @@ schwaNULL
 radikalisering
 .o.
 progressivVassimilering
+.o.
+TclitisU
+.o.
+Tclitisg1
+.o.
+Tclitisg2
+.o.
+clitisAssimilation
+.o.
+clitisVAssimilation
 .o.
 IngenArkefonemer
 .o.
