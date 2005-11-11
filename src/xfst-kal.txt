@@ -22,15 +22,15 @@ define Uvular [ q | r ] ;
 define NonUvular [ Cns - Uvular ] ;
  
 echo << Vi definerer Dummy-symboler >>
-define Dummy [ %> | %< | %^M | %CLIT ] ;
+define Dummy [ %> | %< | %TRUNC | %CLIT ] ;
  
 echo << Vi definerer morfofonemiske regler >>
 echo << Nogle arkifonemer >>
 define TVow [ t2 -> s || Vow ( \Cns ) %> _ ] ; 
 define TCns [ t2 -> t || Cns ( \Vow ) %> _ ] ;
        ! "ikke Cns" og "ikke Vow" for at tillade flags imellem
-define InfinitivLu [ l -> l l || [ a | u | i ] %> _ u ] ;
-define IndikativVu [ v -> p || [ p | r ] %> _ [ u | i | a ] ] ;
+define InfinitivLu [ l -> l l || [ a | u | i ] %> _ ] ;
+define IndikativVu [ v -> p || [ p | r ] %> _ [ u | i | a | o ] ] ;
 define xOprydning [ x -> 0 || Cns %> _ ] ;
 define xpAssimilation [ x -> p || [ a | i | u ] %> _ p ] ;
 define xmAssimilation [ x -> m || [ a | i | u ] %> _ m ] ;
@@ -53,22 +53,29 @@ define gAssimilation [ g -> k || [p | k ] %> _ ] ;
 
 echo << Vi definerer så en del andre rægler >>
 
-define qgFusion [ [ r | q ] %> g -> r ] ;
-define frikativisering [ q -> r ||  \%^M  _ %> Segment ] ; !ikke ved trunkative morfemer på q
-define trunkering [ Cns -> 0 || _ %> %^M ] ; 
-define TclitisU [ t -> n || _ %CLIT u ] ;
+define vSlet [ v -> 0 || u _ [ i | e | a ] ] ;
+define qgFusion [ [ r | q ] (\Segment) (\Segment) g -> r ] ;
+define frikativisering [ q -> r || \%TRUNC _ [ %> Segment | %CLIT ] ] ;
+define trunkering [ Cns -> 0 || _ %> %TRUNC ] ; 
+define TclitisU [ t -> n || _ %CLIT [ u | a ] ] ;
 define Tclitisg1 [ [ t | p | k ] -> n || _ %CLIT g ] ;
 define Tclitisg2 [ g -> n g || n %CLIT _ ] ;
-define ttaaqClitis [ t t -> t || Cns %CLIT _ a ] ;
-define clitisAssimilation [ Cns -> l || _ %CLIT l ] ;
+define clitisLAssimilation [ Cns -> l || _ %CLIT l ] ;
+define clitisMAssimilation [ Cns -> m || _ %CLIT m ] ;
 define clitisVAssimilation [ Vow -> a || a %CLIT _ ] ;
+define clitisQFrikativisering [ q -> r || _ %CLIT [ m | l ] ] ;
+define clitisNasalisering [ k -> ng || _ %CLIT Vow ] ;
+define aasiit1Vokal [ a -> 0 || _ %CLIT a a ] ;
+define aasiit2Vokal [ a ( %> ) ( %TRUNC ) a -> a a j || _ %CLIT a a ] ;
 
 echo << Vi definerer vokalregler >>
-define schwaC [ [ i2 | i3 ] -> i || _ %> ( %^M ) Cns ] ;
-define schwaV [ [ i2 | i3 ] -> a || _ %> ( %^M ) Vow ] ;
+define schwaC [ [ i2 | i3 ] -> i || _ %> ( %TRUNC ) Cns ] ;
+define schwaV [ [ i2 | i3 ] -> a || _ %> ( %TRUNC ) Vow ] ;
 define schwaNULL [ i3 -> 0 || t _ [ .#. | %CLIT ] ] ;
-define radikalisering [ i -> e, u -> o || _ ( %> ) ( %^M ) Uvular ] ;
-define progressivVassimilering [ Vow -> a || a %> ( %^M ) _ ] ; 
+define radikalisering [ i -> e, u -> o || _ ( %> ) ( %TRUNC ) Uvular ] ;
+define eafRadikalisering [ e -> i || _ ( %> ) ( %TRUNC ) [ NonUvular | i | u | a ] ] ;
+define oafRadikalisering [ o -> u || _ ( %> ) ( %TRUNC ) [ NonUvular | i | u | a ] ] ;
+define progressivVassimilering [ Vow -> a || a %> ( %TRUNC ) _ ] ; 
                                                                     
 echo << Vi rydder op >>
 
@@ -91,6 +98,8 @@ xOprydning
 xpAssimilation
 .o.
 xmAssimilation
+.o.
+frikativisering 
 .o.
 qgFusion
 .o.
@@ -116,8 +125,6 @@ vAssimilation
 .o.
 qAssimilation
 .o.
-frikativisering 
-.o.
 trunkering
 .o.
 schwaC
@@ -128,6 +135,10 @@ schwaNULL
 .o.
 radikalisering
 .o.
+eafRadikalisering
+.o.
+oafRadikalisering
+.o.
 progressivVassimilering
 .o.
 TclitisU
@@ -136,12 +147,22 @@ Tclitisg1
 .o.
 Tclitisg2
 .o.
-ttaaqClitis
+clitisLAssimilation
 .o.
-clitisAssimilation
+clitisMAssimilation
 .o.
 clitisVAssimilation
 .o.
+clitisQFrikativisering
+.o.
+clitisNasalisering
+.o.
+aasiit2Vokal
+.o.
+aasiit1Vokal
+.o.
 IngenArkefonemer
 .o.
-DummyDeletion ] ;
+DummyDeletion
+.o.
+vSlet ] ;
