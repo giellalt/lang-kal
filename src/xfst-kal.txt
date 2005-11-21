@@ -22,7 +22,7 @@ define Uvular [ q | r ] ;
 define NonUvular [ Cns - Uvular ] ;
  
 echo << Vi definerer Dummy-symboler >>
-define Dummy [ %> | %< | %TRUNC | %CLIT ] ;
+define Dummy [ %> | %< | %TRUNC | %CLIT | %STRUNC ] ;
  
 echo << Vi definerer morfofonemiske regler >>
 echo << Nogle arkifonemer >>
@@ -67,6 +67,7 @@ define clitisQFrikativisering [ q -> r || _ %CLIT [ m | l ] ] ;
 define clitisNasalisering [ k -> n g || _ %CLIT Vow ] ;
 define aasiit1Vokal [ a -> 0 || _ %CLIT a a ] ;
 define aasiit2Vokal [ a ( %> ) ( %TRUNC ) a -> a a j || _ %CLIT a a ] ;
+define Sgeminering [ a [ q | k ] -> s s a ||Vow _ %> %STRUNC ] ;
 
 echo << Vi definerer vokalregler >>
 define schwaC [ [ i2 | i3 ] -> i || _ %> ( %TRUNC ) Cns ] ;
@@ -85,9 +86,9 @@ define DummyDeletion [ Dummy -> 0 ] ;
 echo << Vi sætter ting sammen >>
                                                                       
 read regex [
-TCns
+TCns	![ t2 -> t || Cns ( \Vow ) %> _ ]
 .o.
-TVow
+TVow	![ t2 -> s || Vow ( \Cns ) %> _ ]
 .o.
 InfinitivLu
 .o.
@@ -132,6 +133,8 @@ schwaC
 schwaV
 .o.
 schwaNULL
+.o.
+Sgeminering
 .o.
 radikalisering
 .o.
