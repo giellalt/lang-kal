@@ -22,17 +22,21 @@ define Uvular [ q | r ] ;
 define NonUvular [ Cns - Uvular ] ;
  
 echo << Vi definerer Dummy-symboler >>
-define Dummy [ %> | %< | %TRUNC | %CLIT | %STRUNC | %POSSESSORTRUNC | %PRONTRUNC ] ;
- 
+define Dummy [ %> | %< | %TRUNC | %CLIT | %STRUNC | %POSSESSORTRUNC | %PRONTRUNC | %ROD ] ;
+
+echo << Vi definerer de ikke fonetisk betingede allomorfer >>
+define InfinitivLu [ l -> l l || [ a | u | i ] %> _ ] ;
+define IndikativVu [ v -> p || [ p | r ] %> _ [ u | i | a | o ] ] ;
+define Possessortrunc [ i t -> i || [ u | i ] %> %POSSESSORTRUNC _ ] ;
+define Prontrunc [ s -> 0 || u %> %PRONTRUNC _ ] ;
+define Pronvar1 [ u -> 0 || a %ROD _ u n ] ;
+
 echo << Vi definerer morfofonemiske regler >>
 echo << Nogle arkifonemer >>
 define TVow [ t2 -> s || Vow ( \Cns ) %> _ ] ; 
 define TCns [ t2 -> t || Cns ( \Vow ) %> _ ] ;
        ! "ikke Cns" og "ikke Vow" for at tillade flags imellem
-define InfinitivLu [ l -> l l || [ a | u | i ] %> _ ] ;
-define IndikativVu [ v -> p || [ p | r ] %> _ [ u | i | a | o ] ] ;
-define Possessortrunc [ i t -> i || [ u | i ] %> %POSSESSORTRUNC _ ] ;
-define Prontrunc [ s -> 0 || u %> %PRONTRUNC _ ] ;
+
 define xOprydning [ x -> 0 || Cns %> _ ] ;
 define xpAssimilation [ x -> p || [ a | i | u ] %> _ p ] ;
 define xmAssimilation [ x -> m || [ a | i | u ] %> _ m ] ;
@@ -55,7 +59,6 @@ define gAssimilation [ g -> k || [p | k ] %> _ ] ;
 
 echo << Vi definerer så en del andre rægler >>
 
-define vSlet [ v -> 0 || u _ [ i | e | a ] ] ;
 define qgFusion [ [ r | q ] (\Segment) (\Segment) g -> r ] ;
 define frikativisering [ q -> r || \%TRUNC _ [ %> Segment | %CLIT ] ] ;
 define trunkering [ Cns -> 0 || _ %> %TRUNC ] ; 
@@ -67,6 +70,7 @@ define clitisMAssimilation [ Cns -> m || _ %CLIT m ] ;
 define clitisVAssimilation [ Vow -> a || a %CLIT _ ] ;
 define clitisQFrikativisering [ q -> r || _ %CLIT [ m | l ] ] ;
 define clitisNasalisering [ k -> n g || _ %CLIT Vow ] ;
+define clitis3cons [ NonUvular -> 0 || _ %CLIT t t ] ;
 define aasiit1Vokal [ a -> 0 || _ %CLIT a a ] ;
 define aasiit2Vokal [ a ( %> ) ( %TRUNC ) a -> a a j || _ %CLIT a a ] ;
 define Sgeminering [ a [ q | k ] -> s s a ||Vow _ %> %STRUNC ] ;
@@ -78,12 +82,13 @@ define schwaNULL [ i3 -> 0 || t _ [ .#. | %CLIT ] ] ;
 define radikalisering [ i -> e, u -> o || _ ( %> ) ( %TRUNC ) Uvular ] ;
 define eafRadikalisering [ e -> i || _ ( %> ) ( %TRUNC ) [ NonUvular | i | u | a ] ] ;
 define oafRadikalisering [ o -> u || _ ( %> ) ( %TRUNC ) [ NonUvular | i | u | a ] ] ;
-define progressivVassimilering [ Vow -> a || a %> ( %TRUNC ) _ ] ; 
+define progressivVassimilering [ Vow -> a || a [ %> | %ROD ] ( %TRUNC ) _ ] ; 
                                                                     
 echo << Vi rydder op >>
 
 define IngenArkefonemer [ i2 -> i, i3 -> i, t2 -> t ] ;
 define DummyDeletion [ Dummy -> 0 ] ;
+define vSlet [ v -> 0 || u _ [ i | e | a ] ] ; !En rent ortografisk regel
 
 echo << Vi sætter ting sammen >>
                                                                       
@@ -99,6 +104,8 @@ IndikativVu
 Possessortrunc
 .o.
 Prontrunc
+.o.
+Pronvar1
 .o.
 xOprydning
 .o.
@@ -148,7 +155,7 @@ eafRadikalisering
 .o.
 oafRadikalisering
 .o.
-progressivVassimilering
+progressivVassimilering	![ Vow -> a || a [ %> | %ROD ] ( %TRUNC ) _ ]
 .o.
 TclitisU
 .o.
@@ -163,6 +170,8 @@ clitisMAssimilation
 clitisVAssimilation
 .o.
 clitisQFrikativisering
+.o.
+clitis3cons
 .o.
 clitisNasalisering
 .o.
