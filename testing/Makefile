@@ -235,41 +235,41 @@ v-paradigm: v-para.ptest savefile
 	@less $(WORD).paradigm
 
 
-# ADJECTIVES
-# ==========
+# PRONOUNS
+# ========
 
-# Create all the adjective test file bases:
-a-%.testbase: a-%.txt adj-codes.txt
+# Create all the pronoun test file bases:
+p-%.testbase: p-%.txt pron-codes.txt
 	@echo
-	@echo "*** Creating the test base for a-$*.txt ***"
+	@echo "*** Creating the test base for p-$*.txt ***"
 	@echo
 	@rm -f $@
 	$(UMASK) && \
-	$(BINDIR)/merge-codesNforms.pl adj-codes.txt $< > $@
+	$(BINDIR)/merge-codesNforms.pl pron-codes.txt $< > $@
 	@chmod 660 $@
 
 # Finally, we concatenate all *.greports:
-a-g.summary: $(AGenFiles)
+p-g.summary: $(PGenFiles)
 	@cat $^ > $@
 	@echo
-	@echo "*** All noun word form generation testing is done.      ***"
+	@echo "*** All pronoun word form generation testing is done.      ***"
 	@echo "*** The concatenated reports are stored in $@. ***"
 	@echo
 #	@less $@
 
 # Finally, we concatenate all *.areports:
-a-a.summary: $(AAnaFiles)
+p-a.summary: $(PAnaFiles)
 	@cat $^ > $@
 	@echo
-	@echo "*** All noun word form analysis testing is done.        ***"
+	@echo "*** All pronoun word form analysis testing is done.        ***"
 	@echo "*** The concatenated reports are stored in $@. ***"
 	@echo
 #	@less $@
 
-# Create adjective paradigm generation input file:
-a-para.ptest: adj-codes.txt
+# Create pronoun paradigm generation input file:
+p-para.ptest: pron-codes.txt
 	@echo
-	@echo "*** Creating the adjective paradigm input file for '$(WORD)' ***"
+	@echo "*** Creating the pronoun paradigm input file for '$(WORD)' ***"
 	@echo
 	@rm -f $@
 	$(UMASK) && \
@@ -277,7 +277,7 @@ a-para.ptest: adj-codes.txt
 	@chmod 660 $@
 
 # Paradigm generation:
-a-paradigm: a-para.ptest savefile
+p-paradigm: p-para.ptest savefile
 	@echo
 	@echo "*** Running the paradigm generator for '$(WORD)' ***"
 	@echo
