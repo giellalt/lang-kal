@@ -22,12 +22,14 @@ define Uvular [ q | r ] ;
 define NonUvular [ Cns - Uvular ] ;
  
 echo << Vi definerer Dummy-symboler >>
-define Dummy [ %> | %< | %TRUNC | %CLIT | %STRUNC | %POSSESSORTRUNC | %PRONTRUNC | %ROD | %likTRUNC | %VqTRUNC | %seqTRUNC | %VTRUNC ] ;
+define Dummy [ %> | %< | %TRUNC | %CLIT | %STRUNC | %POSSESSORTRUNC | %PRONTRUNC | %ROD | %likTRUNC | %VCTRUNC | %seqTRUNC | %VTRUNC ] ;
 
 echo << Vi definerer de ikke fonetisk betingede allomorfer >>
 define InfinitivLu [ l -> l l || [ a | u | i ] %> _ ] ;
 define IndikativVu [ v -> p || [ p | r ] %> _ [ u | i | a | o ] ] ;
-define Possessortrunc [ i t -> i || [ u | i ] %> %POSSESSORTRUNC _ ] ;
+define Possessortrunc [ i t -> i || [ o | u | i ] (Cns) %> %TRUNC _ %POSSESSORTRUNC ] ;
+define Assibilering1 [ t -> s || i %POSSESSORTRUNC _ ] ;
+define PossessortruncVaek [ %POSSESSORTRUNC -> 0 ] ;
 define Prontrunc [ s -> 0 || u %> %PRONTRUNC _ ] ;
 define Pronvar1 [ u -> 0 || a %ROD _ u n ] ;
 define Pronvar2 [ v -> 0 || u _ %ROD u n g ] ;
@@ -45,7 +47,7 @@ define xOprydning [ x -> 0 || Cns %> _ ] ;
 define xpAssimilation [ x -> p || [ a | i | u ] %> _ p ] ;
 define xmAssimilation [ x -> m || [ a | i | u ] %> _ m ] ;
 define LIKtrunkering [ l i k -> 0 || _ %> %likTRUNC ] ;
-define Vqtrunkering [ [ e | a | o ] q -> 0 || _ %> %VqTRUNC ] ;
+define VCtrunkering [ [ e | a | o ] [ q | k ] -> 0 || _ %> %VCTRUNC ] ;
 define SEQtrunkering [ [ s | n ] e q -> 0 || _ %> %seqTRUNC ] ;
 define Vtrunkering [ Vow (Cns) -> 0 || _ %> %VTRUNC ] ;
 ! Assimilationsrægler
@@ -80,7 +82,6 @@ define clitisNasalisering [ k -> n g || _ %CLIT Vow ] ;
 define clitis3cons [ NonUvular -> 0 || _ %CLIT t t ] ;
 define aasiit1Vokal [ a -> 0 || _ %CLIT a a ] ;
 define aasiit2Vokal [ a ( %> ) ( %TRUNC ) a -> a a j || _ %CLIT a a ] ;
-define Sgeminering [ a [ q | k ] -> s s a ||Vow _ %> %STRUNC ] ;
 define Qageminering [ a q -> q a ||Vow _ %> %STRUNC ] ;
 define Qogeminering [ o q -> q u ||Vow _ %> %STRUNC ] ;
 
@@ -91,7 +92,7 @@ define schwaNULL [ i3 -> 0 || t _ [ .#. | %CLIT ] ] ;
 define radikalisering [ i -> e, u -> o || _ ( %> ) ( %TRUNC ) Uvular ] ;
 define eafRadikalisering [ e -> i || _ ( %> ) ( %TRUNC ) [ NonUvular | i | u | a ] ] ;
 define oafRadikalisering [ o -> u || _ ( %> ) ( %TRUNC ) [ NonUvular | i | u | a ] ] ;
-define progressivVassimilering [ Vow -> a || a [ %> | %ROD ] ( %TRUNC ) _ ] ; 
+define progressivVassimilering [ Vow -> a || a [ %> | %ROD ] ( %TRUNC ) _ Cns ] ; 
                                                                     
 echo << Vi rydder op >>
 
@@ -110,11 +111,15 @@ InfinitivLu
 .o.
 IndikativVu
 .o.
-Possessortrunc
+Possessortrunc ![ i t -> i || [ u | i ] (Cns) %> %TRUNC _ %POSSESSORTRUNC]
+.o.
+Assibilering1 ![ t -> s || i %POSSESSORTRUNC _ ] ;
+.o.
+PossessortruncVaek ![ %POSSESSORTRUNC -> 0 ]
 .o.
 LIKtrunkering ![ l i k -> 0 || _ %> %likTRUNC ] ;
 .o.
-Vqtrunkering ![ a q -> 0 || - %> %VqTRUNC ]
+VCtrunkering ![ e | o | a | ] q -> 0 || - %> %VCTRUNC ]
 .o.
 SEQtrunkering ![ s e q -> 0 || _ %> %seqTRUNC ] ;
 .o.
@@ -176,15 +181,13 @@ schwaV
 .o.
 schwaNULL
 .o.
-Sgeminering
-.o.
 radikalisering
 .o.
 eafRadikalisering
 .o.
 oafRadikalisering ![ o -> u || _ ( %> ) ( %TRUNC ) [ NonUvular | i | u | a ] ] ;
 .o.
-progressivVassimilering	![ Vow -> a || a [ %> | %ROD ] ( %TRUNC ) _ ]
+progressivVassimilering	![ Vow -> a || a [ %> | %ROD ] ( %TRUNC ) _ Cns ]
 .o.
 TclitisU
 .o.
