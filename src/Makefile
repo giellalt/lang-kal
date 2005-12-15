@@ -1,5 +1,6 @@
-# This is a makefile that builds the Greenlandic morphological parser
-# *****************************************************************
+# ************************************************************************ #
+# This is a makefile that builds the XFST Greenlandic morphological parser #
+# ************************************************************************ #
 
 # Her bygger vi en analysator for vestgrønlandsk.
 
@@ -64,6 +65,7 @@ g-kal.fst: ../bin/g-kal.fst
 	@xfst < ../tmp/g-kal-fst-script
 	@rm -f ../tmp/g-kal-fst-script
  
+
 # In order to make g-kal.fst we need a binary tag-kal.fst
 # This goal depends on tag-kal.regex
 
@@ -122,6 +124,7 @@ kal.save: ../bin/kal.save
 	@xfst -utf8 < ../tmp/kal-save-script
 	@rm -f ../tmp/kal-save-script
 
+
 # The first goal is to build kal-lex.save
 # This goal depends on a bunch of lexicon files
 
@@ -138,6 +141,7 @@ kal-lex.save: ../bin/kal-lex.save
 	@lexc -utf8 < ../tmp/kal-lex-save-script
 	rm -f ../tmp/kal-lex-save-script
 
+
 # The second goal is to build xfst-kal.bin
 # This goal depends on xfst-kal.txt
 
@@ -151,6 +155,9 @@ xfst-kal.bin: ../bin/xfst-kal.bin
 	quit \n" > ../tmp/xfst-kal-script
 	@xfst -utf8 < ../tmp/xfst-kal-script
 	@rm -f ../tmp/xfst-kal-script
+
+
+
 
 clean:
 	@rm -f ../bin/*.bin ../bin/*.fst ../bin/*.save
