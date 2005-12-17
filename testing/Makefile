@@ -178,7 +178,7 @@ n-paradigm: n-para.ptest savefile
 	@printf "load $(SAVEFILE) \n\
 	apply down <$< \n\
 	quit \n" > $(TEMP)/$@-gtest-script
-	@xfst < $(TEMP)/$@-gtest-script > $(WORD).paradigm
+	@xfst -utf8 < $(TEMP)/$@-gtest-script > $(WORD).paradigm
 	@rm -f $(TEMP)/$@-gtest-script
 	@rm -f $<
 	@less $(WORD).paradigm
@@ -233,7 +233,7 @@ i-paradigm: i-para.ptest savefile
 	@printf "load $(SAVEFILE) \n\
 	apply down <$< \n\
 	quit \n" > $(TEMP)/$@-gtest-script
-	@xfst < $(TEMP)/$@-gtest-script > $(WORD).paradigm
+	@xfst -utf8 < $(TEMP)/$@-gtest-script > $(WORD).paradigm
 	@rm -f $(TEMP)/$@-gtest-script
 	@rm -f $<
 	@less $(WORD).paradigm
@@ -288,7 +288,7 @@ t-paradigm: t-para.ptest savefile
 	@printf "load $(SAVEFILE) \n\
 	apply down <$< \n\
 	quit \n" > $(TEMP)/$@-gtest-script
-	@xfst < $(TEMP)/$@-gtest-script > $(WORD).paradigm
+	@xfst -utf8 < $(TEMP)/$@-gtest-script > $(WORD).paradigm
 	@rm -f $(TEMP)/$@-gtest-script
 	@rm -f $<
 	@less $(WORD).paradigm
@@ -343,7 +343,7 @@ p-paradigm: p-para.ptest savefile
 	@printf "load $(SAVEFILE) \n\
 	apply down <$< \n\
 	quit \n" > $(TEMP)/$@-gtest-script
-	@xfst < $(TEMP)/$@-gtest-script > $(WORD).paradigm
+	@xfst -utf8 < $(TEMP)/$@-gtest-script > $(WORD).paradigm
 	@rm -f $(TEMP)/$@-gtest-script
 	@rm -f $<
 	@less $(WORD).paradigm
@@ -389,7 +389,7 @@ savefile:
 	@printf "load $(SAVEFILE) \n\
 	apply down <$< \n\
 	quit \n" > $(TEMP)/$*-gtest-script
-	@xfst < $(TEMP)/$*-gtest-script > $@
+	@xfst -utf8 < $(TEMP)/$*-gtest-script > $@
 	@rm -f $(TEMP)/$*-gtest-script
 
 # Then we compare with the facit, and report any differences:
@@ -448,7 +448,7 @@ savefile:
 	@printf "load $(SAVEFILE) \n\
 	apply up <$< \n\
 	quit \n" > $(TEMP)/$*-atest-script
-	@xfst < $(TEMP)/$*-atest-script > $@
+	@xfst -utf8 < $(TEMP)/$*-atest-script > $@
 	@rm -f $(TEMP)/$*-atest-script
 
 # Finally, we compare with the facit, and report any differences:
