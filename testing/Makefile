@@ -63,13 +63,17 @@ all: n-g.summary \
 .PHONY: all-n
 all-n: n-g.summary n-a.summary
 
-# If you only want to test verbs:
-.PHONY: all-v
-all-v: v-g.summary v-a.summary
+# If you only want to test intransitive verbs:
+.PHONY: all-i
+all-i: i-g.summary i-a.summary
 
-# If you only want to test adjectives:
-.PHONY: all-a
-all-a: a-g.summary a-a.summary
+# If you only want to test transitive verbs:
+.PHONY: all-t
+all-t: t-g.summary t-a.summary
+
+# If you only want to test pronouns:
+.PHONY: all-p
+all-p: p-g.summary p-a.summary
 
 # If you only want to test verbal generation, use v-g.summary
 # as target. Etc. for the other cases. And do you only want to
@@ -180,41 +184,41 @@ n-paradigm: n-para.ptest savefile
 	@less $(WORD).paradigm
 
 
-# VERBS
+# INTRANSITIVE VERBS
 # =====
 
-# Create all the verb test file bases:
-v-%.testbase: v-%.txt verb-codes.txt
+# Create all the intransitive verb test file bases:
+i-%.testbase: i-%.txt intrans-codes.txt
 	@echo
-	@echo "*** Creating the test base for v-$*.txt ***"
+	@echo "*** Creating the test base for i-$*.txt ***"
 	@echo
 	@rm -f $@
 	$(UMASK) && \
-	$(BINDIR)/merge-codesNforms.pl verb-codes.txt $< > $@
+	$(BINDIR)/merge-codesNforms.pl intrans-codes.txt $< > $@
 	@chmod 660 $@
 
 # Finally, we concatenate all *.greports:
-v-g.summary: $(VGenFiles)
+i-g.summary: $(VGenFiles)
 	@cat $^ > $@
 	@echo
-	@echo "*** All verb word form generation testing is done.      ***"
+	@echo "*** All intrans word form generation testing is done.      ***"
 	@echo "*** The concatenated reports are stored in $@. ***"
 	@echo
 #	@less $@
 
 # Finally, we concatenate all *.areports:
-v-a.summary: $(VAnaFiles)
+i-a.summary: $(VAnaFiles)
 	@cat $^ > $@
 	@echo
-	@echo "*** All verb word form analysis testing is done.        ***"
+	@echo "*** All intrans word form analysis testing is done.        ***"
 	@echo "*** The concatenated reports are stored in $@. ***"
 	@echo
 #	@less $@
 
-# Create verb paradigm generation input file:
-v-para.ptest: verb-codes.txt
+# Create intrans paradigm generation input file:
+i-para.ptest: intrans-codes.txt
 	@echo
-	@echo "*** Creating the verb paradigm input file for '$(WORD)' ***"
+	@echo "*** Creating the intrans paradigm input file for '$(WORD)' ***"
 	@echo
 	@rm -f $@
 	$(UMASK) && \
@@ -222,7 +226,62 @@ v-para.ptest: verb-codes.txt
 	@chmod 660 $@
 
 # Paradigm generation:
-v-paradigm: v-para.ptest savefile
+i-paradigm: i-para.ptest savefile
+	@echo
+	@echo "*** Running the paradigm generator for '$(WORD)' ***"
+	@echo
+	@printf "load $(SAVEFILE) \n\
+	apply down <$< \n\
+	quit \n" > $(TEMP)/$@-gtest-script
+	@xfst < $(TEMP)/$@-gtest-script > $(WORD).paradigm
+	@rm -f $(TEMP)/$@-gtest-script
+	@rm -f $<
+	@less $(WORD).paradigm
+
+
+# TRANSITIVE VERBS
+# =====
+
+# Create all the transitive verb test file bases:
+t-%.testbase: t-%.txt trans-codes.txt
+	@echo
+	@echo "*** Creating the test base for t-$*.txt ***"
+	@echo
+	@rm -f $@
+	$(UMASK) && \
+	$(BINDIR)/merge-codesNforms.pl trans-codes.txt $< > $@
+	@chmod 660 $@
+
+# Finally, we concatenate all *.greports:
+t-g.summary: $(VGenFiles)
+	@cat $^ > $@
+	@echo
+	@echo "*** All trans word form generation testing is done.      ***"
+	@echo "*** The concatenated reports are stored in $@. ***"
+	@echo
+#	@less $@
+
+# Finally, we concatenate all *.areports:
+t-a.summary: $(VAnaFiles)
+	@cat $^ > $@
+	@echo
+	@echo "*** All trans word form analysis testing is done.        ***"
+	@echo "*** The concatenated reports are stored in $@. ***"
+	@echo
+#	@less $@
+
+# Create trans paradigm generation input file:
+t-para.ptest: trans-codes.txt
+	@echo
+	@echo "*** Creating the trans paradigm input file for '$(WORD)' ***"
+	@echo
+	@rm -f $@
+	$(UMASK) && \
+	$(BINDIR)/merge-codesNword.pl $< $(WORD) > $@
+	@chmod 660 $@
+
+# Paradigm generation:
+t-paradigm: t-para.ptest savefile
 	@echo
 	@echo "*** Running the paradigm generator for '$(WORD)' ***"
 	@echo
