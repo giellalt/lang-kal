@@ -25,7 +25,7 @@ echo << Vi definerer Dummy-symboler >>
 define Dummy [ %> | %< | %TRUNC | %CLIT | %STRUNC | %POSSESSORTRUNC | %PRONTRUNC | %ROD | %likTRUNC | %VCTRUNC | %CVqTRUNC | %VTRUNC ] ;
 
 echo << Vi definerer de ikke fonetisk betingede allomorfer >>
-define InfinitivLu [ l -> l l || [ a | u | i ] %> _ ] ;
+!define InfinitivLu [ l -> l l || [ a | u | i ] %> _ ] ;
 define c2slet [ c2 -> 0 || Cns _ %> ] ;
 define IndikativVu [ v -> p || [ p | r ] %> _ [ u | i | a | o ] ] ;
 define Possessortrunc [ i t -> i || [ o | u | i | e ] (Cns) %> (%TRUNC) _ %POSSESSORTRUNC ] ;
@@ -37,6 +37,10 @@ define Pronvar2 [ v -> 0 || u _ %ROD u n g ] ;
 define Pronvar3 [ v %ROD -> g g || u _ u u n a ] ;
 define Pronvar4 [ [ k | g ] %ROD %TRUNC n n a -> n n g a ] ;
 define Pronvar5 [ v %ROD (%TRUNC) Cns -> 0 || .#. u _ ] ;
+define Pronvar6 [ s -> 0 || u %ROD %PRONTRUNC _ u ] ;
+define Impvar1 [ g -> j || [ u | a ] %> _ u k ] ;
+define Impvar2 [ g -> 0 || i %> _ u k ] ;
+
 
 echo << Vi definerer morfofonemiske regler >>
 echo << Nogle arkifonemer >>
@@ -53,6 +57,12 @@ define SEQtrunkering [ [ s | n ] [ e | a ] q -> 0 || _ %> %CVqTRUNC ] ;
 define Vtrunkering [ Vow (Cns) -> 0 || _ %> %VTRUNC ] ;
 define kaNasalisering [ k %> a  -> n g a] ; !De sjaeldne forekomster af possessum Z2Z på finalt k
 define kiNasalisering [ k %> i  -> n g i] ; !De sjaeldne forekomster af possessum Z2Z på finalt k
+
+echo << Vi definerer tilhaengspartiklernes lydregler >>
+define clitkgFusion [ k %CLIT g2 -> g ] ;
+define clitqgFusion [ [ r | q ] %CLIT g2 -> r ] ;
+define Tclitisg1 [ [ t | p ] -> n || _ %CLIT g2 ] ;
+define Tclitisg2 [ g2 -> n g || n %CLIT _ ] ;
  
 ! Assimilationsrægler
 ! - - - - - - - - - - 
@@ -73,19 +83,20 @@ define gAssimilation [ g -> k || [p | k ] %> _ ] ;
 echo << Vi definerer så en del andre rægler >>
 
 define kgFusion [ [ p | k ] %> g2 -> g ] ;
-define qgFusion [ [ r | q ] (\Segment) %> [ g | g2 ] -> r ] ;
+!define qgFusion [ [ r | q ] (\Segment) %> [ g | g2 ] -> r ] ;
+!Aendret 19.2. for at tage hoejde for *mukagitsi -> mukaritsi
+define qgFusion [ [ r | q ] %> ( %TRUNC ) [ g | g2 ] -> r ] ;
 define frikativisering [ q -> r || \%TRUNC _ [ %> Segment | %CLIT ] ] ;
 define trunkering [ Cns -> 0 || _ [ %> | %ROD ] %TRUNC ] ; 
 define TruncVaek [ %TRUNC -> 0 ] ;
 define TclitisU [ t -> n || _ %CLIT [ u | a ] ] ;
-define Tclitisg1 [ [ t | p | k ] -> n || _ %CLIT g ] ;
-define Tclitisg2 [ g -> n g || n %CLIT _ ] ;
-define clitisLAssimilation [ Cns -> l || _ %CLIT l ] ;
-define clitisMAssimilation [ Cns -> m || _ %CLIT m ] ;
-define clitisVAssimilation [ Vow -> a || a %CLIT _ ] ;
-define clitisQFrikativisering [ q -> r || _ %CLIT [ m | l ] ] ;
-define clitisNasalisering [ k -> n g || _ %CLIT Vow ] ;
+define clitisLAssimilation [ NonUvular -> l || _ ( %> ) %CLIT l ] ;
+define clitisMAssimilation [ NonUvular -> m || _ ( %> ) %CLIT m ] ;
+define clitisVAssimilation [ Vow -> a || a ( %> ) %CLIT _ ] ;
+define clitisQFrikativisering [ q -> r || _ ( %> ) %CLIT [ m | l ] ] ;
+define clitisNasalisering [ k -> n g || _ ( %> ) %CLIT Vow ] ;
 define clitis3cons [ NonUvular -> 0 || _ %CLIT t t ] ;
+define clitisAass [ Vow -> a || a _ %CLIT ] ;
 define aasiit1Vokal [ a -> 0 || _ %CLIT a a ] ;
 define aasiit2Vokal [ a ( %> ) ( %TRUNC ) a -> a a j || _ %CLIT a a ] ;
 define Qageminering [ a q -> q a ||Vow _ %> %STRUNC ] ;
@@ -95,11 +106,14 @@ echo << Vi definerer vokalregler >>
 define schwaC [ [ i2 | i3 ] -> i || _ %> ( %TRUNC ) Cns ] ;
 define schwaV [ [ i2 | i3 ] -> a || _ %> ( %TRUNC ) Vow ] ;
 define schwaNULL [ i3 -> 0 || t _ [ .#. | %CLIT ] ] ;
+define Langradikalisering [ i i -> e e, u u -> o o || _ ( %> ) ( \Segment ) Uvular ] ;
 define radikalisering [ i -> e, u -> o || _ %> ( \Segment ) Uvular ] ;
+define EeafRadikalisering [ e e -> i i || _ %> ( %TRUNC ) [ NonUvular | i | u | a ] ] ;
+define OoafRadikalisering [ o o -> u u || _ %> ( %TRUNC ) [ NonUvular | i | u | a ] ] ;
 define eafRadikalisering [ e -> i || _ %> ( %TRUNC ) [ NonUvular | i | u | a ] ] ;
 define oafRadikalisering [ o -> u || _ %> ( %TRUNC ) [ NonUvular | i | u | a ] ] ;
-define progressivVassimilering [ Vow -> a || a [ %> | %ROD ] ( %TRUNC ) _ Cns ] ;
-define tAssibilering [ t t -> t s || _ [ i | e ] ] ; 
+define progressivVassimilering [ Vow -> a || a [ %> | %ROD ] ( %TRUNC ) _  Cns ] ;
+define tAssibilering [ t -> s || t %> _ [ i | e ] ] ; 
 define aVepentese [ %> -> v || a a _ [ a | i ] ] ;
 
 define c2v [ c2 %> v -> p p || Vow _ Vow ] ;
@@ -113,65 +127,80 @@ define vSlet [ v -> 0 || u _ [ i | e | a ] ] ; !En rent ortografisk regel
 echo << Vi sætter ting sammen >>
                                                                       
 read regex [
-TCns	![ t2 -> t || Cns ( \Vow ) %> _ ]
+TCns	![ t2 -> t || Cns ( \Vow ) %> _ ] 01
 .o.
-TVow	![ t2 -> s || Vow ( \Cns ) %> _ ]
+TVow	![ t2 -> s || Vow ( \Cns ) %> _ ] 02
 .o.
-InfinitivLu	![ l -> l l || [ a | u | i ] %> _ ]
-.o.
-c2slet	![ c2 -> 0 || Cns _ %> ]
-.o.
-c2v ![ c2 %> v -> p p || Vow _ Vow ]
-.o.
-IndikativVu	![ v -> p || [ p | r ] %> _ [ u | i | a | o ] ]
-.o.
-Possessortrunc ![ i t -> i || [ e | u | i ] (Cns) %> (%TRUNC) _ %POSSESSORTRUNC]
-.o.
-Assibilering1 ![ t -> s || i %POSSESSORTRUNC _ ] ;
-.o.
-PossessortruncVaek ![ %POSSESSORTRUNC -> 0 ]
-.o.
-kgFusion ![ k %> g2 -> g ]
-.o.
-LIKtrunkering ![ l i k -> 0 || _ %> %likTRUNC ] ;
-.o.
-VCtrunkering ![ [ e | a | o ] ( [ q | k ] ) -> 0 || _ %> %VCTRUNC ] ;
-.o.
-SEQtrunkering ![ [ s | n ] [ e | a ] q -> 0 || _ %> %CVqTRUNC ]
-.o.
-Vtrunkering ![ Vow (Cns) -> 0 || _ %> %VTRUNC ] ;
-.o.
-Prontrunc	![ s -> 0 || u %> %PRONTRUNC _ ]
-.o.
-Pronvar1	![ u -> 0 || a %ROD _ u n ]
-.o.
-Pronvar2	![ v -> 0 || u _ %ROD u n g ]
-.o.
-Pronvar3	![ v %ROD -> g g || u _ u u n a ]
-.o.
-Pronvar4	! [ [ k | g ] %ROD %TRUNC n n a -> n n g a
-.o.
-Pronvar5	! [ v %ROD (%TRUNC) Cns -> 0 || .#. u _ ]
-.o.
-!xOprydning	![ x -> 0 || Cns %> _ ]
+!InfinitivLu	![ l -> l l || [ a | u | i ] %> _ ] 03
 !.o.
-!xpAssimilation	![ x -> p || [ a | i | u ] %> _ p ]
+c2slet	![ c2 -> 0 || Cns _ %> ] 04
+.o.
+c2v ![ c2 %> v -> p p || Vow _ Vow ] 05
+.o.
+IndikativVu	![ v -> p || [ p | r ] %> _ [ u | i | a | o ] ] 06
+.o.
+Possessortrunc ![ i t -> i || [ e | u | i ] (Cns) %> (%TRUNC) _ %POSSESSORTRUNC] 07
+.o.
+Assibilering1 ![ t -> s || i %POSSESSORTRUNC _ ] 08
+.o.
+PossessortruncVaek ![ %POSSESSORTRUNC -> 0 ] 09
+.o.
+kgFusion ![ k %> g2 -> g ] 10
+.o.
+LIKtrunkering ![ l i k -> 0 || _ %> %likTRUNC ] 11
+.o.
+VCtrunkering ![ [ e | a | o ] ( [ q | k ] ) -> 0 || _ %> %VCTRUNC ] 12
+.o.
+SEQtrunkering ![ [ s | n ] [ e | a ] q -> 0 || _ %> %CVqTRUNC ] 13
+.o.
+Vtrunkering ![ Vow (Cns) -> 0 || _ %> %VTRUNC ] 14
+.o.
+Prontrunc	![ s -> 0 || u %> %PRONTRUNC _ ] 15
+.o.
+Pronvar1	![ u -> 0 || a %ROD _ u n ] 16
+.o.
+Pronvar2	![ v -> 0 || u _ %ROD u n g ] 17
+.o.
+Pronvar3	![ v %ROD -> g g || u _ u u n a ] 18
+.o.
+Pronvar4	! [ [ k | g ] %ROD %TRUNC n n a -> n n g a 19
+.o.
+Pronvar5	! [ v %ROD (%TRUNC) Cns -> 0 || .#. u _ ] 20
+.o.
+Pronvar6 ![ s -> 0 || u %ROD %PRONTRUNC _ u ] 21
+.o.
+!xOprydning	![ x -> 0 || Cns %> _ ] 22
 !.o.
-!xmAssimilation	![ x -> m || [ a | i | u ] %> _ m ]
+!xpAssimilation	![ x -> p || [ a | i | u ] %> _ p ] 23
 !.o.
-Qageminering ![ a q -> q a ||Vow _ %> %STRUNC ] ;
+!xmAssimilation	![ x -> m || [ a | i | u ] %> _ m ] 24
+!.o.
+Qageminering ![ a q -> q a ||Vow _ %> %STRUNC ] ; 25
 .o.
-Qogeminering ![ o q -> q u ||Vow _ %> %STRUNC ] ;
+Qogeminering ![ o q -> q u ||Vow _ %> %STRUNC ] ; 26
 .o.
-frikativisering ![ q -> r || \%TRUNC _ [ %> Segment | %CLIT ] ] 
+frikativisering ![ q -> r || \%TRUNC _ [ %> Segment | %CLIT ] ] 27
 .o.
-qgFusion	![ [ r | q ] (\Segment) (\Segment) [ g | g2 ] -> r ]
+qgFusion	![ [ r | q ] %> ( %TRUNC ) [ g | g2 ] -> r ] 36
+!rettet 060315 for at undgå Vr%>%TRUNCguk -> Vguk 
 .o.
-trunkering	! [ Cns -> 0 || _ %> %TRUNC ]
+trunkering	! [ Cns -> 0 || _ %> %TRUNC ] 28
 .o.
-TruncVaek	! [ %TRUNC -> 0 ] ;
+Impvar1 ![ g -> j || [ u | a ] %> _ u k ] ; 29
 .o.
-vAssimilation	![ NonUvular -> p || Vow _ %> v ]
+Impvar2 ![ g -> 0 || i %> _ u k ] ; 30 
+.o.
+TruncVaek	! [ %TRUNC -> 0 ] ; 31
+.o.
+clitkgFusion ![ k %CLIT g2 -> g ] 32
+.o.
+clitqgFusion ![ [ r | q ] %CLIT g2 -> r ] ; 33 
+.o.
+Tclitisg1 ![ [ t | p ] -> n || _ %CLIT g2 ] 34
+.o.
+Tclitisg2 ![ g2 -> n g || n %CLIT _ ] ; 35
+.o.
+vAssimilation	![ NonUvular -> p || Vow _ %> v ] 37
 .o.
 gAssimilation	![ g -> k || [p | k ] %> _ ]
 .o.
@@ -200,7 +229,13 @@ schwaV	![ [ i2 | i3 ] -> a || _ %> ( %TRUNC ) Vow ]
 .o.
 schwaNULL	![ i3 -> 0 || t _ [ .#. | %CLIT ] ] 
 .o.
+Langradikalisering	![ i i -> e e, u u -> o o || _ ( %> ) ( \Segment ) Uvular ]
+.o.
 radikalisering	![ i -> e, u -> o || _ ( %> ) ( \Segment ) Uvular ]
+.o.
+EeafRadikalisering ![ e e -> i i || _ %> ( %TRUNC ) [ NonUvular | i | u | a ] ]
+.o.
+OoafRadikalisering ![ o o -> u u || _ %> ( %TRUNC ) [ NonUvular | i | u | a ] ]
 .o.
 eafRadikalisering	![ e -> i || _ ( %> ) ( %TRUNC ) [ NonUvular | i | u | a ] ]
 .o.
@@ -209,10 +244,6 @@ oafRadikalisering ![ o -> u || _ ( %> ) ( %TRUNC ) [ NonUvular | i | u | a ] ] ;
 progressivVassimilering	![ Vow -> a || a [ %> | %ROD ] ( %TRUNC ) _ Cns ]
 .o.
 TclitisU	![ t -> n || _ %CLIT [ u | a ] ]
-.o.
-Tclitisg1	![ [ t | p | k ] -> n || _ %CLIT g ] 
-.o.
-Tclitisg2	![ g -> n g || n %CLIT _ ]
 .o.
 clitisLAssimilation	![ Cns -> l || _ %CLIT l ] 
 .o.
@@ -226,6 +257,8 @@ clitis3cons	![ NonUvular -> 0 || _ %CLIT t t ]
 .o.
 clitisNasalisering	! [ k -> n g || _ %CLIT Vow ] 
 .o.
+clitisAass ![ Vow -> a || a _ %CLIT ] ;
+.o.
 aasiit2Vokal	![ a ( %> ) ( %TRUNC ) a -> a a j || _ %CLIT a a ]
 .o.
 aasiit1Vokal	![ a -> 0 || _ %CLIT a a ] 
@@ -238,8 +271,8 @@ aVepentese ![ %> -> v || a a _ [ a | i ] ;
 .o.
 IngenArkefonemer	![ i2 -> i, i3 -> i, t2 -> t, g2 -> g ]
 .o.
-DummyDeletion	![ Dummy -> 0 ]
+tAssibilering ![ t -> s || t %> _ [ i | e ] ]  en rent ortografisk regel
 .o.
-tAssibilering ![ t t -> t s || _ [ i | e ]  en rent ortografisk regel
+DummyDeletion	![ Dummy -> 0 ]
 .o.
 vSlet ] ;	![ v -> 0 || u _ [ i | e | a ] ] en anden rent ortografisk regel
