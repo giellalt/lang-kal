@@ -135,7 +135,7 @@ kal-lex.save: ../bin/kal-lex.save
 	@echo "*** Building kal-lex.save ***" ;
 	@echo
 	printf "compile-source kal-lex.txt noun-kal-lex.txt \
-	prt-kal-lex.txt verb-kal-lex.txt \n\
+	prt-kal-lex.txt verb-kal-lex.txt ateq-kal-lex.txt \n\
 	save-source ../bin/kal-lex.save \n\
 	quit \n" > ../tmp/kal-lex-save-script
 	@lexc -utf8 < ../tmp/kal-lex-save-script
