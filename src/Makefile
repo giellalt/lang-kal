@@ -130,7 +130,7 @@ kal.save: ../bin/kal.save
 
 kal-lex.save: ../bin/kal-lex.save
 ../bin/kal-lex.save: kal-lex.txt noun-kal-lex.txt prt-kal-lex.txt \
-	verb-kal-lex.txt
+	verb-kal-lex.txt ateq-kal-lex.txt
 	@echo
 	@echo "*** Building kal-lex.save ***" ;
 	@echo
