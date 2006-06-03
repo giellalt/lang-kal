@@ -6,12 +6,11 @@
 echo << Vi definerer vokalerne... >>
 
 define Vow [ a | e | i | o | u | y | æ | ø | å |
-             A | E | I | O | U | Y | Æ | Ø | Å |
-                i2 | i3 ] ;
+             A | E | I | O | U | Y | Æ | Ø | Å ] ;
  
 echo << Vi definerer konsonanterne... >>
  
-define Cns [ t2 | c2 | b | c | d | f | g | g2 | h | j | k | l | m |
+define Cns [ t2 | c2 | b | c | d | f | g | g2 | g3 | h | j | k | l | m |
              n | p | q | r | s | t | v | w | x | z |
              B | C | D | F | G | H | J | K | L | M |
              N | P | Q | R | S | T | V | W | X | Z ]  ;
@@ -48,6 +47,12 @@ define TVow [ t2 -> s || Vow ( \Cns ) %> _ ] ;
 define TCns [ t2 -> t || Cns ( \Vow ) %> _ ] ;
        ! "ikke Cns" og "ikke Vow" for at tillade flags imellem
 
+!g3 tilfoejet 3.juni Konsekvensretning i IngenArkefonemer, gAssimilation, qgFusion
+
+define Gaffix1 [ g3 i -> 0 || i %> _ ] ;
+define Gaffix2 [ g3 i -> j || [ u | a ] %> _ ] ;
+
+
 !define xOprydning [ x -> 0 || Cns %> _ ] ;
 !define xpAssimilation [ x -> p || [ a | i | u ] %> _ p ] ;
 !define xmAssimilation [ x -> m || [ a | i | u ] %> _ m ] ;
@@ -80,6 +85,7 @@ define aasiit1Vokal [ a -> 0 || _ %CLIT a a ] ;
 define aasiit2Vokal [ a ( %> ) ( %TRUNC ) a -> a a j || _ %CLIT a a ] ;
 define Vepentese [ %EPENT -> i || Cns _ %CLIT ] ;
 define ttaaqReduktion [ t -> 0 || Cns %CLIT _ t a a ] ;
+
  
 ! Assimilationsrægler
 ! - - - - - - - - - - 
@@ -95,14 +101,14 @@ define sAssimilation [ NonUvular -> s || Vow _ [ %> | %ROD ] (\Segment) s ] ;
 define tAssimilation [ NonUvular -> t || Vow _ %> t ] ; 
 define vAssimilation [ NonUvular -> p || Vow _ %> v ] ; 
 define qAssimilation [ Cns -> q || Vow _ %> (\Segment) q ] ; 
-define gAssimilation [ g -> k || [p | k ] %> _ ] ;
+define gAssimilation [ [ g | g3 ] -> k || [p | k ] %> _ ] ;
 
 echo << Vi definerer så en del andre rægler >>
 
 define kgFusion [ [ p | k ] %> g2 -> g ] ;
 !define qgFusion [ [ r | q ] (\Segment) %> [ g | g2 ] -> r ] ;
 !Aendret 19.2. for at tage hoejde for *mukagitsi -> mukaritsi
-define qgFusion [ [ r | q ] %> ( %TRUNC ) [ g | g2 ] -> r ] ;
+define qgFusion [ [ r | q ] %> ( %TRUNC ) [ g | g2 | g3 ] -> r ] ;
 define frikativisering [ q -> r || \%TRUNC _ [ %> Segment | %CLIT ] ] ;
 !define frikativisering [ q -> r || _ %> Segment ] ;
 !Funker ikke, fordi ajoqaaq -> ajoraaq
@@ -113,9 +119,9 @@ define Qogeminering [ o q -> q u ||Vow _ %> %STRUNC ] ;
 define CnsReduktion [ Cns -> 0 || _ %> ( \Segment ) s s ] ;
 
 echo << Vi definerer vokalregler >>
-define schwaC [ [ i2 | i3 ] -> i || _ %> ( %TRUNC ) Cns ] ;
-define schwaV [ [ i2 | i3 ] -> a || _ %> ( %TRUNC ) Vow ] ;
-define schwaNULL [ i3 -> 0 || t _ [ .#. | %CLIT ] ] ;
+!define schwaC [ [ i2 | i3 ] -> i || _ %> ( %TRUNC ) Cns ] ;
+!define schwaV [ [ i2 | i3 ] -> a || _ %> ( %TRUNC ) Vow ] ;
+!define schwaNULL [ i3 -> 0 || t _ [ .#. | %CLIT ] ] ;
 define Langradikalisering [ [ i %> e | i i ] -> e e, [ u %> o | u u ] -> o o || _ ( %> ) ( \Segment ) Uvular ] ;
 define radikalisering [ i -> e, u -> o || _ %> ( \Segment ) Uvular ] ;
 define EeafRadikalisering [ e e -> i i || _ %> ( %TRUNC ) [ NonUvular | i | u | a ] ] ;
@@ -130,7 +136,7 @@ define c2v [ c2 %> v -> p p || Vow _ Vow ] ;
                                                                   
 echo << Vi rydder op >>
 
-define IngenArkefonemer [ i2 -> i, i3 -> i, t2 -> t, g2 -> g ] ;
+define IngenArkefonemer [ t2 -> t, g2 -> g, g3 -> 0 ] ;
 define DummyDeletion [ Dummy -> 0 ] ;
 define vSlet [ v -> 0 || u _ [ i | e | a ] ] ; !En rent ortografisk regel
 
@@ -237,12 +243,12 @@ tAssimilation	![ NonUvular -> t || Vow _ %> t ]
 .o.
 qAssimilation	![ Cns -> q || Vow _ %> (\Segment) q ] 
 .o.
-schwaC	![ [ i2 | i3 ] -> i || _ %> ( %TRUNC ) Cns ] 
-.o.
-schwaV	![ [ i2 | i3 ] -> a || _ %> ( %TRUNC ) Vow ]
-.o.
-schwaNULL	![ i3 -> 0 || t _ [ .#. | %CLIT ] ] 
-.o.
+!schwaC	![ [ i2 | i3 ] -> i || _ %> ( %TRUNC ) Cns ] 
+!.o.
+!schwaV	![ [ i2 | i3 ] -> a || _ %> ( %TRUNC ) Vow ]
+!.o.
+!schwaNULL	![ i3 -> 0 || t _ [ .#. | %CLIT ] ] 
+!.o.
 Langradikalisering	![ [ i e | i i ] -> e e, [ u o | u u -> o o || _ ( %> ) ( \Segment ) Uvular ]
 .o.
 radikalisering	![ i -> e, u -> o || _ ( %> ) ( \Segment ) Uvular ]
@@ -285,7 +291,11 @@ aasiit1Vokal	![ a -> 0 || _ %CLIT a a ]
 !.o.
 aVepentese ![ %> -> v || a a _ [ a | i ] ;
 .o.
-IngenArkefonemer	![ i2 -> i, i3 -> i, t2 -> t, g2 -> g ]
+Gaffix1 ![ g3 i -> 0 || i %> _ ] ;
+.o.
+Gaffix2 ![ g3 i -> j || [ u | a ] %> _ ] ;
+.o.
+IngenArkefonemer	![ t2 -> t, g2 -> g, g3 -> 0 ]
 .o.
 tAssibilering ![ t -> s || t %> _ [ i | e ] ]  en rent ortografisk regel
 .o.
