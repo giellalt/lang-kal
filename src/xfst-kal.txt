@@ -5,7 +5,7 @@
 
 echo << Vi definerer vokalerne... >>
 
-define Vow [ a | e | i | o | u | y | æ | ø | å |
+define Vow [ a | e | i | i2 | o | u | y | æ | ø | å |
              A | E | I | O | U | Y | Æ | Ø | Å ] ;
  
 echo << Vi definerer konsonanterne... >>
@@ -52,6 +52,11 @@ define TCns [ t2 -> t || Cns ( \Vow ) %> _ ] ;
 define Gaffix1 [ g3 i -> 0 || i %> _ ] ;
 define Gaffix2 [ g3 i -> j || [ u | a ] %> _ ] ;
 
+!i2 introduceret 4.juni for at haandtere ateq, tupeq, aleq typer i samme paradigme
+define Lmetatese [ l i2 q -> r l || _ %> Vow ] ;
+define Pmetatese [ p i2 q -> q q || _ %> Vow ] ;
+define Tmetatese [ t i2 q -> q q || _ %> Vow ] ;
+define schwavaek [ i2 -> e ] ;
 
 !define xOprydning [ x -> 0 || Cns %> _ ] ;
 !define xpAssimilation [ x -> p || [ a | i | u ] %> _ p ] ;
@@ -110,6 +115,7 @@ define kgFusion [ [ p | k ] %> g2 -> g ] ;
 !Aendret 19.2. for at tage hoejde for *mukagitsi -> mukaritsi
 define qgFusion [ [ r | q ] %> ( %TRUNC ) [ g | g2 | g3 ] -> r ] ;
 define frikativisering [ q -> r || \%TRUNC _ [ %> Segment | %CLIT ] ] ;
+!tilfoejet Vow 4.juni for at forebygge at toqqit -> *toqrit
 !define frikativisering [ q -> r || _ %> Segment ] ;
 !Funker ikke, fordi ajoqaaq -> ajoraaq
 define trunkering [ Cns -> 0 || _ [ %> | %ROD ] %TRUNC ] ; 
@@ -146,6 +152,14 @@ read regex [
 TCns	![ t2 -> t || Cns ( \Vow ) %> _ ] 01
 .o.
 TVow	![ t2 -> s || Vow ( \Cns ) %> _ ] 02
+.o.
+Lmetatese ![ l i2 q -> r l || _ %> Vow ] ; 03-1
+.o.
+Pmetatese ![ p i2 q -> q q || _ %> Vow ] ; 03-2
+.o.
+Tmetatese ![ t i2 q -> q q || _ %> Vow ] ; 03-3
+.o.
+schwavaek ![ i2 -> e ] ; 03-4
 .o.
 !InfinitivLu	![ l -> l l || [ a | u | i ] %> _ ] 03
 !.o.
@@ -195,7 +209,7 @@ Qageminering ![ a q -> q a ||Vow _ %> %STRUNC ] ; 25
 .o.
 Qogeminering ![ o q -> q u ||Vow _ %> %STRUNC ] ; 26
 .o.
-frikativisering ![ q -> r || \%TRUNC _ [ %> Segment | %CLIT ] ] 27
+frikativisering ![ q -> r || \%TRUNC _ [ %> Segment | %CLIT ] ] ;
 .o.
 qgFusion	![ [ r | q ] %> ( %TRUNC ) [ g | g2 ] -> r ] 36
 !rettet 060315 for at undgå Vr%>%TRUNCguk -> Vguk 
