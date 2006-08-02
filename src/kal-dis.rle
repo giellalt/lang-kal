@@ -16,8 +16,8 @@
               # Local disambiguation - cycles 1 and 2
               # Cycle 2: Other local disambiguation         
               # Cycle 3: Global disambiguation 
-	          # Cycle 4: Syntactic disambiguation 
-	          # Cycle 5: Post-syntactic morphological disambiguation
+	      # Cycle 4: Syntactic disambiguation 
+	      # Cycle 5: Post-syntactic morphological disambiguation
 
 
 # ========== #
@@ -183,18 +183,52 @@ LIST MITAAVAANA = MITAAVAANA ;
 LIST SUB = SUB ;
 
 
+# Syntaktiske klasser
+
+# Verb
+
+SET TRANSVERB = 
+(V 1Sg 2Sg) | (V 1Sg 3Sg) | (V 1Sg 4Sg) | (V 2Sg 1Sg) | (V 2Sg 3Sg) |
+(V 2Sg 4Sg) | (V 3Sg 1Sg) | (V 3Sg 2Sg) | (V 3Sg 3Sg) | (V 3Sg 4Sg) |
+(V 4Sg 1Sg) | (V 4Sg 2Sg) | (V 4Sg 3Sg) | (V 1Sg 2Pl) | (V 1Sg 3Pl) |
+(V 1Sg 4Pl) | (V 2Sg 1Pl) | (V 2Sg 3Pl) | (V 2Sg 4Pl) | (V 3Sg 1Pl) |
+(V 3Sg 2Pl) | (V 3Sg 3Pl) | (V 3Sg 4Pl) | (V 4Sg 1Pl) | (V 4Sg 2Pl) |
+(V 4Sg 3Pl) | (V 1Pl 2Sg) | (V 1Pl 3Sg) | (V 1Pl 4Sg) | (V 2Pl 1Sg) |
+(V 2Pl 3Sg) | (V 2Pl 4Sg) | (V 3Pl 1Sg) | (V 3Pl 2Sg) | (V 3Pl 3Sg) |
+(V 3Pl 4Sg) | (V 4Pl 1Sg) | (V 4Pl 2Sg) | (V 4Pl 3Sg) | (V 1Pl 2Pl) |
+(V 1Pl 3Pl) | (V 1Pl 4Pl) | (V 2Pl 1Pl) | (V 2Pl 3Pl) | (V 2Pl 4Pl) |
+(V 3Pl 1Pl) | (V 3Pl 2Pl) | (V 3Pl 3Pl) | (V 3Pl 4Pl) | (V 4Pl 1Pl) |
+(V 4Pl 2Pl) | (V 4Pl 3Pl) ;
+
+
+# ============ #
+# ============ #
+# Regelsektion #
+# ============ #
+# ============ #
+
+
+
 CONSTRAINTS
 
+# One-cohort disambiguation - cycle 0
 
+REMOVE N IF (NOT -1 BOS)(0 Prop) ;
+	## Ilalu Nuup eqqaani iliverpassuit.
+
+# Many-cohort disambiguation - cycle 1
+
+# Hugseregel:
 # subj-abs IV, subj-rel obj-abs TV.
 
-# Intransitive setningar
+# Intransitive sentences
 
 SELECT (Abs Pl) IF (1 (V 3Pl)) ;
 	## Aviisit atuarpavut.
 
+SELECT (Abs Sg) IF (1 (V 3Sg))(NOT 1 TRANSVERB);
 
-# Transitive setningar
+# Transitive sentences
 
 SELECT 3Pl IF (-2 Abs)(-1 (Rel Pl))(0 V);
 	## Ippassaq unnukkut filmerput.
