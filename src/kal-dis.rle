@@ -13,11 +13,9 @@
 	        # Mapping rules
             # Disambiguation rules
               # One-cohort disambiguation - cycle 0
-              # Local disambiguation - cycles 1 and 2
-              # Cycle 2: Other local disambiguation         
-              # Cycle 3: Global disambiguation 
-	      # Cycle 4: Syntactic disambiguation 
-	      # Cycle 5: Post-syntactic morphological disambiguation
+              # Local disambiguation - cycles 1 
+	      # Global disambiguation - cycles 2
+              # Syntactic disambiguation
 
 
 # ========== #
@@ -185,6 +183,9 @@ LIST SUB = SUB ;
 
 # Syntaktiske klasser
 
+# Alle
+LIST WORD = N V Part Prop ;
+
 # Verb
 
 SET TRANSVERB = 
@@ -200,6 +201,45 @@ SET TRANSVERB =
 (V 3Pl 1Pl) | (V 3Pl 2Pl) | (V 3Pl 3Pl) | (V 3Pl 4Pl) | (V 4Pl 1Pl) |
 (V 4Pl 2Pl) | (V 4Pl 3Pl) ;
 
+SET INTRANSVERB = V - TRANSVERB ;
+
+SET PLOBJVERB =
+(V 1Sg 2Pl) | (V 1Sg 3Pl) | (V 1Sg 4Pl) | 
+(V 2Sg 1Pl) | (V 2Sg 3Pl) | (V 2Sg 4Pl) | 
+(V 3Sg 1Pl) | (V 3Sg 2Pl) | (V 3Sg 3Pl) | (V 3Sg 4Pl) | 
+(V 4Sg 1Pl) | (V 4Sg 2Pl) | (V 4Sg 3Pl) |
+(V 1Pl 2Pl) | (V 1Pl 3Pl) | (V 1Pl 4Pl) | 
+(V 2Pl 1Pl) | (V 2Pl 3Pl) | (V 2Pl 4Pl) |
+(V 3Pl 1Pl) | (V 3Pl 2Pl) | (V 3Pl 3Pl) | (V 3Pl 4Pl) | 
+(V 4Pl 1Pl) | (V 4Pl 2Pl) | (V 4Pl 3Pl) ;
+
+SET SGOBJVERB =
+(V 1Sg 2Sg) | (V 1Sg 3Sg) | (V 1Sg 4Sg) | (V 2Sg 1Sg) | (V 2Sg 3Sg) |
+(V 2Sg 4Sg) | (V 3Sg 1Sg) | (V 3Sg 2Sg) | (V 3Sg 3Sg) | (V 3Sg 4Sg) |
+(V 4Sg 1Sg) | (V 4Sg 2Sg) | (V 4Sg 3Sg) | 
+(V 1Pl 2Sg) | (V 1Pl 3Sg) | (V 1Pl 4Sg) | (V 2Pl 1Sg) |
+(V 2Pl 3Sg) | (V 2Pl 4Sg) | (V 3Pl 1Sg) | (V 3Pl 2Sg) | (V 3Pl 3Sg) |
+(V 3Pl 4Sg) | (V 4Pl 1Sg) | (V 4Pl 2Sg) | (V 4Pl 3Sg) ;
+
+SET 3SGSUBJVERB =
+(V 3Sg 1Sg) | (V 3Sg 2Sg) | (V 3Sg 3Sg) | (V 3Sg 4Sg) ;
+
+# Leksikalske klasser
+
+# Verb
+
+LIST LOKVERB = "najugaq" ;
+
+
+# Syntaks
+
+LIST @PRED = @PRED ;
+LIST @SUBJ = @SUBJ ;
+LIST @POSS = @POSS ;
+LIST @OBJ = @OBJ ;
+LIST @ADVL = @ADVL ;
+LIST @INTERJ = @INTERJ ;
+
 
 # ============ #
 # ============ #
@@ -207,6 +247,26 @@ SET TRANSVERB =
 # ============ #
 # ============ #
 
+
+MAPPINGS
+
+MAP (@PRED) TARGET Ind OR Imp OR Cau OR Int OR Par OR Ite 
+		       OR Inf OR InfNeg OR Opt OR Con OR Vok ;
+
+MAP (@ADVL) TARGET Trm OR Abl OR Lok OR Aeq OR Ins OR Via ;
+
+MAP (@SUBJ @OBJ) TARGET Abs ;
+
+MAP (@POSS) TARGET Rel IF (1 Abs) ;
+
+MAP (@OBJ) TARGET Rel ;
+
+MAP (@ADVL) TARGET Part ;
+
+MAP (@INTERJ) TARGET Interj ;
+
+# Denne tag er for alle ord vi ikke har funktion til.
+MAP (@X) TARGET WORD ;
 
 
 CONSTRAINTS
@@ -226,15 +286,30 @@ REMOVE N IF (NOT -1 BOS)(0 Prop) ;
 SELECT (Abs Pl) IF (1 (V 3Pl)) ;
 	## Aviisit atuarpavut.
 
-SELECT (Abs Sg) IF (1 (V 3Sg))(NOT 1 TRANSVERB);
+REMOVE Rel IF (1 (V 3Sg))(NOT 1 TRANSVERB);
+	## Nuummi najugaqarpoq.
+
+REMOVE (Abs) IF (*1 LOKVERB)(NOT -1 Lok);
+	## Nuummi najugaqarpoq.
 
 # Transitive sentences
+
+	## Kaalip ataataat issiaviit toquppaa.
+	#  (N.r-poss N.abs)subj N.r.obj tv
+
 
 SELECT 3Pl IF (-2 Abs)(-1 (Rel Pl))(0 V);
 	## Ippassaq unnukkut filmerput.
 
+REMOVE (Abs) IF (-1 Abs)(0 (N Rel Pl))(1 SGOBJVERB);
+
 SELECT (Rel Pl) IF (-1 Abs)(0 N)(1 (V 3Pl));
 	## Ippassaq unnukkut filmerput.
+
+SELECT Sg IF (0C (@SUBJ))(*1C 3SGSUBJVERB);
+
+REMOVE (@OBJ) IF (0 Abs)(*1 TRANSVERB BARRIER INTRANSVERB);
+REMOVE (@OBJ) IF (0 Abs)(*-1 TRANSVERB BARRIER INTRANSVERB);
 
 # NP-ar
 
@@ -248,3 +323,7 @@ REMOVE (Abs Sg 1Sg) IF (-1 (Rel Sg)) ;
 	
 	
 
+# Syntaktisk disambiguering.
+
+SELECT (@SUBJ) IF (1C @OBJ)(2 TRANSVERB);
+	## Nanoruna piniartup toqukkaa.
