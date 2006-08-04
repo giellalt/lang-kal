@@ -53,6 +53,7 @@ LIST Adj = Adj ;
 LIST Adv = Adv ;
 LIST Prop = Prop ;
 LIST Interj = Interj ;
+LIST Num = Num ;
 
 LIST Sg = Sg ;
 LIST Du = Du ;
@@ -184,7 +185,7 @@ LIST SUB = SUB ;
 # Syntaktiske klasser
 
 # Alle
-LIST WORD = N V Part Prop ;
+LIST WORD = N V Part Prop Num ;
 
 # Verb
 
@@ -223,6 +224,9 @@ SET SGOBJVERB =
 
 SET 3SGSUBJVERB =
 (V 3Sg 1Sg) | (V 3Sg 2Sg) | (V 3Sg 3Sg) | (V 3Sg 4Sg) ;
+
+SET NONIMPVERB = (V Ind) | (V Cau) | (V Int) | (V Par) | (V Ite) | 
+                 (V Inf) | (V InfNeg) | (V Opt) | (V Con) | (V Vok) ;
 
 # Leksikalske klasser
 
@@ -278,10 +282,17 @@ REMOVE N IF (NOT -1 BOS)(0 Prop) ;
 
 # Many-cohort disambiguation - cycle 1
 
-# Hugseregel:
-# subj-abs IV, subj-rel obj-abs TV.
 
-# Intransitive sentences
+# ==== #
+# Fald # 
+# ==== #
+
+# Hugseregel:
+# subj-abs IV
+# subj-rel obj-abs TV.
+
+# Intransitive sætninger
+# ====================== #
 
 SELECT (Abs Pl) IF (1 (V 3Pl)) ;
 	## Aviisit atuarpavut.
@@ -292,7 +303,9 @@ REMOVE Rel IF (1 (V 3Sg))(NOT 1 TRANSVERB);
 REMOVE (Abs) IF (*1 LOKVERB)(NOT -1 Lok);
 	## Nuummi najugaqarpoq.
 
-# Transitive sentences
+
+# Transitive sætninger
+# =================== #
 
 	## Kaalip ataataat issiaviit toquppaa.
 	#  (N.r-poss N.abs)subj N.r.obj tv
@@ -311,7 +324,7 @@ SELECT Sg IF (0C (@SUBJ))(*1C 3SGSUBJVERB);
 REMOVE (@OBJ) IF (0 Abs)(*1 TRANSVERB BARRIER INTRANSVERB);
 REMOVE (@OBJ) IF (0 Abs)(*-1 TRANSVERB BARRIER INTRANSVERB);
 
-# NP-ar
+# NP-er
 
 SELECT (Abs Sg) IF (-1 (Abs Sg))(0 LU);
 	## Jaakup Juda qatanngutaalu.
@@ -321,9 +334,16 @@ SELECT (Abs Sg) IF (-1 (Abs Sg))(0 LU);
 REMOVE (Abs Sg 1Sg) IF (-1 (Rel Sg)) ;
 	## Daavip ernera.
 	
+
+# Verbal disambiguering
+# =====================
+
+REMOVE Imp IF (0 N OR Adj)(1 NONIMPVERB);
+	## Taamaattumik tamatta suleqatigiittariaqarpugut.
 	
 
-# Syntaktisk disambiguering.
+# Syntaktisk disambiguering
+# ========================= #
 
-SELECT (@SUBJ) IF (1C @OBJ)(2 TRANSVERB);
+SELECT (@SUBJ) IF (1C @OBJ)(2 TRANSVERB) ;
 	## Nanoruna piniartup toqukkaa.
