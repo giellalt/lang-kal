@@ -21,7 +21,7 @@ define Uvular [ q | r ] ;
 define NonUvular [ Cns - Uvular ] ;
  
 echo << Vi definerer Dummy-symboler >>
-define Dummy [ %> | %< | %TRUNC | %CLIT | %STRUNC | %POSSESSORTRUNC | %PRONTRUNC | %ROD | %likTRUNC | %VCTRUNC | %CVqTRUNC | %VTRUNC | %EPENT ] ;
+define Dummy [ %> | %< | %TRUNC | %CLIT | %STRUNC | %POSSESSORTRUNC | %PRONTRUNC | %ROD | %likTRUNC | %VCTRUNC | %CVqTRUNC | %VTRUNC | %EPENT | %PROP | %ALTINF ] ;
 
 echo << Vi definerer de ikke fonetisk betingede allomorfer >>
 !define InfinitivLu [ l -> l l || [ a | u | i ] %> _ ] ;
@@ -37,9 +37,10 @@ define Pronvar3 [ v %ROD -> g g || u _ u u n a ] ;
 define Pronvar4 [ [ k | g ] %ROD %TRUNC n n a -> n n g a ] ;
 define Pronvar5 [ v %ROD (%TRUNC) Cns -> 0 || .#. u _ ] ;
 define Pronvar6 [ s -> 0 || u %ROD %PRONTRUNC _ u ] ;
-define Impvar1 [ g -> j || [ u | a ] %> _ u k ] ;
-define Impvar2 [ g -> 0 || i %> _ u k ] ;
-
+!Impvar-reglerne fjernet 7.9. og guk -> g3uk for at redde Con fra former som *iliukku og *takujukku
+!define Impvar1 [ g -> j || [ u | a ] %> _ u k ] ;
+!define Impvar2 [ g -> 0 || i %> _ u k ] ;
+define AltNegInf [ n -> 0 || r %> %ALTINF _ a ] ;
 
 echo << Vi definerer morfofonemiske regler >>
 echo << Nogle arkifonemer >>
@@ -136,7 +137,7 @@ echo << Vi definerer vokalregler >>
 !define schwaC [ [ i2 | i3 ] -> i || _ %> ( %TRUNC ) Cns ] ;
 !define schwaV [ [ i2 | i3 ] -> a || _ %> ( %TRUNC ) Vow ] ;
 !define schwaNULL [ i3 -> 0 || t _ [ .#. | %CLIT ] ] ;
-define Langradikalisering [ [ i %> e | i i ] -> e e, [ u %> o | u u ] -> o o || _ ( %> ) ( \Segment ) Uvular ] ;
+define Langradikalisering [ [ i %> e | i i | i %> i ] -> e e, [ u %> o | u u | u %> u ] -> o o || _ ( %> ) ( \Segment ) Uvular ] ;
 define radikalisering [ i -> e, u -> o || _ %> ( \Segment ) Uvular ] ;
 define EeafRadikalisering [ e e -> i i || _ %> ( %TRUNC ) [ NonUvular | i | u | a ] ] ;
 define OoafRadikalisering [ o o -> u u || _ %> ( %TRUNC ) [ NonUvular | i | u | a ] ] ;
@@ -171,8 +172,8 @@ Tmetatese ![ t i2 q -> q q || _ %> Vow ] ; 03-3
 .o.
 schwavaek ![ i2 -> e ] ; 03-4
 .o.
-!InfinitivLu	![ l -> l l || [ a | u | i ] %> _ ] 03
-!.o.
+AltNegInf ![ n -> 0 || r %> %ALTINF _ a ] ;
+.o.
 c2slet	![ c2 -> 0 || Cns _ %> ] 04
 .o.
 c2v ![ c2 %> v -> p p || Vow _ Vow ] 05
@@ -226,10 +227,10 @@ qgFusion	![ [ r | q ] %> ( %TRUNC ) [ g | g2 ] -> r ] 36
 .o.
 trunkering ![ Cns -> 0 || _ [ %> | %ROD ] %TRUNC ] ; 
 .o.
-Impvar1 ![ g -> j || [ u | a ] %> _ u k ] ; 29
-.o.
-Impvar2 ![ g -> 0 || i %> _ u k ] ; 30 
-.o.
+!Impvar1 ![ g -> j || [ u | a ] %> _ u k ] ; 29
+!.o.
+!Impvar2 ![ g -> 0 || i %> _ u k ] ; 30 
+!.o.
 TruncVaek	! [ %TRUNC -> 0 ] ; 31
 .o.
 Vepentese ![ %EPENT -> i || Cns _ %CLIT ]
@@ -273,7 +274,7 @@ qAssimilation	![ Cns -> q || Vow _ %> (\Segment) q ]
 !.o.
 !schwaNULL	![ i3 -> 0 || t _ [ .#. | %CLIT ] ] 
 !.o.
-Langradikalisering	![ [ i e | i i ] -> e e, [ u o | u u -> o o || _ ( %> ) ( \Segment ) Uvular ]
+Langradikalisering	![ [ i %> e | i i | i %> i ] -> e e, [ u %> o | u u | u %> u ] -> o o || _ ( %> ) ( \Segment ) Uvular ]
 .o.
 radikalisering	![ i -> e, u -> o || _ ( %> ) ( \Segment ) Uvular ]
 .o.
@@ -284,6 +285,8 @@ OoafRadikalisering ![ o o -> u u || _ %> ( %TRUNC ) [ NonUvular | i | u | a ] ]
 eafRadikalisering	![ e -> i || _ ( %> ) ( %TRUNC ) [ NonUvular | i | u | a ] ]
 .o.
 oafRadikalisering ![ o -> u || _ ( %> ) ( %TRUNC ) [ NonUvular | i | u | a ] ] ;
+.o.
+aVepentese ![ %> -> v || a a _ [ a | i ] ;
 .o.
 progressivVassimilering	![ Vow -> a || a [ %> | %ROD ] ( %TRUNC ) _ ( %> ) Cns ]
 .o.
@@ -313,8 +316,6 @@ aasiit1Vokal	![ a -> 0 || _ %CLIT a a ]
 !.o.
 !kiNasalisering ![ k %> i -> n g i ]
 !.o.
-aVepentese ![ %> -> v || a a _ [ a | i ] ;
-.o.
 G4regel1 ![ g4 -> 0 || [ i | u  ] %> _ ] ;
 .o.
 G4regel2 ![ g4 -> j || a %> _ ] ;
