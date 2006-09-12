@@ -131,14 +131,15 @@ kal.save: ../bin/kal.save
 kal-lex.save: ../bin/kal-lex.save
 ../bin/kal-lex.save: kal-lex.txt noun-kal-lex.txt prt-kal-lex.txt \
 	verb-kal-lex.txt ateq-kal-lex.txt num-kal-lex.txt \
-	ateq-kal-morph.txt punct-kal-lex.txt abbr-kal-lex.txt
+	ateq-kal-morph.txt punct-kal-lex.txt abbr-kal-lex.txt \
+	acro-kal-lex.txt
 	@echo
 	@echo "*** Building kal-lex.save ***" ;
 	@echo
 	printf "compile-source kal-lex.txt noun-kal-lex.txt \
 	prt-kal-lex.txt verb-kal-lex.txt ateq-kal-lex.txt \
 	ateq-kal-morph.txt num-kal-lex.txt punct-kal-lex.txt \
-	abbr-kal-lex.txt \n\
+	abbr-kal-lex.txt acro-kal-lex.txt \n\
 	save-source ../bin/kal-lex.save \n\
 	quit \n" > ../tmp/kal-lex-save-script
 	@lexc -utf8 < ../tmp/kal-lex-save-script
