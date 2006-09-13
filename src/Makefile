@@ -56,7 +56,7 @@ tag-da.fst: ../bin/tag-da.fst
 g-kal.fst: ../bin/g-kal.fst
 ../bin/g-kal.fst: ../bin/kal.fst ../bin/tag-kal.fst
 	@echo
-	@echo "*** Building g-kal.fst, kal.fst with Sami tags ***"
+	@echo "*** Building g-kal.fst, kal.fst with Greenlandic tags ***"
 	@echo
 	@printf "read regex [[@\"../bin/tag-kal.fst\"] .o. \
 	[@\"../bin/kal.fst\"]] ; \n\
