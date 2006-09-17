@@ -8,7 +8,7 @@
 # It is dependent upon kal.save
 
 ikal.fst: ../bin/ikal.fst
-../bin/ikal.fst: ../bin/kal.fst ../bin/g-kal.fst ../bin/d-kal.fst
+../bin/ikal.fst: ../bin/kal.fst ../bin/g-kal.fst ../bin/d-kal.fst ../bin/abbr.txt
 	@echo
 	@echo "*** Building the inverse ikal.fst ***"
 	@echo
@@ -94,6 +94,23 @@ kal.fst: ../bin/kal.fst
 	quit \n" > ../tmp/kal-fst-script
 	@xfst -utf8 < ../tmp/kal-fst-script
 	@rm -f ../tmp/kal-fst-script
+
+
+
+# Here we make the abbrevation file for our current preprocessor, 
+# the perl-based preprocess (located in the script catalogue)
+
+abbr: ../bin/abbr.txt
+../bin/abbr.txt: ../../../gt/script/abbr-extract abbr-kal-lex.txt \
+	ateq-kal-lex.txt noun-kal-lex.txt prt-kal-lex.txt
+	@echo
+	@echo "*** Extracting abbreviations from abbr-kal-lex.txt to abbr.txt ***" ;
+	@echo
+	@perl ../../../gt/script/abbr-extract \
+		--abbr_lex=abbr-kal-lex.txt \
+		--lex=ateq-kal-lex.txt,noun-kal-lex.txt,prt-kal-lex.txt \
+		--output=$@
+
 
 
 # The second goal is to build the caseconv.fst file
