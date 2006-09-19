@@ -5,15 +5,27 @@
 
 echo << Vi definerer vokalerne... >>
 
-define Vow [ a | e | i | i2 | o | u | y | æ | ø | å |
-             A | E | I | O | U | Y | Æ | Ø | Å ] ;
+!define Vow [ a | e | i | i2 | o | u | y | æ | ø | å |
+!             A | E | I | O | U | Y | Æ | Ø | Å ] ;
+!Foerste test med Vow defineret alene som groenlandske vokaler og kun i lowercase
+!Fungerer helt fint
+define Vow [ a | e | i | i2 | o | u ] ;
+
+!Anden test definerer TVow-regelen helt ud for at teste, om vi helt kan undvaere t2
+!Fungerer uden TVow
+
+!Tredie test fjerne t2 helt. Fungerer helt uden problemer
  
 echo << Vi definerer konsonanterne... >>
- 
-define Cns [ t2 | c2 | b | c | d | f | g | g2 | g3 | g4 | h | j | k | l | m |
+define Cns [ c2 | b | c | d | f | g | g2 | g3 | g4 | h | j | k | l | m |
              n | p | q | r | s | t | v | w | x | z |
              B | C | D | F | G | H | J | K | L | M |
              N | P | Q | R | S | T | V | W | X | Z ]  ;
+ 
+!define Cns [ t2 | c2 | b | c | d | f | g | g2 | g3 | g4 | h | j | k | l | m |
+!             n | p | q | r | s | t | v | w | x | z |
+!             B | C | D | F | G | H | J | K | L | M |
+!             N | P | Q | R | S | T | V | W | X | Z ]  ;
  
 echo << Vi definerer sæt af segmenter... >>
 define Segment [ Cns | Vow ] ;
@@ -44,8 +56,8 @@ define AltNegInf [ n -> 0 || r %> %ALTINF _ a ] ;
 
 echo << Vi definerer morfofonemiske regler >>
 echo << Nogle arkifonemer >>
-define TVow [ t2 -> s || Vow ( \Cns ) %> _ ] ; 
-define TCns [ t2 -> t || Cns ( \Vow ) %> _ ] ;
+!define TVow [ t2 -> s || Vow ( \Cns ) %> _ ] ; 
+!define TCns [ t2 -> t || Cns ( \Vow ) %> _ ] ;
        ! "ikke Cns" og "ikke Vow" for at tillade flags imellem
 
 !g3 tilfoejet 3.juni Konsekvensretning i IngenArkefonemer, gAssimilation, qgFusion
@@ -151,17 +163,18 @@ define c2v [ c2 %> v -> p p || Vow _ Vow ] ;
                                                                   
 echo << Vi rydder op >>
 
-define IngenArkefonemer [ t2 -> t, g2 -> g, g3 -> 0 ] ;
+!define IngenArkefonemer [ t2 -> t, g2 -> g, g3 -> 0 ] ;
+define IngenArkefonemer [ g2 -> g, g3 -> 0 ] ;
 define DummyDeletion [ Dummy -> 0 ] ;
 define vSlet [ v -> 0 || u _ [ i | e | a ] ] ; !En rent ortografisk regel
 
 echo << Vi sætter ting sammen >>
                                                                       
 read regex [
-TCns	![ t2 -> t || Cns ( \Vow ) %> _ ] 01
-.o.
-TVow	![ t2 -> s || Vow ( \Cns ) %> _ ] 02
-.o.
+!TCns	![ t2 -> t || Cns ( \Vow ) %> _ ] 01
+!.o.
+!TVow	![ t2 -> s || Vow ( \Cns ) %> _ ] 02
+!.o.
 oLmetatese ![ u l i2 q -> o r l || _ %> Vow ] ;
 .o.
 Lmetatese ![ l i2 q -> r l || _ %> Vow ] ; 03-1
@@ -328,7 +341,9 @@ Gaffix3 ![ g3 -> 0 || i %> _ u ] ;
 .o.
 Gaffix4 ![ g3 -> j || [ a | u ] %> _ u ] ;
 .o.
-IngenArkefonemer	![ t2 -> t, g2 -> g, g3 -> 0, g4 -> 0  ]
+!IngenArkefonemer	![ t2 -> t, g2 -> g, g3 -> 0, g4 -> 0  ]
+!.o.
+IngenArkefonemer	![ g2 -> g, g3 -> 0, g4 -> 0  ]
 .o.
 tAssibilering ![ t -> s || t %> _ [ i | e ] ]  en rent ortografisk regel
 .o.
