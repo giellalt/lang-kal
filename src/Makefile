@@ -11,7 +11,7 @@
 # It is dependent upon kal.save
 
 ikal.fst: ../bin/ikal.fst
-../bin/ikal.fst: ../bin/kal.fst ../bin/g-kal.fst ../bin/d-kal.fst ../bin/abbr.txt #../bin/str-kal.fst
+../bin/ikal.fst: ../bin/kal.fst ../bin/g-kal.fst ../bin/d-kal.fst ../bin/abbr.txt ../bin/str-kal.fst
 	@echo
 	@echo "*** Building the inverse ikal.fst ***"
 	@echo
@@ -27,8 +27,8 @@ ikal.fst: ../bin/ikal.fst
 # ***************************************
 
 
-# Here we build a restricted version of the kal parser
-# It is like the kal.fst, but without the !SUB entries
+## Here we build a restricted version of the kal parser
+## It is like the kal.fst, but without the !SUB entries
 #
 ## This goal is to build the final analyser. It depends on all the files.
 #
@@ -78,25 +78,32 @@ ikal.fst: ../bin/ikal.fst
 #	@lexc -utf8 < ../tmp/str-kal-lex-save-script
 #	rm -f ../tmp/str-kal-lex-save-script
 #
-#STRICTLEX = $(patsubst $src/$(LEX),$int/str-$(LEX),$(LEX))
+#STRICTLEX = $(patsubst $(LEX),$../int/str-$(LEX),$(LEX))
 ## (cf. original (I probably didn't get this right))
 ## NONRECFILES = $(patsubst $(TARGET)/src/%.txt,$(TARGET)/int/%.nonrec,$(SRCS))
 #
-#LEX = src/kal-lex.txt \
-#	src/noun-kal-lex.txt src/verb-kal-lex.txt \
-#	src/closed-kal-lex.txt src/ateq-kal-lex.txt \
-#	src/noun-kal-morph.txt src/ateq-kal-morph.txt \
-#	src/punct-kal-lex.txt
-#
+#LEX = kal-lex.txt \
+#	abbr-kal-lex.txt acro-kal-lex.txt \
+#	noun-kal-lex.txt verb-kal-lex.txt \
+#	ateq-kal-lex.txt ateq-kal-morph.txt \
+#	punct-kal-lex.txt prt-kal-lex.txt num-kal-lex.txt 
 #
 #$(STRICTLEX): $(LEX)
 #	@echo
 #	@echo "*** Making restrictive lexicon files ***"
-#	@echo
-#	@grep -v '\!SUB' $(patsubst ../int/str-$(LEX),$(LEX),$@) > $@
-#
+#	@echo  $(LEX)
+#	@grep -v '\!SUB' $(patsubst ../int/str-$(LEX),$(LEX),$@) > ../int/str-$@
+## intensjon:
+## les alle LEX-filene i denne katalogen og legg dei (utan !SUB-liner) i ../int/
 ## (cf. original:)
 ##	@grep -v '\^[CN]\^' $(patsubst $(TARGET)/int/%.nonrec,$(TARGET)/src/%.txt,$@) | grep -v 'SUB' > $@
+#
+## Primitivversjon
+
+##str-ateq-kal-lex.txt: ../int/str-ateq-kal-lex.txt
+##../int/ateq-kal-lex.txt: ateq-kal-lex.txt
+##	@grep -v '\!SUB' ateq-kal-lex.txt > ../int/str-ateq-kal-lex.txt
+
 
 
 # Versions of the sloppy tagger with different tags:
