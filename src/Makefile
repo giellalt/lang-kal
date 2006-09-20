@@ -2,13 +2,16 @@
 # This is a makefile that builds the XFST Greenlandic morphological parser #
 # ************************************************************************ #
 
+
 # Her bygger vi en analysator for vestgrønlandsk.
+
+
 
 # Here we build the final generator , an inverted transducer of the analyzer.
 # It is dependent upon kal.save
 
 ikal.fst: ../bin/ikal.fst
-../bin/ikal.fst: ../bin/kal.fst ../bin/g-kal.fst ../bin/d-kal.fst ../bin/abbr.txt
+../bin/ikal.fst: ../bin/kal.fst ../bin/g-kal.fst ../bin/d-kal.fst ../bin/abbr.txt #../bin/str-kal.fst
 	@echo
 	@echo "*** Building the inverse ikal.fst ***"
 	@echo
@@ -19,6 +22,85 @@ ikal.fst: ../bin/ikal.fst
 	@xfst -utf8 < ../tmp/ikal-fst-script
 	@rm -f ../tmp/ikal-fst-script
 
+
+# Here we build some intermediate parsers
+# ***************************************
+
+
+# Here we build a restricted version of the kal parser
+# It is like the kal.fst, but without the !SUB entries
+#
+## This goal is to build the final analyser. It depends on all the files.
+#
+#str-kal.fst: ../bin/str-kal.fst
+#../bin/str-kal.fst: ../bin/str-kal.save ../bin/caseconv.fst
+#	@echo
+#	@echo "*** Building the restrictive str-kal.fst ***" ;
+#	@echo
+#	@printf "read regex [[@\"../bin/str-kal.save\"] .o. \
+#	[@\"../bin/caseconv.fst\"]] ; \n\
+#	save stack ../bin/str-kal.fst \n\
+#	quit \n" > ../tmp/str-kal-fst-script
+#	@xfst -utf8 < ../tmp/str-kal-fst-script
+#	@rm -f ../tmp/str-kal-fst-script
+#
+#
+#str-kal.save: ../bin/str-kal.save
+#../bin/str-kal.save: ../bin/xfst-kal.bin ../bin/str-kal-lex.save
+#	@echo
+#	@echo "*** Building the restrictive parser str-kal.save ***"
+#	@echo
+#	@printf "read regex [[@\"../bin/str-kal-lex.save\"] .o. \
+#	[@\"../bin/xfst-kal.bin\"]] ; \n\
+#	save stack ../bin/str-kal.save \n\
+#	quit \n" > ../tmp/str-kal-save-script
+#	@xfst -utf8 < ../tmp/str-kal-save-script
+#	@rm -f ../tmp/str-kal-save-script
+#
+#
+## The first goal is to build str-kal-lex.save
+## This goal depends on a bunch of lexicon files
+#
+#str-kal-lex.save: ../bin/str-kal-lex.save
+#../bin/str-kal-lex.save: ../int/str-kal-lex.txt ../int/str-noun-kal-lex.txt ../int/str-prt-kal-lex.txt \
+#	../int/str-verb-kal-lex.txt ../int/str-ateq-kal-lex.txt ../int/str-num-kal-lex.txt \
+#	../int/str-ateq-kal-morph.txt ../int/str-punct-kal-lex.txt ../int/str-abbr-kal-lex.txt \
+#	../int/str-acro-kal-lex.txt
+#	@echo
+#	@echo "*** Building str-kal-lex.save ***" ;
+#	@echo
+#	printf "compile-source str-kal-lex.txt str-noun-kal-lex.txt \
+#	str-prt-kal-lex.txt str-verb-kal-lex.txt str-ateq-kal-lex.txt \
+#	str-ateq-kal-morph.txt str-num-kal-lex.txt str-punct-kal-lex.txt \
+#	str-abbr-kal-lex.txt str-acro-kal-lex.txt \n\
+#	save-source ../bin/str-kal-lex.save \n\
+#	quit \n" > ../tmp/str-kal-lex-save-script
+#	@lexc -utf8 < ../tmp/str-kal-lex-save-script
+#	rm -f ../tmp/str-kal-lex-save-script
+#
+#STRICTLEX = $(patsubst $src/$(LEX),$int/str-$(LEX),$(LEX))
+## (cf. original (I probably didn't get this right))
+## NONRECFILES = $(patsubst $(TARGET)/src/%.txt,$(TARGET)/int/%.nonrec,$(SRCS))
+#
+#LEX = src/kal-lex.txt \
+#	src/noun-kal-lex.txt src/verb-kal-lex.txt \
+#	src/closed-kal-lex.txt src/ateq-kal-lex.txt \
+#	src/noun-kal-morph.txt src/ateq-kal-morph.txt \
+#	src/punct-kal-lex.txt
+#
+#
+#$(STRICTLEX): $(LEX)
+#	@echo
+#	@echo "*** Making restrictive lexicon files ***"
+#	@echo
+#	@grep -v '\!SUB' $(patsubst ../int/str-$(LEX),$(LEX),$@) > $@
+#
+## (cf. original:)
+##	@grep -v '\^[CN]\^' $(patsubst $(TARGET)/int/%.nonrec,$(TARGET)/src/%.txt,$@) | grep -v 'SUB' > $@
+
+
+# Versions of the sloppy tagger with different tags:
+# **************************************************
 
 # We want an analyzer with Danish tags. It takes the linguistic 
 # kal.fst as input and gives us an alternate d-kal.fst
@@ -79,6 +161,13 @@ tag-kal.fst: ../bin/tag-kal.fst
 	quit \n" > ../tmp/tag-kal-script
 	@xfst < ../tmp/tag-kal-script
 	@rm -f ../tmp/tag-kal-script
+
+
+
+
+# Here comes the part building the basic parser.
+# **********************************************
+
 
 
 # This goal is to build the final analyser. It depends on all the files.
@@ -163,7 +252,10 @@ kal-lex.save: ../bin/kal-lex.save
 	rm -f ../tmp/kal-lex-save-script
 
 
-# The second goal is to build xfst-kal.bin
+
+
+
+# Here we build xfst-kal.bin, the morphophonological component.
 # This goal depends on xfst-kal.txt
 
 xfst-kal.bin: ../bin/xfst-kal.bin
