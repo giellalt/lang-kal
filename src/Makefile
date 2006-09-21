@@ -5,13 +5,39 @@
 
 # Her bygger vi en analysator for vestgrønlandsk.
 
+SRCS = kal-lex.txt \
+	abbr-kal-lex.txt acro-kal-lex.txt \
+	noun-kal-lex.txt verb-kal-lex.txt \
+	ateq-kal-lex.txt ateq-kal-morph.txt \
+	punct-kal-lex.txt prt-kal-lex.txt num-kal-lex.txt 
+
+ifeq ($(TARGET), strict)
+LEX = $(patsubst %,../int/str-%,$(SRCS))
+
+endif
+
+
+ifeq ($(TARGET), sloppy)
+LEX = $(SRCS)
+
+endif
+
+
+# We have two targets, default and strict
+# The latter is restrictive.
+
+all: $(TARGET)
+
+strict: ikal.fst
+sloppy: ikal.fst 
+	
 
 
 # Here we build the final generator , an inverted transducer of the analyzer.
 # It is dependent upon kal.save
 
 ikal.fst: ../bin/ikal.fst
-../bin/ikal.fst: ../bin/kal.fst ../bin/g-kal.fst ../bin/d-kal.fst ../bin/abbr.txt ../bin/str-kal.fst
+../bin/ikal.fst: ../bin/kal.fst ../bin/g-kal.fst ../bin/d-kal.fst ../bin/abbr.txt #../bin/str-kal.fst
 	@echo
 	@echo "*** Building the inverse ikal.fst ***"
 	@echo
@@ -23,86 +49,6 @@ ikal.fst: ../bin/ikal.fst
 	@rm -f ../tmp/ikal-fst-script
 
 
-# Here we build some intermediate parsers
-# ***************************************
-
-
-## Here we build a restricted version of the kal parser
-## It is like the kal.fst, but without the !SUB entries
-#
-## This goal is to build the final analyser. It depends on all the files.
-#
-#str-kal.fst: ../bin/str-kal.fst
-#../bin/str-kal.fst: ../bin/str-kal.save ../bin/caseconv.fst
-#	@echo
-#	@echo "*** Building the restrictive str-kal.fst ***" ;
-#	@echo
-#	@printf "read regex [[@\"../bin/str-kal.save\"] .o. \
-#	[@\"../bin/caseconv.fst\"]] ; \n\
-#	save stack ../bin/str-kal.fst \n\
-#	quit \n" > ../tmp/str-kal-fst-script
-#	@xfst -utf8 < ../tmp/str-kal-fst-script
-#	@rm -f ../tmp/str-kal-fst-script
-#
-#
-#str-kal.save: ../bin/str-kal.save
-#../bin/str-kal.save: ../bin/xfst-kal.bin ../bin/str-kal-lex.save
-#	@echo
-#	@echo "*** Building the restrictive parser str-kal.save ***"
-#	@echo
-#	@printf "read regex [[@\"../bin/str-kal-lex.save\"] .o. \
-#	[@\"../bin/xfst-kal.bin\"]] ; \n\
-#	save stack ../bin/str-kal.save \n\
-#	quit \n" > ../tmp/str-kal-save-script
-#	@xfst -utf8 < ../tmp/str-kal-save-script
-#	@rm -f ../tmp/str-kal-save-script
-#
-#
-## The first goal is to build str-kal-lex.save
-## This goal depends on a bunch of lexicon files
-#
-#str-kal-lex.save: ../bin/str-kal-lex.save
-#../bin/str-kal-lex.save: ../int/str-kal-lex.txt ../int/str-noun-kal-lex.txt ../int/str-prt-kal-lex.txt \
-#	../int/str-verb-kal-lex.txt ../int/str-ateq-kal-lex.txt ../int/str-num-kal-lex.txt \
-#	../int/str-ateq-kal-morph.txt ../int/str-punct-kal-lex.txt ../int/str-abbr-kal-lex.txt \
-#	../int/str-acro-kal-lex.txt
-#	@echo
-#	@echo "*** Building str-kal-lex.save ***" ;
-#	@echo
-#	printf "compile-source str-kal-lex.txt str-noun-kal-lex.txt \
-#	str-prt-kal-lex.txt str-verb-kal-lex.txt str-ateq-kal-lex.txt \
-#	str-ateq-kal-morph.txt str-num-kal-lex.txt str-punct-kal-lex.txt \
-#	str-abbr-kal-lex.txt str-acro-kal-lex.txt \n\
-#	save-source ../bin/str-kal-lex.save \n\
-#	quit \n" > ../tmp/str-kal-lex-save-script
-#	@lexc -utf8 < ../tmp/str-kal-lex-save-script
-#	rm -f ../tmp/str-kal-lex-save-script
-#
-#STRICTLEX = $(patsubst $(LEX),$../int/str-$(LEX),$(LEX))
-## (cf. original (I probably didn't get this right))
-## NONRECFILES = $(patsubst $(TARGET)/src/%.txt,$(TARGET)/int/%.nonrec,$(SRCS))
-#
-#LEX = kal-lex.txt \
-#	abbr-kal-lex.txt acro-kal-lex.txt \
-#	noun-kal-lex.txt verb-kal-lex.txt \
-#	ateq-kal-lex.txt ateq-kal-morph.txt \
-#	punct-kal-lex.txt prt-kal-lex.txt num-kal-lex.txt 
-#
-#$(STRICTLEX): $(LEX)
-#	@echo
-#	@echo "*** Making restrictive lexicon files ***"
-#	@echo  $(LEX)
-#	@grep -v '\!SUB' $(patsubst ../int/str-$(LEX),$(LEX),$@) > ../int/str-$@
-## intensjon:
-## les alle LEX-filene i denne katalogen og legg dei (utan !SUB-liner) i ../int/
-## (cf. original:)
-##	@grep -v '\^[CN]\^' $(patsubst $(TARGET)/int/%.nonrec,$(TARGET)/src/%.txt,$@) | grep -v 'SUB' > $@
-#
-## Primitivversjon
-
-##str-ateq-kal-lex.txt: ../int/str-ateq-kal-lex.txt
-##../int/ateq-kal-lex.txt: ateq-kal-lex.txt
-##	@grep -v '\!SUB' ateq-kal-lex.txt > ../int/str-ateq-kal-lex.txt
 
 
 
@@ -175,6 +121,8 @@ tag-kal.fst: ../bin/tag-kal.fst
 # Here comes the part building the basic parser.
 # **********************************************
 
+# Trying...
+#strict: ../bin/kal.fst
 
 
 # This goal is to build the final analyser. It depends on all the files.
@@ -242,24 +190,28 @@ kal.save: ../bin/kal.save
 # This goal depends on a bunch of lexicon files
 
 kal-lex.save: ../bin/kal-lex.save
-../bin/kal-lex.save: kal-lex.txt noun-kal-lex.txt prt-kal-lex.txt \
-	verb-kal-lex.txt ateq-kal-lex.txt num-kal-lex.txt \
-	ateq-kal-morph.txt punct-kal-lex.txt abbr-kal-lex.txt \
-	acro-kal-lex.txt
+../bin/kal-lex.save: $(LEX)
 	@echo
 	@echo "*** Building kal-lex.save ***" ;
 	@echo
-	printf "compile-source kal-lex.txt noun-kal-lex.txt \
-	prt-kal-lex.txt verb-kal-lex.txt ateq-kal-lex.txt \
-	ateq-kal-morph.txt num-kal-lex.txt punct-kal-lex.txt \
-	abbr-kal-lex.txt acro-kal-lex.txt \n\
+	printf "compile-source $(LEX) \n\
 	save-source ../bin/kal-lex.save \n\
 	quit \n" > ../tmp/kal-lex-save-script
 	@lexc -utf8 < ../tmp/kal-lex-save-script
 	rm -f ../tmp/kal-lex-save-script
 
 
+ifeq ($(TARGET), strict)
+$(LEX): $(SRCS)
+	@echo
+	@echo "*** Making restrictive lexicon files ***"
+	@echo  
+	@grep -v 'SUB' $(patsubst ../int/str-%,%,$@) > $@
+endif
 
+ifeq ($(TARGET), sloppy)
+$(LEX): $(SRCS)
+endif
 
 
 # Here we build xfst-kal.bin, the morphophonological component.
