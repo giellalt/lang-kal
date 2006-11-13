@@ -7,15 +7,9 @@ echo << Vi definerer vokalerne... >>
 
 !define Vow [ a | e | i | i2 | o | u | y | æ | ø | å |
 !             A | E | I | O | U | Y | Æ | Ø | Å ] ;
-!Foerste test med Vow defineret alene som groenlandske vokaler og kun i lowercase
-!Fungerer helt fint
+
 define Vow [ a | e | i | i2 | o | u ] ;
 
-!Anden test definerer TVow-regelen helt ud for at teste, om vi helt kan undvaere t2
-!Fungerer uden TVow
-
-!Tredie test fjerne t2 helt. Fungerer helt uden problemer
- 
 echo << Vi definerer konsonanterne... >>
 !define Cns [ c2 | b | c | d | f | g | g2 | g3 | g4 | h | j | k | l | m |
 !             n | p | q | r | s | t | v | w | x | z |
@@ -40,7 +34,6 @@ echo << Vi definerer Dummy-symboler >>
 define Dummy [ %> | %< | %TRUNC | %CLIT | %STRUNC | %POSSESSORTRUNC | %PRONTRUNC | %ROD | %likTRUNC | %VCTRUNC | %CVqTRUNC | %VTRUNC | %EPENT | %PROP | %ALTINF ] ;
 
 echo << Vi definerer de ikke fonetisk betingede allomorfer >>
-!define InfinitivLu [ l -> l l || [ a | u | i ] %> _ ] ;
 define c2slet [ c2 -> 0 || Cns _ %> ] ;
 define IndikativVu [ v -> p || [ p | r ] %> _ [ u | i | a | o ] ] ;
 define Possessortrunc [ i t -> i || [ o | u | i | e ] (Cns) %> (%TRUNC) _ %POSSESSORTRUNC ] ;
@@ -53,16 +46,10 @@ define Pronvar3 [ v %ROD -> g g || u _ u u n a ] ;
 !define Pronvar4 [ [ k | g ] %ROD %TRUNC n n a -> n n g a ] ;
 define Pronvar5 [ v %ROD (%TRUNC) Cns -> 0 || .#. u _ ] ;
 define Pronvar6 [ s -> 0 || u %ROD %PRONTRUNC _ u ] ;
-!Impvar-reglerne fjernet 7.9. og guk -> g3uk for at redde Con fra former som *iliukku og *takujukku
-!define Impvar1 [ g -> j || [ u | a ] %> _ u k ] ;
-!define Impvar2 [ g -> 0 || i %> _ u k ] ;
 define AltNegInf [ n -> 0 || r %> %ALTINF _ a ] ;
 
 echo << Vi definerer morfofonemiske regler >>
 echo << Nogle arkifonemer >>
-!define TVow [ t2 -> s || Vow ( \Cns ) %> _ ] ; 
-!define TCns [ t2 -> t || Cns ( \Vow ) %> _ ] ;
-       ! "ikke Cns" og "ikke Vow" for at tillade flags imellem
 
 !g3 tilfoejet 3.juni Konsekvensretning i IngenArkefonemer, gAssimilation, qgFusion
 
@@ -83,16 +70,10 @@ define Pmetatese [ u p i2 q -> o q q || _ %> Vow ] ;
 define Tmetatese [ t i2 q -> q q || _ %> Vow ] ;
 define schwavaek [ i2 -> e ] ;
 
-!define xOprydning [ x -> 0 || Cns %> _ ] ;
-!define xpAssimilation [ x -> p || [ a | i | u ] %> _ p ] ;
-!define xmAssimilation [ x -> m || [ a | i | u ] %> _ m ] ;
 define LIKtrunkering [ l i k -> 0 || _ %> %likTRUNC ] ;
 define VCtrunkering [ [ e | a | o ] ( [ q | k ] ) -> 0 || _ %> %VCTRUNC ] ;
 define SEQtrunkering [ [ s | n ] [ e | a ] q -> 0 || _ %> %CVqTRUNC ] ;
 define Vtrunkering [ Vow (Cns) -> 0 || _ %> %VTRUNC ] ;
-!define kaNasalisering [ k %> a  -> n g a || Vow _ ] ; !De sjaeldne forekomster af possessum Z2Z på finalt k
-!define kiNasalisering [ k %> i  -> n g i || Vow _ ] ; !De sjaeldne forekomster af possessum Z2Z på finalt k
-!To nasaliseringsregler slettet 28.4. efter intro af nyt paradigme tup_k
 
 echo << Vi definerer tilhaengspartiklernes lydregler >>
 define clitkgFusion [ k %CLIT g2 -> g ] ;
@@ -117,6 +98,8 @@ define aasiit1Vokal [ a -> 0 || _ %CLIT a a ] ;
 define aasiit2Vokal [ a ( %> ) ( %TRUNC ) a -> a a j || _ %CLIT a a ] ;
 define Vepentese [ %EPENT -> i || [Cns | %-] _ %CLIT ] ;
 define ttaaqReduktion [ t -> 0 || Cns %CLIT _ t a a ] ;
+!Tilfoejet efter 16.10 (13.11.)
+define ttaaqAssibilering [ t t -> s s || i %CLIT _ ] ;
 
  
 ! Assimilationsrægler
@@ -166,7 +149,8 @@ define tAssibilering [ t -> s || t %> _ [ i | e ] ] ;
 define aVepentese [ %> -> v || a a _ [ a | i ] ] ;
 !helt ny regel tilføjet 27.9. for at haandtere qallunaajuvoq og mattusuujuvoq. Skal komme foer progressivVassimilering
 define jEpentese1 [ q %> %TRUNC u -> %> j u ||  [ a a | o o ] _ %> ] ;
-
+!tilfoejet efter 16.10. (13.11.06)
+define gEpentese [ i ( %> ) i %> %TRUNC i -> i i g i ] ;
 define c2v [ c2 %> v -> p p || Vow _ Vow ] ;
                                                                   
 echo << Vi rydder op >>
@@ -253,9 +237,12 @@ trunkering ![ Cns -> 0 || _ [ %> | %ROD ] %TRUNC ] ;
 !Impvar1 ![ g -> j || [ u | a ] %> _ u k ] ; 29
 !.o.
 !Impvar2 ![ g -> 0 || i %> _ u k ] ; 30 
-!.o.
+gEpentese ![ i ( %> ) i %> %TRUNC i -> i i g i ] ;
+.o.
 TruncVaek	! [ %TRUNC -> 0 ] ; 31
 .o.
+ttaaqAssibilering ![ t t -> s s || i %CLIT _ ] !flyttet fra linie 320 hertil  for at forbygge at 
+.o. !epentetisk i bevirker assibileringen
 Vepentese ![ %EPENT -> i || Cns _ %CLIT ]
 .o.
 clitkgFusion ![ k %CLIT g2 -> g ] 32
