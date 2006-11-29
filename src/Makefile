@@ -45,7 +45,7 @@ ikal.fst: ../bin/ikal.fst
 	invert net \n\
 	save stack ../bin/ikal.fst \n\
 	quit \n" > ../tmp/ikal-fst-script
-	@xfst -utf8 < ../tmp/ikal-fst-script
+	@fst -utf8 < ../tmp/ikal-fst-script
 	@rm -f ../tmp/ikal-fst-script
 
 
@@ -67,7 +67,7 @@ d-kal.fst: ../bin/d-kal.fst
 	[@\"../bin/kal.fst\"]] ; \n\
 	save stack ../bin/d-kal.fst \n\
 	quit \n" > ../tmp/d-kal-fst-script
-	@xfst < ../tmp/d-kal-fst-script
+	@fst < ../tmp/d-kal-fst-script
 	@rm -f ../tmp/d-kal-fst-script
 
 
@@ -82,7 +82,7 @@ tag-da.fst: ../bin/tag-da.fst
 	@printf "read regex < tag-da.regex \n\
 	save stack ../bin/tag-da.fst \n\
 	quit \n" > ../tmp/kal-tag-da-script
-	@xfst < ../tmp/kal-tag-da-script
+	@fst < ../tmp/kal-tag-da-script
 	@rm -f ../tmp/kal-tag-da-script
 
 # We also want an analyzer with Greenlandic tags. It takes the linguistic 
@@ -97,7 +97,7 @@ g-kal.fst: ../bin/g-kal.fst
 	[@\"../bin/kal.fst\"]] ; \n\
 	save stack ../bin/g-kal.fst \n\
 	quit \n" > ../tmp/g-kal-fst-script
-	@xfst < ../tmp/g-kal-fst-script
+	@fst < ../tmp/g-kal-fst-script
 	@rm -f ../tmp/g-kal-fst-script
  
 
@@ -112,7 +112,7 @@ tag-kal.fst: ../bin/tag-kal.fst
 	@printf "read regex < tag-kal.regex \n\
 	save stack ../bin/tag-kal.fst \n\
 	quit \n" > ../tmp/tag-kal-script
-	@xfst < ../tmp/tag-kal-script
+	@fst < ../tmp/tag-kal-script
 	@rm -f ../tmp/tag-kal-script
 
 
@@ -136,7 +136,7 @@ kal.fst: ../bin/kal.fst
 	[@\"../bin/caseconv.fst\"]] ; \n\
 	save stack ../bin/kal.fst \n\
 	quit \n" > ../tmp/kal-fst-script
-	@xfst -utf8 < ../tmp/kal-fst-script
+	@fst -utf8 < ../tmp/kal-fst-script
 	@rm -f ../tmp/kal-fst-script
 
 
@@ -168,7 +168,7 @@ caseconv.fst: ../bin/caseconv.fst
 	@printf "read regex < case.regex \n\
 	save stack ../bin/caseconv.fst \n\
 	quit \n" > ../tmp/caseconv-script
-	@xfst -utf8 < ../tmp/caseconv-script
+	@fst -utf8 < ../tmp/caseconv-script
 	@rm -f ../tmp/caseconv-script
 
 
@@ -182,7 +182,7 @@ kal.save: ../bin/kal.save
 	[@\"../bin/xfst-kal.bin\"]] ; \n\
 	save stack ../bin/kal.save \n\
 	quit \n" > ../tmp/kal-save-script
-	@xfst -utf8 < ../tmp/kal-save-script
+	@fst -utf8 < ../tmp/kal-save-script
 	@rm -f ../tmp/kal-save-script
 
 
@@ -225,7 +225,7 @@ xfst-kal.bin: ../bin/xfst-kal.bin
 	@printf "source xfst-kal.txt \n\
 	save stack ../bin/xfst-kal.bin \n\
 	quit \n" > ../tmp/xfst-kal-script
-	@xfst -utf8 < ../tmp/xfst-kal-script
+	@fst -utf8 < ../tmp/xfst-kal-script
 	@rm -f ../tmp/xfst-kal-script
 
 
