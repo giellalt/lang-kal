@@ -5,6 +5,25 @@
 
 # Her bygger vi en analysator for vestgrønlandsk.
 
+# Tools used when compiling the transducers
+
+XFST = xfst -utf8
+LEXC = lexc -utf8
+
+ifeq (victorio.uit.no, $(shell hostname))
+XFST = /opt/sami/xerox/c-fsm/ix86-linux2.6-gcc3.4/bin/fst -utf8
+LEXC = /opt/sami/xerox/bin/lexc -utf8
+endif
+
+#ifeq (per.marttila.fi, $(shell hostname))
+#XFST = /.../fst -utf8 #bare fst viss i sti.
+#LEXC = /../lexc -utf8
+#endif
+
+
+# Kildefiler
+
+
 SRCS = kal-lex.txt \
 	abbr-kal-lex.txt acro-kal-lex.txt \
 	noun-kal-lex.txt verb-kal-lex.txt \
@@ -30,7 +49,6 @@ all: $(TARGET)
 
 strict: ikal.fst
 sloppy: ikal.fst 
-	
 
 
 # Here we build the final generator , an inverted transducer of the analyzer.
@@ -45,7 +63,7 @@ ikal.fst: ../bin/ikal.fst
 	invert net \n\
 	save stack ../bin/ikal.fst \n\
 	quit \n" > ../tmp/ikal-fst-script
-	@fst -utf8 < ../tmp/ikal-fst-script
+	$(XFST) < ../tmp/ikal-fst-script
 	@rm -f ../tmp/ikal-fst-script
 
 
@@ -136,7 +154,7 @@ kal.fst: ../bin/kal.fst
 	[@\"../bin/caseconv.fst\"]] ; \n\
 	save stack ../bin/kal.fst \n\
 	quit \n" > ../tmp/kal-fst-script
-	@fst -utf8 < ../tmp/kal-fst-script
+	$(XFST) < ../tmp/kal-fst-script
 	@rm -f ../tmp/kal-fst-script
 
 
@@ -168,7 +186,7 @@ caseconv.fst: ../bin/caseconv.fst
 	@printf "read regex < case.regex \n\
 	save stack ../bin/caseconv.fst \n\
 	quit \n" > ../tmp/caseconv-script
-	@fst -utf8 < ../tmp/caseconv-script
+	$(XFST) < ../tmp/caseconv-script
 	@rm -f ../tmp/caseconv-script
 
 
@@ -182,7 +200,7 @@ kal.save: ../bin/kal.save
 	[@\"../bin/xfst-kal.bin\"]] ; \n\
 	save stack ../bin/kal.save \n\
 	quit \n" > ../tmp/kal-save-script
-	@fst -utf8 < ../tmp/kal-save-script
+	$(XFST) < ../tmp/kal-save-script
 	@rm -f ../tmp/kal-save-script
 
 
@@ -197,8 +215,8 @@ kal-lex.save: ../bin/kal-lex.save
 	printf "compile-source $(LEX) \n\
 	save-source ../bin/kal-lex.save \n\
 	quit \n" > ../tmp/kal-lex-save-script
-	@lexc -utf8 < ../tmp/kal-lex-save-script
-	rm -f ../tmp/kal-lex-save-script
+	$(LEXC) < ../tmp/kal-lex-save-script
+	@rm -f ../tmp/kal-lex-save-script
 
 
 ifeq ($(TARGET), strict)
@@ -225,7 +243,7 @@ xfst-kal.bin: ../bin/xfst-kal.bin
 	@printf "source xfst-kal.txt \n\
 	save stack ../bin/xfst-kal.bin \n\
 	quit \n" > ../tmp/xfst-kal-script
-	@fst -utf8 < ../tmp/xfst-kal-script
+	$(XFST) < ../tmp/xfst-kal-script
 	@rm -f ../tmp/xfst-kal-script
 
 
