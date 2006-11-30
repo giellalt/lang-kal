@@ -85,7 +85,7 @@ d-kal.fst: ../bin/d-kal.fst
 	[@\"../bin/kal.fst\"]] ; \n\
 	save stack ../bin/d-kal.fst \n\
 	quit \n" > ../tmp/d-kal-fst-script
-	@fst < ../tmp/d-kal-fst-script
+	$(XFST) < ../tmp/d-kal-fst-script
 	@rm -f ../tmp/d-kal-fst-script
 
 
@@ -100,7 +100,7 @@ tag-da.fst: ../bin/tag-da.fst
 	@printf "read regex < tag-da.regex \n\
 	save stack ../bin/tag-da.fst \n\
 	quit \n" > ../tmp/kal-tag-da-script
-	@fst < ../tmp/kal-tag-da-script
+	$(XFST) < ../tmp/kal-tag-da-script
 	@rm -f ../tmp/kal-tag-da-script
 
 # We also want an analyzer with Greenlandic tags. It takes the linguistic 
@@ -115,7 +115,7 @@ g-kal.fst: ../bin/g-kal.fst
 	[@\"../bin/kal.fst\"]] ; \n\
 	save stack ../bin/g-kal.fst \n\
 	quit \n" > ../tmp/g-kal-fst-script
-	@fst < ../tmp/g-kal-fst-script
+	$(XFST) < ../tmp/g-kal-fst-script
 	@rm -f ../tmp/g-kal-fst-script
  
 
@@ -130,7 +130,7 @@ tag-kal.fst: ../bin/tag-kal.fst
 	@printf "read regex < tag-kal.regex \n\
 	save stack ../bin/tag-kal.fst \n\
 	quit \n" > ../tmp/tag-kal-script
-	@fst < ../tmp/tag-kal-script
+	$(XFST) < ../tmp/tag-kal-script
 	@rm -f ../tmp/tag-kal-script
 
 
