@@ -7,7 +7,7 @@
 
 # Tools used when compiling the transducers
 
-XFST = xfst -utf8
+XFST = fst -utf8
 LEXC = lexc -utf8
 
 ifeq (victorio.uit.no, $(shell hostname))
@@ -15,8 +15,8 @@ XFST = /opt/sami/xerox/c-fsm/ix86-linux2.6-gcc3.4/bin/fst -utf8
 LEXC = /opt/sami/xerox/bin/lexc -utf8
 endif
 
-#ifeq (per.marttila.fi, $(shell hostname))
-#XFST = /.../fst -utf8 #bare fst viss i sti.
+#sifeq (hum.uit.no, $(shell hostname))
+#XFST = /.../xfst -utf8 #bare fst viss i sti.
 #LEXC = /../lexc -utf8
 #endif
 
