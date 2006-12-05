@@ -15,10 +15,11 @@ XFST = /opt/sami/xerox/c-fsm/ix86-linux2.6-gcc3.4/bin/fst -utf8
 LEXC = /opt/sami/xerox/bin/lexc -utf8
 endif
 
-#sifeq (hum.uit.no, $(shell hostname))
-#XFST = /.../xfst -utf8 #bare fst viss i sti.
-#LEXC = /../lexc -utf8
-#endif
+# The default compiler for Greenlandic is the commercial version fst.
+# If you have xfst, the free version, go to the directory where you store
+# xfst, and write the following command:
+# ln -s xfst fst
+# This will give a pointer from "fst" to xfst, and the transducers will compile.
 
 
 # Kildefiler
