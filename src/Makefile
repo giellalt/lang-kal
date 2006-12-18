@@ -166,20 +166,19 @@ kal.fst: ../bin/kal.fst
 empty:=
 comma:=,
 space:=$(empty) $(empty)
-ABBRSRCS=$(subst $(space),$(comma),$(SRCS))
+ABBRSRCS=$(subst $(space),$(comma),$(LEX))
 
 scripts=$(HOME)/gt/script
 
 abbr: ../bin/abbr.txt
-../bin/abbr.txt: $(scripts)/abbr-extract $(scripts)/langTools/Util.pm abbr-kal-lex.txt \
-    ateq-kal-lex.txt noun-kal-lex.txt prt-kal-lex.txt
+../bin/abbr.txt: $(scripts)/abbr-extract $(scripts)/langTools/Util.pm $(LEX)
 	@echo
 	@echo "*** Extracting abbreviations from abbr-kal-lex.txt to abbr.txt ***" ;
 	@echo
 	@perl -I $(scripts) $(scripts)/abbr-extract \
 		--output=$@ \
 		--abbr_lex=abbr-kal-lex.txt \
-		--lex=ateq-kal-lex.txt,noun-kal-lex.txt,prt-kal-lex.txt \
+		--lex=$(ABBRSRCS)
 
 
 # The second goal is to build the caseconv.fst file
