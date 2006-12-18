@@ -163,17 +163,23 @@ kal.fst: ../bin/kal.fst
 # Here we make the abbrevation file for our current preprocessor, 
 # the perl-based preprocess (located in the script catalogue)
 
+empty:=
+comma:=,
+space:=$(empty) $(empty)
+ABBRSRCS=$(subst $(space),$(comma),$(SRCS))
+
+scripts=$(HOME)/gt/script
+
 abbr: ../bin/abbr.txt
-../bin/abbr.txt: ../../../gt/script/abbr-extract abbr-kal-lex.txt \
-	ateq-kal-lex.txt noun-kal-lex.txt prt-kal-lex.txt
+../bin/abbr.txt: $(scripts)/abbr-extract $(scripts)/langTools/Util.pm abbr-kal-lex.txt \
+    ateq-kal-lex.txt noun-kal-lex.txt prt-kal-lex.txt
 	@echo
 	@echo "*** Extracting abbreviations from abbr-kal-lex.txt to abbr.txt ***" ;
 	@echo
-	@perl ../../../gt/script/abbr-extract \
+	@perl -I $(scripts) $(scripts)/abbr-extract \
+		--output=$@ \
 		--abbr_lex=abbr-kal-lex.txt \
 		--lex=ateq-kal-lex.txt,noun-kal-lex.txt,prt-kal-lex.txt \
-		--output=$@
-
 
 
 # The second goal is to build the caseconv.fst file
