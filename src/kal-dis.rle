@@ -190,6 +190,8 @@ LIST WORD = N V Part Prop Num ;
 
 # Verb
 
+SET VFIN = Ind | Opt ;
+
 SET TRANSVERB = 
 (V 1Sg 2Sg) | (V 1Sg 3Sg) | (V 1Sg 4Sg) | (V 2Sg 1Sg) | (V 2Sg 3Sg) |
 (V 2Sg 4Sg) | (V 3Sg 1Sg) | (V 3Sg 2Sg) | (V 3Sg 3Sg) | (V 3Sg 4Sg) |
@@ -214,6 +216,26 @@ SET PLOBJVERB =
 (V 2Pl 1Pl) | (V 2Pl 3Pl) | (V 2Pl 4Pl) |
 (V 3Pl 1Pl) | (V 3Pl 2Pl) | (V 3Pl 3Pl) | (V 3Pl 4Pl) | 
 (V 4Pl 1Pl) | (V 4Pl 2Pl) | (V 4Pl 3Pl) ;
+
+SET 34PLOBJVERB =
+(V 1Sg 3Pl) | (V 1Sg 4Pl) | 
+(V 2Sg 3Pl) | (V 2Sg 4Pl) | 
+(V 3Sg 3Pl) | (V 3Sg 4Pl) | 
+(V 4Sg 3Pl) |
+(V 1Pl 3Pl) | (V 1Pl 4Pl) | 
+(V 2Pl 3Pl) | (V 2Pl 4Pl) |
+(V 3Pl 3Pl) | (V 3Pl 4Pl) | 
+(V 4Pl 3Pl) ;
+
+SET 34SGOBJVERB =
+(V 1Sg 3Sg) | (V 1Sg 4Sg) | 
+(V 2Sg 3Sg) | (V 2Sg 4Sg) | 
+(V 3Sg 3Sg) | (V 3Sg 4Sg) | 
+(V 4Sg 3Sg) |
+(V 1Pl 3Sg) | (V 1Pl 4Sg) | 
+(V 2Pl 3Sg) | (V 2Pl 4Sg) |
+(V 3Pl 3Sg) | (V 3Pl 4Sg) | 
+(V 4Pl 3Sg) ;
 
 SET SGOBJVERB =
 (V 1Sg 2Sg) | (V 1Sg 3Sg) | (V 1Sg 4Sg) | (V 2Sg 1Sg) | (V 2Sg 3Sg) |
@@ -250,7 +272,7 @@ LIST @OBJ = @OBJ ;
 LIST @ADVL = @ADVL ;
 LIST @INTERJ = @INTERJ ;
 LIST @PROP> = @PROP> ;
-
+LIST @HNOUN = @HNOUN ;
 
 # ============ #
 # ============ #
@@ -267,11 +289,9 @@ MAP (@PRED) TARGET Ind OR Imp OR Cau OR Int OR Par OR Ite
 
 MAP (@ADVL) TARGET Trm OR Abl OR Lok OR Aeq OR Ins OR Via ;
 
-MAP (@SUBJ @OBJ) TARGET Abs ;
+MAP (@OBJ @SUBJ @HNOUN) TARGET Abs ;
 
-MAP (@POSS) TARGET Rel IF (1 N) ;
-
-MAP (@OBJ) TARGET Rel ;
+MAP (@POSS @SUBJ) TARGET Rel ;
 
 MAP (@ADVL) TARGET Part ;
 
@@ -299,6 +319,14 @@ REMOVE N IF (NOT -1 BOS)(0 Prop) ;
 SELECT Attr IF (0 Prop)(1 (Prop Rel) OR (Prop Abs));
 
 REMOVE Attr IF (0 Prop)(NOT 1 Prop);
+
+REMOVE N IF (0 ("Nuuk" Prop Lok));
+	## Nuummi.
+
+# Et unikt verb
+
+SELECT Ind IF (NOT *-1 Ind)(NOT *1 Ind OR ("?"));
+
 # ==== #
 # Fald # 
 # ==== #
@@ -307,14 +335,18 @@ REMOVE Attr IF (0 Prop)(NOT 1 Prop);
 # subj-abs IV
 # subj-rel obj-abs TV.
 
+
+
 # Intransitive sætninger
 # ====================== #
 
-SELECT (Abs Pl) IF (1 (V 3Pl)) ;
-	## Aviisit atuarpavut.
+REMOVE (@OBJ) IF (0 Abs)(*1 INTRANSVERB) ;
+	## Trond sinippoq.
+	# Trond sover
 
 REMOVE Rel IF (1 (V 3Sg))(NOT 1 TRANSVERB);
 	## Nuummi najugaqarpoq.
+	#  Han bor i Nuuk.
 
 REMOVE (Abs) IF (*1 LOKVERB)(NOT -1 Lok);
 	## Nuummi najugaqarpoq.
@@ -323,8 +355,14 @@ REMOVE (Abs) IF (*1 LOKVERB)(NOT -1 Lok);
 # Transitive sætninger
 # =================== #
 
-	## Kaalip ataataat issiaviit toquppaa.
-	#  (N.r-poss N.abs)subj N.r.obj tv
+SELECT (Pl @OBJ) IF (0 (Abs Pl))(*1 34PLOBJVERB);
+SELECT (Pl @OBJ) IF (0 (Abs Pl))(*-1 34PLOBJVERB);
+	## Aviisit atuarpavut.
+
+SELECT (Sg @OBJ) IF (0 (Abs Sg))(*1 34SGOBJVERB);
+SELECT (Sg @OBJ) IF (0 (Abs Sg))(*-1 34SGOBJVERB);
+	## Trond naapipparput.
+
 
 
 SELECT 3Pl IF (-2 Abs)(-1 (Rel Pl))(0 V);
@@ -367,3 +405,8 @@ REMOVE Imp IF (0 N OR Adj)(1 NONIMPVERB);
 
 SELECT (@SUBJ) IF (1C @OBJ)(2 TRANSVERB) ;
 	## Nanoruna piniartup toqukkaa.
+
+SELECT (@HNOUN) IF (NOT *-1 V)(NOT *1 V);
+
+REMOVE (@HNOUN) IF (0 (@OBJ) OR (@SUBJ));
+
