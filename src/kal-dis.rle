@@ -1,6 +1,6 @@
 # =================================================================== #
 # =================================================================== #
-#    W E S T   G R E E N L A N D I C   D I S A M B I G U A T O R      #
+#     W E S T   G R E E N L A N D I C   D I S A M B I G U A T O R     #
 # =================================================================== #
 # =================================================================== #
 
@@ -260,10 +260,7 @@ SET POSSESSUM3 = (N 3Sg) | (N 3Pl) ; #Pers definition 0608
 
 LIST LOKVERB = "najugar" "najugaqar" ;
 
-LIST ORATIOOBLVERB = isuma" "nalu" "qular"  "qularnar" "taku" ;
-
-
-
+LIST ORATIOOBLVERB = "isuma" "nalu" "qular"  "qularnar" "taku" ;
 
 # Substantiver
 
@@ -290,6 +287,7 @@ LIST @HNOUN = @HNOUN ;
 
 
 MAPPINGS
+
 #BEFORE-SECTIONS
 
 MAP (@PRED) TARGET Ind OR Imp OR Cau OR Int OR Par OR Ite 
@@ -297,7 +295,9 @@ MAP (@PRED) TARGET Ind OR Imp OR Cau OR Int OR Par OR Ite
 
 MAP (@ADVL) TARGET Trm OR Abl OR Lok OR Aeq OR Ins OR Via ;
 
-MAP (@OBJ @SUBJ @HNOUN) TARGET Abs ;
+
+MAP (@SUBJ @OBJ @HNOUN) TARGET Abs ;
+
 MAP (@POSS @SUBJ) TARGET Rel ;
 
 MAP (@ADVL) TARGET Part ;
@@ -316,18 +316,17 @@ CONSTRAINTS
 
 REMOVE N IF (NOT -1 BOS)(0 Prop) ;
 	## Ilalu Nuup eqqaani iliverpassuit.
-	
-	
-	
-	
-	
 
+
+
+	
 REMOVE ("asap" Inf) IF (NOT *-1 ("nateq")) ; #Pers regel 0608 
 REMOVE ("kaa" Interj) IF (0 ("Kaali"));
 
 SELECT ("Kina") IF (-1 BOS)(NOT *1 ("?")); #BOS = Beginning of sentence
 SELECT ("kina") IF (-1 BOS)(*1 ("?"));
 ## Kina aniva.
+
 
 # Many-cohort disambiguation - cycle 1
 
@@ -346,6 +345,7 @@ REMOVE (Prop Attr) IF (NOT 1 Prop);
 SELECT Ind IF (NOT *-1 Ind)(NOT *1 Ind OR ("?"));
 
 REMOVE Attr IF (0 Prop)(NOT 1 Prop);
+
 
 REMOVE N IF (0 ("Nuuk" Prop Lok));
 	## Nuummi.
@@ -426,13 +426,7 @@ REMOVE (Abs Sg 1Sg) IF (-1 (Rel Sg)) ;
 REMOVE Imp IF (0 N OR Adj)(1 NONIMPVERB);
 	## Taamaattumik tamatta suleqatigiittariaqarpugut.
 
-#SELECT Par IF (*-1 VFIN) ;
-	
-	
-	
-	
-	
-	
+#SELECT Par IF (*-1 VFIN) ;	
 ## Nalunngilara Trond pikkorissoq.
 
 SELECT Par IF (*-1 ORATIOOBLVERB) ;
@@ -440,36 +434,39 @@ SELECT Par IF (*1 ORATIOOBLVERB) ;
 
 REMOVE (@OBJ) IF (0 Abs)(*1 Par OR Cau)(*-1 ORATIOOBLVERB);
 REMOVE (@OBJ) IF (0 Abs)(*1 Par OR Cau)(*1 ORATIOOBLVERB); #Pers tilfoejelse01_00608
-	
-	
 ## Nalunngilara Trond pikkorissoq.
 
 REMOVE (@OBJ) IF (0 Abs)(*1 (Par INTRANSVERB))(*-1 ORATIOOBLVERB);
-	
-	
 ## Nalunngilara Trond pikkorissoq.
 
 SELECT (@SUBJ) IF (0 Rel)(*1 (Par TRANSVERB))(*-1 ORATIOOBLVERB);
-	
-	
+
+REMOVE (@OBJ) IF (0 Abs)(*1 (Par INTRANSVERB))(*-1 ORATIOOBLVERB);
+## Nalunngilara Trond pikkorissoq.
 
 REMOVE Opt IF (*1C Ind) ;
 REMOVE Int IF (*1C Ind) ;
 REMOVE Imp IF (*1C Ind) ;
 
-	
+
+SELECT (@SUBJ) IF (0 Rel)(*1 (Par TRANSVERB))(*-1 ORATIOOBLVERB);	
 	
 REMOVE Opt IF (*-1C Ind) ;
 	
+REMOVE Int IF (*-1C Ind) ;
 	
-	
+REMOVE Imp IF (*-1C Ind) ;
+## Kaali anivoq.
+
+REMOVE Opt IF (*1C Ind) ;
+REMOVE Int IF (*1C Ind) ;
+REMOVE Imp IF (*1C Ind) ;
+
+REMOVE Opt IF (*-1C Ind) ;
 	
 REMOVE Int IF (*-1C Ind) ;
 	
-	
 REMOVE Imp IF (*-1C Ind) ;
-	
-	
 ## Kaali anivoq.
 
 
@@ -492,8 +489,13 @@ REMOVE (@HNOUN) IF (0 (@OBJ) OR (@SUBJ));
 	## Trond naapipparput.
 
 
-SELECT (@HNOUN) IF (NOT *-1 V)(NOT *1 V);
+REMOVE (@SUBJ) IF (NOT *-1 V)(NOT *1 V);
+REMOVE (@OBJ) IF (NOT *-1 V)(NOT *1 V);
 
 REMOVE (@HNOUN) IF (0 (@OBJ) OR (@SUBJ));
+
+
+
+
 
 
