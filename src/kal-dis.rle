@@ -57,6 +57,9 @@ LIST Du = Du ;
 LIST Pl = Pl ;
 LIST Attr = Attr ;
 
+LIST nn = nn ;
+LIST vv = vv ;
+
 LIST Abs = Abs ;
 LIST Rel = Rel ;
 LIST Trm = Trm ;
@@ -72,6 +75,7 @@ LIST Ind = Ind ;
 LIST Int = Int ;
 LIST Imp = Imp ;
 LIST Opt = Opt ;
+
 LIST Cau = Cau ;
 LIST Con = Con ;
 LIST Par = Par ;
@@ -115,6 +119,7 @@ LIST PUNCT = PUNCT ;
 LIST LEFT = LEFT ; 
 LIST RIGHT = RIGHT ;
 
+LIST COMMONAFFSTRING = \= ;
 
 LIST IP = IP ;
 LIST KAR = KAR ;
@@ -169,6 +174,7 @@ LIST TARSIMA = TARSIMA ;
 LIST TARSINNAA = TARSINNAA ;
 LIST TASSA = TASSA ;
 LIST TIP = TIP ;
+LIST KKUT = KKUT ;
 
 LIST LU = LU ;
 LIST LUGOOQ = LUGOOQ ;
@@ -199,6 +205,7 @@ LIST MITAAVAANA = MITAAVAANA ;
 LIST SUB = SUB ;
 
 
+
 # Syntaktiske klasser
 # ===================
 
@@ -208,7 +215,10 @@ LIST WORD = N V Part Prop Num ;
 
 # Verb
 # ----
-SET VFIN = Ind | Opt | Int ;
+SET VFIN = Ind | Opt | Int | Imp ;
+
+SET V-NOT-Par = V - Par ;
+
 
 SET TRANSVERB = 1SgO | 2SgO | 3SgO | 4SgO | 1DuO | 2DuO | 3DuO | 4DuO | 1PlO | 2PlO | 3PlO | 4PlO ; 
 
@@ -225,8 +235,8 @@ SET SGOBJVERB =  1SgO | 2SgO | 3SgO | 4SgO ;
 SET 3SGSUBJVERB = (V 3Sg) ;
 SET 3PLSUBJVERB = (V 3Pl) ;
 
-SET SUBJVERBNOT3SG = V - 3SGSUBJVERB ;
-SET SUBJVERBNOT3PL = V - 3PLSUBJVERB ;
+SET VERBNOT3SGSUBJ = V - 3SGSUBJVERB ;
+SET VERBNOT3PLSUBJ = V - 3PLSUBJVERB ;
 SET 12SUBJVERB = (V 1Sg) | (V 1Du) | (V 1Pl) | (V 2Sg) | (V 2Du) | (V 2Pl) ;
   
 SET NONIMPVERB = (V Ind) | (V Cau) | (V Int) | (V Par) | (V Ite) | 
@@ -234,40 +244,100 @@ SET NONIMPVERB = (V Ind) | (V Cau) | (V Int) | (V Par) | (V Ite) |
 
 SET POSSESSUM3 = (N 3Sg) | (N 3Pl) ; #Pers definition 0608
 
+SET POSSESSUM4 = (N 4Sg) | (N 4Pl) ; #Pers definition 0608
+
+SET POSSESSUM = (N 1Sg) |  (N 2Sg) |  (N 3Sg) |  (N 1Pl) |  (N 2Pl) |  (N 3Pl) ; 
 # Leksikalske klasser
 
 # Verb
 
 LIST LOKVERB = "najugaq" "najugaqar" "ilinniar" ;
 
+LIST ABLVERB = "ani" ;
+
+LIST TRMVERB = "iser" ;
+
+SET MOVE-VERB = LOKVERB | ABLVERB | TRMVERB ;
+
 LIST ORATIOOBLVERB = "isuma" "nalu" "oqar" "qular"  "qularnar" "taku" ;
+
+LIST VEXCLAM = "sunaaffa" "uffa" "aali" "naak" ;
+
+LIST humverb = "suli" ; # Verb der vil ha humane subj, og ikke er i andre set
+
+SET HUMVERB = humverb OR ORATIOOBLVERB ; # alle verb  der vil ha humane subj
+
+LIST PSEUDO-HTR = "neri" ;
+
+
 
 # Substantiver
 
+
+LIST HUMAN = "illoq" ;
+
+LIST PLACE = "illu" "Kaffi" ;
+# Remove Kaffi when tagged in lex
+LIST FAM = "illoq" ;
+
 SET KASUS = Abs | Rel | Trm | Abl | Lok | Aeq | Ins | Via ;
+SET NOT-REL = KASUS - Rel ;
+SET OBLIQUE =  Trm | Abl | Lok | Aeq | Ins | Via ;
 
+LIST EDIBLE = "neqi" ;
+LIST DRINKABLE = "kaffi" ;
 
+SET THING = EDIBLE | DRINKABLE ;
+LIST INSTRUMENT = "alussaat" ;
 # Komplementære set
 
 SET NOT-PROP = WORD - Prop ;
 
 SET NOT-Abbr = WORD - Abbr ;
 
+LIST Mal = "Trond" "Per" ;
+LIST Fem = "Kirsten" ;
+LIST Sur = "Rasmussen" "Trosterud" ;
 
+SET FIRSTNAME = Mal | Fem | ("Nuka") ;
+SET NAME = Mal | Fem | Sur ;
+SET NOT-FIRST = WORD - FIRSTNAME ;
 
-
+LIST TIME = "sapaat" ;
 
 # Syntaks
 # =======
 
-LIST @PRED = @PRED ;
-LIST @SUBJ = @SUBJ ;
-LIST @POSS = @POSS ;
-LIST @OBJ = @OBJ ;
-LIST @ADVL = @ADVL ;
-LIST @INTERJ = @INTERJ ;
-LIST @PROP> = @PROP> ;
-LIST @HNOUN = @HNOUN ;
+LIST @PRED = @PRED ; 		 # predikat
+LIST @SUBJ> = @SUBJ> ;		 # subjekt med pred t.h.
+LIST @<SUBJ = @<SUBJ ;		 # subjekt med pred t.v.
+LIST @OBJ> = @OBJ> ;		 # objekt med pred t.h.
+LIST @<OBJ = @<OBJ ;		 # objekt med pred t.v.
+LIST @ADVL> = @ADVL> ;		 # adverbial med kerne t.h.
+LIST @<ADVL = @<ADVL ;		 # adverbal med kerne t.v.
+LIST @CL-ADVL> = @CL-ADVL> ; # neksusadverbial der modificerer t.h. 
+LIST @CL-<ADVL = @CL-<ADVL ; # neksusadverbial der modificerer t.v.
+LIST @CL-CIT> = @CL-CIT> ;	 # predikat i oo der står til et matriseverb t.h. 
+LIST @CL-<CIT = @CL-<CIT ;	 # predikat i oo der står til et matriseverb t.v. 
+LIST @i-OBJ> = @i-OBJ> ;     # objekt der står til inkorporeret verbal t.h.
+LIST @i-<OBJ = @i-<OBJ ;	 # objekt der står til inkorporeret verbal t.v.
+LIST @i-ADVL> = @i-ADVL> ;	 # adverbial der står til inkorporeret verbal t.h.
+LIST @i-<ADVL = @i-<ADVL ;	 # adverbial der står til inkorporeret verbal t.v.
+LIST @INTERJ = @INTERJ ;	 # interjektion
+LIST @PROP> = @PROP> ;		 # proprium til venstre i propriumskede
+LIST @HNOUN = @HNOUN ;		 # løst nomen uden predikat
+LIST @>N = @>N ;			 # prenominalt adled (slagter Hansen)
+LIST @N< = @N< ;	    	 # postnominalt adled
+LIST @i->N = @i->N ;		 # adled der står til inkorporeret nominal t.h.
+LIST @i-N< = @i-N< ;		 # adled der står til inkorporeret nominal t.v.
+LIST @POSS = @POSS ;		 # possessor
+LIST @>V = @>V ;             # adled til verbum # asaneq ajorpara.
+LIST @X = @X ;               # dette ord har endnu ikke fået en mapping-regel
+
+LIST @ARG> = @SUBJ> @OBJ> @ADVL> @CL-ADVL> @CL-CIT> @>V ; # Disse vil ha V t.h.
+LIST @<ARG = @<SUBJ @<OBJ @<ADVL @CL-<ADVL @CL-<CIT ;
+
+
 
 # ============ #
 # ============ #
@@ -278,19 +348,30 @@ LIST @HNOUN = @HNOUN ;
 
 MAPPINGS
 
-#BEFORE-SECTIONS
+ADD (@N<) TARGET N IF (-1 N)(NOT 0 (NEQ)) ;
+ADD (@N<) TARGET N IF (-1 N)(0 (NEQ)) ;
 
-MAP (@PRED) TARGET Ind OR Imp OR Cau OR Int OR Par OR Ite 
-		       OR Inf OR InfNeg OR Opt OR Con OR Vok ;
+MAP (@PRED) TARGET Ind OR Imp OR Int OR Opt ;
 
-MAP (@ADVL) TARGET Trm OR Abl OR Lok OR Aeq OR Ins OR Via ;
+ADD (@CL-ADVL> @CL-<ADVL) TARGET Ite OR Cau OR Inf OR InfNeg OR Con OR Par ;
+ADD (@PRED) TARGET Inf OR InfNeg IF (0 LU OR LUUNNIIT)(*1 VFIN);
+ADD (@PRED) TARGET Inf OR InfNeg IF (0 LU OR LUUNNIIT)(*-1 VFIN);
+	## Trond atuarpoq allallunilu.
+	
+MAP (@CL-CIT> @CL-<CIT) TARGET Par OR Inf OR InfNeg ;
 
+MAP (@ADVL> @<ADVL) TARGET Trm OR Abl OR Lok OR Aeq OR Via ;
 
-MAP (@SUBJ @OBJ @HNOUN) TARGET Abs ;
+ADD (@OBJ>) TARGET Ins IF (*1 PSEUDO-HTR);
+MAP (@ADVL> @<ADVL) TARGET Ins ;
 
-MAP (@POSS @SUBJ) TARGET Rel ;
+MAP (@SUBJ>) TARGET (Abs Sg) IF (*-1 BOS BARRIER N)(NOT 0 TIME)(1 INTRANSVERB + Ind + 3Sg);
+MAP (@SUBJ>) TARGET (Abs Pl) IF (*-1 BOS BARRIER N)(NOT 0 TIME)(1 INTRANSVERB + Ind + 3Pl);
 
-MAP (@ADVL) TARGET Part ;
+MAP (@SUBJ> @<SUBJ @<OBJ @OBJ> @HNOUN) TARGET Abs ;
+MAP (@POSS @SUBJ> @<SUBJ) TARGET Rel ;
+
+MAP (@ADVL>) TARGET Part ;
 
 MAP (@INTERJ) TARGET Interj ;
 
@@ -302,8 +383,25 @@ MAP (@PROP>) TARGET Abbr IF (*1 Prop BARRIER NOT-Abbr) ;
 # Denne tag er for alle ord vi ikke har funktion til.
 MAP (@X) TARGET WORD ;
 
+# ================== #
+# ================== #
+      CONSTRAINTS
+# ================== #
+# ================== #
 
-CONSTRAINTS
+# Tidlige syntaktiske regler
+
+# De måske ikke egnede
+
+REMOVE @<SUBJ;
+REMOVE @<OBJ;
+
+REMOVE @ARG> IF (NOT *1 V) ;
+REMOVE @<ARG IF (NOT *-1 V) ;
+
+REMOVE @ARG> IF (*1C @<ARG BARRIER V);
+REMOVE @<ARG IF (*-1C @ARG> BARRIER V);
+
 
 # One-cohort disambiguation - cycle 0
 
@@ -347,10 +445,8 @@ REMOVE N IF (0 ("Nuuk" Prop Lok));
 
 SELECT Ind IF (NOT *-1 Ind)(NOT *1 Ind OR ("?"));
 
-SELECT Par IF (NOT *-1 VFIN)(NOT *1 VFIN OR ("?"));
-	## Sunaaffa anereersut.
 
-REMOVE (@POSS) IF (NOT *1 POSSESSUM3) ; #Pers tilfoejelse 0608
+REMOVE @POSS IF (NOT *1 POSSESSUM3) ; #Pers tilfoejelse 0608
 
 # Part
 
@@ -358,12 +454,35 @@ REMOVE (@POSS) IF (NOT *1 POSSESSUM3) ; #Pers tilfoejelse 0608
 REMOVE Interj IF (0 Part)(1 (@HNOUN));
 	## Tassa illu.
 
+# Appositioner
+# ------------
 
+SELECT @N< IF (*-1 Abs BARRIER NOT-REL)(0 Abs)(NOT 0 Prop);
+SELECT @N< IF (*-1 Lok BARRIER NOT-REL)(0 Lok)(NOT 0 Prop);
+SELECT @N< IF (*-1 Trm BARRIER NOT-REL)(0 Trm)(NOT 0 Prop);
+SELECT @N< IF (*-1 Abl BARRIER NOT-REL)(0 Abl)(NOT 0 Prop);
+SELECT @N< IF (*-1 Ins BARRIER NOT-REL)(0 Ins)(NOT 0 Prop);
+SELECT @N< IF (*-1 Aeq BARRIER NOT-REL)(0 Aeq)(NOT 0 Prop);
+SELECT @N< IF (*-1 Via BARRIER NOT-REL)(0 Via)(NOT 0 Prop);
+	## Una ilinniartitsisoq Trond Kirstip uia 40-nik ukioqarpoq.
+
+REMOVE @N< IF (NOT -1 N OR @N<);
+REMOVE @N< IF (-1 Prop)(0 Prop);
+
+REMOVE (@N< Abs) IF (NOT *-2 (N Abs))(-1 (Rel @POSS))(0 (N 3Sg));
+REMOVE (@N< Lok) IF (NOT *-2 (N Lok))(-1 (Rel @POSS))(0 (N 3Sg));
+REMOVE (@N< Trm) IF (NOT *-2 (N Trm))(-1 (Rel @POSS))(0 (N 3Sg));
+REMOVE (@N< Abs) IF (NOT *-2 (N Abl))(-1 (Rel @POSS))(0 (N 3Sg));
+REMOVE (@N< Ins) IF (NOT *-2 (N Ins))(-1 (Rel @POSS))(0 (N 3Sg));
+REMOVE (@N< Aeq) IF (NOT *-2 (N Aeq))(-1 (Rel @POSS))(0 (N 3Sg));
+REMOVE (@N< Via) IF (NOT *-2 (N Via))(-1 (Rel @POSS))(0 (N 3Sg));
+	## Karen Langgårdip illua.
 
 # ==== #
 # Fald # 
 # ==== #
-
+CONSTRAINTS
+# =========== #
 # Hugseregel:
 # subj-abs IV
 # subj-rel obj-abs TV.
@@ -373,7 +492,7 @@ REMOVE Interj IF (0 Part)(1 (@HNOUN));
 # Intransitive sætninger
 # ====================== 
 
-REMOVE (@OBJ) IF (0 Abs)(*1C INTRANSVERB) ;
+REMOVE @OBJ> IF (0 Abs)(*1C INTRANSVERB) ;
 	## Trond sinippoq.
 	# Trond sover
 
@@ -388,49 +507,50 @@ REMOVE (Abs MI) IF (0 Lok)(*1 LOKVERB);
 REMOVE (Rel 4Sg) IF (0 Lok)(*1 LOKVERB);
     ## Illumi aappaluttumi najugaqarpugut.
 
-REMOVE (Pl @SUBJ) IF (*1 SUBJVERBNOT3PL);
 
-REMOVE (N Sg @SUBJ) IF (*1 SUBJVERBNOT3SG);
-REMOVE (Prop Sg @SUBJ) IF (*1 SUBJVERBNOT3SG);
 
-REMOVE (Rel @SUBJ) IF (*1 INTRANSVERB BARRIER TRANSVERB);
+REMOVE (Pl @SUBJ>>) IF (*1C VERBNOT3PLSUBJ BARRIER LU);
+
+REMOVE (N Sg @SUBJ>) IF (*1C VFIN BARRIER LU LINK NOT 0 3SGSUBJVERB)(NOT 0 LU);
+
+REMOVE (Rel @SUBJ>) IF (*1C INTRANSVERB BARRIER TRANSVERB);
 	##       N-Rel N-Abs IV =      poss subj iv
     ## N-Rel N-Rel N-Abs TV = poss subj obj tv-s-o
     
 # Transitive sætninger
 # =================== #
 
-SELECT (Pron Abs 1Sg @SUBJ) IF (*1 (V 1Sg));
+SELECT (Pron Abs 1Sg @SUBJ>) IF (*1 (V 1Sg));
 	## Uanga takuara.
 
 
-REMOVE (@SUBJ) IF (0 N)(*1 12SUBJVERB);
-REMOVE (@SUBJ) IF (0 (Pron 3Sg))(*1 12SUBJVERB);
+REMOVE @SUBJ> IF (0 N)(*1C 12SUBJVERB BARRIER V);
+REMOVE @SUBJ> IF (0 (Pron 3Sg))(*1C 12SUBJVERB BARRIER V);
 
-SELECT (Pl @OBJ) IF (0 (Abs Pl))(*1 34PLOBJVERB);
-SELECT (Pl @OBJ) IF (0 (Abs Pl))(*-1 34PLOBJVERB);
+SELECT (Pl @OBJ>) IF (0 (Abs Pl))(*1 34PLOBJVERB);
+SELECT (Pl @OBJ>) IF (0 (Abs Pl))(*-1 34PLOBJVERB);
 	## Aviisit atuarpavut.
 
-SELECT (N Abs Sg @OBJ) IF (*1 34SGOBJVERB BARRIER (Sg @OBJ))(NOT *1 ORATIOOBLVERB);
+SELECT (N Abs Sg @OBJ>) IF (*1 34SGOBJVERB BARRIER (Sg @OBJ>))(NOT *1 ORATIOOBLVERB);
 #Pers aendring 0608
 
 SELECT (Par @PRED) IF (*1 34SGOBJVERB)(*1 ORATIOOBLVERB); #Pers tilfoejelse 2 0608
-#SELECT (Abs Sg @OBJ) IF (*1 34SGOBJVERB BARRIER (Sg @OBJ));
-SELECT (Abs Pl @OBJ) IF (*1 34PLOBJVERB BARRIER (Pl @OBJ));
+#SELECT (Abs Sg @OBJ>) IF (*1 34SGOBJVERB BARRIER (Sg @OBJ>));
+SELECT (Abs Pl @OBJ>) IF (*1 34PLOBJVERB BARRIER (Pl @OBJ>));
 ## Kaalip qimmini toquppaa.
 
 SELECT 3Pl IF (-2 Abs)(-1 (Rel Pl))(0 V);
 	## Ippassaq unnukkut filmerput.
 
-REMOVE (Abs) IF (-1 Abs)(0 (N Rel Pl))(1 SGOBJVERB);
+REMOVE Abs IF (-1 Abs)(0 (N Rel Pl))(1 SGOBJVERB);
 
 SELECT (Rel Pl) IF (-1 Abs)(0 N)(1 (V 3Pl));
 	## Ippassaq unnukkut filmerput.
 
-SELECT Sg IF (0C (@SUBJ))(*1C 3SGSUBJVERB);
+SELECT Sg IF (0C (@SUBJ>))(*1C 3SGSUBJVERB);
 
-#REMOVE (@SUBJ) IF (0 Abs)(*1 TRANSVERB BARRIER INTRANSVERB);
-#REMOVE (@SUBJ) IF (0 Abs)(*-1 TRANSVERB BARRIER INTRANSVERB);
+#REMOVE @SUBJ> IF (0 Abs)(*1 TRANSVERB BARRIER INTRANSVERB);
+#REMOVE @SUBJ> IF (0 Abs)(*-1 TRANSVERB BARRIER INTRANSVERB);
 
 
 # NP-er
@@ -444,11 +564,30 @@ SELECT (Abs Sg) IF (-1 (Abs Sg))(0 LU);
 REMOVE (Abs Sg 1Sg) IF (-1 (Rel Sg)) ;
 	## Daavip ernera.
 
-REMOVE (@SUBJ) IF (0 Rel)(1C (Abs @SUBJ));
+REMOVE @SUBJ> IF (0 Rel)(1C (Abs @SUBJ>));
 	## Nukap nulia Linimik ateqarpoq.
 	# Nukan vaimon nimi on Line.
 	# Gives Rel Poss
+
+REMOVE (N @POSS) IF (NOT 1 POSSESSUM3 OR LU);
+	## Nukap Piitap illua qalipappaa.
+	#  ^^^^^
+
+REMOVE (N @POSS) IF (1 LU)(NOT 2 POSSESSUM3);
+
+REMOVE @SUBJ> IF (*-1C (@SUBJ>) BARRIER LU OR V)(NOT 0 LU);
+	## Nukap Piitap illua qalipappaa.
+	## Nukap Piitap ernerata illua qalipappaa.
+    #        ^^^^^^
+
+REMOVE @PROP> IF (*1 NOT-FIRST BARRIER Sur LINK NOT 0 Sur);
+	## Per Morten Lynge
+	## Per illu Lynge
+	## Per Langgård   # 
 	
+
+REMOVE @POSS IF (1C POSSESSUM4);
+
 
 # Verbal disambiguering
 # =====================
@@ -459,19 +598,29 @@ REMOVE Imp IF (0 N OR Adj)(1 NONIMPVERB);
 #SELECT Par IF (*-1 VFIN) ;	
 ## Nalunngilara Trond pikkorissoq.
 
-SELECT Par IF (*-1 ORATIOOBLVERB) ;
-SELECT Par IF (*1 ORATIOOBLVERB) ;
+SELECT (@CL-<CIT) IF (*-1 ORATIOOBLVERB BARRIER V-NOT-Par) ;
+SELECT (@CL-CIT>) IF (*1 ORATIOOBLVERB BARRIER V-NOT-Par) ;
 
-REMOVE (@OBJ) IF (0 Abs)(*1 Par OR Cau)(*-1 ORATIOOBLVERB);
-REMOVE (@OBJ) IF (0 Abs)(*1 Par OR Cau)(*1 ORATIOOBLVERB); #Pers tilfoejelse01_00608
+
+SELECT Par IF (*-1 UNA BARRIER V-NOT-Par);
+	## Trondimuna tigusimagaa.
+	
+REMOVE Par IF (-1C N)(NOT *-1 VEXCLAM);
+ 
+SELECT Par IF (NOT *-1 VFIN)(NOT *1 VFIN OR ("?"));
+	## Sunaaffa anereersut.
+
+
+REMOVE @OBJ> IF (0 Abs)(*1 Par OR Cau)(*-1 ORATIOOBLVERB);
+REMOVE @OBJ> IF (0 Abs)(*1 Par OR Cau)(*1 ORATIOOBLVERB); #Pers tilfoejelse01_00608
 ## Nalunngilara Trond pikkorissoq.
 
-REMOVE (@OBJ) IF (0 Abs)(*1 (Par INTRANSVERB))(*-1 ORATIOOBLVERB);
+REMOVE @OBJ> IF (0 Abs)(*1 (Par INTRANSVERB))(*-1 ORATIOOBLVERB);
 ## Nalunngilara Trond pikkorissoq.
 
-SELECT (@SUBJ) IF (0 Rel)(*1 (Par TRANSVERB))(*-1 ORATIOOBLVERB);
+SELECT @SUBJ> IF (0 Rel)(*1 (Par TRANSVERB))(*-1 ORATIOOBLVERB);
 
-REMOVE (@OBJ) IF (0 Abs)(*1 (Par INTRANSVERB))(*-1 ORATIOOBLVERB);
+REMOVE @OBJ> IF (0 Abs)(*1 (Par INTRANSVERB))(*-1 ORATIOOBLVERB);
 ## Nalunngilara Trond pikkorissoq.
 
 REMOVE Opt IF (*1C Ind) ;
@@ -479,7 +628,7 @@ REMOVE Int IF (*1C Ind) ;
 REMOVE Imp IF (*1C Ind) ;
 
 
-SELECT (@SUBJ) IF (0 Rel)(*1 (Par TRANSVERB))(*-1 ORATIOOBLVERB);	
+SELECT @SUBJ> IF (0 Rel)(*1 (Par TRANSVERB))(*-1 ORATIOOBLVERB);	
 	
 REMOVE Opt IF (*-1C Ind) ;
 	
@@ -502,41 +651,56 @@ REMOVE Imp IF (*-1C Ind) ;
 # Numerus
 # -------
 
-SELECT 3Pl IF (*-1 (LU @SUBJ) LINK -1 (@SUBJ))(0 (@PRED));
+SELECT 3Pl IF (*-1 (LU @SUBJ>) LINK -1 (@SUBJ>))(0 (@PRED));
 	## Nukap Linillu illortik qalipappaat.
 	# Korrekt regel men feil eksempel.
 
-SELECT 3SgO IF (*-1C (Sg @OBJ)) ;
+SELECT 3SgO IF (*-1C (Sg @OBJ>)) ;
 	## Nukap Linillu illortik qalipappaat.
 
-SELECT 3PlO IF (*-1C (Pl @OBJ)) ;
+SELECT 3PlO IF (*-1C (Pl @OBJ>)) ;
 
 	
 # Syntaktisk disambiguering
 # ========================= #
+         CONSTRAINTS        #
+# ========================= #
 
+REMOVE @SUBJ> IF (NOT *-1 V)(NOT *1 V);
+REMOVE @OBJ> IF (NOT *-1 V)(NOT *1 V);
 
-REMOVE (@SUBJ) IF (NOT *-1 V)(NOT *1 V);
-REMOVE (@OBJ) IF (NOT *-1 V)(NOT *1 V);
-
-REMOVE (@HNOUN) IF (0 (@OBJ) OR (@SUBJ));
+REMOVE @HNOUN IF (0 (@OBJ>) OR (@SUBJ>));
 
 # a. try to find headnoun (try to find headlines, fragments)
 # b. if not, it has to be the VFIN
 
 
-#SELECT (Sg @OBJ) IF (0 (Abs Sg))(*1 34SGOBJVERB);
-#SELECT (Sg @OBJ) IF (0 (Abs Sg))(*-1 34SGOBJVERB);
+#SELECT (Sg @OBJ>) IF (0 (Abs Sg))(*1 34SGOBJVERB);
+#SELECT (Sg @OBJ>) IF (0 (Abs Sg))(*-1 34SGOBJVERB);
 	## Trond naapipparput.
 
 
-REMOVE (@SUBJ) IF (NOT *-1 V)(NOT *1 V);
-REMOVE (@OBJ) IF (NOT *-1 V)(NOT *1 V);
+REMOVE @SUBJ> IF (NOT *-1 V)(NOT *1 V);
+REMOVE @OBJ> IF (NOT *-1 V)(NOT *1 V);
 
-REMOVE (@HNOUN) IF (0 (@OBJ) OR (@SUBJ));
+REMOVE @HNOUN IF (0 (@OBJ>) OR (@SUBJ>));
 
+REMOVE HUMAN + Abl IF (0 PLACE + Abl)(NOT 0 KKUT)(*1 ABLVERB);
+# NB plussnotasjon! XXX
 
+REMOVE HUMAN + Trm IF (0 PLACE + Trm)(NOT 0 KKUT)(*1 TRMVERB);
+REMOVE HUMAN + Lok IF (0 PLACE + Lok)(NOT 0 KKUT);
 
+REMOVE PLACE + @SUBJ> IF (*1 HUMVERB BARRIER @SUBJ>);
+	## Illumi sulivoq.
 
+REMOVE FAM IF (NOT 0 3Sg)(0 OBLIQUE);
+REMOVE @ADVL> IF (0 THING)(*1 PSEUDO-HTR BARRIER V);
+REMOVE @OBJ> IF (0 INSTRUMENT)(*1 PSEUDO-HTR BARRIER V);
 
+#REMOVE (Prop Ins) IF (0 @OBJ>)(*1 PSEUDO-HTR BARRIER V);
+REMOVE (Prop Ins) IF (0 N + @OBJ>)(*1 PSEUDO-HTR BARRIER V);
 
+CONSTRAINTS
+
+SELECT COMMONAFFSTRING ;
