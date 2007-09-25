@@ -16,49 +16,58 @@ define ForVow [ Vow - KalVow ] ;
 define LongVow [ a a | A a | A A | e e | E e | E E | i i | I i | I I |
                  o o | O o | O O | u u | U u | U U | a i | A i | A I ] ;
 
-
-define A2 [ a | A | i | I ] ;
-define E2 [ e | E ] ;
-define I2 [ i | I ] ;
-define O2 [ o | O ] ;
-define U2 [ u | U ] ;
-
 define Cns [ b | c | č | d | đ | ð | f | g | h | j | k | l | m | n | ŋ | 
              B | C | Č | D | Đ | Ð | F | G | H | J | K | L | M | N | Ŋ | 
              ñ | p | q | r | s | š | t | ŧ | v | w | x | z | ž |   
-             Ñ | P | Q | R | S | Š | T | Ŧ | V | W | X | Z | Ž 
-             ĸ | K’ ] ; 
-
+             Ñ | P | Q | R | S | Š | T | Ŧ | V | W | X | Z | Ž | ĸ | K’ ] ; 
+             
 define S [ S | s ] ; 
 
 define Cnss [ Cns - S ] ;
-
-!define Sgm [ Cns | Vow ] ;
-
-!define Cns [ Cnssymb | Vow i ] ;
-
+define Sgm = [ Cns | Vow ] ;
 
 echo << Rules>>
 
-define kra ĸ -> q , K’ -> Q ;
-define finalvow e -> i , ê -> î , o -> u ,  ô -> û || _ .#. ;
-define longvow â -> a a , ê -> e e , î -> i i , ô -> o o , û -> u u ;
+define nalunaaqutaq  r ĸ -> q || a l u n a e _ u t ;
+define kra       ĸ -> q , K’ -> Q ;
+define ss        s s -> s || Vow _ Vow ;
+define v0        v -> 0 || u _ Vow ;
+define finalvow  e -> i , ê -> î , o -> u ,  ô -> û || _ .#. ;
+define longvow   â -> a a , ê -> e e , î -> i i , ô -> o o , û -> u u ;
 define longcns f -> f f , g -> g g , k -> k k , l -> l l , m -> m m , 
-               n -> n n , p -> p p , q -> q q , r -> r r , t -> t t
+               n -> n n , p -> p p , q -> q q , r -> r r , t -> t t , s -> s s
             || [ [á|é|í|ó|ú]|[á[i|u]]|ã] _ ;
 define deacc á -> a , é -> e , í -> i ,  ó -> o , ú -> u , ã -> a a ;
-define monopht a i -> a a , u i -> u u , a u -> a a ;
-define regassim v g -> g g , v k -> k k , g k -> k k , g t -> t t , [g|dv] t l -> ll ;              
+define aaj       i -> j || a _ a ;
+define aiau      i -> a , u -> a , e -> a , o -> a || a _ [?* - .#. ] ;
+define 2cnsi     v t -> t s , g t -> t s , t t -> t s || Vow _ i ; 
+define 3cnsassim [g|v|t] d l -> l l , n g m -> m m , [ v | g n ] n -> n n , 
+                 v n g -> n n g ,  [v|g] s s -> s s , r d l -> r l || Vow _ Vow ;
+define 2cnsassim v g -> g g , v k -> k k , v n -> n n , v q -> q q , v s -> s s , 
+                 v t -> t t , v f -> f f , 
+                 g k -> k k , g p -> p p , g s -> s s , g t -> t t , g f -> f f ,
+                 r q -> q q ; 
+define rss       r s s -> r s ;       
+define uveuvi    v -> 0 || u _ [e|i] ; 
+define suj       u j -> i || .#. s _ ;
 
 echo << Combining >>
 
-read regex [ kra
+read regex [ nalunaaqutaq
+.o. kra
+.o. ss
+.o. v0
 .o. finalvow
 .o. longvow
 .o. longcns
 .o. deacc
-.o. monopht
-.o. regassim
+.o. aaj
+.o. aiau
+.o. 2cnsi
+.o. 3cnsassim
+.o. 2cnsassim
+.o. rss
+.o. suj
  ] ;
 
 invert net ;
