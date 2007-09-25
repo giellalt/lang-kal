@@ -1,0 +1,64 @@
+! =============================== !
+! Hyphenator for West Greenlandic !
+! =============================== !
+
+echo <<defining Cns and Vow...>>
+
+define Vow       [ a | á | e | i | o | u | y | æ | ø | å | ä | ö | 
+                   A | Á | E | I | O | U | Y | Æ | Ø | Å | Ä | Ö | 
+é | ó | ú | í | à | è | ò | ù | ì | ë | ü | ï | â | ê | ô | û | î | ã | ý |
+É | Ó | Ú | Í | À | È | Ò | Ù | Ì | Ë | Ü | Ï | Â | Ê | Ô | Û | Î | Ã | Ý ] ;
+
+define KalVow [ a | e | i | o | u | A | E | I | O | U ] ;
+
+define ForVow [ Vow - KalVow ] ;
+
+define LongVow [ a a | A a | A A | e e | E e | E E | i i | I i | I I |
+                 o o | O o | O O | u u | U u | U U | a i | A i | A I ] ;
+
+
+define A2 [ a | A | i | I ] ;
+define E2 [ e | E ] ;
+define I2 [ i | I ] ;
+define O2 [ o | O ] ;
+define U2 [ u | U ] ;
+
+define Cns [ b | c | č | d | đ | ð | f | g | h | j | k | l | m | n | ŋ | 
+             B | C | Č | D | Đ | Ð | F | G | H | J | K | L | M | N | Ŋ | 
+             ñ | p | q | r | s | š | t | ŧ | v | w | x | z | ž |   
+             Ñ | P | Q | R | S | Š | T | Ŧ | V | W | X | Z | Ž 
+             ĸ | K’ ] ; 
+
+define S [ S | s ] ; 
+
+define Cnss [ Cns - S ] ;
+
+!define Sgm [ Cns | Vow ] ;
+
+!define Cns [ Cnssymb | Vow i ] ;
+
+
+echo << Rules>>
+
+define kra ĸ -> q , K’ -> Q ;
+define finalvow e -> i , ê -> î , o -> u ,  ô -> û || _ .#. ;
+define longvow â -> a a , ê -> e e , î -> i i , ô -> o o , û -> u u ;
+define longcns f -> f f , g -> g g , k -> k k , l -> l l , m -> m m , 
+               n -> n n , p -> p p , q -> q q , r -> r r , t -> t t
+            || [ [á|é|í|ó|ú]|[á[i|u]]|ã] _ ;
+define deacc á -> a , é -> e , í -> i ,  ó -> o , ú -> u , ã -> a a ;
+define monopht a i -> a a , u i -> u u , a u -> a a ;
+define regassim v g -> g g , v k -> k k , g k -> k k , g t -> t t , [g|dv] t l -> ll ;              
+
+echo << Combining >>
+
+read regex [ kra
+.o. finalvow
+.o. longvow
+.o. longcns
+.o. deacc
+.o. monopht
+.o. regassim
+ ] ;
+
+invert net ;
