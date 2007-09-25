@@ -2,13 +2,21 @@
 # This is a makefile that builds the XFST Greenlandic morphological parser #
 # ************************************************************************ #
 
+# Usage notes:
+# There must be a sister catalogue bin/ to this directory, and the xerox tools
+# fst and lexc must be in the path (for use of xfst, see directly below).
+# The parsers compile with the following command (given in this directory):
+# make TARGET=strict (or, eventually: make TARGET=sloppy)
+# where the former is a normative and the latter a descriptive transducer.
 
-# Her bygger vi en analysator for vestgrønlandsk.
+
+# Her bygger vi en analysator for vestgrønlandsk
+# **********************************************
 
 # Tools used when compiling the transducers
 
-XFST = xfst -utf8
-#XFST = fst -utf8
+#XFST = xfst -utf8
+XFST = fst -utf8
 LEXC = lexc -utf8
 
 #ifeq (victorio.uit.no, $(shell hostname))
@@ -17,20 +25,22 @@ LEXC = lexc -utf8
 #endif
 
 # The default compiler for Greenlandic is the commercial version fst.
-# If you have xfst, the free version, go to the directory where you store
-# xfst, and write the following command:
+# If you have xfst, the non-commercial version, go to the directory 
+# where you store xfst (ask: "which xfst" if you don't know), and write
+# the following command:
 # ln -s xfst fst
 # This will give a pointer from "fst" to xfst, and the transducers will compile.
 
 
 # Kildefiler
-
+# **********
 
 SRCS = kal-lex.txt \
 	abbr-kal-lex.txt acro-kal-lex.txt \
 	noun-kal-lex.txt verb-kal-lex.txt \
 	ateq-kal-lex.txt ateq-kal-morph.txt \
 	punct-kal-lex.txt prt-kal-lex.txt num-kal-lex.txt 
+#	hyph-kal.txt phon-kal.xfst orth-kal.xfst
 
 ifeq ($(TARGET), strict)
 LEX = $(patsubst %,../int/str-%,$(SRCS))
@@ -57,7 +67,8 @@ sloppy: ikal.fst
 # It is dependent upon kal.save
 
 ikal.fst: ../bin/ikal.fst
-../bin/ikal.fst: ../bin/kal.fst ../bin/g-kal.fst ../bin/d-kal.fst ../bin/abbr.txt #../bin/str-kal.fst
+../bin/ikal.fst: ../bin/kal.fst ../bin/g-kal.fst ../bin/d-kal.fst ../bin/abbr.txt \
+../bin/hyph-kal.fst ../bin/phon-kal.fst ../bin/orth-kal.fst #../bin/str-kal.fst
 	@echo
 	@echo "*** Building the inverse ikal.fst ***"
 	@echo
@@ -252,6 +263,48 @@ xfst-kal.bin: ../bin/xfst-kal.bin
 	quit \n" > ../tmp/xfst-kal-script
 	$(XFST) < ../tmp/xfst-kal-script
 	@rm -f ../tmp/xfst-kal-script
+
+
+# Here we build a converter from Kleinschmidt to modern
+# orthography.
+
+orth-kal.fst: ../bin/orth-kal.fst
+../bin/orth-kal.fst: orth-kal.xfst
+	@echo
+	@echo "*** Building orth-kal.fst ***" ;
+	@echo
+	@printf "source $< \n\
+	save stack $@ \n\
+	quit \n" > ../tmp/orth-script
+	$(XFST) < ../tmp/orth-script
+	@rm -f ../tmp/orth-script
+
+# Here we build a phonetic transducer
+
+phon-kal.fst: ../bin/phon-kal.fst
+../bin/phon-kal.fst: phon-kal.xfst
+	@echo
+	@echo "*** Building phon-kal.fst ***" ;
+	@echo
+	@printf "source $< \n\
+	save stack $@ \n\
+	quit \n" > ../tmp/phon-script
+	$(XFST) < ../tmp/phon-script
+	@rm -f ../tmp/phon-script
+
+# Here we build a hyphenator
+
+hyph-kal.fst: ../bin/hyph-kal.fst
+../bin/hyph-kal.fst: hyph-kal.txt
+	@echo
+	@echo "*** Building hyph-kal.fst ***" ;
+	@echo
+	@printf "source $< \n\
+	save stack $@ \n\
+	quit \n" > ../tmp/hyph-script
+	$(XFST) < ../tmp/hyph-script
+	@rm -f ../tmp/hyph-script
+
 
 
 
