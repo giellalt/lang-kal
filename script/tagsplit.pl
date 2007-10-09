@@ -1,5 +1,16 @@
 #!/usr/bin/perl -w
 
+# Script to split tags in the kal-lex file.
+# Usage (standing in kal$):
+# cat src/kal-lex.txt | perl script/tagsplit.pl > new-kal-lex-file
+
+# Note that it only hits tags with a + following, i.e., it will
+# translate tags in the suffix part, but not in the definition part.
+# To add tags:
+# write
+# s/\+OLDLONGTAG\+/\+NEW=SPLIT=TAG\+/g;
+
+
 while (<>) 
 {
 s/\+GALLARTIP\+/\+GALLAR=TIP\+/g;
