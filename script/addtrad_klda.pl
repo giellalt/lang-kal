@@ -1,5 +1,12 @@
 #!/usr/bin/perl -w
 
+# The necessary unicode definitions
+use utf8;
+binmode( STDIN, ':utf8' );
+binmode( STDOUT, ':utf8' );
+binmode( STDERR, ':utf8' );
+use open 'utf8';
+
 # usage: cat fil_kl |addtrad_klda
 # (needs dakl_lex)
 
@@ -22,7 +29,8 @@ if ($lang eq "eo") {
 
 open(FH, "<src/kaldan-lex.txt");
 while (<FH>){
-    if (/^(.+)\t([a-zA-ZÊ¯Â∆ÿ≈È…<].+?) *$/) {
+	# Match unicode letters
+    if (/^(.+)\t([\pL<].+?) *$/) {
       $kal =$1;
       $trans =$2;
       @words =split /;/, $kal;
@@ -39,7 +47,8 @@ while (<FH>){
 	  }
 	  $word =$_;
 	  $word =~ s/1\) +//g;
-	  $word =~ s/([a-zA-ZÊ¯Â∆ÿ≈]) 2\)/$1\;/; # avippaa	1) deler det i to dele 2) lader sig skille fra ham/hende
+	  # Match unicode letters
+	  $word =~ s/([\pL]) 2\)/$1\;/; # avippaa	1) deler det i to dele 2) lader sig skille fra ham/hende
 	  $word =~ s/ ([IVX]+|\(.*|\!)//; # I, II
 	  $trans =~ s/ *\(.*?\)//g;
 	  $trans =~ s/; */\//g;
