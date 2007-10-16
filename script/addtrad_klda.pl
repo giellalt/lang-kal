@@ -11,7 +11,10 @@ use open 'utf8';
 # (needs dakl_lex)
 
 $ARG0 =$ARGV[0];
-if ($ARG0 && $ARG0 =~ /(eo|da)/) {$lang = $1;} # print token tag lines
+if ($ARG0 && $ARG0 =~ /(eo|da)/) {
+	$lang = $1;
+    $infile = $ARG0;
+    } # print token tag lines
 if (! $lang) {$lang = "da";}
 
 #print "--------$lang\n";
@@ -27,7 +30,7 @@ if ($lang eq "eo") {
 }
 
 
-open(FH, "<src/kaldan-lex.txt");
+open(FH, "<$infile");
 while (<FH>){
 	# Match unicode letters
     if (/^(.+)\t([\pL<].+?) *$/) {
