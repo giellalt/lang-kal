@@ -12,10 +12,10 @@
 # Tags and sets
 	# Positions and household (line 38)
 	# Parts of speech (line 48)
-	# Derivatives (line 122)
-	# Tilhængspartikler (line 789)
-	# Sets (line 830) 
-	# Tags (line 
+	# Derivatives (line 131)
+	# Tilhængspartikler (line 798)
+	# Sets (line 839) 
+	# Tags (line 953)
 	        # Mapping rules
             # Disambiguation rules
               # One-cohort disambiguation - cycle 0
@@ -100,6 +100,15 @@ LIST 1Du = 1Du ;
 LIST 2Du = 2Du ;
 LIST 3Du = 3Du ;
 LIST 4Du = 4Du ;
+
+LIST 1SgPoss = 1SgPoss ; #Ny tag 22.1.2008
+LIST 2SgPoss = 2SgPoss ; #Ny do.
+LIST 3SgPoss = 3SgPoss ; #Ny do.
+LIST 4SgPoss = 4SgPoss ; #Ny do.
+LIST 1PlPoss = 1PlPoss ; #Ny do.
+LIST 2PlPoss = 2PlPoss ; #Ny do.
+LIST 3PlPoss = 3PlPoss ; #Ny do.
+LIST 4PlPoss = 4PlPoss ; #Ny do.
 
 LIST 1SgO = 1SgO ;
 LIST 2SgO = 2SgO ;
@@ -1027,12 +1036,43 @@ LIST @<ALLSUBJ = @<SUBJ @i-<SUBJ ;
 # ============ #
 
 
-MAPPINGS
+MAPPINGS #Inkl. nye Per-regler
+
+#Et finit verbum er altid prædikat
+MAP (@PRED) TARGET VFIN ;
+
+
+#Appellativer i absolut kasus kan være element af syntagmerne subjekt, objekt, tidsangivelse, overskriftsord 
+ADD (@SUBJ>) TARGET APPELLATIV + (Abs) OR PROPRIUM + (Abs) OR (Adj Abs) IF (*1 INTRANSVERB) ; #Husk at definerede sæt ikke skal have paranteser.
+ADD (@<SUBJ) TARGET APPELLATIV + (Abs) OR PROPRIUM + (Abs) OR (Adj Abs) IF (-*1 INTRANSVERB) ;
+ADD (@OBJ>) TARGET APPELLATIV + (Abs) OR PROPRIUM + (Abs) OR (Adj Abs) IF (*1 TRANSVERB) ; 
+ADD (@<OBJ) TARGET APPELLATIV + (Abs) OR PROPRIUM + (Abs) OR (Adj Abs) IF (-*1 TRANSVERB) ;
+ADD (@CL-ADVL) TARGET APPELLATIV + (Abs) IF (-1 BOS)(NOT 0 POSSESSUM) ;
+ADD (@HNOUN) TARGET APPELLATIV + (Abs) OR PROPRIUM + (Abs) IF (NOT -*1 V)(NOT *1 V) ;
+
+#Appellativer og proprier i relativ kasus kan være element af syntagmerne subjekt og possessor 
+ADD (@SUBJ>) TARGET APPELLATIV + (Rel) OR PROPRIUM + (Rel) OR (Adj) IF (*1 TRANSVERB) ; #Husk at definerede sæt ikke skal have paranteser.
+ADD (@<SUBJ) TARGET APPELLATIV + (Rel) OR PROPRIUM + (Rel) OR (Adj) IF (-*1 TRANSVERB) ;
+ADD (@POSSESSOR) TARGET APPELLATIV + (Rel) OR PROPRIUM + (Rel) IF (*1 POSSESSUM) ; 
+
+#Nomen i oblik kasus kan være adverbalt adled
+ADD (@ADVL>) TARGET (Lok) OR (Trm) OR (Abl) OR (Via) OR (Aeq) OR (Ins) IF (*1 (V)) ;
+ADD (@<ADVL) TARGET (Lok) OR (Trm) OR (Abl) OR (Via) OR (Aeq) OR (Ins) IF (-*1 (V)) ;
+
+
+#Konjunktioner er konjunktioner, når de indleder en sætning, ellers er de adverbier
+ADD (@CONJ) TARGET KONJUNKTION IF (-1 BOS) ;
+
+#ADD (@POSSESSUM) TARGET POSSESSUM ;
+SELECT (N* 3Sg IP) IF (-1 Rel Sg) ; #Virker ikke 18.1. sen aften
+#ADD (@TEST) TARGET (N* 3Sg IP) IF (-1 Rel Sg) ; #test før følgende
+#SELECT (@POSSESSUM) IF (-1 Rel Sg) (0 3Sg); 
+#SELECT SPATIAL + (Sg) IF 0 POSSESSUM ;
+
+#Herfra og fremad er det igen regler fra Nuuk
 
 ADD (@N<) TARGET N IF (-1 N)(NEGATE 0 (NEQ)) ;
 ADD (@N<) TARGET N IF (-1 N)(0 (NEQ)) ;
-
-MAP (@PRED) TARGET Ind OR Imp OR Int OR Opt ;
 
 MAP (@CL-ADVL> @CL-<ADVL) TARGET Ite OR Cau OR Inf OR InfNeg OR Con OR Par ; !was: ADD
 ADD (@PRED) TARGET Inf OR InfNeg IF (0 LU OR LUUNNIIT)(*1 VFIN);
