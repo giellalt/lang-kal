@@ -858,7 +858,7 @@ SET 3SGSUBJVERB = (V 3Sg) ;
 SET 3PLSUBJVERB = (V 3Pl) ;
 SET 34SGOBJVERB = 3SgO ;
 SET 34PLOBJVERB = 3PlO ;
-#SET VERBNOT3SGSUBJ = V - 3SGSUBJVERB ;
+SET VERBNOT3SGSUBJ = V - 3SGSUBJVERB ;
 SET VERBNOT3PLSUBJ = V - 3PLSUBJVERB ;
 SET 12SUBJVERB = (V 1Sg) | (V 1Du) | (V 1Pl) | (V 2Sg) | (V 2Du) | (V 2Pl) ;
 #SET NONIMPVERB = (V Ind) | (V Cau) | (V Int) | (V Par) | (V Ite) | (V Inf) | (V InfNeg) | (V Opt) | (V Con) | (V Vok) ;
@@ -870,19 +870,19 @@ SET V-NOT-Par = V - Par ;
 # Substantiver
 # ------------
 
-SET POSSESSUM3 = (N 3Sg) | (N 3Pl) ; #Pers definition 0608
+SET POSSESSUM3 = (N 3SgPoss) | (N 3PlPoss) ; #Pers definition 0608
 
-SET POSSESSUM4 = (N 4Sg) | (N 4Pl) ; #Pers definition 0608
+SET POSSESSUM4 = (N 4SgPoss) | (N 4PlPoss) ; #Pers definition 0608
 
-SET POSSESSUM = (N 1Sg) |  (N 2Sg) |  (N 3Sg) |  (N 1Pl) |  (N 2Pl) |  (N 3Pl) ; 
+SET POSSESSUM = (N 1SgPoss) |  (N 2SgPoss) |  (N 3SgPoss) |  (N 1PlPoss) |  (N 2PlPoss) |  (N 3PlPoss) ; 
 
 LIST PROPRIUM = Prop ;
 SET APPELLATIV = N - PROPRIUM ;
-SET POSSESSUM = (N 1Sg) | (N 2Sg) | (N 3Sg) | (N 4Sg) | (N 1Pl) | (N 2Pl) | (N 3Pl) | (N 4Pl) | (N* 1Sg) | (N* 2Sg) | (N* 3Sg) | (N* 4Sg) | (N* 1Pl) |  (N* 2Pl) | (N* 3Pl) | (N* 4Pl); 
+SET POSSESSUM = (N 1SgPoss) | (N 2SgPoss) | (N 3SgPoss) | (N 4SgPoss) | (N 1PlPoss) | (N 2PlPoss) | (N 3PlPoss) | (N 4PlPoss) | (N* 1SgPoss) | (N* 2SgPoss) | (N* 3SgPoss) | (N* 4SgPoss) | (N* 1PlPoss) |  (N* 2PlPoss) | (N* 3PlPoss) | (N* 4PlPoss); 
 SET VFIN = Ind | Opt | Int | Imp ;
 
-LIST SPATIAL = "sani" "ati" "quli" ;
-LIST USPATIAL = "sanik" ;
+LIST SPATIAL = "sani" "ati" "quli" "at";
+LIST USPATIAL = "sanik" "ateq";
 LIST KONJUNKTION = "aamma" "kisianni" "imaluunniit" ;
 
 # Leksikalske klasser
@@ -980,7 +980,8 @@ LIST @i-N< = @i-N< ;		 # adled der står til inkorporeret nominal t.v.
 LIST @POSS = @POSS ;		 # possessor
 LIST @>V = @>V ;                 # adled til verbum # asaneq ajorpara.
 LIST @X = @X ;                   # dette ord har endnu ikke fået en mapping-regel
-
+LIST @TEST = @TEST ;
+ 
 #Per Trond.trm butikken.abs passe-ba.
 #su  O         iO       i     y  => O er iS viss vi har iO <== (O kan passiveres)
 #su  iS        iO       i     y  => iS er O når vi har iO
@@ -1035,12 +1036,28 @@ LIST @<ALLSUBJ = @<SUBJ @i-<SUBJ ;
 # ============ #
 # ============ #
 
-
 MAPPINGS #Inkl. nye Per-regler
+
+# Verber - De sikre MAP regler
 
 #Et finit verbum er altid prædikat
 MAP (@PRED) TARGET VFIN ;
 
+# Pronominer - De sikre MAP regler
+
+#"uanga" og "uagut" er subjekt for V i første person hvis ikke adnominalt adled til 1SgPoss eller 1PlPoss resp.
+MAP (@SUBJ>) TARGET ("ua" 1Sg Abs) IF (*1 INTRANSVERB + (1Sg) BARRIER (1SgPoss)) ; 
+MAP (@SUBJ>) TARGET ("ua" 1Pl Abs) IF (*1 INTRANSVERB + (1Pl) BARRIER (1PlPoss)) ; 
+
+MAP (@>N) TARGET ("ua" 1Sg) IF (1 (1SgPoss)) ;
+
+MAP (@TEST) TARGET @HNOUN NOT POSSESSUM IF (NEGATE -1 @POSS) ;
+# Nominer - De sikre MAP regler
+MAP (@HNOUN) TARGET APPELLATIV + (Abs) OR PROPRIUM + (Abs) IF (NOT -*1 V)(NOT *1 V) ;
+#MAP (@TEST) TARGET (@HNOUN NOT POSSESSUM) IF (NEGATE -1 @POSS) ;
+
+# Ins er tit adled til inkorporet objekt
+MAP (@i->N) TARGET (Ins) IF (*1 QAR) ; # "tit" skal præciseres eller reduceres til en ADD-regel
 
 #Appellativer i absolut kasus kan være element af syntagmerne subjekt, objekt, tidsangivelse, overskriftsord 
 ADD (@SUBJ>) TARGET APPELLATIV + (Abs) OR PROPRIUM + (Abs) OR (Adj Abs) IF (*1 INTRANSVERB) ; #Husk at definerede sæt ikke skal have paranteser.
@@ -1158,6 +1175,7 @@ SELECT ("kina") IF (-1 BOS)(*1 ("?"));
 # Navneord # 
 # ======== #
 
+REMOVE SPATIAL IF (0 QAR) ;
 SELECT Prop IF (NEGATE -1 BOS);
 
 SELECT Attr IF (0 Prop)(1 (Prop Rel) OR (Prop Abs));
@@ -1321,6 +1339,9 @@ REMOVE @PROP> IF (*1 NOT-FIRST BARRIER Sur LINK NOT 0 Sur);
 
 REMOVE @POSS IF (1C POSSESSUM4);
 
+#SELECT (NOT POSSESSUM) TARGET @HNOUN IF (NEGATE -1 @POSS) ; #Possessum uden possessor i overskrift er ikke en sandsynlig læsning
+#SELECT @HNOUN IF NEGATE 0 POSSESSUM; #Test fordi ovenstående ikke virkede
+REMOVE POSSESSUM @HNOUN IF (NEGATE -1 (@POSS)) ;
 
 # Verbal disambiguering
 # =====================
