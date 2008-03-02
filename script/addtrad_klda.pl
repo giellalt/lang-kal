@@ -95,6 +95,9 @@ while (<STDIN>) {
   $ulang = "\U$lang";
   if (/\"(.+)\"/) {
     $base =$1;
+    if (/\+([NV])\+/) {
+      $base .= "_$1";
+    }
     if ($trad{$base}) {
       s/\" /\" <$ulang:$trad{$base}> /;
     }
