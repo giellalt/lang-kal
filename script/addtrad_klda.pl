@@ -111,12 +111,17 @@ while (<STDIN>) {
     $base =$1;
     if (/[\+ ]([NV]|nv|vn)[\+ ]/) { # use topclass or first internal class
 	$pos =$1;
-	$pos =~ s/nv/n/;
-	$pos =~ s/vn/v/;
-	$base .= "_\u$pos";
+	$pos =~ s/nv/N/;
+	$pos =~ s/vn/V/;
+	$pos = "_" . $pos;
     }
-    if ($trad{$base}) {
-	$trad{$base} =~ s/^\///;
+    if ($trad{"$base$pos"}) {
+	$trans = $trad{"$base$pos"};
+	$trans =~ s/^\///;
+      s/\" /\" <$ulang:$trans> /;
+    }
+    elsif ($trad{"$base"}) {
+	$trad{"$base"} =~ s/^\///;
       s/\" /\" <$ulang:$trad{$base}> /;
     }
     s/=/ = /g;
