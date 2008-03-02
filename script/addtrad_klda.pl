@@ -11,13 +11,14 @@ use open 'utf8';
 # (needs dakl_lex)
 
 $ARG0 =$ARGV[0];
-if ($ARG0 && $ARG0 =~ /(eo|da)/) {
-	$lang = $1;
-    $infile = $ARG0;
-    } # print token tag lines
+if ($ARG0 && $ARG0 =~ s/lang=(eo|da)&?//) {
+  $lang = $1;
+}
+$infile = $ARG0;
+
 if (! $lang) {$lang = "da";}
 
-#print "--------$lang\n";
+#print "--------lang=$lang  lexfile=$infile\n";
 if ($lang eq "eo") {
   open(FH, "<src/kaleo-lex.txt");
   while (<FH>) {
@@ -32,10 +33,17 @@ if ($lang eq "eo") {
 
 open(FH, "<$infile");
 while (<FH>){
+  s/\t\(.*?\) */\t/;
 	# Match unicode letters
     if (/^(.+)\t([\pL<].+?) *$/) {
       $kal =$1;
       $trans =$2;
+      if ($kal =~ s/(_[A-Z])$//) {
+	  $pos =$1;
+      }
+      else {$pos ="";}
+#      if (/^aleq/) {print "---$kal $trans\n";}
+      $kal =~ s/;=/;/;
       @words =split /;/, $kal;
       foreach (@words) {
 	s/^ +//;
@@ -51,7 +59,7 @@ while (<FH>){
 	  $word =$_;
 	  $word =~ s/1\) +//g;
 	  # Match unicode letters
-	  $word =~ s/([\pL]) 2\)/$1\;/; # avippaa	1) deler det i to dele 2) lader sig skille fra ham/hende
+	  $word =~ s/([\pL<]) 2\)/$1\;/; # avippaa	1) deler det i to dele 2) lader sig skille fra ham/hende
 	  $word =~ s/ ([IVX]+|\(.*|\!)//; # I, II
 	  $trans =~ s/ *\(.*?\)//g;
 	  $trans =~ s/; */\//g;
@@ -66,18 +74,24 @@ while (<FH>){
 #	    $trans =~ s/ +$//;
 #	    $trans =~ s/ *([\/\|]) */$1/g;
 	  }
-	  $trad{$word} =$trans;
+	  if ($pos) {$trad{"$word$pos"} .= "/$trans";}
+	  else {$trad{$word} .= "/$trans";}
 	  if (! ($trans eq "nil")) {
-	    $word =~ s/ppaa$/p/; # transitive
-	    $word =~ s/rpaa$/r/; # transitive
-	    $word =~ s/ppoq$/p/; # intransitive
-	    $word =~ s/rpoq$/r/; # intransitive
-	    $word =~ s/uaa$/u/; # transitive
-	    $word =~ s/vaa$//; # transitive
-	    $word =~ s/([iua])voq$/$1/; # intransitive
-	    $trad{$word} =$trans;
+	    if (($word =~ s/ppaa$/p/) # transitive
+	    || ($word =~ s/rpaa$/r/) # transitive
+	    || ($word =~ s/ppoq$/p/) # intransitive
+	    || ($word =~ s/rpoq$/r/) # intransitive
+	    || ($word =~ s/uaa$/u/) # transitive
+	    || ($word =~ s/vaa$//) # transitive
+	    || ($word =~ s/([iua])voq$/$1/)) { # intransitive
+		    if ($pos) {$trad{"$word$pos"} .= "/$trans";}
+		    else {$trad{$word} .= "/$trans";}
+		}
+#	    $trad{$word} =$trans;
 	  }
 	  $trans =~ s/\/ */\|/g;
+#	  if (/^aleq/) {print "---$word $trans\n";}
+
 #	if (! ($trans =~ /^[<_=]/)) {
 #	  $printout =$trans;
 #	  $printout =~ s/_/ /g;
@@ -95,10 +109,14 @@ while (<STDIN>) {
   $ulang = "\U$lang";
   if (/\"(.+)\"/) {
     $base =$1;
-    if (/\+([NV])\+/) {
-      $base .= "_$1";
+    if (/[\+ ]([NV]|nv|vn)[\+ ]/) { # use topclass or first internal class
+	$pos =$1;
+	$pos =~ s/nv/n/;
+	$pos =~ s/vn/v/;
+	$base .= "_\u$pos";
     }
     if ($trad{$base}) {
+	$trad{$base} =~ s/^\///;
       s/\" /\" <$ulang:$trad{$base}> /;
     }
     s/=/ = /g;
@@ -107,7 +125,9 @@ while (<STDIN>) {
       $der =$3;
       if ($2) {$overgang =$2;} else {$overgang ="";}
       $trans = $trad{$der};
-      s/ $der / $der $trad{$der} /;
+      $trans =~ s/^\///;
+
+      s/ $der / $der $trans /;
     }
   }
   print;
