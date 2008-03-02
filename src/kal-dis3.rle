@@ -29,6 +29,7 @@
 		# Nominer - De sikre MAP regler (1054)
 		# Nominer - ADD regler (1062)
 		# Adjektiver - både ADD og MAP regler (line 1087)
+		# Partikler (1120)
 	# Disambiguation rules (linie 1175)
 		# SELECT og REMOVE verber (
 		# SELECT og REMOVE nominer (
@@ -43,7 +44,7 @@
 # Delimiters #
 # ========== #
 
-DELIMITERS = "<.>" "<!>" "<?>" "<...>" "<¶>"; #<¶> virker ikke og må erstattes af LF 
+DELIMITERS = "<.>" "<!>" "<?>" "<...>" "<¶>" "<:>"; #<¶> virker ikke og må erstattes af LF 
 
 
 # ============= #
@@ -899,6 +900,7 @@ SET APPELLATIV = N - PROPRIUM ;
 # ---------
 LIST KONJUNKTION = "aamma" "kisianni" "imaluunniit" "taava" ;
 LIST ADVERBIUM = "ima" ;
+LIST FOKUSPART = "tassa" "aali" "sunaaffa" ;
 
 # Lexical sets
 ==============
@@ -989,8 +991,9 @@ LIST @N< = @N< ;	    	 # postnominalt adled
 LIST @i->N = @i->N ;		 # adled der står til inkorporeret nominal t.h.
 LIST @i-N< = @i-N< ;		 # adled der står til inkorporeret nominal t.v.
 LIST @POSS = @POSS ;		 # possessor
-LIST @>V = @>V ;             # adled til verbum # asaneq ajorpara.
-LIST @X = @X ;               # dette ord har endnu ikke fået en mapping-regel
+LIST @>V = @>V ;                 # adled til verbum # asaneq ajorpara.
+LIST @FOC = @FOC ;		# partikler, der erstatter et verballed
+LIST @X = @X ;                   # dette ord har endnu ikke fået en mapping-regel
 LIST @TEST = @TEST ;
 LIST @CL->N = @CL->N ;       # Relativsætning stående til nominal til højre
 
@@ -1065,14 +1068,24 @@ MAPPINGS #Inkl. nye Per-regler
 # Verber - De sikre MAP regler
 
 MAP (@PRED) TARGET VFIN ; #Et finit verbum er altid prædikat
-MAP (@PRED) TARGET (Inf) OR (InfNeg) IF (NEGATE *1 @PRED)(-*1 LU BARRIER @PRED) ; #(0 LU) OR
+MAP (@PRED) TARGET Inf + LU OR InfNeg + LU IF (-1 (Ind)) ; #Indikativ+infinitiv paratakse
+MAP (@PRED) TARGET Inf OR InfNeg IF (NEGATE *1 @PRED)(-*1 LU BARRIER @PRED) ; #(0 LU) OR
+
+# Partikler
+MAP (@FOC) TARGET FOKUSPART + Part IF (NEGATE *0 V) ; 
+MAP (@i-ADVL>) TARGET Part IF (1 N + @<SUBJ) ;
+
 
 # Nominer - De sikre MAP regler
+MAP (@<SUBJ) TARGET (Abs) IF (*-1 @FOC BARRIER (V));
 MAP (@HNOUN) TARGET APPELLATIV + (Abs) OR PROPRIUM + (Abs) IF (NOT -*1 V)(NOT *1 V) ;
+
+# Partikler anden runde
+MAP (@i-ADVL>) TARGET (Part) IF (1 N + @<SUBJ) ;
 
 # MAP (@POSS @SUBJ> @<SUBJ) TARGET Rel ; #Formulering fra Nuuk erstattet af de følgende 3 20080124
 
-#ADD (@POSS) TARGET (Rel) IF (1 POSSESSUM3) ; #Ikke 1 men *1 pga. Piitap qangaaniilli soqutigisaa
+ADD (@POSS) TARGET (Rel) IF (1 POSSESSUM3) ; #Ikke 1 men *1 pga. Piitap qangaaniilli soqutigisaa
 
 #ADD (@SUBJ) TARGET (Rel) IF (1 POSSESSUM3)(2 3SgO) ;
 
@@ -1125,7 +1138,6 @@ ADD (@SUBJ>) TARGET (Adj 1Sg) IF (*1 TRANSVERB + (1Sg)) ;
 ADD (@CONJ) TARGET KONJUNKTION IF (-1 BOS) ;
 MAP (@ADVL>) TARGET ADVERBIUM IF (*1 (V)) ; #ima etc.
 MAP (@<ADVL) TARGET ADVERBIUM IF (*-1 (V)) ;
-
 
 #ADD (@POSSESSUM) TARGET POSSESSUM ;
 #ADD (@TEST) TARGET (N* 3Sg IP) IF (-1 Rel Sg) ; #test før følgende
@@ -1247,6 +1259,10 @@ SELECT (@<SUBJ Sg Rel) IF (-*1 TRANSVERB + 3Sg)(NEGATE *1 VFIN) ;
 SELECT (@POSS Pl) IF (1 POSSESSUM + 3PlPoss) ;
 SELECT (@POSS Sg) IF (1 POSSESSUM + 3SgPoss) ;
 
+
+#Partiklernes SELECT og REMOVE
+SELECT (@FOC Part) IF (*1 (@<SUBJ) BARRIER V ) ;
+
 # Tidlige syntaktiske regler
 SELECT (N* 3Sg IP) IF (-1 (Rel Sg)) ; #Virker ikke 18.1. sen aften
 
@@ -1254,9 +1270,9 @@ SELECT (N* 3Sg IP) IF (-1 (Rel Sg)) ; #Virker ikke 18.1. sen aften
 #SELECT SPATIAL + Sg IF (0 POSSESSUM) ;
 SELECT @HNOUN IF (NOT -*1 V)(NOT *1 V) ;
 
+REMOVE @<ARG IF (NEGATE *-1 V)(NEGATE *-1 (@FOC)) ;
 REMOVE @ALL-ARG> IF (NEGATE *1 V) ; # Ikke @ARG> fordi ingen V t.h.
-REMOVE @ALL-<ARG IF (NEGATE *-1 V) ;
-
+#REMOVE @ARG> IF (NEGATE *1 V) ; #min formulering
 REMOVE @ARG> IF (*1C @<ARG BARRIER V);
 REMOVE @<ARG IF (*-1C @ARG> BARRIER V); # Ikke @<ARG fordi ingen V før @ARG> t.v.
 
@@ -1580,6 +1596,7 @@ SELECT HUMAN IF (-*1 HUMVERB) ; # ikke "illu" før HUMVERB
 SELECT ("illu") ; # "illu" mere sandsynlig end "illoq"
 SELECT ("aamma") ; # "aamma" mere sandsynlig end "aak"+Rel
 SELECT ("ataata") ; # mere sandsynlig end "ataataq"
+SELECT ("qaliaq") ; # ad hoc for at forebygge 'hårbåndet' qaleq
 
 SELECT COMMONAFFSTRING ;
 
