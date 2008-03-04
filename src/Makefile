@@ -68,7 +68,7 @@ sloppy: ikal.fst
 
 ikal.fst: ../bin/ikal.fst
 ../bin/ikal.fst: ../bin/kal.fst ../bin/g-kal.fst ../bin/d-kal.fst ../bin/abbr.txt \
-../bin/hyph-kal.fst ../bin/phon-kal.fst ../bin/orth-kal.fst #../bin/str-kal.fst
+../bin/hyph-kal.fst ../bin/phon-kal.fst ../bin/orth-kal.fst ../bin/kal-dis.bin #../bin/str-kal.fst
 	@echo
 	@echo "*** Building the inverse ikal.fst ***"
 	@echo
@@ -305,6 +305,15 @@ hyph-kal.fst: ../bin/hyph-kal.fst
 	$(XFST) < ../tmp/hyph-script
 	@rm -f ../tmp/hyph-script
 
+
+# Let us just make a binary disambiguator
+# It can be used instead of the source file.
+kal-dis.bin: ../bin/kal-dis.bin
+../bin/kal-dis.bin: kal-dis3.rle
+	@echo
+	@echo "*** Building a binary disambiguator kal-dis.bin ***" ;
+	@echo
+	@vislcg3 --grammar kal-dis3.rle --grammar-only --grammar-bin ../bin/kal-dis.bin
 
 
 
