@@ -308,7 +308,7 @@ hyph-kal.fst: ../bin/hyph-kal.fst
 
 # Let us just make a binary disambiguator
 # It can be used instead of the source file.
-kal-dis.bin: ../bin/kal-dis.bin
+dis-bin: ../bin/kal-dis.bin
 ../bin/kal-dis.bin: kal-dis3.rle
 	@echo
 	@echo "*** Building a binary disambiguator kal-dis.bin ***" ;
