@@ -114,6 +114,10 @@ LIST 2Pl = 2Pl ;
 LIST 3Pl = 3Pl ;
 LIST 4Pl = 4Pl ;
 
+LIST 34IV = 3Sg 3Pl 4Sg 4Pl ;
+LIST 34Sg = 3Sg 4Sg ;
+LIST 34Pl = 3Pl 4Pl ;
+
 LIST 1SgPoss = 1SgPoss ; #Ny tag 22.1.2008
 LIST 2SgPoss = 2SgPoss ; #Ny do.
 LIST 3SgPoss = 3SgPoss ; #Ny do.
@@ -220,7 +224,6 @@ LIST GUNAR = GUNAR ;
 LIST GUNNAIR = GUNNAIR ;
 LIST GUNNAIR_RIIR = GUNNAIR\=RIIR ;
 LIST GUNNAIR_LIR_SIMA = GUNNAIR\=LIR\=SIMA ;
-LIST GUNNAIR_RIIR = GUNNAIR\=RIIR ;
 LIST GUNNAIR_INNAR = GUNNAIR\=INNAR ;
 LIST GUNNAIR_TIP_GUMA = GUNNAIR\=TIP\=GUMA ;
 LIST GUNNAIR_SIMA = GUNNAIR\=SIMA ;
@@ -243,7 +246,6 @@ LIST JA = JA ;
 LIST KAR = KAR ;
 LIST KKUT = KKUT ;
 LIST KAAP = KAAP ;
-LIST KKUT = KKUT ;
 LIST LAAR = LAAR  ;
 LIST LAAR_GALLAR = LAAR\=GALLAR ;
 LIST LAAR_GALLAR_NIAR = LAAR\=GALLAR\=NIAR ;
@@ -308,7 +310,6 @@ LIST NIAR_GAJUP = NIAR\=GAJUP ;
 LIST NIAR_GALLAR = NIAR\=GALLAR ;
 LIST NIAR_GALUAR = NIAR\=GALUAR ;
 LIST NIAR_GALUAR_GUMAAR = NIAR\=GALUAR\=GUMAAR ;
-LIST NIAR_INNAR = NIAR\=INNAR ;
 LIST NIAR_INNAR = NIAR\=INNAR ;
 LIST NIAR_INNAR_LIR = NIAR\=INNAR\=LIR ;
 LIST NIAR_LIR = NIAR\=LIR ;
@@ -535,7 +536,6 @@ LIST RIIR_SIMA_SSA = RIIR\=SIMA\=SSA ;
 LIST RIIR_SIMA_SSA_GALUAR = RIIR\=SIMA\=SSA\=GALUAR ;
 LIST RIIR_TIP = RIIR\=TIP ;
 LIST RIIR_SSA = RIIR\=SSA ;
-LIST SUR = SUR ;
 LIST SURE = SURE ;
 LIST SURE_NIQAR = SURE\=NIQAR ;
 LIST SURE_NNGIT = SURE\=NNGIT ;
@@ -547,7 +547,7 @@ LIST RUJUK_SUAR_NIAR = RUJUK\=SUAR\=NIAR ;
 LIST RUJUK_SUAR_QINA = RUJUK\=SUAR\=QINA ;
 LIST RUJUK_SUAR_TARIAQAR = RUJUK\=SUAR\=TARIAQAR ;
 LIST SAR = SAR ;
-LIST SAR_HTR = HTR ;
+LIST SAR_HTR = SAR\=HTR ;
 LIST SARIASSA = SARIASSA ; #skal checkes
 LIST SAR_NIQAR = SAR\=NIQAR ;
 LIST SAR_NIQAR_SIMA = SAR\=NIQAR\=SIMA ;
@@ -895,8 +895,7 @@ SET POSSESSUM12 = (N 1SgPoss) | (N 2SgPoss) | (N* 1SgPoss) | (N* 2SgPoss)| (N 1P
 
 SET POSSESSUM = POSSESSUM12 OR POSSESSUM3 OR POSSESSUM4 ; 
 
-LIST PROPRIUM = Prop ;
-SET APPELLATIV = N - PROPRIUM ;
+SET APPELLATIV = N - Prop ;
 #SET POSSESSUM = (N 1SgPoss) | (N 2SgPoss) | (N 3SgPoss) | (N 4SgPoss) | (N 1PlPoss) | (N 2PlPoss) | (N 3PlPoss) | (N 4PlPoss) | (N* 1SgPoss) | (N* 2SgPoss) | (N* 3SgPoss) | (N* 4SgPoss) | (N* 1PlPoss) |  (N* 2PlPoss) | (N* 3PlPoss) | (N* 4PlPoss); 
 
 LIST POSS_ABBR = "sap" ; # forkortelser, der oftest anvendes som possessor
@@ -908,7 +907,7 @@ LIST ADVERBIUM = "ima" ;
 LIST FOKUSPART = "tassa" "aali" "sunaaffa" ;
 
 # Lexical sets
-==============
+# ==============
 
 # Verbernes leksikalske klasser
 # =============================
@@ -1084,9 +1083,9 @@ MAP:AddPartConjRel (@CONJ) TARGET Part IF (-1 Rel)(*1 Rel BARRIER VFIN) ;
 
 # Nominer - De sikre MAP regler
 MAP (@<SUBJ) TARGET (Abs) IF (*-1 @FOC BARRIER (V));
-MAP (@HNOUN) TARGET APPELLATIV + (Abs) OR PROPRIUM + (Abs) IF (NOT -*1 V)(NOT *1 V) ;
+MAP (@HNOUN) TARGET APPELLATIV + (Abs) OR Prop + (Abs) IF (NOT -*1 V)(NOT *1 V) ;
 MAP (@i-ADVL>) TARGET Trm IF (1 N + (vn)) ;
-MAP (@OBJ>) TARGET APPELLATIV + Abs + Sg OR PROPRIUM + Abs + Sg IF (1 TRANSVERB + 3SgO) ; 
+MAP (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (1 TRANSVERB + 3SgO) ; 
 MAP (@POSS) TARGET POSS_ABBR IF (1 POSSESSUM3); #sap. akunnera
 
 # Partikler anden runde
@@ -1099,30 +1098,30 @@ ADD (@POSS) TARGET (Rel) IF (1 POSSESSUM3) ; #Ikke 1 men *1 pga. Piitap qangaani
 #ADD (@SUBJ) TARGET (Rel) IF (1 POSSESSUM3)(2 3SgO) ;
 
 
-MAP (@SUBJ>) TARGET (Rel) IF (*1 TRANSVERB + (3Sg) OR (3Pl) OR (4Sg) OR (4Pl) BARRIER POSSESSUM3) ;
+MAP (@SUBJ>) TARGET (Rel) IF (*1 TRANSVERB + 34IV BARRIER POSSESSUM3) ;
 
-MAP (@<SUBJ) TARGET (Rel) IF (-*1 TRANSVERB + ((3Sg) OR (4Sg)))(0 (Sg)) ;
+MAP (@<SUBJ) TARGET (Rel) IF (-*1 TRANSVERB + 34Sg)(0 (Sg)) ;
 
-MAP (@<SUBJ) TARGET (Rel) IF (-*1 TRANSVERB + ((3Pl) OR (4Pl)))(0 (Pl)) ;
+MAP (@<SUBJ) TARGET (Rel) IF (-*1 TRANSVERB + 34Pl)(0 (Pl)) ;
 MAP (@<SUBJ) TARGET (Abs Sg) IF (-*1C INTRANSVERB + (3Sg) OR INTRANSVERB + (4Sg)) ;
 MAP (@<SUBJ) TARGET (Abs Pl) IF (-*1C INTRANSVERB + (3Pl) OR INTRANSVERB + (4Pl)) ;
 
 #Nominer i absolut kasus er oftest subjekt for intransitivt verbum 
-MAP (@SUBJ>) TARGET APPELLATIV + (Abs) OR PROPRIUM + (Abs) IF (*1 INTRANSVERB + VFIN)(NEGATE *1 TRANSVERB + VFIN)(NEGATE 1 Inf + TRANSVERB); #Husk at definerede sæt ikke skal have paranteser.
+MAP (@SUBJ>) TARGET APPELLATIV + (Abs) OR Prop + (Abs) IF (*1 INTRANSVERB + VFIN)(NEGATE *1 TRANSVERB + VFIN)(NEGATE 1 Inf + TRANSVERB); #Husk at definerede sæt ikke skal have paranteser.
 
 # Ins er tit adled til inkorporet objekt
 MAP (@i->N) TARGET (Ins) IF (*1 QAR OR LIK) ; # "tit" skal præciseres eller reduceres til en ADD-regel
 
 # Nominer - ADD regler
 #Appellativer i absolut kasus kan være element af syntagmerne subjekt, objekt, tidsangivelse, overskriftsord 
-ADD (@SUBJ>) TARGET APPELLATIV + (Abs) OR PROPRIUM + (Abs) IF (*1 INTRANSVERB)(NEGATE *1 TRANSVERB) ; #Husk at definerede sæt ikke skal have paranteser.
-ADD (@OBJ>) TARGET APPELLATIV + (Abs) OR PROPRIUM + (Abs) IF (*1 TRANSVERB) ; 
-ADD (@<OBJ) TARGET APPELLATIV + (Abs) OR PROPRIUM + (Abs) OR (Adj Abs) IF (-*1 TRANSVERB) ;
+ADD (@SUBJ>) TARGET APPELLATIV + (Abs) OR Prop + (Abs) IF (*1 INTRANSVERB)(NEGATE *1 TRANSVERB) ; #Husk at definerede sæt ikke skal have paranteser.
+ADD (@OBJ>) TARGET APPELLATIV + (Abs) OR Prop + (Abs) IF (*1 TRANSVERB) ; 
+ADD (@<OBJ) TARGET APPELLATIV + (Abs) OR Prop + (Abs) OR (Adj Abs) IF (-*1 TRANSVERB) ;
 ADD (@CL-ADVL) TARGET APPELLATIV + (Abs) IF (-1 BOS)(NOT 0 POSSESSUM) ;
 
 #Appellativer og proprier i relativ kasus kan være element af syntagmerne subjekt og possessor 
-ADD (@SUBJ>) TARGET APPELLATIV + (Rel) OR PROPRIUM + (Rel) IF (*1 TRANSVERB) ; #Husk at definerede sæt ikke skal have paranteser.
-ADD (@<SUBJ) TARGET APPELLATIV + (Rel) OR PROPRIUM + (Rel) OR (Adj) IF (-*1 TRANSVERB) ;
+ADD (@SUBJ>) TARGET APPELLATIV + (Rel) OR Prop + (Rel) IF (*1 TRANSVERB) ; #Husk at definerede sæt ikke skal have paranteser.
+ADD (@<SUBJ) TARGET APPELLATIV + (Rel) OR Prop + (Rel) OR (Adj) IF (-*1 TRANSVERB) ;
 
 #Nomen i oblik kasus kan være adverbalt adled
 ADD (@ADVL>) TARGET (Lok) OR (Trm) OR (Abl) OR (Via) OR (Aeq) OR (Ins) IF (*1 (V)) ;
@@ -1210,7 +1209,7 @@ MAP (@>N) TARGET Abbr IF (1 Num);
 MAP (@>N) TARGET ("§") IF (1 Num);
 	## § 5.
 
-MAP (@HNOUN) TARGET Vok ; ! Sætningsfragment
+MAP (@HNOUN) TARGET Vok ; # Sætningsfragment
 
 MAP (@>N) TARGET Ord IF (1 N) ;
 	## 1. august.
@@ -1231,9 +1230,11 @@ MAP (@X) TARGET WORD ; #Ændret til ADD 20080123
 # De allertidligste disambigueringsregler
 #Nominer
 
-REMOVE Prop + MI + Abs IF (*-1 Abs) OR (*1 Abs) ;
+REMOVE Prop + MI + Abs IF (*1 Abs) ; # Unify!
+REMOVE Prop + MI + Abs IF (*-1 Abs)  ;
 REMOVE Abs + MI + Sg IF (1 INTRANSVERB + 3Pl); #"kingulleq" N Abs Sg MI @SUBJ> "isuma" QATIGIIP vv V Ind 3Pl @PRED
-REMOVE Abs + 2SgPoss IF (NEGATE *0 INTRANSVERB + 3Sg) OR (NEGATE *0 TRANSVERB + 3SgO) ;
+REMOVE Abs + 2SgPoss IF (NEGATE *0 TRANSVERB + 3SgO) ;
+REMOVE Abs + 2SgPoss IF (NEGATE *0 INTRANSVERB + 3Sg) ;
 SELECT Prop + Attr IF (1 Prop + Sg) ;
 REMOVE (Prop Attr) IF (NEGATE 1 Prop);
 SELECT 2SgPoss IF (*0 ("qujanaq"))(NEGATE -1 ("uanga"))(NEGATE *0 VFIN) ;
@@ -1274,7 +1275,7 @@ SELECT INTRANSVERB + (Inf) + (4Sg) IF (NEGATE -1 ("immi")) ;
 SELECT SPATIAL + (Sg) IF (0 POSSESSUM) ;
 
 REMOVE SPATIAL IF (0 QAR) ;
-SELECT Prop IF (NEGATE -1 BOS);q
+SELECT Prop IF (NEGATE -1 BOS);
 
 SELECT Attr IF (0 Prop)(1 (Prop Rel) OR (Prop Abs));
 
