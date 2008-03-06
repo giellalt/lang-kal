@@ -920,7 +920,7 @@ LIST TRMVERB = "iser" ;
 
 SET MOVE-VERB = LOKVERB | ABLVERB | TRMVERB ;
 
-LIST ORATIOOBLVERB = "isuma" "nalu" "oqar" "qular"  "qularnar" "taku" ;
+LIST ORATIOOBLVERB = "ilisimatitsissut" "isuma" "nalu" "oqar" "qular"  "qularnar" "taku" ;
 
 LIST VEXCLAM = "sunaaffa" "uffa" "aali" "naak" ;
 
@@ -1080,23 +1080,26 @@ MAP (@FOC) TARGET FOKUSPART + (Part) IF (NEGATE *0 V) ;
 MAP (@i-ADVL>) TARGET (Part) IF (1 N + @<SUBJ) ;
 MAP:AddPartConjAbs (@CONJ) TARGET Part IF (-1 Abs)(*1 Abs BARRIER VFIN) ;
 MAP:AddPartConjRel (@CONJ) TARGET Part IF (-1 Rel)(*1 Rel BARRIER VFIN) ;
+MAP:Nexusadverbial (@CL-ADVL>) TARGET Part IF (-1 BOS)(NEGATE 0 KONJUNKTION) ;
 
 # Nominer - De sikre MAP regler
 MAP (@<SUBJ) TARGET (Abs) IF (*-1 @FOC BARRIER (V));
 MAP (@HNOUN) TARGET APPELLATIV + (Abs) OR Prop + (Abs) IF (NOT -*1 V)(NOT *1 V) ;
 MAP (@i-ADVL>) TARGET Trm IF (1 N + (vn)) ;
 MAP (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (1 TRANSVERB + 3SgO) ; 
+MAP (@OBJ>) TARGET APPELLATIV + Abs + Pl IF (1 TRANSVERB + 3PlO) ; 
 MAP (@POSS) TARGET POSS_ABBR IF (1 POSSESSUM3); #sap. akunnera
+
 
 # Partikler anden runde
 MAP (@i-ADVL>) TARGET (Part) IF (1 N + @<SUBJ) ;
 
-# MAP (@POSS @SUBJ> @<SUBJ) TARGET Rel ; #Formulering fra Nuuk erstattet af de følgende 3 20080124
-
 ADD (@POSS) TARGET (Rel) IF (1 POSSESSUM3) ; #Ikke 1 men *1 pga. Piitap qangaaniilli soqutigisaa
 
-#ADD (@SUBJ) TARGET (Rel) IF (1 POSSESSUM3)(2 3SgO) ;
-
+MAP (@SUBJ>) TARGET Rel + Sg IF (*1 TRANSVERB + (3Sg) OR (4Sg) BARRIER POSSESSUM3) ;
+MAP (@SUBJ>) TARGET Rel + Pl IF (*1 TRANSVERB + (3Pl) OR (4Pl) BARRIER POSSESSUM3) ;
+MAP (@SUBJ>) TARGET Abs + Sg IF (*1 TRANSVERB + (3Sg) OR (4Sg) BARRIER POSSESSUM3) ;
+MAP (@SUBJ>) TARGET Abs + Pl IF (*1 TRANSVERB + (3Pl) OR (4Pl) BARRIER POSSESSUM3) ;
 
 MAP (@SUBJ>) TARGET (Rel) IF (*1 TRANSVERB + 34IV BARRIER POSSESSUM3) ;
 
@@ -1107,17 +1110,18 @@ MAP (@<SUBJ) TARGET (Abs Sg) IF (-*1C INTRANSVERB + (3Sg) OR INTRANSVERB + (4Sg)
 MAP (@<SUBJ) TARGET (Abs Pl) IF (-*1C INTRANSVERB + (3Pl) OR INTRANSVERB + (4Pl)) ;
 
 #Nominer i absolut kasus er oftest subjekt for intransitivt verbum 
-MAP (@SUBJ>) TARGET APPELLATIV + (Abs) OR Prop + (Abs) IF (*1 INTRANSVERB + VFIN)(NEGATE *1 TRANSVERB + VFIN)(NEGATE 1 Inf + TRANSVERB); #Husk at definerede sæt ikke skal have paranteser.
+MAP (@SUBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs IF (*1 INTRANSVERB + 3Sg)(NEGATE *1 TRANSVERB + VFIN)(NEGATE 1 Inf + TRANSVERB);
 
 # Ins er tit adled til inkorporet objekt
 MAP (@i->N) TARGET (Ins) IF (*1 QAR OR LIK) ; # "tit" skal præciseres eller reduceres til en ADD-regel
 
 # Nominer - ADD regler
 #Appellativer i absolut kasus kan være element af syntagmerne subjekt, objekt, tidsangivelse, overskriftsord 
+
 ADD (@SUBJ>) TARGET APPELLATIV + (Abs) OR Prop + (Abs) IF (*1 INTRANSVERB)(NEGATE *1 TRANSVERB) ; #Husk at definerede sæt ikke skal have paranteser.
 ADD (@OBJ>) TARGET APPELLATIV + (Abs) OR Prop + (Abs) IF (*1 TRANSVERB) ; 
 ADD (@<OBJ) TARGET APPELLATIV + (Abs) OR Prop + (Abs) OR (Adj Abs) IF (-*1 TRANSVERB) ;
-ADD (@CL-ADVL) TARGET APPELLATIV + (Abs) IF (-1 BOS)(NOT 0 POSSESSUM) ;
+#ADD (@CL-ADVL>) TARGET APPELLATIV + (Abs) IF (-1 BOS)(NOT 0 POSSESSUM) ; #?? Lyder som en fejl. Jf. MAP:Nexusadverbial
 
 #Appellativer og proprier i relativ kasus kan være element af syntagmerne subjekt og possessor 
 ADD (@SUBJ>) TARGET APPELLATIV + (Rel) OR Prop + (Rel) IF (*1 TRANSVERB) ; #Husk at definerede sæt ikke skal have paranteser.
@@ -1143,7 +1147,7 @@ ADD (@OBJ>) TARGET (Adj 1Sg) IF (*1 TRANSVERB + (1SgO)) ;
 ADD (@SUBJ>) TARGET (Adj 1Sg) IF (*1 TRANSVERB + (1Sg)) ;
 
 #Konjunktioner er konjunktioner, når de indleder en sætning, ellers er de adverbier
-ADD (@CONJ) TARGET KONJUNKTION IF (-1 BOS) ;
+MAP (@CONJ) TARGET KONJUNKTION IF (-1 BOS) ;
 MAP (@ADVL>) TARGET ADVERBIUM IF (*1 (V)) ; #ima etc.
 MAP (@<ADVL) TARGET ADVERBIUM IF (*-1 (V)) ;
 
@@ -1161,10 +1165,6 @@ MAP (@>N) TARGET Num IF (1 NUMHOVED + Abs) ;
 
 ADD (@CL->N) TARGET Inf IF (1 N); # XXX Problemet her er 1 N, vi må ha kriterier til N.
 
-SELECT (@CL->N) IF (-1C @ARG>);
-
-SELECT 4Sg IF (0C (@CL->N))(1 (N Sg)); # eksperimentell
-SELECT 4Pl IF (0C (@CL->N))(1 (N Pl)); # eksperimentell
 
 
 MAP (@CL-ADVL>) TARGET Ite OR Cau OR Inf OR InfNeg OR Con OR Par IF ( *1 V BARRIER N) ;
@@ -1176,9 +1176,8 @@ ADD (@PRED) TARGET Inf OR InfNeg IF (0 LU OR LUUNNIIT)(*-1 VFIN);
 	
 #MAP (@CL-CIT>) TARGET Par + INTRANSVERB OR Inf + INTRANSVERB OR InfNeg + INTRANSVERB IF (*1 ORATIOOBLVERB)(-*1 Abs);# BARRIER ("aamma")) ;
 #funker ikke ved "naalakkersor" HTR V Par 3Sg @CL-CIT> MAP:1176 / "Helge" N Prop Attr SELECT:1260 @PROP> MAP:1199
-MAP (@CL-CIT>) TARGET Par + INTRANSVERB + 3Sg OR Inf + INTRANSVERB + 4Sg OR InfNeg + INTRANSVERB + 4Sg IF (*1 ORATIOOBLVERB)(-*1 Abs)(NEGATE 1 Prop + Abs OR Prop + Attr);
-
-MAP (@CL-<CIT) TARGET Par OR Inf OR InfNeg IF (*-1 ORATIOOBLVERB) ;
+MAP (@CL-CIT>) TARGET Par + INTRANSVERB + 3Sg OR Inf + INTRANSVERB + 4Sg OR InfNeg + INTRANSVERB + 4Sg OR Cau + INTRANSVERB + 3Sg IF (*1 ORATIOOBLVERB)(-*1 Abs + Sg)(NEGATE 1 Prop + Abs OR Prop + Attr);
+MAP (@CL-<CIT) TARGET Par + INTRANSVERB + 3Sg OR Inf + INTRANSVERB + 4Sg OR InfNeg + INTRANSVERB + 4Sg OR Cau + INTRANSVERB + 3Sg IF (-*1 ORATIOOBLVERB)(-*1 Abs + Sg)(NEGATE 1 Prop + Abs OR Prop + Attr);
 
 MAP (@i-SUBJ>) TARGET Trm IF (*1 DOTR);
 MAP (@i-OBJ>)  TARGET Trm IF (*1 DOTR)(NEGATE 0 TIME);
@@ -1228,20 +1227,45 @@ MAP (@X) TARGET WORD ; #Ændret til ADD 20080123
 # ================== #
 
 # De allertidligste disambigueringsregler
-#Nominer
+#Hoejfrekvente kombinationer
+SELECT ("kalaaleq") + Rel + Pl IF (1 ("oqaaseq") OR ("nuna"));
+SELECT ("oqaaseq") + 3PlPoss IF (-1 ("kalaaleq") + Rel + Pl);
+SELECT ("nuna") + Sg IF (-1 ("kalaaleq") + Rel + Pl);
+SELECT ("taamaattoq") + LI IF (-1 BOS) ; #Har vaeret checket for modeksempler, men hidtil ingen fundet. Pas paa!
+SELECT ("taamaakkaluartoq") IF (-1 BOS) ; #Har vaeret checket for modeksempler, men hidtil ingen fundet. Pas paa!
 
-REMOVE Prop + MI + Abs IF (*1 Abs) ; # Unify!
-REMOVE Prop + MI + Abs IF (*-1 Abs)  ;
+#Partikler
+SELECT KONJUNKTION IF (-1 BOS);
+
+#Nominer med tilhængspartikler
+REMOVE Prop + MI + Abs IF (*-1 Abs) OR (*1 Abs) ;
 REMOVE Abs + MI + Sg IF (1 INTRANSVERB + 3Pl); #"kingulleq" N Abs Sg MI @SUBJ> "isuma" QATIGIIP vv V Ind 3Pl @PRED
-REMOVE Abs + 2SgPoss IF (NEGATE *0 TRANSVERB + 3SgO) ;
-REMOVE Abs + 2SgPoss IF (NEGATE *0 INTRANSVERB + 3Sg) ;
+
+#Proprier og attributter
 SELECT Prop + Attr IF (1 Prop + Sg) ;
 REMOVE (Prop Attr) IF (NEGATE 1 Prop);
-SELECT 2SgPoss IF (*0 ("qujanaq"))(NEGATE -1 ("uanga"))(NEGATE *0 VFIN) ;
-#SELECT N + $$NUMERUS IF (1 N + $$NUMERUS)(NEGATE *0 V) ; # Vedr. overskrifter og sætningsemner
-SELECT N + Sg IF (1 N + Sg)(NEGATE *0 V) ; # Vedr. overskrifter og sætningsemner
+
+#Overfloedige possessumformer
+SELECT 2SgPoss IF (*0 ("qujanaq"))(NEGATE -1 ("uanga"))(NEGATE *0 VFIN) ; #Kontekst, der maa sikres foer foelgende REMOVE
+REMOVE Abs + 2SgPoss IF (NEGATE *0 INTRANSVERB + 3Sg) OR (NEGATE *0 TRANSVERB + 3SgO) ;
+REMOVE Via + 1SgPoss IF (NEGATE -1 ("ua"))(NEGATE *0 V + 1Sg) ;
+REMOVE Via + 2SgPoss IF (NEGATE -1 ("illit"))(NEGATE *0 V + 2Sg) ;
+REMOVE Abs + Sg + 4SgPoss IF (NEGATE -*1 3SgO BARRIER (Abs + Sg)C) ;
+REMOVE Abs + Pl + 4SgPoss IF (NEGATE -*1 3PlO BARRIER (Abs + Pl)C) ;
+
+#Overfloedige relativer
+SELECT Rel + Pl IF (1C 3PlPoss) ; 
 REMOVE Rel + Sg IF (NEGATE *1 3SgPoss)(NEGATE *0 TRANSVERB + 3Sg) ;
 REMOVE Rel + Pl IF (NEGATE *1 3PlPoss)(NEGATE *0 TRANSVERB + 3Pl) ;
+
+#Nominer - kongruens
+#SELECT N + $$NUMERUS IF (1 N + $$NUMERUS)(NEGATE *0 V) ; # Vedr. overskrifter og sætningsemner - afventer svar fra Tino
+SELECT N + Sg IF (1 N + Sg)(NEGATE *0 V) ; # Vedr. overskrifter og sætningsemner
+SELECT Ins + LU IF (-1C Ins) ;
+
+#Nominer - andre disambigueringer
+SELECT Abs + Sg IF (*1C INTRANSVERB + 3Sg) ;
+SELECT N + NIQAR + NIQ + Sg; #Passivt verbalnomen i pluralis er sjaeldent
 
 #Verber
 REMOVE (Inf 1Sg) IF (NEGATE *0 VFIN + 1Sg);
@@ -1249,7 +1273,8 @@ REMOVE (Inf 2Sg) IF (NEGATE *0 VFIN + 2Sg);
 REMOVE (Inf 1Pl) IF (NEGATE *0 VFIN + 1Pl);
 REMOVE (Inf 2Pl) IF (NEGATE *0 VFIN + 2Pl);
 
-#Partikler
+SELECT NIQAR + V IF (-*1 Abs + Sg) ; #Disambiguerer NIQAR fra NIQ efterfulgt af QAR
+
 
 SECTION #dette er kun til testbrug
 # Verbernes SELECT og REMOVE
@@ -1360,6 +1385,10 @@ REMOVE @POSS IF (NEGATE *1 POSSESSUM3) ; #Pers tilfoejelse 0608
 REMOVE Interj IF (0 Part)(1 (@HNOUN));
 	## Tassa illu.
 
+SELECT (@CL->N) IF (-1C @ARG>);
+
+SELECT 4Sg IF (0C (@CL->N))(1 (N Sg)); # eksperimentell
+SELECT 4Pl IF (0C (@CL->N))(1 (N Pl)); # eksperimentell
 
 
 
