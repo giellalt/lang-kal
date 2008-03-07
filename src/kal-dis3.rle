@@ -1238,7 +1238,9 @@ SELECT ("taamaakkaluartoq") IF (-1 BOS) ; #Har vaeret checket for modeksempler, 
 SELECT KONJUNKTION IF (-1 BOS);
 
 #Nominer med tilhængspartikler
-REMOVE Prop + MI + Abs IF (*-1 Abs) OR (*1 Abs) ;
+#REMOVE Prop + MI + Abs IF (*-1 Abs) OR (*1 Abs) ;
+REMOVE Prop + MI + Abs IF (*-0 Abs) ; # Lene
+
 REMOVE Abs + MI + Sg IF (1 INTRANSVERB + 3Pl); #"kingulleq" N Abs Sg MI @SUBJ> "isuma" QATIGIIP vv V Ind 3Pl @PRED
 
 #Proprier og attributter
@@ -1247,11 +1249,17 @@ REMOVE (Prop Attr) IF (NEGATE 1 Prop);
 
 #Overfloedige possessumformer
 SELECT 2SgPoss IF (*0 ("qujanaq"))(NEGATE -1 ("uanga"))(NEGATE *0 VFIN) ; #Kontekst, der maa sikres foer foelgende REMOVE
-REMOVE Abs + 2SgPoss IF (NEGATE *0 INTRANSVERB + 3Sg) OR (NEGATE *0 TRANSVERB + 3SgO) ;
+#REMOVE Abs + 2SgPoss IF (NEGATE *0 INTRANSVERB + 3Sg) OR (NEGATE *0 TRANSVERB + 3SgO) ;
+REMOVE Abs + 2SgPoss IF (NEGATE *0 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO) ; #Lene
+
 REMOVE Via + 1SgPoss IF (NEGATE -1 ("ua"))(NEGATE *0 V + 1Sg) ;
 REMOVE Via + 2SgPoss IF (NEGATE -1 ("illit"))(NEGATE *0 V + 2Sg) ;
-REMOVE Abs + Sg + 4SgPoss IF (NEGATE -*1 3SgO BARRIER (Abs + Sg)C) ;
-REMOVE Abs + Pl + 4SgPoss IF (NEGATE -*1 3PlO BARRIER (Abs + Pl)C) ;
+#REMOVE Abs + Sg + 4SgPoss IF (NEGATE -*1 3SgO BARRIER (Abs + Sg)C) ;
+REMOVE Abs + Sg + 4SgPoss IF (NEGATE -*1 3SgO CBARRIER Abs + Sg) ; # Lene
+
+#REMOVE Abs + Pl + 4SgPoss IF (NEGATE -*1 3PlO BARRIER (Abs + Pl)C) ;
+REMOVE Abs + Pl + 4SgPoss IF (NEGATE -*1 3PlO CBARRIER Abs + Pl) ; # Lene
+
 
 #Overfloedige relativer
 SELECT Rel + Pl IF (1C 3PlPoss) ; 
