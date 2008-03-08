@@ -45,7 +45,7 @@
 # Delimiters #
 # ========== #
 
-DELIMITERS = "<.>" "<!>" "<?>" "<...>" "<¶>"; #<¶> virker ikke og må erstattes af LF 
+DELIMITERS = "<.>" "<!>" "<?>" "<:>" "<...>" "<¶>"; #<¶> virker ikke og må erstattes af LF 
 
 
 # ============= #
@@ -939,7 +939,7 @@ LIST PSEUDO-HTR = "neri" ;
 
 # Nominernes leksikalske klasser
 # =============================
-
+LIST MAANED = "januaari" "februaari" "marsi" "apriili" "maaji" "juuni" "juuli" "aggusti" "augusti" "septembari" "oktobari" "novembari" "decembari";
 LIST SPATIAL = "sani" "ati" "quli" "at" "ilu";
 LIST USPATIAL = "sanik" "ateq";
 
@@ -992,6 +992,8 @@ LIST @CL-CIT> = @CL-CIT> ;	 # predikat i oo der står til et matriseverb t.h. CL
 LIST @CL-<CIT = @CL-<CIT ;	 # predikat i oo der står til et matriseverb t.v. (CIT=sitat)
 LIST @i-SUBJ> = @i-SUBJ> ;   # subjekt der står til inkorporeret dotr verbal t.h.
 LIST @i-<SUBJ = @i-<SUBJ ;   # subjekt der står til inkorporeret dotr verbal t.v.
+LIST @MIK-OBJ> = @MIK-OBJ> ; # indef objekt ved HTR til hoejre
+#LIST @<MIK-OBJ = @<MIK-OBJ ; # indef objekt ved HTR til venstre #Findes den kontekst overhovedet??
 LIST @i-OBJ> = @i-OBJ> ;     # objekt der står til inkorporeret verbal t.h.
 LIST @i-<OBJ = @i-<OBJ ;	 # objekt der står til inkorporeret verbal t.v.
 LIST @i-ADVL> = @i-ADVL> ;	 # adverbial der står til inkorporeret verbal t.h.
@@ -1104,10 +1106,12 @@ MAP (@<N) TARGET Trm IF (-1C Trm)(NEGATE *1 V) ;
 
 # Partikler anden runde
 MAP (@i-ADVL>) TARGET (Part) IF (1 N + @<SUBJ) ;
+MAP (@ADVL>) TARGET Part IF (1 V)(NEGATE *-1 V);
+ADD (@ADVL>) TARGET Part IF (1 V);
 
 # Nominer anden runde
 ADD (@POSS) TARGET (Rel) IF (1 POSSESSUM3) ; #Ikke 1 men *1 pga. Piitap qangaaniilli soqutigisaa
-
+ADD (@MIK-OBJ>) TARGET Ins IF (*1 HTR); #Ikke MAP fordi ogsaa ADVL> muligqq
 MAP (@SUBJ>) TARGET Rel + Sg IF (*1 TRANSVERB + (3Sg) OR (4Sg) BARRIER POSSESSUM3) ;
 MAP (@SUBJ>) TARGET Rel + Pl IF (*1 TRANSVERB + (3Pl) OR (4Pl) BARRIER POSSESSUM3) ;
 MAP (@SUBJ>) TARGET Abs + Sg IF (*1 TRANSVERB + (3Sg) OR (4Sg) BARRIER POSSESSUM3)(NEGATE -1 ("\(")) ; #Parantetiske indskud andet steds hen
@@ -1117,7 +1121,7 @@ MAP (@SUBJ>) TARGET N IF (-1 ("\("))(1 ("\)"))(-2 @SUBJ>) ; #Parantetiske indsku
 MAP (@<SUBJ) TARGET (Rel) IF (-*1 TRANSVERB + 34Sg)(0 (Sg)) ;
 
 MAP (@<SUBJ) TARGET (Rel) IF (-*1 TRANSVERB + 34Pl)(0 (Pl)) ;
-MAP (@<SUBJ) TARGET (Abs Sg) IF (-*1C INTRANSVERB + (3Sg) OR INTRANSVERB + (4Sg))(NEGATE -1 ("\(")) ;
+MAP (@<SUBJ) TARGET (Abs Sg) IF (-*1C INTRANSVERB + (3Sg) OR INTRANSVERB + (4Sg) BARRIER ("tassa"))(NEGATE -1 ("\(")) ;
 MAP (@<SUBJ) TARGET (Abs Pl) IF (-*1C INTRANSVERB + (3Pl) OR INTRANSVERB + (4Pl)) ;
 
 #Nominer i absolut kasus er oftest subjekt for intransitivt verbum 
@@ -1131,7 +1135,7 @@ MAP (@i->N) TARGET (Ins) IF (*1 QAR OR LIK) ; # "tit" skal præciseres eller red
 
 ADD (@SUBJ>) TARGET APPELLATIV + (Abs) OR Prop + (Abs) IF (*1 INTRANSVERB)(NEGATE *1 TRANSVERB)(NEGATE -1 ("\(")) ; 
 ADD (@OBJ>) TARGET APPELLATIV + (Abs) OR Prop + (Abs) IF (*1 TRANSVERB) ; 
-ADD (@<OBJ) TARGET APPELLATIV + (Abs) OR Prop + (Abs) OR (Adj Abs) IF (-*1 TRANSVERB)(NEGATE -1 ("\(")) ;
+ADD (@<OBJ) TARGET APPELLATIV + (Abs) OR Prop + (Abs) OR (Adj Abs) IF (-*1 TRANSVERB BARRIER Inf);#(NEGATE -1 ("\(")) ;
 #ADD (@CL-ADVL>) TARGET APPELLATIV + (Abs) IF (-1 BOS)(NOT 0 POSSESSUM) ; #?? Lyder som en fejl. Jf. MAP:Nexusadverbial
 
 #Appellativer og proprier i relativ kasus kan være element af syntagmerne subjekt og possessor 
@@ -1168,6 +1172,7 @@ MAP (@<ADVL) TARGET ADVERBIUM IF (*-1 (V)) ;
 
 # Numeralier
 MAP (@>N) TARGET Num IF (1 NUMHOVED + Abs) ;
+MAP (@POSS) TARGET MAANED IF (1 Num + 3PlPoss); #NB Possessum skal vaere plur. da konsekvent underforstaaet 'ulloq' MAANED (ulluisa) Num
 
 # Verber anden runde
 MAP (@PARATAKSE_INF->N) TARGET Inf + LU IF (1 Abs + vn) ; #misissueqqissaarutaallunilu oqaasiliuut .. Skal elaboreres!! 
@@ -1179,6 +1184,8 @@ MAP (@INF->N) TARGET Inf + 4Sg + 3SgO IF (-1 @SUBJ> OR ("\)") OR (""")) ; #Det b
 MAP (@CL-ADVL>) TARGET Ite OR Cau OR Inf OR InfNeg OR Con OR Par IF ( *1 V BARRIER N) ;
 MAP (@CL-<ADVL) TARGET Ite OR Cau OR Inf OR InfNeg OR Con OR Par IF (*-1 V BARRIER N) ; 
 
+ADD (@PRED) TARGET Inf OR InfNeg IF (-1 Ins + LU OR Ins + LUUNNIIT)(*1 VFIN);
+ADD (@PRED) TARGET Inf OR InfNeg IF (-1 Ins + LU OR Ins + LUUNNIIT)(*-1 VFIN);
 ADD (@PRED) TARGET Inf OR InfNeg IF (0 LU OR LUUNNIIT)(*1 VFIN);
 ADD (@PRED) TARGET Inf OR InfNeg IF (0 LU OR LUUNNIIT)(*-1 VFIN);
 	## Trond atuarpoq allallunilu.
@@ -1206,7 +1213,7 @@ MAP (@SUBJ>) TARGET (Abs Pl) IF (*-1 BOS BARRIER N)(NEGATE 0 TIME)(1 INTRANSVERB
 
 MAP (@ADVL>) TARGET (Part NOT KONJUNKTION); #Rettet til ikke at medtage konjunktioner og MAP -> ADD
 
-MAP (@INTERJ) TARGET Interj ;
+MAP (@INTERJ) TARGET Interj (NEGATE *0 V) ;
 
 MAP (@PROP>) TARGET Prop IF (1 Prop);
 
@@ -1235,6 +1242,7 @@ MAP (@X) TARGET WORD ;
 
 # De allertidligste disambigueringsregler
 #Hoejfrekvente kombinationer
+SELECT Num + 3PlPoss IF (-1 MAANED); #NB Possessum skal vaere plur. da konsekvent underforstaaet 'ulloq' MAANED (ulluisa) Num
 SELECT ("kalaaleq") + Rel + Pl IF (1 ("oqaaseq") OR ("nuna"));
 SELECT ("oqaaseq") + 3PlPoss IF (-1 ("kalaaleq") + Rel + Pl);
 SELECT ("nuna") + Sg IF (-1 ("kalaaleq") + Rel + Pl);
@@ -1258,9 +1266,13 @@ REMOVE (Prop Attr) IF (NEGATE 1 Prop);
 SELECT 2SgPoss IF (*0 ("qujanaq"))(NEGATE -1 ("uanga"))(NEGATE *0 VFIN) ; #Kontekst, der maa sikres foer foelgende REMOVE
 #REMOVE Abs + 2SgPoss IF (NEGATE *0 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO) ; #Lene
 REMOVE Abs + 2SgPoss IF (NEGATE *1 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO BARRIER V)(NEGATE -*1 TRANSVERB + 3SgO BARRIER (",") OR V) ; #Lenes reformuleres igen
+REMOVE 3PlPoss IF (NEGATE -1 Rel + Pl) ;
+REMOVE 3SgPoss IF (NEGATE -1 Rel + Sg) ;
 
 REMOVE Via + 1SgPoss IF (NEGATE -1 ("ua"))(NEGATE *0 V + 1Sg) ;
 REMOVE Via + 2SgPoss IF (NEGATE -1 ("illit"))(NEGATE *0 V + 2Sg) ;
+REMOVE Trm + 1SgPoss IF (NEGATE -1 ("ua"))(NEGATE *0 V + 1Sg) ;
+REMOVE Trm + 2SgPoss IF (NEGATE -1 ("illit"))(NEGATE *0 V + 2Sg) ;
 REMOVE Abs + Sg + 4SgPoss IF (NEGATE -*1 3SgO CBARRIER Abs + Sg) ; # Lene
 REMOVE Abs + Pl + 4SgPoss IF (NEGATE -*1 3PlO CBARRIER Abs + Pl) ; # Lene
 
@@ -1288,6 +1300,7 @@ SELECT Abs + Sg IF (*1C INTRANSVERB + 3Sg BARRIER Inf + 3SgO) ;
 SELECT N + NIQAR + NIQ + Sg; #Passivt verbalnomen i pluralis er sjaeldent
 SELECT N + NIQAR + TUQ + Sg; #Passivt verbalnomen i pluralis er sjaeldent
 SELECT Ins + LU IF (-1 VFIN)(1 Inf OR InfNeg) ;
+REMOVE Aeq + Pl IF (0 Aeq + Sg)(NEGATE 0 POSSESSUM) ;
 
 #Pronominer
 SELECT Pron + Pl IF (1C N + Pl) ;
@@ -1696,7 +1709,7 @@ SELECT COMMONAFFSTRING ;
 # Alle andre regler er prøvet før disse
 
 SECTION
- 
+REMOVE Abs + 2SgPoss IF (NEGATE *0 ("illit") LINK 0 Abs + Pl) ;
 SELECT (@CL-<CIT) IF (*-1 ORATIOOBLVERB BARRIER V-NOT-Par) ;
 SELECT (@CL-CIT>) IF (*1 ORATIOOBLVERB BARRIER V-NOT-Par) ;
 REMOVE (@X) ; # (fjerner alle doble.)
