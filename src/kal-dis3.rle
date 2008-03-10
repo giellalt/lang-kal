@@ -884,6 +884,7 @@ SET VERBNOT3PLSUBJ = V - 3PLSUBJVERB ;
 SET 12SUBJVERB = (V 1Sg) | (V 1Du) | (V 1Pl) | (V 2Sg) | (V 2Du) | (V 2Pl) ;
 #SET NONIMPVERB = (V Ind) | (V Cau) | (V Int) | (V Par) | (V Ite) | (V Inf) | (V InfNeg) | (V Opt) | (V Con) | (V Vok) ;
 SET V-NOT-Par = V - Par ;
+SET VERB-NOTINF = V - Inf - InfNeg ;
 
 # Forståelsesspørgsmål LIST vs. SET. Hvorfor ikke LIST en definition som fx 3SGSUBJVERB og bagefter SET?
 # Svar det ser ut til at det må vere LIST når det kan vere LIST.
@@ -1088,7 +1089,8 @@ MAP (@PRED) TARGET VFIN ; #Et finit verbum er altid prædikat
 MAP (@PRED) TARGET Inf + LU OR InfNeg + LU IF (1 VFIN) ;
 
 # Partikler
-MAP (@FOC) TARGET FOKUSPART + (Part) IF (NEGATE *0 V) ; 
+MAP (@FOC) TARGET FOKUSPART + (Part) IF (NEGATE *0 V) ;
+MAP (@CONJ) TARGET ("tassa") + Part IF (-*1 V OR vn)(*1 V OR vn OR Prop OR ("\:")) ; #"tassa" brugt foer forklarende hovedsaetning eller i consekutiv bisaetning
 MAP (@i-ADVL>) TARGET (Part) IF (1 N + @<SUBJ) ;
 MAP:AddPartConjAbs (@CONJ) TARGET Part IF (-1 Abs)(*1 Abs BARRIER VFIN) ;
 MAP:AddPartConjRel (@CONJ) TARGET Part IF (-1 Rel)(*1 Rel BARRIER VFIN) ;
@@ -1096,7 +1098,7 @@ MAP:Nexusadverbial (@CL-ADVL>) TARGET Part IF (-1 BOS)(NEGATE 0 KONJUNKTION) ;
 
 # Nominer - De sikre MAP regler
 MAP (@<SUBJ) TARGET (Abs) IF (*-1 @FOC BARRIER (V));
-MAP (@HNOUN) TARGET APPELLATIV + (Abs) OR Prop + (Abs) IF (NOT -*1 V)(NOT *1 V) ;
+MAP (@HNOUN) TARGET APPELLATIV + (Abs) OR Prop + (Abs) IF (NEGATE *0 VERB-NOTINF)(NEGATE 1 TRANSVERB + Inf OR TRANSVERB + InfNeg);
 MAP (@i-ADVL>) TARGET Trm IF (1 N + (vn)) ;
 MAP (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (1 TRANSVERB + 3SgO) ; 
 MAP (@OBJ>) TARGET APPELLATIV + Abs + Pl IF (1 TRANSVERB + 3PlO) ; 
@@ -1135,7 +1137,7 @@ MAP (@i->N) TARGET (Ins) IF (*1 QAR OR LIK) ; # "tit" skal præciseres eller red
 
 ADD (@SUBJ>) TARGET APPELLATIV + (Abs) OR Prop + (Abs) IF (*1 INTRANSVERB)(NEGATE *1 TRANSVERB)(NEGATE -1 ("\(")) ; 
 ADD (@OBJ>) TARGET APPELLATIV + (Abs) OR Prop + (Abs) IF (*1 TRANSVERB) ; 
-ADD (@<OBJ) TARGET APPELLATIV + (Abs) OR Prop + (Abs) OR (Adj Abs) IF (-*1 TRANSVERB BARRIER Inf);#(NEGATE -1 ("\(")) ;
+ADD (@<OBJ) TARGET APPELLATIV + (Abs) OR Prop + (Abs) OR (Adj Abs) IF (-*1 TRANSVERB - Inf BARRIER Inf);
 #ADD (@CL-ADVL>) TARGET APPELLATIV + (Abs) IF (-1 BOS)(NOT 0 POSSESSUM) ; #?? Lyder som en fejl. Jf. MAP:Nexusadverbial
 
 #Appellativer og proprier i relativ kasus kan være element af syntagmerne subjekt og possessor 
@@ -1252,7 +1254,7 @@ SELECT ("taamaakkaluartoq") IF (-1 BOS) ; #Har vaeret checket for modeksempler, 
 #Partikler
 SELECT KONJUNKTION IF (-1 BOS);
 SELECT Part IF (-1 BOS OR (","))(*1C VFIN) ;
-
+#MAP (@CONJ) TARGET ("tassa") + Part IF (-*1 V)(*1 V) ; Skal sådan noget skrives ind??
 #Nominer med tilhængspartikler
 REMOVE Prop + MI + Abs IF (*0 Abs) ;
 REMOVE Abs + MI + Sg IF (1 INTRANSVERB + 3Pl); #"kingulleq" N Abs Sg MI @SUBJ> "isuma" QATIGIIP vv V Ind 3Pl @PRED
@@ -1369,7 +1371,7 @@ SELECT (N* 3Sg IP) IF (-1 (Rel Sg)) ; #Virker ikke 18.1. sen aften
 
 #SELECT @POSSESSUM IF (-1 Rel Sg) (0 3Sg); 
 #SELECT SPATIAL + Sg IF (0 POSSESSUM) ;
-SELECT @HNOUN IF (NOT -*1 V)(NOT *1 V) ;
+SELECT @HNOUN IF (NEGATE *0 V - Inf OR V - InfNeg) ;
 
 REMOVE @<ARG IF (NEGATE *-1 V)(NEGATE *-1 (@FOC)) ;
 REMOVE @ALL-ARG> IF (NEGATE *1 V) ; # Ikke @ARG> fordi ingen V t.h.
