@@ -938,7 +938,7 @@ LIST TRMVERB = "iser" ;
 
 SET MOVE-VERB = LOKVERB | ABLVERB | TRMVERB ;
 
-LIST ORATIOOBLVERB = "ilisimatitsissut" "isuma" "nalu" "oqar" "qular"  "qularnar" "taku" "neriup" ;
+LIST ORATIOOBLVERB = "ilisimatitsissut" "isuma" "naatsorsor" "nalu" "nalunaar" "neriup" "oqar" "qular" "qularnar" "paasi" "siunnersor" "taku"  ;
 
 LIST VEXCLAM = "sunaaffa" "uffa" "aali" "naak" ;
 
@@ -1014,6 +1014,7 @@ LIST @i-<ADVL = @i-<ADVL ;	 # adverbial der står til inkorporeret verbal t.v.
 LIST @INTERJ = @INTERJ ;	 # interjektion
 LIST @PROP> = @PROP> ;		 # proprium til venstre i propriumskede
 LIST @HNOUN = @HNOUN ;		 # løst nomen uden predikat
+LIST @HEADLINE = @HEADLINE ;	# loes partikel eller verbum i overskrifter
 LIST @>N = @>N ;		     # prenominalt adled (slagter Hansen)
 LIST @N< = @N< ;	    	 # postnominalt adled
 LIST @i->N = @i->N ;		 # adled der står til inkorporeret nominal t.h.
@@ -1026,7 +1027,7 @@ LIST @TEST = @TEST ;
 LIST @CL->N = @CL->N ;       # Relativsætning stående til nominal til højre
 LIST @INF->N = @INF->N ;	# tag forbeholdt de saerlige adnominale transitive infinitiver uden objekt (ilitsoqqussaralugu oqaatsit)
 LIST @PARATAKSE_INF->N = @PARATAKSE_INF->N ; # Placeholder for infinitiv i paratakse med substantiv. Skal udskiftes i allersidste section
-
+LIST @PRED2 = @PRED2 ; # saettes paa verbet i en bunden ledsaetning
 SET TAGGED = @PRED OR @SUBJ> OR @<SUBJ OR @OBJ> OR @<OBJ OR @ADVL> OR @<ADVL OR @CL-ADVL> OR @CL-<ADVL OR @CL-CIT> OR @CL-<CIT OR @i-SUBJ> OR @i-<SUBJ 
 OR @i-OBJ> OR @i-<OBJ OR @i-ADVL> OR @i-<ADVL OR @INTERJ OR @PROP> OR @HNOUN OR @>N OR @N< OR @i->N OR @i-N< OR @POSS OR @>V ;
 
@@ -1101,10 +1102,12 @@ MAPPINGS
 MAP (@PRED) TARGET VFIN ; #Et finit verbum er altid prædikat
 MAP (@PRED) TARGET Inf + LU OR InfNeg + LU IF (1 VFIN) ;
 MAP (@PRED) TARGET Inf + LU OR InfNeg + LU IF (-1 VFIN) ;
-
+MAP (@PRED2) TARGET INTRANSVERB + Par + 3Pl IF (*-1 Abs + Pl)(NEGATE *0 ORATIOOBLVERB BARRIER VFIN)(1 Abs OR ("\,")); #koncessive saetninger uden konjunktion
 # Partikler
 #Konjunktioner er konjunktioner, når de indleder en sætning, ellers er de adverbier
 MAP (@CONJ) TARGET KONJUNKTION IF (-1 BOS) ; #Flyttet fra 1168 forebygge konflikt med @ADVL>
+MAP (@<CL-ADVL) TARGET KONJUNKTION IF (1 EOS)(NEGATE -1 BOS) ; #Sidste betingelse for at undgaa at tagge isolerede konjunktioner
+MAP (@HEADLINE) TARGET KONJUNKTION IF (1 EOS)(-1 BOS) ; #Sidste betingelse for at undgaa at tagge isolerede konjunktioner
 MAP (@FOC) TARGET FOKUSPART + (Part) IF (NEGATE *0 V) ;
 MAP (@CONJ) TARGET ("tassa") + Part IF (-*1 V OR vn)(*1 V OR vn OR Prop OR ("\:")) ; #"tassa" brugt foer forklarende hovedsaetning eller i consekutiv bisaetning
 MAP (@i-ADVL>) TARGET (Part) IF (1 N + @<SUBJ) ;
@@ -1161,7 +1164,9 @@ ADD (@SUBJ>) TARGET APPELLATIV + (Rel) OR Prop + (Rel) IF (*1 TRANSVERB) ; #Husk
 ADD (@<SUBJ) TARGET APPELLATIV + (Rel) OR Prop + (Rel) OR (Adj) IF (-*1 TRANSVERB + VERB-NOTINF BARRIER ("\,")) ;
 
 #Nomen i oblik kasus kan være adverbalt adled
-ADD (@ADVL>) TARGET (Lok) OR (Trm) OR (Abl) OR (Via) OR (Aeq) OR (Ins) IF (*1 (V)) ;
+#ADD (@ADVL>) TARGET (Lok) OR (Trm) OR (Abl) OR (Via) OR (Aeq) OR (Ins) IF (*1 V OR vn) ;#OR vn tilfoejet 0312
+MAP (@ADVL>) TARGET (Lok) OR (Trm) OR (Abl) OR (Via) OR (Aeq) OR (Ins) IF (*1 vn OR V)(NEGATE *1 QAR OR LIK) ;#OR vn tilfoejet 0312
+
 ADD (@<ADVL) TARGET (Lok) OR (Trm) OR (Abl) OR (Via) OR (Aeq) OR (Ins) IF (-*1 V BARRIER ("\,"))(NEGATE -1 ("\(")) ;
 MAP (@<ADVL) TARGET N IF (-1 ("\("))(1 ("\)"))(-2 @<ADVL) ; #Parantetiske indskud samme led som foregående ord
 
@@ -1217,7 +1222,7 @@ ADD (@PRED) TARGET Inf OR InfNeg IF (0 LU OR LUUNNIIT)(*-1 VFIN);
 	
 #MAP (@CL-CIT>) TARGET Par + INTRANSVERB OR Inf + INTRANSVERB OR InfNeg + INTRANSVERB IF (*1 ORATIOOBLVERB)(-*1 Abs);# BARRIER ("aamma")) ;
 #funker ikke ved "naalakkersor" HTR V Par 3Sg @CL-CIT> MAP:1176 / "Helge" N Prop Attr SELECT:1260 @PROP> MAP:1199
-MAP (@CL-CIT>) TARGET Par + INTRANSVERB + 3Sg OR Inf + INTRANSVERB + 4Sg OR InfNeg + INTRANSVERB + 4Sg OR Cau + INTRANSVERB + 3Sg IF (*1 ORATIOOBLVERB)(-*1 Abs + Sg)(NEGATE 1 Prop + Abs OR Prop + Attr);
+MAP (@CL-CIT>) TARGET Par + INTRANSVERB + 3Sg OR Inf + INTRANSVERB + 4Sg OR InfNeg + INTRANSVERB + 4Sg OR Cau + INTRANSVERB + 3Sg IF (*1 ORATIOOBLVERB)(-*1 Abs + Sg);#(NEGATE 1 Prop + Abs OR Prop + Attr);#forstaar ikke Prop begraensningerne 12.03
 MAP (@CL-<CIT) TARGET Par + INTRANSVERB + 3Sg OR Inf + INTRANSVERB + 4Sg OR InfNeg + INTRANSVERB + 4Sg OR Cau + INTRANSVERB + 3Sg IF (-*1 ORATIOOBLVERB)(-*1 Abs + Sg)(NEGATE 1 Prop + Abs OR Prop + Attr);
 MAP (@CL-<CIT) TARGET Inf + TRANSVERB + 1Pl OR InfNeg + TRANSVERB + 1Pl IF (-*1 ORATIOOBLVERB BARRIER ("\,"));
 
@@ -1274,6 +1279,26 @@ SELECT ("oqaaseq") + 3PlPoss IF (-1 ("kalaaleq") + Rel + Pl);
 SELECT ("nuna") + Sg IF (-1 ("kalaaleq") + Rel + Pl);
 SELECT ("taamaattoq") + LI IF (-1 BOS) ; #Har vaeret checket for modeksempler, men hidtil ingen fundet. Pas paa!
 SELECT ("taamaakkaluartoq") IF (-1 BOS) ; #Har vaeret checket for modeksempler, men hidtil ingen fundet. Pas paa!
+
+# Isolering af ledsaetninger - non-coref. 
+REMOVE Par IF (-1 Trm)(1 Prop);
+REMOVE INTRANSVERB + Par + 3Sg IF (0 Abs + Sg)(1 Inf + 3SgO);# OR InfNeg +3SgO);
+REMOVE Par + 3Pl IF (1 Rel + Pl)(2 Rel + Pl)(3 Ins)(4 Rel + Pl)(5 Lok + 3PlPoss) ;
+REMOVE Par + 3Pl IF (1 Rel + Pl)(2 Ins)(3 Rel + Pl)(4 Lok + 3PlPoss) ;
+REMOVE Par + 4Sg IF (-1 Rel + Pl)(0 3PlPoss + NIQ);
+REMOVE Par IF (NEGATE *0 ORATIOOBLVERB)(NEGATE 0 ("assartor")); #Totalt ad hoc jf. 1296
+
+
+SELECT INTRANSVERB + Par + 3Pl IF (*-1 Abs + Pl)(NEGATE *0 ORATIOOBLVERB BARRIER VFIN)(1 Abs OR ("\,")); #koncession og temporal uden konjunktion fulgt af subjekt
+SELECT Par + INTRANSVERB + 3Sg IF (*1 ORATIOOBLVERB + V)(*-1 Abs + Sg)(NEGATE 0 LU LINK -1 Abs + Sg); 
+SELECT Par + INTRANSVERB + 3Sg IF (*-1 ORATIOOBLVERB + V)(*-1 Abs + Sg)(NEGATE 0 LU LINK -1 Abs + Sg); 
+SELECT INTRANSVERB + Par + 3Pl IF (*-1 ORATIOOBLVERB)(-*1 Abs + Pl BARRIER VFIN)(-*1 LU);
+SELECT INTRANSVERB + Par + 3Pl IF (*1 ORATIOOBLVERB)(-*1 Abs + Pl BARRIER VFIN);
+
+SELECT Par + ("assartor") + NIQAR IF (NEGATE *1 VFIN); #Totalt ad hoc. Ikke or. obl., snarere noget 'medens' eller 'skønt'. Skal undersøges bedre
+
+
+SECTION #Skal kun bruges til at isolere Par - reglerne
 
 #Partikler
 SELECT KONJUNKTION IF (-1 BOS);
@@ -1344,6 +1369,7 @@ SELECT Inf + 4Sg IF (*1 VFIN + 3Sg) ;
 SELECT Inf + 4Pl IF (*1 VFIN + 3Pl) ;
 SELECT InfNeg + 4Sg IF (*1 VFIN + 3Sg) ;
 SELECT InfNeg + 4Pl IF (*1 VFIN + 3Pl) ;
+
 
 SECTION #dette er kun til testbrug
 # Verbernes SELECT og REMOVE
@@ -1730,9 +1756,11 @@ SELECT ("illu") ; # "illu" mere sandsynlig end "illoq"
 SELECT ("aamma") ; # "aamma" mere sandsynlig end "aak"+Rel
 SELECT ("ataata") ; # mere sandsynlig end "ataataq"
 SELECT ("qaliaq") ; # ad hoc for at forebygge 'hårbåndet' qaleq
+REMOVE ("pi") + nv IF (0 ("pi") + vv); # vaelger pi+LIR=TIP frem for pi+LIR+TIP
 SELECT ("pi") + nn ; # ad hoc for at disambiguere pi+nn fra pi+vn
 SELECT ("allor") IF (NEGATE *0 @ALLSUBJ + ("seqineq")) ; # alluppoq vistnok kun med subjekt "seqineq"
-
+REMOVE IR + nv IF (0 V + vv) ;
+REMOVE U + nv IF (0 V + vv) ;
 SELECT COMMONAFFSTRING ;
 
 
