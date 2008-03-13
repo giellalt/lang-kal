@@ -938,7 +938,7 @@ LIST TRMVERB = "iser" ;
 
 SET MOVE-VERB = LOKVERB | ABLVERB | TRMVERB ;
 
-LIST ORATIOOBLVERB = "ilisimatitsissut" "isuma" "naatsorsor" "nalu" "nalunaar" "neriup" "oqar" "qular" "qularnar" "paasi" "siunnersor" "taku"  ;
+LIST ORATIOOBLVERB = "ilisimatitsissut" "isuma" "naatsorsor" "nalu" "nalunaar" "nalunaarut" "neriup" "oqar" "qular" "qularnar" "paasi" "siunnersor" "taku"  ;
 
 LIST VEXCLAM = "sunaaffa" "uffa" "aali" "naak" ;
 
@@ -947,6 +947,7 @@ LIST animalverb = "qilup" "pangalip" ; #forudsætter subjekt ANIMAL
 SET HUMVERB = humverb OR ORATIOOBLVERB ; # alle verb  der vil ha humane subj
 
 LIST PSEUDO-HTR = "neri" ;
+LIST TEMPUSVERB = "qaanger" ;
 
 # Nominernes leksikalske klasser
 # =============================
@@ -966,7 +967,7 @@ LIST DRINKABLE = "kaffi" ;
 SET THING = EDIBLE | DRINKABLE ;
 LIST INSTRUMENT = "alussaat" ;
 
-LIST TIME = "sapaat" ;
+LIST TIME = "sapaat" "qeqqa" ;
 LIST NUMHOVED = "krone" "milliardi" "million" "dollari" ;
 LIST COMPOUND_N = "Windows" "Linux" "program" ;
 
@@ -1280,22 +1281,47 @@ SELECT ("nuna") + Sg IF (-1 ("kalaaleq") + Rel + Pl);
 SELECT ("taamaattoq") + LI IF (-1 BOS) ; #Har vaeret checket for modeksempler, men hidtil ingen fundet. Pas paa!
 SELECT ("taamaakkaluartoq") IF (-1 BOS) ; #Har vaeret checket for modeksempler, men hidtil ingen fundet. Pas paa!
 
-# Isolering af ledsaetninger - non-coref. 
+# Isolering af ledsaetninger - non-coref.
+SELECT Par IF (0 TEMPUSVERB)(-1 TIME); #Egentlig tidsbisætning
+SELECT:KoncesPost Par + NIQAR IF (*-1 TRANSVERB + VFIN)(1 EOS); #koncessiv uden konjunktion og efterstillet
+#RAL-ip assartorsimavai, siorna taamaalinerani 389.000 kubikmeterit assartorneqarsimasut
+SELECT Par + 3Sg IF (-*1 N + Sg)(NEGATE *0 VFIN) ; #Participium i overskrifter
+#SELECT Par + 3Pl IF (-*1 N + Sg)(NEGATE *0 VFIN) ; #Participium i overskrifter. Opgivet da ikke hit på Qilerutip kipinissaanut piareersimasut
+SELECT Par + 3Pl IF (NEGATE *0 VFIN) ; #Participium i overskrifter
+SELECT:KoncesSg INTRANSVERB + Par + 3Sg IF (@1 Abs + Sg )(*1 VFIN)(*1 Abs OR Rel)(NEGATE *-1 ("\,")); #Bisætning uden konjunktion
+#SELECT:KoncesPl INTRANSVERB + Par + 3Pl IF (@1 Abs + Pl)(*1 VFIN)(*1 Abs OR Rel)(NEGATE *-1 3PlPoss)(NEGATE 1 LU)(NEGATE -1 BOS); #Bisætning uden konjunktion
+#rettet da hit på aalakoortut i 'angutit aalakoortut ooqattaasarsimanerat'
+
+SELECT:KoncesPl INTRANSVERB + Par + 3Pl IF (@1 Abs + Pl)(*1 VFIN - ORATIOOBLVERB)(*1 Abs OR Rel)(NEGATE *-1 3PlPoss)(NEGATE 1 LU)(NEGATE -1 BOS OR Con OR Cau)(NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER N + Rel + Pl) ; #Bisætning uden konjunktion
+#SELECT:KoncesPl INTRANSVERB + Par + 3Pl IF (@1 Abs + Pl)(*1 VFIN - ORATIOOBLVERB)(*1 Abs OR Rel)(NEGATE *-1 3PlPoss)(NEGATE 1 LU)(NEGATE -1 BOS)(NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER N + Rel + Pl) ; #Bisætning uden konjunktion. Hitter innuttaasut i '@CON innuttaasut nunani ineriartortitani inuuniarnermi atugassarititaasut qaffaseqataannik inuuneqalernissartik naatsorsuutigisariaqassavaat .. ANFØRENDE SÆTNING' 
+
+
+
 REMOVE Par IF (-1 Trm)(1 Prop);
+#Bisætning med participium står ikke uden subjekt umiddelbart efter finit Cau og Con
+REMOVE INTRANSVERB + Par + 3Pl IF (-1 Con OR Cau LINK *-1 Abs) ;
+REMOVE INTRANSVERB + Par + 3Pl IF (NEGATE *0 ORATIOOBLVERB); 
+REMOVE INTRANSVERB + Par + 3Sg IF (NEGATE *0 ORATIOOBLVERB BARRIER ("\,"));
+REMOVE INTRANSVERB + Par + 3Pl IF (1 3PlPoss + Sg)(*1 TRANSVERB + 3SgO) ;
+REMOVE INTRANSVERB + Par + 3Pl IF (NEGATE *-1 Abs + Pl - 4SgPoss BARRIER V)(NEGATE *0 ORATIOOBLVERB)(NEGATE 1 VFIN); #Lokalis læst som possessum skaber problemer
+REMOVE INTRANSVERB + Par + 3Pl IF (1 Con)(2 TRANSVERB + 3Pl) ; #Det er subjektet
+REMOVE INTRANSVERB + Par + 3Sg IF (NEGATE *-1 Abs + Sg BARRIER V)(NEGATE *0 ORATIOOBLVERB)(NEGATE 1 VFIN) ;
 REMOVE INTRANSVERB + Par + 3Sg IF (0 Abs + Sg)(1 Inf + 3SgO);# OR InfNeg +3SgO);
 REMOVE Par + 3Pl IF (1 Rel + Pl)(2 Rel + Pl)(3 Ins)(4 Rel + Pl)(5 Lok + 3PlPoss) ;
 REMOVE Par + 3Pl IF (1 Rel + Pl)(2 Ins)(3 Rel + Pl)(4 Lok + 3PlPoss) ;
 REMOVE Par + 4Sg IF (-1 Rel + Pl)(0 3PlPoss + NIQ);
-REMOVE Par IF (NEGATE *0 ORATIOOBLVERB)(NEGATE 0 ("assartor")); #Totalt ad hoc jf. 1296
+REMOVE Par + 3Pl IF (-1 N + Pl)(1 VFIN + ORATIOOBLVERB)(*1 Par) ; #Forebygger hit på amerlanerussuteqartut i 'Qallunaat amerlanerussuteqartut isumaqarput or. obliqua*
 
+#SELECT INTRANSVERB + Par + 3Sg IF (*-1 Abs + Sg BARRIER VFIN OR Inf);
+#SELECT INTRANSVERB + Par + 3Pl IF (*-1 Abs + Pl)(NEGATE *0 ORATIOOBLVERB BARRIER VFIN)(1 Abs OR ("\,")); #koncession og #temporal uden konjunktion fulgt af subjekt
 
-SELECT INTRANSVERB + Par + 3Pl IF (*-1 Abs + Pl)(NEGATE *0 ORATIOOBLVERB BARRIER VFIN)(1 Abs OR ("\,")); #koncession og temporal uden konjunktion fulgt af subjekt
 SELECT Par + INTRANSVERB + 3Sg IF (*1 ORATIOOBLVERB + V)(*-1 Abs + Sg)(NEGATE 0 LU LINK -1 Abs + Sg); 
 SELECT Par + INTRANSVERB + 3Sg IF (*-1 ORATIOOBLVERB + V)(*-1 Abs + Sg)(NEGATE 0 LU LINK -1 Abs + Sg); 
 SELECT INTRANSVERB + Par + 3Pl IF (*-1 ORATIOOBLVERB)(-*1 Abs + Pl BARRIER VFIN)(-*1 LU);
-SELECT INTRANSVERB + Par + 3Pl IF (*1 ORATIOOBLVERB)(-*1 Abs + Pl BARRIER VFIN);
+SELECT INTRANSVERB + Par + 3Pl IF (*-1 ORATIOOBLVERB)(-*1 Abs + Pl BARRIER VFIN)(1 LU);
 
-SELECT Par + ("assartor") + NIQAR IF (NEGATE *1 VFIN); #Totalt ad hoc. Ikke or. obl., snarere noget 'medens' eller 'skønt'. Skal undersøges bedre
+SELECT INTRANSVERB + Par + 3Pl IF (*-1 ORATIOOBLVERB)(-*1 Abs + Pl BARRIER VFIN)(1 EOS);
+SELECT INTRANSVERB + Par + 3Pl IF (*1 ORATIOOBLVERB)(-*1 Abs + Pl BARRIER VFIN);
 
 
 SECTION #Skal kun bruges til at isolere Par - reglerne
