@@ -1122,11 +1122,14 @@ MAP:Nexusadverbial (@CL-ADVL>) TARGET Part IF (-1 BOS)(NEGATE 0 KONJUNKTION) ;
 MAP (@<SUBJ) TARGET (Abs) IF (*-1 @FOC BARRIER (V));
 MAP (@HNOUN) TARGET APPELLATIV + (Abs) OR Prop + (Abs) IF (NEGATE *0 VERB-NOTINF)(NEGATE 1 TRANSVERB + Inf OR TRANSVERB + InfNeg);
 MAP (@i-ADVL>) TARGET Trm IF (1 N + (vn)) ;
+MAP:SgObjGE (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (*1 Rel)(*1 TRANSVERB + GE + 3SgO BARRIER VERB-NOTINF) ; 
 MAP:SgObj (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (1 TRANSVERB + 3SgO) ; 
 MAP (@OBJ>) TARGET APPELLATIV + Abs + Pl IF (1 TRANSVERB + 3PlO) ; 
 MAP (@POSS) TARGET POSS_ABBR IF (1 POSSESSUM3); #sap. akunnera
 MAP (@<N) TARGET Trm IF (-1 ("qujanaq"))(NEGATE *1 V) ;
 MAP (@<N) TARGET Trm IF (-1C Trm)(NEGATE *1 V) ;
+#At adskille Inf's objekt fra V's subjekt
+MAP (@OBJ>) TARGET Abs + Sg IF (1 Abs + Sg)(2 Inf + 3SgO OR InfNeg + 3SgO);
 
 # Partikler anden runde
 MAP (@i-ADVL>) TARGET (Part) IF (1 N + @<SUBJ) ;
@@ -1224,13 +1227,16 @@ ADD (@PRED) TARGET Inf OR InfNeg IF (-1 Ins + LU OR Ins + LUUNNIIT)(*-1 VFIN);
 ADD (@PRED) TARGET Inf OR InfNeg IF (0 LU OR LUUNNIIT)(*1 VFIN);
 ADD (@PRED) TARGET Inf OR InfNeg IF (0 LU OR LUUNNIIT)(*-1 VFIN);
 	## Trond atuarpoq allallunilu.
-	
+MAP (@CL-CIT>) TARGET Par + TRANSVERB IF (*1 ORATIOOBLVERB);	
 #MAP (@CL-CIT>) TARGET Par + INTRANSVERB OR Inf + INTRANSVERB OR InfNeg + INTRANSVERB IF (*1 ORATIOOBLVERB)(-*1 Abs);# BARRIER ("aamma")) ;
 #funker ikke ved "naalakkersor" HTR V Par 3Sg @CL-CIT> MAP:1176 / "Helge" N Prop Attr SELECT:1260 @PROP> MAP:1199
 MAP (@CL-CIT>) TARGET Par + INTRANSVERB + 3Sg OR Inf + INTRANSVERB + 4Sg OR InfNeg + INTRANSVERB + 4Sg OR Cau + INTRANSVERB + 3Sg IF (*1 ORATIOOBLVERB)(-*1 Abs + Sg);#(NEGATE 1 Prop + Abs OR Prop + Attr);#forstaar ikke Prop begraensningerne 12.03
 MAP (@CL-<CIT) TARGET Par + INTRANSVERB + 3Sg OR Inf + INTRANSVERB + 4Sg OR InfNeg + INTRANSVERB + 4Sg OR Cau + INTRANSVERB + 3Sg IF (-*1 ORATIOOBLVERB)(-*1 Abs + Sg)(NEGATE 1 Prop + Abs OR Prop + Attr);
 MAP (@CL-<CIT) TARGET Inf + TRANSVERB + 1Pl OR InfNeg + TRANSVERB + 1Pl IF (-*1 ORATIOOBLVERB BARRIER ("\,"));
 
+#Parataktisk oratio obliqua kan (sjaeldent??) vaere efterstillet som i 
+#' ... Ilisimatusarfiup pigilissagaa ministerit ... isumaqatigiipput, ... sunniutai maluginiarneqassasut.
+MAP (@CL-<CIT) TARGET Par + INTRANSVERB + 3Pl IF (*-1 ORATIOOBLVERB)(*-1 ("\,"))(*-1 Abs + Pl BARRIER ("\,")); 
 MAP (@i-SUBJ>) TARGET Trm IF (*1 DOTR);
 MAP (@i-OBJ>)  TARGET Trm IF (*1 DOTR)(NEGATE 0 TIME);
 
@@ -1370,7 +1376,7 @@ REMOVE (Prop Attr) IF (NEGATE 1 Prop);
 #Overfloedige possessumformer
 SELECT 2SgPoss IF (*0 ("qujanaq"))(NEGATE -1 ("uanga"))(NEGATE *0 VFIN) ; #Kontekst, der maa sikres foer foelgende REMOVE
 #REMOVE Abs + 2SgPoss IF (NEGATE *0 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO) ; #Lene
-REMOVE Abs + 2SgPoss IF (NEGATE *1 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO BARRIER V)(NEGATE -*1 TRANSVERB + 3SgO BARRIER (",") OR V) ; #Lenes reformuleres igen
+REMOVE Abs + 2SgPoss IF (NEGATE *1 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO BARRIER V OR ("\,"))(NEGATE -*1 TRANSVERB + 3SgO BARRIER (",") OR V) ; #Lenes reformuleres igen
 REMOVE 3PlPoss IF (NEGATE -1 Rel + Pl) ;
 REMOVE 3SgPoss IF (NEGATE -1 Rel + Sg) ;
 
@@ -1396,7 +1402,7 @@ SELECT Ins + LU IF (-1C Ins) ;
 SELECT Aeq + Pl IF (-1C Aeq + Pl);
 SELECT Aeq + Pl IF (1C Aeq + Pl);
 SELECT Abs + LU + Pl IF (-1C Abs + Pl);
-SELECT Abs + LU + Sg IF (-1C Abs + Sg);
+SELECT Abs + LU + Sg IF (-1C Abs + Sg)(NEGATE 0 Rel + Sg LINK 1 3SgPoss);
 
 
 #Nominer - andre disambigueringer
@@ -1652,7 +1658,7 @@ SELECT (Abs Sg) IF (0C (@SUBJ>))(*1C 3SGSUBJVERB);
 # NP-er
 # -----
 
-SELECT (Abs Sg) IF (-1 (Abs Sg))(0 LU);
+SELECT (Abs Sg) IF (-1 (Abs Sg))(0 LU)(NEGATE 0 Rel LINK 1 POSSESSUM3);
 	## Jaakup Juda qatanngutaalu.
 
 
@@ -1798,6 +1804,8 @@ REMOVE (Prop Ins) IF (0 N + @OBJ>)(*1 PSEUDO-HTR BARRIER V);
 REMOVE (@SUBJ> Adj 1Sg) IF (*1 @PRED + (3Sg)) ;
 
 SELECT APPELLATIV IF (0 ("Aleqa")) ;
+SELECT ("alla") IF (0 NNGUR + GIARTUR); #ringe sandsynlighed for 'allak' og 'allaq'
+SELECT ("nali") IF (0 AFFINGERET); #nali+LIR sandsynlig, nalik+LIR usandsynlig
 
 # ========================= #
 #     Final sektion         #
