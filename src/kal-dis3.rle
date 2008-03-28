@@ -1156,6 +1156,7 @@ MAP (@SUBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs IF (*1 INTRANSVERB + 3Sg
 
 # Ins er tit adled til inkorporet objekt
 MAP (@i->N) TARGET (Ins) IF (*1 QAR OR LIK) ; # "tit" skal præciseres eller reduceres til en ADD-regel
+MAP (@i-N<) TARGET (Ins) IF (*-1 QAR OR LIK)(NEGATE *1 QAR OR LIK) ; # "tit" skal præciseres eller reduceres til en ADD-regel
 
 # Nominer - ADD regler
 #Appellativer i absolut kasus kan være element af syntagmerne subjekt, objekt, tidsangivelse, overskriftsord 
@@ -1171,7 +1172,11 @@ ADD (@<SUBJ) TARGET APPELLATIV + (Rel) OR Prop + (Rel) OR (Adj) IF (-*1 TRANSVER
 
 #Nomen i oblik kasus kan være adverbalt adled
 #ADD (@ADVL>) TARGET (Lok) OR (Trm) OR (Abl) OR (Via) OR (Aeq) OR (Ins) IF (*1 V OR vn) ;#OR vn tilfoejet 0312
-MAP (@ADVL>) TARGET (Lok) OR (Trm) OR (Abl) OR (Via) OR (Aeq) OR (Ins) IF (*1 vn OR V)(NEGATE *1 QAR OR LIK) ;#OR vn tilfoejet 0312
+MAP (@ADVL>) TARGET Lok IF (-1 BOS) ; 
+MAP (@ADVL>) TARGET (Ins) IF (*1 vn OR V)(NEGATE *1 QAR OR LIK) ;#OR vn tilfoejet 0312
+MAP (@i-ADVL>) TARGET (Lok) OR (Abl) OR (Via) OR (Aeq) IF (*1 vn - NAR BARRIER V); #Kun Trm til vn med NAR
+MAP (@i-ADVL>) TARGET (Trm) IF (*1 vn BARRIER V);
+MAP (@ADVL>) TARGET (Lok) OR (Trm) OR (Abl) OR (Via) OR (Aeq) IF (*1 V); #Foerst adled til vn og i-ADVL, derefter andre ADVL
 
 ADD (@<ADVL) TARGET (Lok) OR (Trm) OR (Abl) OR (Via) OR (Aeq) OR (Ins) IF (-*1 V BARRIER ("\,"))(NEGATE -1 ("\(")) ;
 MAP (@<ADVL) TARGET N IF (-1 ("\("))(1 ("\)"))(-2 @<ADVL) ; #Parantetiske indskud samme led som foregående ord
@@ -1273,7 +1278,15 @@ MAP (@>N) TARGET Ord IF (1 N) ;
 
 #De "normale" adverbale infinitiver
 MAP (@ADVL>) TARGET Inf + 4Pl OR InfNeg + 4Pl IF (*1 VFIN + 3Pl)(NEGATE *0 ORATIOOBLVERB) ; #EQIMMALLUTIK ippiup qaani narsartami toqqissumiipput.
-	
+
+#Alle kongruenserne
+MAP (@i-ADVL>) TARGET Trm IF (1 @i-ADVL> + Trm);
+MAP (@i-ADVL>) TARGET Via IF (1 @i-ADVL> + Via);
+MAP (@i-ADVL>) TARGET Lok IF (1 @i-ADVL> + Lok);
+MAP (@i-ADVL>) TARGET Aeq IF (1 @i-ADVL> + Aeq);
+MAP (@i-ADVL>) TARGET Abl IF (1 @i-ADVL> + Abl);
+MAP (@i-ADVL>) TARGET Ins IF (1 @i-ADVL> + Ins);
+
 	
 # Denne tag er for alle ord vi ikke har funktion til.
 
@@ -1296,7 +1309,7 @@ SELECT ("taamaakkaluartoq") IF (-1 BOS) ; #Har vaeret checket for modeksempler, 
 
 #Et par sikre
 SELECT 3PlPoss IF (-1 Rel + Pl)(NEGATE *1 TRANSVERB + 3Pl);#siulittaasuisa nuannarineqarnersaat.
-SELECT 3Pl IF (-1 Rel + Pl); #siulittaasuisa nuannarineqarnersaraat
+SELECT 3Pl IF (-1C Rel + Pl); #siulittaasuisa nuannarineqarnersaraat
 
 #Fjern de helt sikkert overflødige possessumformer, der kan interferere med Par-reglerne
 REMOVE Abs + Sg + 4SgPoss IF (NEGATE *1 3SgO OR Cau + 3Sg OR Con + 3Sg BARRIER VFIN);
@@ -1320,7 +1333,11 @@ SELECT:KoncesSg INTRANSVERB + Par + 3Sg IF (@1 Abs + Sg )(*1 VFIN)(*1 Abs OR Rel
 
 #SELECT:KoncesPl INTRANSVERB + Par + 3Pl IF (@1 Abs + Pl)(*1 VFIN)(*1 Abs OR Rel)(NEGATE *-1 3PlPoss)(NEGATE 1 LU)(NEGATE -1 BOS); #Bisætning uden konjunktion
 #rettet da hit på aalakoortut i 'angutit aalakoortut ooqattaasarsimanerat'
-SELECT:KoncesPl INTRANSVERB + Par + 3Pl IF (@1 Abs + Pl)(*1 VFIN - ORATIOOBLVERB)(*1 Abs OR Rel OR Pron)(NEGATE 1 LU)(NEGATE -1 BOS OR Con OR Cau)(NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER N + Rel + Pl) ; #uden (NEGATE *-1 3PlPoss)
+#SELECT:KoncesPl INTRANSVERB + Par + 3Pl IF (@1 Abs + Pl)(*1 VFIN - ORATIOOBLVERB)(*1 Abs OR Rel OR Pron)(NEGATE 1 LU)(NEGATE -1 BOS OR Con OR Cau)(NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER N + Rel + Pl) ; #uden (NEGATE *-1 3PlPoss)
+#Ogsaa rettet da hit på 'Illut qisuinnannguit ataaserlu .. qarmaqartoq tamarmik ALINNARTUUNNGIVISSUT .. toqqissumiipput'
+SELECT:KoncesPlPl INTRANSVERB + Par + 3Pl IF (@1 Abs + Pl)(NEGATE *0 ORATIOOBLVERB)(*1 Abs + Pl OR Pron + Pl LINK *1 VFIN + INTRANSVERB + 3Pl)(NEGATE 1 LU)(NEGATE -1 BOS OR Con OR Cau)(NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER N + Rel + Pl) ;
+SELECT:KoncesPlSg INTRANSVERB + Par + 3Pl IF (@1 Abs + Pl)(NEGATE *0 ORATIOOBLVERB)(*1 Abs + Sg OR Pron + Sg LINK *1 VFIN + INTRANSVERB + 3Sg)(NEGATE 1 LU)(NEGATE -1 BOS OR Con OR Cau)(NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER N + Rel + Pl) ;
+
 #En tidlig regel for ledsætninger med NIR. Kontekst 3 person for at forebygge hit på NIR + 4Sg (=NIQ+3.Poss+Lok)
 SELECT Par + NIR + 3Sg IF (*0 ORATIOOBLVERB)(NEGATE 0 ("nuap"));#Maa kunne adskille nuap+NIR fra nuanner
 SELECT Par + NIR + 3Pl IF (*0 ORATIOOBLVERB)(NEGATE 0 ("nuap"));
@@ -1390,6 +1407,8 @@ REMOVE 3SgPoss IF (NEGATE -1 Rel + Sg) ;
 
 REMOVE Via + 1SgPoss IF (NEGATE -1 ("ua"))(NEGATE *0 V + 1Sg) ;
 REMOVE Via + 2SgPoss IF (NEGATE -1 ("illit"))(NEGATE *0 V + 2Sg) ;
+REMOVE Ins + 1SgPoss IF (NEGATE -1 ("ua"))(NEGATE *0 V + 1Sg) ;
+REMOVE Ins + 2SgPoss IF (NEGATE -1 ("illit"))(NEGATE *0 V + 2Sg) ;
 REMOVE Trm + 1SgPoss IF (NEGATE -1 ("ua"))(NEGATE *0 V + 1Sg) ;
 REMOVE Trm + 2SgPoss IF (NEGATE -1 ("illit"))(NEGATE *0 V + 2Sg) ;
 REMOVE Abs + Sg + 4SgPoss IF (NEGATE -*1 3SgO CBARRIER Abs + Sg) ; # Lene
@@ -1649,7 +1668,7 @@ SELECT (Pron Abs 1Sg @SUBJ>) IF (*1 (V 1Sg));
 REMOVE @SUBJ> IF (0 N)(NEGATE 0 LU)(*1C 12SUBJVERB BARRIER V);
 REMOVE @SUBJ> IF (0 (Pron 3Sg))(*1C 12SUBJVERB BARRIER V);
 
-SELECT (Pl @OBJ>) IF (0 (Abs Pl))(*1 34PLOBJVERB);
+SELECT (Pl @OBJ>) IF (0 (Abs Pl))(*1 34PLOBJVERB)(-*1 Rel BARRIER 3PlPoss);
 SELECT (Pl @OBJ>) IF (0 (Abs Pl))(*-1 34PLOBJVERB);
 	## Aviisit atuarpavut.
 
@@ -1657,10 +1676,6 @@ SELECT (N Abs Sg) + @ALLOBJ> IF (*1 34SGOBJVERB BARRIER Sg +  @ALLOBJ>)(NEGATE *
 	#Pers aendring 0608
 
 SELECT (Par @PRED) IF (*1 34SGOBJVERB)(*1 ORATIOOBLVERB); #Pers tilfoejelse 2 0608
- #SELECT (Abs Sg @OBJ>) IF (*1 34SGOBJVERB BARRIER (Sg @OBJ>));
-SELECT (Abs Pl @OBJ>) IF (*1 34PLOBJVERB BARRIER (Pl @OBJ>));
-	## Kaalip qimmini toquppaa.
-
 
 
 SELECT (Abs Sg) IF (0C (@SUBJ>))(*1C 3SGSUBJVERB);
@@ -1771,7 +1786,7 @@ SELECT 3Pl IF (*-1 (LU @SUBJ>) LINK -1 (@SUBJ>))(0 (@PRED));
 SELECT 3SgO IF (*-1C (Sg @OBJ>)) ;
 	## Nukap Linillu illortik qalipappaat.
 
-SELECT 3PlO IF (*-1C (Pl @OBJ>)) ;
+SELECT 3PlO IF (*-1C (Pl @OBJ>))(*-1 @SUBJ>) ;
 
 
 
@@ -1838,6 +1853,13 @@ SELECT ("pi") + nn ; # ad hoc for at disambiguere pi+nn fra pi+vn
 SELECT ("allor") IF (NEGATE *0 @ALLSUBJ + ("seqineq")) ; # alluppoq vistnok kun med subjekt "seqineq"
 REMOVE IR + nv IF (0 V + vv) ;
 REMOVE U + nv IF (0 V + vv) ;
+SELECT ("toqqip") IF (0 Lok) ; #for at adskille 'toqqip' fra 'tup+QQIP'
+REMOVE ("alip") IF ( 0 ("alinnar")); #'alinnar' vs. 'alip+NAR'
+SELECT ("ila") + Pl IF (NEGATE -1**< ("ilaaq")); # 'toejlapper' sjaeldne medens partitiv hyppig 
+REMOVE U + NAR; #"eqqaq" U nv NAR vv for 'eqqaanar' vist en utaenkelig kombination
+REMOVE ("piner") IF (NEGATE *0 ("kamik"))
+REMOVE HTR + NAR; #naeppe en mulig kombination
+
 SELECT COMMONAFFSTRING ;
 
 
