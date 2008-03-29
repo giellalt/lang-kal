@@ -1831,36 +1831,53 @@ REMOVE @OBJ> IF (0 INSTRUMENT)(*1 PSEUDO-HTR BARRIER V);
 REMOVE (Prop Ins) IF (0 N + @OBJ>)(*1 PSEUDO-HTR BARRIER V);
 REMOVE (@SUBJ> Adj 1Sg) IF (*1 @PRED + (3Sg)) ;
 
-SELECT APPELLATIV IF (0 ("Aleqa")) ;
-SELECT ("alla") IF (0 NNGUR + GIARTUR); #ringe sandsynlighed for 'allak' og 'allaq'
-SELECT ("nali") IF (0 AFFINGERET); #nali+LIR sandsynlig, nalik+LIR usandsynlig
-
 # ========================= #
 #     Final sektion         #
 # ========================= #
          CONSTRAINTS        #
 # ========================= #
-# Foelgende har mest karakter af ad hoc og maa revideres
-SELECT AFFINGERET ; # Vælg den analyserede form fred for den leksikaliserede 
+
+# ======================================================================= #
+# Disambiguering af enkeltord, der ikke kan disambigueres paa anden maade #
+# ======================================================================= #
+
+# Generelle regler
+SELECT AFFINGERET ; # Vælg den analyserede form frem for den leksikaliserede 
+
+# Nomen eller nomen?
 SELECT ("illu") IF (0 (@HNOUN)); # "illoq" er usandsynlig i absolut form
 SELECT HUMAN IF (-*1 HUMVERB) ; # ikke "illu" før HUMVERB
 SELECT ("illu") ; # "illu" mere sandsynlig end "illoq"
-SELECT ("aamma") ; # "aamma" mere sandsynlig end "aak"+Rel
 SELECT ("ataata") ; # mere sandsynlig end "ataataq"
 SELECT ("qaliaq") ; # ad hoc for at forebygge 'hårbåndet' qaleq
-REMOVE ("pi") + nv IF (0 ("pi") + vv); # vaelger pi+LIR=TIP frem for pi+LIR+TIP
-SELECT ("pi") + nn ; # ad hoc for at disambiguere pi+nn fra pi+vn
+SELECT ("ila") + Pl IF (NEGATE -1**< ("ilaaq")); # 'toejlapper' sjaeldne medens partitiv hyppig
+SELECT ("alla") IF (0 NNGUR + GIARTUR); #ringe sandsynlighed for 'allak' og 'allaq'
+SELECT ("nali") IF (0 AFFINGERET); #nali+LIR sandsynlig, nalik+LIR usandsynlig
+
+# Nomen eller partikel?
+SELECT ("aamma") ; # "aamma" mere sandsynlig end "aak"+Rel
+
+# Verbum eller verbum?
 SELECT ("allor") IF (NEGATE *0 @ALLSUBJ + ("seqineq")) ; # alluppoq vistnok kun med subjekt "seqineq"
-REMOVE IR + nv IF (0 V + vv) ;
-REMOVE U + nv IF (0 V + vv) ;
 SELECT ("toqqip") IF (0 Lok) ; #for at adskille 'toqqip' fra 'tup+QQIP'
 REMOVE ("alip") IF ( 0 ("alinnar")); #'alinnar' vs. 'alip+NAR'
-SELECT ("ila") + Pl IF (NEGATE -1**< ("ilaaq")); # 'toejlapper' sjaeldne medens partitiv hyppig 
+REMOVE ("piner") IF (NEGATE *0 ("kamik"));
+REMOVE ("pi") + NIP IF (0 ("piniar")); #fjerner pi+NIP+UTE fra 'piniutit'
+
+# nv eller vv?
+REMOVE ("pi") + nv IF (0 ("pi") + vv); # vaelger pi+LIR=TIP frem for pi+LIR+TIP
+SELECT ("pi") + nn ; # ad hoc for at disambiguere pi+nn fra pi+vn
+
+# Enkelte derivativer
+REMOVE IR + nv IF (0 V + vv) ;
+REMOVE U + nv IF (0 V + vv) ;
 REMOVE U + NAR; #"eqqaq" U nv NAR vv for 'eqqaanar' vist en utaenkelig kombination
-REMOVE ("piner") IF (NEGATE *0 ("kamik"))
 REMOVE HTR + NAR; #naeppe en mulig kombination
 
-SELECT COMMONAFFSTRING ;
+# Appellativ eller proprium?
+SELECT APPELLATIV IF (0 ("Aleqa")) ;
+
+#SELECT COMMONAFFSTRING ; #Testet 29.3. Maa rettes, da fejl mere end 50%
 
 
  # Heuristiske regler:
@@ -1874,7 +1891,3 @@ REMOVE Abs + 2SgPoss IF (NEGATE *0 ("illit") LINK 0 Abs + Pl) ;
 SELECT (@CL-<CIT) IF (*-1 ORATIOOBLVERB BARRIER V-NOT-Par) ;
 SELECT (@CL-CIT>) IF (*1 ORATIOOBLVERB BARRIER V-NOT-Par) ;
 REMOVE (@X) ; # (fjerner alle doble.)
-
-#Indsættes i linie 1313
-#Forsøger at fjerne BARRIER Prop fra venstre kontekst
-#REMOVE Par IF (*-1 ("\,") BARRIER Prop)(*1 ("\,"))(NEGATE *0 VFIN BARRIER ("\,")); # Kommaafgrænset apposition til proprium
