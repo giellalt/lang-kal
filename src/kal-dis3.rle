@@ -1124,7 +1124,10 @@ MAP (@HNOUN) TARGET APPELLATIV + (Abs) OR Prop + (Abs) IF (NEGATE *0 VERB-NOTINF
 MAP (@i-ADVL>) TARGET Trm IF (1 N + (vn)) ;
 MAP:SgObjGE (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (*1 Rel)(*1 TRANSVERB + GE + 3SgO BARRIER VERB-NOTINF) ; 
 MAP:SgObj (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (1 TRANSVERB + 3SgO) ; 
-MAP (@OBJ>) TARGET APPELLATIV + Abs + Pl IF (1 TRANSVERB + 3PlO) ; 
+#MAP (@OBJ>) TARGET APPELLATIV + Abs + Pl IF (1 TRANSVERB + 3PlO) ; #Fejl: Hitter på 'Illut akornini AQQUSINEERANNGUIT nalunaaqaat'. Erstattes af foelgende to regler:
+MAP (@OBJ>) TARGET APPELLATIV + Abs + Pl IF (1 TRANSVERB + 3PlO + GE LINK -1 Rel) ; #foerst OSV ved -givaa
+MAP (@OBJ>) TARGET APPELLATIV + Abs + Pl IF (1 TRANSVERB + 3PlO)(-1 Rel BARRIER POSSESSUM) ; #
+
 MAP (@POSS) TARGET POSS_ABBR IF (1 POSSESSUM3); #sap. akunnera
 MAP (@<N) TARGET Trm IF (-1 ("qujanaq"))(NEGATE *1 V) ;
 MAP (@<N) TARGET Trm IF (-1C Trm)(NEGATE *1 V) ;
@@ -1319,12 +1322,17 @@ REMOVE Abs + Pl + 4SgPoss IF (NEGATE *1 3PlO OR Cau + 3Pl OR Con + 3Pl BARRIER V
 REMOVE Opt IF (0 ("suli") OR ("aali") OR ("illit")) ; #naesten helt sikkert partikel/ pronomen
 REMOVE Opt + 3Pl IF (NEGATE 1 EOS); #fanger ambiguiteter med LIK+Pl ved at postulere, at Opt altid saetningsfinal 
 
+#Overfloedige 2Sg subjekter ved transitive schwa stammer
+REMOVE TRANSVERB + GE + 2Sg OR TRANSVERB + QE + 2Sg IF (NEGATE -1**< ("illit"));#"nalunaar" QE vv V Ind 2Sg 3SgO 
+
 # Isolering af ledsaetninger - non-coref.
 SELECT:TempusTimeN Par IF (0 TEMPUSVERB)(-1 TIME); #Egentlig tidsbisætning
 SELECT:TempusUdenTimeN Par + RUTTUR OR Par + GALUAR IF (NEGATE -*1 VFIN) ; 
 
-SELECT:KoncesPost Par + NIQAR IF (*-1 TRANSVERB + VFIN)(1 EOS); #koncessiv uden konjunktion og efterstillet
+SELECT:ContempPostPassiv Par + NIQAR IF (*-1 TRANSVERB + VFIN)(1 EOS); #"medens" uden konjunktion og efterstillet
 #RAL-ip assartorsimavai, siorna taamaalinerani 389.000 kubikmeterit assartorneqarsimasut
+SELECT:ContempPost Par + INTRANSVERB IF (*-1 VFIN)(1 EOS)(*-1 Abs BARRIER ("\,")); #"medens" uden konjunktion og efterstillet
+#'.. aqqusineerannguit nalunaaqaat, nuna .. aqqusininnguussimasoq.'
 SELECT Par + 3Sg IF (-*1 N + Sg)(NEGATE *0 VFIN) ; #Participium i overskrifter
 #SELECT Par + 3Pl IF (-*1 N + Sg)(NEGATE *0 VFIN) ; #Participium i overskrifter. Opgivet da ikke hit på Qilerutip kipinissaanut piareersimasut
 SELECT Par + 3Pl IF (NEGATE *0 VFIN) ; #Participium i overskrifter
@@ -1376,7 +1384,8 @@ REMOVE Par + 3Pl IF (-1 N + Pl)(1 VFIN + ORATIOOBLVERB)(*1 Par) ; #Forebygger hi
 #SELECT INTRANSVERB + Par + 3Pl IF (*-1 Abs + Pl)(NEGATE *0 ORATIOOBLVERB BARRIER VFIN)(1 Abs OR ("\,")); #koncession og #temporal uden konjunktion fulgt af subjekt
 
 SELECT Par + INTRANSVERB + 3Sg IF (*1 ORATIOOBLVERB + V BARRIER ("\,"))(*-1 Abs + Sg)(NEGATE 0 LU LINK -1 Abs + Sg); 
-SELECT Par + INTRANSVERB + 3Sg IF (*-1 ORATIOOBLVERB + V)(*-1 Abs + Sg)(NEGATE 0 LU LINK -1 Abs + Sg); 
+SELECT Par + INTRANSVERB + 3Sg IF (*-1 ORATIOOBLVERB + V BARRIER ("\,"))(*-1 Abs + Sg)(NEGATE 0 LU LINK -1 Abs + Sg); 
+
 SELECT INTRANSVERB + Par + 3Pl IF (*-1 ORATIOOBLVERB)(-*1 Abs + Pl BARRIER VFIN)(-*1 LU);
 SELECT INTRANSVERB + Par + 3Pl IF (*-1 ORATIOOBLVERB)(-*1 Abs + Pl BARRIER VFIN)(1 LU);
 
@@ -1400,6 +1409,7 @@ SELECT Prop + Attr IF (1 Prop + Sg) ;
 REMOVE (Prop Attr) IF (NEGATE 1 Prop);
 
 #Overfloedige possessumformer
+REMOVE Abs + 2SgPoss IF (NEGATE *0 ("illit") LINK 0 Abs + Pl) ;
 SELECT 2SgPoss IF (*0 ("qujanaq"))(NEGATE -1 ("uanga"))(NEGATE *0 VFIN) ; #Kontekst, der maa sikres foer foelgende REMOVE
 REMOVE Abs + 2SgPoss IF (NEGATE *1 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO BARRIER V OR ("\,"))(NEGATE -*1 TRANSVERB + 3SgO BARRIER (",") OR V) ; #Lenes reformuleres igen
 REMOVE 3PlPoss IF (NEGATE -1 Rel + Pl)(NEGATE 0 ("ila"))  ;
@@ -1467,20 +1477,13 @@ SECTION #dette er kun til testbrug
 # -------
 
 # De underordnede modi
-
 REMOVE (Inf 4Pl) IF (1 (N Abs Sg @<SUBJ));
-
-
-
-REMOVE ("asap" Inf) IF (NEGATE *-1 ("nateq")) ; #Pers regel 0608 
-REMOVE (Int) IF (*1 Ind) ;
-	# Et unikt verb
-SELECT Ind IF (NEGATE *-1 Ind)(NEGATE *1 Ind OR ("?"));
-
 SELECT INTRANSVERB + (Inf) + (4Sg) IF (NEGATE -1 ("immi")) ; 
-#Hvorfor giver fst den transitive option??
-# skriv til REMOVE
 
+# De overordnede modi
+REMOVE (Int) IF (*1 Ind) ;
+SELECT Ind IF (NEGATE *-1 Ind)(NEGATE *1 Ind OR ("?")); # Et unikt verb
+SELECT Ind + INTRANSVERB + 3Pl IF (-*1 Abs + Pl LINK NEGATE -*1 Rel + Pl BARRIER POSSESSUM); # Piitakkut ikinngutaat QASOQAAT
 #Nominernes SELECT og REMOVE
 SELECT SPATIAL + (Sg) IF (0 POSSESSUM) ;
 
@@ -1553,10 +1556,6 @@ REMOVE Attr IF (0 Prop)(NEGATE 1 Prop);
 
 REMOVE N IF (0 ("Nuuk" Prop Lok));
 	## Nuummi.
-
-	# Et unikt verb
-SELECT Ind IF (NEGATE *-1 Ind)(NEGATE *1 Ind OR ("?"));
-
 
 REMOVE @POSS IF (NEGATE *1 POSSESSUM3) ; #Pers tilfoejelse 0608
 
@@ -1863,7 +1862,8 @@ SELECT ("toqqip") IF (0 Lok) ; #for at adskille 'toqqip' fra 'tup+QQIP'
 REMOVE ("alip") IF ( 0 ("alinnar")); #'alinnar' vs. 'alip+NAR'
 REMOVE ("piner") IF (NEGATE *0 ("kamik"));
 REMOVE ("pi") + NIP IF (0 ("piniar")); #fjerner pi+NIP+UTE fra 'piniutit'
-
+REMOVE ("asap" Inf) IF (NEGATE *-1 ("nateq") OR ("timi") OR ("angallat")) ; #asavdlugo vs. assagdlugo
+ 
 # nv eller vv?
 REMOVE ("pi") + nv IF (0 ("pi") + vv); # vaelger pi+LIR=TIP frem for pi+LIR+TIP
 SELECT ("pi") + nn ; # ad hoc for at disambiguere pi+nn fra pi+vn
@@ -1887,7 +1887,6 @@ SELECT APPELLATIV IF (0 ("Aleqa")) ;
 # Alle andre regler er prøvet før disse
 
 SECTION
-REMOVE Abs + 2SgPoss IF (NEGATE *0 ("illit") LINK 0 Abs + Pl) ;
 SELECT (@CL-<CIT) IF (*-1 ORATIOOBLVERB BARRIER V-NOT-Par) ;
 SELECT (@CL-CIT>) IF (*1 ORATIOOBLVERB BARRIER V-NOT-Par) ;
 REMOVE (@X) ; # (fjerner alle doble.)
