@@ -944,7 +944,8 @@ LIST ORATIOOBLVERB = "ilisimatitsissut" "isuma" "isummer" "naatsorsor" "nalu" "n
 
 LIST VEXCLAM = "sunaaffa" "uffa" "aali" "naak" ;
 
-LIST humverb = "suli" ; # Verb der vil ha humane subj, og ikke er i andre set
+LIST humverb = "suli" "nalunaar"; # Verb der vil ha humane subj, og ikke er i andre set
+LIST thingverb = "nalunaap";
 LIST animalverb = "qilup" "pangalip" ; #forudsætter subjekt ANIMAL
 SET HUMVERB = humverb OR ORATIOOBLVERB ; # alle verb  der vil ha humane subj
 
@@ -954,7 +955,7 @@ LIST TEMPUSVERB = "qaanger" ;
 # Nominernes leksikalske klasser
 # =============================
 LIST MAANED = "januaari" "februaari" "marsi" "apriili" "maaji" "juuni" "juuli" "aggusti" "augusti" "septembari" "oktobari" "novembari" "decembari";
-LIST SPATIAL = "sani" "ati" "quli" "at" "ilu";
+LIST SPATIAL = "sani" "ati" "quli" "at" "ilu" "eqqaq" "silat";
 LIST USPATIAL = "sanik" "ateq";
 
 LIST ANIMAL = "qimmeq" "qitsuk" "puisi" ;
@@ -966,10 +967,10 @@ LIST PLACE = "illu" ;
 LIST EDIBLE = "neqi" ;
 LIST DRINKABLE = "kaffi" ;
 
-SET THING = EDIBLE | DRINKABLE ;
-LIST INSTRUMENT = "alussaat" ;
+SET FOOD = EDIBLE | DRINKABLE ;
+LIST THING = "alussaat" "aqqusineq";
 
-LIST TIME = "sapaat" "qeqqa" ;
+LIST TIME = "sapaat" "qeqqa" "aasaq";
 LIST NUMHOVED = "krone" "milliardi" "million" "dollari" ;
 LIST COMPOUND_N = "Windows" "Linux" "program" ;
 
@@ -1228,7 +1229,8 @@ MAP:SgObjKongruens (@OBJ>) TARGET Abs + Sg IF (1 Abs + Sg + @OBJ>) ; #Kongruent 
 MAP (@CON) TARGET Con ; #ny 110308
 MAP (@CAU) TARGET Cau (NEGATE -*1 ORATIOOBLVERB) ; 
 MAP (@CL-ADVL>) TARGET Ite OR Inf OR InfNeg OR Par IF ( *1 V BARRIER N) ; #erstattes 110308 af saerlige CON og CAU
-MAP (@CL-<ADVL) TARGET Ite OR Inf OR InfNeg OR Par IF (*-1 V BARRIER N) ; 
+#MAP (@CL-<ADVL) TARGET Ite OR Inf OR InfNeg OR Par IF (*-1 V BARRIER N) ; #Inf kun sjaeldent nexusadverbial saa nyt forsoeg herunder:
+MAP (@CL-<ADVL) TARGET Ite OR Par IF (*-1 V BARRIER N) ; 
 
 ADD (@PRED) TARGET Inf OR InfNeg IF (-1 Ins + LU OR Ins + LUUNNIIT)(*1 VFIN);
 ADD (@PRED) TARGET Inf OR InfNeg IF (-1 Ins + LU OR Ins + LUUNNIIT)(*-1 VFIN);
@@ -1281,6 +1283,7 @@ MAP (@>N) TARGET Ord IF (1 N) ;
 
 #De "normale" adverbale infinitiver
 MAP (@ADVL>) TARGET Inf + 4Pl OR InfNeg + 4Pl IF (*1 VFIN + 3Pl)(NEGATE *0 ORATIOOBLVERB) ; #EQIMMALLUTIK ippiup qaani narsartami toqqissumiipput.
+MAP (@<ADVL) TARGET Inf + 4Pl OR InfNeg + 4Pl IF (-*1 VFIN + 3Pl)(NEGATE *0 ORATIOOBLVERB) ; #Qalipaatigissaartuupput IGALAARTUULLUTIK silatimikkullu unalukkersukkanik NAATSIIVEQARLUTIK
 
 #Alle kongruenserne
 MAP (@i-ADVL>) TARGET Trm IF (1 @i-ADVL> + Trm);
@@ -1289,7 +1292,7 @@ MAP (@i-ADVL>) TARGET Lok IF (1 @i-ADVL> + Lok);
 MAP (@i-ADVL>) TARGET Aeq IF (1 @i-ADVL> + Aeq);
 MAP (@i-ADVL>) TARGET Abl IF (1 @i-ADVL> + Abl);
 MAP (@i-ADVL>) TARGET Ins IF (1 @i-ADVL> + Ins);
-
+MAP (@POSS) TARGET Rel IF (1 @POSS);
 	
 # Denne tag er for alle ord vi ikke har funktion til.
 
@@ -1311,7 +1314,8 @@ SELECT:Se_taamaattoq ("taamaattoq") + LI IF (-1 BOS) ; #Har vaeret checket for m
 SELECT:Se_tamaakk ("taamaakkaluartoq") IF (-1 BOS) ; #Har vaeret checket for modeksempler, men hidtil ingen fundet. Pas paa!
 
 #Et par sikre
-SELECT:Se3PlPsIfRel 3PlPoss IF (-1 Rel + Pl)(NEGATE *1 TRANSVERB + 3Pl);#siulittaasuisa nuannarineqarnersaat.
+SELECT Part + ("ilaatigut") IF (NEGATE -1C Rel)(NEGATE 1 VFIN); #Regel 29.3. Formoder ilaatigut som possessum altid i umiddelbar forbindelse med V. Skal checkes grundigt
+SELECT:Se3PlPsIfRel 3PlPoss IF (-1 Rel + Pl)(NEGATE *1 TRANSVERB + 3Pl);#siulittaasuisa nuannarineqarnersaat. Hitter fejl i ' .. naasut .. ILAATIGULLU ruuat' hvorfor regel umiddelbart foran
 SELECT:Se3PlIfRelPl 3Pl IF (-1C Rel + Pl); #siulittaasuisa nuannarineqarnersaraat
 
 #Fjern de helt sikkert overflødige possessumformer, der kan interferere med Par-reglerne
@@ -1421,6 +1425,8 @@ REMOVE Ins + 1SgPoss IF (NEGATE -1 ("ua"))(NEGATE *0 V + 1Sg) ;
 REMOVE Ins + 2SgPoss IF (NEGATE -1 ("illit"))(NEGATE *0 V + 2Sg) ;
 REMOVE Trm + 1SgPoss IF (NEGATE -1 ("ua"))(NEGATE *0 V + 1Sg) ;
 REMOVE Trm + 2SgPoss IF (NEGATE -1 ("illit"))(NEGATE *0 V + 2Sg) ;
+REMOVE Lok + 1SgPoss IF (NEGATE -1 ("ua"))(NEGATE *0 V + 1Sg) ;
+REMOVE Lok + 2SgPoss IF (NEGATE -1 ("illit"))(NEGATE *0 V + 2Sg) ;
 REMOVE Abs + Sg + 4SgPoss IF (NEGATE -*1 3SgO CBARRIER Abs + Sg) ; # Lene
 REMOVE Abs + Pl + 4SgPoss IF (NEGATE -*1 3PlO CBARRIER Abs + Pl) ; # Lene
 
@@ -1433,13 +1439,13 @@ REMOVE Rel + 4PlPoss + Sg IF (NEGATE 1 3SgPoss)(NEGATE *1 TRANSVERB + Par + 3Sg 
 SELECT Abs + Pl IF (1 Abs + Pron + Pl); 
 
 #Nominer - kongruens
-#SELECT N + $$NUMERUS IF (1 N + $$NUMERUS)(NEGATE *0 V) ; # Vedr. overskrifter og sætningsemner - afventer svar fra Tino
 SELECT N + Sg IF (1 N + Sg)(NEGATE *0 V) ; # Vedr. overskrifter og sætningsemner
 SELECT Ins + LU IF (-1C Ins) ;
-SELECT Aeq + Pl IF (-1C Aeq + Pl);
-SELECT Aeq + Pl IF (1C Aeq + Pl);
 SELECT Abs + LU + Pl IF (-1C Abs + Pl);
 SELECT Abs + LU + Sg IF (-1C Abs + Sg)(NEGATE 0 Rel + Sg LINK 1 3SgPoss);
+SELECT Rel + Pl IF (1 Rel + Pl); #'ILLUT taakku eqqaanni @SUBJ> ... @PRED'
+SELECT Aeq + Pl IF (-1C Aeq + Pl);
+SELECT Aeq + Pl IF (1C Aeq + Pl);
 
 
 #Nominer - andre disambigueringer
@@ -1463,7 +1469,7 @@ REMOVE (Inf 2Pl) IF (NEGATE *0 VFIN + 2Pl);
 REMOVE Opt IF (*0C Ind) ;
 REMOVE Int IF (*0C Ind) ;
 REMOVE Imp IF (*0C Ind) ;
-SELECT NIQAR + V IF (-*1 Abs + Sg) ; #Disambiguerer NIQAR fra NIQ efterfulgt af QAR
+SELECT NIQAR + V IF (-*1 Abs BARRIER TRANSVERB) ; #Disambiguerer NIQAR fra NIQ efterfulgt af QAR. BARRIER af hensyn til muligheden af at Abs er objekt for et transitivt verbum
 SELECT Inf + 4Sg IF (1 Ins)(2C vn + Abs + Sg)(*1 V + 3Sg); #OBJ pillugu Ins vn+subjekt verbum
 SELECT Inf + 4Sg IF (1C vn + Abs + Sg)(*1 V + 3Sg); #OBJ pillugu vn+subjekt verbum
 SELECT Inf + 4Sg IF (*1 VFIN + 3Sg) ;
@@ -1628,7 +1634,7 @@ REMOVE (Via @N<) IF (NEGATE -1 Via OR Rel);
 # ====================== #
 
 SELECT Abs + Pl IF (*1C INTRANSVERB + VFIN + 3Pl);
-
+REMOVE HTR IF (0 vn + QAR); #en skummel regel, der skal lukke op for @i->N og blokere @MIK-OBJ
 SELECT @MIK-OBJ> IF (*1 HTR) ;
 
 REMOVE @ALLOBJ> IF (0 Abs)(*1C INTRANSVERB) ;
@@ -1720,9 +1726,8 @@ REMOVE Lok + Pl IF (-1 Rel + Sg)(0 3SgPoss)(NEGATE 1 3SgPoss); #'ippiup QAANI na
 
 # Verbal disambiguering
 # =====================
-
-#SELECT V IF NIAR ; #En test for at se hvordan derivati-reglerne opfører sig
-
+SELECT humverb + Ind IF (-*1 @SUBJ> + HUMAN); #nalunaarpoq
+SELECT thingverb + Ind IF (-*1 @SUBJ> + THING); #nalunaappoq
 	# Eit sikkert VFIN til venstre utelukker VFIN til høgre
 REMOVE VFIN IF (*-1C VFIN)(NEGATE 0 LU); 
 
@@ -1824,8 +1829,8 @@ REMOVE PLACE + @SUBJ> IF (*1 HUMVERB BARRIER @SUBJ>);
 	## Illumi sulivoq.
 
 REMOVE FAM IF (NEGATE 0 3Sg)(0 OBLIQUE);
-REMOVE @ADVL> IF (0 THING)(*1 PSEUDO-HTR BARRIER V);
-REMOVE @OBJ> IF (0 INSTRUMENT)(*1 PSEUDO-HTR BARRIER V);
+REMOVE @ADVL> IF (0 FOOD)(*1 PSEUDO-HTR BARRIER V);
+REMOVE @OBJ> IF (0 THING)(*1 PSEUDO-HTR BARRIER V);
 
 REMOVE (Prop Ins) IF (0 N + @OBJ>)(*1 PSEUDO-HTR BARRIER V);
 REMOVE (@SUBJ> Adj 1Sg) IF (*1 @PRED + (3Sg)) ;
@@ -1851,7 +1856,9 @@ SELECT:Se_ataata ("ataata") ; # mere sandsynlig end "ataataq"
 SELECT:Se_qaliaq ("qaliaq") ; # ad hoc for at forebygge 'hårbåndet' qaleq
 SELECT:Se_ila ("ila") + Pl IF (NEGATE -1**< ("ilaaq")); # 'toejlapper' sjaeldne medens partitiv hyppig
 SELECT:Se_alla ("alla") IF (0 NNGUR + GIARTUR); #ringe sandsynlighed for 'allak' og 'allaq'
+REMOVE ("allaq") IF (0 ("alla"))(NEGATE *0 animalverb); #
 SELECT:Se_nali ("nali") IF (0 AFFINGERET); #nali+LIR sandsynlig, nalik+LIR usandsynlig
+SELECT TIME + Lok IF (-1 BOS); #'aasaq' for 'aa+TAQ'
 
 # Nomen eller partikel?
 SELECT ("aamma") ; # "aamma" mere sandsynlig end "aak"+Rel
@@ -1862,8 +1869,9 @@ SELECT ("toqqip") IF (0 Lok) ; #for at adskille 'toqqip' fra 'tup+QQIP'
 REMOVE ("alip") IF ( 0 ("alinnar")); #'alinnar' vs. 'alip+NAR'
 REMOVE ("piner") IF (NEGATE *0 ("kamik"));
 REMOVE ("pi") + NIP IF (0 ("piniar")); #fjerner pi+NIP+UTE fra 'piniutit'
-REMOVE ("asap" Inf) IF (NEGATE *-1 ("nateq") OR ("timi") OR ("angallat")) ; #asavdlugo vs. assagdlugo
- 
+REMOVE ("asap") + Inf IF (NEGATE *-1 ("nateq") OR ("timi") OR ("angallat")) ; #asavdlugo vs. assagdlugo
+SELECT ("naa") IF (*0 ("naatser")); #'naavoq' sandsynligere end 'naappoq' ved 'vaekst'
+
 # nv eller vv?
 REMOVE ("pi") + nv IF (0 ("pi") + vv); # vaelger pi+LIR=TIP frem for pi+LIR+TIP
 SELECT ("pi") + nn ; # ad hoc for at disambiguere pi+nn fra pi+vn
@@ -1876,6 +1884,10 @@ REMOVE HTR + NAR; #naeppe en mulig kombination
 
 # Appellativ eller proprium?
 SELECT APPELLATIV IF (0 ("Aleqa")) ;
+
+# Hvilket praefingeret pronomen?
+SELECT ("taanna\(taavaniittoq\)") IF (-1**< ("avannaq"));
+SELECT ("taanna"); #Den hyppigste
 
 #SELECT COMMONAFFSTRING ; #Testet 29.3. Maa rettes, da fejl mere end 50%
 
