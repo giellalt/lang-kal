@@ -1293,7 +1293,7 @@ MAP (@i-ADVL>) TARGET Ins IF (1 @i-ADVL> + Ins);
 	
 # Denne tag er for alle ord vi ikke har funktion til.
 
-MAP (@X) TARGET WORD ;
+MAP:MapX (@X) TARGET WORD ;
 
 # ================== #
 # ================== #
@@ -1303,24 +1303,24 @@ MAP (@X) TARGET WORD ;
 
 # De allertidligste disambigueringsregler
 #Hoejfrekvente kombinationer
-SELECT Num + 3PlPoss IF (-1 MAANED); #NB Possessum skal vaere plur. da konsekvent underforstaaet 'ulloq' MAANED (ulluisa) Num
-SELECT ("kalaaleq") + Rel + Pl IF (1 ("oqaaseq") OR ("nuna"));
-SELECT ("oqaaseq") + 3PlPoss IF (-1 ("kalaaleq") + Rel + Pl);
-SELECT ("nuna") + Sg + 3PlPoss IF (-1 ("kalaaleq") + Rel + Pl);
-SELECT ("taamaattoq") + LI IF (-1 BOS) ; #Har vaeret checket for modeksempler, men hidtil ingen fundet. Pas paa!
-SELECT ("taamaakkaluartoq") IF (-1 BOS) ; #Har vaeret checket for modeksempler, men hidtil ingen fundet. Pas paa!
+SELECT:SeNumPossMnd Num + 3PlPoss IF (-1 MAANED); #NB Possessum skal vaere plur. da konsekvent underforstaaet 'ulloq' MAANED (ulluisa) Num
+SELECT:Se_kalalaq ("kalaaleq") + Rel + Pl IF (1 ("oqaaseq") OR ("nuna"));
+SELECT:Se_oqaaseq ("oqaaseq") + 3PlPoss IF (-1 ("kalaaleq") + Rel + Pl);
+SELECT:Se_nuna ("nuna") + Sg + 3PlPoss IF (-1 ("kalaaleq") + Rel + Pl);
+SELECT:Se_taamaattoq ("taamaattoq") + LI IF (-1 BOS) ; #Har vaeret checket for modeksempler, men hidtil ingen fundet. Pas paa!
+SELECT:Se_tamaakk ("taamaakkaluartoq") IF (-1 BOS) ; #Har vaeret checket for modeksempler, men hidtil ingen fundet. Pas paa!
 
 #Et par sikre
-SELECT 3PlPoss IF (-1 Rel + Pl)(NEGATE *1 TRANSVERB + 3Pl);#siulittaasuisa nuannarineqarnersaat.
-SELECT 3Pl IF (-1C Rel + Pl); #siulittaasuisa nuannarineqarnersaraat
+SELECT:Se3PlPsIfRel 3PlPoss IF (-1 Rel + Pl)(NEGATE *1 TRANSVERB + 3Pl);#siulittaasuisa nuannarineqarnersaat.
+SELECT:Se3PlIfRelPl 3Pl IF (-1C Rel + Pl); #siulittaasuisa nuannarineqarnersaraat
 
 #Fjern de helt sikkert overflødige possessumformer, der kan interferere med Par-reglerne
-REMOVE Abs + Sg + 4SgPoss IF (NEGATE *1 3SgO OR Cau + 3Sg OR Con + 3Sg BARRIER VFIN);
-REMOVE Abs + Pl + 4SgPoss IF (NEGATE *1 3PlO OR Cau + 3Pl OR Con + 3Pl BARRIER VFIN);
+REMOVE:Re4IfNotSgObjCauCon Abs + Sg + 4SgPoss IF (NEGATE *1 3SgO OR Cau + 3Sg OR Con + 3Sg BARRIER VFIN);
+REMOVE:Re4IfNotPlObjCauCon Abs + Pl + 4SgPoss IF (NEGATE *1 3PlO OR Cau + 3Pl OR Con + 3Pl BARRIER VFIN);
 
 #Og overfloedige optativer
-REMOVE Opt IF (0 ("suli") OR ("aali") OR ("illit")) ; #naesten helt sikkert partikel/ pronomen
-REMOVE Opt + 3Pl IF (NEGATE 1 EOS); #fanger ambiguiteter med LIK+Pl ved at postulere, at Opt altid saetningsfinal 
+REMOVE:ReOpt_suli Opt IF (0 ("suli") OR ("aali") OR ("illit")) ; #naesten helt sikkert partikel/ pronomen
+REMOVE:ReOptIfNotEOS Opt + 3Pl IF (NEGATE 1 EOS); #fanger ambiguiteter med LIK+Pl ved at postulere, at Opt altid saetningsfinal 
 
 #Overfloedige 2Sg subjekter ved transitive schwa stammer
 REMOVE TRANSVERB + GE + 2Sg OR TRANSVERB + QE + 2Sg IF (NEGATE -1**< ("illit"));#"nalunaar" QE vv V Ind 2Sg 3SgO 
@@ -1844,14 +1844,14 @@ REMOVE (@SUBJ> Adj 1Sg) IF (*1 @PRED + (3Sg)) ;
 SELECT AFFINGERET ; # Vælg den analyserede form frem for den leksikaliserede 
 
 # Nomen eller nomen?
-SELECT ("illu") IF (0 (@HNOUN)); # "illoq" er usandsynlig i absolut form
-SELECT HUMAN IF (-*1 HUMVERB) ; # ikke "illu" før HUMVERB
-SELECT ("illu") ; # "illu" mere sandsynlig end "illoq"
-SELECT ("ataata") ; # mere sandsynlig end "ataataq"
-SELECT ("qaliaq") ; # ad hoc for at forebygge 'hårbåndet' qaleq
-SELECT ("ila") + Pl IF (NEGATE -1**< ("ilaaq")); # 'toejlapper' sjaeldne medens partitiv hyppig
-SELECT ("alla") IF (0 NNGUR + GIARTUR); #ringe sandsynlighed for 'allak' og 'allaq'
-SELECT ("nali") IF (0 AFFINGERET); #nali+LIR sandsynlig, nalik+LIR usandsynlig
+SELECT:Se_illuHnoun ("illu") IF (0 (@HNOUN)); # "illoq" er usandsynlig i absolut form
+SELECT:SeHumHum HUMAN IF (-*1 HUMVERB) ; # ikke "illu" før HUMVERB
+SELECT:Se_illuNot_illoq ("illu") ; # "illu" mere sandsynlig end "illoq"
+SELECT:Se_ataata ("ataata") ; # mere sandsynlig end "ataataq"
+SELECT:Se_qaliaq ("qaliaq") ; # ad hoc for at forebygge 'hårbåndet' qaleq
+SELECT:Se_ila ("ila") + Pl IF (NEGATE -1**< ("ilaaq")); # 'toejlapper' sjaeldne medens partitiv hyppig
+SELECT:Se_alla ("alla") IF (0 NNGUR + GIARTUR); #ringe sandsynlighed for 'allak' og 'allaq'
+SELECT:Se_nali ("nali") IF (0 AFFINGERET); #nali+LIR sandsynlig, nalik+LIR usandsynlig
 
 # Nomen eller partikel?
 SELECT ("aamma") ; # "aamma" mere sandsynlig end "aak"+Rel
