@@ -46,6 +46,7 @@
 # ========== #
 
 DELIMITERS = "<.>" "<!>" "<?>" "<:>" "<...>" "<¶>"; #<¶> virker ikke og må erstattes af LF 
+                                                    # joda, ¶ fungerer...
 
 
 # ============= #
@@ -1104,10 +1105,10 @@ MAPPINGS
 # Verber - De sikre MAP regler 1. runde
 # =====================================
 
-MAP (@PRED) TARGET VFIN ; #Et finit verbum er altid prædikat
-MAP (@PRED) TARGET Inf + LU OR InfNeg + LU IF (1 VFIN) ;
-MAP (@PRED) TARGET Inf + LU OR InfNeg + LU IF (-1 VFIN) ;
-MAP (@PRED2) TARGET INTRANSVERB + Par + 3Pl IF (*-1 Abs + Pl)(NEGATE *0 ORATIOOBLVERB BARRIER VFIN)(1 Abs OR ("\,")); #koncessive saetninger uden konjunktion
+MAP:MapPredToVfin (@PRED) TARGET VFIN ; #Et finit verbum er altid prædikat
+MAP:MapPredToInfLuIfRvfin (@PRED) TARGET Inf + LU OR InfNeg + LU IF (1 VFIN) ;
+MAP:MapPredToInfLuIfLvfin (@PRED) TARGET Inf + LU OR InfNeg + LU IF (-1 VFIN) ;
+MAP:MapPred2ToIV (@PRED2) TARGET INTRANSVERB + Par + 3Pl IF (*-1 Abs + Pl)(NEGATE *0 ORATIOOBLVERB BARRIER VFIN)(1 Abs OR ("\,")); #koncessive saetninger uden konjunktion
 
 # Partikler
 # =========
@@ -1121,6 +1122,9 @@ MAP (@i-ADVL>) TARGET (Part) IF (1 N + @<SUBJ) ;
 MAP:AddPartConjAbs (@CONJ) TARGET Part IF (-1 Abs)(*1 Abs BARRIER VFIN) ;
 MAP:AddPartConjRel (@CONJ) TARGET Part IF (-1 Rel)(*1 Rel BARRIER VFIN) ;
 MAP:Nexusadverbial (@CL-ADVL>) TARGET Part IF (-1 BOS)(NEGATE 0 KONJUNKTION) ;
+MAP:Tidsadberbial  (@CL-ADVL>) TARGET TIME IF (*1 Ind OR Opt OR Int)(NEGATE 0 KONJUNKTION) ; #XXX TT
+MAP:Tidsadberbial  (@<CL-ADVL) TARGET TIME IF (-*1 Ind OR Opt OR Int)(NEGATE 0 KONJUNKTION) ; #XXX TT
+
 
 # Nominer - De sikre MAP regler
 # =============================
@@ -1147,14 +1151,14 @@ ADD (@ADVL>) TARGET Part IF (1 V);
 
 # Nominer anden runde
 # ===================
-ADD (@POSS) TARGET (Rel) IF (1 POSSESSUM3) ; #Ikke 1 men *1 pga. Piitap qangaaniilli soqutigisaa
-ADD (@MIK-OBJ>) TARGET Ins IF (*1 HTR); #Ikke MAP fordi ogsaa ADVL> mulig
-MAP (@SUBJ>) TARGET Rel + Sg IF (*1 TRANSVERB + (3Sg) OR (4Sg) BARRIER POSSESSUM3) ;
-MAP (@SUBJ>) TARGET Rel + Pl IF (*1 TRANSVERB + (3Pl) OR (4Pl) BARRIER POSSESSUM3) ;
-MAP (@SUBJ>) TARGET Abs + Sg IF (*1 INTRANSVERB + VERB-NOTINF + 3Sg OR INTRANSVERB + VERB-NOTINF + 4Sg BARRIER POSSESSUM3)(NEGATE -1 ("\(")) ; 
+ADD:MapPossToRelIfPoss (@POSS) TARGET (Rel) IF (1 POSSESSUM3) ; #Ikke 1 men *1 pga. Piitap qangaaniilli soqutigisaa
+ADD:MapMikObjToIns (@MIK-OBJ>) TARGET Ins IF (*1 HTR); #Ikke MAP fordi ogsaa ADVL> mulig
+MAP:MapSubjToRelSgIfTV (@SUBJ>) TARGET Rel + Sg IF (*1 TRANSVERB + (3Sg) OR (4Sg) BARRIER POSSESSUM3) ;
+MAP:MapSubjToRelPlIfTV (@SUBJ>) TARGET Rel + Pl IF (*1 TRANSVERB + (3Pl) OR (4Pl) BARRIER POSSESSUM3) ;
+MAP:MapSubjToAbsSgIfIV (@SUBJ>) TARGET Abs + Sg IF (*1 INTRANSVERB + VERB-NOTINF + 3Sg OR INTRANSVERB + VERB-NOTINF + 4Sg BARRIER POSSESSUM3)(NEGATE -1 ("\(")) ; 
 #MAP (@SUBJ>) TARGET Abs + Sg IF (*1 INTRANSVERB + VERB-NOTINF + (3Sg) OR (4Sg) BARRIER POSSESSUM3)(NEGATE -1 ("\(")) ; #Parantetiske indskud andet steds hen
 #MAP (@SUBJ>) TARGET Abs + Pl IF (*1 INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl BARRIER POSSESSUM3) ;#Forstaar ikke BARRIER 30.3.
-MAP (@SUBJ>) TARGET Abs + Pl IF (*1 INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl) ;#Nyt frosoeg 30.3.
+MAP:MapSubjToAbsIfIV (@SUBJ>) TARGET Abs + Pl IF (*1 INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl) ;#Nyt frosoeg 30.3.
 MAP (@SUBJ>) TARGET (Rel) IF (*1 TRANSVERB + 34IV BARRIER POSSESSUM3) ;
 MAP (@SUBJ>) TARGET N IF (-1 ("\("))(1 ("\)"))(-2 @SUBJ>) ; #Parantetiske indskud samme led som foregående ord
 MAP (@<SUBJ) TARGET (Rel) IF (-*1 TRANSVERB + VERB-NOTINF + 34Sg)(0 (Sg)) ;
@@ -1433,8 +1437,8 @@ SELECT INTRANSVERB + Par + 3Pl IF (*1 ORATIOOBLVERB)(-*1 Abs + Pl BARRIER VFIN);
 SECTION #Skal kun bruges til at isolere Par - reglerne
 
 #Partikler
-SELECT KONJUNKTION IF (-1 BOS);
-SELECT Part IF (-1 BOS OR (","))(*1C VFIN) ;
+SELECT:SeInitConj KONJUNKTION IF (-1 BOS);
+SELECT:SeInitPart Part IF (-1 BOS OR (","))(*1C VFIN) ;
 #MAP (@CONJ) TARGET ("tassa") + Part IF (-*1 V)(*1 V) ; Skal sådan noget skrives ind??
 #Nominer med tilhængspartikler
 REMOVE Prop + MI + Abs IF (*0 Abs) ;
@@ -1620,7 +1624,7 @@ SELECT 4Pl IF (0C (@CL->N))(1 (N Pl)); # eksperimentell
 
 # Appositioner
 # ------------
-SELECT @N< IF (*-1 $$KASUS BARRIER NOT-REL)(0 $$KASUS)(NEGATE 0 Prop);
+SELECT:SeAppKasusKongr @N< IF (*-1 $$KASUS BARRIER NOT-REL)(0 $$KASUS)(NEGATE 0 Prop);
 #SELECT @N< IF (*-1 Abs BARRIER NOT-REL)(0 Abs)(NEGATE 0 Prop);
 #SELECT @N< IF (*-1 Lok BARRIER NOT-REL)(0 Lok)(NEGATE 0 Prop);
 #SELECT @N< IF (*-1 Trm BARRIER NOT-REL)(0 Trm)(NEGATE 0 Prop);
@@ -1630,9 +1634,9 @@ SELECT @N< IF (*-1 $$KASUS BARRIER NOT-REL)(0 $$KASUS)(NEGATE 0 Prop);
 #SELECT @N< IF (*-1 Via BARRIER NOT-REL)(0 Via)(NEGATE 0 Prop);
 	## Una ilinniartitsisoq Trond Kirstip uia 40-nik ukioqarpoq.
 
-REMOVE @N< IF (NEGATE -1 N OR @N<);
-REMOVE @N< IF (-1 Prop)(0 Prop);
-REMOVE ($$NOT-REL @N<) IF (NEGATE *-2 (N $$NOT-REL))(-1 (Rel @POSS))(0 (N 3Sg));
+REMOVE:ReAppToNotN   @N< IF (NEGATE -1 N OR @N<);
+REMOVE:ReAppPropProp @N< IF (-1 Prop)(0 Prop);
+REMOVE:ReAppNotRel ($$NOT-REL @N<) IF (NEGATE *-2 (N $$NOT-REL))(-1 (Rel @POSS))(0 (N 3Sg));
 #REMOVE (Abs @N<) IF (NEGATE *-2 (N Abs))(-1 (Rel @POSS))(0 (N 3Sg));
 #REMOVE (Lok @N<) IF (NEGATE *-2 (N Lok))(-1 (Rel @POSS))(0 (N 3Sg));
 #REMOVE (Trm @N<) IF (NEGATE *-2 (N Trm))(-1 (Rel @POSS))(0 (N 3Sg));
@@ -1860,6 +1864,9 @@ REMOVE @HNOUN IF (0 (@OBJ>) OR (@SUBJ>));
 REMOVE @SUBJ> IF (NEGATE *-1 V)(NEGATE *1 V);
 REMOVE @OBJ> IF (NEGATE *-1 V)(NEGATE *1 V);
 
+REMOVE:TimeadvlNotObj @OBJ> IF (0 TIME);
+REMOVE:TimeadvlNotObj @<OBJ IF (0 TIME);
+
 REMOVE @HNOUN IF (0 (@OBJ>) OR (@SUBJ>));
 
 REMOVE HUMAN + Abl IF (0 PLACE + Abl)(NEGATE 0 KKUT)(*1 ABLVERB);
@@ -1889,7 +1896,9 @@ REMOVE (@SUBJ> Adj 1Sg) IF (*1 @PRED + (3Sg)) ;
 # ======================================================================= #
 
 # Generelle regler
-SELECT AFFINGERET ; # Vælg den analyserede form frem for den leksikaliserede 
+
+#SELECT:SeAffingeret AFFINGERET ; # Vælg den analyserede form frem for den leksikaliserede 
+SELECT:SeAffingeret AFFINGERET IF (0C $$TAGGED); # Vælg den analyserede form frem for den leksikaliserede 
 
 # Nomen eller nomen?
 SELECT:Se_illuHnoun ("illu") IF (0 (@HNOUN)); # "illoq" er usandsynlig i absolut form
