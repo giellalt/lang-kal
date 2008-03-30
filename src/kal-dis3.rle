@@ -1102,12 +1102,15 @@ LIST @ALLSUBJ = @ALLSUBJ> @<ALLSUBJ ;
 MAPPINGS
 
 # Verber - De sikre MAP regler 1. runde
+# =====================================
 
 MAP (@PRED) TARGET VFIN ; #Et finit verbum er altid prædikat
 MAP (@PRED) TARGET Inf + LU OR InfNeg + LU IF (1 VFIN) ;
 MAP (@PRED) TARGET Inf + LU OR InfNeg + LU IF (-1 VFIN) ;
 MAP (@PRED2) TARGET INTRANSVERB + Par + 3Pl IF (*-1 Abs + Pl)(NEGATE *0 ORATIOOBLVERB BARRIER VFIN)(1 Abs OR ("\,")); #koncessive saetninger uden konjunktion
+
 # Partikler
+# =========
 #Konjunktioner er konjunktioner, når de indleder en sætning, ellers er de adverbier
 MAP (@CONJ) TARGET KONJUNKTION IF (-1 BOS) ; #Flyttet fra 1168 forebygge konflikt med @ADVL>
 MAP (@<CL-ADVL) TARGET KONJUNKTION IF (1 EOS)(NEGATE -1 BOS) ; #Sidste betingelse for at undgaa at tagge isolerede konjunktioner
@@ -1120,6 +1123,7 @@ MAP:AddPartConjRel (@CONJ) TARGET Part IF (-1 Rel)(*1 Rel BARRIER VFIN) ;
 MAP:Nexusadverbial (@CL-ADVL>) TARGET Part IF (-1 BOS)(NEGATE 0 KONJUNKTION) ;
 
 # Nominer - De sikre MAP regler
+# =============================
 MAP (@<SUBJ) TARGET (Abs) IF (*-1 @FOC BARRIER (V));
 MAP (@HNOUN) TARGET APPELLATIV + (Abs) OR Prop + (Abs) IF (NEGATE *0 VERB-NOTINF)(NEGATE 1 TRANSVERB + Inf OR TRANSVERB + InfNeg);
 MAP (@i-ADVL>) TARGET Trm IF (1 N + (vn)) ;
@@ -1135,12 +1139,21 @@ MAP (@<N) TARGET Trm IF (-1C Trm)(NEGATE *1 V) ;
 #At adskille Inf's objekt fra V's subjekt
 MAP (@OBJ>) TARGET Abs + Sg IF (1 Abs + Sg)(2 Inf + 3SgO OR InfNeg + 3SgO);
 
+
+# Adverbialier
+# ============
+MAP (@<ADVL) TARGET ("ippaq" SSAQ nn N Abs Sg) IF (*-1 VFIN);
+MAP (@ADVL>) TARGET ("ippaq" SSAQ nn N Abs Sg) IF (*1 VFIN);
+    ## Ippassaq tikippoq.
+
 # Partikler anden runde
+# =====================
 MAP (@i-ADVL>) TARGET (Part) IF (1 N + @<SUBJ) ;
 MAP (@ADVL>) TARGET Part IF (1 V)(NEGATE *-1 V);
 ADD (@ADVL>) TARGET Part IF (1 V);
 
 # Nominer anden runde
+# ===================
 ADD (@POSS) TARGET (Rel) IF (1 POSSESSUM3) ; #Ikke 1 men *1 pga. Piitap qangaaniilli soqutigisaa
 ADD (@MIK-OBJ>) TARGET Ins IF (*1 HTR); #Ikke MAP fordi ogsaa ADVL> mulig
 MAP (@SUBJ>) TARGET Rel + Sg IF (*1 TRANSVERB + (3Sg) OR (4Sg) BARRIER POSSESSUM3) ;
@@ -1155,14 +1168,16 @@ MAP (@<SUBJ) TARGET (Rel) IF (-*1 TRANSVERB + 34Pl)(0 (Pl)) ;
 MAP (@<SUBJ) TARGET (Abs Sg) IF (-*1C INTRANSVERB + (3Sg) OR INTRANSVERB + (4Sg) BARRIER ("tassa"))(NEGATE -1 ("\(")) ;
 MAP (@<SUBJ) TARGET (Abs Pl) IF (-*1C INTRANSVERB + (3Pl) OR INTRANSVERB + (4Pl)) ;
 
-#Nominer i absolut kasus er oftest subjekt for intransitivt verbum 
+# Nominer i absolut kasus er oftest subjekt for intransitivt verbum 
 MAP (@SUBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs IF (*1 INTRANSVERB + 3Sg)(NEGATE *1 TRANSVERB + VFIN)(NEGATE 1 Inf + TRANSVERB);
 
 # Ins er tit adled til inkorporet objekt
 MAP (@i->N) TARGET (Ins) IF (*1 QAR OR LIK) ; # "tit" skal præciseres eller reduceres til en ADD-regel
 MAP (@i-N<) TARGET (Ins) IF (*-1 QAR OR LIK)(NEGATE *1 QAR OR LIK) ; # "tit" skal præciseres eller reduceres til en ADD-regel
 
+
 # Nominer - ADD regler
+# ====================
 #Appellativer i absolut kasus kan være element af syntagmerne subjekt, objekt, tidsangivelse, overskriftsord 
 
 ADD (@SUBJ>) TARGET APPELLATIV + (Abs) OR Prop + (Abs) IF (*1 INTRANSVERB)(NEGATE *1 TRANSVERB)(NEGATE -1 ("\(")) ; 
@@ -1185,8 +1200,9 @@ MAP (@ADVL>) TARGET (Lok) OR (Trm) OR (Abl) OR (Via) OR (Aeq) IF (*1 V); #Foerst
 ADD (@<ADVL) TARGET (Lok) OR (Trm) OR (Abl) OR (Via) OR (Aeq) OR (Ins) IF (-*1 V BARRIER ("\,"))(NEGATE -1 ("\(")) ;
 MAP (@<ADVL) TARGET N IF (-1 ("\("))(1 ("\)"))(-2 @<ADVL) ; #Parantetiske indskud samme led som foregående ord
 
-# Pronominer - De sikre MAP regler
 
+# Pronominer - De sikre MAP regler
+# ================================
 #"uanga" og "uagut" er subjekt for V i første person hvis ikke adnominalt adled til 1SgPoss eller 1PlPoss resp.
 MAP (@SUBJ>) TARGET ("ua" 1Sg Abs) IF (*1 INTRANSVERB + (1Sg) BARRIER (1SgPoss)) ; 
 MAP (@SUBJ>) TARGET ("ua" 1Pl Abs) IF (*1 INTRANSVERB + (1Pl) BARRIER (1PlPoss)) ; 
@@ -1195,7 +1211,7 @@ MAP (@>N) TARGET ("ua" 1Sg) IF (1 (1SgPoss)) ;
 
 
 # Adjektiver - både ADD og MAP regler
-
+# ===================================
 ADD (@SUBJ>) TARGET (Adj) IF (*1 INTRANSVERB) ;
 ADD (@OBJ>) TARGET (Adj 1Sg) IF (*1 TRANSVERB + (1SgO)) ;
 ADD (@SUBJ>) TARGET (Adj 1Sg) IF (*1 TRANSVERB + (1Sg)) ;
@@ -1208,11 +1224,15 @@ MAP (@<ADVL) TARGET ADVERBIUM IF (*-1 (V)) ;
 #ADD (@POSSESSUM) TARGET POSSESSUM ;
 #ADD (@TEST) TARGET (N* 3Sg IP) IF (-1 Rel Sg) ; #test før følgende
 
+
 # Numeralier
+# ==========
 MAP (@>N) TARGET Num IF (1 NUMHOVED + Abs) ;
 MAP (@POSS) TARGET MAANED IF (1 Num + 3PlPoss); #NB Possessum skal vaere plur. da konsekvent underforstaaet 'ulloq' MAANED (ulluisa) Num
 
+
 # Verber anden runde
+# ==================
 MAP (@PARATAKSE_INF->N) TARGET Inf + LU IF (1 Abs + vn) ; #misissueqqissaarutaallunilu oqaasiliuut .. Skal elaboreres!!
 MAP (@INF->N) TARGET Inf + 4Sg IF (1 Ins)(2C vn + Abs + Sg)(*1 V + 3Sg); #OBJ pillugu Ins vn+subjekt verbum 
 MAP (@INF->N) TARGET Inf + 4Sg IF (1C vn + Abs + Sg)(*1 V + 3Sg); #OBJ pillugu vn+subjekt verbum
@@ -1220,6 +1240,7 @@ MAP (@INF->N) TARGET Inf + 4Sg + 3SgO IF (-1 @SUBJ> OR ("\)") OR ("\"")) ; #Det 
 
 
 # Nominer anden runde
+# ===================
 MAP:SgObjKongruens (@OBJ>) TARGET Abs + Sg IF (1 Abs + Sg + @OBJ>) ; #Kongruent N til N mappet med SgObj. Skal maaske specificeres??
 #Herfra og fremad er det igen regler fra Nuuk
 
@@ -1265,6 +1286,10 @@ MAP (@SUBJ>) TARGET (Abs Pl) IF (*-1 BOS BARRIER N)(NEGATE 0 TIME)(1 INTRANSVERB
 
 MAP (@ADVL>) TARGET (Part NOT KONJUNKTION); #Rettet til ikke at medtage konjunktioner og MAP -> ADD
 
+
+
+# Andre kategorier
+# ================
 MAP (@INTERJ) TARGET Interj (NEGATE *0 V) ;
 
 MAP (@PROP>) TARGET Prop IF (1 Prop);
@@ -1298,6 +1323,8 @@ MAP (@POSS) TARGET Rel IF (1 @POSS);
 
 MAP:MapX (@X) TARGET WORD ;
 
+
+
 # ================== #
 # ================== #
       SECTION        #
@@ -1305,6 +1332,7 @@ MAP:MapX (@X) TARGET WORD ;
 # ================== #
 
 # De allertidligste disambigueringsregler
+
 #Hoejfrekvente kombinationer
 SELECT:SeNumPossMnd Num + 3PlPoss IF (-1 MAANED); #NB Possessum skal vaere plur. da konsekvent underforstaaet 'ulloq' MAANED (ulluisa) Num
 SELECT:Se_kalalaq ("kalaaleq") + Rel + Pl IF (1 ("oqaaseq") OR ("nuna"));
