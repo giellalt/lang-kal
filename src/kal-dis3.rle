@@ -897,7 +897,7 @@ SET 12SUBJVERB = (V 1Sg) | (V 1Du) | (V 1Pl) | (V 2Sg) | (V 2Du) | (V 2Pl) ;
 #SET NONIMPVERB = (V Ind) | (V Cau) | (V Int) | (V Par) | (V Ite) | (V Inf) | (V InfNeg) | (V Opt) | (V Con) | (V Vok) ;
 SET V-NOT-Par = V - Par ;
 SET VERB-NOTINF = V - Inf - InfNeg ;
-
+LIST CON_CAU = Con OR Cau ;
 # Forståelsesspørgsmål LIST vs. SET. Hvorfor ikke LIST en definition som fx 3SGSUBJVERB og bagefter SET?
 # Svar det ser ut til at det må vere LIST når det kan vere LIST.
 # Spørgsmål om god stil: Er det klogt at samme tags indgår i forskellige set?
@@ -1353,7 +1353,8 @@ REMOVE 3PlPoss + Abs + Pl IF (*1 VFIN + INTRANSVERB + 3Pl)(NEGATE 1 Num + Abs)(N
 
 
 SELECT 3PlPoss IF (-1 Rel + Pl)(NEGATE *1 TRANSVERB + 3Pl)(NEGATE 0 ADJEKTIVISK);#siulittaasuisa nuannarineqarnersaat. 
-SELECT 3Pl IF (-1C Rel + Pl); #siulittaasuisa nuannarineqarnersaraat
+#SELECT 3Pl IF (-1C Rel + Pl); #siulittaasuisa nuannarineqarnersaraat. Rettes 1.4. da hit på Par + 3Pl i 'Naatsiiviup ungaluisa QISUUSUT portusuut manngui ...'
+SELECT 3Pl IF (-1C Rel + Pl)(1 EOS OR ("\")); #begraensning til saetningsfinale 
 
 #Fjern de helt sikkert overflødige possessumformer, der kan interferere med Par-reglerne
 REMOVE Abs + Sg + 4SgPoss IF (NEGATE *1 3SgO OR Cau + 3Sg OR Con + 3Sg BARRIER VFIN);
@@ -1442,7 +1443,8 @@ SELECT:SeInitPart Part IF (-1 BOS OR (","))(*1C VFIN) ;
 #MAP (@CONJ) TARGET ("tassa") + Part IF (-*1 V)(*1 V) ; Skal sådan noget skrives ind??
 #Nominer med tilhængspartikler
 REMOVE Prop + MI + Abs IF (*0 Abs) ;
-REMOVE Abs + MI + Sg IF (1 INTRANSVERB + 3Pl); #"kingulleq" N Abs Sg MI @SUBJ> "isuma" QATIGIIP vv V Ind 3Pl @PRED
+#REMOVE Abs + MI + Sg IF (*1 INTRANSVERB + 3Pl BARRIER Cau + 3Sg OR Con + 3Sg); #Haandterer for lidt. Afloeses 1.4. af foelgende skumle, der postulerer enten anafori eller ledsaetning som forudsaetning for brugen af MI + Abs
+REMOVE Abs + MI + Sg IF (NEGATE -1 BOS)(NEGATE *1 CON_CAU + 3Sg);
 
 #Proprier og attributter
 SELECT COMPOUND_N + Prop + Attr IF (1 COMPOUND_N) ; #Nominer, der bruges compound-lignende (Windows, program, Linux)
@@ -1451,13 +1453,19 @@ REMOVE (Prop Attr) IF (NEGATE 1 Prop);
 
 #Overfloedige possessumformer
 SELECT 2SgPoss IF (*0 ("qujanaq"))(NEGATE -1 ("uanga"))(NEGATE *0 VFIN) ; #Kontekst, der maa sikres foer foelgende REMOVE
-#REMOVE Abs + 2SgPoss IF (NEGATE *0 ("illit") LINK 0 Abs + Pl) ;
+REMOVE Abs + 2SgPoss IF (NEGATE *0 ("illit") LINK 0 Abs + Pl) ; 
+#REMOVE Abs + 2SgPoss IF (-1C Inf + 4Pl OR InfNeg + 4Pl)(NEGATE *1 Rel + Pl LINK *1 TRANSVERB + GE + 3SgO); #0 maa vaere plur hvis nabo til en ledsagemaade, men der maa tages hoejde for muligheden af et OSV verbum.
+REMOVE Abs + 2SgPoss + TUQ IF (NEGATE *0 ("illit")); #1.4. Evt. elaboreres med TAQ og UTE
 REMOVE Rel + Pl + 2SgPoss IF (NEGATE *0 ("illit"));
 
 REMOVE Abs + 2SgPoss IF (NEGATE *1 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO BARRIER V OR ("\,"))(NEGATE -*1 TRANSVERB + 3SgO BARRIER (",") OR V) ; #Lenes reformuleres igen
 REMOVE 3PlPoss IF (NEGATE -1 Rel + Pl)(NEGATE 0 ("ila"))  ;
 REMOVE 3SgPoss IF (NEGATE -1 Rel + Sg) ;
 
+REMOVE Abl + 1SgPoss IF (NEGATE -1 ("ua"))(NEGATE *0 V + 1Sg) ;
+REMOVE Abl + 2SgPoss IF (NEGATE -1 ("illit"))(NEGATE *0 V + 2Sg) ;
+REMOVE Aeq + 1SgPoss IF (NEGATE -1 ("ua"))(NEGATE *0 V + 1Sg) ;
+REMOVE Aeq + 2SgPoss IF (NEGATE -1 ("illit"))(NEGATE *0 V + 2Sg) ;
 REMOVE Via + 1SgPoss IF (NEGATE -1 ("ua"))(NEGATE *0 V + 1Sg) ;
 REMOVE Via + 2SgPoss IF (NEGATE -1 ("illit"))(NEGATE *0 V + 2Sg) ;
 REMOVE Ins + 1SgPoss IF (NEGATE -1 ("ua"))(NEGATE *0 V + 1Sg) ;
@@ -1565,7 +1573,7 @@ REMOVE @<ARG IF (NEGATE *-1 V)(NEGATE *-1 (@FOC)) ;
 REMOVE @ALL-ARG> IF (NEGATE *1 V) ; # Ikke @ARG> fordi ingen V t.h.
 #REMOVE @ARG> IF (NEGATE *1 V) ; #min formulering
 REMOVE @ARG> IF (*1C @<ARG BARRIER V);
-REMOVE @<ARG IF (*-1C @ARG> BARRIER V); # Ikke @<ARG fordi ingen V før @ARG> t.v.
+#REMOVE @<ARG IF (*-1C @ARG> BARRIER V); # Ikke @<ARG fordi ingen V før @ARG> t.v. Fjernet 1.4., da fjerner objektet i '.. akutaaqqat naatsiivissuarmi PINNGUARTUT isiginnaalerpaat.'
 
 
 # One-cohort disambiguation - cycle 0
@@ -1622,9 +1630,9 @@ SELECT 4Pl IF (0C (@CL->N))(1 (N Pl)); # eksperimentell
 
 
 
-# Appositioner
+# Appositioner - linier frem til ##Karen Langgårdip illua fjernet 1.4. da hverken hit i Bibel eller aviser2008
 # ------------
-SELECT:SS_SeAppKasusKongr @N< IF (*-1 $$KASUS BARRIER NOT-REL)(0 $$KASUS)(NEGATE 0 Prop);
+#SELECT:SS_SeAppKasusKongr @N< IF (*-1 $$KASUS BARRIER NOT-REL)(0 $$KASUS)(NEGATE 0 Prop);
 #SELECT @N< IF (*-1 Abs BARRIER NOT-REL)(0 Abs)(NEGATE 0 Prop);
 #SELECT @N< IF (*-1 Lok BARRIER NOT-REL)(0 Lok)(NEGATE 0 Prop);
 #SELECT @N< IF (*-1 Trm BARRIER NOT-REL)(0 Trm)(NEGATE 0 Prop);
@@ -1634,9 +1642,9 @@ SELECT:SS_SeAppKasusKongr @N< IF (*-1 $$KASUS BARRIER NOT-REL)(0 $$KASUS)(NEGATE
 #SELECT @N< IF (*-1 Via BARRIER NOT-REL)(0 Via)(NEGATE 0 Prop);
 	## Una ilinniartitsisoq Trond Kirstip uia 40-nik ukioqarpoq.
 
-REMOVE:ReAppToNotN   @N< IF (NEGATE -1 N OR @N<);
-REMOVE:ReAppPropProp @N< IF (-1 Prop)(0 Prop);
-REMOVE:SS_ReAppNotRel ($$NOT-REL @N<) IF (NEGATE *-2 (N $$NOT-REL))(-1 (Rel @POSS))(0 (N 3Sg));
+#REMOVE:ReAppToNotN   @N< IF (NEGATE -1 N OR @N<);
+#REMOVE:ReAppPropProp @N< IF (-1 Prop)(0 Prop);
+#REMOVE:SS_ReAppNotRel ($$NOT-REL @N<) IF (NEGATE *-2 (N $$NOT-REL))(-1 (Rel @POSS))(0 (N 3Sg));
 #REMOVE (Abs @N<) IF (NEGATE *-2 (N Abs))(-1 (Rel @POSS))(0 (N 3Sg));
 #REMOVE (Lok @N<) IF (NEGATE *-2 (N Lok))(-1 (Rel @POSS))(0 (N 3Sg));
 #REMOVE (Trm @N<) IF (NEGATE *-2 (N Trm))(-1 (Rel @POSS))(0 (N 3Sg));
@@ -1911,6 +1919,7 @@ SELECT:Se_alla ("alla") IF (0 NNGUR + GIARTUR); #ringe sandsynlighed for 'allak'
 REMOVE ("allaq") IF (0 ("alla"))(NEGATE *0 animalverb); #
 SELECT:Se_nali ("nali") IF (0 AFFINGERET); #nali+LIR sandsynlig, nalik+LIR usandsynlig
 SELECT TIME + Lok IF (-1 BOS); #'aasaq' for 'aa+TAQ'
+REMOVE ("mannguk") IF (0 ("manngoq"))(0 POSSESSUM); #'roden' snarere end 'tøvejret' naar possessum
 
 # Nomen eller partikel?
 SELECT ("aamma") ; # "aamma" mere sandsynlig end "aak"+Rel
@@ -1922,7 +1931,7 @@ REMOVE ("alip") IF ( 0 ("alinnar")); #'alinnar' vs. 'alip+NAR'
 REMOVE ("piner") IF (NEGATE *0 ("kamik"));
 REMOVE ("pi") + NIP IF (0 ("piniar")); #fjerner pi+NIP+UTE fra 'piniutit'
 REMOVE ("asap") + Inf IF (NEGATE *-1 ("nateq") OR ("timi") OR ("angallat")) ; #asavdlugo vs. assagdlugo
-SELECT ("naa") IF (*0 ("naatser")); #'naavoq' sandsynligere end 'naappoq' ved 'vaekst'
+SELECT ("naa") IF (*0 ("naatser")); #'naavoq' sandsynligere end 'naappoq' ved 'vae
 
 # nv eller vv?
 REMOVE ("pi") + nv IF (0 ("pi") + vv); # vaelger pi+LIR=TIP frem for pi+LIR+TIP
