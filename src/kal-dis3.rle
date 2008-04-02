@@ -1028,7 +1028,8 @@ LIST @POSS = @POSS ;		 # possessor
 LIST @>V = @>V ;                 # adled til verbum # asaneq ajorpara.
 LIST @FOC = @FOC ;		# partikler, der erstatter et verballed
 LIST @X = @X ;                   # dette ord har endnu ikke fået en mapping-regel
-LIST @TEST = @TEST ;
+LIST @TEST = @TEST ; 
+LIST @INTERIM = @INTERIM ;	#en tag til noget, der afventer teoretisk afklaring o.lign.
 LIST @CL->N = @CL->N ;       # Relativsætning stående til nominal til højre
 LIST @INF->N = @INF->N ;	# tag forbeholdt de saerlige adnominale transitive infinitiver uden objekt (ilitsoqqussaralugu oqaatsit)
 LIST @PARATAKSE_INF->N = @PARATAKSE_INF->N ; # Placeholder for infinitiv i paratakse med substantiv. Skal udskiftes i allersidste section
@@ -1119,7 +1120,8 @@ MAP (@HEADLINE) TARGET KONJUNKTION IF (1 EOS)(-1 BOS) ; #Sidste betingelse for a
 MAP (@FOC) TARGET FOKUSPART + (Part) IF (NEGATE *0 V) ;
 MAP (@CONJ) TARGET ("tassa") + Part IF (-*1 V OR vn)(*1 V OR vn OR Prop OR ("\:")) ; #"tassa" brugt foer forklarende hovedsaetning eller i consekutiv bisaetning
 MAP (@i-ADVL>) TARGET (Part) IF (1 N + @<SUBJ) ;
-MAP:AddPartConjAbs (@CONJ) TARGET Part IF (-1 Abs)(*1 Abs BARRIER VFIN) ;
+MAP:HvilkenAdverbial (@INTERIM) TARGET Part IF (0 LU)(-1 N)(1 N);
+MAP:AddPartConjAbs (@CONJ) TARGET Part IF (-1 Abs)(*1 Abs BARRIER VFIN) ;#2.4. tilfoejet  MAP:HvilkenAdverbial foer denne for at forhindre @CONJ på 'Aasaanerani naasut tamalaat alutornartut ILAATIGULLU ruuat ..'
 MAP:AddPartConjRel (@CONJ) TARGET Part IF (-1 Rel)(*1 Rel BARRIER VFIN) ;
 MAP:Nexusadverbial (@CL-ADVL>) TARGET Part IF (-1 BOS)(NEGATE 0 KONJUNKTION) ;
 MAP:Tidsadberbial  (@CL-ADVL>) TARGET TIME IF (*1 Ind OR Opt OR Int)(NEGATE 0 KONJUNKTION) ; #XXX TT
@@ -1164,7 +1166,8 @@ MAP (@SUBJ>) TARGET N IF (-1 ("\("))(1 ("\)"))(-2 @SUBJ>) ; #Parantetiske indsku
 MAP (@<SUBJ) TARGET (Rel) IF (-*1 TRANSVERB + VERB-NOTINF + 34Sg)(0 (Sg)) ;
 MAP (@<SUBJ) TARGET (Rel) IF (-*1 TRANSVERB + 34Pl)(0 (Pl)) ;
 MAP (@<SUBJ) TARGET (Abs Sg) IF (-*1C INTRANSVERB + (3Sg) OR INTRANSVERB + (4Sg) BARRIER ("tassa"))(NEGATE -1 ("\(")) ;
-MAP (@<SUBJ) TARGET (Abs Pl) IF (-*1C INTRANSVERB + (3Pl) OR INTRANSVERB + (4Pl)) ;
+#MAP (@<SUBJ) TARGET (Abs Pl) IF (-*1C INTRANSVERB + (3Pl) OR INTRANSVERB + (4Pl)) ;#rettet 2.4. da alt for bred
+MAP (@<SUBJ) TARGET (Abs Pl) IF (-*1C INTRANSVERB + 3Pl OR 4Pl)(NEGATE *1 INTRANSVERB + 3Pl OR 4Pl)(NEGATE *1 TRANSVERB + 3PlO);#2.4.
 
 # Nominer i absolut kasus er oftest subjekt for intransitivt verbum 
 MAP (@SUBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs IF (*1 INTRANSVERB + 3Sg)(NEGATE *1 TRANSVERB + VFIN)(NEGATE 1 Inf + TRANSVERB);
@@ -1179,6 +1182,7 @@ MAP (@i-N<) TARGET (Ins) IF (*-1 QAR OR LIK)(NEGATE *1 QAR OR LIK) ; # "tit" ska
 #Appellativer i absolut kasus kan være element af syntagmerne subjekt, objekt, tidsangivelse, overskriftsord 
 
 #ADD (@SUBJ>) TARGET APPELLATIV + Abs OR Prop + Abs IF (*1 INTRANSVERB)(NEGATE *1 TRANSVERB)(NEGATE -1 ("\(")) ; #tagger ikke 'ADVL meeqqat pingasut AKUTAKUJUUGINNAAT ... pinnguarput' 30.3.
+MAP (@>N) TARGET Num IF (1 NUMHOVED); # ' .. 2 oorimoorlutik ..'
 MAP (@SUBJ>) TARGET APPELLATIV + Abs OR Prop + Abs OR Num + Abs IF (*1 INTRANSVERB)(NEGATE *1 TRANSVERB)(NEGATE -1 ("\(")) ; #nyt forsoeg 30.3.
 ADD (@OBJ>) TARGET APPELLATIV + (Abs) OR Prop + (Abs) IF (*1 TRANSVERB) ; 
 ADD (@<OBJ) TARGET APPELLATIV + (Abs) OR Prop + (Abs) OR (Adj Abs) IF (-*1 TRANSVERB - Inf BARRIER Inf);
@@ -1192,7 +1196,9 @@ ADD (@<SUBJ) TARGET APPELLATIV + (Rel) OR Prop + (Rel) OR (Adj) IF (-*1 TRANSVER
 #ADD (@ADVL>) TARGET (Lok) OR (Trm) OR (Abl) OR (Via) OR (Aeq) OR (Ins) IF (*1 V OR vn) ;#OR vn tilfoejet 0312
 MAP (@ADVL>) TARGET Lok IF (-1 BOS) ; 
 MAP (@ADVL>) TARGET (Ins) IF (*1 vn OR V)(NEGATE *1 QAR OR LIK) ;#OR vn tilfoejet 0312
-MAP (@i-ADVL>) TARGET (Lok) OR (Abl) OR (Via) OR (Aeq) IF (*1 vn - NAR BARRIER V); #Kun Trm til vn med NAR
+#MAP (@i-ADVL>) TARGET (Lok) OR (Abl) OR (Via) OR (Aeq) IF (*1 vn - NAR BARRIER V); #Kun Trm til vn med NAR. Strammet op 2.4. for at forebygge hit paa 'Illorsuup annerpaap SILATAANI naatsiiverujussuup ILUANI meeqqat ... pinnguarput'
+MAP (@i-ADVL>) TARGET (Lok) OR (Abl) OR (Via) OR (Aeq) IF (1 vn - NAR BARRIER V)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Lok OR Abl OR Via OR Aeq ); #Kun Trm til vn med NAR. Rettet 2.4.
+
 MAP (@i-ADVL>) TARGET (Trm) IF (*1 vn BARRIER V);
 MAP (@ADVL>) TARGET (Lok) OR (Trm) OR (Abl) OR (Via) OR (Aeq) IF (*1 V); #Foerst adled til vn og i-ADVL, derefter andre ADVL
 
@@ -1309,6 +1315,7 @@ MAP (@>N) TARGET Ord IF (1 N) ;
 
 #De "normale" adverbale infinitiver
 MAP (@ADVL>) TARGET Inf + 4Pl OR InfNeg + 4Pl IF (*1 VFIN + 3Pl)(NEGATE *0 ORATIOOBLVERB) ; #EQIMMALLUTIK ippiup qaani narsartami toqqissumiipput.
+MAP (@<ADVL) TARGET Inf OR InfNeg IF (-*1 VFIN + INTRANSVERB + 3Sg LINK NEGATE -*1 Abs + Sg); #maa maaske strammes med betingelser for at undgå hit på adnominaler etc., som ikke allerede er haandteret
 MAP (@<ADVL) TARGET Inf + 4Pl OR InfNeg + 4Pl IF (-*1 VFIN + 3Pl)(NEGATE *0 ORATIOOBLVERB) ; #Qalipaatigissaartuupput IGALAARTUULLUTIK silatimikkullu unalukkersukkanik NAATSIIVEQARLUTIK
 
 #Alle kongruenserne
@@ -1319,6 +1326,7 @@ MAP (@i-ADVL>) TARGET Aeq IF (1 @i-ADVL> + Aeq);
 MAP (@i-ADVL>) TARGET Abl IF (1 @i-ADVL> + Abl);
 MAP (@i-ADVL>) TARGET Ins IF (1 @i-ADVL> + Ins);
 MAP (@POSS) TARGET Rel IF (1 @POSS);
+MAP (@SUBJ>) TARGET Adj IF (-1 @SUBJ>); #2.4. for bred og upraecis??
 	
 # Denne tag er for alle ord vi ikke har funktion til.
 
@@ -1348,7 +1356,13 @@ SELECT Part + ("ilaatigut") IF (NEGATE -1C Rel)(NEGATE 1 VFIN); #Regel 29.3. For
 SELECT:Se3PlPsIfRelTaq 3PlPoss IF (-1 Rel + Pl)(NEGATE *1 TRANSVERB + 3Pl)(0 ADJEKTIVISK + TAQ);#siulittaasuisa nuannarineqarnersaat. Specialtilfaeldet som skal hitte foer foelgende regel
 
 #Forsoeg med helt specifikke REMOVE 30.3.: Det er graensende til umuligt umiddelbart at SELECT/ undgaa SELECT af 3PlPoss (ex 'Meerarpaaluit SIMAARTUINNAAT qernariinnarnik nujallit ... ussagalerput.
-REMOVE Abs + Sg IF (*1 VFIN + INTRANSVERB + 3Pl BARRIER TRANSVERB + Inf + 3SgO); #haandterer ogsaa 3PlPoss + Sg
+#REMOVE Abs + Sg IF (*1 VFIN + INTRANSVERB + 3Pl BARRIER TRANSVERB + Inf + 3SgO); #haandterer ogsaa 3PlPoss + Sg. 2.4. rammer 'Illut qisuinnannguit ataaserlu issunik ujaqqanillu QARMAQARTOQ tamarmik ..'
+REMOVE Abs + Sg IF (*1 VFIN + INTRANSVERB + 3Pl BARRIER TRANSVERB + Inf + 3SgO)(NEGATE 0 LU LINK *-1 Abs)(NEGATE *-1 LU LINK *-1 Abs);#2.4.
+SELECT 3PlPoss IF (-1 Rel + Pl)(0C POSSESSUM)(NEGATE -1 Rel + Sg); #2.4. Hvis 0 kun kan vaere possessum og der er en mulig possessor og muligheden af en singularis possessor kan udelukkes, saa vaelg
+SELECT 3PlPoss IF (-1 ("\"))(-2C 3PlPoss); #2.4. opremsning med komma
+SELECT 3PlPoss IF (0 LU)(-1C 3PlPoss); #2.4. 3. led i opremsning med komma eller andet uden komma
+
+#Reglen herunder fjerner 'Amerlanerit ipiitsuinnaanngivipput ilaasalu IKUSII, nului seeqquilu ...' hvorfor foregaaende regel tilfoejet 2.4.
 REMOVE 3PlPoss + Abs + Pl IF (*1 VFIN + INTRANSVERB + 3Pl)(NEGATE 1 Num + Abs)(NEGATE -1 Rel + Pl LINK -1 Abs + Pl);#Fjern possessumlaesning trods mulig possessor, hvis der ikke staar et adnominalt adled og der tidligere staar et subjekt 
 
 
@@ -1459,7 +1473,8 @@ REMOVE Abs + 2SgPoss + TUQ IF (NEGATE *0 ("illit")); #1.4. Evt. elaboreres med T
 REMOVE Rel + Pl + 2SgPoss IF (NEGATE *0 ("illit"));
 
 REMOVE Abs + 2SgPoss IF (NEGATE *1 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO BARRIER V OR ("\,"))(NEGATE -*1 TRANSVERB + 3SgO BARRIER (",") OR V) ; #Lenes reformuleres igen
-REMOVE 3PlPoss IF (NEGATE -1 Rel + Pl)(NEGATE 0 ("ila"))  ;
+#REMOVE 3PlPoss IF (NEGATE -1 Rel + Pl)(NEGATE 0 ("ila"))  ;#2.4. Sletter ' .. iluatigut ATISAAT ilullissiat ersiallattarlutik
+REMOVE Abs + 3PlPoss + Pl IF (NEGATE -1 Rel + Pl)(NEGATE 0 ("ila"))(NEGATE -*1 VFIN + 3Pl LINK *1 V + 3Pl OR 4Pl);
 REMOVE 3SgPoss IF (NEGATE -1 Rel + Sg) ;
 
 REMOVE Abl + 1SgPoss IF (NEGATE -1 ("ua"))(NEGATE *0 V + 1Sg) ;
@@ -1480,7 +1495,8 @@ REMOVE Abs + Pl + 4SgPoss IF (NEGATE -*1 3PlO CBARRIER Abs + Pl) ; # Lene
 #Overfloedige relativer
 SELECT Rel + Pl IF (1C 3PlPoss) ; 
 REMOVE Rel + Sg IF (NEGATE *1 3SgPoss)(NEGATE *0 TRANSVERB + 3Sg) ;
-REMOVE Rel + Pl IF (NEGATE *1 3PlPoss)(NEGATE *0 TRANSVERB + 3Pl) ;
+#REMOVE Rel + Pl IF (NEGATE *1 3PlPoss)(NEGATE *0 TRANSVERB + 3Pl) ; #Fjerner 'Amerlanerit ipiitsuinnaanngivissut ILAASALU ikusii, nului seeqquuilu ilaartornikuullutillu .. '
+REMOVE Rel + Pl IF (NEGATE *1 3PlPoss)(NEGATE *0 TRANSVERB + 3Pl)(NEGATE 0 LU LINK -1 3Pl) ;
 REMOVE Rel + 4SgPoss + Pl IF (NEGATE 1 3PlPoss)(NEGATE *1 TRANSVERB + Par + 3Pl OR TRANSVERB + Cau + 3Pl OR TRANSVERB + Con + 3Pl) ;
 REMOVE Rel + 4PlPoss + Sg IF (NEGATE 1 3SgPoss)(NEGATE *1 TRANSVERB + Par + 3Sg OR TRANSVERB + Cau + 3Sg OR TRANSVERB + Con + 3Sg CBARRIER Rel + Sg) ;
 SELECT Abs + Pl IF (1 Abs + Pron + Pl); 
@@ -1504,18 +1520,22 @@ SELECT N + NIQAR + TUQ + Sg; #Passivt verbalnomen i pluralis er sjaeldent
 SELECT N + NIQAR + NIRSAQ; #Passivt verbalnomen i pluralis er sjaeldent
 SELECT Ins + LU IF (-1 VFIN)(1 Inf OR InfNeg) ;
 REMOVE Aeq + Pl IF (0 Aeq + Sg)(NEGATE 0 POSSESSUM) ;
+SELECT Abs + Pl IF (*-1 VFIN + 3Pl)(*1 INTRANSVERB + Inf + 4Pl BARRIER V); #2.4. ' .. alinneqartiterput iluatigut ATISAAT ILULLISSIAT ersiallattarlutik.'
+SELECT Abs + Pl IF (*-1 Inf + 4Pl BARRIER VFIN)(*1 VFIN + 3PlO); #2.4. Maa vaere objekt da subjekt formodes at komme foer ledsagemaaden
 
 #Pronominer
 SELECT Pron + Pl IF (1C N + Pl) ;
 
 #Verber
-REMOVE (Inf 1Sg) IF (NEGATE *0 VFIN + 1Sg);
-REMOVE (Inf 2Sg) IF (NEGATE *0 VFIN + 2Sg);
-REMOVE (Inf 1Pl) IF (NEGATE *0 VFIN + 1Pl);
-REMOVE (Inf 2Pl) IF (NEGATE *0 VFIN + 2Pl);
+REMOVE Inf + 1Sg IF (NEGATE *0 VFIN + 1Sg);
+REMOVE Inf + 2Sg IF (NEGATE *0 VFIN + 2Sg);
+REMOVE Inf + 1Pl IF (NEGATE *0 VFIN + 1Pl);
+REMOVE Inf + 2Pl IF (NEGATE *0 VFIN + 2Pl);
+REMOVE Inf + 2SgO IF (NEGATE *0 VFIN + 2SgO)(NEGATE *0 ("illit"));
 REMOVE Opt IF (*0C Ind) ;
 REMOVE Int IF (*0C Ind) ;
-REMOVE Imp IF (*0C Ind) ;
+REMOVE:ReImpIfInd Imp IF (*0C Ind) ;
+REMOVE Imp IF (-1 Ind)(0 LU); #2.4. da ReImpIfInd ikke finder 'Amerlanerit ipiitsuinnaanngivipput ILAASALU ikusii .. ' 
 SELECT NIQAR + V IF (-*1 Abs BARRIER TRANSVERB) ; #Disambiguerer NIQAR fra NIQ efterfulgt af QAR. BARRIER af hensyn til muligheden af at Abs er objekt for et transitivt verbum
 SELECT Inf + 4Sg IF (1 Ins)(2C vn + Abs + Sg)(*1 V + 3Sg); #OBJ pillugu Ins vn+subjekt verbum
 SELECT Inf + 4Sg IF (1C vn + Abs + Sg)(*1 V + 3Sg); #OBJ pillugu vn+subjekt verbum
@@ -1538,7 +1558,7 @@ REMOVE (Int) IF (*1 Ind) ;
 SELECT Ind IF (NEGATE *-1 Ind)(NEGATE *1 Ind OR ("?")); # Et unikt verb
 SELECT Ind + INTRANSVERB + 3Pl IF (-*1 Abs + Pl LINK NEGATE -*1 Rel + Pl BARRIER POSSESSUM); # Piitakkut ikinngutaat QASOQAAT
 #Nominernes SELECT og REMOVE
-SELECT SPATIAL + (Sg) IF (0 POSSESSUM) ;
+SELECT SPATIAL + (Sg) IF (0 POSSESSUM)(NEGATE 0 ("ati") + TAQ) ;#2.4. hitter paa ati + TAQ
 
 REMOVE SPATIAL IF (0 QAR) ;
 SELECT Prop IF (NEGATE -1 BOS);
@@ -1601,7 +1621,7 @@ SELECT ("kina") IF (-1 BOS)(*1 ("?"));
 # Verber   # 
 # ======== #
 
-
+SELECT 3Pl + 3PlO IF (-1 Abs + Pl)(NEGATE 0 GE); #2.4.
 SELECT (3Sg) IF (NEGATE *-1 (@SUBJ> 3Sg))(NEGATE *1 (@<SUBJ 3Sg))(-1*W (@PRED 3Sg));
 
 #SELECT (3Sg) IF (-1*W (@PRED 3Sg));
