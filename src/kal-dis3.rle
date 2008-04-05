@@ -898,10 +898,7 @@ SET 12SUBJVERB = (V 1Sg) | (V 1Du) | (V 1Pl) | (V 2Sg) | (V 2Du) | (V 2Pl) ;
 SET V-NOT-Par = V - Par ;
 SET VERB-NOTINF = V - Inf - InfNeg ;
 LIST CON_CAU = Con OR Cau ;
-# Forståelsesspørgsmål LIST vs. SET. Hvorfor ikke LIST en definition som fx 3SGSUBJVERB og bagefter SET?
-# Svar det ser ut til at det må vere LIST når det kan vere LIST.
-# Spørgsmål om god stil: Er det klogt at samme tags indgår i forskellige set?
-
+LIST PASSIV = (GE SIMA) OR NIQAR OR (TRANSVERB TAQ U) ;
 
 # Nominer
 # -------
@@ -942,6 +939,7 @@ LIST TRMVERB = "iser" ;
 SET MOVE-VERB = LOKVERB | ABLVERB | TRMVERB ;
 
 LIST ORATIOOBLVERB = "ilisimatitsissut" "isuma" "isummer" "naatsorsor" "nalu" "nalunaar" "nalunaarut" "neriup" "oqar" "qular" "qularnar" "paasi" "siunnersor" "taku"  ;
+#fandt ingen 'oqalup' som inquit i corpus 5.4.
 
 LIST VEXCLAM = "sunaaffa" "uffa" "aali" "naak" ;
 
@@ -1357,6 +1355,10 @@ SELECT Part + ("ilaatigut") IF (NEGATE -1C Rel)(NEGATE 1 VFIN); #Regel 29.3. For
 SELECT:Se3PlPsIfRelTaq 3PlPoss IF (-1 Rel + Pl)(NEGATE *1 TRANSVERB + 3Pl)(0 ADJEKTIVISK + TAQ);#siulittaasuisa nuannarineqarnersaat. Specialtilfaeldet som skal hitte foer foelgende regel
 
 #Forsoeg med helt specifikke REMOVE 30.3.: Det er graensende til umuligt umiddelbart at SELECT/ undgaa SELECT af 3PlPoss (ex 'Meerarpaaluit SIMAARTUINNAAT qernariinnarnik nujallit ... ussagalerput.
+REMOVE:PossessorOgAaappaq Par + 3Pl IF (1 ("aappaq") + POSSESSUM)(NEGATE -*1 Abs + Pl);
+#Håndterer den "forkerte" kongruens ved aappaq. aappaq's -1 må være possessor, hvis ikke verbum for et subjekt længere til venstre
+#Milloorumanngitsut aappaa oqarpallappoq:
+
 #REMOVE Abs + Sg IF (*1 VFIN + INTRANSVERB + 3Pl BARRIER TRANSVERB + Inf + 3SgO); #haandterer ogsaa 3PlPoss + Sg. 2.4. rammer 'Illut qisuinnannguit ataaserlu issunik ujaqqanillu QARMAQARTOQ tamarmik ..'
 REMOVE Abs + Sg IF (*1 VFIN + INTRANSVERB + 3Pl BARRIER TRANSVERB + Inf + 3SgO)(NEGATE 0 LU LINK *-1 Abs)(NEGATE *-1 LU LINK *-1 Abs);#2.4.
 SELECT 3PlPoss IF (-1 Rel + Pl)(0C POSSESSUM)(NEGATE -1 Rel + Sg); #2.4. Hvis 0 kun kan vaere possessum og der er en mulig possessor og muligheden af en singularis possessor kan udelukkes, saa vaelg
@@ -1383,73 +1385,103 @@ REMOVE:ReOptIfNotEOS Opt + 3Pl IF (NEGATE 1 EOS); #fanger ambiguiteter med LIK+P
 REMOVE TRANSVERB + GE + 2Sg OR TRANSVERB + QE + 2Sg IF (NEGATE -1**< ("illit"));#"nalunaar" QE vv V Ind 2Sg 3SgO 
 
 # Isolering af ledsaetninger - non-coref.
-SELECT:TempusTimeN Par IF (0 TEMPUSVERB)(-1 TIME); #Egentlig tidsbisætning
+SELECT:ParantetiskParPl Par + PASSIV + 3Pl IF (-3 Rel)(-2 Abs + Pl)(-1 Ins)(1 POSSESSUM);
+
+SELECT:TempusTimeN Par IF (0 TEMPUSVERB)(-1 TIME);
+#Egentlig tidsbisætning
+
 SELECT:TempusUdenTimeN Par + RUTTUR OR Par + GALUAR IF (NEGATE -*1 VFIN) ; 
 
-SELECT:ContempPostPassiv Par + NIQAR IF (*-1 TRANSVERB + VFIN)(1 EOS); #"medens" uden konjunktion og efterstillet
-#RAL-ip assartorsimavai, siorna taamaalinerani 389.000 kubikmeterit assartorneqarsimasut
-#SELECT:ContempPost Par + INTRANSVERB IF (*-1 VFIN)(1 EOS)(*-1 Abs BARRIER ("\,")); #"medens" uden konjunktion og efterstillet. 3.4. Select-er ogsaa trods inquit
+SELECT:ContempPostPassiv Par + NIQAR IF (*-1 TRANSVERB + VFIN)(1 EOS);
+#"medens" uden konjunktion og efterstillet
 
-#SELECT:ContempPost Par + INTRANSVERB IF (*-1 VFIN - ORATIOOBLVERB)(1 EOS)(*-1 Abs BARRIER ("\,")); #"medens" uden konjunktion og efterstillet. '.. aqqusineerannguit nalunaaqaat, nuna .. aqqusininnguussimasoq.' Rettet 3.4. til ikke at hitte efter copula ' .. pissusiviusoq .. atugaavoq .. takutitsisoq."
 SELECT:ContempPost Par + INTRANSVERB IF (*-1 VFIN - ORATIOOBLVERB)(NEGATE -*1 VFIN + U)(1 EOS)(*-1 Abs BARRIER ("\,"));
-SELECT Par + 3Sg IF (-*1 N + Sg)(NEGATE *0 VFIN) ; #Participium i overskrifter
-#SELECT Par + 3Pl IF (-*1 N + Sg)(NEGATE *0 VFIN) ; #Participium i overskrifter. Opgivet da ikke hit på Qilerutip kipinissaanut piareersimasut
-SELECT Par + 3Pl IF (NEGATE *0 VFIN) ; #Participium i overskrifter
-#SELECT:KoncesSg INTRANSVERB + Par + 3Sg IF (@1 Abs + Sg )(*1 VFIN)(*1 Abs OR Rel)(NEGATE *-1 ("\,")); #Bisætning uden konjunktion. Fejl da hit paa 'qarmaqartoq' i 'Illut qisuinnannguit ataaserlu issunik ujaqqanillu qarmaqartoq..'
-#SELECT:KoncesSg INTRANSVERB + Par + 3Sg IF (@1 Abs + Sg )(*1 VFIN)(*1 Abs OR Rel)(NEGATE *-1 ("\,"))(NEGATE *-1 LU LINK *1 VFIN + 3Pl); #Bisætning uden konjunktion. 3.4. vaelger ogsaa trods inquit
-SELECT:KoncesSg INTRANSVERB + Par + 3Sg IF (@1 Abs + Sg )(*1 VFIN - ORATIOOBLVERB)(*1 Abs OR Rel)(NEGATE *-1 ("\,"))(NEGATE *-1 LU LINK *1 VFIN + 3Pl); #Bisætning uden konjunktion.
 
-#SELECT:KoncesPl INTRANSVERB + Par + 3Pl IF (@1 Abs + Pl)(*1 VFIN)(*1 Abs OR Rel)(NEGATE *-1 3PlPoss)(NEGATE 1 LU)(NEGATE -1 BOS); #Bisætning uden konjunktion
-#rettet da hit på aalakoortut i 'angutit aalakoortut ooqattaasarsimanerat'
-#SELECT:KoncesPl INTRANSVERB + Par + 3Pl IF (@1 Abs + Pl)(*1 VFIN - ORATIOOBLVERB)(*1 Abs OR Rel OR Pron)(NEGATE 1 LU)(NEGATE -1 BOS OR Con OR Cau)(NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER N + Rel + Pl) ; #uden (NEGATE *-1 3PlPoss)
-#Ogsaa rettet da hit på 'Illut qisuinnannguit ataaserlu .. qarmaqartoq tamarmik ALINNARTUUNNGIVISSUT .. toqqissumiipput'
+SELECT:OverskriftParSg Par + 3Sg IF (-*1 N + Sg)(NEGATE *0 VFIN) ;
+#Participium i overskrifter
+
+SELECT:OverskriftParPl Par + 3Pl IF (NEGATE *0 VFIN) ;
+#Participium i overskrifter
+
+#SELECT:KoncesSg INTRANSVERB + Par + 3Sg IF (@1 Abs + Sg )(*1 VFIN)(NEGATE *0 ORATIOOBLVERB)(*1 Abs OR Rel)(NEGATE *-1 ("\,"))(NEGATE *-1 LU LINK *1 VFIN + 3Pl);
+#Bisætning uden konjunktion. Fejl 5.4.: 'Simaartuaqqat ilaat IPIKUJUTTOQ alinnikunik qarlilik taamaalluni kaasarfissoriarami ooriutimi ilaat ilummut miloriuppaa akutaaqqat killinnguannut tutsillugu.'
+#SELECT:KoncesSg INTRANSVERB + Par + 3Sg IF (@1 Abs + Sg )(*1 VFIN)(NEGATE *0 ORATIOOBLVERB)(*1 Abs OR Rel)(NEGATE *-1 ("\,"))(NEGATE *-1 LU LINK *1 VFIN + 3Pl); 5.4. forstår jeg ikke længere begrundelsen for syntaksen. Giver op og prøver helt forfra
+#SELECT:KoncesSg INTRANSVERB + Par + 3Sg IF (@1 Abs + Sg OR Rel LINK 1 POSSESSUM3 + Sg)(NEGATE *0 ORATIOOBLVERB + V)(*1 Abs - LIK LINK *1 INTRANSVERB BARRIER V); 
+#Koncession eller tempus uden konjunktion. Subjektet for participiet står først i sætningen. Der må ikke være inquit. Umiddelbart til højre for bisætningen skal der være nexus. Abs må ikke være adled til 0. 5.4. opgiver helt, da gentagne hit på alt andet end de korrekte strukturer. Der skal nok tænkes den anden vej, nemlig ved at præcisere selve participiet i stedet for konteksten eller ved at remove lidt mere først.
+
+SELECT:KoncesPlPlInfIntrans INTRANSVERB + Par + 3Pl IF (-*1 Inf + 4Pl)(NEGATE *0 ORATIOOBLVERB)(*1 Abs + Pl OR Pron + Pl LINK *1 VFIN + INTRANSVERB + 3Pl)(NEGATE 1 LU)(NEGATE -1 BOS OR Con OR Cau)(NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER N + Rel + Pl) ;
+#Specialtilfælde til følgende, hvor bisætningens subjekt er implicit, men nexus klar nok på gr. af ledsagemåde uden for overordnet nexus' scope. 
+
+SELECT:KoncesPlPlInfTrans INTRANSVERB + Par + 3Pl IF (-*1 Inf + 4Pl)(NEGATE *0 ORATIOOBLVERB)(*1 Rel + Pl OR Pron + Pl LINK *1 VFIN + TRANSVERB + 3Pl)(NEGATE 1 LU)(NEGATE -1 BOS OR Con OR Cau)(NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER N + Rel + Pl) ;
+#Specialtilfælde til følgende, hvor bisætningens subjekt er implicit, men nexus klar nok på gr. af ledsagemåde uden for overordnet nexus' scope. 
+#Pinngussanik ilaatigut qaqutiguuissunik pinngualersorlutik pinnguartut simaartuaqqat silataaniit isiginnaarrappaat ilaasa kaasarfisik kaallugit kakkitik millutillattaarlugit.
+
 SELECT:KoncesPlPl INTRANSVERB + Par + 3Pl IF (@1 Abs + Pl)(NEGATE *0 ORATIOOBLVERB)(*1 Abs + Pl OR Pron + Pl LINK *1 VFIN + INTRANSVERB + 3Pl)(NEGATE 1 LU)(NEGATE -1 BOS OR Con OR Cau)(NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER N + Rel + Pl) ;
+
 SELECT:KoncesPlSg INTRANSVERB + Par + 3Pl IF (@1 Abs + Pl)(NEGATE *0 ORATIOOBLVERB)(*1 Abs + Sg OR Pron + Sg LINK *1 VFIN + INTRANSVERB + 3Sg)(NEGATE 1 LU)(NEGATE -1 BOS OR Con OR Cau)(NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER N + Rel + Pl) ;
 
+SELECT:ParNIRSg Par + NIR + 3Sg IF (*0 ORATIOOBLVERB)(NEGATE 0 ("nuap"));
 #En tidlig regel for ledsætninger med NIR. Kontekst 3 person for at forebygge hit på NIR + 4Sg (=NIQ+3.Poss+Lok)
-SELECT Par + NIR + 3Sg IF (*0 ORATIOOBLVERB)(NEGATE 0 ("nuap"));#Maa kunne adskille nuap+NIR fra nuanner
-SELECT Par + NIR + 3Pl IF (*0 ORATIOOBLVERB)(NEGATE 0 ("nuap"));
 
-#Koncessive saetninger med konjunktionen
+SELECT:ParNIRPl Par + NIR + 3Pl IF (*0 ORATIOOBLVERB)(NEGATE 0 ("nuap"));
+#En tidlig regel for ledsætninger med NIR. Kontekst 3 person for at forebygge hit på NIR + 4Sg (=NIQ+3.Poss+Lok)
+
 SELECT:KoncesSgPart INTRANSVERB + Par + 3Sg IF (@1 KONCESSIV BARRIER VFIN);
+#Koncessive saetninger med konjunktionen
+
 SELECT:KoncesPlPart INTRANSVERB + Par + 3Pl IF (@1 KONCESSIV BARRIER VFIN);
+#Koncessive saetninger med konjunktionen
+
 SELECT:KoncesSgPartPost INTRANSVERB + Par + 3Sg IF (-*1 KONCESSIV BARRIER VFIN);
+#Koncessive saetninger med konjunktionen
+
 SELECT:KoncesPlPartPost INTRANSVERB + Par + 3Pl IF (-*1 KONCESSIV BARRIER VFIN);
-
-
-#SELECT:KoncesPl INTRANSVERB + Par + 3Pl IF (@1 Abs + Pl)(*1 VFIN - ORATIOOBLVERB)(*1 Abs OR Rel OR Pron)(NEGATE *-1 3PlPoss)(NEGATE 1 LU)(NEGATE -1 BOS OR Con OR Cau)(NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER N + Rel + Pl) ; #Bisætning uden konjunktion
-#SELECT:KoncesPl INTRANSVERB + Par + 3Pl IF (@1 Abs + Pl)(*1 VFIN - ORATIOOBLVERB)(*1 Abs OR Rel)(NEGATE *-1 3PlPoss)(NEGATE 1 LU)(NEGATE -1 BOS)(NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER N + Rel + Pl) ; #Bisætning uden konjunktion. Hitter innuttaasut i '@CON innuttaasut nunani ineriartortitani inuuniarnermi atugassarititaasut qaffaseqataannik inuuneqalernissartik naatsorsuutigisariaqassavaat .. ANFØRENDE SÆTNING' 
-
-
+#Koncessive saetninger med konjunktionen
 
 REMOVE Par IF (-1 Trm)(1 Prop);
-REMOVE Par IF (*-1 ("\,"))(*1 ("\,"))(NEGATE *0 VFIN BARRIER ("\,")); # Kommaafgrænset apposition til proprium
-#Bisætning med participium står ikke uden subjekt umiddelbart efter finit Cau og Con
+
+REMOVE Par IF (*-1 ("\,"))(*1 ("\,"))(NEGATE *0 VFIN BARRIER ("\,"));
+# Kommaafgrænset apposition til proprium
+
 REMOVE INTRANSVERB + Par + 3Pl IF (-1 Con OR Cau LINK *-1 Abs) ;
-REMOVE INTRANSVERB + Par + 3Pl IF (NEGATE *0 ORATIOOBLVERB); 
-#REMOVE INTRANSVERB + Par + 3Sg IF (NEGATE *0 ORATIOOBLVERB BARRIER ("\,")); #komma forekommer også mellem oratio recte og obliqua
-REMOVE INTRANSVERB + Par + 3Sg IF (NEGATE *0 ORATIOOBLVERB) ; #komma forekommer også mellem oratio recte og obliqua
+#Bisætning med participium står ikke uden subjekt umiddelbart efter finit Cau og Con
+
+REMOVE:ParUdenInquitPl INTRANSVERB + Par + 3Pl IF (NEGATE *0 ORATIOOBLVERB); 
+
+REMOVE:ParUdenInquitSg INTRANSVERB + Par + 3Sg IF (NEGATE *0 ORATIOOBLVERB) ;
+#komma forekommer også mellem oratio recte og obliqua
+
 REMOVE INTRANSVERB + Par + 3Pl IF (1 3PlPoss + Sg)(*1 TRANSVERB + 3SgO) ;
-REMOVE INTRANSVERB + Par + 3Pl IF (NEGATE *-1 Abs + Pl - 4SgPoss BARRIER V)(NEGATE *0 ORATIOOBLVERB)(NEGATE 1 VFIN); #Lokalis læst som possessum skaber problemer
-REMOVE INTRANSVERB + Par + 3Pl IF (1 Con)(2 TRANSVERB + 3Pl) ; #Det er subjektet
+
+REMOVE INTRANSVERB + Par + 3Pl IF (NEGATE *-1 Abs + Pl - 4SgPoss BARRIER V)(NEGATE *0 ORATIOOBLVERB)(NEGATE 1 VFIN);
+#Lokalis læst som possessum skaber problemer
+
+REMOVE INTRANSVERB + Par + 3Pl IF (1 Con)(2 TRANSVERB + 3Pl) ;
+#Det er subjektet
+
 REMOVE INTRANSVERB + Par + 3Sg IF (NEGATE *-1 Abs + Sg BARRIER V)(NEGATE *0 ORATIOOBLVERB)(NEGATE 1 VFIN) ;
-REMOVE INTRANSVERB + Par + 3Sg IF (0 Abs + Sg)(1 Inf + 3SgO);# OR InfNeg +3SgO);
+
+REMOVE INTRANSVERB + Par + 3Sg IF (0 Abs + Sg)(1 Inf + 3SgO - ORATIOOBLVERB);# fjerner ' .. ujarak eqqaminnut TUTTOQ takullugu .. '
+
 REMOVE Par + 3Pl IF (1 Rel + Pl)(2 Rel + Pl)(3 Ins)(4 Rel + Pl)(5 Lok + 3PlPoss) ;
+
 REMOVE Par + 3Pl IF (1 Rel + Pl)(2 Ins)(3 Rel + Pl)(4 Lok + 3PlPoss) ;
+
 REMOVE Par + 4Sg IF (-1 Rel + Pl)(0 3PlPoss + NIQ);
-REMOVE Par + 3Pl IF (-1 N + Pl)(1 VFIN + ORATIOOBLVERB)(*1 Par) ; #Forebygger hit på amerlanerussuteqartut i 'Qallunaat amerlanerussuteqartut isumaqarput or. obliqua*
 
+REMOVE Par + 3Pl IF (-1 N + Pl)(1 VFIN + ORATIOOBLVERB)(*1 Par) ;
+#Forebygger hit på amerlanerussuteqartut i 'Qallunaat amerlanerussuteqartut isumaqarput or. obliqua*
 
-#SELECT INTRANSVERB + Par + 3Sg IF (*-1 Abs + Sg BARRIER VFIN OR Inf);
-#SELECT INTRANSVERB + Par + 3Pl IF (*-1 Abs + Pl)(NEGATE *0 ORATIOOBLVERB BARRIER VFIN)(1 Abs OR ("\,")); #koncession og #temporal uden konjunktion fulgt af subjekt
+SELECT:Obl3SgIntrSubjTh Par + INTRANSVERB + 3Sg IF (*1 ORATIOOBLVERB + V BARRIER ("\,") OR VFIN)(*-1 Abs + Sg)(NEGATE 0 LU LINK -1 Abs + Sg);
+#koncession og temporal uden konjunktion fulgt af subjekt#Ny 3.4.
 
-#SELECT Par + INTRANSVERB + 3Sg IF (*1 ORATIOOBLVERB + V BARRIER ("\,"))(*-1 Abs + Sg)(NEGATE 0 LU LINK -1 Abs + Sg); #hit 3.4. på ' .. , PISSUSIVIUSOQ sakkortooq ernumanartorlu alla atugaavoq Kalaallit Nunaanni pissusiviusunik nillertunik misigittaatsunillu takutitsisoq. 
-SELECT:Obl3SgIntrSubjTh Par + INTRANSVERB + 3Sg IF (*1 ORATIOOBLVERB + V BARRIER ("\,") OR VFIN)(*-1 Abs + Sg)(NEGATE 0 LU LINK -1 Abs + Sg); #Ny 3.4.
-#SELECT:Obl3PlIntrSubjTv INTRANSVERB + Par + 3Pl IF (*-1 ORATIOOBLVERB)(-*1 Abs + Pl BARRIER VFIN)(-*1 LU);
-SELECT:Obl3PlIntrSubjTv INTRANSVERB + Par + 3Pl IF (*-1 ORATIOOBLVERB)(-*1 Abs + Pl BARRIER VFIN)(-*1 LU OR VFIN); #ny 3.4.
+SELECT:Obl3PlIntrSubjTv INTRANSVERB + Par + 3Pl IF (*-1 ORATIOOBLVERB)(-*1 Abs + Pl BARRIER VFIN)(-*1 LU OR VFIN);
+#ny 3.4.
+
 SELECT INTRANSVERB + Par + 3Pl IF (*-1 ORATIOOBLVERB)(-*1 Abs + Pl BARRIER VFIN)(1 LU);
 
 SELECT INTRANSVERB + Par + 3Pl IF (*-1 ORATIOOBLVERB)(-*1 Abs + Pl BARRIER VFIN)(1 EOS);
+
 SELECT INTRANSVERB + Par + 3Pl IF (*1 ORATIOOBLVERB)(-*1 Abs + Pl BARRIER VFIN);
 
 
@@ -1561,6 +1593,8 @@ SELECT INTRANSVERB + (Inf) + (4Sg) IF (NEGATE -1 ("immi")) ;
 REMOVE (Int) IF (*1 Ind) ;
 SELECT Ind IF (NEGATE *-1 Ind)(NEGATE *1 Ind OR ("?")); # Et unikt verb
 SELECT Ind + INTRANSVERB + 3Pl IF (-*1 Abs + Pl LINK NEGATE -*1 Rel + Pl BARRIER POSSESSUM); # Piitakkut ikinngutaat QASOQAAT
+SELECT:ImpUdenIndInt Imp IF (NEGATE *0 Ind OR Int);
+
 #Nominernes SELECT og REMOVE
 SELECT SPATIAL + (Sg) IF (0 POSSESSUM)(NEGATE 0 ("ati") + TAQ) ;#2.4. hitter paa ati + TAQ
 
