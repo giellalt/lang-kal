@@ -45,9 +45,7 @@
 # Delimiters #
 # ========== #
 
-DELIMITERS = "<.>" "<!>" "<?>" "<:>" "<...>" "<¶>"; #<¶> virker ikke og må erstattes af LF 
-                                                    # joda, ¶ fungerer...
-
+DELIMITERS = "<.>" "<!>" "<?>" "<:>" "<...>" "<\;>" "<¶>"; #tilføjet semikolon den 6.4.
 
 # ============= #
 # Tags and sets #
@@ -938,18 +936,18 @@ LIST TRMVERB = "iser" ;
 
 SET MOVE-VERB = LOKVERB | ABLVERB | TRMVERB ;
 
-LIST ORATIOOBLVERB = "ilisimatitsissut" "isuma" "isummer" "naatsorsor" "nalu" "nalunaar" "nalunaarut" "neriup" "oqar" "qular" "qularnar" "paasi" "siunnersor" "taku"  ;
+LIST ORATIOOBLVERB = "ilisimatitsissut" "isuma" "isummer" "naatsorsor" "nalu" "nalunaar" "nalunaarut" "neriup" "oqar" "qular" "qularnar" "paasi" "siunnersor" "taku" "unner" ;
 #fandt ingen 'oqalup' som inquit i corpus 5.4.
 
 LIST VEXCLAM = "sunaaffa" "uffa" "aali" "naak" ;
 
 LIST humverb = "suli" "nalunaar"; # Verb der vil ha humane subj, og ikke er i andre set
-LIST thingverb = "nalunaap";
+LIST thingverb = "nalunaap" "ersip";
 LIST animalverb = "qilup" "pangalip" ; #forudsætter subjekt ANIMAL
 SET HUMVERB = humverb OR ORATIOOBLVERB ; # alle verb  der vil ha humane subj
 
 LIST PSEUDO-HTR = "neri" ;
-LIST TEMPUSVERB = "qaanger" ;
+LIST TEMPUSVERB = "qaanger" "taamaali";
 
 # Nominernes leksikalske klasser
 # =============================
@@ -967,7 +965,7 @@ LIST EDIBLE = "neqi" ;
 LIST DRINKABLE = "kaffi" ;
 
 SET FOOD = EDIBLE | DRINKABLE ;
-LIST THING = "alussaat" "aqqusineq";
+LIST THING = "alussaat" "aqqusineq" ("ati" TAQ) "ilullissiaq" ;
 
 LIST TIME = "sapaat" "qeqqa" "aasaq" "ippassaq";
 LIST NUMHOVED = "krone" "milliardi" "million" "dollari" "oori" "øre" "koruuni" "euro" "dollar" "kiilu" "kilo" "gram";
@@ -1118,7 +1116,8 @@ MAP (@HEADLINE) TARGET KONJUNKTION IF (1 EOS)(-1 BOS) ; #Sidste betingelse for a
 MAP (@FOC) TARGET FOKUSPART + (Part) IF (NEGATE *0 V) ;
 MAP (@CONJ) TARGET ("tassa") + Part IF (-*1 V OR vn)(*1 V OR vn OR Prop OR ("\:")) ; #"tassa" brugt foer forklarende hovedsaetning eller i consekutiv bisaetning
 MAP (@i-ADVL>) TARGET (Part) IF (1 N + @<SUBJ) ;
-MAP:HvilkenAdverbial (@INTERIM) TARGET Part IF (0 LU)(-1 N)(1 N);
+MAP:AdvVedParatakse (@ADVL>) TARGET Part IF (0 LU)(-1 N)(1 N);
+#MAP:HvilkenAdverbial (@INTERIM) TARGET Part IF (0 LU)(-1 N)(1 N);
 MAP:AddPartConjAbs (@CONJ) TARGET Part IF (-1 Abs)(*1 Abs BARRIER VFIN) ;#2.4. tilfoejet  MAP:HvilkenAdverbial foer denne for at forhindre @CONJ på 'Aasaanerani naasut tamalaat alutornartut ILAATIGULLU ruuat ..'
 MAP:AddPartConjRel (@CONJ) TARGET Part IF (-1 Rel)(*1 Rel BARRIER VFIN) ;
 MAP:Nexusadverbial (@CL-ADVL>) TARGET Part IF (-1 BOS)(NEGATE 0 KONJUNKTION) ;
@@ -1152,7 +1151,7 @@ ADD (@ADVL>) TARGET Part IF (1 V);
 # Nominer anden runde
 # ===================
 ADD:MapPossToRelIfPoss (@POSS) TARGET (Rel) IF (1 POSSESSUM3) ; #Ikke 1 men *1 pga. Piitap qangaaniilli soqutigisaa
-ADD:MapMikObjToIns (@MIK-OBJ>) TARGET Ins IF (*1 HTR); #Ikke MAP fordi ogsaa ADVL> mulig
+ADD:MapMikObjToIns (@MIK-OBJ>) TARGET Ins IF (*1 HTR + V); #Ikke MAP fordi ogsaa ADVL> mulig
 MAP:MapSubjToRelSgIfTV (@SUBJ>) TARGET Rel + Sg IF (*1 TRANSVERB + (3Sg) OR (4Sg) BARRIER POSSESSUM3) ;
 MAP:MapSubjToRelPlIfTV (@SUBJ>) TARGET Rel + Pl IF (*1 TRANSVERB + (3Pl) OR (4Pl) BARRIER POSSESSUM3) ;
 MAP:MapSubjToAbsSgIfIV (@SUBJ>) TARGET Abs + Sg IF (*1 INTRANSVERB + VERB-NOTINF + 3Sg OR INTRANSVERB + VERB-NOTINF + 4Sg BARRIER POSSESSUM3)(NEGATE -1 ("\(")) ; 
@@ -1260,7 +1259,7 @@ MAP (@CL-<ADVL) TARGET Ite OR Par IF (*-1 V BARRIER N) ;
 
 ADD (@PRED) TARGET Inf OR InfNeg IF (-1 Ins + LU OR Ins + LUUNNIIT)(*1 VFIN);
 ADD (@PRED) TARGET Inf OR InfNeg IF (-1 Ins + LU OR Ins + LUUNNIIT)(*-1 VFIN);
-ADD (@PRED) TARGET Inf OR InfNeg IF (0 LU OR LUUNNIIT)(*1 VFIN);
+MAP (@PRED) TARGET Inf OR InfNeg IF (0 LU OR LUUNNIIT)(*1 VFIN);
 ADD (@PRED) TARGET Inf OR InfNeg IF (0 LU OR LUUNNIIT)(*-1 VFIN);
 	## Trond atuarpoq allallunilu.
 MAP (@CL-CIT>) TARGET Par + TRANSVERB IF (*1 ORATIOOBLVERB);	
@@ -1349,23 +1348,34 @@ SELECT:Se_taamaattoq ("taamaattoq") + LI IF (-1 BOS) ; #Har vaeret checket for m
 SELECT:Se_tamaakk ("taamaakkaluartoq") IF (-1 BOS) ; #Har vaeret checket for modeksempler, men hidtil ingen fundet. Pas paa!
 
 #Et par sikre
+SELECT:SikkerPossessor01 Rel + Pl IF (1C 3PlPoss);
+#
+
+SELECT:SikkerPossessor02 Rel + Pl IF (1 Pron + Rel LINK 1 3PlPoss);
+#OR for også at tage højde for 'Maaniittut ukua ilaasa .. '
+
+SELECT:SikkerPossessor03 3SgPoss IF (-1C Rel + Sg)(NEGATE *1 VERB-NOTINF + TRANSVERB + 3Sg BARRIER VFIN);
+
 REMOVE:ReImpIfInd Imp IF (*0C Ind) ; #Flyttet hertil 3.4.
 SELECT Part + ("ilaatigut") IF (NEGATE -1C Rel)(NEGATE 1 VFIN); #Regel 29.3. Formoder ilaatigut som possessum altid i umiddelbar forbindelse med V. Skal checkes grundigt
 #SELECT:Se3PlPsIfRel 3PlPoss IF (-1 Rel + Pl)(NEGATE *1 TRANSVERB + 3Pl);#siulittaasuisa nuannarineqarnersaat. Hitter fejl i ' .. naasut .. ILAATIGULLU ruuat' hvorfor regel umiddelbart foran. 30.3.: Ogsaa fejlhit i 'ADVL meeqqat pingasut AKUTAKUJUUGINNAAT naasorpassuit .. akornanni pinnguarput'
 SELECT:Se3PlPsIfRelTaq 3PlPoss IF (-1 Rel + Pl)(NEGATE *1 TRANSVERB + 3Pl)(0 ADJEKTIVISK + TAQ);#siulittaasuisa nuannarineqarnersaat. Specialtilfaeldet som skal hitte foer foelgende regel
 
 #Forsoeg med helt specifikke REMOVE 30.3.: Det er graensende til umuligt umiddelbart at SELECT/ undgaa SELECT af 3PlPoss (ex 'Meerarpaaluit SIMAARTUINNAAT qernariinnarnik nujallit ... ussagalerput.
-REMOVE:PossessorOgAaappaq Par + 3Pl IF (1 ("aappaq") + POSSESSUM)(NEGATE -*1 Abs + Pl);
+REMOVE:VnIkkePar01 Par + 3Pl IF (1 ("aappaq") + POSSESSUM)(NEGATE -*1 Abs + Pl);
 #Håndterer den "forkerte" kongruens ved aappaq. aappaq's -1 må være possessor, hvis ikke verbum for et subjekt længere til venstre
 #Milloorumanngitsut aappaa oqarpallappoq:
 
 #REMOVE Abs + Sg IF (*1 VFIN + INTRANSVERB + 3Pl BARRIER TRANSVERB + Inf + 3SgO); #haandterer ogsaa 3PlPoss + Sg. 2.4. rammer 'Illut qisuinnannguit ataaserlu issunik ujaqqanillu QARMAQARTOQ tamarmik ..'
-REMOVE Abs + Sg IF (*1 VFIN + INTRANSVERB + 3Pl BARRIER TRANSVERB + Inf + 3SgO)(NEGATE 0 LU LINK *-1 Abs)(NEGATE *-1 LU LINK *-1 Abs);#2.4.
+REMOVE:ParIkkeVn01 Abs + Sg IF (*1 VFIN + INTRANSVERB + 3Pl BARRIER TRANSVERB + Inf + 3SgO)(NEGATE 0 LU LINK *-1 Abs)(NEGATE *-1 LU LINK *-1 Abs);#2.4.
 SELECT 3PlPoss IF (-1 Rel + Pl)(0C POSSESSUM)(NEGATE -1 Rel + Sg); #2.4. Hvis 0 kun kan vaere possessum og der er en mulig possessor og muligheden af en singularis possessor kan udelukkes, saa vaelg
 SELECT 3PlPoss IF (-1 ("\"))(-2C 3PlPoss); #2.4. opremsning med komma
 SELECT 3PlPoss IF (0 LU)(-1C 3PlPoss); #2.4. 3. led i opremsning med komma eller andet uden komma
 
-#Reglen herunder fjerner 'Amerlanerit ipiitsuinnaanngivipput ilaasalu IKUSII, nului seeqquilu ...' hvorfor foregaaende regel tilfoejet 2.4.
+SELECT:Ila01 ("ila") + 3PlPoss IF (-1 BOS)(-1**< VFIN + 3Pl)(NEGATE -1**< ("ilaaq"));
+#'Ilaat' først i en sætning er partitiv, hvis subjektet i foregående sætning er 3. plur. Og hvis vi der ikke har været snakket om lapper i sætningen før.
+
+#Reglen herunder fjerner 'Amerlanerit ipiitsuinnaanngivipput ilaasalu IKUSII, nului seeqquilu ...' og 'ILAAT sanimikkut .. queqarput' hvorfor foregaaende 2 regler tilfoejet 2.4.
 REMOVE 3PlPoss + Abs + Pl IF (*1 VFIN + INTRANSVERB + 3Pl)(NEGATE 1 Num + Abs)(NEGATE -1 Rel + Pl LINK -1 Abs + Pl);#Fjern possessumlaesning trods mulig possessor, hvis der ikke staar et adnominalt adled og der tidligere staar et subjekt 
 
 
@@ -1416,7 +1426,14 @@ SELECT:KoncesPlPlInfTrans INTRANSVERB + Par + 3Pl IF (-*1 Inf + 4Pl)(NEGATE *0 O
 #Specialtilfælde til følgende, hvor bisætningens subjekt er implicit, men nexus klar nok på gr. af ledsagemåde uden for overordnet nexus' scope. 
 #Pinngussanik ilaatigut qaqutiguuissunik pinngualersorlutik pinnguartut simaartuaqqat silataaniit isiginnaarrappaat ilaasa kaasarfisik kaallugit kakkitik millutillattaarlugit.
 
-SELECT:KoncesPlPl INTRANSVERB + Par + 3Pl IF (@1 Abs + Pl)(NEGATE *0 ORATIOOBLVERB)(*1 Abs + Pl OR Pron + Pl LINK *1 VFIN + INTRANSVERB + 3Pl)(NEGATE 1 LU)(NEGATE -1 BOS OR Con OR Cau)(NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER N + Rel + Pl) ;
+SELECT:ParPred01 Par + 3Pl IF (-1 BOS)(*1 VFIN + INTRANSVERB - 3Pl OR VFIN + TRANSVERB - 3PlO BARRIER Con OR Cau OR ("\,"))(NEGATE 0 Rel + Sg LINK *1 3SgPoss);
+#En tidsbisætning som kun er participiet. Der skal være et verballed, men det må ikke være 3. plur og det må udelukkes, at "participiet" ikke er et objekt. Også muligheden af relativ sing + enklitis må udelukkes.
+
+SELECT:ParPred02 Par + 3Pl + TEMPUSVERB IF (-1 BOS)(*1 Abs LINK *1 VFIN + INTRANSVERB BARRIER Con OR Cau OR ("\,"))(NEGATE *1 Rel LINK *1 VFIN + TRANSVERB BARRIER Con OR Cau OR ("\,"))(NEGATE 0 Rel + Sg LINK *1 3SgPoss);
+#En tidsbisætning som kun er participiet. Næsten som ParPred01, men uden krav om at at hovednexus ikke må være pluralis. Til gengæld med en leksikal begrænsning i 0.
+
+SELECT:KoncesPlPl INTRANSVERB + Par + 3Pl IF (@1 Abs + Pl)(NEGATE *0 ORATIOOBLVERB)(*1 Abs + Pl OR Pron + Pl LINK *1 VFIN + INTRANSVERB + 3Pl)(NEGATE 1 LU OR LIK OR QAR)(NEGATE -1 BOS OR Con OR Cau)(NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER N + Rel + Pl) ;
+#6.4. tilføjes LIK og QAR i betingelsen, fordi hit på 'Angutit SIMAARTUT arlallit .. *
 
 SELECT:KoncesPlSg INTRANSVERB + Par + 3Pl IF (@1 Abs + Pl)(NEGATE *0 ORATIOOBLVERB)(*1 Abs + Sg OR Pron + Sg LINK *1 VFIN + INTRANSVERB + 3Sg)(NEGATE 1 LU)(NEGATE -1 BOS OR Con OR Cau)(NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER N + Rel + Pl) ;
 
@@ -1838,6 +1855,9 @@ REMOVE Lok + Pl IF (-1 Rel + Sg)(0 3SgPoss)(NEGATE 1 3SgPoss); #'ippiup QAANI na
 # =====================
 SELECT humverb + Ind IF (-*1 @SUBJ> + HUMAN); #nalunaarpoq
 SELECT thingverb + Ind IF (-*1 @SUBJ> + THING); #nalunaappoq
+SELECT thingverb + Inf IF (-*1 @SUBJ> + THING BARRIER VFIN);
+#Infinitiver, der vikarierer for VFIN
+
 	# Eit sikkert VFIN til venstre utelukker VFIN til høgre
 REMOVE VFIN IF (*-1C VFIN)(NEGATE 0 LU); 
 
@@ -2007,6 +2027,11 @@ SELECT APPELLATIV IF (0 ("Aleqa")) ;
 # Hvilket praefingeret pronomen?
 SELECT ("taanna\(taavaniittoq\)") IF (-1**< ("avannaq"));
 SELECT ("taanna"); #Den hyppigste
+
+# Spatial med eller uden possessor?
+SELECT Via - POSSESSUM IF (NEGATE -1 Rel);
+#"qaaq" N Via Sg 3PlPoss @i-ADVL> eller "qaaq" N Via Pl @i-ADVL>
+
 
 #SELECT COMMONAFFSTRING ; #Testet 29.3. Maa rettes, da fejl mere end 50%
 
