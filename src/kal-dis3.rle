@@ -1030,6 +1030,7 @@ LIST @CL->N = @CL->N ;       # Relativsætning stående til nominal til højre
 LIST @INF->N = @INF->N ;	# tag forbeholdt de saerlige adnominale transitive infinitiver uden objekt (ilitsoqqussaralugu oqaatsit)
 LIST @PARATAKSE_INF->N = @PARATAKSE_INF->N ; # Placeholder for infinitiv i paratakse med substantiv. Skal udskiftes i allersidste section
 LIST @PRED2 = @PRED2 ; # saettes paa verbet i en bunden ledsaetning
+LIST @ABSOLUT_PRED = @ABSOLUT_PRED ;	#Participier med nexus inde i en NP eller afterthoughts
 SET TAGGED = @PRED OR @SUBJ> OR @<SUBJ OR @OBJ> OR @<OBJ OR @ADVL> OR @<ADVL OR @CL-ADVL> OR @CL-<ADVL OR @CL-CIT> OR @CL-<CIT OR @i-SUBJ> OR @i-<SUBJ 
 OR @i-OBJ> OR @i-<OBJ OR @i-ADVL> OR @i-<ADVL OR @INTERJ OR @PROP> OR @HNOUN OR @>N OR @N< OR @i->N OR @i-N< OR @POSS OR @>V ;
 
@@ -1241,11 +1242,15 @@ MAP (@PARATAKSE_INF->N) TARGET Inf + LU IF (1 Abs + vn) ; #misissueqqissaarutaal
 MAP (@INF->N) TARGET Inf + 4Sg IF (1 Ins)(2C vn + Abs + Sg)(*1 V + 3Sg); #OBJ pillugu Ins vn+subjekt verbum 
 MAP (@INF->N) TARGET Inf + 4Sg IF (1C vn + Abs + Sg)(*1 V + 3Sg); #OBJ pillugu vn+subjekt verbum
 MAP (@INF->N) TARGET Inf + 4Sg + 3SgO IF (-1 @SUBJ> OR ("\)") OR ("\"")) ; #Det blev alt for ad hoc med baade citation og parantes
+MAP (@ABSOLUT_PRED) TARGET Par + PASSIV + 3Pl IF (-3 Rel)(-2 Abs + Pl)(-1 Ins)(1 POSSESSUM);#matcher SELECT:ParantetiskParPl
 
 
 # Nominer anden runde
 # ===================
 MAP:SgObjKongruens (@OBJ>) TARGET Abs + Sg IF (1 Abs + Sg + @OBJ>) ; #Kongruent N til N mappet med SgObj. Skal maaske specificeres??
+
+MAP (@i-ADVL>) TARGET Part IF (-2 BOS)(-1 $$KASUS)(1 $$KASUS + vn);
+#'Pinngussanik ILAATIGUT qaqutiguuissunik .. '
 #Herfra og fremad er det igen regler fra Nuuk
 
 
@@ -1856,6 +1861,8 @@ REMOVE Lok + Pl IF (-1 Rel + Sg)(0 3SgPoss)(NEGATE 1 3SgPoss); #'ippiup QAANI na
 SELECT humverb + Ind IF (-*1 @SUBJ> + HUMAN); #nalunaarpoq
 SELECT thingverb + Ind IF (-*1 @SUBJ> + THING); #nalunaappoq
 SELECT thingverb + Inf IF (-*1 @SUBJ> + THING BARRIER VFIN);
+REMOVE ("ip") + TRANSVERB (NEGATE -1 Aeq); #Ntut ippara er vel eneste mulige transitiv af ippoq
+
 #Infinitiver, der vikarierer for VFIN
 
 	# Eit sikkert VFIN til venstre utelukker VFIN til høgre
@@ -2016,7 +2023,7 @@ REMOVE ("pi") + nv IF (0 ("pi") + vv); # vaelger pi+LIR=TIP frem for pi+LIR+TIP
 SELECT ("pi") + nn ; # ad hoc for at disambiguere pi+nn fra pi+vn
 
 # Enkelte derivativer
-REMOVE IR + nv IF (0 V + vv) ;
+REMOVE IR + nv IF (0 V + vv OR ("ila")) ;#'ilaarpaa' ikke 'ila+IR'
 REMOVE U + nv IF (0 V + vv) ;
 REMOVE U + NAR; #"eqqaq" U nv NAR vv for 'eqqaanar' vist en utaenkelig kombination
 REMOVE HTR + NAR; #naeppe en mulig kombination
