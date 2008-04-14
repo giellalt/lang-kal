@@ -951,10 +951,14 @@ LIST TEMPUSVERB = "qaanger" "taamaali";
 
 # Nominernes leksikalske klasser
 # =============================
+#Overvejelser om semantiske klasser - konkrete eksempler 
+#partit (@POSS) siulittar+HTR+TUQ vs. siu+LIK=TAQ+U+TUQ: ORGANISATION og TITEL listes og begge tilføjes SET HUMAN. Så kan man selecte HUMAN hvis @POSS er HUMAN
+
 LIST MAANED = "januaari" "februaari" "marsi" "apriili" "maaji" "juuni" "juuli" "aggusti" "augusti" "septembari" "oktobari" "novembari" "decembari";
-LIST SPATIAL = "sani" "ati" "quli" "at" "ilu" "eqqaq" "silat" "aki";#'aki' tilfoejet 30.3.
+LIST SPATIAL = "aki" "at" "ati" "quli"  "ilu" "eqqaq" "sani" "silat" "siu";#'aki' tilfoejet 30.3.
 LIST USPATIAL = "sanik" "ateq";
 
+LIST ORGANISATION = "Inatsisartut" "parti" "Siumut" "Atassut" "IA" ("Naalakkersuisoq" Pl) "Demokratit";
 LIST ANIMAL = "qimmeq" "qitsuk" "puisi" ;
 LIST ABSTRACT = "taaq" ;
 
@@ -965,7 +969,7 @@ LIST EDIBLE = "neqi" ;
 LIST DRINKABLE = "kaffi" ;
 
 SET FOOD = EDIBLE | DRINKABLE ;
-LIST THING = "alussaat" "aqqusineq" ("ati" TAQ) "ilullissiaq" ;
+LIST THING = "alussaat" "aqqusineq" ("ati" TAQ) "ilullissiaq" "siu";
 
 LIST TIME = "sapaat" "qeqqa" "aasaq" "ippassaq";
 LIST NUMHOVED = "krone" "milliardi" "million" "dollari" "oori" "øre" "koruuni" "euro" "dollar" "kiilu" "kilo" "gram";
@@ -977,14 +981,15 @@ LIST COMPOUND_N = "Windows" "Linux" "program" ;
 LIST Mal = "Trond" "Per" ;
 LIST Fem = "Kirsten" ;
 LIST Sur = "Rasmussen" "Trosterud" ;
+LIST TITEL = ("siulittar" TUQ) ;
 
-SET FIRSTNAME = Mal | Fem | ("Nuka") ;
+SET FIRSTNAME = Mal | Fem | ("Nuka") | ("A") | ("B") | ("C") | ("Chr") | ("D") | ("E") | ("F") | ("G") | ("H") | ("I") | ("J") | ("K") | ("Kr") | ("L") | ("M") | ("N") | ("O") | ("P") | ("Q") | ("R") | ("S") | ("T") | ("U") | ("V") | ("W") | ("X") | ("Y") | ("Z") | ("Æ") | ("Ø") | ("Å") ;
 SET NAME = FIRSTNAME | Sur ;
 SET NOT-FIRST = WORD - FIRSTNAME ;
 
 LIST FAM = "illoq" ;
 
-SET HUMAN = FAM OR NAME ;
+SET HUMAN = FAM OR NAME OR TITEL OR ORGANISATION;
 
 
 
@@ -1129,7 +1134,7 @@ MAP:Tidsadberbial  (@<CL-ADVL) TARGET TIME IF (-*1 Ind OR Opt OR Int)(NEGATE 0 K
 # Nominer - De sikre MAP regler
 # =============================
 MAP (@<SUBJ) TARGET (Abs) IF (*-1 @FOC BARRIER (V));
-MAP (@HNOUN) TARGET APPELLATIV + (Abs) OR Prop + (Abs) IF (NEGATE *0 VERB-NOTINF)(NEGATE 1 TRANSVERB + Inf OR TRANSVERB + InfNeg);
+MAP (@HNOUN) TARGET APPELLATIV + Abs OR Prop + Abs OR Abbr - FIRSTNAME IF (NEGATE *0 VERB-NOTINF)(NEGATE 1 TRANSVERB + Inf OR TRANSVERB + InfNeg);
 MAP (@i-ADVL>) TARGET Trm IF (1 N + (vn)) ;
 MAP:SgObjGE (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (*1 Rel)(*1 TRANSVERB + GE + 3SgO BARRIER VERB-NOTINF) ; 
 MAP:SgObj (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (1 TRANSVERB + 3SgO) ; 
@@ -1151,7 +1156,9 @@ ADD (@ADVL>) TARGET Part IF (1 V);
 
 # Nominer anden runde
 # ===================
-ADD:MapPossToRelIfPoss (@POSS) TARGET (Rel) IF (1 POSSESSUM3) ; #Ikke 1 men *1 pga. Piitap qangaaniilli soqutigisaa
+MAP:PossAcrFoerAdvl (@POSS) TARGET (ACR Rel) IF (1 Via)(2 vn + 3SgPoss) ;
+MAP:PossNFoerAdvl (@POSS) TARGET (Rel + Sg) IF (1 Via)(2 vn + 3SgPoss) ;
+ADD:MapPossToRelIfPoss (@POSS) TARGET (Rel) IF (1 POSSESSUM3) ;
 ADD:MapMikObjToIns (@MIK-OBJ>) TARGET Ins IF (*1 HTR + V); #Ikke MAP fordi ogsaa ADVL> mulig
 MAP:MapSubjToRelSgIfTV (@SUBJ>) TARGET Rel + Sg IF (*1 TRANSVERB + (3Sg) OR (4Sg) BARRIER POSSESSUM3) ;
 MAP:MapSubjToRelPlIfTV (@SUBJ>) TARGET Rel + Pl IF (*1 TRANSVERB + (3Pl) OR (4Pl) BARRIER POSSESSUM3) ;
@@ -1168,7 +1175,7 @@ MAP (@<SUBJ) TARGET (Abs Sg) IF (-*1C INTRANSVERB + (3Sg) OR INTRANSVERB + (4Sg)
 MAP (@<SUBJ) TARGET (Abs Pl) IF (-*1C INTRANSVERB + 3Pl OR 4Pl)(NEGATE *1 INTRANSVERB + 3Pl OR 4Pl)(NEGATE *1 TRANSVERB + 3PlO);#2.4.
 
 # Nominer i absolut kasus er oftest subjekt for intransitivt verbum 
-MAP (@SUBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs IF (*1 INTRANSVERB + 3Sg)(NEGATE *1 TRANSVERB + VFIN)(NEGATE 1 Inf + TRANSVERB);
+MAP (@SUBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs OR Pron + Abs + Sg IF (*1 INTRANSVERB + 3Sg)(NEGATE *1 TRANSVERB + VFIN)(NEGATE 1 Inf + TRANSVERB);
 
 # Ins er tit adled til inkorporet objekt
 MAP (@i->N) TARGET (Ins) IF (*1 QAR OR LIK) ; # "tit" skal præciseres eller reduceres til en ADD-regel
@@ -1187,7 +1194,7 @@ ADD (@<OBJ) TARGET APPELLATIV + (Abs) OR Prop + (Abs) OR (Adj Abs) IF (-*1 TRANS
 #ADD (@CL-ADVL>) TARGET APPELLATIV + (Abs) IF (-1 BOS)(NOT 0 POSSESSUM) ; #?? Lyder som en fejl. Jf. MAP:Nexusadverbial
 
 #Appellativer og proprier i relativ kasus kan være element af syntagmerne subjekt og possessor 
-ADD (@SUBJ>) TARGET APPELLATIV + (Rel) OR Prop + (Rel) IF (*1 TRANSVERB) ; #Husk at definerede sæt ikke skal have paranteser.
+ADD (@SUBJ>) TARGET APPELLATIV + (Rel) OR Prop + (Rel) IF (*1 TRANSVERB BARRIER 3SgPoss) ;
 ADD (@<SUBJ) TARGET APPELLATIV + (Rel) OR Prop + (Rel) OR (Adj) IF (-*1 TRANSVERB + VERB-NOTINF BARRIER ("\,")) ;
 
 #Nomen i oblik kasus kan være adverbalt adled
@@ -1301,7 +1308,7 @@ MAP (@ADVL>) TARGET (Part NOT KONJUNKTION); #Rettet til ikke at medtage konjunkt
 # ================
 MAP (@INTERJ) TARGET Interj (NEGATE *0 V) ;
 
-MAP (@PROP>) TARGET Prop IF (1 Prop);
+MAP (@PROP>) TARGET Prop OR FIRSTNAME IF (1 Prop);
 
 MAP (@PROP>) TARGET Abbr IF (*1 Prop BARRIER NOT-Abbr) ;
 
@@ -1522,6 +1529,9 @@ REMOVE Abs + MI + Sg IF (NEGATE -1 BOS)(NEGATE *1 CON_CAU + 3Sg);
 SELECT COMPOUND_N + Prop + Attr IF (1 COMPOUND_N) ; #Nominer, der bruges compound-lignende (Windows, program, Linux)
 SELECT Prop + Attr IF (1 Prop + Sg) ;
 REMOVE (Prop Attr) IF (NEGATE 1 Prop);
+SELECT FIRSTNAME IF (1 Prop + Sg) ; #vælger stort bogstav qua forkortelse frem for lille bogstav
+SELECT Abs IF (-2 Prop + Abs)(-1 ("\,"))(NEGATE 0 Rel LINK 1 POSSESSUM3); #'Enoksen, SIUMUT' 'Kleist, INUIT Ataqatigiit'
+SELECT Abs IF (-3 Prop + Abs)(-2 ("\,"))(-1 Abs)(NEGATE 0 Rel LINK 1 POSSESSUM3); #'Enoksen, SIUMUT' 'Kleist, Inuit ATAQATIGIIT'
 
 #Overfloedige possessumformer
 SELECT 2SgPoss IF (*0 ("qujanaq"))(NEGATE -1 ("uanga"))(NEGATE *0 VFIN) ; #Kontekst, der maa sikres foer foelgende REMOVE
@@ -1594,6 +1604,7 @@ REMOVE Opt IF (*0C Ind) ;
 REMOVE Int IF (*0C Ind) ;
 #REMOVE:ReImpIfInd Imp IF (*0C Ind) ; #Flyttes meget tidligt 3.4.
 REMOVE Imp IF (-1 Ind)(0 LU); #2.4. da ReImpIfInd ikke finder 'Amerlanerit ipiitsuinnaanngivipput ILAASALU ikusii .. ' 
+SELECT NIQAR + V IF (-*1 @SUBJ> + Abs) ; #Disambiguerer NIQAR fra NIQ efterfulgt af QAR. BARRIER af hensyn til muligheden 
 SELECT NIQAR + V IF (-*1 Abs BARRIER TRANSVERB) ; #Disambiguerer NIQAR fra NIQ efterfulgt af QAR. BARRIER af hensyn til muligheden af at Abs er objekt for et transitivt verbum
 SELECT Inf + 4Sg IF (1 Ins)(2C vn + Abs + Sg)(*1 V + 3Sg); #OBJ pillugu Ins vn+subjekt verbum
 SELECT Inf + 4Sg IF (1C vn + Abs + Sg)(*1 V + 3Sg); #OBJ pillugu vn+subjekt verbum
@@ -1820,6 +1831,9 @@ SELECT (Abs Sg) IF (0C (@SUBJ>))(*1C 3SGSUBJVERB);
 
 # NP-er
 # -----
+SELECT HUMAN + Rel IF (1 HUMAN + POSSESSUM3);
+SELECT HUMAN IF (-1 @POSS + HUMAN);
+#Vælger siulittar+HTR+TUQ for siu+LIK=TAQ+U+TUQ efter possessum 'partit'
 
 SELECT (Abs Sg) IF (-1 (Abs Sg))(0 LU)(NEGATE 0 Rel LINK 1 POSSESSUM3);
 	## Jaakup Juda qatanngutaalu.
