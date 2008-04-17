@@ -65,6 +65,7 @@ LIST COMMONAFFSTRING = \= ;
 
 LIST N = N ;
 LIST V = V ;
+LIST N* = N* ; #Præprocessorens tagging af N, der indgår i compounds
 LIST Part = Part ;
 LIST Pron = Pron ;
 LIST Adj = Adj ;
@@ -882,7 +883,7 @@ SET AFFINGERET = ALLAP | ALLAP_TIP | ALLAP_TIP_HTR | ARAQ | IAR | IAR_HTR | IP |
 SET TRANSVERB = 1SgO | 2SgO | 3SgO | 4SgO | 1PlO | 2PlO | 3PlO | 4PlO ;
 SET INTRANSVERB = V - TRANSVERB ;
 SET VFIN = Ind | Opt | Int | Imp ;
-SET DOTR = QQU | TIP | SAR ;
+SET DOTR = QQU | TIP | SAR | ("ussersuup") ;
 #SET SGOBJVERB =  1SgO | 2SgO | 3SgO | 4SgO ;
 #SET PLOBJVERB =  1PlO | 2PlO | 3PlO | 4PlO ;
 LIST 3SGSUBJVERB = (V 3Sg) ;
@@ -946,7 +947,7 @@ LIST thingverb = "nalunaap" "ersip";
 LIST animalverb = "qilup" "pangalip" ; #forudsætter subjekt ANIMAL
 SET HUMVERB = humverb OR ORATIOOBLVERB ; # alle verb  der vil ha humane subj
 
-LIST PSEUDO-HTR = "neri" ;
+LIST IntransTrans = "neri" "ilassior"; #Set til disambiguering af Ins, VIP vs. HTR mv.
 LIST TEMPUSVERB = "qaanger" "taamaali";
 
 # Nominernes leksikalske klasser
@@ -988,8 +989,9 @@ SET NAME = FIRSTNAME | Sur ;
 SET NOT-FIRST = WORD - FIRSTNAME ;
 
 LIST FAM = "illoq" ;
+LIST HUM = "inuk" "arnaq" "angut" "ila" ;
 
-SET HUMAN = FAM OR NAME OR TITEL OR ORGANISATION;
+SET HUMAN = FAM OR NAME OR TITEL OR ORGANISATION OR HUM;
 
 
 
@@ -1013,8 +1015,8 @@ LIST @i-SUBJ> = @i-SUBJ> ;   # subjekt der står til inkorporeret dotr verbal t.
 LIST @i-<SUBJ = @i-<SUBJ ;   # subjekt der står til inkorporeret dotr verbal t.v.
 LIST @MIK-OBJ> = @MIK-OBJ> ; # indef objekt ved HTR til hoejre
 #LIST @<MIK-OBJ = @<MIK-OBJ ; # indef objekt ved HTR til venstre #Findes den kontekst overhovedet??
-LIST @i-OBJ> = @i-OBJ> ;     # objekt der står til inkorporeret verbal t.h.
-LIST @i-<OBJ = @i-<OBJ ;	 # objekt der står til inkorporeret verbal t.v.
+LIST @i-OBJ> = @i-OBJ> ;     # tingsobjekt i Ins eller personobjekt i Trm ved dotr th
+LIST @i-<OBJ = @i-<OBJ ;	 # tingsobjekt i Ins eller personobjekt i Trm ved dotr tv
 LIST @i-ADVL> = @i-ADVL> ;	 # adverbial der står til inkorporeret verbal t.h.
 LIST @i-<ADVL = @i-<ADVL ;	 # adverbial der står til inkorporeret verbal t.v.
 LIST @INTERJ = @INTERJ ;	 # interjektion
@@ -1156,9 +1158,11 @@ ADD (@ADVL>) TARGET Part IF (1 V);
 
 # Nominer anden runde
 # ===================
-MAP:PossAcrFoerAdvl (@POSS) TARGET (ACR Rel) IF (1 Via)(2 vn + 3SgPoss) ;
-MAP:PossNFoerAdvl (@POSS) TARGET (Rel + Sg) IF (1 Via)(2 vn + 3SgPoss) ;
-ADD:MapPossToRelIfPoss (@POSS) TARGET (Rel) IF (1 POSSESSUM3) ;
+MAP (@POSS) TARGET ACR + Rel IF (1 3SgPoss);
+MAP:PossAcrFoerAdvl (@POSS) TARGET ACR + Rel IF (1 Via)(2 vn + 3SgPoss) ;
+MAP:PossNFoerAdvl (@POSS) TARGET Rel + Sg IF (1 Via)(2 vn + 3SgPoss) ;
+MAP:MapPossToRelSgIfPoss (@POSS) TARGET Rel + Sg IF (1 3SgPoss) ;
+MAP:MapPossToRelPlIfPoss (@POSS) TARGET Rel + Pl IF (1 3PlPoss) ;
 ADD:MapMikObjToIns (@MIK-OBJ>) TARGET Ins IF (*1 HTR + V); #Ikke MAP fordi ogsaa ADVL> mulig
 MAP:MapSubjToRelSgIfTV (@SUBJ>) TARGET Rel + Sg IF (*1 TRANSVERB + (3Sg) OR (4Sg) BARRIER POSSESSUM3) ;
 MAP:MapSubjToRelPlIfTV (@SUBJ>) TARGET Rel + Pl IF (*1 TRANSVERB + (3Pl) OR (4Pl) BARRIER POSSESSUM3) ;
@@ -1200,14 +1204,14 @@ ADD (@<SUBJ) TARGET APPELLATIV + (Rel) OR Prop + (Rel) OR (Adj) IF (-*1 TRANSVER
 #Nomen i oblik kasus kan være adverbalt adled
 #ADD (@ADVL>) TARGET (Lok) OR (Trm) OR (Abl) OR (Via) OR (Aeq) OR (Ins) IF (*1 V OR vn) ;#OR vn tilfoejet 0312
 MAP (@ADVL>) TARGET Lok IF (-1 BOS) ; 
-MAP (@ADVL>) TARGET (Ins) IF (*1 vn OR V)(NEGATE *1 QAR OR LIK) ;#OR vn tilfoejet 0312
+MAP (@ADVL>) TARGET (Ins) IF (*1 vn OR V - DOTR)(NEGATE *1 QAR OR LIK) ;#OR vn tilfoejet 0312
 #MAP (@i-ADVL>) TARGET (Lok) OR (Abl) OR (Via) OR (Aeq) IF (*1 vn - NAR BARRIER V); #Kun Trm til vn med NAR. Strammet op 2.4. for at forebygge hit paa 'Illorsuup annerpaap SILATAANI naatsiiverujussuup ILUANI meeqqat ... pinnguarput'
 MAP (@i-ADVL>) TARGET (Lok) OR (Abl) OR (Via) OR (Aeq) IF (1 vn - NAR BARRIER V)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Lok OR Abl OR Via OR Aeq ); #Kun Trm til vn med NAR. Rettet 2.4.
 
 MAP (@i-ADVL>) TARGET (Trm) IF (*1 vn BARRIER V);
 MAP (@ADVL>) TARGET (Lok) OR (Trm) OR (Abl) OR (Via) OR (Aeq) IF (*1 V); #Foerst adled til vn og i-ADVL, derefter andre ADVL
 
-ADD (@<ADVL) TARGET (Lok) OR (Trm) OR (Abl) OR (Via) OR (Aeq) OR (Ins) IF (-*1 V BARRIER ("\,"))(NEGATE -1 ("\(")) ;
+ADD (@<ADVL) TARGET (Lok) OR (Trm) OR (Abl) OR (Via) OR (Aeq) OR (Ins) IF (-*1 V BARRIER ("\,") OR LU)(NEGATE -1 ("\(")) ;
 MAP (@<ADVL) TARGET N IF (-1 ("\("))(1 ("\)"))(-2 @<ADVL) ; #Parantetiske indskud samme led som foregående ord
 
 
@@ -1285,16 +1289,20 @@ MAP (@CL-<CIT) TARGET Inf + TRANSVERB + 1Pl OR InfNeg + TRANSVERB + 1Pl IF (-*1 
 #' ... Ilisimatusarfiup pigilissagaa ministerit ... isumaqatigiipput, ... sunniutai maluginiarneqassasut.
 MAP (@CL-<CIT) TARGET Par + INTRANSVERB + 3Pl IF (*-1 ORATIOOBLVERB)(*-1 ("\,"))(*-1 Abs + Pl BARRIER ("\,")); 
 MAP (@i-SUBJ>) TARGET Trm IF (*1 DOTR);
-MAP (@i-OBJ>)  TARGET Trm IF (*1 DOTR)(NEGATE 0 TIME);
+#MAP (@i-OBJ>)  TARGET Trm IF (*1 DOTR)(NEGATE 0 TIME);
 
+MAP (@i-OBJ>) TARGET Ins IF (-*1 Abs)(1 DOTR);
 #MAP (@ADVL> @<ADVL) TARGET Trm OR Abl OR Lok OR Aeq OR Via ; Erstattet af de to ADD regler under Nominer
 
 
-ADD (@OBJ>) TARGET Ins IF (*1 PSEUDO-HTR);
+ADD (@OBJ>) TARGET Ins IF (*1 IntransTrans);
 MAP (@ADVL> @<ADVL) TARGET Ins ;
 
 MAP (@SUBJ>) TARGET (Abs Sg) IF (*-1 BOS BARRIER N)(NEGATE 0 TIME)(1 INTRANSVERB + Ind + 3Sg);
 MAP (@SUBJ>) TARGET (Abs Pl) IF (*-1 BOS BARRIER N)(NEGATE 0 TIME)(1 INTRANSVERB + Ind + 3Pl);
+MAP (@SUBJ) TARGET Rel + Pl IF (*1 TRANSVERB + 3Pl + 3PlO)(-1 Par + 3Pl); #Subjektet, når bisætningens subjekt er implicit objekt 'Pinngussanik ilaatigut qaqutiguuissunik pinngualersorlutik pinnguartut SIMAARTUAQQAT silataaniit isiginnaarrappaat ... '
+MAP (@SUBJ>) TARGET Rel + Pl IF (*1 TRANSVERB + 3Pl + 3PlO)(*1 Abs + Pl BARRIER TRANSVERB); #Den normale SOV
+
 
 #MAP (@SUBJ> @<SUBJ @<OBJ @OBJ> @HNOUN) TARGET Abs ; #Rettet til følgende ADD-regel 20080123
 #ADD (@SUBJ> @<SUBJ @<OBJ @OBJ> @HNOUN) TARGET Abs ; #Går efterhånden ud mod nye mere specifikke MAP under Nominer
@@ -1386,12 +1394,12 @@ SELECT 3PlPoss IF (0 LU)(-1C 3PlPoss); #2.4. 3. led i opremsning med komma eller
 
 SELECT:Ila01 ("ila") + 3PlPoss IF (-1 BOS)(-1**< VFIN + 3Pl)(NEGATE -1**< ("ilaaq"));
 #'Ilaat' først i en sætning er partitiv, hvis subjektet i foregående sætning er 3. plur. Og hvis vi der ikke har været snakket om lapper i sætningen før.
-
-#Reglen herunder fjerner 'Amerlanerit ipiitsuinnaanngivipput ilaasalu IKUSII, nului seeqquilu ...' og 'ILAAT sanimikkut .. queqarput' hvorfor foregaaende 2 regler tilfoejet 2.4.
+SELECT TAQ + Abs + Pl + 3PlPoss IF (-1 BOS)(1-**< VFIN + 3Pl)(*1 VFIN + INTRANSVERB + 3Pl);
+#Reglen herunder fjerner 'Amerlanerit ipiitsuinnaanngivipput ilaasalu IKUSII, nului seeqquilu ...' og 'ILAAT sanimikkut .. queqarput' hvorfor foregaaende 2 regler tilfoejet 2.4. Den fjerner også Abs + Pl + 3PlPoss i 'KISIINNERUSORTAAT ilaanneeriarlutik ilummut suaartartarput ilassiuillutillu, .. ' hvorfor foregående tilføjet 17.4.
 REMOVE 3PlPoss + Abs + Pl IF (*1 VFIN + INTRANSVERB + 3Pl)(NEGATE 1 Num + Abs)(NEGATE -1 Rel + Pl LINK -1 Abs + Pl);#Fjern possessumlaesning trods mulig possessor, hvis der ikke staar et adnominalt adled og der tidligere staar et subjekt 
 
 
-SELECT 3PlPoss IF (-1 Rel + Pl)(NEGATE *1 TRANSVERB + 3Pl)(NEGATE 0 ADJEKTIVISK);#siulittaasuisa nuannarineqarnersaat. 
+SELECT 3PlPoss IF (-1 Rel + Pl)(NEGATE *1 TRANSVERB + 3Pl)(NEGATE 0 ADJEKTIVISK)(NEGATE 0 N*);#siulittaasuisa nuannarineqarnersaat. 
 #SELECT 3Pl IF (-1C Rel + Pl); #siulittaasuisa nuannarineqarnersaraat. Rettes 1.4. da hit på Par + 3Pl i 'Naatsiiviup ungaluisa QISUUSUT portusuut manngui ...'
 SELECT 3Pl IF (-1C Rel + Pl)(1 EOS OR ("\")); #begraensning til saetningsfinale 
 
@@ -1589,7 +1597,7 @@ SELECT N + NIQAR + NIRSAQ; #Passivt verbalnomen i pluralis er sjaeldent
 SELECT Ins + LU IF (-1 VFIN)(1 Inf OR InfNeg) ;
 REMOVE Aeq + Pl IF (0 Aeq + Sg)(NEGATE 0 POSSESSUM) ;
 SELECT Abs + Pl IF (*-1 VFIN + 3Pl)(*1 INTRANSVERB + Inf + 4Pl BARRIER V); #2.4. ' .. alinneqartiterput iluatigut ATISAAT ILULLISSIAT ersiallattarlutik.'
-SELECT Abs + Pl IF (*-1 Inf + 4Pl BARRIER VFIN)(*1 VFIN + 3PlO); #2.4. Maa vaere objekt da subjekt formodes at komme foer ledsagemaaden
+SELECT Abs + Pl IF (*-1 Inf + 4Pl BARRIER VFIN OR Par)(*1 VFIN + 3PlO); #2.4. Maa vaere objekt da subjekt formodes at komme foer ledsagemaaden. 'OR Par' tilføjet 17.4. pga. ledsagemåder i participiale bisætninger
 
 #Pronominer
 SELECT Pron + Pl IF (1C N + Pl) ;
@@ -1687,6 +1695,8 @@ SELECT ("kina") IF (-1 BOS)(*1 ("?"));
 # ======== #
 # Navneord # 
 # ======== #
+
+
 
 # ======== #
 # Verber   # 
@@ -1812,6 +1822,9 @@ REMOVE (Rel @SUBJ>) IF (*1C INTRANSVERB BARRIER TRANSVERB);
 SELECT (Pron Abs 1Sg @SUBJ>) IF (*1 (V 1Sg));
 	## Uanga takuara.
 
+SELECT Rel + Pl IF (*1 TRANSVERB + 3Pl + 3PlO)(-1 Par + 3Pl); #Subjektet, når bisætningens subjekt er implicit objekt 'Pinngussanik ilaatigut qaqutiguuissunik pinngualersorlutik pinnguartut SIMAARTUAQQAT silataaniit isiginnaarrappaat ... '
+SELECT Rel + Pl IF (*1 TRANSVERB + 3Pl + 3PlO)(*1 Abs + Pl BARRIER TRANSVERB); #Den normale SOV
+
 
 REMOVE @SUBJ> IF (0 N)(NEGATE 0 LU)(*1C 12SUBJVERB BARRIER V);
 REMOVE @SUBJ> IF (0 (Pron 3Sg))(*1C 12SUBJVERB BARRIER V);
@@ -1876,6 +1889,7 @@ SELECT humverb + Ind IF (-*1 @SUBJ> + HUMAN); #nalunaarpoq
 SELECT thingverb + Ind IF (-*1 @SUBJ> + THING); #nalunaappoq
 SELECT thingverb + Inf IF (-*1 @SUBJ> + THING BARRIER VFIN);
 REMOVE ("ip") + TRANSVERB (NEGATE -1 Aeq); #Ntut ippara er vel eneste mulige transitiv af ippoq
+SELECT ("ilaanneeriar") IF (0 Inf);
 
 #Infinitiver, der vikarierer for VFIN
 
@@ -1966,7 +1980,7 @@ REMOVE @HNOUN IF (0 (@OBJ>) OR (@SUBJ>));
 	# a. try to find headnoun (try to find headlines, fragments)
 	# b. if not, it has to be the VFIN
 
-
+REMOVE TAQ + nn IF (0 U); #TAQ med copula vil næsten altid være TAQ+vn bortset fra faste udtryk som 'arnartaq'
 
 REMOVE @SUBJ> IF (NEGATE *-1 V)(NEGATE *1 V);
 REMOVE @OBJ> IF (NEGATE *-1 V)(NEGATE *1 V);
@@ -1986,10 +2000,10 @@ REMOVE PLACE + @SUBJ> IF (*1 HUMVERB BARRIER @SUBJ>);
 	## Illumi sulivoq.
 
 REMOVE FAM IF (NEGATE 0 3Sg)(0 OBLIQUE);
-REMOVE @ADVL> IF (0 FOOD)(*1 PSEUDO-HTR BARRIER V);
-REMOVE @OBJ> IF (0 THING)(*1 PSEUDO-HTR BARRIER V);
+REMOVE @ADVL> IF (0 FOOD)(*1 IntransTrans BARRIER V);
+REMOVE @OBJ> IF (0 THING)(*1 IntransTrans BARRIER V);
 
-REMOVE (Prop Ins) IF (0 N + @OBJ>)(*1 PSEUDO-HTR BARRIER V);
+REMOVE (Prop Ins) IF (0 N + @OBJ>)(*1 IntransTrans BARRIER V);
 REMOVE (@SUBJ> Adj 1Sg) IF (*1 @PRED + (3Sg)) ;
 
 # ========================= #
@@ -2019,7 +2033,7 @@ REMOVE ("allaq") IF (0 ("alla"))(NEGATE *0 animalverb); #
 SELECT:Se_nali ("nali") IF (0 AFFINGERET); #nali+LIR sandsynlig, nalik+LIR usandsynlig
 SELECT TIME + Lok IF (-1 BOS); #'aasaq' for 'aa+TAQ'
 REMOVE ("mannguk") IF (0 ("manngoq"))(0 POSSESSUM); #'roden' snarere end 'tøvejret' naar possessum
-
+REMOVE ("ilut") IF (NEGATE 0 GE OR POSSESSUM OR QAR OR LIK) ; #næppe 'jævnaldrende', snarere spatial 'iluk' 
 # Nomen eller partikel?
 SELECT ("aamma") ; # "aamma" mere sandsynlig end "aak"+Rel
 
@@ -2031,6 +2045,7 @@ REMOVE ("piner") IF (NEGATE *0 ("kamik"));
 REMOVE ("pi") + NIP IF (0 ("piniar")); #fjerner pi+NIP+UTE fra 'piniutit'
 REMOVE ("asap") + Inf IF (NEGATE *-1 ("nateq") OR ("timi") OR ("angallat")) ; #asavdlugo vs. assagdlugo
 SELECT ("naa") IF (*0 ("naatser")); #'naavoq' sandsynligere end 'naappoq' ved 'vae
+REMOVE ("kivi") IF (NEGATE *0 ("imaq")); #
 
 # nv eller vv?
 REMOVE ("pi") + nv IF (0 ("pi") + vv); # vaelger pi+LIR=TIP frem for pi+LIR+TIP
@@ -2041,6 +2056,9 @@ REMOVE IR + nv IF (0 V + vv OR ("ila")) ;#'ilaarpaa' ikke 'ila+IR'
 REMOVE U + nv IF (0 V + vv) ;
 REMOVE U + NAR; #"eqqaq" U nv NAR vv for 'eqqaanar' vist en utaenkelig kombination
 REMOVE HTR + NAR; #naeppe en mulig kombination
+REMOVE SSAQ + LIUR IF (0 HUMAN) ; #'ilassiorpoq' ikke 'ila+SSAQ=LIUR'
+REMOVE VIP IF (0 IntransTrans); #HTR mest sandsynlig
+REMOVE NIQ + U IF (0 NIRU + TUQ); # 17.4. Ad hoc og alt for bred. Maa indsnævres når der viser sig eksempler
 
 # Appellativ eller proprium?
 SELECT APPELLATIV IF (0 ("Aleqa")) ;
