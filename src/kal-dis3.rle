@@ -948,7 +948,7 @@ LIST animalverb = "qilup" "pangalip" ; #forudsætter subjekt ANIMAL
 SET HUMVERB = humverb OR ORATIOOBLVERB ; # alle verb  der vil ha humane subj
 
 LIST IntransTrans = "neri" "ilassior"; #Set til disambiguering af Ins, VIP vs. HTR mv.
-LIST TEMPUSVERB = "qaanger" "taamaali";
+LIST TEMPUSVERB = "qaanger" "taamaali" "ataasinngor" "marlunngor" ;
 
 # Nominernes leksikalske klasser
 # =============================
@@ -972,7 +972,7 @@ LIST DRINKABLE = "kaffi" ;
 SET FOOD = EDIBLE | DRINKABLE ;
 LIST THING = "alussaat" "aqqusineq" ("ati" TAQ) "ilullissiaq" "siu";
 
-LIST TIME = "sapaat" "qeqqa" "aasaq" "ippassaq";
+LIST TIME = "sapaat" "qeqqa" "aasaq" "ippassaq" "ullaaq" "ullaa" ;
 LIST NUMHOVED = "krone" "milliardi" "million" "dollari" "oori" "øre" "koruuni" "euro" "dollar" "kiilu" "kilo" "gram";
 LIST COMPOUND_N = "Windows" "Linux" "program" ;
 
@@ -1417,8 +1417,11 @@ REMOVE TRANSVERB + GE + 2Sg OR TRANSVERB + QE + 2Sg IF (NEGATE -1**< ("illit"));
 # Isolering af ledsaetninger - non-coref.
 SELECT:ParantetiskParPl Par + PASSIV + 3Pl IF (-3 Rel)(-2 Abs + Pl)(-1 Ins)(1 POSSESSUM);
 
+SELECT:TempusTimeSgNexus Par + 3Sg  IF (0 TEMPUSVERB)(-1 Abs + Sg)(-*1 TIME)(*1 VFIN - 3Sg);
+#Egentlig tidsbisætning med vistnok helt sikker kontekst
+
 SELECT:TempusTimeN Par IF (0 TEMPUSVERB)(-1 TIME);
-#Egentlig tidsbisætning
+#Egentlig tidsbisætning uden subjekt
 
 SELECT:TempusUdenTimeN Par + RUTTUR OR Par + GALUAR IF (NEGATE -*1 VFIN) ; 
 
@@ -1553,6 +1556,8 @@ REMOVE Abs + 2SgPoss IF (NEGATE *1 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO BARRIER
 REMOVE Abs + 3PlPoss + Pl IF (NEGATE -1 Rel + Pl)(NEGATE 0 ("ila"))(NEGATE -*1 VFIN + 3Pl LINK *1 V + 3Pl OR 4Pl);
 REMOVE 3SgPoss IF (NEGATE -1 Rel + Sg) ;
 
+REMOVE NOT-REL + 1SgPoss IF (NEGATE -1 ("ua"))(NEGATE *0 V + 1Sg)(NEGATE 1* (<<<) LINK 1*W V + 1Sg BARRIER VFIN OR (<<<)) ;
+REMOVE NOT-REL + 2SgPoss IF (NEGATE -1 ("illit"))(NEGATE *0 V + 2Sg) ;
 REMOVE Abl + 1SgPoss IF (NEGATE -1 ("ua"))(NEGATE *0 V + 1Sg) ;
 REMOVE Abl + 2SgPoss IF (NEGATE -1 ("illit"))(NEGATE *0 V + 2Sg) ;
 REMOVE Aeq + 1SgPoss IF (NEGATE -1 ("ua"))(NEGATE *0 V + 1Sg) ;
@@ -1757,6 +1762,8 @@ SELECT 4Pl IF (0C (@CL->N))(1 (N Pl)); # eksperimentell
 
 REMOVE (Rel @N<) IF (NEGATE -1 (N Rel));
 	## Atuagaq Trosterudip tiguaa.
+
+REMOVE:KasusKongruens $$NOT-REL + @N< IF (NEGATE -1 $$NOT-REL OR Rel);
 
 REMOVE (Abs @N<) IF (NEGATE -1 Abs OR Rel);
 REMOVE (Lok @N<) IF (NEGATE -1 Lok OR Rel);
