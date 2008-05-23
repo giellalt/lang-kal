@@ -15,14 +15,15 @@
 
 # Tools used when compiling the transducers
 
+ifeq (victorio.uit.no, $(shell hostname))
+XFST = /opt/sami/xerox/c-fsm/ix86-linux2.6-gcc3.4/bin/fst -utf8
+LEXC = /opt/sami/xerox/bin/lexc -utf8
+endif
+
 #XFST = xfst -utf8
-XFST = fst -utf8
+XFST = xfst -utf8
 LEXC = lexc -utf8
 
-#ifeq (victorio.uit.no, $(shell hostname))
-#XFST = /opt/sami/xerox/c-fsm/ix86-linux2.6-gcc3.4/bin/fst -utf8
-#LEXC = /opt/sami/xerox/bin/lexc -utf8
-#endif
 
 # The default compiler for Greenlandic is the commercial version fst.
 # If you have xfst, the non-commercial version, go to the directory 
@@ -68,7 +69,7 @@ sloppy: ikal.fst
 
 ikal.fst: ../bin/ikal.fst
 ../bin/ikal.fst: ../bin/kal.fst ../bin/g-kal.fst ../bin/d-kal.fst ../bin/abbr.txt \
-../bin/hyph-kal.fst ../bin/phon-kal.fst ../bin/orth-kal.fst ../bin/kal-dis.bin #../bin/str-kal.fst
+../bin/hyph-kal.fst ../bin/phon-kal.fst ../bin/orth-kal.fst dis-bin #../bin/str-kal.fst
 	@echo
 	@echo "*** Building the inverse ikal.fst ***"
 	@echo
@@ -314,6 +315,16 @@ dis-bin: ../bin/kal-dis.bin
 	@echo "*** Building a binary disambiguator kal-dis.bin ***" ;
 	@echo
 	@vislcg3 --grammar kal-dis3.rle --grammar-only --grammar-bin ../bin/kal-dis.bin
+
+# not quite yet...
+## Let us just make a binary dependency grammar
+## It can be used instead of the source file.
+#dep-bin: ../bin/kal-dep.bin
+#../bin/kal-dep.bin: kal-dep.rle
+#	@echo
+#	@echo "*** Building a binary dependency grammar kal-dep.bin ***" ;
+#	@echo
+#	@vislcg3 --grammar kal-dep.rle --grammar-only --grammar-bin ../bin/kal-dep.bin
 
 
 
