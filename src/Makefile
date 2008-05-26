@@ -15,6 +15,11 @@
 
 # Tools used when compiling the transducers
 
+#XFST = xfst -utf8
+XFST = fst -utf8
+LEXC = lexc -utf8
+
+
 ifeq (victorio.uit.no, $(shell hostname))
 XFST = /opt/sami/xerox/c-fsm/ix86-linux2.6-gcc3.4/bin/fst -utf8
 LEXC = /opt/sami/xerox/bin/lexc -utf8
@@ -24,13 +29,17 @@ endif
 XFST = fst -utf8
 LEXC = lexc -utf8
 
-
 # The default compiler for Greenlandic is the commercial version fst.
-# If you have xfst, the non-commercial version, go to the directory 
+# If you have xfst, the non-commercial version, you may either
+# 1.
+# go to the directory 
 # where you store xfst (ask: "which xfst" if you don't know), and write
 # the following command:
 # ln -s xfst fst
 # This will give a pointer from "fst" to xfst, and the transducers will compile.
+# or 
+# 2.
+# change the # before "#XFST = xfst -utf8" above to before "XFST = fst -utf8"
 
 
 # Kildefiler
