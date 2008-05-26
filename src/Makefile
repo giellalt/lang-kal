@@ -21,7 +21,7 @@ LEXC = /opt/sami/xerox/bin/lexc -utf8
 endif
 
 #XFST = xfst -utf8
-XFST = xfst -utf8
+XFST = fst -utf8
 LEXC = lexc -utf8
 
 
@@ -69,7 +69,8 @@ sloppy: ikal.fst
 
 ikal.fst: ../bin/ikal.fst
 ../bin/ikal.fst: ../bin/kal.fst ../bin/g-kal.fst ../bin/d-kal.fst ../bin/abbr.txt \
-../bin/hyph-kal.fst ../bin/phon-kal.fst ../bin/orth-kal.fst dis-bin #../bin/str-kal.fst
+../bin/hyph-kal.fst ../bin/phon-kal.fst ../bin/orth-kal.fst #../bin/str-kal.fst
+#../bin/hyph-kal.fst ../bin/phon-kal.fst ../bin/orth-kal.fst dis-bin #../bin/str-kal.fst #kommenteret ud 26.5. og erstattet af ovenstående
 	@echo
 	@echo "*** Building the inverse ikal.fst ***"
 	@echo
@@ -309,12 +310,12 @@ hyph-kal.fst: ../bin/hyph-kal.fst
 
 # Let us just make a binary disambiguator
 # It can be used instead of the source file.
-dis-bin: ../bin/kal-dis.bin
-../bin/kal-dis.bin: kal-dis3.rle
-	@echo
-	@echo "*** Building a binary disambiguator kal-dis.bin ***" ;
-	@echo
-	@vislcg3 --grammar kal-dis3.rle --grammar-only --grammar-bin ../bin/kal-dis.bin
+#kal-dis.bin: ../bin/kal-dis.bin
+#../bin/kal-dis.bin: kal-dis3.rle
+#	@echo
+#	@echo "*** Building a binary disambiguator kal-dis.bin ***" ;
+#	@echo
+#	@vislcg3 --grammar kal-dis3.rle --grammar-only --grammar-bin ../bin/kal-dis.bin
 
 # not quite yet...
 ## Let us just make a binary dependency grammar
