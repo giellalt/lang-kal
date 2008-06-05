@@ -15,19 +15,16 @@
 
 # Tools used when compiling the transducers
 
-#XFST = xfst -utf8
-XFST = fst -utf8
-LEXC = lexc -utf8
-
-
 ifeq (victorio.uit.no, $(shell hostname))
 XFST = /opt/sami/xerox/c-fsm/ix86-linux2.6-gcc3.4/bin/fst -utf8
 LEXC = /opt/sami/xerox/bin/lexc -utf8
 endif
 
-#XFST = xfst -utf8
-XFST = fst -utf8
+
+XFST = xfst -utf8
 LEXC = lexc -utf8
+
+
 
 # The default compiler for Greenlandic is the commercial version fst.
 # If you have xfst, the non-commercial version, you may either
