@@ -21,7 +21,7 @@ LEXC = /opt/sami/xerox/bin/lexc -utf8
 endif
 
 XFST = fst -utf8
-!XFST = xfst -utf8
+#XFST = xfst -utf8
 LEXC = lexc -utf8
 
 
