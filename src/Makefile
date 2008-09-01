@@ -20,8 +20,8 @@ XFST = /opt/sami/xerox/c-fsm/ix86-linux2.6-gcc3.4/bin/fst -utf8
 LEXC = /opt/sami/xerox/bin/lexc -utf8
 endif
 
-
-XFST = xfst -utf8
+XFST = fst -utf8
+!XFST = xfst -utf8
 LEXC = lexc -utf8
 
 
@@ -74,8 +74,10 @@ sloppy: ikal.fst
 # It is dependent upon kal.save
 
 ikal.fst: ../bin/ikal.fst
-../bin/ikal.fst: ../bin/kal.fst ../bin/g-kal.fst ../bin/d-kal.fst ../bin/abbr.txt \
+../bin/ikal.fst: ../bin/kal.fst ../bin/g-kal.fst ../bin/d-kal.fst \
 ../bin/hyph-kal.fst ../bin/phon-kal.fst ../bin/orth-kal.fst #../bin/str-kal.fst
+#../bin/ikal.fst: ../bin/kal.fst ../bin/g-kal.fst ../bin/d-kal.fst ../bin/abbr.txt \
+#../bin/hyph-kal.fst ../bin/phon-kal.fst ../bin/orth-kal.fst #../bin/str-kal.fst
 #../bin/hyph-kal.fst ../bin/phon-kal.fst ../bin/orth-kal.fst dis-bin #../bin/str-kal.fst #kommenteret ud 26.5. og erstattet af ovenstående
 	@echo
 	@echo "*** Building the inverse ikal.fst ***"
