@@ -10,7 +10,7 @@ SHELL = /bin/sh
 # ====================
 
 # Where all the perl scripts are:
-BINDIR = ~/gt/script/testing
+BINDIR = ~/gtsvn/gt/script/testing
 
 # Directory where all the compiled fst's are:
 FSTDIR = ../bin
