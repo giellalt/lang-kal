@@ -190,7 +190,8 @@ comma:=,
 space:=$(empty) $(empty)
 ABBRSRCS=$(subst $(space),$(comma),$(LEX))
 
-scripts=$(HOME)/gtsvn/gt/script
+scripts=../../../gt/script
+#scripts=$(HOME)/gtsvn/gt/script
 
 abbr: ../bin/abbr.txt
 ../bin/abbr.txt: $(scripts)/abbr-extract $(scripts)/langTools/Util.pm $(LEX)
@@ -316,14 +317,14 @@ hyph-kal.fst: ../bin/hyph-kal.fst
 	@rm -f ../tmp/hyph-script
 
 
-# Let us just make a binary disambiguator
-# It can be used instead of the source file.
-#kal-dis.bin: ../bin/kal-dis.bin
-#../bin/kal-dis.bin: kal-dis3.rle
-#	@echo
-#	@echo "*** Building a binary disambiguator kal-dis.bin ***" ;
-#	@echo
-#	@vislcg3 --grammar kal-dis3.rle --grammar-only --grammar-bin ../bin/kal-dis.bin
+#Let us just make a binary disambiguator
+#It can be used instead of the source file.
+kal-dis.bin: ../bin/kal-dis.bin
+../bin/kal-dis.bin: kal-dis3.rle
+	@echo
+	@echo "*** Building a binary disambiguator kal-dis.bin ***" ;
+	@echo
+	@vislcg3 --grammar kal-dis3.rle --grammar-only --grammar-bin ../bin/kal-dis.bin
 
 # not quite yet...
 ## Let us just make a binary dependency grammar
