@@ -8,7 +8,7 @@ define Vow       [ a | á | e | i | o | u | y | æ | ø | å | ä | ö |
                    A | Á | E | I | O | U | Y | Æ | Ø | Å | Ä | Ö | 
 é | ó | ú | í | à | è | ò | ù | ì | ë | ü | ï | â | ê | ô | û | î | ã | ý |
 É | Ó | Ú | Í | À | È | Ò | Ù | Ì | Ë | Ü | Ï | Â | Ê | Ô | Û | Î | Ã | Ý |
-ɑ ] ;
+ɑ | ɛ | ɔ ] ;
 
 define KalVow [ a | e | i | o | u | ɑ | A | E | I | O | U ] ;
 
@@ -28,7 +28,7 @@ define Cns [ b | c | č | d | đ | ð | f | g | h | j | k | l | m | n | ŋ |
              B | C | Č | D | Đ | Ð | F | G | H | J | K | L | M | N | Ŋ | 
              ñ | p | q | r | s | š | t | ŧ | v | w | x | z | ž |   
              Ñ | P | Q | R | S | Š | T | Ŧ | V | W | X | Z | Ž |
-             ç | ɣ | ł | ŋ | ʁ | w | χ | ȼ ] ; 
+             ç | ɣ | ł | ŋ | ʁ | w | χ | ȼ | ʲ | ʷ ] ; 
 
 define S [ S | s ] ; 
 
@@ -111,11 +111,23 @@ define gg  [ g %. g -> ç %. ç ] ;
 define g   [ g -> ɣ ] ;
 define dbl [ l %. l -> ł %. ł ] ;
 !define v   [ v -> w || Vow %. _ Vow ] ; omformuleret 4.11.
-define v   [ v -> w || u (%ː) %. _ [ u | ɔ ]] ; !virker ikke. qasusuuvunga bliver stadig qa.su.²suː.vu.ŋa 
+define v   [ v -> w || u (%ː) %. _ [ u | ɔ ]] ;
 define rr [ r %. r -> χ %. χ ] ;
 define r   [ r -> ʁ ] ;
 define ts [ s -> ȼ || t %. _ ] ;
 define assibilering [ t -> ȼ || _ [i|ɛ] ] ; !Hvorfor virker reglen ikke med [i|e] eller [i|e|ɛ] ?????
+
+!Glide insertion. JAglide og WAglide virker ikke, men producerer fejlen "***** ERROR in PARALLEL REPLACEMENT:   All UPPER, LOWER, LEFT and RIGHT must be simple fsm, and no transducers." under kompileringen
+!De andre virker fint. Efter mange timers forsoeg paa at finde fejlen har jeg opgivet.
+
+define JAglide [..] -> ʲ || i %. _ a ; 
+define JAlowglide [..] -> ʲ || i %. _  ɑ ; 
+define JUlowglide [..] -> ʲ || i %. _  ɔ ; 
+define JUglide [..] -> ʲ || i %. _ u ; 
+define WAlowglide [..] -> ʷ || u %. _ ɑ ;
+define WAglide [..] -> ʷ || u %. _ a ;
+define WIlowglide [..] -> ʷ || u %. _ ɛ ;
+define WIglide [..] -> ʷ || u %. _ i ;
 
 define ta  [..] -> ¹ || [ %. | .#. ] (Cns?) _ (Cns) Vow Cns %.     ;
 define tb  [..] -> ² || [ %. | .#. ] (Cns?) _ (Cns) Vow %ː [ %. | .#. ]  ;
@@ -184,6 +196,14 @@ NG
 .o. r
 .o. ts
 .o. assibilering
+.o. JAlowglide
+.o. JAglide
+.o. JUlowglide
+.o. JUglide
+.o. WAlowglide
+.o. WAglide
+.o. WIlowglide
+.o. WIglide
 .o. tc 
 .o. tb
 .o. ta
