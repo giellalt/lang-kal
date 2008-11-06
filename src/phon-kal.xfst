@@ -12,6 +12,10 @@ define Vow       [ a | á | e | i | o | u | y | æ | ø | å | ä | ö |
 
 define KalVow [ a | e | i | o | u | ɑ | A | E | I | O | U ] ;
 
+define BackVow [ a | ɑ | ɔ | o | u ] ;
+
+define NonBackVow [ ɑ | a | i | ɛ | e ] ;
+
 define ForVow [ Vow - KalVow ] ;
 
 define LongVow [ a a | A a | A A | e e | E e | E E | i i | I i | I I |
@@ -28,11 +32,11 @@ define Cns [ b | c | č | d | đ | ð | f | g | h | j | k | l | m | n | ŋ |
              B | C | Č | D | Đ | Ð | F | G | H | J | K | L | M | N | Ŋ | 
              ñ | p | q | r | s | š | t | ŧ | v | w | x | z | ž |   
              Ñ | P | Q | R | S | Š | T | Ŧ | V | W | X | Z | Ž |
-             ç | ɣ | ł | ŋ | ʁ | w | χ | ȼ | ʲ | ʷ ] ; 
+             ç | ɣ | ł | ŋ | ʁ | w | χ | ɕ | ʲ | ʷ ] ; 
 
-define S [ S | s ] ; 
+define Ss [ S | s ] ; 
 
-define Cnss [ Cns - S ] ;
+define Cnss [ Cns - Ss ] ;
 
 define ptk [p|t|k];
 
@@ -45,10 +49,10 @@ define Dummy [ %^K ] ;
 echo << Rules>>
 define NG          [..] -> %.  || Vow ([r|R|n|N]) _ [ n g | N G ] ;
 define beforeCV    [..] -> %.  || Vow           _ Cns Vow ;  !a-te-qu-seq
-define sC          [..] -> %.  || Vow S Cns*    _ Cns Vow ;
-define Css         [..] -> %.  || Vow Cns S     _ S ;
+define sC          [..] -> %.  || Vow Ss Cns*    _ Cns Vow ;
+define Css         [..] -> %.  || Vow Cns Ss     _ Ss ;
 define CCV         [..] -> %.  || Vow Cnss+     _ Cns Vow ;  !il-lu, Matt-hæ-u-sip
-define CsCV        [..] -> %.  || Vow Cnss+     _ S Cnss Vow ; !Kron-stadt, Kris-tus
+define CsCV        [..] -> %.  || Vow Cnss+     _ Ss Cnss Vow ; !Kron-stadt, Kris-tus
 define keep        [..] -> %^K || [a|A]         _ A2 ,
                                   [e|E]         _ E2 ,
                                   [i|I]         _ I2 ,
@@ -80,9 +84,9 @@ define ii     [ i -> %ː || i _ ] ;
 define oo     [ o -> %ː || o _ ] ;
 define uu     [ u -> %ː || u _ ] ;
 
-define a      [ a -> ɑ  ||   _ (%ː) (%.) [r|q] ] ;
-define o      [ o -> ɔ ] ;
-define e      [ e -> ɛ ] ;
+define aUv      [ a -> ɑ  ||   _ (%ː) (%.) [r|q] ] ;
+define oUv      [ o -> ɔ ] ;
+define eUv      [ e -> ɛ ] ;
 define rf [ r -> f || _ %. f ] ;
 define rg [ r -> g || _ %. g ] ;
 define rk [ r -> k || _ %. k ] ; 
@@ -108,26 +112,28 @@ define qv [ q -> v || _ %. v ] ;
 define ng  [ n g -> ŋ ] ;
 define nng [ n -> ŋ || _ %. ŋ ] ;
 define gg  [ g %. g -> ç %. ç ] ;
-define g   [ g -> ɣ ] ;
+define gGlide   [ g -> ɣ ] ;
 define dbl [ l %. l -> ł %. ł ] ;
 !define v   [ v -> w || Vow %. _ Vow ] ; omformuleret 4.11.
-define v   [ v -> w || u (%ː) %. _ [ u | ɔ ]] ;
+define vRound   [ v -> w || u (%ː) %. _ [ u | ɔ ]] ;
 define rr [ r %. r -> χ %. χ ] ;
-define r   [ r -> ʁ ] ;
-define ts [ s -> ȼ || t %. _ ] ;
-define assibilering [ t -> ȼ || _ [i|ɛ] ] ; !Hvorfor virker reglen ikke med [i|e] eller [i|e|ɛ] ?????
+define rUv   [ r -> ʁ ] ;
+define ts [ s -> ɕ || t %. _ ] ;
+define assibilering [ t -> ɕ || _ [ i | ɛ ] ] ; !Hvorfor virker reglen ikke med [i|e] eller [i|e|ɛ] ?????
 
 !Glide insertion. JAglide og WAglide virker ikke, men producerer fejlen "***** ERROR in PARALLEL REPLACEMENT:   All UPPER, LOWER, LEFT and RIGHT must be simple fsm, and no transducers." under kompileringen
 !De andre virker fint. Efter mange timers forsoeg paa at finde fejlen har jeg opgivet.
 
-define JAglide [..] -> ʲ || i %. _ a ; 
-define JAlowglide [..] -> ʲ || i %. _  ɑ ; 
-define JUlowglide [..] -> ʲ || i %. _  ɔ ; 
-define JUglide [..] -> ʲ || i %. _ u ; 
-define WAlowglide [..] -> ʷ || u %. _ ɑ ;
-define WAglide [..] -> ʷ || u %. _ a ;
-define WIlowglide [..] -> ʷ || u %. _ ɛ ;
-define WIglide [..] -> ʷ || u %. _ i ;
+define jBackGlide  [ i %. -> i %. ʲ  || _ BackVow ] ; 
+!define JAlowglide [..] -> ʲ || i %. _  ɑ ; 
+!define JUlowglide [..] -> ʲ || i %. _  ɔ ; 
+!define JUglide [..] -> ʲ || i %. _ u ; 
+
+define wNonBackGlide  [ u %. -> u %. ʷ || _ [ ɑ | a | i | ɛ ] ] ;
+!define WAlowglide [..] -> ʷ || u %. _ ɑ ;
+!define WAglide [..] -> ʷ || u %. _ a ;
+!define WIlowglide [..] -> ʷ || u %. _ ɛ ;
+!define WIglide [..] -> ʷ || u %. _ i ;
 
 define ta  [..] -> ¹ || [ %. | .#. ] (Cns?) _ (Cns) Vow Cns %.     ;
 define tb  [..] -> ² || [ %. | .#. ] (Cns?) _ (Cns) Vow %ː [ %. | .#. ]  ;
@@ -162,9 +168,9 @@ NG
 .o. ii
 .o. oo
 .o. uu
-.o. a
-.o. o
-.o. e
+.o. aUv
+.o. oUv
+.o. eUv
 .o. rf
 .o. rg
 .o. rk
@@ -189,18 +195,15 @@ NG
 .o. ng
 .o. nng
 .o. gg
-.o. g
+.o. gGlide
 .o. dbl
-.o. v
+.o. vRound
 .o. rr
-.o. r
+.o. rUv
 .o. ts
 .o. assibilering
-.o. JAlowglide
-.o. JAglide
-.o. JUlowglide
-.o. JUglide
-.o. WAlowglide
+.o. jBackGlide
+.o. wNonBackGlide
 .o. WAglide
 .o. WIlowglide
 .o. WIglide
