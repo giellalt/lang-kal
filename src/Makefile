@@ -46,8 +46,8 @@ SRCS = kal-lex.txt \
 	abbr-kal-lex.txt acro-kal-lex.txt \
 	noun-kal-lex.txt verb-kal-lex.txt \
 	ateq-kal-lex.txt ateq-kal-morph.txt \
-	punct-kal-lex.txt prt-kal-lex.txt num-kal-lex.txt 
-#	hyph-kal.txt phon-kal.xfst orth-kal.xfst
+	punct-kal-lex.txt prt-kal-lex.txt num-kal-lex.txt \
+	hyph-kal.txt phon-kal.xfst orth-kal.xfst
 
 ifeq ($(TARGET), strict)
 LEX = $(patsubst %,../int/str-%,$(SRCS))
