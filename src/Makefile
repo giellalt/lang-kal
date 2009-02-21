@@ -20,10 +20,15 @@ XFST = /opt/sami/xerox/c-fsm/ix86-linux2.6-gcc3.4/bin/fst -utf8
 LEXC = /opt/sami/xerox/bin/lexc -utf8
 endif
 
+# These are for Per, and for fst users
 XFST = fst -utf8
-#XFST = xfst -utf8
 LEXC = lexc -utf8
 
+# These are for the rest of us
+#XFST = xfst
+#LEXC = lexc 
+
+# We need to parametrise the tools better.
 
 
 # The default compiler for Greenlandic is the commercial version fst.
@@ -46,8 +51,7 @@ SRCS = kal-lex.txt \
 	abbr-kal-lex.txt acro-kal-lex.txt \
 	noun-kal-lex.txt verb-kal-lex.txt \
 	ateq-kal-lex.txt ateq-kal-morph.txt \
-	punct-kal-lex.txt prt-kal-lex.txt num-kal-lex.txt \
-	hyph-kal.txt phon-kal.xfst orth-kal.xfst
+	punct-kal-lex.txt prt-kal-lex.txt num-kal-lex.txt 
 
 ifeq ($(TARGET), strict)
 LEX = $(patsubst %,../int/str-%,$(SRCS))
