@@ -21,8 +21,8 @@ LEXC = /opt/sami/xerox/bin/lexc -utf8
 endif
 
 # These are for Per, and for fst users
-#XFST = fst -utf8
-#LEXC = lexc -utf8
+# XFST = fst -utf8
+# LEXC = lexc -utf8
 
 # These are for the rest of us
 XFST = xfst
