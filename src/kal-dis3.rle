@@ -997,6 +997,7 @@ SET HUMAN = FAM OR NAME OR TITEL OR ORGANISATION OR HUM;
 
 # Tags
 # ====
+LIST @AGENS = @AGENS ;		# agens ved PASSIV
 LIST @PRED = @PRED ; 		 # predikat
 LIST @SUBJ> = @SUBJ> ;		 # subjekt med pred t.h.
 LIST @<SUBJ = @<SUBJ ;		 # subjekt med pred t.v.
@@ -1038,6 +1039,8 @@ LIST @INF->N = @INF->N ;	# tag forbeholdt de saerlige adnominale transitive infi
 LIST @PARATAKSE_INF->N = @PARATAKSE_INF->N ; # Placeholder for infinitiv i paratakse med substantiv. Skal udskiftes i allersidste section
 LIST @PRED2 = @PRED2 ; # saettes paa verbet i en bunden ledsaetning
 LIST @ABSOLUT_PRED = @ABSOLUT_PRED ;	#Participier med nexus inde i en NP eller afterthoughts
+LIST @i->V = @i->V ; 	# NIQ ved ajor, saper, artor, nalu
+
 SET TAGGED = @PRED OR @SUBJ> OR @<SUBJ OR @OBJ> OR @<OBJ OR @ADVL> OR @<ADVL OR @CL-ADVL> OR @CL-<ADVL OR @CL-CIT> OR @CL-<CIT OR @i-SUBJ> OR @i-<SUBJ 
 OR @i-OBJ> OR @i-<OBJ OR @i-ADVL> OR @i-<ADVL OR @INTERJ OR @PROP> OR @HNOUN OR @>N OR @N< OR @i->N OR @i-N< OR @POSS OR @>V ;
 
@@ -1155,6 +1158,7 @@ MAP (@OBJ>) TARGET Abs + Sg IF (1 Abs + Sg)(2 Inf + 3SgO OR InfNeg + 3SgO);
 MAP (@i-ADVL>) TARGET (Part) IF (1 N + @<SUBJ) ;
 MAP (@ADVL>) TARGET Part IF (1 V)(NEGATE *-1 V);
 ADD (@ADVL>) TARGET Part IF (1 V);
+MAP (@i-ADVL>) TARGET Part IF (1 NIQ); #ingerlaannaq piviusunngortitsineq
 
 # Nominer anden runde
 # ===================
@@ -1207,7 +1211,7 @@ MAP (@ADVL>) TARGET Lok IF (-1 BOS) ;
 MAP (@ADVL>) TARGET (Ins) IF (*1 vn OR V - DOTR)(NEGATE *1 QAR OR LIK) ; #OR vn tilfoejet 0312
 #MAP (@i-ADVL>) TARGET (Lok) OR (Abl) OR (Via) OR (Aeq) IF (*1 vn - NAR BARRIER V); #Kun Trm til vn med NAR. Strammet op 2.4. for at forebygge hit paa 'Illorsuup annerpaap SILATAANI naatsiiverujussuup ILUANI meeqqat ... pinnguarput'
 MAP (@i-ADVL>) TARGET (Lok) OR (Abl) OR (Via) OR (Aeq) IF (1 vn - NAR BARRIER V)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Lok OR Abl OR Via OR Aeq ); #Kun Trm til vn med NAR. Rettet 2.4.
-
+MAP (@AGENS) TARGET Abl IF (*1 PASSIV);
 MAP (@i-ADVL>) TARGET (Trm) IF (*1 vn BARRIER V);
 MAP (@ADVL>) TARGET (Lok) OR (Trm) OR (Abl) OR (Via) OR (Aeq) IF (*1 V); #Foerst adled til vn og i-ADVL, derefter andre ADVL
 
@@ -1254,6 +1258,8 @@ MAP (@INF->N) TARGET Inf + 4Sg IF (1 Ins)(2C vn + Abs + Sg)(*1 V + 3Sg); #OBJ pi
 MAP (@INF->N) TARGET Inf + 4Sg IF (1C vn + Abs + Sg)(*1 V + 3Sg); #OBJ pillugu vn+subjekt verbum
 MAP (@INF->N) TARGET Inf + 4Sg + 3SgO IF (-1 @SUBJ> OR ("\)") OR ("\"")) ; #Det blev alt for ad hoc med baade citation og parantes
 MAP (@ABSOLUT_PRED) TARGET Par + PASSIV + 3Pl IF (-3 Rel)(-2 Abs + Pl)(-1 Ins)(1 POSSESSUM); #matcher SELECT:ParantetiskParPl
+MAP (@i-ADVL>) TARGET InfNeg IF (1 Part)(2 NIQ); #Eqqarsaatigiinnarnagu ingerlaannaq piviusunngortitsineq
+MAP (@i-ADVL>) TARGET Inf IF (1 Part)(2 NIQ); #
 
 
 # Nominer anden runde
@@ -1403,13 +1409,14 @@ SELECT 3PlPoss IF (-1 Rel + Pl)(NEGATE *1 TRANSVERB + 3Pl)(NEGATE 0 ADJEKTIVISK)
 #SELECT 3Pl IF (-1C Rel + Pl); #siulittaasuisa nuannarineqarnersaraat. Rettes 1.4. da hit på Par + 3Pl i 'Naatsiiviup ungaluisa QISUUSUT portusuut manngui ...'
 SELECT 3Pl IF (-1C Rel + Pl)(1 EOS OR ("\,")); #" begraensning til saetningsfinale 
 
+#Og overfloedige optativer
+REMOVE Opt IF (0 ("suli") OR ("aali") OR ("illit")) ; #naesten helt sikkert partikel/ pronomen
+REMOVE:ReOptIfNotEOS Opt + 3Pl IF (NEGATE 1 EOS); #fanger ambiguiteter med LIK+Pl ved at postulere, at Opt altid saetningsfinal 
+
 #Fjern de helt sikkert overflødige possessumformer, der kan interferere med Par-reglerne
 REMOVE Abs + Sg + 4SgPoss IF (NEGATE *1 3SgO OR Cau + 3Sg OR Con + 3Sg BARRIER VFIN);
 REMOVE Abs + Pl + 4SgPoss IF (NEGATE *1 3PlO OR Cau + 3Pl OR Con + 3Pl BARRIER VFIN);
 
-#Og overfloedige optativer
-REMOVE Opt IF (0 ("suli") OR ("aali") OR ("illit")) ; #naesten helt sikkert partikel/ pronomen
-REMOVE:ReOptIfNotEOS Opt + 3Pl IF (NEGATE 1 EOS); #fanger ambiguiteter med LIK+Pl ved at postulere, at Opt altid saetningsfinal 
 
 #Overfloedige 2Sg subjekter ved transitive schwa stammer
 REMOVE TRANSVERB + GE + 2Sg OR TRANSVERB + QE + 2Sg IF (NEGATE -1**< ("illit")); #"nalunaar" QE vv V Ind 2Sg 3SgO 
@@ -1571,7 +1578,7 @@ REMOVE Trm + 2SgPoss IF (NEGATE -1 ("illit"))(NEGATE *0 V + 2Sg) ;
 REMOVE Lok + 1SgPoss IF (NEGATE -1 ("ua"))(NEGATE *0 V + 1Sg) ;
 REMOVE Lok + 2SgPoss IF (NEGATE -1 ("illit"))(NEGATE *0 V + 2Sg) ;
 REMOVE Abs + Sg + 4SgPoss IF (NEGATE -*1 3SgO CBARRIER Abs + Sg) ; # Lene
-REMOVE Abs + Pl + 4SgPoss IF (NEGATE -*1 3PlO CBARRIER Abs + Pl) ; # Lene
+#REMOVE Abs + Pl + 4SgPoss IF (NEGATE -*1 3PlO CBARRIER Abs + Pl) ; # Lene - fjernet 20090306. Sletter objekter som sullitani sullikkumavai
 
 #Overfloedige relativer
 SELECT Rel + Pl IF (1C 3PlPoss) ; 
@@ -1661,7 +1668,7 @@ SELECT (@<SUBJ Sg Rel) IF (-*1 TRANSVERB + 3Sg BARRIER ("\,"))(NEGATE *1 VFIN) ;
 
 SELECT (@POSS Pl) IF (1 POSSESSUM + 3PlPoss) ;
 SELECT (@POSS Sg) IF (1 POSSESSUM + 3SgPoss) ;
-
+SELECT Abl IF (*1 PASSIV); #Regel for agens tilfoejet 9.11.
 
 #Partiklernes SELECT og REMOVE
 SELECT (@FOC Part) IF (*1 (@<SUBJ) BARRIER V ) ;
@@ -1706,13 +1713,15 @@ SELECT ("kina") IF (-1 BOS)(*1 ("?"));
 # ======== #
 # Verber   # 
 # ======== #
+#ACR ikke maerket for numerus. Derfor foelgende saerlige regler
+REMOVE 3Pl + 3PlO IF (*-1C (@SUBJ> ACR Rel)); #20090306 INTERIM. Skal goeres generel
+
 
 SELECT 3Pl + 3PlO IF (-1 Abs + Pl)(NEGATE 0 GE); #2.4.
 SELECT (3Sg) IF (NEGATE *-1 (@SUBJ> 3Sg))(NEGATE *1 (@<SUBJ 3Sg))(-1*W (@PRED 3Sg));
 
 #SELECT (3Sg) IF (-1*W (@PRED 3Sg));
 REMOVE Attr IF (0 Prop)(NEGATE 1 Prop);
-
 
 REMOVE N IF (0 ("Nuuk" Prop Lok));
 	## Nuummi.
@@ -2067,9 +2076,11 @@ REMOVE HTR + NAR; #naeppe en mulig kombination
 REMOVE SSAQ + LIUR IF (0 HUMAN) ; #'ilassiorpoq' ikke 'ila+SSAQ=LIUR'
 REMOVE VIP IF (0 IntransTrans); #HTR mest sandsynlig
 REMOVE NIQ + U IF (0 NIRU + TUQ); # 17.4. Ad hoc og alt for bred. Maa indsnævres når der viser sig eksempler
+REMOVE ("niver" NGA) IF (*-1 Abs - HUMAN) ; # kun mennesker niver+NGA. Ting nivinga
 
 # Appellativ eller proprium?
 SELECT APPELLATIV IF (0 ("Aleqa")) ;
+SELECT Prop IF (0 (@HNOUN)) ;
 
 # Hvilket praefingeret pronomen?
 SELECT ("taanna\(taavaniittoq\)") IF (-1**< ("avannaq"));
@@ -2079,6 +2090,8 @@ SELECT ("taanna"); #Den hyppigste
 SELECT Via - POSSESSUM IF (NEGATE -1 Rel);
 #"qaaq" N Via Sg 3PlPoss @i-ADVL> eller "qaaq" N Via Pl @i-ADVL>
 
+# Possessum singularis eller pluralis?
+SELECT Sg IF (0 POSSESSUM);
 
 #SELECT COMMONAFFSTRING ; #Testet 29.3. Maa rettes, da fejl mere end 50%
 
