@@ -79,7 +79,10 @@ sloppy: ikal.fst
 
 ikal.fst: ../bin/ikal.fst
 ../bin/ikal.fst: ../bin/kal.fst ../bin/g-kal.fst ../bin/d-kal.fst ../bin/abbr.txt \
-../bin/hyph-kal.fst ../bin/phon-kal.fst ../bin/orth-kal.fst 
+../bin/hyph-kal.fst ../bin/phon-kal.fst ../bin/orth-kal.fst #../bin/kal-dis.bin
+# Problemet her er at Per ikkje har siste versjon av vislcg3.
+# Når han får den kan kal-dis.bin bli kommentert inn.
+
 #../bin/ikal.fst: ../bin/kal.fst ../bin/g-kal.fst ../bin/d-kal.fst ../bin/abbr.txt \
 #../bin/hyph-kal.fst ../bin/phon-kal.fst ../bin/orth-kal.fst #../bin/str-kal.fst
 #../bin/hyph-kal.fst ../bin/phon-kal.fst ../bin/orth-kal.fst dis-bin #../bin/str-kal.fst #kommenteret ud 26.5. og erstattet af ovenstående
