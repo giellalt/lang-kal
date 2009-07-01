@@ -15,11 +15,6 @@
 
 # Tools used when compiling the transducers
 
-ifeq (victorio.uit.no, $(shell hostname))
-XFST = /opt/sami/xerox/c-fsm/ix86-linux2.6-gcc3.4/bin/fst -utf8
-LEXC = /opt/sami/xerox/bin/lexc -utf8
-endif
-
 # These are for Per, and for fst users
 # XFST = fst -utf8
 # LEXC = lexc -utf8
@@ -27,6 +22,11 @@ endif
 # These are for the rest of us
 XFST = xfst
 LEXC = lexc 
+
+ifeq (victorio.uit.no, $(shell hostname))
+XFST = /opt/sami/xerox/c-fsm/ix86-linux2.6-gcc3.4/bin/fst -utf8
+LEXC = /opt/sami/xerox/bin/lexc -utf8
+endif
 
 # We need to parametrise the tools better.
 
@@ -42,6 +42,9 @@ LEXC = lexc
 # or 
 # 2.
 # change the # before "#XFST = xfst -utf8" above to before "XFST = fst -utf8"
+
+# Directories:
+scripts=$(GTHOME)/gt/script
 
 
 # Kildefiler
@@ -78,8 +81,14 @@ sloppy: ikal.fst
 # It is dependent upon kal.save
 
 ikal.fst: ../bin/ikal.fst
-../bin/ikal.fst: ../bin/kal.fst ../bin/g-kal.fst ../bin/d-kal.fst ../bin/abbr.txt \
-../bin/hyph-kal.fst ../bin/phon-kal.fst ../bin/orth-kal.fst #../bin/kal-dis.bin
+../bin/ikal.fst: ../bin/kal.fst \
+				 ../bin/g-kal.fst \
+				 ../bin/d-kal.fst \
+				 ../bin/abbr.txt \
+				 ../bin/hyph-kal.fst \
+				 ../bin/phon-kal.fst \
+				 ../bin/orth-kal.fst 
+#../bin/kal-dis.bin
 # Problemet her er at Per ikkje har siste versjon av vislcg3.
 # Når han får den kan kal-dis.bin bli kommentert inn.
 
@@ -197,11 +206,10 @@ comma:=,
 space:=$(empty) $(empty)
 ABBRSRCS=$(subst $(space),$(comma),$(LEX))
 
-scripts=../../../gt/script
-#scripts=$(HOME)/gtsvn/gt/script
-
 abbr: ../bin/abbr.txt
-../bin/abbr.txt: $(scripts)/abbr-extract $(scripts)/langTools/Util.pm $(LEX)
+../bin/abbr.txt: $(scripts)/abbr-extract \
+				 $(scripts)/langTools/Util.pm \
+				 $(LEX)
 	@echo
 	@echo "*** Extracting abbreviations from abbr-kal-lex.txt to abbr.txt ***" ;
 	@echo
@@ -344,9 +352,5 @@ kal-dis.bin: ../bin/kal-dis.bin
 #	@vislcg3 --grammar kal-dep.rle --grammar-only --grammar-bin ../bin/kal-dep.bin
 
 
-
-
 clean:
 	@rm -f ../bin/*.bin ../bin/*.fst ../bin/*.save
-
-
