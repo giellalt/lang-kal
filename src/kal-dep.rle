@@ -1035,23 +1035,43 @@ OR @i-OBJ> OR @i-<OBJ OR @i-ADVL> OR @i-<ADVL OR @INTERJ OR @PROP> OR @HNOUN OR 
 # su  iS        iO       i     y  => iS er O når vi har iO
 # S   A         O        PRED = syntaks modulo kasus
 
+
 LIST @CL-ARG> = @CL-ADVL> @CL-CIT> ; # Disse vil ha V t.h.
 LIST @CL-<ARG = @CL-<ADVL @CL-<CIT ;
 
-LIST @ARG> = @SUBJ> @OBJ> @ADVL> @>V ; # Disse vil ha V t.h.
+LIST @ARG> = @SUBJ> @ALLOBJ> @ADVL> @>V ; # Disse vil ha V t.h.
 LIST @<ARG = @<SUBJ @<OBJ @<ADVL ;
 
 SET @ALL-ARG> = @ARG> OR @CL-ARG> ;
 SET @ALL-<ARG = @<ARG OR @CL-<ARG ; 
 
+LIST @APP-N< = @APP-N< ; # sme
+LIST @APP>Pron = @APP>Pron ; # sme
+LIST @APP-Pron< = @APP-Pron< ; # sme
+LIST COMMA = "," ; # sme
+LIST @>Num = @>Num ; # sme
+LIST @Num< = @Num< ; # sme
+list @APP-Num< = @APP-Num< ; # sme
+
 
 LIST @ALLOBJ> = @OBJ> @i-OBJ> ;
 LIST @<ALLOBJ = @<OBJ @i-<OBJ ;
+LIST @ALLOBJ = @ALLOBJ> @<ALLOBJ ;
 
 LIST @ALLSUBJ> = @SUBJ> @i-SUBJ> ;
 LIST @<ALLSUBJ = @<SUBJ @i-<SUBJ ;
+LIST @i-SUBJ = @i-<SUBJ @i-SUBJ> ;
+
 LIST @ALLSUBJ = @ALLSUBJ> @<ALLSUBJ ;
 
+LIST @ADVL = @ADVL> @<ADVL ;
+LIST @i-ADVL = @i-<ADVL @i-<ADVL ;
+
+LIST @-FARG = @-FOBJ @i-SUBJ ;
+SET @ARG = @ALLSUBJ OR @ALLOBJ OR @PRED	 OR @ADVL  ;
+SET @-FARG/ADVL = @-FARG OR @i-ADVL ;
+SET @ARG/ADVL = @ARG OR @ADVL - (@ADVL + CC) ;
+SET @CLAUSE = @ARG/ADVL OR @-FARG/ADVL ;
 
 
 # DENNE DEL KOPIERT FRA kal-dis3.rle. (slut)
@@ -1071,3 +1091,48 @@ SECTION
 
 SETPARENT (@POSS) TO (1 POSSESSUM);
 
+### np
+
+SETPARENT:SetModToN @>N TO (*1 N BARRIER @CLAUSE) ;
+SETPARENT:SetCompToN @N< OR @APP-N< TO (*-1 N BARRIER @CLAUSE) ;
+SETPARENT:SetReflToN (Refl Nom @N<) TO (*-1 N) ;
+SETPARENT:SetAppToRightPron @APP>Pron TO (*1 COMMA LINK 1 Pron BARRIER @CLAUSE) ;
+SETPARENT:SetAppToLeftPron @APP-Pron< TO (*-1 COMMA LINK -1 Pron BARRIER @CLAUSE) ;
+
+### nump
+
+SETPARENT:SetAttrToRightNum @>Num TO (*1 Num BARRIER @CLAUSE) ;
+SETPARENT:SetAttrToLeftNum @Num< OR @APP-Num< TO (*-1 Num BARRIER @CLAUSE) ;
+
+
+### clause level
+
+
+# SETPARENT:SetObjToLeftMv @<OBJ TO (*-1 (<mv>) OR (Neg Foc/ge) BARRIER  @i-SUBJ OR @ALLOBJ) ;
+SETPARENT:SetObjToRightMv @ALLOBJ> TO (*1 (V @PRED) BARRIER  @i-SUBJ) ;
+# SETPARENT:Set-FObjToLeftMv @-F<OBJ TO (*-1 NONVFIN BARRIER  @i-SUBJ OR @ALLOBJ) ;
+# SETPARENT:Set-FObjToRightMv @-FOBJ> TO (*1 NONVFIN BARRIER  @i-SUBJ) ;
+# SETPARENT:SetAdvlToLeftMv @<ADVL TO (*-1 (<mv>) BARRIER  @i-SUBJ) ;
+# SETPARENT:SetAdvlToRightMv @ADVL> TO (*1 (<mv>) BARRIER  @i-SUBJ) ;
+
+
+SETPARENT:SetSubjToRightVfin @SUBJ> TO (*1 VFIN) ;
+SETPARENT:SetSubjToLeftVfin @<SUBJ TO (*-1 VFIN) ; 
+
+SETPARENT @PRED TO (*-1 @ALLSUBJ);
+SETPARENT @PRED TO (*1 @ALLSUBJ);
+
+# SETPARENT @<SPRED TO (*-1 @SUBJ>);
+# SETPARENT @<SPRED TO (*-1 VFIN OR @HNOUN);
+# SETPARENT @SPRED> TO (*1 VFIN OR @HNOUN);
+# 
+# SETPARENT @<OPRED TO (*-1 TV );
+# SETPARENT @OPRED> TO (*1 TV );
+# 
+# SETPARENT @<OPRED TO (*-1 @ALLOBJ );
+# SETPARENT @OPRED> TO (*1 @ALLOBJ );
+# SETPARENT @<PPRED TO (*-1 @SPRED OR @OPRED) ;
+
+### Coordination
+
+SETPARENT LU TO (*-1 TAGGED) ;
