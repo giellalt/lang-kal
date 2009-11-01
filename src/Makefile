@@ -84,7 +84,7 @@ ikal.fst: ../bin/ikal.fst
 ../bin/ikal.fst: ../bin/kal.fst \
 				 ../bin/g-kal.fst \
 				 ../bin/d-kal.fst \
-				 ../bin/abbr.txt \
+#				 ../bin/abbr.txt \ #kommenteret ud 13.8.09
 				 ../bin/hyph-kal.fst \
 				 ../bin/phon-kal.fst \
 				 ../bin/orth-kal.fst 
@@ -206,17 +206,18 @@ comma:=,
 space:=$(empty) $(empty)
 ABBRSRCS=$(subst $(space),$(comma),$(LEX))
 
-abbr: ../bin/abbr.txt
-../bin/abbr.txt: $(scripts)/abbr-extract \
-				 $(scripts)/langTools/Util.pm \
-				 $(LEX)
-	@echo
-	@echo "*** Extracting abbreviations from abbr-kal-lex.txt to abbr.txt ***" ;
-	@echo
-	@perl -I $(scripts) $(scripts)/abbr-extract \
-		--output=$@ \
-		--abbr_lex=abbr-kal-lex.txt \
-		--lex=$(ABBRSRCS)
+# hele følgende blok kommenteret ud 13.8.09
+#abbr: ../bin/abbr.txt
+#../bin/abbr.txt: $(scripts)/abbr-extract \
+#				 $(scripts)/langTools/Util.pm \
+#				 $(LEX)
+#	@echo
+#	@echo "*** Extracting abbreviations from abbr-kal-lex.txt to abbr.txt ***" ;
+#	@echo
+#	@perl -I $(scripts) $(scripts)/abbr-extract \
+#		--output=$@ \
+#		--abbr_lex=abbr-kal-lex.txt \
+#		--lex=$(ABBRSRCS)
 
 
 # The second goal is to build the caseconv.fst file
@@ -319,17 +320,18 @@ phon-kal.fst: ../bin/phon-kal.fst
 	@rm -f ../tmp/phon-script
 
 # Here we build a hyphenator
+# Kommenteret bort 2009-09-20
 
-hyph-kal.fst: ../bin/hyph-kal.fst
-../bin/hyph-kal.fst: hyph-kal.txt
-	@echo
-	@echo "*** Building hyph-kal.fst ***" ;
-	@echo
-	@printf "source $< \n\
-	save stack $@ \n\
-	quit \n" > ../tmp/hyph-script
-	$(XFST) < ../tmp/hyph-script
-	@rm -f ../tmp/hyph-script
+#hyph-kal.fst: ../bin/hyph-kal.fst
+#../bin/hyph-kal.fst: hyph-kal.txt
+#	@echo
+#	@echo "*** Building hyph-kal.fst ***" ;
+#	@echo
+#	@printf "source $< \n\
+#	save stack $@ \n\
+#	quit \n" > ../tmp/hyph-script
+#	$(XFST) < ../tmp/hyph-script
+#	@rm -f ../tmp/hyph-script
 
 
 #Let us just make a binary disambiguator
