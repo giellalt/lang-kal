@@ -79,6 +79,7 @@ LIST ACR = ACR ;
 LIST Ord = Ord ; # Ordinaltal
 LIST Clt = Clt ; # LU og andre
 LIST SUB = SUB ;
+LIST Arch = Arch ;
 
 LIST Sg = Sg ;
 LIST Du = Du ;
@@ -922,7 +923,7 @@ LIST POSS_ABBR = "sap" ; # forkortelser, der oftest anvendes som possessor
 LIST KONJUNKTION = "aamma" "kisianni" "imaluunniit" "taava" ;
 LIST ADVERBIUM = "ima" ;
 LIST FOKUSPART = "tassa" "aali" "sunaaffa" ;
-LIST KONCESSIV = "naak" "uffa" ;
+LIST KONCESSIV = "naak" "uffa" "sunaaffa" ;
 
 # Lexical sets
 # ==============
@@ -1128,7 +1129,7 @@ MAP:MapPred2ToIV (@PRED2) TARGET INTRANSVERB + Par + 3Pl IF (*-1 Abs + Pl)(NEGAT
 # Partikler
 # =========
 #Konjunktioner er konjunktioner, når de indleder en sætning, ellers er de adverbier
-MAP (@CONJ) TARGET KONJUNKTION IF (-1 BOS) ; #Flyttet fra 1168 forebygge konflikt med @ADVL>
+MAP (@CONJ) TARGET KONJUNKTION IF (-1 BOS OR ("\,")) ; #Flyttet fra 1168 forebygge konflikt med @ADVL>
 MAP (@<CL-ADVL) TARGET KONJUNKTION IF (1 EOS)(NEGATE -1 BOS) ; #Sidste betingelse for at undgaa at tagge isolerede konjunktioner
 MAP (@HEADLINE) TARGET KONJUNKTION IF (1 EOS)(-1 BOS) ; #Sidste betingelse for at undgaa at tagge isolerede konjunktioner
 MAP (@FOC) TARGET FOKUSPART + (Part) IF (NEGATE *0 V) ;
@@ -1159,6 +1160,10 @@ MAP (@<N) TARGET Trm IF (-1 ("qujanaq"))(NEGATE *1 V) ;
 MAP (@<N) TARGET Trm IF (-1C Trm)(NEGATE *1 V) ;
 #At adskille Inf's objekt fra V's subjekt
 MAP (@OBJ>) TARGET Abs + Sg IF (1 Abs + Sg)(2 Inf + 3SgO OR InfNeg + 3SgO);
+
+# Hoejfrekvente fraser
+MAP (@POSS) TARGET ("kalaaleq") + Rel + Pl IF (1 ("oqaaseq") OR ("nuna")); #20091103 Kalaallit Nunaat
+
 
 # Partikler anden runde
 # =====================
@@ -1217,13 +1222,24 @@ ADD (@<SUBJ) TARGET APPELLATIV + (Rel) OR Prop + (Rel) OR (Adj) IF (-*1 TRANSVER
 #ADD (@ADVL>) TARGET (Lok) OR (Trm) OR (Abl) OR (Via) OR (Aeq) OR (Ins) IF (*1 V OR vn) ; #OR vn tilfoejet 0312
 MAP (@ADVL>) TARGET Lok IF (-1 BOS) ; 
 MAP (@ADVL>) TARGET (Ins) IF (*1 vn OR V - DOTR)(NEGATE *1 QAR OR LIK) ; #OR vn tilfoejet 0312
+
+MAP (@i-<ADVL) TARGET (Lok) + POSSESSUM3 IF (-2 vn - NAR)(-1 Rel)(NEGATE *1 V OR vn - LU) ; #20091104
+MAP (@i-<ADVL) TARGET (Lok) IF (0 LU)(-1 (Lok) + (@i-<ADVL)) ; #20091104
+
+
 #MAP (@i-ADVL>) TARGET (Lok) OR (Abl) OR (Via) OR (Aeq) IF (*1 vn - NAR BARRIER V); #Kun Trm til vn med NAR. Strammet op 2.4. for at forebygge hit paa 'Illorsuup annerpaap SILATAANI naatsiiverujussuup ILUANI meeqqat ... pinnguarput'
-MAP (@i-ADVL>) TARGET (Lok) OR (Abl) OR (Via) OR (Aeq) IF (1 vn - NAR BARRIER V)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Lok OR Abl OR Via OR Aeq ); #Kun Trm til vn med NAR. Rettet 2.4.
+MAP (@i-ADVL>) TARGET (Lok) IF (1 vn - NAR BARRIER V)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Lok)(NEGATE 1 LU + (Lok)); #Kun Trm til vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse
+MAP (@i-ADVL>) TARGET (Abl) IF (1 vn - NAR BARRIER V)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Abl)(NEGATE 1 LU + (Abl)); #Kun Trm til vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse
+MAP (@i-ADVL>) TARGET (Via) IF (1 vn - NAR BARRIER V)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Via )(NEGATE 1 LU + (Via)); #Kun Trm til vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse
+MAP (@i-ADVL>) TARGET (Aeq) IF (1 vn - NAR BARRIER V)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Aeq )(NEGATE 1 LU + (Aeq)); #Kun Trm til vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse
 MAP (@AGENS) TARGET Abl IF (*1 PASSIV);
 MAP (@i-ADVL>) TARGET (Trm) IF (*1 vn BARRIER V);
 MAP (@ADVL>) TARGET (Lok) OR (Trm) OR (Abl) OR (Via) OR (Aeq) IF (*1 V); #Foerst adled til vn og i-ADVL, derefter andre ADVL
 
+
 ADD (@<ADVL) TARGET (Lok) OR (Trm) OR (Abl) OR (Via) OR (Aeq) OR (Ins) IF (-*1 V BARRIER ("\,") OR LU)(NEGATE -1 ("\(")) ;
+
+
 MAP (@<ADVL) TARGET N IF (-1 ("\("))(1 ("\)"))(-2 @<ADVL) ; #Parantetiske indskud samme led som foregående ord
 
 
@@ -1268,7 +1284,10 @@ MAP (@INF->N) TARGET Inf + 4Sg + 3SgO IF (-1 @SUBJ> OR ("\)") OR ("\"")) ; #Det 
 MAP (@ABSOLUT_PRED) TARGET Par + PASSIV + 3Pl IF (-3 Rel)(-2 Abs + Pl)(-1 Ins)(1 POSSESSUM); #matcher SELECT:ParantetiskParPl
 MAP (@i-ADVL>) TARGET InfNeg IF (1 Part)(2 NIQ); #Eqqarsaatigiinnarnagu ingerlaannaq piviusunngortitsineq
 MAP (@i-ADVL>) TARGET Inf IF (1 Part)(2 NIQ); #
+# Mapping af ledsagemåde til inderiveret verbum
+MAP (@i-ADVL>) TARGET Inf IF (1 vn) ;
 
+# Mapping af ledsagemåde til hovedverbal
 MAP (@ADVL>) TARGET Inf + 1Sg OR InfNeg + 1Sg IF (*1 VFIN + 1Sg);
 MAP (@<ADVL) TARGET Inf + 1Sg OR InfNeg + 1Sg IF (*-1 VFIN + 1Sg)(NEGATE 0 LU);
 MAP (@ADVL>) TARGET Inf + 2Sg OR InfNeg + 2Sg IF (*1 VFIN + 2Sg);
@@ -1650,9 +1669,13 @@ SELECT NIQAR + V IF (-*1 Abs BARRIER TRANSVERB) ; #Disambiguerer NIQAR fra NIQ e
 SELECT Inf + 4Sg IF (1 Ins)(2C vn + Abs + Sg)(*1 V + 3Sg); #OBJ pillugu Ins vn+subjekt verbum
 SELECT Inf + 4Sg IF (1C vn + Abs + Sg)(*1 V + 3Sg); #OBJ pillugu vn+subjekt verbum
 SELECT Inf + 4Sg IF (*1 VFIN + 3Sg) ;
+SELECT Inf + 1Pl IF (*1 VFIN + 1Pl) ;
+SELECT Inf + 1Sg IF (*1 VFIN + 1Sg) ;
 SELECT Inf + 4Pl IF (*1 VFIN + 3Pl) ;
 SELECT InfNeg + 4Sg IF (*0 VFIN + 3Sg) ;
 SELECT InfNeg + 4Pl IF (*1 VFIN + 3Pl) ;
+SELECT Inf + 1Sg IF (*-1 VFIN + 1Sg BARRIER VFIN - 1Sg OR KONCESSIV) ;
+
 
 SECTION #dette er kun til testbrug
 # Verbernes SELECT og REMOVE
@@ -2120,6 +2143,8 @@ SELECT Sg IF (0 POSSESSUM);
 
 #20091031 NIAR nv eller NIAR vv??
 REMOVE NIAR + nv IF ( NEGATE 0 ANIMAL) ;
+
+REMOVE (Arch) ;
 
 #SELECT COMMONAFFSTRING ; #Testet 29.3. Maa rettes, da fejl mere end 50%
 

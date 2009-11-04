@@ -84,10 +84,11 @@ ikal.fst: ../bin/ikal.fst
 ../bin/ikal.fst: ../bin/kal.fst \
 				 ../bin/g-kal.fst \
 				 ../bin/d-kal.fst \
-#				 ../bin/abbr.txt \ #kommenteret ud 13.8.09
-				 ../bin/hyph-kal.fst \
-				 ../bin/phon-kal.fst \
-				 ../bin/orth-kal.fst 
+				 ../bin/abbr.txt
+#				 ../bin/abbr.txt \ #kommenteret ud 13.8.09 og ind igen 4.11.09
+#				 ../bin/hyph-kal.fst \ #ud 4.11.09
+#				 ../bin/phon-kal.fst \ #ud 4.11.09
+#				 ../bin/orth-kal.fst  #ud 4.11.09
 #../bin/kal-dis.bin
 # Problemet her er at Per ikkje har siste versjon av vislcg3.
 # Når han får den kan kal-dis.bin bli kommentert inn.
@@ -293,31 +294,30 @@ xfst-kal.bin: ../bin/xfst-kal.bin
 
 
 # Here we build a converter from Kleinschmidt to modern
-# orthography.
+# orthography. KOMMENTERET BORT 4.11.09
 
-orth-kal.fst: ../bin/orth-kal.fst
-../bin/orth-kal.fst: orth-kal.xfst
-	@echo
-	@echo "*** Building orth-kal.fst ***" ;
-	@echo
-	@printf "source $< \n\
-	save stack $@ \n\
-	quit \n" > ../tmp/orth-script
-	$(XFST) < ../tmp/orth-script
-	@rm -f ../tmp/orth-script
+#orth-kal.fst: ../bin/orth-kal.fst
+#../bin/orth-kal.fst: orth-kal.xfst
+#	@echo
+#	@echo "*** Building orth-kal.fst ***" ;
+#	@echo
+#	@printf "source $< \n\
+#	save stack $@ \n\
+#	quit \n" > ../tmp/orth-script
+#	$(XFST) < ../tmp/orth-script
+#	@rm -f ../tmp/orth-script
 
-# Here we build a phonetic transducer
+# Here we build a phonetic transducer KOMMENTERET BORT 4.11.09
 
-phon-kal.fst: ../bin/phon-kal.fst
-../bin/phon-kal.fst: phon-kal.xfst
-	@echo
-	@echo "*** Building phon-kal.fst ***" ;
-	@echo
-	@printf "source $< \n\
-	save stack $@ \n\
-	quit \n" > ../tmp/phon-script
-	$(XFST) < ../tmp/phon-script
-	@rm -f ../tmp/phon-script
+#phon-kal.fst: ../bin/phon-kal.fst
+#../bin/phon-kal.fst: phon-kal.xfst
+#	@echo
+#	@echo "*** Building phon-kal.fst ***" ;
+#	@echo
+#	@printf "source $< \n\
+#	quit \n" > ../tmp/phon-script
+#	$(XFST) < ../tmp/phon-script
+#	@rm -f ../tmp/phon-script
 
 # Here we build a hyphenator
 # Kommenteret bort 2009-09-20
