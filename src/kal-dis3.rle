@@ -1022,7 +1022,9 @@ LIST @i-SUBJ> = @i-SUBJ> ;   # subjekt der står til inkorporeret dotr verbal t.
 LIST @i-<SUBJ = @i-<SUBJ ;   # subjekt der står til inkorporeret dotr verbal t.v.
 LIST @MIK-OBJ> = @MIK-OBJ> ; # indef objekt ved HTR til hoejre
 #LIST @<MIK-OBJ = @<MIK-OBJ ; # indef objekt ved HTR til venstre #Findes den kontekst overhovedet??
-LIST @i-OBJ> = @i-OBJ> ;     # tingsobjekt i Ins eller personobjekt i Trm ved dotr th
+LIST @i-MIK-OBJ> = @i-MIK-OBJ> ; #objekt ved inderiveret halvtransitiv 20091106
+LIST @i-OBJ_DOTR> = @i-OBJ_DOTR> ;     # tingsobjekt i Ins eller personobjekt i Trm ved dotr th
+
 LIST @i-<OBJ = @i-<OBJ ;	 # tingsobjekt i Ins eller personobjekt i Trm ved dotr tv
 LIST @i-ADVL> = @i-ADVL> ;	 # adverbial der står til inkorporeret verbal t.h.
 LIST @i-<ADVL = @i-<ADVL ;	 # adverbial der står til inkorporeret verbal t.v.
@@ -1049,7 +1051,7 @@ LIST @i->V = @i->V ; 	# NIQ ved ajor, saper, artor, nalu
 LIST @SUBJ_COMP = @SUBJ_COMP ;	#Prædikat til subjekt/ subjective complement
 
 SET TAGGED = @PRED OR @SUBJ> OR @<SUBJ OR @OBJ> OR @<OBJ OR @ADVL> OR @<ADVL OR @CL-ADVL> OR @CL-<ADVL OR @CL-CIT> OR @CL-<CIT OR @i-SUBJ> OR @i-<SUBJ 
-OR @i-OBJ> OR @i-<OBJ OR @i-ADVL> OR @i-<ADVL OR @INTERJ OR @PROP> OR @HNOUN OR @>N OR @N< OR @i->N OR @i-N< OR @POSS OR @>V ;
+OR @i-OBJ_DOTR> OR @i-<OBJ OR @i-ADVL> OR @i-<ADVL OR @INTERJ OR @PROP> OR @HNOUN OR @>N OR @N< OR @i->N OR @i-N< OR @POSS OR @>V ;
 
 # Syntaks
 # =======
@@ -1068,7 +1070,7 @@ SET @ALL-ARG> = @ARG> OR @CL-ARG> ;
 SET @ALL-<ARG = @<ARG OR @CL-<ARG ; 
 
 
-LIST @ALLOBJ> = @OBJ> @i-OBJ> ;
+LIST @ALLOBJ> = @OBJ> @i-OBJ_DOTR> ;
 LIST @<ALLOBJ = @<OBJ @i-<OBJ ;
 
 LIST @ALLSUBJ> = @SUBJ> @i-SUBJ> ;
@@ -1184,6 +1186,7 @@ MAP:PossNFoerAdvl (@POSS) TARGET Rel + Sg IF (1 Via)(2 vn + 3SgPoss) ;
 MAP:MapPossToRelSgIfPoss (@POSS) TARGET Rel + Sg IF (1 3SgPoss) ;
 MAP:MapPossToRelPlIfPoss (@POSS) TARGET Rel + Pl IF (1 3PlPoss) ;
 ADD:MapMikObjToIns (@MIK-OBJ>) TARGET Ins IF (*1 HTR + V); #Ikke MAP fordi ogsaa ADVL> mulig
+MAP (@i-MIK-OBJ>) TARGET Ins IF (1 HTR + vn - V) ; #20091106
 MAP:MapSubjToRelSgIfTV (@SUBJ>) TARGET Rel + Sg IF (*1 TRANSVERB + (3Sg) OR (4Sg) BARRIER POSSESSUM3) ;
 MAP:MapSubjToRelPlIfTV (@SUBJ>) TARGET Rel + Pl IF (*1 TRANSVERB + (3Pl) OR (4Pl) BARRIER POSSESSUM3) ;
 MAP:MapSubjToAbsSgIfIV (@SUBJ>) TARGET Abs + Sg IF (*1 INTRANSVERB + VERB-NOTINF + 3Sg OR INTRANSVERB + VERB-NOTINF + 4Sg BARRIER POSSESSUM3)(NEGATE -1 ("\(")) ; 
@@ -1337,9 +1340,9 @@ MAP (@CL-<CIT) TARGET Inf + TRANSVERB + 1Pl OR InfNeg + TRANSVERB + 1Pl IF (-*1 
 #' ... Ilisimatusarfiup pigilissagaa ministerit ... isumaqatigiipput, ... sunniutai maluginiarneqassasut.
 MAP (@CL-<CIT) TARGET Par + INTRANSVERB + 3Pl IF (*-1 ORATIOOBLVERB)(*-1 ("\,"))(*-1 Abs + Pl BARRIER ("\,")); 
 MAP (@i-SUBJ>) TARGET Trm IF (*1 DOTR);
-#MAP (@i-OBJ>)  TARGET Trm IF (*1 DOTR)(NEGATE 0 TIME);
+#MAP (@i-OBJ_DOTR>)  TARGET Trm IF (*1 DOTR)(NEGATE 0 TIME);
 
-MAP (@i-OBJ>) TARGET Ins IF (-*1 Abs)(1 DOTR);
+MAP (@i-OBJ_DOTR>) TARGET Ins IF (-*1 Abs)(1 DOTR);
 #MAP (@ADVL> @<ADVL) TARGET Trm OR Abl OR Lok OR Aeq OR Via ; Erstattet af de to ADD regler under Nominer
 
 
@@ -1852,6 +1855,7 @@ SELECT Abs + Pl IF (*1C INTRANSVERB + VFIN + 3Pl); #hitter paa 'SUBJ NAASORPASSU
 #SELECT Abs + Pl IF (*1C INTRANSVERB + VFIN + 3Pl BARRIER 3PlPoss); #Nyt forsoeg 30.3. blokerer nu SUBJ, hvorfor ovenstaaende foerst
 
 REMOVE HTR IF (0 vn + QAR); #en skummel regel, der skal lukke op for @i->N og blokere @MIK-OBJ
+SELECT @i-MIK-OBJ> IF (1 HTR + vn - V) ; #20091106
 SELECT @MIK-OBJ> IF (*1 HTR) ;
 
 REMOVE @ALLOBJ> IF (0 Abs)(*1C INTRANSVERB - Par BARRIER ("\,")) ; #20091105 udelukket Par og tilfoejet BARRIER
