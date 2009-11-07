@@ -1023,8 +1023,8 @@ LIST @CL-ADVL> = @CL-ADVL> ; # neksusadverbial der modificerer t.h.
 LIST @CL-<ADVL = @CL-<ADVL ; # neksusadverbial der modificerer t.v.
 LIST @CL-CIT> = @CL-CIT> ;	 # predikat i oo der står til et matriseverb t.h. CL-OBJ (oo oratobl)
 LIST @CL-<CIT = @CL-<CIT ;	 # predikat i oo der står til et matriseverb t.v. (CIT=sitat)
-LIST @i-SUBJ> = @i-SUBJ> ;   # subjekt der står til inkorporeret dotr verbal t.h.
-LIST @i-<SUBJ = @i-<SUBJ ;   # subjekt der står til inkorporeret dotr verbal t.v.
+LIST @i-SUBJ> = @i-SUBJ> ;   # "dativ-objektet" ved dotr verbal t.h. 'Beatrinep PERIMUT allagaq aaqquaa'
+LIST @i-<SUBJ = @i-<SUBJ ;   # "dativ-objektet" ved dotr verbal t.v. 
 LIST @MIK-OBJ> = @MIK-OBJ> ; # indef objekt ved HTR til hoejre
 #LIST @<MIK-OBJ = @<MIK-OBJ ; # indef objekt ved HTR til venstre #Findes den kontekst overhovedet??
 LIST @i-MIK-OBJ> = @i-MIK-OBJ> ; #objekt ved inderiveret halvtransitiv 20091106
@@ -1055,8 +1055,7 @@ LIST @ABSOLUT_PRED = @ABSOLUT_PRED ;	#Participier med nexus inde i en NP eller a
 LIST @i->V = @i->V ; 	# NIQ ved ajor, saper, artor, nalu
 LIST @SUBJ_COMP = @SUBJ_COMP ;	#Prædikat til subjekt/ subjective complement
 
-SET TAGGED = @PRED OR @SUBJ> OR @<SUBJ OR @OBJ> OR @<OBJ OR @ADVL> OR @<ADVL OR @CL-ADVL> OR @CL-<ADVL OR @CL-CIT> OR @CL-<CIT OR @i-SUBJ> OR @i-<SUBJ 
-OR @i-OBJ_DOTR> OR @i-<OBJ OR @i-ADVL> OR @i-<ADVL OR @INTERJ OR @PROP> OR @HNOUN OR @>N OR @N< OR @i->N OR @i-N< OR @POSS OR @>V ;
+SET TAGGED = @PRED OR @SUBJ> OR @<SUBJ OR @OBJ> OR @<OBJ OR @ADVL> OR @<ADVL OR @CL-ADVL> OR @CL-<ADVL OR @CL-CIT> OR @CL-<CIT OR @i-SUBJ> OR @i-<SUBJ OR @i-OBJ_DOTR> OR @i-<OBJ OR @i-ADVL> OR @i-<ADVL OR @INTERJ OR @PROP> OR @HNOUN OR @>N OR @N< OR @i->N OR @i-N< OR @POSS OR @>V ;
 
 # Syntaks
 # =======
@@ -1790,6 +1789,7 @@ REMOVE @POSS IF (NEGATE *1 POSSESSUM3) ; #Pers tilfoejelse 0608
 
 # Part
 
+SELECT ("tassa") + Part IF (-*1 V OR vn)(*1 V OR vn OR Prop OR ("\:")) ; #"tassa" brugt foer forklarende hovedsaetning eller i consekutiv bisaetning
 
 REMOVE Interj IF (0 Part)(1 (@HNOUN));
 	## Tassa illu.
@@ -1878,9 +1878,8 @@ REMOVE (Abs MI) IF (0 Lok)(*1 LOKVERB);
 REMOVE (Rel 4Sg) IF (0 Lok)(*1 LOKVERB);
     ## Illumi aappaluttumi najugaqarpugut.
 
-
-
-REMOVE Pl + @ALLSUBJ> IF (*1C VERBNOT3PLSUBJ BARRIER LU);
+#REMOVE Pl + @ALLSUBJ> IF (*1C VERBNOT3PLSUBJ BARRIER LU); #20091107 - maa ikke hitte paa 4.person
+REMOVE Pl + @ALLSUBJ> IF (*1C 12SUBJVERB BARRIER LU);
 
 #REMOVE (N Sg) + @ALLSUBJ> IF (*1C VFIN BARRIER LU LINK NOT 0 3SGSUBJVERB)(NEGATE 0 LU); #forstår ikke 20080302
 
@@ -1938,7 +1937,7 @@ REMOVE (N @POSS) IF (NEGATE 1 POSSESSUM3 OR LU);
 
 REMOVE (N @POSS) IF (1 LU)(NEGATE 2 POSSESSUM3);
 
-REMOVE @SUBJ> IF (*-1C (@SUBJ>) BARRIER LU OR V )(NEGATE 0 LU);
+REMOVE @SUBJ> + Rel IF (*-1C (@SUBJ>) BARRIER LU OR V )(NEGATE 0 LU);
 	## Nukap Piitap illua qalipappaa.
 	## Nukap Piitap ernerata illua qalipappaa.
     #        ^^^^^^
@@ -2078,6 +2077,8 @@ REMOVE @OBJ> IF (0 THING)(*1 IntransTrans BARRIER V);
 
 REMOVE (Prop Ins) IF (0 N + @OBJ>)(*1 IntransTrans BARRIER V);
 REMOVE (@SUBJ> Adj 1Sg) IF (*1 @PRED + (3Sg)) ;
+
+SELECT Abs + Pl + @SUBJ> IF (-1C Abs + Pl + @SUBJ>)(1 INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl) ; #20091107 'ajornartorsiutit SUUGALUARTUT oqaasinngortinneqaraangamik'
 
 # ========================= #
 #     Final sektion         #
