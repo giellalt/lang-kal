@@ -902,6 +902,7 @@ SET V-NOT-Par = V - Par ;
 SET VERB-NOTINF = V - Inf - InfNeg ;
 LIST CON_CAU = Con OR Cau ;
 LIST PASSIV = (GE SIMA) OR NIQAR OR (TRANSVERB TAQ U) ;
+LIST NO_HTR = "allap" ; #20091108 - Verber, der ikke kan kombinere med HTR
 
 # Nominer
 # -------
@@ -924,8 +925,8 @@ LIST POSS_ABBR = "sap" ; # forkortelser, der oftest anvendes som possessor
 # ---------
 LIST KONJUNKTION = "aamma" "kisianni" "imaluunniit" "taava" ;
 LIST ADVERBIUM = "ima" ;
-LIST FOKUSPART = "tassa" "aali" "sunaaffa" ;
-LIST KONCESSIV = "naak" "uffa" "sunaaffa" ;
+LIST FOKUSPART = "tassa" "aali" "sunaaffa" ; #oqaqqarniutit imal. oqaaseqatigiinni oqaluutitaqanngitsut 
+LIST KONCESSIV = "naak" "uffa" "sunaaffa" ; #oqaaseqatigiinni minnerni oqaluummik pisariaqartitsisut
 
 # Lexical sets
 # ==============
@@ -951,7 +952,7 @@ SET ORATIOOBLVERB = ORATIOOBLVERBnOQAR OR OQARnUSIQ ;
 #LIST ORATIOOBLVERB = "eqqartor" "ilisimatitsissut" "isuma" "isummer" "naatsorsor" "nalu" "nalunaar" "nalunaarut" "neriup" ("oqar" - USIQ) "qular" "qularnar" "paasi" "siunnersor" "taku" "unner" ;
 #fandt ingen 'oqalup' som inquit i corpus 5.4.
 
-LIST VEXCLAM = "sunaaffa" "uffa" "aali" "naak" ;
+#LIST VEXCLAM = "sunaaffa" "uffa" "aali" "naak" ; #20091108 slettet
 
 LIST humverb = "suli" "nalunaar"; # Verb der vil ha humane subj, og ikke er i andre set
 LIST thingverb = "nalunaap" "ersip";
@@ -1143,7 +1144,7 @@ MAP:MapPred2ToIV (@PRED2) TARGET INTRANSVERB + Par + 3Pl IF (*-1 Abs + Pl)(NEGAT
 # =========
 #Konjunktioner er konjunktioner, når de indleder en sætning, ellers er de adverbier
 MAP (@CONJ) TARGET KONJUNKTION IF (-1 BOS OR ("\,")) ; #Flyttet fra 1168 forebygge konflikt med @ADVL>
-MAP (@<CL-ADVL) TARGET KONJUNKTION IF (1 EOS)(NEGATE -1 BOS) ; #Sidste betingelse for at undgaa at tagge isolerede konjunktioner
+MAP (@CL-<ADVL) TARGET KONJUNKTION IF (1 EOS)(NEGATE -1 BOS) ; #Sidste betingelse for at undgaa at tagge isolerede konjunktioner
 MAP (@HEADLINE) TARGET KONJUNKTION IF (1 EOS)(-1 BOS) ; #Sidste betingelse for at undgaa at tagge isolerede konjunktioner
 MAP (@FOC) TARGET FOKUSPART + (Part) IF (NEGATE *0 V) ;
 MAP (@CONJ) TARGET ("tassa") + Part IF (-*1 V OR vn)(*1 V OR vn OR Prop OR ("\:")) ; #"tassa" brugt foer forklarende hovedsaetning eller i consekutiv bisaetning
@@ -1154,7 +1155,7 @@ MAP:AddPartConjAbs (@CONJ) TARGET Part IF (-1 Abs)(*1 Abs BARRIER VFIN) ; #2.4. 
 MAP:AddPartConjRel (@CONJ) TARGET Part IF (-1 Rel)(*1 Rel BARRIER VFIN) ;
 MAP:Nexusadverbial (@CL-ADVL>) TARGET Part IF (-1 BOS)(NEGATE 0 KONJUNKTION) ;
 MAP:Tidsadberbial  (@CL-ADVL>) TARGET TIME IF (*1 Ind OR Opt OR Int)(NEGATE 0 KONJUNKTION) ; #XXX TT
-MAP:Tidsadberbial  (@<CL-ADVL) TARGET TIME IF (-*1 Ind OR Opt OR Int)(NEGATE 0 KONJUNKTION) ; #XXX TT
+MAP:Tidsadberbial  (@CL-<ADVL) TARGET TIME IF (-*1 Ind OR Opt OR Int)(NEGATE 0 KONJUNKTION) ; #XXX TT
 
 
 # Nominer - De sikre MAP regler
@@ -1175,7 +1176,7 @@ MAP (@<N) TARGET Trm IF (-1C Trm)(NEGATE *1 V) ;
 MAP (@OBJ>) TARGET Abs + Sg IF (1 Abs + Sg)(2 Inf + 3SgO OR InfNeg + 3SgO);
 
 # Hoejfrekvente fraser
-MAP (@POSS) TARGET ("kalaaleq") + Rel + Pl IF (1 ("oqaaseq") OR ("nuna")); #20091103 Kalaallit Nunaat
+MAP (@POSS) TARGET ("kalaaleq") + Rel + Pl IF (1 ("oqaaseq") OR ("nuna") OR ("Nuna")); #20091103 Kalaallit Nunaat
 
 
 # Partikler anden runde
@@ -1327,7 +1328,7 @@ MAP (@i-ADVL>) TARGET Part IF (-2 BOS)(-1 $$KASUS)(1 $$KASUS + vn);
 #MAP (@CL-ADVL>) TARGET Ite OR Cau OR Inf OR InfNeg OR Con OR Par IF ( *1 V BARRIER N) ; #erstattes 110308 af saerlige CON og CAU
 #MAP (@CL-<ADVL) TARGET Ite OR Cau OR Inf OR InfNeg OR Con OR Par IF (*-1 V BARRIER N) ; 
 MAP (@CON) TARGET Con ; #ny 110308
-MAP (@CAU) TARGET Cau (NEGATE -*1 ORATIOOBLVERB) ;
+MAP (@CAU) TARGET Cau (NEGATE -*1 ORATIOOBLVERB BARRIER VFIN) ;
 #Reglen herunder mapper alt for meget og jeg forstaar ikke BARRIER??? Kommenteres ud 
 #MAP (@CL-ADVL>) TARGET Ite OR Inf OR InfNeg OR Par IF ( *1 V BARRIER N) ; #erstattes 110308 af saerlige CON og CAU
 #MAP (@CL-<ADVL) TARGET Ite OR Inf OR InfNeg OR Par IF (*-1 V BARRIER N) ; #Inf kun sjaeldent nexusadverbial saa nyt forsoeg herunder:
@@ -1419,13 +1420,16 @@ MAP (@SUBJ>) TARGET Adj IF (-1 @SUBJ>); #2.4. for bred og upraecis??
 
 #Hoejfrekvente kombinationer
 SELECT Num + 3PlPoss IF (-1 MAANED); #NB Possessum skal vaere plur. da konsekvent underforstaaet 'ulloq' MAANED (ulluisa) Num
-SELECT ("kalaaleq") + Rel + Pl IF (1 ("oqaaseq") OR ("nuna"));
+SELECT ("kalaaleq") + Rel + Pl IF (1 ("oqaaseq") OR ("nuna") OR ("Nuna"));
 SELECT ("oqaaseq") + 3PlPoss IF (-1 ("kalaaleq") + Rel + Pl);
+SELECT:Se_Nuna ("Nuna") + Sg + 3PlPoss IF (-1 ("kalaaleq") + Rel + Pl);
 SELECT:Se_nuna ("nuna") + Sg + 3PlPoss IF (-1 ("kalaaleq") + Rel + Pl);
 SELECT:Se_taamaattoq ("taamaattoq") + LI IF (-1 BOS) ; #Har vaeret checket for modeksempler, men hidtil ingen fundet. Pas paa!
 SELECT:Se_tamaakk ("taamaakkaluartoq") IF (-1 BOS) ; #Har vaeret checket for modeksempler, men hidtil ingen fundet. Pas paa!
 
 #Et par sikre
+REMOVE NO_HTR + HTR ; #20091108 - umulige kombinationer som ("allap" HTR)
+
 SELECT:SikkerPossessor01 Rel + Pl IF (1C 3PlPoss);
 #
 
@@ -1982,7 +1986,7 @@ REMOVE Inf + 4Pl + 4PlO IF (NEGATE 0 TIP);
 SELECT Par IF (*-1 UNA BARRIER V-NOT-Par);
 	## Trondimuna tigusimagaa.
 	
-REMOVE Par IF (-1C N)(NEGATE *-1 VEXCLAM)(NEGATE *1 ORATIOOBLVERB); #forstår ikke reglen 20080302
+#REMOVE Par IF (-1C N)(NEGATE *-1 VEXCLAM)(NEGATE *1 ORATIOOBLVERB); #forstår ikke reglen 20080302. Slettet 20091108
  
 SELECT Par IF (NEGATE *-1 VFIN)(NEGATE *1 VFIN OR ("?"));
 	## Sunaaffa anereersut.
@@ -2134,7 +2138,8 @@ SELECT ("pi") + nn ; # ad hoc for at disambiguere pi+nn fra pi+vn
 
 # Enkelte derivativer
 REMOVE IR + nv IF (0 V + vv OR ("ila")) ; #'ilaarpaa' ikke 'ila+IR'
-REMOVE U + nv IF (0 V + vv) ;
+SELECT ("alla") + U IF (-1 BOS OR ("\,") OR ("ila")) ; #20091108 vaelger alla+U+NNGIT frem for "hun skraever ikke" i begyndelsen af en saetning
+REMOVE U + nv IF (0 V + vv) ; #20091108 vaelger "allaap" NNGIT frem for "alla" U NNGIT. Derfor ny SELECT ovenover
 REMOVE U + NAR; #"eqqaq" U nv NAR vv for 'eqqaanar' vist en utaenkelig kombination
 REMOVE HTR + NAR; #naeppe en mulig kombination
 REMOVE SSAQ + LIUR IF (0 HUMAN) ; #'ilassiorpoq' ikke 'ila+SSAQ=LIUR'
