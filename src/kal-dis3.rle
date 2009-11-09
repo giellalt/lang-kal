@@ -924,7 +924,7 @@ LIST POSS_ABBR = "sap" ; # forkortelser, der oftest anvendes som possessor
 # Partikler
 # ---------
 LIST KONJUNKTION = "aamma" "kisianni" "imaluunniit" "taava" ;
-LIST ADVERBIUM = "ima" ;
+LIST ADVERBIUM = "ima" "qanoq" ; #20091109 tilfoejet 'qanoq', der maaske staar lidt malplaceret her
 LIST FOKUSPART = "tassa" "aali" "sunaaffa" ; #oqaqqarniutit imal. oqaaseqatigiinni oqaluutitaqanngitsut 
 LIST KONCESSIV = "naak" "uffa" "sunaaffa" ; #oqaaseqatigiinni minnerni oqaluummik pisariaqartitsisut
 
@@ -982,9 +982,9 @@ LIST EDIBLE = "neqi" ;
 LIST DRINKABLE = "kaffi" ;
 
 SET FOOD = EDIBLE | DRINKABLE ;
-LIST THING = "alussaat" "aqqusineq" ("ati" TAQ) "ilullissiaq" "siu";
+LIST THING = "alussaat" "aqqusineq" ("ati" TAQ) "ilullissiaq" "siu" "timi" ;
 
-LIST TIME = "sapaat" "qeqqa" "aasaq" "ippassaq" "ullaaq" "ullaa" ;
+LIST TIME = "sapaat" "qeqqa" "aasaq" "ippassaq" "ullaaq" "ullaa" "ataasinngor" "marlunngor" "pingasunngor" "sisamanngor" "tallimanngor" "arfininngor";
 LIST NUMHOVED = "krone" "milliardi" "million" "dollari" "oori" "øre" "koruuni" "euro" "dollar" "kiilu" "kilo" "gram";
 LIST COMPOUND_N = "Windows" "Linux" "program" ;
 LIST AIRTRANSPORT = "qajaq" "timmi" "helikopter" "helikopteri" "qulimiguulik" "zeppeliner" ;
@@ -1139,6 +1139,9 @@ MAP:MapPredToVfin (@PRED) TARGET VFIN ; #Et finit verbum er altid prædikat
 MAP:MapPredToInfLuIfRvfin (@PRED) TARGET Inf + LU OR InfNeg + LU IF (1 VFIN) ;
 MAP:MapPredToInfLuIfLvfin (@PRED) TARGET Inf + LU OR InfNeg + LU IF (-1 VFIN) ;
 MAP:MapPred2ToIV (@PRED2) TARGET INTRANSVERB + Par + 3Pl IF (*-1 Abs + Pl)(NEGATE *0 ORATIOOBLVERB BARRIER VFIN)(1 Abs OR ("\,")); #koncessive saetninger uden konjunktion
+MAP (@CL-<ADVL) TARGET Par + 3Pl + 4SgO OR Par + 4Sg IF (*-1 VFIN) ; #20091109 participium på -gaanni altid neksusadverbial
+MAP (@PRED2) TARGET Par IF (*-1 ADVERBIUM OR UNA BARRIER V)(NEGATE *0 ORATIOOBLVERB) ; #20091109
+MAP (@PRED2) TARGET Inf + 1Sg OR InfNeg + 1Sg IF (*-1 ADVERBIUM OR UNA LINK *-1 VFIN + 1Sg)(NEGATE *0 ORATIOOBLVERB) ; #20091109
 
 # Partikler
 # =========
@@ -1153,6 +1156,7 @@ MAP:AdvVedParatakse (@ADVL>) TARGET Part IF (0 LU)(-1 N)(1 N);
 #MAP:HvilkenAdverbial (@INTERIM) TARGET Part IF (0 LU)(-1 N)(1 N);
 MAP:AddPartConjAbs (@CONJ) TARGET Part IF (-1 Abs)(*1 Abs BARRIER VFIN) ; #2.4. tilfoejet  MAP:HvilkenAdverbial foer denne for at forhindre @CONJ på 'Aasaanerani naasut tamalaat alutornartut ILAATIGULLU ruuat ..'
 MAP:AddPartConjRel (@CONJ) TARGET Part IF (-1 Rel)(*1 Rel BARRIER VFIN) ;
+MAP (@CL-ADVL>) TARGET Part IF (-2 BOS OR ("\,"))(-1 Interj)(NEGATE 0 KONJUNKTION)(*1 V) ; #20091109 .., aasiit TAAMATUT, ...
 MAP:Nexusadverbial (@CL-ADVL>) TARGET Part IF (-1 BOS)(NEGATE 0 KONJUNKTION) ;
 MAP:Tidsadberbial  (@CL-ADVL>) TARGET TIME IF (*1 Ind OR Opt OR Int)(NEGATE 0 KONJUNKTION) ; #XXX TT
 MAP:Tidsadberbial  (@CL-<ADVL) TARGET TIME IF (-*1 Ind OR Opt OR Int)(NEGATE 0 KONJUNKTION) ; #XXX TT
@@ -1160,11 +1164,12 @@ MAP:Tidsadberbial  (@CL-<ADVL) TARGET TIME IF (-*1 Ind OR Opt OR Int)(NEGATE 0 K
 
 # Nominer - De sikre MAP regler
 # =============================
-MAP (@<SUBJ) TARGET (Abs) IF (*-1 @FOC BARRIER (V));
+MAP (@<SUBJ) TARGET (Abs) IF (*-1 @FOC BARRIER V);
 MAP (@HNOUN) TARGET APPELLATIV + Abs OR Prop + Abs OR Abbr - FIRSTNAME IF (NEGATE *0 VERB-NOTINF)(NEGATE 1 TRANSVERB + Inf OR TRANSVERB + InfNeg);
 MAP (@i-ADVL>) TARGET Trm IF (1 N + (vn)) ;
 MAP:SgObjGE (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (*1 Rel)(*1 TRANSVERB + GE + 3SgO BARRIER VERB-NOTINF) ; 
-MAP:SgObj (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (1 TRANSVERB + 3SgO) ; 
+MAP (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (*1 Par + 3Pl + 4SgO BARRIER V + 3Sg) ; #20091109 objekt for -gaanni hvis ikke subjekt for entalsverbum
+MAP:SgObj (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (1 TRANSVERB + 3SgO OR Par + 3Pl + 4SgO) ; #20091109 tilfoejet Par med -gaanni
 MAP (@OBJ>) TARGET APPELLATIV + Abs + Pl IF (1 TRANSVERB + 3PlO + GE LINK -1 Rel) ; #foerst OSV ved -givaa
 MAP (@OBJ>) TARGET APPELLATIV + Abs + Pl IF (1 TRANSVERB + 3PlO)(-1 Rel BARRIER POSSESSUM) ; #
 MAP (@OBJ>) TARGET APPELLATIV + Abs + Pl OR Prop + Abs + Pl IF ( *1 TRANSVERB - 3Pl + 3PlO) ; #20091105 Kun sikker, naar subjekt != 3Pl. Der maa mere avancerede regler til at adskille implicit subjekt 3Pl fra objekt Pl
@@ -1206,7 +1211,7 @@ MAP (@SUBJ>) TARGET N IF (-1 ("\("))(1 ("\)"))(-2 @SUBJ>) ; #Parantetiske indsku
 MAP (@<SUBJ) TARGET (Rel) IF (-*1 TRANSVERB + VERB-NOTINF + 34Sg)(0 (Sg)) ;
 MAP (@<SUBJ) TARGET (Rel) IF (-*1 TRANSVERB + 34Pl)(0 (Pl)) ;
 #MAP (@<SUBJ) TARGET (Abs Sg) IF (-*1C INTRANSVERB + 3Sg OR INTRANSVERB + 4Sg BARRIER ("tassa"))(NEGATE -1 ("\(")) ;
-MAP (@<SUBJ) TARGET (Abs Sg) IF (-*1C INTRANSVERB + 3Sg OR INTRANSVERB + 4Sg BARRIER ("tassa") LINK NOT 0 (TUQ vn QAR nv)) (NEGATE -1 ("\(")) ;
+MAP (@<SUBJ) TARGET (Abs Sg) IF (-*1C INTRANSVERB + 3Sg OR INTRANSVERB + 4Sg BARRIER ("tassa") LINK NOT 0 (TUQ vn QAR nv)) (NEGATE -1 ("\("))(NEGATE 1 Abs + Sg LINK *1 V) ; #20091109 - sidste NEGATE
 #MAP (@<SUBJ) TARGET (Abs Pl) IF (-*1C INTRANSVERB + (3Pl) OR INTRANSVERB + (4Pl)) ; #rettet 2.4. da alt for bred
 MAP (@<SUBJ) TARGET (Abs Pl) IF (-*1C INTRANSVERB + 3Pl OR 4Pl)(NEGATE *1 INTRANSVERB + 3Pl OR 4Pl)(NEGATE *1 TRANSVERB + 3PlO); #2.4.
 
@@ -1215,7 +1220,7 @@ MAP (@SUBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs OR Pron + Abs + Sg IF (*
 
 # Ins er tit adled til inkorporet objekt
 MAP (@i->N) TARGET (Ins) IF (*1 QAR OR LIK) ; # "tit" skal præciseres eller reduceres til en ADD-regel
-MAP (@i-N<) TARGET (Ins) IF (*-1 QAR OR LIK)(NEGATE *1 QAR OR LIK) ; # "tit" skal præciseres eller reduceres til en ADD-regel
+MAP (@i-N<) TARGET (Ins) IF (*-1 QAR OR LIK)(NEGATE *1 QAR OR LIK)(NEGATE 1 vn) ; # Sidste NEGATE for at forebygge hit paa 'ilunni QATSORTITASSAANNGIVISSUMIK anorersuartorsuaq,'
 
 
 # Nominer - ADD regler
@@ -1236,7 +1241,7 @@ ADD (@<SUBJ) TARGET APPELLATIV + (Rel) OR Prop + (Rel) OR (Adj) IF (-*1 TRANSVER
 #Nomen i oblik kasus kan være adverbalt adled
 #ADD (@ADVL>) TARGET (Lok) OR (Trm) OR (Abl) OR (Via) OR (Aeq) OR (Ins) IF (*1 V OR vn) ; #OR vn tilfoejet 0312
 MAP (@ADVL>) TARGET Lok IF (-1 BOS) ; 
-MAP (@ADVL>) TARGET (Ins) IF (*1 vn OR V - DOTR)(NEGATE *1 QAR OR LIK) ; #OR vn tilfoejet 0312
+MAP (@ADVL>) TARGET (Ins) IF (*1 V - DOTR BARRIER vn)(NEGATE *1 QAR OR LIK) ; #OR vn fjernet og BARRIER tilfoejet 20091109
 
 MAP (@i-<ADVL) TARGET (Lok) + POSSESSUM3 IF (-2 vn - NAR)(-1 Rel)(NEGATE *1 V OR vn - LU) ; #20091104
 MAP (@i-<ADVL) TARGET (Lok) IF (0 LU)(-1 (Lok) + (@i-<ADVL)) ; #20091104
@@ -1247,12 +1252,13 @@ MAP (@i-ADVL>) TARGET (Lok) IF (1 vn - NAR BARRIER V)(NEGATE 1 Rel LINK 1 POSSES
 MAP (@i-ADVL>) TARGET (Abl) IF (1 vn - NAR BARRIER V)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Abl)(NEGATE 1 LU + (Abl)); #Kun Trm til vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse
 MAP (@i-ADVL>) TARGET (Via) IF (1 vn - NAR BARRIER V)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Via )(NEGATE 1 LU + (Via)); #Kun Trm til vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse
 MAP (@i-ADVL>) TARGET (Aeq) IF (1 vn - NAR BARRIER V)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Aeq )(NEGATE 1 LU + (Aeq)); #Kun Trm til vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse
+MAP (@i-ADVL>) TARGET (Ins) IF (1 vn - NAR BARRIER V)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Ins )(NEGATE 1 LU + (Ins)); #20091109 
 MAP (@AGENS) TARGET Abl IF (*1 PASSIV);
 MAP (@i-ADVL>) TARGET (Trm) IF (*1 vn BARRIER V);
 MAP (@ADVL>) TARGET (Lok) OR (Trm) OR (Abl) OR (Via) OR (Aeq) IF (*1 V); #Foerst adled til vn og i-ADVL, derefter andre ADVL
 
 
-ADD (@<ADVL) TARGET (Lok) OR (Trm) OR (Abl) OR (Via) OR (Aeq) OR (Ins) IF (-*1 V BARRIER ("\,") OR LU)(NEGATE -1 ("\(")) ;
+ADD (@<ADVL) TARGET (Lok) OR (Trm) OR (Abl) OR (Via) OR (Aeq) OR (Ins) IF (-*1 V BARRIER ("\,") OR LU)(NEGATE -1 ("\("))(NEGATE 1 vn) ; # 20091109 sidste NEGATE
 
 
 MAP (@<ADVL) TARGET N IF (-1 ("\("))(1 ("\)"))(-2 @<ADVL) ; #Parantetiske indskud samme led som foregående ord
@@ -1275,7 +1281,7 @@ ADD (@SUBJ>) TARGET (Adj 1Sg) IF (*1 TRANSVERB + (1Sg)) ;
 
 #Konjunktioner er konjunktioner, når de indleder en sætning, ellers er de adverbier
 #MAP (@CONJ) TARGET KONJUNKTION IF (-1 BOS) ; Flyttet til 1092 for at forebygge konflikt med @ADVL>
-MAP (@ADVL>) TARGET ADVERBIUM IF (*1 (V)) ; #ima etc.
+MAP (@ADVL>) TARGET ADVERBIUM IF (*1 Par OR Inf OR InfNeg BARRIER VFIN) ; #20091109
 MAP (@<ADVL) TARGET ADVERBIUM IF (*-1 (V)) ;
 
 #ADD (@POSSESSUM) TARGET POSSESSUM ;
@@ -1327,6 +1333,8 @@ MAP (@i-ADVL>) TARGET Part IF (-2 BOS)(-1 $$KASUS)(1 $$KASUS + vn);
 
 #MAP (@CL-ADVL>) TARGET Ite OR Cau OR Inf OR InfNeg OR Con OR Par IF ( *1 V BARRIER N) ; #erstattes 110308 af saerlige CON og CAU
 #MAP (@CL-<ADVL) TARGET Ite OR Cau OR Inf OR InfNeg OR Con OR Par IF (*-1 V BARRIER N) ; 
+MAP (@CL-<ADVL) TARGET Ite IF (*-1 VFIN) ; #20091109
+MAP (@CL-ADVL>) TARGET Ite IF (*1 VFIN) ; #20091109
 MAP (@CON) TARGET Con ; #ny 110308
 MAP (@CAU) TARGET Cau (NEGATE -*1 ORATIOOBLVERB BARRIER VFIN) ;
 #Reglen herunder mapper alt for meget og jeg forstaar ikke BARRIER??? Kommenteres ud 
@@ -1374,6 +1382,7 @@ MAP (@ADVL>) TARGET (Part NOT KONJUNKTION); #Rettet til ikke at medtage konjunkt
 # Andre kategorier
 # ================
 MAP (@INTERJ) TARGET Interj (NEGATE *0 V) ;
+MAP (@INTERJ) TARGET Interj IF (-1 BOS OR ("\,") OR ("\-")) ; #20091109
 
 MAP (@PROP>) TARGET Prop OR FIRSTNAME IF (1 Prop);
 
@@ -1799,6 +1808,7 @@ REMOVE @POSS IF (NEGATE *1 POSSESSUM3) ; #Pers tilfoejelse 0608
 
 
 # Part
+SELECT Interj IF (-1 BOS OR ("\,")); #20091109
 
 SELECT ("tassa") + Part IF (-*1 V OR vn)(*1 V OR vn OR Prop OR ("\:")) ; #"tassa" brugt foer forklarende hovedsaetning eller i consekutiv bisaetning
 
@@ -1866,7 +1876,7 @@ REMOVE (Via @N<) IF (NEGATE -1 Via OR Rel);
 # ====================== #
 SELECT Rel + Pl IF (1 vn + Rel + Pl)(2 3PlPoss); # 'ADVL SUBJ> NAASORPASSUIT qalipaatigissaartut akornanni pinnguarput ...' Antager, at vn normalt er et adled. Ny regel 30.3.
 
-SELECT Abs + Pl IF (*1C INTRANSVERB + VFIN + 3Pl); #hitter paa 'SUBJ NAASORPASSUIT qalipaatigissaartut akornanni pinnguarput' 30.3.
+SELECT Abs + Pl IF (*1C INTRANSVERB + VFIN + 3Pl BARRIER 3PlPoss); #hitter paa 'SUBJ NAASORPASSUIT qalipaatigissaartut akornanni pinnguarput' 30.3.
 #SELECT Abs + Pl IF (*1C INTRANSVERB + VFIN + 3Pl)(*1 Rel + 3Pl LINK 1 3PlPoss BARRIER VFIN); #Ny regel 30.3.
 #SELECT Abs + Pl IF (*1C INTRANSVERB + VFIN + 3Pl BARRIER 3PlPoss); #Nyt forsoeg 30.3. blokerer nu SUBJ, hvorfor ovenstaaende foerst
 
@@ -2135,12 +2145,14 @@ REMOVE ("asap") + Inf IF (NEGATE *-1 ("nateq") OR ("timi") OR ("angallat")) ; #a
 SELECT ("naa") IF (*0 ("naatser")); #'naavoq' sandsynligere end 'naappoq' ved 'vae
 REMOVE ("kivi") IF (NEGATE *0 ("imaq")); #
 REMOVE ("allar") IF (NEGATE 0 AFFINGERET LINK *0 ("qilak")) ; #20091103 allar- eller allap-
+REMOVE ("ili") IF (0 ("ilisima"))(NEGATE *0 THING + @ALLOBJ> OR THING + @<ALLOBJ) ; #20091109
 
 # nv eller vv?
 REMOVE ("pi") + nv IF (0 ("pi") + vv); # vaelger pi+LIR=TIP frem for pi+LIR+TIP
 SELECT ("pi") + nn ; # ad hoc for at disambiguere pi+nn fra pi+vn
 
 # Enkelte derivativer
+REMOVE NIRU IF (0 TIME) ; #20091109 "tallimanngor" NIRU
 REMOVE IR + nv IF (0 V + vv OR ("ila")) ; #'ilaarpaa' ikke 'ila+IR'
 SELECT ("alla") + U IF (-1 BOS OR ("\,") OR ("ila")) ; #20091108 vaelger alla+U+NNGIT frem for "hun skraever ikke" i begyndelsen af en saetning
 REMOVE U + nv IF (0 V + vv) ; #20091108 vaelger "allaap" NNGIT frem for "alla" U NNGIT. Derfor ny SELECT ovenover
