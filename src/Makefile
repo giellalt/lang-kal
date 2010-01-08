@@ -46,6 +46,8 @@ endif
 # Directories:
 scripts=$(GTHOME)/gt/script
 
+#Setting the default target:
+TARGET = sloppy
 
 # Kildefiler
 # **********
@@ -122,7 +124,7 @@ d-kal.fst: ../bin/d-kal.fst
 	@echo "*** Building d-kal.fst, kal.fst with Danish tags ***"
 	@echo
 	@printf "read regex [[@\"../bin/tag-da.fst\"] .o. \
-	[@\"../bin/kal.fst\"]] ; \n\
+	[@\"../bin/kal.fst\"   ]] \n\
 	save stack ../bin/d-kal.fst \n\
 	quit \n" > ../tmp/d-kal-fst-script
 	$(XFST) < ../tmp/d-kal-fst-script
@@ -135,7 +137,7 @@ d-kal.fst: ../bin/d-kal.fst
 tag-da.fst: ../bin/tag-da.fst
 ../bin/tag-da.fst: tag-da.regex
 	@echo
-	@echo "*** Building tag-da.fst ***" ;
+	@echo "*** Building tag-da.fst ***"
 	@echo
 	@printf "read regex < tag-da.regex \n\
 	save stack ../bin/tag-da.fst \n\
@@ -152,7 +154,7 @@ g-kal.fst: ../bin/g-kal.fst
 	@echo "*** Building g-kal.fst, kal.fst with Greenlandic tags ***"
 	@echo
 	@printf "read regex [[@\"../bin/tag-kal.fst\"] .o. \
-	[@\"../bin/kal.fst\"]] ; \n\
+	[@\"../bin/kal.fst\"]] \n\
 	save stack ../bin/g-kal.fst \n\
 	quit \n" > ../tmp/g-kal-fst-script
 	$(XFST) < ../tmp/g-kal-fst-script
@@ -165,7 +167,7 @@ g-kal.fst: ../bin/g-kal.fst
 tag-kal.fst: ../bin/tag-kal.fst
 ../bin/tag-kal.fst: tag-kal.regex
 	@echo
-	@echo "*** Building tag-kal.fst ***" ;
+	@echo "*** Building tag-kal.fst ***"
 	@echo
 	@printf "read regex < tag-kal.regex \n\
 	save stack ../bin/tag-kal.fst \n\
@@ -188,10 +190,10 @@ tag-kal.fst: ../bin/tag-kal.fst
 kal.fst: ../bin/kal.fst
 ../bin/kal.fst: ../bin/kal.save ../bin/caseconv.fst
 	@echo
-	@echo "*** Building kal.fst ***" ;
+	@echo "*** Building kal.fst ***"
 	@echo
 	@printf "read regex [[@\"../bin/kal.save\"] .o. \
-	[@\"../bin/caseconv.fst\"]] ; \n\
+	[@\"../bin/caseconv.fst\"]] \n\
 	save stack ../bin/kal.fst \n\
 	quit \n" > ../tmp/kal-fst-script
 	$(XFST) < ../tmp/kal-fst-script
@@ -213,7 +215,7 @@ ABBRSRCS=$(subst $(space),$(comma),$(LEX))
 #				 $(scripts)/langTools/Util.pm \
 #				 $(LEX)
 #	@echo
-#	@echo "*** Extracting abbreviations from abbr-kal-lex.txt to abbr.txt ***" ;
+#	@echo "*** Extracting abbreviations from abbr-kal-lex.txt to abbr.txt ***"
 #	@echo
 #	@perl -I $(scripts) $(scripts)/abbr-extract \
 #		--output=$@ \
@@ -227,7 +229,7 @@ ABBRSRCS=$(subst $(space),$(comma),$(LEX))
 caseconv.fst: ../bin/caseconv.fst
 ../bin/caseconv.fst: case.regex
 	@echo
-	@echo "*** Building caseconv.fst ***" ;
+	@echo "*** Building caseconv.fst ***"
 	@echo
 	@printf "read regex < case.regex \n\
 	save stack ../bin/caseconv.fst \n\
@@ -243,26 +245,55 @@ kal.save: ../bin/kal.save
 	@echo "*** Building the parser kal.save ***"
 	@echo
 	@printf "read regex [[@\"../bin/kal-lex.save\"] .o. \
-	[@\"../bin/xfst-kal.bin\"]] ; \n\
-	save stack ../bin/kal.save \n\
+		[[@\"../bin/kal-lex.save\"].l .o. [@\"../bin/xfst-kal.bin\"]] \
+		] \n\
+	save stack $@ \n\
 	quit \n" > ../tmp/kal-save-script
 	$(XFST) < ../tmp/kal-save-script
 	@rm -f ../tmp/kal-save-script
-
+# To be used instead of the above when foma has support for -stop:
+#	$(XFST) -e "read regex [[@\"../bin/kal-lex.save\"] .o. \
+#							[[@\"../bin/kal-lex.save\"].l .o. \
+#							 [@\"../bin/xfst-kal.bin\"]] \
+#						   ]" \
+#			-e "save stack ../bin/kal.save" \
+#			-stop
 
 # The first goal is to build kal-lex.save
 # This goal depends on a bunch of lexicon files
 
+#kal-lex.save: ../bin/kal-lex.save
+#../bin/kal-lex.save: $(LEX)
+#	@echo
+#	@echo "*** Building kal-lex.save ***"
+#	@echo
+#	printf "compile-source $(LEX) \n\
+#	save-source ../bin/kal-lex.save \n\
+#	quit \n" > ../tmp/kal-lex-save-script
+#	$(LEXC) < ../tmp/kal-lex-save-script
+#	@rm -f ../tmp/kal-lex-save-script
+
+# Foma-kompatible version:
 kal-lex.save: ../bin/kal-lex.save
-../bin/kal-lex.save: $(LEX)
+../bin/kal-lex.save: ../tmp/kal-all.lex
 	@echo
-	@echo "*** Building kal-lex.save ***" ;
+	@echo "*** Building $(notdir $@) ***"
 	@echo
-	printf "compile-source $(LEX) \n\
-	save-source ../bin/kal-lex.save \n\
+	printf "read lexc < $< \n\
+	save stack $@ \n\
 	quit \n" > ../tmp/kal-lex-save-script
-	$(LEXC) < ../tmp/kal-lex-save-script
+	$(XFST) < ../tmp/kal-lex-save-script
 	@rm -f ../tmp/kal-lex-save-script
+# To be used instead of the above when foma has support for -stop:
+#	$(XFST) -e "read lexc $<" \
+#			-e "save stack $@" \
+#			-stop
+
+../tmp/kal-all.lex: $(LEX)
+	@echo
+	@echo "*** Building $(notdir $@) - foma compatibility ***"
+	@echo
+	cat $^ > $@
 
 
 ifeq ($(TARGET), strict)
@@ -281,16 +312,27 @@ endif
 # Here we build xfst-kal.bin, the morphophonological component.
 # This goal depends on xfst-kal.txt
 
+../tmp/xfst-kal.tmp: xfst-kal.txt
+	@echo
+	@echo "*** cleaning $< for comments (foma compatibility) ***"
+	@echo
+	@sed 's/ \!.*$$/ /g' $< | grep -v '^!' | sed 's/$$/ /g' | \
+		grep -v 'echo' > $@
+
 xfst-kal.bin: ../bin/xfst-kal.bin
-../bin/xfst-kal.bin: xfst-kal.txt
+../bin/xfst-kal.bin: ../tmp/xfst-kal.tmp
 	@echo
-	@echo "*** Building xfst-kal.bin ***" ;
+	@echo "*** Building xfst-kal.bin ***"
 	@echo
-	@printf "source xfst-kal.txt \n\
-	save stack ../bin/xfst-kal.bin \n\
+	@printf "source $< \n\
+	save stack $@ \n\
 	quit \n" > ../tmp/xfst-kal-script
 	$(XFST) < ../tmp/xfst-kal-script
 	@rm -f ../tmp/xfst-kal-script
+# To be used instead of the above when foma has support for -stop:
+#	$(XFST) -e "source $<" \
+#			-e "save stack $@" \
+#			-e "quit"
 
 
 # Here we build a converter from Kleinschmidt to modern
@@ -299,7 +341,7 @@ xfst-kal.bin: ../bin/xfst-kal.bin
 #orth-kal.fst: ../bin/orth-kal.fst
 #../bin/orth-kal.fst: orth-kal.xfst
 #	@echo
-#	@echo "*** Building orth-kal.fst ***" ;
+#	@echo "*** Building orth-kal.fst ***"
 #	@echo
 #	@printf "source $< \n\
 #	save stack $@ \n\
@@ -312,7 +354,7 @@ xfst-kal.bin: ../bin/xfst-kal.bin
 #phon-kal.fst: ../bin/phon-kal.fst
 #../bin/phon-kal.fst: phon-kal.xfst
 #	@echo
-#	@echo "*** Building phon-kal.fst ***" ;
+#	@echo "*** Building phon-kal.fst ***"
 #	@echo
 #	@printf "source $< \n\
 #	quit \n" > ../tmp/phon-script
@@ -325,7 +367,7 @@ xfst-kal.bin: ../bin/xfst-kal.bin
 #hyph-kal.fst: ../bin/hyph-kal.fst
 #../bin/hyph-kal.fst: hyph-kal.txt
 #	@echo
-#	@echo "*** Building hyph-kal.fst ***" ;
+#	@echo "*** Building hyph-kal.fst ***"
 #	@echo
 #	@printf "source $< \n\
 #	save stack $@ \n\
@@ -339,7 +381,7 @@ xfst-kal.bin: ../bin/xfst-kal.bin
 kal-dis.bin: ../bin/kal-dis.bin
 ../bin/kal-dis.bin: kal-dis3.rle
 	@echo
-	@echo "*** Building a binary disambiguator kal-dis.bin ***" ;
+	@echo "*** Building a binary disambiguator kal-dis.bin ***"
 	@echo
 	@vislcg3 --grammar kal-dis3.rle --grammar-only --grammar-bin ../bin/kal-dis.bin
 
@@ -349,10 +391,10 @@ kal-dis.bin: ../bin/kal-dis.bin
 #dep-bin: ../bin/kal-dep.bin
 #../bin/kal-dep.bin: kal-dep.rle
 #	@echo
-#	@echo "*** Building a binary dependency grammar kal-dep.bin ***" ;
+#	@echo "*** Building a binary dependency grammar kal-dep.bin ***"
 #	@echo
 #	@vislcg3 --grammar kal-dep.rle --grammar-only --grammar-bin ../bin/kal-dep.bin
 
 
 clean:
-	@rm -f ../bin/*.bin ../bin/*.fst ../bin/*.save
+	@rm -f ../bin/* ../tmp/*
