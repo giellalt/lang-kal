@@ -124,7 +124,7 @@ d-kal.fst: ../bin/d-kal.fst
 	@echo "*** Building d-kal.fst, kal.fst with Danish tags ***"
 	@echo
 	@printf "read regex [[@\"../bin/tag-da.fst\"] .o. \
-	[@\"../bin/kal.fst\"   ]] \n\
+	[@\"../bin/kal.fst\"]] ; \n\
 	save stack ../bin/d-kal.fst \n\
 	quit \n" > ../tmp/d-kal-fst-script
 	$(XFST) < ../tmp/d-kal-fst-script
@@ -154,7 +154,7 @@ g-kal.fst: ../bin/g-kal.fst
 	@echo "*** Building g-kal.fst, kal.fst with Greenlandic tags ***"
 	@echo
 	@printf "read regex [[@\"../bin/tag-kal.fst\"] .o. \
-	[@\"../bin/kal.fst\"]] \n\
+	[@\"../bin/kal.fst\"]] ; \n\
 	save stack ../bin/g-kal.fst \n\
 	quit \n" > ../tmp/g-kal-fst-script
 	$(XFST) < ../tmp/g-kal-fst-script
@@ -193,7 +193,7 @@ kal.fst: ../bin/kal.fst
 	@echo "*** Building kal.fst ***"
 	@echo
 	@printf "read regex [[@\"../bin/kal.save\"] .o. \
-	[@\"../bin/inituppercase.fst\"]] \n\
+	[@\"../bin/inituppercase.fst\"]] ; \n\
 	save stack ../bin/kal.fst \n\
 	quit \n" > ../tmp/kal-fst-script
 	$(XFST) < ../tmp/kal-fst-script
@@ -245,8 +245,8 @@ kal.save: ../bin/kal.save
 	@echo "*** Building the parser kal.save ***"
 	@echo
 	@printf "read regex [[@\"../bin/kal-lex.save\"] .o. \
-		[[@\"../bin/kal-lex.save\"].l .o. [@\"../bin/xfst-kal.bin\"]] \
-		] \n\
+	[[@\"../bin/kal-lex.save\"].l .o. [@\"../bin/xfst-kal.bin\"]] \
+	] ; \n\
 	save stack $@ \n\
 	quit \n" > ../tmp/kal-save-script
 	$(XFST) < ../tmp/kal-save-script
