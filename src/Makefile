@@ -186,12 +186,12 @@ tag-kal.fst: ../bin/tag-kal.fst
 # This goal is to build the final analyser. It depends on all the files.
 
 kal.fst: ../bin/kal.fst
-../bin/kal.fst: ../bin/kal.save ../bin/caseconv.fst
+../bin/kal.fst: ../bin/kal.save ../bin/inituppercase.fst
 	@echo
 	@echo "*** Building kal.fst ***" ;
 	@echo
 	@printf "read regex [[@\"../bin/kal.save\"] .o. \
-	[@\"../bin/caseconv.fst\"]] ; \n\
+	[@\"../bin/inituppercase.fst\"]] ; \n\
 	save stack ../bin/kal.fst \n\
 	quit \n" > ../tmp/kal-fst-script
 	$(XFST) < ../tmp/kal-fst-script
@@ -221,19 +221,19 @@ ABBRSRCS=$(subst $(space),$(comma),$(LEX))
 #		--lex=$(ABBRSRCS)
 
 
-# The second goal is to build the caseconv.fst file
-# This goal depends on case.regex
+# The second goal is to build the inituppercase.fst file
+# This goal depends on inituppercase.regex
 
-caseconv.fst: ../bin/caseconv.fst
-../bin/caseconv.fst: inituppercase.regex
+inituppercase.fst: ../bin/inituppercase.fst
+../bin/inituppercase.fst: inituppercase.regex
 	@echo
-	@echo "*** Building caseconv.fst ***" ;
+	@echo "*** Building inituppercase.fst ***" ;
 	@echo
 	@printf "read regex < inituppercase.regex \n\
-	save stack ../bin/caseconv.fst \n\
-	quit \n" > ../tmp/caseconv-script
-	$(XFST) < ../tmp/caseconv-script
-	@rm -f ../tmp/caseconv-script
+	save stack ../bin/inituppercase.fst \n\
+	quit \n" > ../tmp/inituppercase-script
+	$(XFST) < ../tmp/inituppercase-script
+	@rm -f ../tmp/inituppercase-script
 
 kal.save: ../bin/kal.save
 ../bin/kal.save: ../bin/xfst-kal.bin ../bin/kal-lex.save
