@@ -5,23 +5,9 @@
 
 echo << Vi definerer vokalerne... >>
 
-!define Vow [ a | e | i | i2 | o | u | y | æ | ø | å |
-!             A | E | I | O | U | Y | Æ | Ø | Å ] ;
-
 define Vow [ a | e | i | i2 | o | u ] ;
 
 echo << Vi definerer konsonanterne... >>
-!define Cns [ c2 | b | c | d | f | g | g2 | g3 | g4 | h | j | k | l | m |
-!             n | p | q | r | s | t | v | w | x | z |
-!             B | C | D | F | G | H | J | K | L | M |
-!             N | P | Q | R | S | T | V | W | X | Z ]  ;
- 
-!define Cns [ t2 | c2 | b | c | d | f | g | g2 | g3 | g4 | h | j | k | l | m |
-!             n | p | q | r | s | t | v | w | x | z |
-!             B | C | D | F | G | H | J | K | L | M |
-!             N | P | Q | R | S | T | V | W | X | Z ]  ;
-
-!Fjerde test redefinerer Cns
 define Cns [ c2 | d | f | g | g2 | g3 | g4 | h | j | k | l | m |
              n | p | q | r | s | t | v ]  ;
 
@@ -31,7 +17,7 @@ define Uvular [ q | r ] ;
 define NonUvular [ Cns - Uvular ] ;
  
 echo << Vi definerer Dummy-symboler >>
-define Dummy [ %> | %< | %TRUNC | %CLIT | %STRUNC | %POSSESSORTRUNC | %PRONTRUNC | %ROD | %likTRUNC | %VCTRUNC | %CVqTRUNC | %VTRUNC | %EPENT | %PROP | %ALTINF ] ;
+define Dummy [ %> | %< | %TRUNC | %CLIT | %STRUNC | %POSSESSORTRUNC | %PRONTRUNC | %ROD | %likTRUNC | %VCTRUNC | %CVqTRUNC | %VTRUNC | %EPENT | %PROP | %ALTINF | %ProgI] ;
 
 echo << Vi definerer de ikke fonetisk betingede allomorfer >>
 define c2slet [ c2 -> 0 || Cns _ %> ] ;
@@ -140,7 +126,7 @@ echo << Vi definerer vokalregler >>
 !define schwaC [ [ i2 | i3 ] -> i || _ %> ( %TRUNC ) Cns ] ;
 !define schwaV [ [ i2 | i3 ] -> a || _ %> ( %TRUNC ) Vow ] ;
 !define schwaNULL [ i3 -> 0 || t _ [ .#. | %CLIT ] ] ;
-define Langradikalisering [ [ i %> e | i i | i %> i ] -> e e, [ u %> o | u u | u %> u ] -> o o || _ ( %> ) ( \Segment ) Uvular ] ;
+define Langradikalisering [ [ i %> e | i i | i %> ( %ProgI ) i ] -> e e, [ u %> o | u u | u %> u ] -> o o || _ ( %> ) ( \Segment ) Uvular ] ; !20100117 (pl) tilfoejet ( %ProgI ) paa venstre af hensyn til progressiv ass. ved i
 define radikalisering [ i -> e, u -> o || _ %> ( \Segment ) Uvular ] ;
 !define EeafRadikalisering [ e e -> i i || _ %> ( %TRUNC ) [ NonUvular | i | u | a ] ] ;
 define EeafRadikalisering [ [ e e | e i ] -> i i || _ %> ( %TRUNC ) [ NonUvular | i | u | a ] ] ; !Aendret 12.6.2007 for fejl som *taareigaq 
@@ -149,6 +135,8 @@ define eafRadikalisering [ e -> i || _ %> ( [ %TRUNC | %CLIT ] ) [ NonUvular | i
 !modificeret efter 16.10. e tilfoejet for at tage hoejde for xxsueruppoq il.il.
 define oafRadikalisering [ o -> u || _ %> ( %TRUNC ) [ NonUvular | i | e | u | a ] ] ;
 define progressivVassimilering [ [ u | o | i | e ] -> a || a [ %> | %ROD ] ( %TRUNC ) _  ( %> ) Cns ] ;
+!20100117 (pl) ProgI for at haandtere allaffeeraq men viinniaraq
+define ProgI [ Vow (->) i || [ e | i ] %> ( %TRUNC ) %ProgI _ ] ;
 define tAssibilering [ t -> s || t %> _ [ i | e ] ] ;
 !tilfoejet efter 16.10. for skyld innar efter langt a. Skal komme foer aVepentese
 define c2v [ c2 %> v -> p p || Vow _ Vow ] ;
@@ -264,6 +252,8 @@ trunkering ![ Cns -> 0 || _ [ %> | %ROD ] %TRUNC ] ;
 !Impvar2 ![ g -> 0 || i %> _ u k ] ; 30 
 !gEpentese ![ i ( %> ) i %> %TRUNC i -> i i g i ] ;
 !.o.
+ProgI ![ Vow (->) i || [ e | i ] %> ( %TRUNC ) %ProgI _ ] ;
+.o.
 TruncVaek ! [ %TRUNC -> 0 ] ; 31
 .o.
 ttaaqAssibilering ![ t t -> s s || i %CLIT _ ] !flyttet fra linie 320 hertil  for at forbygge at 
