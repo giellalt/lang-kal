@@ -46,6 +46,8 @@ endif
 # Directories:
 scripts=$(GTHOME)/gt/script
 
+#Setting the default target:
+TARGET = sloppy
 
 # Kildefiler
 # **********
@@ -241,26 +243,55 @@ kal.save: ../bin/kal.save
 	@echo "*** Building the parser kal.save ***"
 	@echo
 	@printf "read regex [[@\"../bin/kal-lex.save\"] .o. \
-	[@\"../bin/xfst-kal.bin\"]] ; \n\
-	save stack ../bin/kal.save \n\
+	[[@\"../bin/kal-lex.save\"].l .o. [@\"../bin/xfst-kal.bin\"]] \
+	] ; \n\
+	save stack $@ \n\
 	quit \n" > ../tmp/kal-save-script
 	$(XFST) < ../tmp/kal-save-script
 	@rm -f ../tmp/kal-save-script
-
+# To be used instead of the above when foma has support for -stop:
+#	$(XFST) -e "read regex [[@\"../bin/kal-lex.save\"] .o. \
+#							[[@\"../bin/kal-lex.save\"].l .o. \
+#							 [@\"../bin/xfst-kal.bin\"]] \
+#						   ]" \
+#			-e "save stack ../bin/kal.save" \
+#			-stop
 
 # The first goal is to build kal-lex.save
 # This goal depends on a bunch of lexicon files
 
+#kal-lex.save: ../bin/kal-lex.save
+#../bin/kal-lex.save: $(LEX)
+#	@echo
+#	@echo "*** Building kal-lex.save ***"
+#	@echo
+#	printf "compile-source $(LEX) \n\
+#	save-source ../bin/kal-lex.save \n\
+#	quit \n" > ../tmp/kal-lex-save-script
+#	$(LEXC) < ../tmp/kal-lex-save-script
+#	@rm -f ../tmp/kal-lex-save-script
+
+# Foma-kompatible version:
 kal-lex.save: ../bin/kal-lex.save
-../bin/kal-lex.save: $(LEX)
+../bin/kal-lex.save: ../tmp/kal-all.lex
 	@echo
-	@echo "*** Building kal-lex.save ***" ;
+	@echo "*** Building $(notdir $@) ***"
 	@echo
-	printf "compile-source $(LEX) \n\
-	save-source ../bin/kal-lex.save \n\
+	printf "read lexc < $< \n\
+	save stack $@ \n\
 	quit \n" > ../tmp/kal-lex-save-script
-	$(LEXC) < ../tmp/kal-lex-save-script
+	$(XFST) < ../tmp/kal-lex-save-script
 	@rm -f ../tmp/kal-lex-save-script
+# To be used instead of the above when foma has support for -stop:
+#	$(XFST) -e "read lexc $<" \
+#			-e "save stack $@" \
+#			-stop
+
+../tmp/kal-all.lex: $(LEX)
+	@echo
+	@echo "*** Building $(notdir $@) - foma compatibility ***"
+	@echo
+	cat $^ > $@
 
 
 ifeq ($(TARGET), strict)
@@ -279,16 +310,27 @@ endif
 # Here we build xfst-kal.bin, the morphophonological component.
 # This goal depends on xfst-kal.txt
 
+../tmp/xfst-kal.tmp: xfst-kal.txt
+	@echo
+	@echo "*** cleaning $< for comments (foma compatibility) ***"
+	@echo
+	@sed 's/ \!.*$$/ /g' $< | grep -v '^!' | sed 's/$$/ /g' | \
+		grep -v 'echo' > $@
+
 xfst-kal.bin: ../bin/xfst-kal.bin
-../bin/xfst-kal.bin: xfst-kal.txt
+../bin/xfst-kal.bin: ../tmp/xfst-kal.tmp
 	@echo
-	@echo "*** Building xfst-kal.bin ***" ;
+	@echo "*** Building xfst-kal.bin ***"
 	@echo
-	@printf "source xfst-kal.txt \n\
-	save stack ../bin/xfst-kal.bin \n\
+	@printf "source $< \n\
+	save stack $@ \n\
 	quit \n" > ../tmp/xfst-kal-script
 	$(XFST) < ../tmp/xfst-kal-script
 	@rm -f ../tmp/xfst-kal-script
+# To be used instead of the above when foma has support for -stop:
+#	$(XFST) -e "source $<" \
+#			-e "save stack $@" \
+#			-e "quit"
 
 
 # Here we build a converter from Kleinschmidt to modern
@@ -353,4 +395,4 @@ kal-dis.bin: ../bin/kal-dis.bin
 
 
 clean:
-	@rm -f ../bin/*.bin ../bin/*.fst ../bin/*.save
+	@rm -f ../bin/* ../tmp/*
