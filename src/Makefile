@@ -52,11 +52,17 @@ TARGET = sloppy
 # Kildefiler
 # **********
 
-SRCS = kal-lex.txt \
-	abbr-kal-lex.txt acro-kal-lex.txt \
-	noun-kal-lex.txt verb-kal-lex.txt \
-	ateq-kal-lex.txt ateq-kal-morph.txt \
-	punct-kal-lex.txt prt-kal-lex.txt num-kal-lex.txt 
+SRCS = \
+	kal-lex.txt \
+	noun-kal-lex.txt \
+	verb-kal-lex.txt \
+	ateq-kal-lex.txt \
+	ateq-kal-morph.txt \
+	abbr-kal-lex.txt \
+	acro-kal-lex.txt \
+	punct-kal-lex.txt \
+	prt-kal-lex.txt \
+	num-kal-lex.txt 
 
 ifeq ($(TARGET), strict)
 LEX = $(patsubst %,../int/str-%,$(SRCS))
@@ -302,14 +308,9 @@ $(LEX): $(SRCS)
 	@grep -v 'SUB' $(patsubst ../int/str-%,%,$@) > $@
 endif
 
-ifeq ($(TARGET), sloppy)
-$(LEX): $(SRCS)
-endif
-
 
 # Here we build xfst-kal.bin, the morphophonological component.
 # This goal depends on xfst-kal.txt
-
 ../tmp/xfst-kal.tmp: xfst-kal.txt
 	@echo
 	@echo "*** cleaning $< for comments (foma compatibility) ***"
