@@ -1050,6 +1050,7 @@ LIST @N< = @N< ;	    	 # postnominalt adled
 LIST @i->N = @i->N ;		 # adled der står til inkorporeret nominal t.h.
 LIST @i-N< = @i-N< ;		 # adled der står til inkorporeret nominal t.v.
 LIST @POSS = @POSS ;		 # possessor
+LIST @POSS> = @POSS> ;		 # possessor
 LIST @>V = @>V ;                 # adled til verbum # asaneq ajorpara.
 LIST @FOC = @FOC ;		# partikler, der erstatter et verballed
 LIST @X = @X ;                   # dette ord har endnu ikke fået en mapping-regel
@@ -1063,7 +1064,7 @@ LIST @ABSOLUT_PRED = @ABSOLUT_PRED ;	#Participier med nexus inde i en NP eller a
 LIST @i->V = @i->V ; 	# NIQ ved ajor, saper, artor, nalu
 LIST @SUBJ_COMP = @SUBJ_COMP ;	#Prædikat til subjekt/ subjective complement
 
-SET TAGGED = @PRED OR @SUBJ> OR @<SUBJ OR @OBJ> OR @<OBJ OR @ADVL> OR @<ADVL OR @CL-ADVL> OR @CL-<ADVL OR @CL-CIT> OR @CL-<CIT OR @i-SUBJ> OR @i-<SUBJ OR @i-OBJ_DOTR> OR @i-<OBJ OR @i-ADVL> OR @i-<ADVL OR @INTERJ OR @PROP> OR @HNOUN OR @>N OR @N< OR @i->N OR @i-N< OR @POSS OR @>V ;
+SET TAGGED = @PRED OR @SUBJ> OR @<SUBJ OR @OBJ> OR @<OBJ OR @ADVL> OR @<ADVL OR @CL-ADVL> OR @CL-<ADVL OR @CL-CIT> OR @CL-<CIT OR @i-SUBJ> OR @i-<SUBJ OR @i-OBJ_DOTR> OR @i-<OBJ OR @i-ADVL> OR @i-<ADVL OR @INTERJ OR @PROP> OR @HNOUN OR @>N OR @N< OR @i->N OR @i-N< OR @POSS OR @POSS> OR @>V ;
 
 # Syntaks
 # =======
@@ -1171,6 +1172,8 @@ MAP:Nexusadverbial (@CL-ADVL>) TARGET Part IF (-1 BOS)(NEGATE 0 KONJUNKTION) ;
 MAP (@<SUBJ) TARGET (Abs) IF (*-1 @FOC BARRIER V);
 MAP (@HNOUN) TARGET APPELLATIV + Abs OR Prop + Abs OR Abbr - FIRSTNAME IF (NEGATE *0 VERB-NOTINF)(NEGATE 1 TRANSVERB + Inf OR TRANSVERB + InfNeg);
 MAP (@i-ADVL>) TARGET Trm IF (1 N + (vn)) ;
+MAP:SgObjLeft (@<OBJ) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (-1 TRANSVERB + 3SgO)(*1 CLB OR EOS BARRIER 3SgO);
+
 MAP:SgObjGE (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (*1 Rel)(*1 TRANSVERB + GE + 3SgO BARRIER VERB-NOTINF) ; 
 MAP (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (*1 Par + 3Pl + 4SgO BARRIER V + 3Sg) ; #20091109 objekt for -gaanni hvis ikke subjekt for entalsverbum
 MAP:SgObj (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (1 TRANSVERB + 3SgO OR Par + 3Pl + 4SgO) ; #20091109 tilfoejet Par med -gaanni
@@ -1178,14 +1181,14 @@ MAP (@OBJ>) TARGET APPELLATIV + Abs + Pl IF (1 TRANSVERB + 3PlO + GE LINK -1 Rel
 MAP (@OBJ>) TARGET APPELLATIV + Abs + Pl IF (1 TRANSVERB + 3PlO)(-1 Rel BARRIER POSSESSUM) ; #
 MAP (@OBJ>) TARGET APPELLATIV + Abs + Pl OR Prop + Abs + Pl IF ( *1 TRANSVERB - 3Pl + 3PlO) ; #20091105 Kun sikker, naar subjekt != 3Pl. Der maa mere avancerede regler til at adskille implicit subjekt 3Pl fra objekt Pl
 
-MAP (@POSS) TARGET POSS_ABBR IF (1 POSSESSUM3); #sap. akunnera
+MAP (@POSS>) TARGET POSS_ABBR IF (1 POSSESSUM3); #sap. akunnera
 MAP (@<N) TARGET Trm IF (-1 ("qujanaq"))(NEGATE *1 V) ;
 MAP (@<N) TARGET Trm IF (-1C Trm)(NEGATE *1 V) ;
 #At adskille Inf's objekt fra V's subjekt
 MAP (@OBJ>) TARGET Abs + Sg IF (1 Abs + Sg)(2 Inf + 3SgO OR InfNeg + 3SgO);
 
 # Hoejfrekvente fraser
-MAP (@POSS) TARGET ("kalaaleq") + Rel + Pl IF (1 ("oqaaseq") OR ("nuna") OR ("Nuna")); #20091103 Kalaallit Nunaat
+MAP (@POSS>) TARGET ("kalaaleq") + Rel + Pl IF (1 ("oqaaseq") OR ("nuna") OR ("Nuna")); #20091103 Kalaallit Nunaat
 
 
 # Partikler anden runde
@@ -1198,11 +1201,11 @@ MAP (@ADVL>) TARGET Part IF (*1 V BARRIER ("\,"))(NEGATE *-1 V BARRIER ("\,")); 
 
 # Nominer anden runde
 # ===================
-MAP (@POSS) TARGET ACR + Rel IF (1 3SgPoss);
-MAP:PossAcrFoerAdvl (@POSS) TARGET ACR + Rel IF (1 Via)(2 vn + 3SgPoss) ;
-MAP:PossNFoerAdvl (@POSS) TARGET Rel + Sg IF (1 Via)(2 vn + 3SgPoss) ;
-MAP:MapPossToRelSgIfPoss (@POSS) TARGET Rel + Sg IF (1 3SgPoss) ;
-MAP:MapPossToRelPlIfPoss (@POSS) TARGET Rel + Pl IF (1 3PlPoss) ;
+MAP (@POSS>) TARGET ACR + Rel IF (1 3SgPoss);
+MAP:PossAcrFoerAdvl (@POSS>) TARGET ACR + Rel IF (1 Via)(2 vn + 3SgPoss) ;
+MAP:PossNFoerAdvl (@POSS>) TARGET Rel + Sg IF (1 Via)(2 vn + 3SgPoss) ;
+MAP:MapPossToRelSgIfPoss (@POSS>) TARGET Rel + Sg IF (1 3SgPoss) ;
+MAP:MapPossToRelPlIfPoss (@POSS>) TARGET Rel + Pl IF (1 3PlPoss) ;
 ADD:MapMikObjToIns (@MIK-OBJ>) TARGET Ins IF (*1 HTR + V); #Ikke MAP fordi ogsaa ADVL> mulig
 MAP (@i-MIK-OBJ>) TARGET Ins IF (1 HTR + vn - V) ; #20091106
 MAP:MapSubjToRelSgIfTV (@SUBJ>) TARGET Rel + Sg IF (*1 TRANSVERB + (3Sg) OR (4Sg) BARRIER POSSESSUM3) ;
@@ -1298,7 +1301,7 @@ MAP (@<ADVL) TARGET ADVERBIUM IF (*-1 (V)) ;
 MAP (@>N) TARGET Num + Abs IF (1 NUMHOVED); #Ny 30.3.
 #MAP (@>N) TARGET Num IF (1 NUMHOVED + Abs) ; #kan ikke haandtere incorporerede N
 
-MAP (@POSS) TARGET MAANED IF (1 Num + 3PlPoss); #NB Possessum skal vaere plur. da konsekvent underforstaaet 'ulloq' MAANED (ulluisa) Num
+MAP (@POSS>) TARGET MAANED IF (1 Num + 3PlPoss); #NB Possessum skal vaere plur. da konsekvent underforstaaet 'ulloq' MAANED (ulluisa) Num
 
 
 # Verber anden runde
@@ -1415,13 +1418,13 @@ MAP (@i-ADVL>) TARGET Lok IF (1 @i-ADVL> + Lok);
 MAP (@i-ADVL>) TARGET Aeq IF (1 @i-ADVL> + Aeq);
 MAP (@i-ADVL>) TARGET Abl IF (1 @i-ADVL> + Abl);
 MAP (@i-ADVL>) TARGET Ins IF (1 @i-ADVL> + Ins);
-MAP (@POSS) TARGET Rel IF (1 @POSS);
+MAP (@POSS>) TARGET Rel IF (1 @POSS);
 MAP (@SUBJ>) TARGET Adj IF (-1 @SUBJ>); #2.4. for bred og upraecis??
 	
 # Denne tag er for alle ord vi ikke har funktion til.
 # 20091031: Kommenteret ud, fordi reglen synes at nedsaette kompileringshastigheden med vistnok overfloedig redundans
-#MAP:MapX (@X) TARGET WORD ;
-
+MAP:MapX (@X) TARGET WORD ;
+REMOVE (@X);
 
 
 # ================== #
@@ -1668,7 +1671,7 @@ REMOVE Rel + 4PlPoss + Sg IF (NEGATE 1 3SgPoss)(NEGATE *1 TRANSVERB + Par + 3Sg 
 SELECT Abs + Pl IF (1 Abs + Pron + Pl); 
 
 #Nominer - kongruens
-SELECT N + Sg IF (1 N + Sg)(NEGATE *0 V) ; # Vedr. overskrifter og sætningsemner
+SELECT N + Sg IF (1 N + Sg)(NOT 0 V)(NEGATE *0 V) ; # Vedr. overskrifter og sætningsemner
 SELECT Ins + LU IF (-1C Ins) ;
 SELECT Abs + LU + Pl IF (-1C Abs + Pl);
 SELECT Abs + LU + Sg IF (-1C Abs + Sg)(NEGATE 0 Rel + Sg LINK 1 3SgPoss);
@@ -2210,4 +2213,4 @@ REMOVE (Arch) ;
 SECTION
 SELECT (@CL-<CIT) IF (*-1 ORATIOOBLVERB BARRIER V-NOT-Par) ;
 SELECT (@CL-CIT>) IF (*1 ORATIOOBLVERB BARRIER V-NOT-Par) ;
-REMOVE (@X) ; # (fjerner alle doble.)
+#REMOVE (@X) ; # (fjerner alle doble.)
