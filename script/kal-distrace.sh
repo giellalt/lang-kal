@@ -10,7 +10,7 @@ echo -n "Skriv sætning: "                   # (message to user)
 read sentence                               # next 3 lines is the usual command
 echo $sentence | preprocess --abbr=$HOME/gtsvn/st/kal/bin/abbr.txt | \
 lookup -flags mbTT -utf8 ~/st/kal/bin/kal.fst | ~/gt/script/lookup2cg | \
-vislcg3 -g $HOME/st/kal/src/kal-dis3.rle 
+vislcg3 -g $HOME/st/kal/src/kal-dis3.rle -t
 
 done                      
 exit 0
