@@ -217,13 +217,13 @@ ABBRSRCS=$(subst $(space),$(comma),$(LEX))
 
 # hele følgende blok kommenteret ud 13.8.09
 #abbr: ../bin/abbr.txt
-#../bin/abbr.txt: $(scripts)/abbr-extract \
+#../bin/abbr.txt: $(scripts)/abbr-extract.pl \
 #				 $(scripts)/langTools/Util.pm \
 #				 $(LEX)
 #	@echo
 #	@echo "*** Extracting abbreviations from abbr-kal-lex.txt to abbr.txt ***" ;
 #	@echo
-#	@perl -I $(scripts) $(scripts)/abbr-extract \
+#	@perl -I $(scripts) $(scripts)/abbr-extract.pl \
 #		--output=$@ \
 #		--abbr_lex=abbr-kal-lex.txt \
 #		--lex=$(ABBRSRCS)
