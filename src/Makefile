@@ -216,17 +216,17 @@ space:=$(empty) $(empty)
 ABBRSRCS=$(subst $(space),$(comma),$(LEX))
 
 # hele følgende blok kommenteret ud 13.8.09
-#abbr: ../bin/abbr.txt
-#../bin/abbr.txt: $(scripts)/abbr-extract.pl \
-#				 $(scripts)/langTools/Util.pm \
-#				 $(LEX)
-#	@echo
-#	@echo "*** Extracting abbreviations from abbr-kal-lex.txt to abbr.txt ***" ;
-#	@echo
-#	@perl -I $(scripts) $(scripts)/abbr-extract.pl \
-#		--output=$@ \
-#		--abbr_lex=abbr-kal-lex.txt \
-#		--lex=$(ABBRSRCS)
+abbr: ../bin/abbr.txt
+../bin/abbr.txt: $(scripts)/abbr-extract.pl \
+				 $(scripts)/langTools/Util.pm \
+				 $(LEX)
+	@echo
+	@echo "*** Extracting abbreviations from abbr-kal-lex.txt to abbr.txt ***" ;
+	@echo
+	@perl -I $(scripts) $(scripts)/abbr-extract.pl \
+		--output=$@ \
+		--abbr_lex=abbr-kal-lex.txt \
+		--lex=$(ABBRSRCS)
 
 
 # The second goal is to build the inituppercase.fst file
@@ -350,39 +350,39 @@ xfst-kal.bin: ../bin/xfst-kal.bin
 
 # Here we build a phonetic transducer KOMMENTERET BORT 4.11.09
 
-#phon-kal.fst: ../bin/phon-kal.fst
-#../bin/phon-kal.fst: phon-kal.xfst
-#	@echo
-#	@echo "*** Building phon-kal.fst ***" ;
-#	@echo
-#	@printf "source $< \n\
-#	quit \n" > ../tmp/phon-script
-#	$(XFST) < ../tmp/phon-script
-#	@rm -f ../tmp/phon-script
+phon: ../bin/phon-kal.fst
+../bin/phon-kal.fst: phon-kal.xfst
+	@echo
+	@echo "*** Building phon-kal.fst ***" ;
+	@echo
+	@printf "source $< \n\
+	quit \n" > ../tmp/phon-script
+	$(XFST) < ../tmp/phon-script
+	@rm -f ../tmp/phon-script
 
 # Here we build a hyphenator
 # Kommenteret bort 2009-09-20
 
-#hyph-kal.fst: ../bin/hyph-kal.fst
-#../bin/hyph-kal.fst: hyph-kal.txt
-#	@echo
-#	@echo "*** Building hyph-kal.fst ***" ;
-#	@echo
-#	@printf "source $< \n\
-#	save stack $@ \n\
-#	quit \n" > ../tmp/hyph-script
-#	$(XFST) < ../tmp/hyph-script
-#	@rm -f ../tmp/hyph-script
+hyph: ../bin/hyph-kal.fst
+../bin/hyph-kal.fst: hyph-kal.txt
+	@echo
+	@echo "*** Building hyph-kal.fst ***" ;
+	@echo
+	@printf "source $< \n\
+	save stack $@ \n\
+	quit \n" > ../tmp/hyph-script
+	$(XFST) < ../tmp/hyph-script
+	@rm -f ../tmp/hyph-script
 
 
 #Let us just make a binary disambiguator
 #It can be used instead of the source file.
-kal-dis.bin: ../bin/kal-dis.bin
-../bin/kal-dis.bin: kal-dis3.rle
+dis: ../bin/kal-dis.bin
+../bin/kal-dis.bin: kal-dis.rle
 	@echo
 	@echo "*** Building a binary disambiguator kal-dis.bin ***" ;
 	@echo
-	@vislcg3 --grammar kal-dis3.rle --grammar-only --grammar-bin ../bin/kal-dis.bin
+	@vislcg3 --grammar kal-dis.rle --grammar-only --grammar-bin ../bin/kal-dis.bin
 
 # not quite yet...
 ## Let us just make a binary dependency grammar
