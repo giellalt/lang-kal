@@ -15,7 +15,7 @@
 
 # Tools used when compiling the transducers
 
-# These are for Per, and for fst users
+# These are for Per and for other fst users
 # XFST = fst -utf8
 # LEXC = lexc -utf8
 
@@ -28,20 +28,6 @@ XFST = /opt/sami/xerox/c-fsm/ix86-linux2.6-gcc3.4/bin/fst -utf8
 LEXC = /opt/sami/xerox/bin/lexc -utf8
 endif
 
-# We need to parametrise the tools better.
-
-
-# The default compiler for Greenlandic is the commercial version fst.
-# If you have xfst, the non-commercial version, you may either
-# 1.
-# go to the directory 
-# where you store xfst (ask: "which xfst" if you don't know), and write
-# the following command:
-# ln -s xfst fst
-# This will give a pointer from "fst" to xfst, and the transducers will compile.
-# or 
-# 2.
-# change the # before "#XFST = xfst -utf8" above to before "XFST = fst -utf8"
 
 # Directories:
 scripts=$(GTHOME)/gt/script
@@ -75,10 +61,6 @@ LEX = $(SRCS)
 
 endif
 
-
-# We have two targets, default and strict
-# The latter is restrictive.
-
 all: $(TARGET)
 
 strict: ikal.fst
@@ -88,22 +70,20 @@ sloppy: ikal.fst
 # Here we build the final generator , an inverted transducer of the analyzer.
 # It is dependent upon kal.save
 
+# Alle udkommenterede mål i denne liste kan fræmdeles kompileres, ved
+# at skrive
+# make TARGET=g-kal.fst
+# osv. for de andre mål
+
 ikal.fst: ../bin/ikal.fst
 ../bin/ikal.fst: ../bin/kal.fst \
-				 ../bin/g-kal.fst \
-				 ../bin/d-kal.fst \
-				 ../bin/abbr.txt
-#				 ../bin/abbr.txt \ #kommenteret ud 13.8.09 og ind igen 4.11.09
-#				 ../bin/hyph-kal.fst \ #ud 4.11.09
-#				 ../bin/phon-kal.fst \ #ud 4.11.09
-#				 ../bin/orth-kal.fst  #ud 4.11.09
-#../bin/kal-dis.bin
-# Problemet her er at Per ikkje har siste versjon av vislcg3.
-# Når han får den kan kal-dis.bin bli kommentert inn.
-
-#../bin/ikal.fst: ../bin/kal.fst ../bin/g-kal.fst ../bin/d-kal.fst ../bin/abbr.txt \
-#../bin/hyph-kal.fst ../bin/phon-kal.fst ../bin/orth-kal.fst #../bin/str-kal.fst
-#../bin/hyph-kal.fst ../bin/phon-kal.fst ../bin/orth-kal.fst dis-bin #../bin/str-kal.fst #kommenteret ud 26.5. og erstattet af ovenstående
+#				../bin/g-kal.fst \
+#				../bin/d-kal.fst \
+ 				../bin/abbr.txt # kommenter evt ud.
+#				../bin/hyph-kal.fst \
+#				../bin/phon-kal.fst \
+#				../bin/orth-kal.fst  
+#				../bin/kal-dis.bin   # Per har ikke siste versjon av vislcg3.
 	@echo
 	@echo "*** Building the inverse ikal.fst ***"
 	@echo
@@ -165,7 +145,7 @@ g-kal.fst: ../bin/g-kal.fst
 	quit \n" > ../tmp/g-kal-fst-script
 	$(XFST) < ../tmp/g-kal-fst-script
 	@rm -f ../tmp/g-kal-fst-script
- 
+
 
 # In order to make g-kal.fst we need a binary tag-kal.fst
 # This goal depends on tag-kal.regex
@@ -187,10 +167,6 @@ tag-kal.fst: ../bin/tag-kal.fst
 # Here comes the part building the basic parser.
 # **********************************************
 
-# Trying...
-#strict: ../bin/kal.fst
-
-
 # This goal is to build the final analyser. It depends on all the files.
 
 kal.fst: ../bin/kal.fst
@@ -208,14 +184,13 @@ kal.fst: ../bin/kal.fst
 
 
 # Here we make the abbrevation file for our current preprocessor, 
-# the perl-based preprocess (located in the script catalogue)
+# the perl-based preprocess (located in the $(scripts) catalogue)
 
 empty:=
 comma:=,
 space:=$(empty) $(empty)
 ABBRSRCS=$(subst $(space),$(comma),$(LEX))
 
-# hele følgende blok kommenteret ud 13.8.09
 abbr: ../bin/abbr.txt
 ../bin/abbr.txt: $(scripts)/abbr-extract.pl \
 				 $(scripts)/langTools/Util.pm \
@@ -335,20 +310,20 @@ xfst-kal.bin: ../bin/xfst-kal.bin
 
 
 # Here we build a converter from Kleinschmidt to modern
-# orthography. KOMMENTERET BORT 4.11.09
+# orthography.
 
-#orth-kal.fst: ../bin/orth-kal.fst
-#../bin/orth-kal.fst: orth-kal.xfst
-#	@echo
-#	@echo "*** Building orth-kal.fst ***" ;
-#	@echo
-#	@printf "source $< \n\
-#	save stack $@ \n\
-#	quit \n" > ../tmp/orth-script
-#	$(XFST) < ../tmp/orth-script
-#	@rm -f ../tmp/orth-script
+orth-kal.fst: ../bin/orth-kal.fst
+../bin/orth-kal.fst: orth-kal.xfst
+	@echo
+	@echo "*** Building orth-kal.fst ***" ;
+	@echo
+	@printf "source $< \n\
+	save stack $@ \n\
+	quit \n" > ../tmp/orth-script
+	$(XFST) < ../tmp/orth-script
+	@rm -f ../tmp/orth-script
 
-# Here we build a phonetic transducer KOMMENTERET BORT 4.11.09
+# Here we build a phonetic transducer 
 
 phon: ../bin/phon-kal.fst
 ../bin/phon-kal.fst: phon-kal.xfst
@@ -361,7 +336,6 @@ phon: ../bin/phon-kal.fst
 	@rm -f ../tmp/phon-script
 
 # Here we build a hyphenator
-# Kommenteret bort 2009-09-20
 
 hyph: ../bin/hyph-kal.fst
 ../bin/hyph-kal.fst: hyph-kal.txt
