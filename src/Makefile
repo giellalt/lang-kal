@@ -42,6 +42,7 @@ SRCS = \
 	kal-lex.txt \
 	noun-kal-lex.txt \
 	verb-kal-lex.txt \
+	pron-kal-lex.txt \
 	ateq-kal-lex.txt \
 	ateq-kal-morph.txt \
 	abbr-kal-lex.txt \
