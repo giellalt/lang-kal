@@ -69,6 +69,8 @@ LIST N = N ;
 LIST V = V ;
 LIST N* = N* ; #Præprocessorens tagging af N, der indgår i compounds
 LIST part = part ;
+LIST PersPron = PersPron ;
+LIST DemPron = DemPron ;
 LIST Pron = Pron ;
 LIST Adj = Adj ;
 LIST Adv = Adv ;
@@ -884,7 +886,7 @@ LIST UKU = UKU ;
 
 # Alle ordklasser
 # ---------------
-LIST WORD = N V Adj Pron Adv Interj part Num ;
+LIST WORD = N V Adj PersPron DemPron Pron Adv Interj part Num ;
 
 SET NOT-PROP = WORD - Prop ;
 
@@ -1477,7 +1479,7 @@ MAP:0520 (@<SUBJ) TARGET (Abs Sg) IF (-*1C INTRANSVERB + 3Sg OR INTRANSVERB + 4S
 MAP:0530 (@<SUBJ) TARGET (Abs Pl) IF (-*1C INTRANSVERB + 3Pl OR 4Pl)(NEGATE *1 INTRANSVERB + 3Pl OR 4Pl)(NEGATE *1 TRANSVERB + 3PlO); #2.4.
 
 # Nominer i absolut kasus er oftest subjekt for intransitivt verbum 
-MAP:0540 (@SUBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs OR Pron + Abs + Sg IF (*1 INTRANSVERB + 3Sg)(NEGATE *1 TRANSVERB + VFIN)(NEGATE 1 Inf + TRANSVERB);
+MAP:0540 (@SUBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs OR DemPron + Abs + Sg IF (*1 INTRANSVERB + 3Sg)(NEGATE *1 TRANSVERB + VFIN)(NEGATE 1 Inf + TRANSVERB);
 
 # Ins er tit adled til inkorporet objekt
 MAP:0550 (@i->N) TARGET (Ins) IF (*1 QAR OR LIK) ; # "tit" skal præciseres eller reduceres til en ADD-regel
@@ -1520,10 +1522,15 @@ MAP:0760 (@<ADVL) TARGET N IF (-1 ("\("))(1 ("\)"))(-2 @<ADVL) ; #Parantetiske i
 # Pronominer - De sikre MAP regler
 # ================================
 #"uanga" og "uagut" er subjekt for V i første person hvis ikke adnominalt adled til 1SgPoss eller 1PlPoss resp.
-MAP:0770 (@SUBJ>) TARGET ("ua" 1Sg Abs) IF (*1 INTRANSVERB + (1Sg) BARRIER (1SgPoss)) ; 
-MAP:0780 (@SUBJ>) TARGET ("ua" 1Pl Abs) IF (*1 INTRANSVERB + (1Pl) BARRIER (1PlPoss)) ; 
+MAP:0770 (@SUBJ>) TARGET ("uanga" 1Sg Abs) IF (*1 INTRANSVERB + (1Sg) BARRIER (1SgPoss)) ; 
+MAP:0771 (@SUBJ>) TARGET ("uanga" 1Pl Abs) IF (*1 INTRANSVERB + (1Pl) BARRIER (1PlPoss)) ; 
+MAP:0772 (@N>) TARGET ("uanga" 1Sg) IF (1 (1SgPoss)) ;
 
-MAP:0790 (@N>) TARGET ("ua" 1Sg) IF (1 (1SgPoss)) ;
+#"illit" og "ilissi" er subjekt for V i anden person hvis ikke adnominalt adled til 2SgPoss eller 2PlPoss resp.
+MAP:0770 (@SUBJ>) TARGET ("illit" 2Sg Abs) IF (*1 INTRANSVERB + (2Sg) BARRIER (2SgPoss)) ; 
+MAP:0771 (@SUBJ>) TARGET ("illit" 2Pl Abs) IF (*1 INTRANSVERB + (2Pl) BARRIER (2PlPoss)) ; 
+MAP:0772 (@N>) TARGET ("illit" 2Sg) IF (1 (2SgPoss)) ;
+
 
 # Adjektiver - både ADD og MAP regler
 # ===================================
@@ -1697,9 +1704,9 @@ SELECT:OverskriftParSg Par + 3Sg IF (-*1 N + Sg)(NEGATE *0 VFIN)(NEGATE *1C Par)
 SELECT:OverskriftParPl Par + 3Pl IF (NEGATE *0 VFIN)(NEGATE 0 VFIN) ; #2009115 'ajoraatsit' selv baade Par og Ind
 #Participium i overskrifter
 
-SELECT:ParIkkeNv08 INTRANSVERB + Par + 3Pl IF (-*1 Inf + 4Pl)(NEGATE *0 ORATIOOBLVERB)(*1 Abs + Pl OR Pron + Pl LINK *1 VFIN + INTRANSVERB + 3Pl)(NEGATE 1 LU)(NEGATE -1 BOS OR Con OR Cau)(NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER N + Rel + Pl) ;
+SELECT:ParIkkeNv08 INTRANSVERB + Par + 3Pl IF (-*1 Inf + 4Pl)(NEGATE *0 ORATIOOBLVERB)(*1 Abs + Pl OR DemPron + Pl LINK *1 VFIN + INTRANSVERB + 3Pl)(NEGATE 1 LU)(NEGATE -1 BOS OR Con OR Cau)(NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER N + Rel + Pl) ;
 
-SELECT:ParIkkeNv09 INTRANSVERB + Par + 3Pl IF (-*1 Inf + 4Pl)(NEGATE *0 ORATIOOBLVERB)(*1 Rel + Pl OR Pron + Pl LINK *1 VFIN + TRANSVERB + 3Pl)(NEGATE 1 LU)(NEGATE -1 BOS OR Con OR Cau)(NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER N + Rel + Pl) ;
+SELECT:ParIkkeNv09 INTRANSVERB + Par + 3Pl IF (-*1 Inf + 4Pl)(NEGATE *0 ORATIOOBLVERB)(*1 Rel + Pl OR DemPron + Pl LINK *1 VFIN + TRANSVERB + 3Pl)(NEGATE 1 LU)(NEGATE -1 BOS OR Con OR Cau)(NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER N + Rel + Pl) ;
 #Specialtilfælde til følgende, hvor bisætningens subjekt er implicit, men nexus klar nok på gr. af ledsagemåde uden for overordnet nexus' scope. 
 #Pinngussanik ilaatigut qaqutiguuissunik pinngualersorlutik pinnguartut simaartuaqqat silataaniit isiginnaarrappaat ilaasa kaasarfisik kaallugit kakkitik millutillattaarlugit.
 
@@ -1709,10 +1716,10 @@ SELECT:ParIkkeVn11 Par + 3Pl IF (-1 BOS)(*1 VFIN + INTRANSVERB - 3Pl OR VFIN + T
 SELECT:ParPred02 Par + 3Pl + TEMPUSVERB IF (-1 BOS)(*1 Abs LINK *1 VFIN + INTRANSVERB BARRIER Con OR Cau OR ("\,"))(NEGATE *1 Rel LINK *1 VFIN + TRANSVERB BARRIER Con OR Cau OR ("\,"))(NEGATE 0 Rel + Sg LINK *1 3SgPoss);
 #En tidsbisætning som kun er participiet. Næsten som ParPred01, men uden krav om at at hovednexus ikke må være pluralis. Til gengæld med en leksikal begrænsning i 0.
 
-SELECT:KoncesPlPl INTRANSVERB + Par + 3Pl IF (@1 Abs + Pl)(NEGATE *0 ORATIOOBLVERB)(*1 Abs + Pl OR Pron + Pl LINK *1 VFIN + INTRANSVERB + 3Pl)(NEGATE 1 LU OR LIK OR QAR)(NEGATE -1 BOS OR Con OR Cau)(NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER N + Rel + Pl) ;
+SELECT:KoncesPlPl INTRANSVERB + Par + 3Pl IF (@1 Abs + Pl)(NEGATE *0 ORATIOOBLVERB)(*1 Abs + Pl OR DemPron + Pl LINK *1 VFIN + INTRANSVERB + 3Pl)(NEGATE 1 LU OR LIK OR QAR)(NEGATE -1 BOS OR Con OR Cau)(NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER N + Rel + Pl) ;
 #6.4. tilføjes LIK og QAR i betingelsen, fordi hit på 'Angutit SIMAARTUT arlallit .. *
 
-SELECT:KoncesPlSg INTRANSVERB + Par + 3Pl IF (@1 Abs + Pl)(NEGATE *0 ORATIOOBLVERB)(*1 Abs + Sg OR Pron + Sg LINK *1 VFIN + INTRANSVERB + 3Sg)(NEGATE 1 LU)(NEGATE -1 BOS OR Con OR Cau)(NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER N + Rel + Pl) ;
+SELECT:KoncesPlSg INTRANSVERB + Par + 3Pl IF (@1 Abs + Pl)(NEGATE *0 ORATIOOBLVERB)(*1 Abs + Sg OR DemPron + Sg LINK *1 VFIN + INTRANSVERB + 3Sg)(NEGATE 1 LU)(NEGATE -1 BOS OR Con OR Cau)(NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER N + Rel + Pl) ;
 
 SELECT:ParNIRSg Par + NIR + 3Sg IF (*0 ORATIOOBLVERB)(NEGATE 0 ("nuap"));
 #En tidlig regel for ledsætninger med NIR. Kontekst 3 person for at forebygge hit på NIR + 4Sg (=NIQ+3.Poss+Lok)
@@ -2065,9 +2072,8 @@ REMOVE (Rel @SUBJ>) IF (*1C INTRANSVERB BARRIER TRANSVERB);
 # Transitive sætninger
 # ==================== #
 
-SELECT (Pron Abs 1Sg @SUBJ>) IF (*1 (V 1Sg));
-	## Uanga takuara.
-
+SELECT (PersPron Abs 1Sg @SUBJ>) IF (*1 (V 1Sg));
+	
 SELECT Rel + Pl IF (*1 TRANSVERB + 3Pl + 3PlO)(-1 Par + 3Pl); #Subjektet, når bisætningens subjekt er implicit objekt 'Pinngussanik ilaatigut qaqutiguuissunik pinngualersorlutik pinnguartut SIMAARTUAQQAT silataaniit isiginnaarrappaat ... '
 SELECT Rel + Pl IF (*1 TRANSVERB + 3Pl + 3PlO)(*1 Abs + Pl BARRIER TRANSVERB); #Den normale SOV
 
