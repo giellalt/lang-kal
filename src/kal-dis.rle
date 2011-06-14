@@ -1348,6 +1348,21 @@ SELECT Inf + 4Pl IF (-*1 ORATIOOBLVERB + 3Pl)(NEGATE *1 Inf)(NEGATE *1 Par) ;
 REMOVE VERB_udenUTE IF (0 UTE + vn) ;
 #Fjerner overflødige UTE+vn
 
+#Typiske overgenereringer med +SI+nv
+REMOVE ("anneq") + SI ;
+REMOVE ("at") + SI ;
+REMOVE ("ilaaq") + SI ;
+REMOVE ("ili") + SI ;
+REMOVE ("ilik") + SI ;
+REMOVE ("kingu") + SI ;
+REMOVE ("nuap") + SI ;
+REMOVE ("nuanneq") + SI ;
+REMOVE ("paa") + SI ;
+REMOVE ("paaq") + SI ;
+REMOVE ("pui") + SI ;
+REMOVE ("taaq") + SI ;
+
+
 SECTION
 
 # Verber - De sikre MAP regler 1. runde
@@ -1363,6 +1378,11 @@ MAP:0010 (@PRED) TARGET Inf + LU OR InfNeg + LU IF (1 VFIN) ;
 MAP:0020 (@PRED) TARGET Inf + LU OR InfNeg + LU IF (-1 VFIN) ;
 MAP:0030 (@PRED2) TARGET INTRANSVERB + Par + 3Pl IF (*-1 Abs + Pl)(NEGATE *0 ORATIOOBLVERB BARRIER VFIN)(1 Abs OR ("\,")); #koncessive saetninger uden konjunktion
 MAP:0040 (@CL-<ADVL) TARGET Par + 3Pl + 4SgO OR Par + 4Sg IF (*-1 VFIN) ; #20091109 participium på -gaanni altid neksusadverbial
+
+#Adverbal ledsagemåde efterstillet causativ som særligt tilfælde
+MAP:0041 (@<ADVL) TARGET Inf + 1Pl IF (-2 Cau + 1Pl)(-1 N + Abs) ;
+MAP:0042 (@-<ADVL) TARGET Inf + 1Sg IF (-2 Cau + 1Sg)(-1 N + Abs) ;
+
 MAP:0050 (@PRED2) TARGET Par IF (*-1 ADVERBIUM OR UNA BARRIER V)(NEGATE *0 ORATIOOBLVERB) ; #20091109
 MAP:0060 (@PRED2) TARGET Inf + 1Sg OR InfNeg + 1Sg IF (*-1 ADVERBIUM OR UNA LINK *-1 VFIN + 1Sg)(NEGATE *0 ORATIOOBLVERB) ; #20091109
 MAP:0061 (@CL-<CIT) TARGET Inf + 4Sg IF (-*1 ORATIOOBLVERB + 3Sg)(NEGATE *1 Inf) (NEGATE *1 Par);
@@ -1848,7 +1868,8 @@ SELECT Pron + Pl IF (1C N + Pl) ;
 
 #Verber
 SELECT Refl IF (-1 ("immi")); #20100228 Ny (PL) Skal udvides med QQU og TIP
-REMOVE Inf + 1Sg IF (NEGATE *0 VFIN + 1Sg);
+SELECT Inf + 1Sg IF (*1 vn + 1SgPoss BARRIER V) ; #Skal sikkert begrænses af andre kriterier
+REMOVE Inf + 1Sg IF (NEGATE *0 VFIN + 1Sg OR Cau + 1Sg);
 REMOVE Inf + 2Sg IF (NEGATE *0 VFIN + 2Sg);
 REMOVE Inf + 1Pl IF (NEGATE *0 VFIN + 1Pl);
 REMOVE Inf + 2Pl IF (NEGATE *0 VFIN + 2Pl);
@@ -1859,6 +1880,10 @@ REMOVE Int IF (*0C Ind) ;
 REMOVE Imp IF (-1 Ind)(0 LU); #2.4. da ReImpIfInd ikke finder 'Amerlanerit ipiitsuinnaanngivipput ILAASALU ikusii .. ' 
 SELECT NIQAR + V IF (-*1 @SUBJ> + Abs) ; #Disambiguerer NIQAR fra NIQ efterfulgt af QAR. BARRIER af hensyn til muligheden 
 SELECT NIQAR + V IF (-*1 Abs BARRIER TRANSVERB) ; #Disambiguerer NIQAR fra NIQ efterfulgt af QAR. BARRIER af hensyn til muligheden af at Abs er objekt for et transitivt verbum
+
+#Adverbal ledsagemåde efterstillet causativ som særligt tilfælde
+SELECT Inf + 1Pl IF (-2 Cau + 1Pl)(-1 N + Abs) ;
+SELECT Inf + 1Sg IF (-2 Cau + 1Sg)(-1 N + Abs) ;
 
 #Adverbale ledsagemaader til hovedverbet enkeltvis for bedre at kunne styre dem
 SELECT Inf + Refl IF (-1 ("immi")) ;
@@ -2278,6 +2303,7 @@ REMOVE ("isikkoq") IF (0 ("isikku")) ; #20091113 - standard foer dialektisme
 REMOVE ("iluk") + LIAQ IF (0 ("iluliaq")); # 20091113
 REMOVE ("iloq") (NEGATE *0 ("igalaaq")); # 'iloq' vs. 'iluk'
 REMOVE ("isa") + POSSESSUM ; #20091115 hvis nogens, er det nok 'isi'
+REMOVE ("ata") + USIQ ; #'ataaseq' er næppe 'hænge-ved-måden'
 
 # Nomen eller partikel?
 SELECT ("aamma") ; # "aamma" mere sandsynlig end "aak"+Rel
