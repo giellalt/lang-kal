@@ -9,6 +9,7 @@
 # make TARGET=strict (or, eventually: make TARGET=sloppy)
 # where the former is a normative and the latter a descriptive transducer.
 
+# En overflødig linie, der skal få systemet til at kompilere på ny
 
 # Her bygger vi en analysator for vestgrønlandsk
 # **********************************************
