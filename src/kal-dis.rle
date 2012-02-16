@@ -69,9 +69,7 @@ LIST N = N ;
 LIST V = V ;
 LIST N* = N* ; #Præprocessorens tagging af N, der indgår i compounds
 LIST part = part ;
-LIST PersPron = PersPron ;
 LIST DemPron = DemPron ;
-LIST Pron = Pron ;
 LIST Adj = Adj ;
 LIST Adv = Adv ;
 LIST Prop = Prop ;
@@ -886,7 +884,7 @@ LIST UKU = UKU ;
 
 # Alle ordklasser
 # ---------------
-LIST WORD = N V Adj PersPron DemPron Pron Adv Interj part Num ;
+LIST WORD = N V Adj DemPron Adv Interj part Num ;
 
 SET NOT-PROP = WORD - Prop ;
 
@@ -912,8 +910,8 @@ SET 12SUBJVERB = (V 1Sg) | (V 1Du) | (V 1Pl) | (V 2Sg) | (V 2Du) | (V 2Pl) ;
 #SET NONIMPVERB = (V Ind) | (V Cau) | (V Int) | (V Par) | (V Ite) | (V Inf) | (V InfNeg) | (V Opt) | (V Con) | (V Vok) ;
 SET V-NOT-Par = V - Par ;
 SET VERB-NOTINF = V - Inf - InfNeg ;
-LIST CON_CAU = Con Cau ;
-SET PASSIV = (GE SIMA) OR NIQAR OR (TRANSVERB TAQ U) ;
+LIST CON_CAU = Con OR Cau ;
+LIST PASSIV = (GE SIMA) OR NIQAR OR (TRANSVERB TAQ U) ;
 LIST NO_HTR = "allap" ; #20091108 - Verber, der ikke kan kombinere med HTR
 
 
@@ -989,7 +987,7 @@ LIST ADJEKTIVISK = "akutakujooq" "akutakujuk" ;
 
 LIST EDIBLE = "neqi" "iffiaq" "kaagi" ;
 LIST DRINKABLE = "kaffi" "tii" "immuk" "whisky" "immiaaraq" "immiaq" "baaja" ;
-
+LIST CLOTHES = "kamik" "annoraaq" "kavaajaq" "alersi" "alerseq" "skuu" ;
 SET FOOD = EDIBLE | DRINKABLE ;
 LIST THING = "alussaat" "aqqusineq" ("ati" TAQ) "ilullissiaq" "siu" "timi" ;
 
@@ -1174,9 +1172,12 @@ SELECT ("nuna") + Sg + 3PlPoss IF (-1 ("kalaaleq") + Rel + Pl);
 
 REMOVE Abs + Sg + MI IF (*0 Abs + Sg) ; #20101013 Lokalis tagget som subjekt med MI er en stor fejlkilde
 
-SELECT Rel + Pl IF (1 Pron + Rel LINK 1 3PlPoss);
+SELECT Rel + Pl IF (1 DemPron + Rel LINK 1 3PlPoss);
+SELECT Rel + Sg IF (1 DemPron + Rel LINK 1 3SgPoss);
 SELECT Rel + Pl IF (1C 3PlPoss);
+SELECT Rel + Sg IF (1C 3SgPoss);
 SELECT 3SgPoss IF (-1C Rel + Sg)(NEGATE *1 VERB-NOTINF + TRANSVERB + 3Sg BARRIER VFIN);
+
 #Sikre possessorer. Den foerste er et specialtilfaelde for også at tage højde for 'Maaniittut ukua ilaasa .. '
 
 #Overfloedige relativer
@@ -1185,7 +1186,7 @@ REMOVE Rel + Sg IF (NEGATE *1 3SgPoss)(NEGATE *0 TRANSVERB + 3Sg) ;
 REMOVE Rel + Pl IF (NEGATE *1 3PlPoss)(NEGATE *0 TRANSVERB + 3Pl)(NEGATE 0 LU LINK -1 3Pl) ;
 REMOVE Rel + 4SgPoss + Pl IF (NEGATE 1 3PlPoss)(NEGATE *1 TRANSVERB + Par + 3Pl OR TRANSVERB + Cau + 3Pl OR TRANSVERB + Con + 3Pl) ;
 REMOVE Rel + 4PlPoss + Sg IF (NEGATE 1 3SgPoss)(NEGATE *1 TRANSVERB + Par + 3Sg OR TRANSVERB + Cau + 3Sg OR TRANSVERB + Con + 3Sg CBARRIER Rel + Sg) ;
-SELECT Abs + Pl IF (1 Abs + Pron + Pl); 
+SELECT Abs + Pl IF (1 Abs + DemPron + Pl); 
 
 SELECT 3PlPoss IF (-1 Rel + Pl)(NEGATE *1 TRANSVERB + 3Pl)(0 ADJEKTIVISK + TAQ);
 REMOVE Abs + Sg + 4SgPoss IF (NEGATE *1 3SgO OR Cau + 3Sg OR Con + 3Sg BARRIER VFIN)(NEGATE 0 LU);
@@ -1348,21 +1349,6 @@ SELECT Inf + 4Pl IF (-*1 ORATIOOBLVERB + 3Pl)(NEGATE *1 Inf)(NEGATE *1 Par) ;
 REMOVE VERB_udenUTE IF (0 UTE + vn) ;
 #Fjerner overflødige UTE+vn
 
-#Typiske overgenereringer med +SI+nv
-REMOVE ("anneq") + SI ;
-REMOVE ("at") + SI ;
-REMOVE ("ilaaq") + SI ;
-REMOVE ("ili") + SI ;
-REMOVE ("ilik") + SI ;
-REMOVE ("kingu") + SI ;
-REMOVE ("nuap") + SI ;
-REMOVE ("nuanneq") + SI ;
-REMOVE ("paa") + SI ;
-REMOVE ("paaq") + SI ;
-REMOVE ("pui") + SI ;
-REMOVE ("taaq") + SI ;
-
-
 SECTION
 
 # Verber - De sikre MAP regler 1. runde
@@ -1378,11 +1364,6 @@ MAP:0010 (@PRED) TARGET Inf + LU OR InfNeg + LU IF (1 VFIN) ;
 MAP:0020 (@PRED) TARGET Inf + LU OR InfNeg + LU IF (-1 VFIN) ;
 MAP:0030 (@PRED2) TARGET INTRANSVERB + Par + 3Pl IF (*-1 Abs + Pl)(NEGATE *0 ORATIOOBLVERB BARRIER VFIN)(1 Abs OR ("\,")); #koncessive saetninger uden konjunktion
 MAP:0040 (@CL-<ADVL) TARGET Par + 3Pl + 4SgO OR Par + 4Sg IF (*-1 VFIN) ; #20091109 participium på -gaanni altid neksusadverbial
-
-#Adverbal ledsagemåde efterstillet causativ som særligt tilfælde
-MAP:0041 (@<ADVL) TARGET Inf + 1Pl IF (-2 Cau + 1Pl)(-1 N + Abs) ;
-MAP:0042 (@-<ADVL) TARGET Inf + 1Sg IF (-2 Cau + 1Sg)(-1 N + Abs) ;
-
 MAP:0050 (@PRED2) TARGET Par IF (*-1 ADVERBIUM OR UNA BARRIER V)(NEGATE *0 ORATIOOBLVERB) ; #20091109
 MAP:0060 (@PRED2) TARGET Inf + 1Sg OR InfNeg + 1Sg IF (*-1 ADVERBIUM OR UNA LINK *-1 VFIN + 1Sg)(NEGATE *0 ORATIOOBLVERB) ; #20091109
 MAP:0061 (@CL-<CIT) TARGET Inf + 4Sg IF (-*1 ORATIOOBLVERB + 3Sg)(NEGATE *1 Inf) (NEGATE *1 Par);
@@ -1473,7 +1454,8 @@ MAP:0390 (@POSS>) TARGET Rel + Sg IF (1 Via)(2 vn + 3SgPoss) ;
 #Possessorer i opremsninger med og uden komma
 MAP:0398 (@POSS>) TARGET Rel + Sg IF (-3 Rel LINK 1 KOMMA LINK 1 Rel)(1 KOMMA LINK 1 Rel + 3PlPoss) ; #opremsning med komma før 400
 MAP:0399 (@POSS>) TARGET Rel + Sg IF (1 KOMMA LINK 1 Rel + Sg LINK 1 3SgPoss) ; #opremsning med komma før 400
-MAP:0400 (@POSS>) TARGET Rel + Sg IF (1 3SgPoss) ;
+MAP:0400 (@POSS>) TARGET Rel + Sg IF (1 DemPron + Rel LINK 1 3SgPoss) ;
+MAP:0401 (@POSS>) TARGET Rel + Sg IF (1 3SgPoss) ;
 
 MAP:0410 (@POSS>) TARGET Rel + Pl IF (1 3PlPoss) ;
 ADD:0420 (@MIK-OBJ>) TARGET Ins IF (*1 HTR + V); #Ikke MAP fordi ogsaa ADVL> mulig
@@ -1542,15 +1524,10 @@ MAP:0760 (@<ADVL) TARGET N IF (-1 ("\("))(1 ("\)"))(-2 @<ADVL) ; #Parantetiske i
 # Pronominer - De sikre MAP regler
 # ================================
 #"uanga" og "uagut" er subjekt for V i første person hvis ikke adnominalt adled til 1SgPoss eller 1PlPoss resp.
-MAP:0770 (@SUBJ>) TARGET ("uanga" 1Sg Abs) IF (*1 INTRANSVERB + (1Sg) BARRIER (1SgPoss)) ; 
-MAP:0771 (@SUBJ>) TARGET ("uanga" 1Pl Abs) IF (*1 INTRANSVERB + (1Pl) BARRIER (1PlPoss)) ; 
-MAP:0772 (@N>) TARGET ("uanga" 1Sg) IF (1 (1SgPoss)) ;
+MAP:0770 (@SUBJ>) TARGET ("ua" 1Sg Abs) IF (*1 INTRANSVERB + (1Sg) BARRIER (1SgPoss)) ; 
+MAP:0780 (@SUBJ>) TARGET ("ua" 1Pl Abs) IF (*1 INTRANSVERB + (1Pl) BARRIER (1PlPoss)) ; 
 
-#"illit" og "ilissi" er subjekt for V i anden person hvis ikke adnominalt adled til 2SgPoss eller 2PlPoss resp.
-MAP:0770 (@SUBJ>) TARGET ("illit" 2Sg Abs) IF (*1 INTRANSVERB + (2Sg) BARRIER (2SgPoss)) ; 
-MAP:0771 (@SUBJ>) TARGET ("illit" 2Pl Abs) IF (*1 INTRANSVERB + (2Pl) BARRIER (2PlPoss)) ; 
-MAP:0772 (@N>) TARGET ("illit" 2Sg) IF (1 (2SgPoss)) ;
-
+MAP:0790 (@N>) TARGET ("ua" 1Sg) IF (1 (1SgPoss)) ;
 
 # Adjektiver - både ADD og MAP regler
 # ===================================
@@ -1582,6 +1559,8 @@ MAP:0930 (@i-ADVL>) TARGET Inf IF (1 part)(2 NIQ); #
 MAP:0940 (@i-ADVL>) TARGET Inf IF (1 vn) ;
 
 # Mapping af ledsagemåde til hovedverbal
+MAP:0949 (@ADVL>) TARGET Inf + TRANSVERB OR InfNeg + TRANSVERB IF (*1 VFIN);
+#mapper uagtet subjekt alle transitive ledsagemåder med finit til højre
 MAP:0950 (@ADVL>) TARGET Inf + 1Sg OR InfNeg + 1Sg IF (*1 VFIN + 1Sg);
 MAP:0960 (@<ADVL) TARGET Inf + 1Sg OR InfNeg + 1Sg IF (*-1 VFIN + 1Sg)(NEGATE 0 LU);
 MAP:0970 (@ADVL>) TARGET Inf + 2Sg OR InfNeg + 2Sg IF (*1 VFIN + 2Sg);
@@ -1843,7 +1822,7 @@ SELECT N + Sg IF (1 N + Sg)(NEGATE *0 V) ; # Vedr. overskrifter og sætningsemne
 SELECT Ins + LU IF (-1C Ins) ;
 SELECT Abs + LU + Pl IF (-1C Abs + Pl);
 SELECT Abs + LU + Sg IF (-1C Abs + Sg)(NEGATE 0 Rel + Sg LINK 1 3SgPoss);
-SELECT Rel + Pl IF (1 Pron + Rel + Pl); #'ILLUT taakku eqqaanni @SUBJ> ... @PRED'
+SELECT Rel + Pl IF (1 DemPron + Rel + Pl); #'ILLUT taakku eqqaanni @SUBJ> ... @PRED'
 SELECT Aeq + Pl IF (-1C Aeq + Pl);
 SELECT Aeq + Pl IF (1C Aeq + Pl);
 
@@ -1864,12 +1843,11 @@ SELECT Abs + Pl IF (*-1 VFIN + 3Pl)(*1 INTRANSVERB + Inf + 4Pl BARRIER V); #2.4.
 SELECT Abs + Pl IF (*-1 Inf + 4Pl BARRIER VFIN OR Par)(*1 VFIN + 3PlO); #2.4. Maa vaere objekt da subjekt formodes at komme foer ledsagemaaden. 'OR Par' tilføjet 17.4. pga. ledsagemåder i participiale bisætninger
 
 #Pronominer
-SELECT Pron + Pl IF (1C N + Pl) ;
+SELECT DemPron + Pl IF (1C N + Pl) ;
 
 #Verber
 SELECT Refl IF (-1 ("immi")); #20100228 Ny (PL) Skal udvides med QQU og TIP
-SELECT Inf + 1Sg IF (*1 vn + 1SgPoss BARRIER V) ; #Skal sikkert begrænses af andre kriterier
-REMOVE Inf + 1Sg IF (NEGATE *0 VFIN + 1Sg OR Cau + 1Sg);
+REMOVE Inf + 1Sg IF (NEGATE *0 VFIN + 1Sg);
 REMOVE Inf + 2Sg IF (NEGATE *0 VFIN + 2Sg);
 REMOVE Inf + 1Pl IF (NEGATE *0 VFIN + 1Pl);
 REMOVE Inf + 2Pl IF (NEGATE *0 VFIN + 2Pl);
@@ -1880,10 +1858,6 @@ REMOVE Int IF (*0C Ind) ;
 REMOVE Imp IF (-1 Ind)(0 LU); #2.4. da ReImpIfInd ikke finder 'Amerlanerit ipiitsuinnaanngivipput ILAASALU ikusii .. ' 
 SELECT NIQAR + V IF (-*1 @SUBJ> + Abs) ; #Disambiguerer NIQAR fra NIQ efterfulgt af QAR. BARRIER af hensyn til muligheden 
 SELECT NIQAR + V IF (-*1 Abs BARRIER TRANSVERB) ; #Disambiguerer NIQAR fra NIQ efterfulgt af QAR. BARRIER af hensyn til muligheden af at Abs er objekt for et transitivt verbum
-
-#Adverbal ledsagemåde efterstillet causativ som særligt tilfælde
-SELECT Inf + 1Pl IF (-2 Cau + 1Pl)(-1 N + Abs) ;
-SELECT Inf + 1Sg IF (-2 Cau + 1Sg)(-1 N + Abs) ;
 
 #Adverbale ledsagemaader til hovedverbet enkeltvis for bedre at kunne styre dem
 SELECT Inf + Refl IF (-1 ("immi")) ;
@@ -2097,14 +2071,15 @@ REMOVE (Rel @SUBJ>) IF (*1C INTRANSVERB BARRIER TRANSVERB);
 # Transitive sætninger
 # ==================== #
 
-SELECT (PersPron Abs 1Sg @SUBJ>) IF (*1 (V 1Sg));
-	
+SELECT (DemPron Abs 1Sg @SUBJ>) IF (*1 (V 1Sg));
+	## Uanga takuara.
+
 SELECT Rel + Pl IF (*1 TRANSVERB + 3Pl + 3PlO)(-1 Par + 3Pl); #Subjektet, når bisætningens subjekt er implicit objekt 'Pinngussanik ilaatigut qaqutiguuissunik pinngualersorlutik pinnguartut SIMAARTUAQQAT silataaniit isiginnaarrappaat ... '
 SELECT Rel + Pl IF (*1 TRANSVERB + 3Pl + 3PlO)(*1 Abs + Pl BARRIER TRANSVERB); #Den normale SOV
 
 
 REMOVE @SUBJ> IF (0 N)(NEGATE 0 LU)(*1C 12SUBJVERB BARRIER V);
-REMOVE @SUBJ> IF (0 (Pron 3Sg))(*1C 12SUBJVERB BARRIER V);
+REMOVE @SUBJ> IF (0 (DemPron 3Sg))(*1C 12SUBJVERB BARRIER V);
 
 SELECT (Pl @OBJ>) IF (0 (Abs Pl))(*1 34PLOBJVERB)(-*1 Rel BARRIER 3PlPoss);
 SELECT (Pl @OBJ>) IF (0 (Abs Pl))(*-1 34PLOBJVERB);
@@ -2303,7 +2278,6 @@ REMOVE ("isikkoq") IF (0 ("isikku")) ; #20091113 - standard foer dialektisme
 REMOVE ("iluk") + LIAQ IF (0 ("iluliaq")); # 20091113
 REMOVE ("iloq") (NEGATE *0 ("igalaaq")); # 'iloq' vs. 'iluk'
 REMOVE ("isa") + POSSESSUM ; #20091115 hvis nogens, er det nok 'isi'
-REMOVE ("ata") + USIQ ; #'ataaseq' er næppe 'hænge-ved-måden'
 
 # Nomen eller partikel?
 SELECT ("aamma") ; # "aamma" mere sandsynlig end "aak"+Rel
@@ -2311,6 +2285,9 @@ REMOVE ("aatsar") + UTE IF (NEGATE 0 POSSESSUM OR GE) ; #20091113 saa er det nok
 
 # Nomen eller numerale
 SELECT Num IF ( 0 N) ; #Alt andet lige det sikreste bud
+
+# Semantiske constraints på verber
+REMOVE ("taap") IF (NEGATE *1 CLOTHES) ; 
 
 # Verbum eller verbum?
 SELECT ("allor") IF (NEGATE *0 @ALLSUBJ + ("seqineq")) ; # alluppoq vistnok kun med subjekt "seqineq"
@@ -2334,7 +2311,6 @@ SELECT ("pi") + nn ; # ad hoc for at disambiguere pi+nn fra pi+vn
 REMOVE NIRU IF (0 TIME) ; #20091109 "tallimanngor" NIRU
 REMOVE IR + nv IF (0 V + vv OR ("ila")) ; #'ilaarpaa' ikke 'ila+IR'
 SELECT ("alla") + U IF (-1 BOS OR ("\,") OR ("ila")) ; #20091108 vaelger alla+U+NNGIT frem for "hun skraever ikke" i begyndelsen af en saetning
-REMOVE U + nv IF (0 V + vv) ; #20091108 vaelger "allaap" NNGIT frem for "alla" U NNGIT. Derfor ny SELECT ovenover
 REMOVE U + NAR; #"eqqaq" U nv NAR vv for 'eqqaanar' vist en utaenkelig kombination
 REMOVE HTR + NAR; #naeppe en mulig kombination
 REMOVE SSAQ + LIUR IF (0 HUMAN) ; #'ilassiorpoq' ikke 'ila+SSAQ=LIUR'
