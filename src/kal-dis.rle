@@ -488,6 +488,7 @@ LIST PALAAQ_SUAQ = PALAAQ\=SUAQ ;
 LIST PALAAR = PALAAR ;
 LIST PALLAP = PALLAP ;
 LIST PALUP = PALUP ;
+LIST PAK = PAK ;
 LIST PAK_SUAQ = PAK\=SUAQ ;
 LIST QAR = QAR ;
 LIST QAR_NNGIT = QAR\=NNGIT ;
@@ -982,7 +983,7 @@ LIST ORGANISATION = "Inatsisartut" "parti" "Siumut" "Atassut" "IA" ("Naalakkersu
 LIST ANIMAL = "qimmeq" "qitsuk" "puisi" ;
 LIST ABSTRACT = "taaq" ;
 
-LIST PLACE = "illu" ;
+LIST PLACE = "illu" "imaq" ;
 LIST ADJEKTIVISK = "akutakujooq" "akutakujuk" ;
 
 LIST EDIBLE = "neqi" "iffiaq" "kaagi" ;
@@ -1197,7 +1198,7 @@ SELECT 3PlPoss IF (-1 Rel + Pl)(0C POSSESSUM)(NEGATE -1 Rel + Sg); #Hvis 0 kun k
 SELECT 3PlPoss IF (-1 ("\,"))(-2C 3PlPoss); #opremsning med komma
 SELECT 3PlPoss IF (0 LU)(-1C 3PlPoss); #3. led i opremsning med komma eller andet uden komma
 #Sikre possessum
-
+REMOVE PAK IF (0 VFIN BARRIER VFIN) ; #Vælg finit Vb frem for PAK+Pl hvis eneste VFIN. Skal komme før følgende SELECT
 SELECT 3PlPoss IF (-1 Rel + Pl)(NEGATE *1 TRANSVERB + 3Pl)(NEGATE 0 ADJEKTIVISK)(NEGATE 0 N*); #siulittaasuisa nuannarineqarnersaat. 
 
 SELECT:Ila01 ("ila") + 3PlPoss IF (-1 BOS)(-1**< VFIN + 3Pl)(NEGATE -1**< ("ilaaq"));
@@ -2288,8 +2289,10 @@ SELECT Num IF ( 0 N) ; #Alt andet lige det sikreste bud
 
 # Semantiske constraints på verber
 REMOVE ("taap") IF (NEGATE *1 CLOTHES) ; 
+REMOVE ("ajup") IF (NEGATE *1 CLOTHES) ; 
 
 # Verbum eller verbum?
+SELECT (INNAR NNGIT) IF (*1 ("aamma") ) ; #+INNAR=NNGIT aamma Vb fremfor NAR) 
 SELECT ("allor") IF (NEGATE *0 @ALLSUBJ + ("seqineq")) ; # alluppoq vistnok kun med subjekt "seqineq"
 SELECT ("toqqip") IF (0 Lok) ; #for at adskille 'toqqip' fra 'tup+QQIP'
 REMOVE ("alip") IF ( 0 ("alinnar")); #'alinnar' vs. 'alip+NAR'
@@ -2323,11 +2326,13 @@ REMOVE TUR + vn IF (NEGATE 0 FOOD) ;
 REMOVE TUQ + GE + GIARTUR ; # 20091110 - er vist altid 'xxxtor+GIARTUR'
 REMOVE ("nassuk") + IAR IF (NEGATE *0 ("tuttu")); #20091110 - Sandsynligvis ellers 'nassuiar'
 REMOVE UTIGE IF (NEGATE 0 Inf) ; #næsten kun om samtidighed i ledsagemåde
+REMOVE PLACE + SSUSIQ ; #vælg 'imaannaanngissuseq' frem for 'imaq+INNAQ+U+SSUSIQ'
 
 # Enkelte substantiver
 REMOVE ("pineq") IF (NEGATE *0 ("kamik")) ; #20091103 pineq+QAR vs. pineqar-
 REMOVE ("illaaq") IF (NEGATE 0 POSSESSUM OR QAR OR LIK); #20091112 soedyrsfostre vist altid moderdyrets
-
+REMOVE ("kristumioq") IF ( 0 ("kristumiu"));
+REMOVE MIOQ if (0 MIU);
 # Appellativ eller proprium?
 SELECT APPELLATIV IF (0 ("Aleqa")) ;
 SELECT Prop IF (0 (@HNOUN)) ;
