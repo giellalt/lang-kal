@@ -1012,7 +1012,7 @@ SET NAME = FIRSTNAME | Sur ;
 SET NOT-FIRST = WORD - FIRSTNAME ;
 
 LIST FAM = "illoq" ;
-LIST HUM = "inuk" "arnaq" "angut" "ila" ;
+LIST HUM = "inuk" "arnaq" "angut" "ila" ("ajor" TUQ);
 
 SET HUMAN = FAM OR NAME OR TITEL OR ORGANISATION OR HUM;
 
@@ -1422,9 +1422,10 @@ MAP:0210 (@<OBJ) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (-1 TRANSVER
 MAP:0220 (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (*1 Rel)(*1 TRANSVERB + GE + 3SgO BARRIER VERB-NOTINF) ; 
 MAP:0230 (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (*1 Par + 3Pl + 4SgO BARRIER V + 3Sg) ; #20091109 objekt for -gaanni hvis ikke subjekt for entalsverbum
 
-MAP:0239 (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (*1 Rel + Sg LINK *1 TRANSVERB + 3SgO OR Par + 3Pl + 4SgO) ; #20101013 til typen S V O-LU S V
+MAP:0238 (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (*1 Rel + Sg LINK *1 TRANSVERB + 3SgO OR Par + 3Pl + 4SgO) ; #20101013 til typen S V O-LU S V
+MAP:0239 (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg OR DemPron + Abs + Sg IF (1 part LINK 1 TRANSVERB + 3SgO OR Par + 3Pl + 4SgO) ; #Subj Obj partikel TRANSVERB typen
 
-MAP:0240 (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (1 TRANSVERB + 3SgO OR Par + 3Pl + 4SgO) ; #20091109 tilfoejet Par med -gaanni
+MAP:0240 (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg OR DemPron + Abs + Sg IF (1 TRANSVERB + 3SgO OR Par + 3Pl + 4SgO) ; #20091109 tilfoejet Par med -gaanni
 MAP:0250 (@OBJ>) TARGET APPELLATIV + Abs + Pl IF (1 TRANSVERB + 3PlO + GE LINK -1 Rel) ; #foerst OSV ved -givaa
 MAP:0260 (@OBJ>) TARGET APPELLATIV + Abs + Pl IF (1 TRANSVERB + 3PlO)(-1 Rel BARRIER POSSESSUM) ; #
 MAP:0270 (@OBJ>) TARGET APPELLATIV + Abs + Pl OR Prop + Abs + Pl IF ( *1 TRANSVERB - 3Pl + 3PlO) ; #20091105 Kun sikker, naar subjekt != 3Pl. Der maa mere avancerede regler til at adskille implicit subjekt 3Pl fra objekt Pl
@@ -1464,7 +1465,7 @@ MAP:0430 (@i-MIK-OBJ>) TARGET Ins IF (1 HTR + vn - V) ; #20091106
 MAP:0439 (@SUBJ>) TARGET Rel + Sg IF (1 Rel LINK 1 POSSESSUM3 LINK *1 TRANSVERB + (3Sg) OR (4Sg) BARRIER POSSESSUM3) ; #Særtilfælde til 440 med en possessor-possessum mellem subjekt og verbum
 MAP:0440 (@SUBJ>) TARGET Rel + Sg IF (*1 TRANSVERB + (3Sg) OR (4Sg) BARRIER POSSESSUM3) ;
 MAP:0450 (@SUBJ>) TARGET Rel + Pl IF (*1 TRANSVERB + (3Pl) OR (4Pl) BARRIER POSSESSUM3) ;
-MAP:0460 (@SUBJ>) TARGET Abs + Sg IF (*1 INTRANSVERB + VERB-NOTINF + 3Sg OR INTRANSVERB + VERB-NOTINF + 4Sg BARRIER POSSESSUM3)(NEGATE -1 ("\(")) ; 
+MAP:0460 (@SUBJ>) TARGET Abs + Sg IF (*1 INTRANSVERB + VERB-NOTINF + 3Sg OR INTRANSVERB + VERB-NOTINF + 4Sg BARRIER POSSESSUM3 OR TRANSVERB)(NEGATE -1 ("\(")) ; #TRANSVERB tilføjet for at forhindre tag på obj i: SUBJ OBJ TRANSVERB INTRANSVERB
 MAP:0470 (@SUBJ>) TARGET Abs + Pl IF (*1 INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl) ; #Nyt frosoeg 30.3.
 MAP:0480 (@SUBJ>) TARGET (Rel) IF (*1 TRANSVERB + 34IV BARRIER POSSESSUM3) ;
 MAP:0490 (@SUBJ>) TARGET N IF (-1 ("\("))(1 ("\)"))(-2 @SUBJ>) ; #Parantetiske indskud samme led som foregående ord
@@ -2327,6 +2328,7 @@ REMOVE TUQ + GE + GIARTUR ; # 20091110 - er vist altid 'xxxtor+GIARTUR'
 REMOVE ("nassuk") + IAR IF (NEGATE *0 ("tuttu")); #20091110 - Sandsynligvis ellers 'nassuiar'
 REMOVE UTIGE IF (NEGATE 0 Inf) ; #næsten kun om samtidighed i ledsagemåde
 REMOVE PLACE + SSUSIQ ; #vælg 'imaannaanngissuseq' frem for 'imaq+INNAQ+U+SSUSIQ'
+REMOVE KKUT IF (NEGATE 0 HUMAN) ;
 
 # Enkelte substantiver
 REMOVE ("pineq") IF (NEGATE *0 ("kamik")) ; #20091103 pineq+QAR vs. pineqar-
@@ -2336,6 +2338,7 @@ REMOVE MIOQ if (0 MIU);
 # Appellativ eller proprium?
 SELECT APPELLATIV IF (0 ("Aleqa")) ;
 SELECT Prop IF (0 (@HNOUN)) ;
+REMOVE ("qanik") + QAR IF ( *0 @SUBJ> + HUMAN ) ;
 
 # Hvilket praefingeret pronomen?
 SELECT ("taanna\(taavaniittoq\)") IF (-1**< ("avannaq"));
@@ -2357,26 +2360,16 @@ REMOVE ("ilik") + NIAR ; #20091112 - ad hoc regel, der skal erstattes, naar --or
 
 REMOVE (Arch) ;
 
-"Regel specielt til Biblens "takuat,"
+#"Regel specielt til Biblens "takuat,"
 REMOVE Via + 2SgPoss IF (NEGATE -1 ("illit"))(NEGATE *0 VERB-NOTINF + 2Sg LINK NEGATE 0 ("taku")) ;
 
-
-#SELECT COMMONAFFSTRING ; #Testet 29.3. Maa rettes, da fejl mere end 50%
-
-
  # Heuristiske regler:
- # I mangel av andre, tidligere regler, vælg de vanlige analyser
- # og smid væk de sjeldne.
-
-# Alle andre regler er prøvet før disse
+ # Hvis alt andet har været prøvet vælg den statistisk mest sandsynlige
+REMOVE SSAQ + LIUR IF ( 0 SIUR) ; # N-SIUR sandsynligere end N-SSAQ=LIUR
+REMOVE ("iluar") + TUQ + UTE IF ( 0 TUQ + U + TIP ) ; # iluar+TUQ+U+TIP+TAQ frem for iluar+TUQ+UTE+TAAR
 
 SECTION
 SELECT (@<CL-CIT) IF (*-1 ORATIOOBLVERB BARRIER V-NOT-Par) ;
 SELECT (@CL-CIT>) IF (*1 ORATIOOBLVERB BARRIER V-NOT-Par) ;
 REMOVE (@X) ; # (fjerner alle doble.)
-
-#Skrot 01: Reglen herunder mapper alt for meget og jeg forstaar ikke BARRIER??? Kommenteres ud 
-#Skrot 02: MAP (@CL-ADVL>) TARGET Ite OR Inf OR InfNeg OR Par IF ( *1 V BARRIER N) ; #erstattes 110308 af saerlige CON og CAU
-#Skrot 03: MAP (@CL-<ADVL) TARGET Ite OR Inf OR InfNeg OR Par IF (*-1 V BARRIER N) ; #Inf kun sjaeldent nexusadverbial saa nyt forsoeg herunder:
-#Skrot 04: MAP (@CL-<ADVL) TARGET Ite OR Par IF (*-1 V BARRIER N) ; 
 
