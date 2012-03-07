@@ -957,7 +957,7 @@ SET MOVE-VERB = LOKVERB | ABLVERB | TRMVERB ;
 # 20091106 Foelgende med tak til Tino for at forebygge at "oqar" + USIQ opfattes som inquit
 LIST ORATIOOBLVERBnOQAR = "eqqarsar" "eqqartor" "ilisimatitsissut" "isuma"
 "isummer" "malunnarsi" "naatsorsor" "nalu" "nalunaar" "nalunaarut" "neriup" "qular"
-"qularnar" "paasi" "siunnersor" "taku" "unner" ;
+"qularnar" "qinnuigaa" "paasi" "pinngitsaali" "siunnersor" "taku" "unner" ;
 SET OQARnUSIQ = ("oqar") - (USIQ) ;
 SET ORATIOOBLVERB = ORATIOOBLVERBnOQAR OR OQARnUSIQ ;
 
@@ -1014,7 +1014,7 @@ SET NAME = FIRSTNAME | Sur ;
 SET NOT-FIRST = WORD - FIRSTNAME ;
 
 LIST FAM = "illoq" ;
-LIST HUM = "inuk" "arnaq" "angut" "ila" ("ajor" TUQ);
+LIST HUM = "inuk" "arnaq" "angut" "ila" ("ajor" TUQ) "kalaaleq" "qallunaaq" ;
 
 SET HUMAN = FAM OR NAME OR TITEL OR ORGANISATION OR HUM;
 
@@ -1348,6 +1348,7 @@ SELECT Inf + 4Pl IF (-*1 ORATIOOBLVERB + 3Pl)(NEGATE *1 Inf)(NEGATE *1 Par) ;
 # Frequent and safe rules - specific derivatives (remember also to check the final probabilistic loop) #
 ################################################################
 
+#REMOVE TAQ + nn IF (NEGATE 0 HUMAN) ; #Virker sikkert, men forudsætter signifikant rækkefølge. Se TAQ+nn i sidste sektion
 #20100827 Fordi rækkefølge endnu ikke signifikant må denne iøvrigt udmærkede regel foreløbig kommenteres ud
 #REMOVE GE + vv IF (NEGATE 0 VERB_medGE) ; #NB Forudsætter, at tags rækkefølge gøres signifikant
 #Fjerner GE+vv bortset fra de få leksikalt markerede
@@ -1374,6 +1375,7 @@ MAP:0050 (@PRED2) TARGET Par IF (*-1 ADVERBIUM OR UNA BARRIER V)(NEGATE *0 ORATI
 MAP:0060 (@PRED2) TARGET Inf + 1Sg OR InfNeg + 1Sg IF (*-1 ADVERBIUM OR UNA LINK *-1 VFIN + 1Sg)(NEGATE *0 ORATIOOBLVERB) ; #20091109
 MAP:0061 (@CL-<CIT) TARGET Inf + 4Sg IF (-*1 ORATIOOBLVERB + 3Sg)(NEGATE *1 Inf) (NEGATE *1 Par);
 MAP:0062 (@CL-<CIT) TARGET Inf + 4Pl IF (-*1 ORATIOOBLVERB + 3Pl)(NEGATE *1 Inf)(NEGATE *1 Par) ;
+MAP:0063 (@CL-<CIT) TARGET Inf + TRANSVERB IF (-*1 ORATIOOBLVERB)(NEGATE *1 Inf)(NEGATE *1 Par) ;
 #Simpel co-ref oratio obliqua uden andre ledsagemåder end CL-CIT
 
 # Proprier - MAP-regler
@@ -1566,7 +1568,7 @@ MAP:0930 (@i-ADVL>) TARGET Inf IF (1 part)(2 NIQ); #
 MAP:0940 (@i-ADVL>) TARGET Inf IF (1 vn) ;
 
 # Mapping af ledsagemåde til hovedverbal
-MAP:0949 (@ADVL>) TARGET Inf + TRANSVERB OR InfNeg + TRANSVERB IF (*1 VFIN);
+MAP:0949 (@ADVL>) TARGET Inf + TRANSVERB OR InfNeg + TRANSVERB IF (*1 VFIN OR Par + TRANSVERB);
 #mapper uagtet subjekt alle transitive ledsagemåder med finit til højre
 MAP:0950 (@ADVL>) TARGET Inf + 1Sg OR InfNeg + 1Sg IF (*1 VFIN + 1Sg);
 MAP:0960 (@<ADVL) TARGET Inf + 1Sg OR InfNeg + 1Sg IF (*-1 VFIN + 1Sg)(NEGATE 0 LU);
@@ -1605,6 +1607,7 @@ MAP:1150 (@PRED) TARGET Inf OR InfNeg IF (0 LU OR LUUNNIIT)(*1 VFIN);
 ADD:1160 (@PRED) TARGET Inf OR InfNeg IF (0 LU OR LUUNNIIT)(*-1 VFIN);
 	## Trond atuarpoq allallunilu.
 MAP:1170 (@CL-CIT>) TARGET Par + TRANSVERB IF (*1 ORATIOOBLVERB);	
+MAP:1171 (@CL-<CIT) TARGET Par + TRANSVERB IF (*-1 ORATIOOBLVERB);	
 MAP:1180 (@CL-CIT>) TARGET Par + INTRANSVERB + 3Sg OR Inf + INTRANSVERB + 4Sg OR InfNeg + INTRANSVERB + 4Sg OR Cau + INTRANSVERB + 3Sg IF (*1 ORATIOOBLVERB)(-*1 Abs + Sg); #(NEGATE 1 Prop + Abs OR Prop + Attr); #forstaar ikke Prop begraensningerne 12.03
 MAP:1190 (@<CL-CIT) TARGET Par + INTRANSVERB + 3Sg OR Inf + INTRANSVERB + 4Sg OR InfNeg + INTRANSVERB + 4Sg OR Cau + INTRANSVERB + 3Sg IF (-*1 ORATIOOBLVERB)(-*1 Abs + Sg BARRIER ORATIOOBLVERB)(NEGATE 1 Prop + Abs OR Prop + Attr)(NEGATE 0 nv LINK *1 Par + Sg); #20100322 Sidste NEGATE for skyld oo, hvor et verbalnomen er subjekt
 MAP:1200 (@<CL-CIT) TARGET Inf + TRANSVERB + 1Pl OR InfNeg + TRANSVERB + 1Pl IF (-*1 ORATIOOBLVERB BARRIER ("\,"));
@@ -2317,6 +2320,7 @@ REMOVE ("aak") + LISAR IF (0 ("aalisar")) ;
 REMOVE ("paap") IF (0 ("paa"))(NEGATE *0 MATERIAL) ;
 REMOVE ("alliar") IF ( NEGATE *0 ("illeq") OR ("nateq")) ; # kun om nedstigning fra traditionel briks
 REMOVE ("allip") IF ( 0 NGAAR ) ;
+REMOVE ("saa") + VIK + GE ; #vælger saap+VIK+GE
 
 # nv eller vv?
 REMOVE ("pi") + nv IF (0 ("pi") + vv); # vaelger pi+LIR=TIP frem for pi+LIR+TIP
@@ -2352,6 +2356,7 @@ SELECT Prop IF (0 (@HNOUN)) ;
 REMOVE Prop IF (0 ("Aleqa") OR ("Anersaaq")) ;
 REMOVE ("qanik") + QAR IF ( *0 @SUBJ> + HUMAN ) ;
 REMOVE ("alliaq") IF (0 TU) ; #vælger 'alliartor' frem for alliaq+TU
+REMOVE ("toqu") + TAQ + nn ; # vælger toqup+TAQ+vn+U frem for toqu+TAQ+nn+U
 
 # Hvilket praefingeret pronomen?
 SELECT ("taanna\(taavaniittoq\)") IF (-1**< ("avannaq"));
@@ -2382,7 +2387,7 @@ REMOVE SSAQ + LIUR IF ( 0 SIUR) ; # N-SIUR sandsynligere end N-SSAQ=LIUR
 REMOVE ("iluar") + TUQ + UTE IF ( 0 TUQ + U + TIP ) ; # iluar+TUQ+U+TIP+TAQ frem for iluar+TUQ+UTE+TAAR
 
 SECTION
-SELECT (@<CL-CIT) IF (*-1 ORATIOOBLVERB BARRIER V-NOT-Par) ;
+SELECT (@CL-<CIT) IF (*-1 ORATIOOBLVERB BARRIER V-NOT-Par) ;
 SELECT (@CL-CIT>) IF (*1 ORATIOOBLVERB BARRIER V-NOT-Par) ;
 REMOVE (@X) ; # (fjerner alle doble.)
 
