@@ -70,6 +70,8 @@ LIST V = V ;
 LIST N* = N* ; #Præprocessorens tagging af N, der indgår i compounds
 LIST part = part ;
 LIST DemPron = DemPron ;
+LIST IntPron = IntPron ;
+LIST IndefPron = IndefPron ;
 LIST Adj = Adj ;
 LIST Adv = Adv ;
 LIST Prop = Prop ;
@@ -1217,7 +1219,7 @@ REMOVE 3PlPoss + Abs + Pl IF (*1 VFIN + INTRANSVERB + 3Pl)(NEGATE 1 Num + Abs)(N
 
 #Overfloedige possessumformer
 SELECT 2SgPoss IF (*0 ("qujanaq"))(NEGATE -1 ("uanga"))(NEGATE *0 VFIN) ; #Kontekst, der maa sikres foer foelgende REMOVE
-REMOVE Abs + 2SgPoss IF (NEGATE *0 ("illit") LINK 0 Abs + Pl) ; 
+REMOVE Abs + 2SgPoss IF (NEGATE *0 ("illit") OR Imp + 2Sg) ; 
 #REMOVE Abs + 2SgPoss IF (-1C Inf + 4Pl OR InfNeg + 4Pl)(NEGATE *1 Rel + Pl LINK *1 TRANSVERB + GE + 3SgO); #0 maa vaere plur hvis nabo til en ledsagemaade, men der maa tages hoejde for muligheden af et OSV verbum.
 REMOVE Abs + 2SgPoss + TUQ IF (NEGATE *0 ("illit")); #1.4. Evt. elaboreres med TAQ og UTE
 REMOVE Rel + Pl + 2SgPoss IF (NEGATE *0 ("illit"));
@@ -1496,7 +1498,10 @@ MAP:0540 (@SUBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs OR DemPron + Abs + 
 MAP:0550 (@i->N) TARGET (Ins) IF (*1 QAR OR LIK) ; # "tit" skal præciseres eller reduceres til en ADD-regel
 MAP:0560 (@i-N<) TARGET (Ins) IF (*-1 QAR OR LIK)(NEGATE *1 QAR OR LIK)(NEGATE 1 vn) ; # Sidste NEGATE for at forebygge hit paa 'ilunni QATSORTITASSAANNGIVISSUMIK anorersuartorsuaq,'
 
-
+MAP:0561 (@HNOUN) TARGET N + Abs IF (-1 ("\"") LINK -1 (" ") LINK -1 BOS)(1 KOMMA)(*1 Imp) ; #Et isoleret nomen er vokativ også først i anført tale
+MAP:0562 (@HNOUN) TARGET N + Abs IF (-1 BOS)(1 KOMMA)(*1 Imp) ; #Et isoleret nomen er vokativ
+MAP:0563 (@HNOUN) TARGET N + Abs IF (1 KOMMA)(*1 Imp) ; #Et isoleret nomen er vokativ
+#561 og 562 virker ikke. 563 er alt for bred og skal slettes når de andre er klaret
 # Nominer - ADD regler
 # ====================
 #Appellativer i absolut kasus kan være element af syntagmerne subjekt, objekt, tidsangivelse, overskriftsord 
@@ -1800,6 +1805,8 @@ SELECT INTRANSVERB + Par + 3Pl IF (*1 ORATIOOBLVERB)(-*1 Abs + Pl LINK NEGATE *1
 
 SELECT Par + INTRANSVERB + 3Sg OR Inf + INTRANSVERB + 4Sg OR InfNeg + INTRANSVERB + 4Sg OR Cau + INTRANSVERB + 3Sg IF (-*1 ORATIOOBLVERB)(-*1 Abs + Sg BARRIER ORATIOOBLVERB)(NEGATE 1 Prop + Abs OR Prop + Attr)(NEGATE 0 nv LINK *1 Par + Sg); #20100322 Sidste NEGATE for skyld oo, hvor et verbalnomen er subjekt
 
+#Fjern Par hvis intet inquit og sikkert objekt for TRANSVERB til højre
+REMOVE Par IF (NEGATE *0 ORATIOOBLVERB BARRIER TRANSVERB)(*1 TRANSVERB BARRIER TRANSVERB) ;
 
 SECTION #Skal kun bruges til at isolere Par - reglerne
 
