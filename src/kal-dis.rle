@@ -288,6 +288,7 @@ LIST LIR_TIP_NIQAR = LIR\=TIP\=NIQAR ;
 LIST LIR_TIP_HTR = LIR\=TIP\=HTR ;
 LIST LIR_VIP = LIR\=VIP ;
 LIST LIR_VIP_TARIAQAR = LIR\=VIP\=TARIAQAR ;
+LIST LIRI = LIRI ;
 LIST LIRSUR = LIRSUR ;
 LIST LIRSUR_HTR = LIRSUR\=HTR ;
 LIST LISAR = LISAR ;
@@ -550,6 +551,7 @@ LIST QQU_HTR_TAR = QQU\=HTR\=TAR ;
 LIST QQU_HTR_GUNNAIR = QQU\=HTR\=GUNNAIR ;
 LIST QQU_SSA = QQU\=SSA ;
 LIST QQU_TAR = QQU\=TAR ;
+LIST RIAQ = RIAQ ;
 LIST RIAR = RIAR ;
 LIST RIAR_GALUAR = RIAR\=GALUAR ;
 LIST RIAR_INNAR = RIAR\=INNAR ;
@@ -1252,6 +1254,9 @@ REMOVE KKUT + Abs IF (NEGATE *1 INTRANSVERB + 3Pl)(NEGATE *0 3PlO) ;
 REMOVE KKUT + Rel IF (NEGATE *1 TRANSVERB + 3Pl)(NEGATE 1 3PlPoss OR 3SgPoss) ;
 #vælger vialis frem for KKUT
 
+SELECT Ins + IndefPron IF (1 NIQ LINK 1 ("ajor"))(NEGATE *1 NIQAR) ; #specialfald til følgende vedr. NIQ ajor..
+SELECT Ins + IndefPron IF (1 V)(NEGATE *1 NIQAR) ; 
+
 ##########################################
 # Frequent and safe rules - proper names #
 ##########################################
@@ -1294,6 +1299,8 @@ SELECT part + ("aamma")
 ########################
 # Frequent and safe rules - pronouns #
 ########################
+
+REMOVE IntPron IF ( 0 IndefPron ) (NEGATE *1 ("\?")) ;
 
 ######################
 # Frequent and safe rules - verbs #
@@ -1502,6 +1509,10 @@ MAP:0561 (@HNOUN) TARGET N + Abs IF (-1 ("\"") LINK -1 (" ") LINK -1 BOS)(1 KOMM
 MAP:0562 (@HNOUN) TARGET N + Abs IF (-1 BOS)(1 KOMMA)(*1 Imp) ; #Et isoleret nomen er vokativ
 MAP:0563 (@HNOUN) TARGET N + Abs IF (1 KOMMA)(*1 Imp) ; #Et isoleret nomen er vokativ
 #561 og 562 virker ikke. 563 er alt for bred og skal slettes når de andre er klaret
+
+MAP:0565 (@i->V) TARGET Abs + Sg + NIQ IF (1 ("ajor")) ; 
+
+
 # Nominer - ADD regler
 # ====================
 #Appellativer i absolut kasus kan være element af syntagmerne subjekt, objekt, tidsangivelse, overskriftsord 
@@ -2042,12 +2053,6 @@ REMOVE (Via @N<) IF (NEGATE -1 Via OR Rel);
   CONSTRAINTS #
 # =========== #
 
-	# Hugseregel:
-	# subj-abs IV
-	# subj-rel obj-abs TV.
-
-
-
 # Intransitive sætninger
 # ====================== #
 SELECT Rel + Pl IF (1 vn + Rel + Pl)(2 3PlPoss); # 'ADVL SUBJ> NAASORPASSUIT qalipaatigissaartut akornanni pinnguarput ...' Antager, at vn normalt er et adled. Ny regel 30.3.
@@ -2352,6 +2357,7 @@ REMOVE UTIGE IF (NEGATE 0 Inf) ; #næsten kun om samtidighed i ledsagemåde
 REMOVE PLACE + SSUSIQ ; #vælg 'imaannaanngissuseq' frem for 'imaq+INNAQ+U+SSUSIQ'
 REMOVE KKUT IF (NEGATE 0 HUMAN) ;
 REMOVE TUR IF (NEGATE 0 FOOD) ;
+REMOVE ("ilut") + LIRI IF (0 ("iluseq") );
 
 # Enkelte substantiver
 REMOVE ("pineq") IF (NEGATE *0 ("kamik")) ; #20091103 pineq+QAR vs. pineqar-
@@ -2364,6 +2370,7 @@ REMOVE Prop IF (0 ("Aleqa") OR ("Anersaaq")) ;
 REMOVE ("qanik") + QAR IF ( *0 @SUBJ> + HUMAN ) ;
 REMOVE ("alliaq") IF (0 TU) ; #vælger 'alliartor' frem for alliaq+TU
 REMOVE ("toqu") + TAQ + nn ; # vælger toqup+TAQ+vn+U frem for toqu+TAQ+nn+U
+REMOVE ("qimip") + RIAQ IF (0 ("qimeriaq")) ; #vælg 'øjenbryn'
 
 # Hvilket praefingeret pronomen?
 SELECT ("taanna\(taavaniittoq\)") IF (-1**< ("avannaq"));
