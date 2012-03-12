@@ -960,7 +960,7 @@ SET MOVE-VERB = LOKVERB | ABLVERB | TRMVERB ;
 
 # 20091106 Foelgende med tak til Tino for at forebygge at "oqar" + USIQ opfattes som inquit
 LIST ORATIOOBLVERBnOQAR = "eqqarsar" "eqqartor" "ilisimatitsissut" "isuma"
-"isummer" "malunnarsi" "naatsorsor" "nalu" "nalunaar" "nalunaarut" "neriup" "qular"
+"isummer" "malugaa" "malunnarsi" "naatsorsor" "nalu" "nalunaar" "nalunaarut" "neriup" "qular"
 "qularnar" "qinnuigaa" "paasi" "pinngitsaali" "siunnersor" "taku" "unner" ;
 SET OQARnUSIQ = ("oqar") - (USIQ) ;
 SET ORATIOOBLVERB = ORATIOOBLVERBnOQAR OR OQARnUSIQ ;
@@ -1101,7 +1101,7 @@ LIST @<ALLOBJ = @<OBJ @i-<OBJ ;
 
 LIST @ALLSUBJ> = @SUBJ> @i-SUBJ> ;
 LIST @<ALLSUBJ = @<SUBJ @i-<SUBJ ;
-LIST @ALLSUBJ = @ALLSUBJ> @<ALLSUBJ ;
+SET @ALLSUBJ = @ALLSUBJ> OR @<ALLSUBJ ;
 
  # Kladdenotatar, skal slettast
  # SU: abs(iv), rel(tv), trm(dotv), ins; 4subm
@@ -1154,6 +1154,8 @@ REMOVE Prop + Attr IF (0 Prop + Sg)(-1 N + Sg)(*1 VFIN + 3Sg BARRIER KOMMA);
 # Same construct case LU
 REMOVE Prop + Attr IF (0 Prop + Sg)(-1 N + Sg)(1 N + Sg + LU)(*1 VFIN + 3Pl BARRIER KOMMA) ;
 
+#Vælg Indikativ verbum, hvis eneste finitte. NIR undtaget, da ofte fejl for NIQ plus noget
+SELECT Ind IF (NEGATE *0 VFIN)(NEGATE 0 NIR) ;
 
 ###################################
 # Frequent and safe rules - nouns #
@@ -1629,7 +1631,10 @@ MAP:1190 (@<CL-CIT) TARGET Par + INTRANSVERB + 3Sg OR Inf + INTRANSVERB + 4Sg OR
 MAP:1200 (@<CL-CIT) TARGET Inf + TRANSVERB + 1Pl OR InfNeg + TRANSVERB + 1Pl IF (-*1 ORATIOOBLVERB BARRIER ("\,"));
 
 #20100322 Nexusadverbialer efter oratio oblique. Erstatter Skrot 01-04
-MAP:1210 (@CL-<ADVL) TARGET Ite OR Cau OR Con IF (*-1 VFIN) ; 
+MAP:1210 (@CL-<ADVL) TARGET Ite OR Cau OR Con IF (*-1 VFIN) ;
+MAP:1220 (@CL-<ADVL) TARGET Par + INTRANSVERB IF (*-1 ORATIOOBLVERB + 3SgO LINK -*1 Abs + Sg)(NEGATE -*1 VFIN + U)(1 EOS); #non-coref tidsbisætning - ikke oratio oblique - hvis der er et objekt
+MAP:1221 (@CL-<ADVL) TARGET Par + INTRANSVERB IF (*-1 VFIN - ORATIOOBLVERB)(NEGATE -*1 VFIN + U)(1 EOS); #non-coref tidsbisætning - ikke oratio oblique.  SELECT-reglen ConTempPost har også følgende begrænsning (*-1 Abs BARRIER ("\,")), som måske skal med også i MAP-sætningen??
+
 MAP:1220 (@CL-ADVL>) TARGET Ite OR Cau OR Con IF (*1 VFIN) ; 
 
 #Parataktisk oratio obliqua kan (sjaeldent??) vaere efterstillet som i 
@@ -1718,6 +1723,7 @@ SELECT:ParIkkeVn07 Par + RUTTUR OR Par + GALUAR IF (NEGATE -*1 VFIN)(NEGATE *1 3
 SELECT:ContempPostPassiv Par + NIQAR IF (*-1 TRANSVERB + VFIN)(1 EOS);
 #"medens" uden konjunktion og efterstillet
 
+SELECT:ContempPostMedOBJ Par + INTRANSVERB IF (*-1 VFIN + ORATIOOBLVERB + 3SgO LINK -*1 Abs + Sg )(NEGATE -*1 VFIN + U)(1 EOS)(*-1 Abs BARRIER ("\,")); #Specialfald til følgende regel når mulig inquit men med objekt
 SELECT:ContempPost Par + INTRANSVERB IF (*-1 VFIN - ORATIOOBLVERB)(NEGATE -*1 VFIN + U)(1 EOS)(*-1 Abs BARRIER ("\,"));
 
 SELECT:VnIkkePar02 vn + Sg IF (-*1 N + Sg)(1 vn + Sg + LU LINK *1C Par) ;
@@ -2007,32 +2013,6 @@ SELECT (@CL->N) IF (-1C @ARG>);
 SELECT 4Sg IF (0C (@CL->N))(1 (N Sg)); # eksperimentell
 SELECT 4Pl IF (0C (@CL->N))(1 (N Pl)); # eksperimentell
 
-
-
-# Appositioner - linier frem til ##Karen Langgårdip illua fjernet 1.4. da hverken hit i Bibel eller aviser2008
-# ------------
-#SELECT:SS_SeAppKasusKongr @N< IF (*-1 $$KASUS BARRIER NOT-REL)(0 $$KASUS)(NEGATE 0 Prop);
-#SELECT @N< IF (*-1 Abs BARRIER NOT-REL)(0 Abs)(NEGATE 0 Prop);
-#SELECT @N< IF (*-1 Lok BARRIER NOT-REL)(0 Lok)(NEGATE 0 Prop);
-#SELECT @N< IF (*-1 Trm BARRIER NOT-REL)(0 Trm)(NEGATE 0 Prop);
-#SELECT @N< IF (*-1 Abl BARRIER NOT-REL)(0 Abl)(NEGATE 0 Prop);
-#SELECT @N< IF (*-1 Ins BARRIER NOT-REL)(0 Ins)(NEGATE 0 Prop);
-#SELECT @N< IF (*-1 Aeq BARRIER NOT-REL)(0 Aeq)(NEGATE 0 Prop);
-#SELECT @N< IF (*-1 Via BARRIER NOT-REL)(0 Via)(NEGATE 0 Prop);
-	## Una ilinniartitsisoq Trond Kirstip uia 40-nik ukioqarpoq.
-
-#REMOVE:ReAppToNotN   @N< IF (NEGATE -1 N OR @N<);
-#REMOVE:ReAppPropProp @N< IF (-1 Prop)(0 Prop);
-#REMOVE:SS_ReAppNotRel ($$NOT-REL @N<) IF (NEGATE *-2 (N $$NOT-REL))(-1 (Rel @POSS))(0 (N 3Sg));
-#REMOVE (Abs @N<) IF (NEGATE *-2 (N Abs))(-1 (Rel @POSS))(0 (N 3Sg));
-#REMOVE (Lok @N<) IF (NEGATE *-2 (N Lok))(-1 (Rel @POSS))(0 (N 3Sg));
-#REMOVE (Trm @N<) IF (NEGATE *-2 (N Trm))(-1 (Rel @POSS))(0 (N 3Sg));
-#REMOVE (Abs @N<) IF (NEGATE *-2 (N Abl))(-1 (Rel @POSS))(0 (N 3Sg));
-#REMOVE (Ins @N<) IF (NEGATE *-2 (N Ins))(-1 (Rel @POSS))(0 (N 3Sg));
-#REMOVE (Aeq @N<) IF (NEGATE *-2 (N Aeq))(-1 (Rel @POSS))(0 (N 3Sg));
-#REMOVE (Via @N<) IF (NEGATE *-2 (N Via))(-1 (Rel @POSS))(0 (N 3Sg));
-	## Karen Langgårdip illua.
-
 REMOVE (Rel @N<) IF (NEGATE -1 (N Rel));
 	## Atuagaq Trosterudip tiguaa.
 
@@ -2081,7 +2061,7 @@ REMOVE (Rel 4Sg) IF (0 Lok)(*1 LOKVERB);
     ## Illumi aappaluttumi najugaqarpugut.
 
 #REMOVE Pl + @ALLSUBJ> IF (*1C VERBNOT3PLSUBJ BARRIER LU); #20091107 - maa ikke hitte paa 4.person
-REMOVE Pl + @ALLSUBJ> IF (*1C 12SUBJVERB BARRIER LU);
+#REMOVE Pl + @ALLSUBJ> IF (*1C 12SUBJVERB BARRIER LU); #sletter et korrekt subjekt 11.3.2012
 
 #REMOVE (N Sg) + @ALLSUBJ> IF (*1C VFIN BARRIER LU LINK NOT 0 3SGSUBJVERB)(NEGATE 0 LU); #forstår ikke 20080302
 
@@ -2206,6 +2186,8 @@ REMOVE Con + 2SgO IF (*-1 @OBJ> + Pl)(NEGATE *0 ("illit")); #20091113 1Sg-2Sg vs
 # Sen disambiguering af infinitiver
 SELECT Inf + TRANSVERB + 4Sg IF (1 Inf)(-*1 VFIN); # En meget snaever kontekst for absolutte ledsagemaader som '.. naatinneqartarput silataanit ISIGALUGIT takuminavissarlutik.'
 
+SELECT 3SgPoss + @ALLSUBJ IF (*0 @OBJ> + 3SgPoss) (NEGATE -*1 Rel + Sg) ; #Kusanassusia atuaqataasa malugaat
+
 # Numerus
 # -------
 
@@ -2228,6 +2210,7 @@ SELECT 3PlO IF (*-1C (Pl @OBJ>))(*-1 @SUBJ>) ;
 SELECT 3SgO IF (*1 @CL-<CIT) ; #Vælg inquit med Sg frem for Pl
 SELECT 3SgO IF (*-1 @CL-CIT>) ; #Vælg inquit med Sg frem for Pl
 
+SELECT 3SgO IF (0 @CL-CIT>)(-*1 3Sg BARRIER @OBJ> + Pl) ;
 SELECT @ADVL> IF (1 V) ; #Disambiguerer @ADVL> og @<ADVL
 SELECT @ADVL> IF (1 @POSS)(2 @ADVL>) ; #Disambiguerer @ADVL> og @<ADVL i NP med possessor-possessum
 
@@ -2346,6 +2329,7 @@ REMOVE U + NAR; #"eqqaq" U nv NAR vv for 'eqqaanar' vist en utaenkelig kombinati
 REMOVE HTR + NAR; #naeppe en mulig kombination
 REMOVE SSAQ + LIUR IF (0 HUMAN) ; #'ilassiorpoq' ikke 'ila+SSAQ=LIUR'
 REMOVE VIP IF (0 IntransTrans); #HTR mest sandsynlig
+REMOVE NIQ + U IF (0 NIRU + TIP); # nuannernerulersittarpai
 REMOVE NIQ + U IF (0 NIRU + TUQ); # 17.4. Ad hoc og alt for bred. Maa indsnævres når der viser sig eksempler
 REMOVE ("niver" NGA) IF (*-1 Abs - HUMAN) ; # kun mennesker niver+NGA. Ting nivinga
 REMOVE SSAQ + IR + NNGIT IF ( 0 SSAQ + U + NNGIT) ; #20091108
@@ -2371,6 +2355,7 @@ REMOVE ("qanik") + QAR IF ( *0 @SUBJ> + HUMAN ) ;
 REMOVE ("alliaq") IF (0 TU) ; #vælger 'alliartor' frem for alliaq+TU
 REMOVE ("toqu") + TAQ + nn ; # vælger toqup+TAQ+vn+U frem for toqu+TAQ+nn+U
 REMOVE ("qimip") + RIAQ IF (0 ("qimeriaq")) ; #vælg 'øjenbryn'
+REMOVE ("qaqu") + N* IF (0 ("qaqutigoor")) ;
 
 # Hvilket praefingeret pronomen?
 SELECT ("taanna\(taavaniittoq\)") IF (-1**< ("avannaq"));
