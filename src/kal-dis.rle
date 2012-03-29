@@ -989,7 +989,7 @@ LIST ANIMAL = "qimmeq" "qitsuk" "puisi" ;
 LIST ABSTRACT = "taaq" ;
 
 LIST PLACE = "illu" "imaq" ;
-LIST ADJEKTIVISK = "akutakujooq" "akutakujuk" ;
+LIST ADJEKTIVISK = "akutakujooq" "akutakujuk" "qaqqorik";
 
 LIST EDIBLE = "neqi" "iffiaq" "kaagi" ;
 LIST DRINKABLE = "kaffi" "tii" "immuk" "whisky" "immiaaraq" "immiaq" "baaja" ;
@@ -997,7 +997,7 @@ LIST CLOTHES = "kamik" "annoraaq" "kavaajaq" "alersi" "alerseq" "skuu" ;
 SET FOOD = EDIBLE | DRINKABLE ;
 LIST THING = "alussaat" "aqqusineq" ("ati" TAQ) "ilullissiaq" "siu" "timi" ;
 LIST MATERIAL = "ameq" "ulik" "qipik" ;
-
+LIST f-an_SG = "qaneq" "qingaq" ;
 LIST TIME = "nali" "sapaat" "qeqqa" "aasaq" "ippassaq" "ullaaq" "ullaa" "ataasinngor" "marlunngor" "pingasunngor" "sisamanngor" "tallimanngor" "arfininngor" "ulloq";
 LIST NUMHOVED = "krone" "milliardi" "million" "dollari" "oori" "øre" "koruuni" "euro" "dollar" "kiilu" "kilo" "gram";
 LIST COMPOUND_N = "Windows" "Linux" "program" ;
@@ -1259,6 +1259,8 @@ REMOVE KKUT + Rel IF (NEGATE *1 TRANSVERB + 3Pl)(NEGATE 1 3PlPoss OR 3SgPoss) ;
 SELECT Ins + IndefPron IF (1 NIQ LINK 1 ("ajor"))(NEGATE *1 NIQAR) ; #specialfald til følgende vedr. NIQ ajor..
 SELECT Ins + IndefPron IF (1 V)(NEGATE *1 NIQAR) ; 
 
+REMOVE f-an_SG + Sg + 3PlPoss IF (0 3SgPoss) ; # 'qaneq' mv. altid possessor i sing.
+
 ##########################################
 # Frequent and safe rules - proper names #
 ##########################################
@@ -1297,6 +1299,8 @@ SELECT part IF (-1 BOS);
 #Vælger "taama" part frem for "taaq" N Rel Pl 1SgPoss o.lign.
 
 SELECT part + ("aamma")
+
+SELECT ("soorlu") IF (*1 Par OR Inf OR InfNeg BARRIER V ) ;
 
 ########################
 # Frequent and safe rules - pronouns #
@@ -1367,6 +1371,7 @@ SELECT Inf + 4Pl IF (-*1 ORATIOOBLVERB + 3Pl)(NEGATE *1 Inf)(NEGATE *1 Par) ;
 REMOVE VERB_udenUTE IF (0 UTE + vn) ;
 #Fjerner overflødige UTE+vn
 
+REMOVE U + Imp + 1Pl IF (0 POSSESSUM3) ; #fjerner "kigut" U nv V Imp 1Pl for "kigut" N Rel Pl 3PlPoss
 SECTION
 
 # Verber - De sikre MAP regler 1. runde
@@ -1383,6 +1388,7 @@ MAP:0020 (@PRED) TARGET Inf + LU OR InfNeg + LU IF (-1 VFIN) ;
 MAP:0030 (@PRED2) TARGET INTRANSVERB + Par + 3Pl IF (*-1 Abs + Pl)(NEGATE *0 ORATIOOBLVERB BARRIER VFIN)(1 Abs OR ("\,")); #koncessive saetninger uden konjunktion
 MAP:0040 (@CL-<ADVL) TARGET Par + 3Pl + 4SgO OR Par + 4Sg IF (*-1 VFIN) ; #20091109 participium på -gaanni altid neksusadverbial
 MAP:0050 (@PRED2) TARGET Par IF (*-1 ADVERBIUM OR UNA BARRIER V)(NEGATE *0 ORATIOOBLVERB) ; #20091109
+MAP:0051 (@PRED2) TARGET Par OR Inf OR InfNeg IF (*-1 ("soorlu") BARRIER V)(NEGATE *0 VFIN) ;
 MAP:0060 (@PRED2) TARGET Inf + 1Sg OR InfNeg + 1Sg IF (*-1 ADVERBIUM OR UNA LINK *-1 VFIN + 1Sg)(NEGATE *0 ORATIOOBLVERB) ; #20091109
 MAP:0061 (@CL-<CIT) TARGET Inf + 4Sg IF (-*1 ORATIOOBLVERB + 3Sg)(NEGATE *1 Inf) (NEGATE *1 Par);
 MAP:0062 (@CL-<CIT) TARGET Inf + 4Pl IF (-*1 ORATIOOBLVERB + 3Pl)(NEGATE *1 Inf)(NEGATE *1 Par) ;
@@ -2119,7 +2125,7 @@ REMOVE (N @POSS) IF (NEGATE 1 POSSESSUM3 OR LU);
 
 REMOVE (N @POSS) IF (1 LU)(NEGATE 2 POSSESSUM3);
 
-REMOVE @SUBJ> + Rel + Pl IF (*-1C (@SUBJ>) BARRIER LU OR V OR ("\,"))(NEGATE 0 LU)(NEGATE 0 vn + Rel + Pl LINK -1 N + Rel + Pl); #20091113 BARRIER, numerus og sidste NEGATE for at forhindre hit på kongruensadled ', eqqarsaatimali AJORSINNAASUT qaninngoorniaannavissutut malersortuarpaannga.'
+REMOVE @SUBJ> + Rel + Pl IF (*-1C (@SUBJ>) BARRIER LU OR V OR ("\,"))(NEGATE 0 LU)(NEGATE 0 vn OR ADJEKTIVISK + Rel + Pl LINK -1 N + Rel + Pl); #20091113 BARRIER, numerus og sidste NEGATE for at forhindre hit på kongruensadled ', eqqarsaatimali AJORSINNAASUT qaninngoorniaannavissutut malersortuarpaannga.'
 REMOVE @SUBJ> + Rel + Sg IF (*-1C (@SUBJ>) BARRIER LU OR V OR ("\,"))(NEGATE 0 LU)(NEGATE 0 vn + Rel + Sg LINK -1 N + Rel + Sg); #20091113	## Nukap Piitap illua qalipappaa.
 	## Nukap Piitap ernerata illua qalipappaa.
     #        ^^^^^^
@@ -2342,6 +2348,7 @@ REMOVE PLACE + SSUSIQ ; #vælg 'imaannaanngissuseq' frem for 'imaq+INNAQ+U+SSUSI
 REMOVE KKUT IF (NEGATE 0 HUMAN) ;
 REMOVE TUR IF (NEGATE 0 FOOD) ;
 REMOVE ("ilut") + LIRI IF (0 ("iluseq") );
+REMOVE ("tupip") + NAR IF (0 ("tupinnar")) ;
 
 # Enkelte substantiver
 REMOVE ("pineq") IF (NEGATE *0 ("kamik")) ; #20091103 pineq+QAR vs. pineqar-
@@ -2356,6 +2363,7 @@ REMOVE ("alliaq") IF (0 TU) ; #vælger 'alliartor' frem for alliaq+TU
 REMOVE ("toqu") + TAQ + nn ; # vælger toqup+TAQ+vn+U frem for toqu+TAQ+nn+U
 REMOVE ("qimip") + RIAQ IF (0 ("qimeriaq")) ; #vælg 'øjenbryn'
 REMOVE ("qaqu") + N* IF (0 ("qaqutigoor")) ;
+REMOVE ("qanik") + POSSESSUM IF (0 ("qaneq")); #sandsynligvis en mund, hvis nogens qanik/qaneq
 
 # Hvilket praefingeret pronomen?
 SELECT ("taanna\(taavaniittoq\)") IF (-1**< ("avannaq"));
@@ -2367,6 +2375,9 @@ SELECT Via - POSSESSUM IF (NEGATE -1 Rel);
 
 # Possessum singularis eller pluralis?
 SELECT Sg IF (0 POSSESSUM);
+
+# Possessor singularis eller pluralis?
+REMOVE 3PlPoss IF (-*1 @POSS> + 3SgPoss BARRIER 3PlPoss)(0 3SgPoss); #vælg sing. possessor hvis sing til venstre
 
 #20091112 Regler for disambiguering af SAR og TAR. Skal maaske laves om til sets??
 SELECT ("eqqissisar") IF (0 ("eqqissi") + TAR);
