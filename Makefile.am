@@ -4,3 +4,5 @@
 
 ACLOCAL_AMFLAGS = -I ${GTCORE}/am-shared/m4 -I m4
 SUBDIRS = src doc
+
+# conflicting change
