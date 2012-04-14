@@ -72,6 +72,7 @@ LIST part = part ;
 LIST DemPron = DemPron ;
 LIST IntPron = IntPron ;
 LIST IndefPron = IndefPron ;
+LIST DivPron = DivPron ;
 LIST Adj = Adj ;
 LIST Adv = Adv ;
 LIST Prop = Prop ;
@@ -937,6 +938,8 @@ SET APPELLATIV = N - Prop ;
 
 LIST POSS_ABBR = "sap" ; # forkortelser, der oftest anvendes som possessor
 
+SET PRON = DemPron | IntPron | IndefPron | DivPron | Adj ;
+
 # Partikler
 # ---------
 LIST KONJUNKTION = "aamma" "kisianni" "imaluunniit" "taava" ;
@@ -961,7 +964,7 @@ SET MOVE-VERB = LOKVERB | ABLVERB | TRMVERB ;
 # 20091106 Foelgende med tak til Tino for at forebygge at "oqar" + USIQ opfattes som inquit
 LIST ORATIOOBLVERBnOQAR = "eqqarsar" "eqqartor" "ilisimatitsissut" "isuma"
 "isummer" "malugaa" "malunnarsi" "naatsorsor" "nalu" "nalunaar" "nalunaarut" "neriup" "qular"
-"qularnar" "qinnuigaa" "paasi" "pinngitsaali" "siunnersor" "taku" "unner" ;
+"qularnar" "qinnuigaa" "paasi" "pinngitsaali" "siunnersor" "taku" "unner" "uppernarsar" ;
 SET OQARnUSIQ = ("oqar") - (USIQ) ;
 SET ORATIOOBLVERB = ORATIOOBLVERBnOQAR OR OQARnUSIQ ;
 
@@ -1187,7 +1190,7 @@ REMOVE Abs + Sg + MI IF (*0 Abs + Sg) ; #20101013 Lokalis tagget som subjekt med
 SELECT Rel + Pl IF (1 DemPron + Rel LINK 1 3PlPoss);
 SELECT Rel + Sg IF (1 DemPron + Rel LINK 1 3SgPoss);
 SELECT Rel + Pl IF (1C 3PlPoss);
-SELECT Rel + Sg IF (1C 3SgPoss);
+SELECT Rel + Sg IF (1C 3SgPoss)(NEGATE 0 Ins LINK 1 QAR OR LIK); #asanninnermik pigisaqarneranut er ikke en possessor-possessum forbindelse
 SELECT 3SgPoss IF (-1C Rel + Sg)(NEGATE *1 VERB-NOTINF + TRANSVERB + 3Sg BARRIER VFIN);
 
 #Sikre possessorer. Den foerste er et specialtilfaelde for også at tage højde for 'Maaniittut ukua ilaasa .. '
@@ -1443,7 +1446,10 @@ MAP:0190 (@HNOUN) TARGET APPELLATIV + Abs OR Prop + Abs OR Abbr - FIRSTNAME IF (
 MAP:0200 (@i-ADVL>) TARGET Trm IF (1 N + (vn)) ;
 MAP:0210 (@<OBJ) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (-1 TRANSVERB + 3SgO)(*1 CLB OR EOS BARRIER 3SgO)(NEGATE *-1 ORATIOOBLVERB LINK *1 V + 3Sg); #20100227 Tronds tilfoejelse. 20100322 NEGATE forebygger forkerte hit paa subjekter (PL)
 
-MAP:0220 (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (*1 Rel)(*1 TRANSVERB + GE + 3SgO BARRIER VERB-NOTINF) ; 
+MAP:0220 (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (*1 Rel)(*1 TRANSVERB + 3SgO BARRIER VERB-NOTINF) ; #Typen O S V-GE udvidet til også at hitte uden GE
+#MAP:0220 (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (*1 Rel)(*1 TRANSVERB + GE + 3SgO BARRIER VERB-NOTINF) ; #Til typen O S V-GE
+MAP:0221 (@OBJ>) TARGET DemPron + Abs + Sg IF (-1 Abs + Sg)(*1 Rel)(*1 TRANSVERB + 3SgO BARRIER VERB-NOTINF) ; #Adled til objekt i sætningstypen O S V-GE udvidet til også at hitte uden GE
+
 MAP:0230 (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (*1 Par + 3Pl + 4SgO BARRIER V + 3Sg) ; #20091109 objekt for -gaanni hvis ikke subjekt for entalsverbum
 
 MAP:0238 (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (*1 Rel + Sg LINK *1 TRANSVERB + 3SgO OR Par + 3Pl + 4SgO) ; #20101013 til typen S V O-LU S V
@@ -1527,12 +1533,12 @@ MAP:0565 (@i->V) TARGET Abs + Sg + NIQ IF (1 ("ajor")) ;
 
 MAP:0570 (@N>) TARGET Num IF (1 NUMHOVED); # ' .. 2 oorimoorlutik ..'
 MAP:0580 (@SUBJ>) TARGET APPELLATIV + Abs OR Prop + Abs OR Num + Abs IF (*1 INTRANSVERB)(NEGATE *1 TRANSVERB)(NEGATE -1 ("\(")) ; #nyt forsoeg 30.3.
-ADD:0590 (@<OBJ) TARGET APPELLATIV + (Abs) OR Prop + (Abs) OR (Adj Abs) IF (-*1 TRANSVERB - Inf BARRIER Inf + @ADVL> OR Inf + @<ADVL OR ("\,")); #20091111 af Beatrine. (linie 1243)
-ADD:0600 (@<OBJ) TARGET APPELLATIV + (Abs) OR Prop + (Abs) OR (Adj Abs) IF (-*1 TRANSVERB - Inf BARRIER Inf OR ("\,"));
+ADD:0590 (@<OBJ) TARGET APPELLATIV + (Abs) OR Prop + (Abs) OR (PRON Abs) IF (-*1 TRANSVERB - Inf BARRIER Inf + @ADVL> OR Inf + @<ADVL OR ("\,")); #20091111 af Beatrine. (linie 1243)
+ADD:0600 (@<OBJ) TARGET APPELLATIV + (Abs) OR Prop + (Abs) OR (PRON Abs) IF (-*1 TRANSVERB - Inf BARRIER Inf OR ("\,"));
 
 #Appellativer og proprier i relativ kasus kan være element af syntagmerne subjekt og possessor 
 ADD:0610 (@SUBJ>) TARGET APPELLATIV + (Rel) OR Prop + (Rel) IF (*1 TRANSVERB BARRIER 3SgPoss) ;
-ADD:0620 (@<SUBJ) TARGET APPELLATIV + (Rel) OR Prop + (Rel) OR (Adj) IF (-*1 TRANSVERB + VERB-NOTINF BARRIER ("\,")) ;
+ADD:0620 (@<SUBJ) TARGET APPELLATIV + (Rel) OR Prop + (Rel) OR (PRON) IF (-*1 TRANSVERB + VERB-NOTINF BARRIER ("\,")) ;
 
 #Nomen i oblik kasus kan være adverbalt adled
 MAP:0630 (@ADVL>) TARGET Lok IF (-1 BOS) ; 
@@ -1564,9 +1570,10 @@ MAP:0790 (@N>) TARGET ("ua" 1Sg) IF (1 (1SgPoss)) ;
 
 # Adjektiver - både ADD og MAP regler
 # ===================================
-ADD:0800 (@SUBJ>) TARGET (Adj) IF (*1 INTRANSVERB) ;
-ADD:0810 (@OBJ>) TARGET (Adj 1Sg) IF (*1 TRANSVERB + (1SgO)) ;
-ADD:0820 (@SUBJ>) TARGET (Adj 1Sg) IF (*1 TRANSVERB + (1Sg)) ;
+MAP:0800 (@SUBJ>) TARGET PRON + Abs + 4Sg IF (*1C INTRANSVERB + 3Sg) ;
+MAP:0801 (@SUBJ>) TARGET PRON + Abs + 4Pl IF (*1C INTRANSVERB + 3Pl) ;
+ADD:0810 (@OBJ>) TARGET PRON + Abs + 1Sg IF (*1 TRANSVERB + (1SgO)) ;
+ADD:0820 (@SUBJ>) TARGET (PRON 1Sg) IF (*1 TRANSVERB + (1Sg)) ;
 
 #Konjunktioner er konjunktioner, når de indleder en sætning, ellers er de adverbier
 MAP:0830 (@ADVL>) TARGET ADVERBIUM IF (*1 Par OR Inf OR InfNeg BARRIER VFIN) ; #20091109
@@ -2258,6 +2265,7 @@ REMOVE (@SUBJ> Adj 1Sg) IF (*1 @PRED + (3Sg)) ;
 
 SELECT Abs + Pl + @SUBJ> IF (-1C Abs + Pl + @SUBJ>)(1 INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl) ; #20091107 'ajornartorsiutit SUUGALUARTUT oqaasinngortinneqaraangamik'
 
+SELECT PRON + Abs + 1Sg + @OBJ> IF (1* TRANSVERB + 1SgO) ; #kisima (Rel) vs. kisima (Abs)
 # ========================= #
 #     Final sektion         #
 # ========================= #
@@ -2349,6 +2357,7 @@ REMOVE KKUT IF (NEGATE 0 HUMAN) ;
 REMOVE TUR IF (NEGATE 0 FOOD) ;
 REMOVE ("ilut") + LIRI IF (0 ("iluseq") );
 REMOVE ("tupip") + NAR IF (0 ("tupinnar")) ;
+REMOVE ("anneq") + GE IF (NEGATE -1 Abl)(0 ("anneraa")) ;
 
 # Enkelte substantiver
 REMOVE ("pineq") IF (NEGATE *0 ("kamik")) ; #20091103 pineq+QAR vs. pineqar-
