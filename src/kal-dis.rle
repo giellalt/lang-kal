@@ -73,6 +73,7 @@ LIST DemPron = DemPron ;
 LIST IntPron = IntPron ;
 LIST IndefPron = IndefPron ;
 LIST DivPron = DivPron ;
+LIST PersPron = PersPron ;
 LIST Adj = Adj ;
 LIST Adv = Adv ;
 LIST Prop = Prop ;
@@ -938,7 +939,7 @@ SET APPELLATIV = N - Prop ;
 
 LIST POSS_ABBR = "sap" ; # forkortelser, der oftest anvendes som possessor
 
-SET PRON = DemPron | IntPron | IndefPron | DivPron | Adj ;
+SET PRON = DemPron | IntPron | IndefPron | DivPron | PersPron | Adj ;
 
 # Partikler
 # ---------
@@ -1264,6 +1265,7 @@ SELECT Ins + IndefPron IF (1 V)(NEGATE *1 NIQAR) ;
 
 REMOVE f-an_SG + Sg + 3PlPoss IF (0 3SgPoss) ; # 'qaneq' mv. altid possessor i sing.
 
+SELECT Rel + 3SgPoss IF (1 3SgPoss)(NEGATE *-1 Rel + Pl) ; #N-ata pia og N-isa piat
 ##########################################
 # Frequent and safe rules - proper names #
 ##########################################
@@ -1310,6 +1312,7 @@ SELECT ("soorlu") IF (*1 Par OR Inf OR InfNeg BARRIER V ) ;
 ########################
 
 REMOVE IntPron IF ( 0 IndefPron ) (NEGATE *1 ("\?")) ;
+SELECT PersPron + Abs + 1Sg IF (*1 INTRANSVERB + 1Sg)(NEGATE 1 1SgPoss); #vælg uanga+Abs for uanga+Rel
 
 ######################
 # Frequent and safe rules - verbs #
@@ -1452,7 +1455,7 @@ MAP:0221 (@OBJ>) TARGET DemPron + Abs + Sg IF (-1 Abs + Sg)(*1 Rel)(*1 TRANSVERB
 
 MAP:0230 (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (*1 Par + 3Pl + 4SgO BARRIER V + 3Sg) ; #20091109 objekt for -gaanni hvis ikke subjekt for entalsverbum
 
-MAP:0238 (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (*1 Rel + Sg LINK *1 TRANSVERB + 3SgO OR Par + 3Pl + 4SgO) ; #20101013 til typen S V O-LU S V
+MAP:0238 (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (*1 Rel + Sg LINK *1 TRANSVERB + 3SgO OR Par + 3Pl + 4SgO)(NEGATE *1 INTRANSVERB + 3Sg BARRIER TRANSVERB) ; #20101013 til typen S V O-LU S V. NEGATE for skyld typen 'subjekt Abs + or. obl. intr. + subjekt Rel + PRED
 MAP:0239 (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg OR DemPron + Abs + Sg IF (1 part LINK 1 TRANSVERB + 3SgO OR Par + 3Pl + 4SgO) ; #Subj Obj partikel TRANSVERB typen
 
 MAP:0240 (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg OR DemPron + Abs + Sg IF (1 TRANSVERB + 3SgO OR Par + 3Pl + 4SgO) ; #20091109 tilfoejet Par med -gaanni
@@ -1496,6 +1499,7 @@ MAP:0439 (@SUBJ>) TARGET Rel + Sg IF (1 Rel LINK 1 POSSESSUM3 LINK *1 TRANSVERB 
 MAP:0440 (@SUBJ>) TARGET Rel + Sg IF (*1 TRANSVERB + (3Sg) OR (4Sg) BARRIER POSSESSUM3) ;
 MAP:0450 (@SUBJ>) TARGET Rel + Pl IF (*1 TRANSVERB + (3Pl) OR (4Pl) BARRIER POSSESSUM3) ;
 MAP:0460 (@SUBJ>) TARGET Abs + Sg IF (*1 INTRANSVERB + VERB-NOTINF + 3Sg OR INTRANSVERB + VERB-NOTINF + 4Sg BARRIER POSSESSUM3 OR TRANSVERB)(NEGATE -1 ("\(")) ; #TRANSVERB tilføjet for at forhindre tag på obj i: SUBJ OBJ TRANSVERB INTRANSVERB
+MAP:0461 (@SUBJ>) TARGET PersPron + Abs + 1Sg IF (*1 INTRANSVERB + VERB-NOTINF + 1Sg OR INTRANSVERB + VERB-NOTINF + 1Sg BARRIER POSSESSUM3 OR TRANSVERB)(NEGATE -1 ("\(")) ; #TRANSVERB tilføjet for at forhindre tag på obj i: SUBJ OBJ TRANSVERB INTRANSVERB
 MAP:0470 (@SUBJ>) TARGET Abs + Pl IF (*1 INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl) ; #Nyt frosoeg 30.3.
 MAP:0480 (@SUBJ>) TARGET (Rel) IF (*1 TRANSVERB + 34IV BARRIER POSSESSUM3) ;
 MAP:0490 (@SUBJ>) TARGET N IF (-1 ("\("))(1 ("\)"))(-2 @SUBJ>) ; #Parantetiske indskud samme led som foregående ord
@@ -2373,6 +2377,7 @@ REMOVE ("toqu") + TAQ + nn ; # vælger toqup+TAQ+vn+U frem for toqu+TAQ+nn+U
 REMOVE ("qimip") + RIAQ IF (0 ("qimeriaq")) ; #vælg 'øjenbryn'
 REMOVE ("qaqu") + N* IF (0 ("qaqutigoor")) ;
 REMOVE ("qanik") + POSSESSUM IF (0 ("qaneq")); #sandsynligvis en mund, hvis nogens qanik/qaneq
+REMOVE ("massak") IF (NEGATE *0 ("nappar") OR ("eqqor")) ; #vælg massakkut frem for massak+KKUT og massak+Via
 
 # Hvilket praefingeret pronomen?
 SELECT ("taanna\(taavaniittoq\)") IF (-1**< ("avannaq"));
