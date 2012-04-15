@@ -54,7 +54,6 @@ gt_ENABLE_TOOLKITS
 # allow enabling and disabling parts of automata
 gt_ENABLE_TARGETS
 
-# will be GT_CONFIG_FILES =:
 AC_CONFIG_FILES([Makefile src/Makefile src/morphology/Makefile src/orthography/Makefile src/phonology/Makefile src/spellchecker/Makefile src/syntax/Makefile doc/Makefile])
 
 # must retain as-is
