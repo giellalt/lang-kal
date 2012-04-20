@@ -74,6 +74,7 @@ LIST IntPron = IntPron ;
 LIST IndefPron = IndefPron ;
 LIST DivPron = DivPron ;
 LIST PersPron = PersPron ;
+LIST ReflPron = ReflPron ;
 LIST Adj = Adj ;
 LIST Adv = Adv ;
 LIST Prop = Prop ;
@@ -939,7 +940,7 @@ SET APPELLATIV = N - Prop ;
 
 LIST POSS_ABBR = "sap" ; # forkortelser, der oftest anvendes som possessor
 
-SET PRON = DemPron | IntPron | IndefPron | DivPron | PersPron | Adj ;
+SET PRON = DemPron | IntPron | IndefPron | DivPron | PersPron | ReflPron | Adj ;
 
 # Partikler
 # ---------
@@ -1313,6 +1314,7 @@ SELECT ("soorlu") IF (*1 Par OR Inf OR InfNeg BARRIER V ) ;
 
 REMOVE IntPron IF ( 0 IndefPron ) (NEGATE *1 ("\?")) ;
 SELECT PersPron + Abs + 1Sg IF (*1 INTRANSVERB + 1Sg)(NEGATE 1 1SgPoss); #vælg uanga+Abs for uanga+Rel
+SELECT ReflPron + Via + Sg IF (NEGATE -1 Via + Pl) ; # immikkut+Pl teoretisk adled til Via+Pl. Ellers altid Sg
 
 ######################
 # Frequent and safe rules - verbs #
@@ -2272,6 +2274,7 @@ REMOVE (@SUBJ> Adj 1Sg) IF (*1 @PRED + (3Sg)) ;
 SELECT Abs + Pl + @SUBJ> IF (-1C Abs + Pl + @SUBJ>)(1 INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl) ; #20091107 'ajornartorsiutit SUUGALUARTUT oqaasinngortinneqaraangamik'
 
 SELECT PRON + Abs + 1Sg + @OBJ> IF (1* TRANSVERB + 1SgO) ; #kisima (Rel) vs. kisima (Abs)
+SELECT PRON + Rel + 4Pl IF (1* TRANSVERB + 3Pl) ; #tamaq (Rel) vs. tamaq (Abs)
 # ========================= #
 #     Final sektion         #
 # ========================= #
