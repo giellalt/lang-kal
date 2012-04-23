@@ -1070,7 +1070,7 @@ LIST @i->N = @i->N ;		 # adled der står til inkorporeret nominal t.h.
 LIST @i-N< = @i-N< ;		 # adled der står til inkorporeret nominal t.v.
 LIST @POSS = @POSS ;		 # possessor
 LIST @POSS> = @POSS> ;		 # possessor
-LIST @V> = @V> ;                 # adled til verbum # asaneq ajorpara
+LIST @V> = @V> ;                 # adled til verbum # asaneq ajorpara og taama nuannertigivoq
 LIST @<V = @<V ;                 # adled til verbum # N-tut ippaa
 LIST @FOC = @FOC ;		# partikler, der erstatter et verballed
 LIST @X = @X ;                   # dette ord har endnu ikke fået en mapping-regel
@@ -1168,6 +1168,8 @@ SELECT Ind IF (NEGATE *0 VFIN)(NEGATE 0 NIR) ;
 ###################################
 # Frequent and safe rules - nouns #
 ###################################
+
+REMOVE ("ilaaq") - AFFINGERET IF (0 ("ila") + POSSESSUM) ; #'ilaaq' uden QAR el. lign. usandsynlig
 
 SELECT Comp IF (1 ("ajor") OR ("artor") OR ("saper") OR ("nalu"));
 REMOVE Comp IF (NEGATE 1 ("ajor") OR ("artor") OR ("saper") OR ("nalu"));
@@ -1457,7 +1459,7 @@ MAP:0140 (@CONJ) TARGET part IF (-1 Abs)(*1 Abs BARRIER VFIN) ; #2.4. tilfoejet 
 MAP:0150 (@CONJ) TARGET part IF (-1 Rel)(*1 Rel BARRIER VFIN) ;
 MAP:0160 (@CL-ADVL>) TARGET part IF (-2 BOS OR ("\,"))(-1 Interj)(NEGATE 0 KONJUNKTION)(*1 V) ; #20091109 .., aasiit TAAMATUT, ...
 MAP:0170 (@CL-ADVL>) TARGET part IF (-1 BOS)(NEGATE 0 KONJUNKTION) ;
-
+MAP:0171 (@V>) TARGET ("taama") OR ("taamak") IF (1 TIGE) ;
 
 
 # Nominer - De sikre MAP regler
@@ -2425,6 +2427,7 @@ REMOVE ("qanik") + POSSESSUM IF (0 ("qaneq")); #sandsynligvis en mund, hvis noge
 REMOVE ("massak") IF (NEGATE *0 ("nappar") OR ("eqqor")) ; #vælg massakkut frem for massak+KKUT og massak+Via
 REMOVE ("aasaq") + LIR + nv IF (0 ("aasar") + LIR + vv) ; #vanskeligt at forestille sig Subj. for aasalerpaa
 REMOVE ("torlor") + LAAR IF ( 0 ("torlulaar")) ; #er næsten helt sikkert "tordlulaorpoq" og ikke 'råbe lidt'
+REMOVE ("soraarut") IF ( 0 ("soraarummeer")) ;
 
 # Ugedagene
 REMOVE ("ataaseq") + NNGUR + NIRU IF (0 ("ataaseq") + NNGUR + NIQ + U) ;
@@ -2474,5 +2477,5 @@ REMOVE ("iluar") + TUQ + UTE IF ( 0 TUQ + U + TIP ) ; # iluar+TUQ+U+TIP+TAQ frem
 SECTION
 SELECT (@CL-<CIT) IF (*-1 ORATIOOBLVERB BARRIER V-NOT-Par) ;
 SELECT (@CL-CIT>) IF (*1 ORATIOOBLVERB BARRIER V-NOT-Par) ;
-REMOVE (@X) ; # (fjerner alle doble.)
+#REMOVE (@X) ; # (fjerner alle doble.) Inkl. de korrekte, hvis der er fejl i programmet. Skal måske genindsættes på et senere tidspunkt
 
