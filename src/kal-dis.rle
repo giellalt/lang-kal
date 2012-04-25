@@ -1406,6 +1406,8 @@ REMOVE ("båndi") IF (0 ("bånd")) ;
 
 
 MAP:0000 (@PRED) TARGET VFIN ; #Et finit verbum er altid prædikat
+MAP:0001 (@PRED2) TARGET Par IF (@1 Interj)(NEGATE *0 VFIN); #Ved emfase og udbrud 
+
 MAP:0010 (@PRED) TARGET Inf + LU OR InfNeg + LU IF (1 VFIN) ;
 MAP:0020 (@PRED) TARGET Inf + LU OR InfNeg + LU IF (-1 VFIN) ;
 MAP:0030 (@PRED2) TARGET INTRANSVERB + Par + 3Pl IF (*-1 Abs + Pl)(NEGATE *0 ORATIOOBLVERB BARRIER VFIN)(1 Abs OR ("\,")); #koncessive saetninger uden konjunktion
@@ -1531,7 +1533,7 @@ ADD:0420 (@MIK-OBJ>) TARGET Ins IF (*1 HTR + V); #Ikke MAP fordi ogsaa ADVL> mul
 MAP:0430 (@i-MIK-OBJ>) TARGET Ins IF (1 HTR + vn - V) ; #20091106
 MAP:0439 (@SUBJ>) TARGET Rel + Sg IF (1 Rel LINK 1 POSSESSUM3 LINK *1 TRANSVERB + (3Sg) OR (4Sg) BARRIER POSSESSUM3) ; #Særtilfælde til 440 med en possessor-possessum mellem subjekt og verbum
 MAP:0440 (@SUBJ>) TARGET Rel + Sg IF (*1 TRANSVERB + (3Sg) OR (4Sg) BARRIER POSSESSUM3) ;
-MAP:0450 (@SUBJ>) TARGET Rel + Pl IF (*1 TRANSVERB + (3Pl) OR (4Pl) BARRIER POSSESSUM3) ;
+MAP:0450 (@SUBJ>) TARGET Rel + Pl IF (*1 TRANSVERB + (3Pl) OR (4Pl) BARRIER 3PlPoss) ;
 MAP:0460 (@SUBJ>) TARGET Abs + Sg IF (*1 INTRANSVERB + VERB-NOTINF + 3Sg OR INTRANSVERB + VERB-NOTINF + 4Sg BARRIER POSSESSUM3 OR TRANSVERB)(NEGATE -1 ("\(")) ; #TRANSVERB tilføjet for at forhindre tag på obj i: SUBJ OBJ TRANSVERB INTRANSVERB
 MAP:0461 (@SUBJ>) TARGET PersPron + Abs + 1Sg IF (*1 INTRANSVERB + VERB-NOTINF + 1Sg OR INTRANSVERB + VERB-NOTINF + 1Sg BARRIER POSSESSUM3 OR TRANSVERB)(NEGATE -1 ("\(")) ; #TRANSVERB tilføjet for at forhindre tag på obj i: SUBJ OBJ TRANSVERB INTRANSVERB
 MAP:0470 (@SUBJ>) TARGET Abs + Pl IF (*1 INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl BARRIER TRANSVERB + 3PlO) ; #så er det et objekt for TRANSVERB
@@ -1585,7 +1587,7 @@ MAP:0650 (@i-<ADVL) TARGET (Lok) + POSSESSUM3 IF (-2 vn - NAR)(-1 Rel)(NEGATE *1
 MAP:0660 (@i-<ADVL) TARGET (Lok) IF (0 LU)(-1 (Lok) + (@i-<ADVL)) ; #20091104
 
 MAP :670 (@i-ADVL>) TARGET (Lok) IF (1 vn - NAR BARRIER V)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Lok)(NEGATE 1 LU + (Lok)); #Kun Trm til vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse
-MAP:0680 (@i-ADVL>) TARGET (Abl) IF (1 vn - NAR BARRIER V)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Abl)(NEGATE 1 LU + (Abl)); #Kun Trm til vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse
+MAP:0680 (@i-ADVL>) TARGET (Abl) IF (1 vn - NAR BARRIER V)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Abl)(NEGATE 1 LU + (Abl))(NEGATE *1 PASSIV); #Kun Trm til vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse. Hvis PASSIV muligvis Agens
 MAP:0690 (@i-ADVL>) TARGET (Via) IF (1 vn - NAR BARRIER V)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Via )(NEGATE 1 LU + (Via)); #Kun Trm til vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse
 MAP:0700 (@i-ADVL>) TARGET (Aeq) IF (1 vn - NAR BARRIER V)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Aeq )(NEGATE 1 LU + (Aeq)); #Kun Trm til vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse
 MAP:0710 (@i-ADVL>) TARGET (Ins) IF (1 vn - NAR BARRIER V)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Ins )(NEGATE 1 LU + (Ins)); #20091109 
@@ -1648,6 +1650,7 @@ MAP:1010 (@ADVL>) TARGET Inf + 1Pl OR InfNeg + 1Pl IF (*1 VFIN + 1Pl);
 MAP:1020 (@<ADVL) TARGET Inf + 1Pl OR InfNeg + 1Pl IF (*-1 VFIN + 1Pl)(NEGATE 0 LU);
 MAP:1030 (@ADVL>) TARGET Inf + 2Pl OR InfNeg + 2Pl IF (*1 VFIN + 2Pl);
 MAP:1040 (@<ADVL) TARGET Inf + 2Pl OR InfNeg + 2Pl IF (*-1 VFIN + 2Pl)(NEGATE 0 LU);
+MAP:1049 (@ADVL>) TARGET INF + 4Pl IF (*1 Par + 3Pl)(NEGATE *0 VFIN); #i sætninger af PRED2-type
 MAP:1050 (@ADVL>) TARGET Inf + 4Pl OR InfNeg + 4Pl IF (*1 VFIN + 3Pl);
 MAP:1060 (@<ADVL) TARGET Inf + 4Pl OR InfNeg + 4Pl IF (*-1 VFIN + 3Pl)(NEGATE 0 LU);
 
@@ -2308,6 +2311,9 @@ SELECT Abs + Pl + @SUBJ> IF (-1C Abs + Pl + @SUBJ>)(1 INTRANSVERB + 3Pl OR INTRA
 
 SELECT PRON + Abs + 1Sg + @OBJ> IF (1* TRANSVERB + 1SgO) ; #kisima (Rel) vs. kisima (Abs)
 SELECT PRON + Rel + 4Pl IF (1* TRANSVERB + 3Pl) ; #tamaq (Rel) vs. tamaq (Abs)
+
+#en usikker disambiguering af Rel + Pl vs. Abs + Pl efter CAU hvis intet objekt til subjekt eller evt. hvis intet subjekt til objektet
+SELECT Rel + Pl IF (-1 Cau + 4Pl)(NEGATE *1 N + Pl)(*1 TRANSVERB + 3Pl) ;
 # ========================= #
 #     Final sektion         #
 # ========================= #
@@ -2373,6 +2379,7 @@ REMOVE ("paap") IF (0 ("paa"))(NEGATE *0 MATERIAL) ;
 REMOVE ("alliar") IF ( NEGATE *0 ("illeq") OR ("nateq")) ; # kun om nedstigning fra traditionel briks
 REMOVE ("allip") IF ( 0 NGAAR ) ;
 REMOVE ("saa") + VIK + GE ; #vælger saap+VIK+GE
+REMOVE ("saa") + Refl ; #fravælger 'bestrø hinanden' til fordel for 'henvende sig til hinanden'
 SELECT ("aasar") + LIR + TUQ ; #fravælger aa+TAQ+vn+LIR+nv+TUQ og aa+TAR=LIR+vv+TUQ
 SELECT ("pileri") + AFFINGERET IF (0 ("pileraaq")) ;
 # nv eller vv?
