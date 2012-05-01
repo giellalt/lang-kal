@@ -1741,7 +1741,7 @@ MAP:1521 (@ADVL>) TARGET PRON IF (-1 @ADVL>); #2.4. for bred og upraecis??
 MAP:1529 (@<OBJ) TARGET TAQ + Abs IF (*-1 @<OBJ LINK *1 KOMMA BARRIER V) ;
 	
 # Denne tag er for alle ord vi ikke har funktion til.
-MAP:1530 (@X) TARGET WORD ; #20100227 Tronds genindsaettelse
+#MAP:1530 (@X) TARGET WORD ; #20100227 Tronds genindsaettelse 20120501 Pers sletning for anden gang
 
 # ================== #
 # ================== #
@@ -2314,6 +2314,9 @@ SELECT PRON + Rel + 4Pl IF (1* TRANSVERB + 3Pl) ; #tamaq (Rel) vs. tamaq (Abs)
 
 #en usikker disambiguering af Rel + Pl vs. Abs + Pl efter CAU hvis intet objekt til subjekt eller evt. hvis intet subjekt til objektet
 SELECT Rel + Pl IF (-1 Cau + 4Pl)(NEGATE *1 N + Pl)(*1 TRANSVERB + 3Pl) ;
+
+#nok en usikker regel. Disambiguerer 3SgO fra 3PlO når der ikke findes et eksplicit objekt.
+SELECT 3SgO IF (NEGATE *-1 Abs + Pl + @OBJ> BARRIER V )(*-1 Rel + Pl + @SUBJ> BARRIER V) ;
 # ========================= #
 #     Final sektion         #
 # ========================= #
@@ -2337,10 +2340,10 @@ SELECT:Se_illuNot_illoq ("illu") ; # "illu" mere sandsynlig end "illoq"
 SELECT:Se_ataata ("ataata") ; # mere sandsynlig end "ataataq"
 SELECT:Se_qaliaq ("qaliaq") ; # ad hoc for at forebygge 'hårbåndet' qaleq
 SELECT:Se_ila ("ila") + Pl IF (NEGATE -1**< ("ilaaq")); # 'toejlapper' sjaeldne medens partitiv hyppig
-SELECT:Se_alla ("alla") IF (0 NNGUR + GIARTUR); #ringe sandsynlighed for 'allak' og 'allaq'
+SELECT:Se_alla ("alla") IF (0 NNGUR); #ringe sandsynlighed for 'allak' og 'allaq'
 REMOVE ("allaq") IF (0 ("alla"))(NEGATE *0 animalverb); #
 REMOVE ("allak") + U + NNGIT IF (*1 (@<CL-CIT)) ; #så er det allaanngilaq ... der er på spil
-SELECT:Se_nali ("nali") IF (0 AFFINGERET); #nali+LIR sandsynlig, nalik+LIR usandsynlig
+REMOVE ("nalik") IF ( 0 ("nali") + AFFINGERET ) ; #nali+LIR sandsynlig, nalik+LIR usandsynlig
 SELECT TIME + Lok IF (-1 BOS); #'aasaq' for 'aa+TAQ'
 REMOVE ("mannguk") IF (0 ("manngoq"))(0 POSSESSUM); #'roden' snarere end 'tøvejret' naar possessum
 REMOVE ("ilut") IF (NEGATE 0 GE OR POSSESSUM OR QAR OR LIK) ; #næppe 'jævnaldrende', snarere spatial 'iluk' 
@@ -2349,6 +2352,7 @@ REMOVE ("isikkoq") IF (0 ("isikku")) ; #20091113 - standard foer dialektisme
 REMOVE ("iluk") + LIAQ IF (0 ("iluliaq")); # 20091113
 REMOVE ("iloq") (NEGATE *0 ("igalaaq")); # 'iloq' vs. 'iluk'
 REMOVE ("isa") + POSSESSUM ; #20091115 hvis nogens, er det nok 'isi'
+REMOVE ("paaq") + GE IF ( 0 ("paaraa")) ; #det er næppe en skallesluger/ sod/ munding, der haves
 
 # Nomen eller partikel?
 SELECT ("aamma") ; # "aamma" mere sandsynlig end "aak"+Rel
@@ -2387,6 +2391,7 @@ REMOVE ("pi") + nv IF (0 ("pi") + vv); # vaelger pi+LIR=TIP frem for pi+LIR+TIP
 SELECT ("pi") + nn ; # ad hoc for at disambiguere pi+nn fra pi+vn
 REMOVE ("pup") + LAAR IF (0 ("pulaar")) ; 
 REMOVE ("pulaa") IF (0 ("pulaar")) ; #ad hoc. Hvad betyder 'pulaavoq'??
+REMOVE ("nalup") + TRANSVERB IF (0 ("nalu") + NNGIT) ; #dækker nok for bredt
 
 # Enkelte derivativer
 REMOVE NIRU IF (0 TIME) ; #20091109 "tallimanngor" NIRU
