@@ -15,19 +15,19 @@
 ## You should have received a copy of the GNU General Public License
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-GT_LEXC_ROOT=definitions.lexc
+GT_LEXC_ROOT=root.lexc
 GT_LEXC_SRCS=\
-			 lexical-data/abbr.lexc \
-			 lexical-data/acro.lexc \
-			 lexical-data/nouns.lexc \
-			 lexical-data/numerals.lexc \
-			 lexical-data/particles.lexc \
-			 lexical-data/pronouns.lexc \
-			 lexical-data/proper.lexc \
-			 lexical-data/punctuation.lexc \
-			 lexical-data/verbs.lexc \
-			 inflection/derivations.lexc \
-			 inflection/proper.lexc
+			 stems/abbr.lexc \
+			 stems/acro.lexc \
+			 stems/nouns.lexc \
+			 stems/numerals.lexc \
+			 stems/particles.lexc \
+			 stems/pronouns.lexc \
+			 stems/proper.lexc \
+			 stems/punctuation.lexc \
+			 stems/verbs.lexc \
+			 affixes/derivations.lexc \
+			 affixes/proper.lexc
 
 include $(top_srcdir)/am-shared/lexc-include.am
 
