@@ -2,6 +2,7 @@
 ## Copyright: Sámediggi/Divvun/UiT
 ## Licence: GPL v3+
 
-GT_UPPERCASINGS=inituppercase.regex
+# set this to names of available upper casing rules in regex and xfst format
+GT_UPPERCASINGS=inituppercase.regex allcaps.xfstscript
 
 include $(top_srcdir)/am-shared/uppercase-include.am

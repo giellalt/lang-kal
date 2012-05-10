@@ -15,7 +15,9 @@
 ## You should have received a copy of the GNU General Public License
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# Set this to name of lexc file containing Multichar_Symbols and LEXICON Root
 GT_LEXC_ROOT=root.lexc
+# Set this to names of all other lexc files
 GT_LEXC_SRCS=\
 			 stems/abbr.lexc \
 			 stems/acro.lexc \

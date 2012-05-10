@@ -2,7 +2,7 @@
 ## Copyright: Sámediggi/Divvun/UiT
 ## Licence: GPL v3+
 
-# e.g. install as-is
+# Install these files:
 doc_DATA=danfreq.txt index.xml korpustags.kal.txt lex.xml \
 		 morph.html paradigm.kal.txt site-frag.xml tabs-frag.xml
 
