@@ -15,10 +15,9 @@
 ## You should have received a copy of the GNU General Public License
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-kal.twolc: kal.twolc.m4
+kal-phon.twolc: kal.twolc.m4
 	$(M4) -DNORAISE -DBASE $< > $@
 
-include $(top_srcdir)/am-shared/twolc-include.am
+include $(top_srcdir)/am-shared/phonology-include.am
 
 # vim: set ft=automake:
