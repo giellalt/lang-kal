@@ -1182,6 +1182,11 @@ REMOVE Prop + Attr IF (0 Prop + Sg)(-1 N + Sg)(1 N + Sg + LU)(*1 VFIN + 3Pl BARR
 #Vælg Indikativ verbum, hvis eneste finitte. NIR undtaget, da ofte fejl for NIQ plus noget
 SELECT Ind IF (NEGATE *0 VFIN)(NEGATE 0 NIR) ;
 
+# Vælg Interj hvis fulgt af '?' eller efter foregående Imp
+SELECT:0040 ("aat") IF (1 ("?"));
+SELECT:0041 ("aat") IF (-*1C Imp);
+
+
 ###################################
 # Frequent and safe rules - nouns #
 ###################################
@@ -1993,8 +1998,8 @@ REMOVE Opt IF (*0C Ind) ;
 REMOVE Int IF (*0C Ind) ;
 #REMOVE:ReImpIfInd Imp IF (*0C Ind) ; #Flyttes meget tidligt 3.4.
 REMOVE Imp IF (-1 Ind)(0 LU); #2.4. da ReImpIfInd ikke finder 'Amerlanerit ipiitsuinnaanngivipput ILAASALU ikusii .. ' 
-SELECT NIQAR + V IF (-*1 @SUBJ> + Abs) ; #Disambiguerer NIQAR fra NIQ efterfulgt af QAR. BARRIER af hensyn til muligheden 
-SELECT NIQAR + V IF (-*1 Abs BARRIER TRANSVERB) ; #Disambiguerer NIQAR fra NIQ efterfulgt af QAR. BARRIER af hensyn til muligheden af at Abs er objekt for et transitivt verbum
+SELECT:1500 NIQAR + V IF (-*1 @SUBJ> + Abs) ; #Disambiguerer NIQAR fra NIQ efterfulgt af QAR.
+SELECT:1501 NIQAR + V IF (-*1 Abs BARRIER TRANSVERB) ; #Disambiguerer NIQAR fra NIQ efterfulgt af QAR. BARRIER af hensyn til muligheden af at Abs er objekt for et transitivt verbum
 
 #Adverbale ledsagemaader til hovedverbet enkeltvis for bedre at kunne styre dem
 SELECT Inf + Refl IF (-1 ("immi")) ;
@@ -2462,6 +2467,7 @@ REMOVE:5501 ("taa") + vn OR ("taa") + INTRANSVERB IF (NEGATE -1 ("immi"))(0 ("ta
 SELECT:5502 ("siner") IF (*-1 sinerOBJ + @OBJ>) ; 
 REMOVE:5503 ("siner") IF (0 ("sinip"))(NEGATE *0 sinerOBJ + @OBJ> OR @ADVL>);
 REMOVE:5504 ("ajor") + ALLAP IF (0 ("ajuar") + LLAP) ;
+REMOVE:5505 ("akip") IF (0 ("aki")) ;
 
 # Enkelte derivativer
 REMOVE NIRU IF (0 TIME) ; #20091109 "tallimanngor" NIRU
@@ -2494,6 +2500,9 @@ REMOVE ("qasu") + NGA IF (0 ("qasup") + NGA) ;
 REMOVE:5550 PAK + LUP IF (0 PALUP) ;
 REMOVE:5551 ("qiteq") + QATE IF (0 ("qitip")) ;
 REMOVE:5552 ("niviaq") + SIAQ IF (0 ("niviarsiaq"));
+REMOVE:5553 NIQ + QAR IF (0 NIQAR); #Sen regel udelukkende ud fra sandsynlighed
+REMOVE:5554 ("oqaq") + LUP IF (0 ("oqalup"));
+REMOVE:5555 ("oqalup") + TUQ IF (0 ("oqaluttuup"));
 
 # Enkelte substantiver
 REMOVE ("pineq") IF (NEGATE *0 ("kamik")) ; #20091103 pineq+QAR vs. pineqar-
@@ -2513,6 +2522,7 @@ REMOVE ("massak") IF (NEGATE *0 ("nappar") OR ("eqqor")) ; #vælg massakkut frem
 REMOVE ("aasaq") + LIR + nv IF (0 ("aasar") + LIR + vv) ; #vanskeligt at forestille sig Subj. for aasalerpaa
 REMOVE ("torlor") + LAAR IF ( 0 ("torlulaar")) ; #er næsten helt sikkert "tordlulaorpoq" og ikke 'råbe lidt'
 REMOVE ("soraarut") IF ( 0 ("soraarummeer")) ;
+REMOVE:5750 ("qaak") + POSSESSUM IF (0 ("qaaq") + POSSESSUM); #ikke morgenlys, men nogets overflade eller nogens pande
 
 # Ugedagene
 REMOVE ("ataaseq") + NNGUR + NIRU IF (0 ("ataaseq") + NNGUR + NIQ + U) ;
