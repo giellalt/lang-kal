@@ -27,7 +27,7 @@ for f in  .xfst .hfst; do
 		echo "Hfst test"
 	fi
 	if [ -f "${srcdir}/../../src/generator.gt$f" ]; then
-		$transducer_found=1
+		let "transducer_found += 1"
 		sed 's/$/+N+Sg+Nom/' nouns.txt | \
 				$lookuptool ${srcdir}/../../src/generator.gt$f \
 				> gen-nouns$f.txt
