@@ -75,6 +75,7 @@ LIST IndefPron = IndefPron ;
 LIST DivPron = DivPron ;
 LIST PersPron = PersPron ;
 LIST ReflPron = ReflPron ;
+LIST DemInterj = DemInterj ;
 LIST Adj = Adj ;
 LIST Adv = Adv ;
 LIST Prop = Prop ;
@@ -1182,7 +1183,7 @@ REMOVE Prop + Attr IF (0 Prop + Sg)(-1 N + Sg)(*1 VFIN + 3Sg BARRIER KOMMA);
 REMOVE Prop + Attr IF (0 Prop + Sg)(-1 N + Sg)(1 N + Sg + LU)(*1 VFIN + 3Pl BARRIER KOMMA) ;
 
 #Vælg Indikativ verbum, hvis eneste finitte. NIR undtaget, da ofte fejl for NIQ plus noget
-SELECT Ind IF (NEGATE *0 VFIN)(NEGATE 0 NIR) ;
+SELECT Ind IF (NEGATE *0 VFIN BARRIER LU OR LI OR KOMMA)(NEGATE 0 NIR) ;
 
 # Vælg Interj hvis fulgt af '?' eller efter foregående Imp
 SELECT:0040 ("aat") IF (1 ("?"));
@@ -1338,6 +1339,8 @@ SELECT part IF (-1 BOS);
 SELECT part + ("aamma")
 
 SELECT ("soorlu") IF (*1 Par OR Inf OR InfNeg BARRIER V ) ;
+
+REMOVE:650 ("una") + DemInterj	IF (0 ("tassa") + Interj) ;
 
 ########################
 # Frequent and safe rules - pronouns #
@@ -1502,7 +1505,7 @@ MAP:0070 (@CONJ) TARGET KONJUNKTION IF (-1 BOS OR ("\,")) ; #Flyttet fra 1168 fo
 MAP:0071 (@CONJ) TARGET ("aamma") + LU; #vistnok undtagelsesløs
 MAP:0080 (@CL-<ADVL) TARGET KONJUNKTION IF (1 EOS)(NEGATE -1 BOS) ; #Sidste betingelse for at undgaa at tagge isolerede konjunktioner
 MAP:0090 (@HEADLINE) TARGET KONJUNKTION IF (1 EOS)(-1 BOS) ; #Sidste betingelse for at undgaa at tagge isolerede konjunktioner
-MAP:0100 (@FOC) TARGET FOKUSPART + (part) IF (NEGATE *0 V) ;
+MAP:0100 (@FOC) TARGET FOKUSPART + (part) IF (NEGATE *0 VFIN) ;
 MAP:0110 (@CONJ) TARGET ("tassa") + part IF (-*1 V OR vn)(*1 V OR vn OR Prop OR ("\:")) ; #"tassa" brugt foer forklarende hovedsaetning eller i consekutiv bisaetning
 MAP:0120 (@i-ADVL>) TARGET (part) IF (1 N + @<SUBJ) ;
 MAP:0130 (@ADVL>) TARGET part IF (0 LU)(-1 N)(1 N);
@@ -2274,7 +2277,7 @@ SELECT ("ilaanneeriar") IF (0 Inf);
 #Infinitiver, der vikarierer for VFIN
 
 	# Eit sikkert VFIN til venstre utelukker VFIN til høgre
-REMOVE VFIN IF (*-1C VFIN)(NEGATE 0 LU); 
+#REMOVE VFIN IF (*-1C VFIN)(NEGATE 0 LU); #Forkert 20120912 
 
 	# Unik VFIN
 REMOVE VFIN IF (*1C VFIN LINK NOT 0 LU); 
@@ -2482,6 +2485,7 @@ REMOVE:5508 ("isip") IF (0 ("iser"))(NEGATE *-1 ("imaq") OR ("taseq")) ;
 REMOVE:5509 ("ila") + SSIP IF (0 ("ilassi")) ;
 REMOVE:5510 ("torersaar") IF (0 ("torer") + SAR + HTR) ;
 REMOVE:5511 NIAQ + LIR IF (0 NIAR + LIR) ;
+SELECT:5512 ("iki") IF (0 ("ikip"))(-1 Trm); # lægge mut, men antænde mik
 
 # Enkelte derivativer
 REMOVE NIRU IF (0 TIME) ; #20091109 "tallimanngor" NIRU
@@ -2517,6 +2521,7 @@ REMOVE:5552 ("niviaq") + SIAQ IF (0 ("niviarsiaq"));
 REMOVE:5553 NIQ + QAR IF (0 NIQAR); #Sen regel udelukkende ud fra sandsynlighed
 REMOVE:5554 ("oqaq") + LUP IF (0 ("oqalup"));
 REMOVE:5555 ("oqalup") + TUQ IF (0 ("oqaluttuup"));
+REMOVE:5556 TAR + RIAQ + QAR IF (0 TARIAQAR) ;
 
 # Enkelte substantiver
 REMOVE ("pineq") IF (NEGATE *0 ("kamik")) ; #20091103 pineq+QAR vs. pineqar-
@@ -2563,7 +2568,7 @@ SELECT Via - POSSESSUM IF (NEGATE -1 Rel);
 #"qaaq" N Via Sg 3PlPoss @i-ADVL> eller "qaaq" N Via Pl @i-ADVL>
 
 # Possessum singularis eller pluralis?
-SELECT Sg IF (0 POSSESSUM);
+#SELECT Sg IF (0 POSSESSUM); #Laver masser af fejl. Skal nuformuleres
 
 # Possessor singularis eller pluralis?
 REMOVE 3PlPoss IF (-*1 @POSS> + 3SgPoss BARRIER 3PlPoss)(0 3SgPoss); #vælg sing. possessor hvis sing til venstre
