@@ -1,0 +1,94 @@
+! =========================================== !
+! Orthographic converter for West Greenlandic !
+! =========================================== !
+
+! This program translates text written in the Kleinschmidt orthography
+! into the modern Greenlandic orthography.
+
+echo <<defining Cns and Vow...>>
+
+define vow  [ a | e | i | o | u |   
+              á | é | í | ó | ú | à | è | ì | ò | ù | 
+              ä | ë | ï | ö | ü | â | ê | î | ô | û | 
+              ã | ẽ | ĩ | õ | ũ | y | ý | æ | ø | å ] ;
+define WOW  [ A | E | I | O | U |  
+              Á | É | Í | Ó | Ú | À | È | Ì | Ò | Ù | 
+              Ä | Ë | Ï | Ö | Ü | Â | Ê | Î | Ô | Û | 
+              Ã | Ẽ | Ĩ | Õ | Ũ | Y | Ý | Æ | Ø | Å ] ;
+
+define Vow [ vow | WOW ] ;
+
+define KalVow [ a | e | i | o | u | A | E | I | O | U ] ;
+
+define ForVow [ Vow - KalVow ] ;
+
+define LongVow [ a a | A a | A A | e e | E e | E E | i i | I i | I I |
+                 o o | O o | O O | u u | U u | U U | a i | A i | A I ] ;
+
+define cns [ b | c | č | d | đ | ð | f | g | h | j | k | l | m | n | ŋ | 
+             ñ | p | q | r | s | š | t | ŧ | v | w | x | z | ž ] ;   
+define CNS [ B | C | Č | D | Đ | Ð | F | G | H | J | K | L | M | N | Ŋ | 
+             Ñ | P | Q | R | S | Š | T | Ŧ | V | W | X | Z | Ž | ĸ | K’ ] ; 
+
+define Cns [ cns | CNS ] ;
+             
+define S [ S | s ] ; 
+
+define Cnss [ Cns - S ] ;
+define SGM [ CNS | VOW ] ;
+define Sgm [ Cns | Vow ] ;
+define sgm [ cns | vow ] ;
+
+echo << Rules>>
+
+define nalunaaqutaq  r ĸ -> q || a l u n a e _ u t ;
+define kra       ĸ -> q , K’ -> Q ;
+define sloppykra K -> q || Sgm _ ; 
+! eventually K -> Q || [ .#. | SGM ] _ ,, K -> q || [ .#. SGM | sgm ] _ ;
+define ssRule  s s -> s || Vow _ Vow ;
+define v0        v -> 0 || u _ Vow ;
+define finalvowR  e -> i , ê -> î , o -> u ,  ô -> û || _ .#. ;
+define longutilde û -> u u ;
+define longvowR   â -> a a , ê -> e e , î -> i i , ô -> o o ;
+define longcns f -> f f , g -> g g , k -> k k , l -> l l , m -> m m , 
+               n -> n n , p -> p p , q -> q q , r -> r r , t -> t t , s -> s s
+            || [ [á|é|í|ó|ú]|[á[i|u]]|ã|ẽ|ĩ|õ|ũ] _ ; ! all vow ~ 
+define deacc á -> a   , é -> e   , í -> i   , ó -> o   , ú -> u ,
+             ã -> a a , ẽ -> e e , ĩ -> i i , õ -> o o , ũ -> u u ; ! all V
+define aaj       i -> j || a _ a ;
+define aiau      i -> a , u -> a , e -> a , o -> a || a _ Sgm ;
+define 2cnsi     v t -> t s , g t -> t s , t t -> t s || Vow _ [ i | e [r|q]] ; 
+define 3cnsassim [g|v|t] d l -> l l , n g m -> m m , [ v | g n ] n -> n n , 
+                 v n g -> n n g ,  [v|g] s s -> s s , r d l -> r l || Vow _ Vow ;
+define 2cnsassim v g -> g g , v k -> k k , v n -> n n , v q -> q q , v s -> s s , 
+                 v t -> t t , v f -> f f , 
+                 g k -> k k , g p -> p p , g s -> s s , g t -> t t , g f -> f f ,
+                 r q -> q q ; 
+define rss       r s s -> r s ;       
+define uveuvi    v -> 0 || u _ [e|i] ; 
+define suj       u j -> i || .#. s _ ;
+define ngn       n g n -> n n || Vow _ Vow ; ! agdlangneĸ
+
+echo << Combining >>
+
+read regex [ nalunaaqutaq
+.o. kra
+.o. sloppykra
+.o. ssRule
+.o. v0
+.o. finalvowR
+.o. longutilde
+.o. longvowR
+.o. longcns
+.o. deacc
+.o. aaj
+.o. aiau
+.o. 2cnsi
+.o. 3cnsassim
+.o. 2cnsassim
+.o. rss
+.o. uveuvi
+.o. suj
+.o. ngn ] ;
+
+invert net ;
