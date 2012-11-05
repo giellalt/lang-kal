@@ -94,6 +94,10 @@ gt_PROG_XFST
 # Tests and sets up vislcg3
 gt_PROG_VISLCG3
 
+# Tests and sets up XML to lexc conversion
+gt_PROG_SAXON
+
+
 # List all non-script files processed by Autoconf.
 AC_CONFIG_FILES([Makefile \
                  src/Makefile \
