@@ -20,11 +20,8 @@
 #! @param GT_TWOLC_MAIN required, the source of phonology
 #! @param GT_TWOLC_SUPPLEMENTS optional, other sources to distribute and
 #! 		  compile for other things
-GT_PHONOLOGY_MAIN=$(GTLANG)-phon.twolc
+GT_PHONOLOGY_MAIN=$(GTLANG)-phon.xfscript
 GT_PHONOLOGY_SUPPLEMENTS=
-
-kal-phon.twolc: kal.twolc.m4
-	$(M4) -DNORAISE -DBASE $< > $@
 
 include $(top_srcdir)/am-shared/phonology-include.am
 
