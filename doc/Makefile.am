@@ -14,8 +14,11 @@
 
 if CAN_DOCC
 
-JSP_PAGES=root-morphology.jspwiki
-# clitics-morphology.jspwiki       \
+JSP_PAGES=root-morphology.jspwiki \
+		  derivations-inflections-affixes.jspwiki            \
+		  numerals-affixes.jspwiki            \
+		  propernouns-affixes.jspwiki      \
+		  nouns-stems.jspwiki
 # compounding-morphology.jspwiki   \
 # abbreviations-stems.jspwiki      \
 # acronyms-stems.jspwiki           \
@@ -26,7 +29,6 @@ JSP_PAGES=root-morphology.jspwiki
 # conjunctions-stems.jspwiki       \
 # interjections-stems.jspwiki      \
 # nouns-oahpa-stems.jspwiki        \
-# nouns-stems.jspwiki              \
 # numerals-stems.jspwiki           \
 # particles-stems.jspwiki          \
 # pronouns-stems.jspwiki           \
@@ -37,10 +39,7 @@ JSP_PAGES=root-morphology.jspwiki
 # verbs-stems.jspwiki              \
 # adjectives-oahpa-affixes.jspwiki \
 # adjectives-affixes.jspwiki       \
-# nouns-affixes.jspwiki            \
-# propernouns-affixes.jspwiki      \
 # verbs-affixes.jspwiki
-
 ALLINONE_JSP_PAGE=$(GTLANG).jspwiki
 
 LINKS=Links.jspwiki
