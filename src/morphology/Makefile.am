@@ -20,7 +20,7 @@ GT_LEXC_ROOT=root.lexc
 
 # Set this to the names of all other source lexc files
 GT_LEXC_SRCS=\
-			 stems/abbr.lexc        \
+			 stems/abbreviations.lexc \
 			 stems/acro.lexc        \
 			 stems/nouns.lexc       \
 			 stems/numerals.lexc    \
