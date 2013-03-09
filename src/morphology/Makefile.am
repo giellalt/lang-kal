@@ -20,15 +20,15 @@ GT_LEXC_ROOT=root.lexc
 
 # Set this to the names of all other source lexc files
 GT_LEXC_SRCS=\
-			 stems/abbreviations.lexc \
-			 stems/acro.lexc        \
-			 stems/nouns.lexc       \
-			 stems/numerals.lexc    \
-			 stems/particles.lexc   \
-			 stems/pronouns.lexc    \
-			 stems/propernouns.lexc \
-			 stems/punctuation.lexc \
-			 stems/verbs.lexc       \
+			 stems/abbreviations.lexc             \
+			 stems/acronyms.lexc                  \
+			 stems/nouns.lexc                     \
+			 stems/numerals.lexc                  \
+			 stems/particles.lexc                 \
+			 stems/pronouns.lexc                  \
+			 stems/propernouns.lexc               \
+			 stems/punctuation.lexc               \
+			 stems/verbs.lexc                     \
 			 affixes/derivations-inflections.lexc \
 			 affixes/numerals.lexc                \
 			 affixes/propernouns.lexc
