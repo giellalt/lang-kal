@@ -15,9 +15,9 @@
 if CAN_DOCC
 
 JSP_PAGES=root-morphology.jspwiki \
-		  derivations-inflections-affixes.jspwiki            \
-		  numerals-affixes.jspwiki            \
-		  propernouns-affixes.jspwiki      \
+		  derivations-inflections-affixes.jspwiki \
+		  numerals-affixes.jspwiki \
+		  propernouns-affixes.jspwiki \
 		  nouns-stems.jspwiki
 # compounding-morphology.jspwiki   \
 # abbreviations-stems.jspwiki      \
