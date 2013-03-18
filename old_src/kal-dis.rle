@@ -47,7 +47,8 @@
 # Delimiters #
 # ========== #
 
-DELIMITERS = "<.>" "<!>" "<?>" "<:>" "<...>" "<\;>" "<¶>" "<!><\">" ; #tilføjet semikolon den 6.4.
+DELIMITERS = "<.>" "<!>" "<?>" "<:>" "<...>" "<\;>" "<¶>"  ; #tilføjet semikolon den 6.4.
+
 
 # ========= #
 # Tags and sets #
@@ -1178,6 +1179,8 @@ SET @ALLMIK-OBJ = @MIK-OBJ> OR @i-MIK-OBJ> ;
 # ============ #
 
 BEFORE-SECTIONS
+
+DELIMIT ("<">") IF (-1W _S_DELIMITERS_) ; #virker tilsyneladende ikke
 
 #####################################
 # Cleaning special constructions that complicate the rest #
@@ -2388,6 +2391,7 @@ SELECT Abs + Pl + @SUBJ> IF (-1C Abs + Pl + @SUBJ>)(1 INTRANSVERB + 3Pl OR INTRA
 SELECT PRON + Abs + 1Sg + @OBJ> IF (1* TRANSVERB + 1SgO) ; #kisima (Rel) vs. kisima (Abs)
 SELECT PRON + Rel + 4Pl IF (1* TRANSVERB + 3Pl) ; #tamaq (Rel) vs. tamaq (Abs)
 
+SELECT 3SgPoss IF (<*-1 @PRED + 3Sg)(-1 BOS) ; #Vælger 3SgPoss hen over sætningsgrænse
 
 #en usikker disambiguering af Rel + Pl vs. Abs + Pl efter CAU hvis intet objekt til subjekt eller evt. hvis intet subjekt til objektet
 SELECT Rel + Pl IF (-1 Cau + 4Pl)(NEGATE *1 N + Pl)(*1 TRANSVERB + 3Pl) ;
@@ -2510,6 +2514,12 @@ REMOVE:5518 NIQ + KUQ IF (0 NIKUU) ;
 REMOVE:5519 ("paap") + TIP IF (0 ("paasi")) ;
 REMOVE:5520 ("paat") + LIR IF (0 ("paasi")) ;
 REMOVE:5521 ("ingerlap") + VIK IF (0 ("ingerla") + VIK) ;
+REMOVE:5522 ("simip") IF (*0 ("ameq"))(0 ("simer")) ;
+REMOVE:5523 ("ip") + QQAAR IF (0 ("eqqaa")); 
+SELECT:5524 ("kipissaa") IF (0 ("kipi") ) ;
+SELECT:5525 ("takussaa") IF (0 ("taku")) ;
+SELECT:5526 ("eqqaa") + SSA + NNGIT IF (0 Par + 4Sg) ;
+REMOVE:5527  ("tusar") + USAR IF (0 ( "tusaa") + TAR) ;
 
 # Enkelte derivativer
 REMOVE NIRU IF (0 TIME) ; #20091109 "tallimanngor" NIRU
