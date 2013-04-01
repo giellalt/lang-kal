@@ -47,7 +47,8 @@
 # Delimiters #
 # ========== #
 
-DELIMITERS = "<.>" "<!>" "<?>" "<:>" "<...>" "<\;>" "<¶>" "<!><\">" ; #tilføjet semikolon den 6.4.
+DELIMITERS = "<.>" "<!>" "<?>" "<:>" "<...>" "<\;>" "<¶>"  ; #tilføjet semikolon den 6.4.
+
 
 # ========= #
 # Tags and sets #
@@ -1179,6 +1180,8 @@ SET @ALLMIK-OBJ = @MIK-OBJ> OR @i-MIK-OBJ> ;
 
 BEFORE-SECTIONS
 
+DELIMIT ("<">") IF (-1W _S_DELIMITERS_) ; #virker tilsyneladende ikke
+
 #####################################
 # Cleaning special constructions that complicate the rest #
 #####################################
@@ -2053,8 +2056,8 @@ SELECT Ind + INTRANSVERB + 3Pl IF (-*1 Abs + Pl LINK NEGATE -*1 Rel + Pl BARRIER
 SELECT:ImpUdenIndInt Imp IF (NEGATE *0 Ind OR Int);
 
 #Nominernes SELECT og REMOVE
-SELECT SPATIAL + (Sg) IF (0 POSSESSUM)(NEGATE 0 ("ati") + TAQ) ; #2.4. hitter paa ati + TAQ
-REMOVE SPATIAL + LIR ; #20120422 vist altid forkert analyse af et verbum
+SELECT SPATIAL + (Sg) IF (0 POSSESSUM)(NEGATE 0 ("ati") + TAQ)(NEGATE 0 ("ataata")) ; #2.4. hitter paa ati + TAQ og på "ataata"
+REMOVE SPATIAL + LIR ; #20120422 vqist altid forkert analyse af et verbum
 REMOVE SPATIAL IF (0 QAR) ; #Forstår ikke reglen 20120422
 SELECT Prop IF (NEGATE -1 BOS);
 
@@ -2340,6 +2343,8 @@ SELECT 3PlO IF (*-1C (Pl @OBJ>))(*-1 @SUBJ>) ;
 # ========================= #
          CONSTRAINTS        #
 # ========================= #
+SELECT ("su") + SSA + Cau + 2Sg IF (1 ("?"))(-1 BOS); #
+
 SELECT 3SgO IF (*1 @CL-<CIT) ; #Vælg inquit med Sg frem for Pl
 SELECT 3SgO IF (*-1 @CL-CIT>) ; #Vælg inquit med Sg frem for Pl
 
@@ -2388,6 +2393,7 @@ SELECT Abs + Pl + @SUBJ> IF (-1C Abs + Pl + @SUBJ>)(1 INTRANSVERB + 3Pl OR INTRA
 SELECT PRON + Abs + 1Sg + @OBJ> IF (1* TRANSVERB + 1SgO) ; #kisima (Rel) vs. kisima (Abs)
 SELECT PRON + Rel + 4Pl IF (1* TRANSVERB + 3Pl) ; #tamaq (Rel) vs. tamaq (Abs)
 
+SELECT 3SgPoss IF (<*-1 @PRED + 3Sg)(-1 BOS) ; #Vælger 3SgPoss hen over sætningsgrænse
 
 #en usikker disambiguering af Rel + Pl vs. Abs + Pl efter CAU hvis intet objekt til subjekt eller evt. hvis intet subjekt til objektet
 SELECT Rel + Pl IF (-1 Cau + 4Pl)(NEGATE *1 N + Pl)(*1 TRANSVERB + 3Pl) ;
@@ -2510,6 +2516,13 @@ REMOVE:5518 NIQ + KUQ IF (0 NIKUU) ;
 REMOVE:5519 ("paap") + TIP IF (0 ("paasi")) ;
 REMOVE:5520 ("paat") + LIR IF (0 ("paasi")) ;
 REMOVE:5521 ("ingerlap") + VIK IF (0 ("ingerla") + VIK) ;
+REMOVE:5522 ("simip") IF (*0 ("ameq"))(0 ("simer")) ;
+REMOVE:5523 ("ip") + QQAAR IF (0 ("eqqaa")); 
+SELECT:5524 ("kipissaa") IF (0 ("kipi") ) ;
+SELECT:5525 ("takussaa") IF (0 ("taku")) ;
+SELECT:5526 ("eqqaa") + SSA + NNGIT IF (0 Par + 4Sg) ;
+REMOVE:5527  ("tusar") + USAR IF (0 ( "tusaa") + TAR) ;
+REMOVE:5528 ("mikigar") + LLAR IF (0 ("miki") + GALLAR ) ;
 
 # Enkelte derivativer
 REMOVE NIRU IF (0 TIME) ; #20091109 "tallimanngor" NIRU
@@ -2520,7 +2533,7 @@ REMOVE HTR + NAR; #naeppe en mulig kombination
 REMOVE SSAQ + LIUR IF (0 HUMAN) ; #'ilassiorpoq' ikke 'ila+SSAQ=LIUR'
 REMOVE VIP IF (0 IntransTrans); #HTR mest sandsynlig
 REMOVE NIQ + U IF (0 NIRU + TIP); # nuannernerulersittarpai
-REMOVE NIQ + U IF (0 NIRU + TUQ); # 17.4. Ad hoc og alt for bred. Maa indsnævres når der viser sig eksempler
+REMOVE NIQ + U IF (0 NIRU ); # 17.4. Ad hoc og alt for bred. Maa indsnævres når der viser sig eksempler
 REMOVE ("niver" NGA) IF (*-1 Abs - HUMAN) ; # kun mennesker niver+NGA. Ting nivinga
 REMOVE SSAQ + IR + NNGIT IF ( 0 SSAQ + U + NNGIT) ; #20091108
 REMOVE ("paatsivik") + IRUP IF ( 0 ("paatsiveerup")) ; # 20091108
