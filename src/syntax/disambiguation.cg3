@@ -1055,7 +1055,7 @@ SET HUMAN = FAM OR NAME OR TITEL OR ORGANISATION OR HUM;
 
 # TEMPLATES
 # ==========
-Template NexusHøjre =  (*1 Abs LINK *1 INTRANSVERB) OR (*1 Rel LINK *1 TRANSVERB) ;
+Template NexusHøjre =  (*1 Abs LINK *1 INTRANSVERB) OR (*1 Rel LINK *1 TRANSVERB) OR (*1 Abs + Sg LINK *1 TRANSVERB + 3SgO) OR (*1 Abs + Pl LINK *1 TRANSVERB + 3PlO) ; #3. og 4. OR på grund af transitiv med implicit subjekt
 Template NexusVenstre =  (-*1 Abs LINK *1 INTRANSVERB) OR (-*1 Rel LINK *1 TRANSVERB) ;
 
 # Tags
@@ -1353,7 +1353,10 @@ SELECT part + ("aamma")
 
 SELECT ("soorlu") IF (*1 Par OR Inf OR InfNeg BARRIER V ) ;
 
-REMOVE:650 ("una") + DemInterj	IF (0 ("tassa") + Interj) ;
+REMOVE:048 ("una") + DemInterj	IF (0 ("tassa") + Interj) ;
+
+#Template NexusHøjre =  (*1 Abs LINK *1 INTRANSVERB) OR (*1 Rel LINK *1 TRANSVERB) OR (*1 Abs + Sg LINK *1 TRANSVERB + 3SgO) OR (*1 Abs + Pl LINK *1 TRANSVERB + 3PlO) ; 
+REMOVE:049 ("tassa") + Interj IF (T:NexusHøjre); #Vælger noget adverbielt eller verbalt hvis nexus til højre
 
 ########################
 # Frequent and safe rules - pronouns #
@@ -2409,6 +2412,10 @@ SELECT:8540 3SgO IF (NEGATE *-1 Abs + Pl + @OBJ> BARRIER V )(*-1 Rel + Pl + @SUB
 SELECT:8550 Rel + @SUBJ> IF (*1 TRANSVERB + @PRED);
 SELECT:8551 Abs + @SUBJ> IF (*1 INTRANSVERB + @PRED);
 
+#To regler der vælger subjekter før hhv. Lok og Ins ved oratio oblique
+SELECT:8552 Rel + @SUBJ> + 4SgPoss IF (*1 TRANSVERB + 4SgO) ;
+SELECT:8553 Rel + @SUBJ> + 4PlPoss IF (*1 TRANSVERB + 4PlO) ;
+
 # ========================= #
 #     Final sektion         #
 # ========================= #
@@ -2523,6 +2530,8 @@ SELECT:5525 ("takussaa") IF (0 ("taku")) ;
 SELECT:5526 ("eqqaa") + SSA + NNGIT IF (0 Par + 4Sg) ;
 REMOVE:5527  ("tusar") + USAR IF (0 ( "tusaa") + TAR) ;
 REMOVE:5528 ("mikigar") + LLAR IF (0 ("miki") + GALLAR ) ;
+SELECT:5529 ("uppernarsi") + SURE IF (0 ("upper") + TUQ + GE) ; #vælg uppernarsi+SURE frem for upper+NAR=SI+TUQ+GE
+
 
 # Enkelte derivativer
 REMOVE NIRU IF (0 TIME) ; #20091109 "tallimanngor" NIRU
