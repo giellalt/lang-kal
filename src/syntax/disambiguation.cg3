@@ -1030,7 +1030,7 @@ SET FOOD = EDIBLE | DRINKABLE ;
 LIST THING = "alussaat" "aqqusineq" ("ati" TAQ) "ilullissiaq" "siu" "timi" "savik";
 LIST MATERIAL = "ameq" "ulik" "qipik" ;
 LIST f-an_SG = "qaneq" "qingaq" ;
-LIST TIME = "nali" "sapaat" "qeqqa" "aasaq" "ippassaq" "ullaaq" "ullaa" "ataasinngor" "marlunngor" "pingasunngor" "sisamanngor" "tallimanngor" "arfininngor" "ulloq" "unnuaq" ;
+LIST TIME = "aasaq" "arfininngor" "ataasinngor" "ippassaq" "marlunngor" "nali" "pingasunngor" "qeqqa" "sapaat" "sisamanngor" "siulleq" "tallimanngor" "ukioq" "ullaa" "ullaaq" "ulloq" "unnuaq";
 LIST NUMHOVED = "dollar" "dollari" "euro" "gram" "kapitali" "kapitel" "kiilu" "kilo" "koruuni" "krone" "milliardi" "million" "oori" "øre";
 LIST COMPOUND_N = "Windows" "Linux" "program" ;
 LIST AIRTRANSPORT = "qajaq" "timmi" "helikopter" "helikopteri" "qulimiguulik" "zeppeliner" ;
@@ -1205,6 +1205,7 @@ REMOVE:0042 ("ipi") + RAR IF (0 ("iperar"));
 REMOVE:0043 ("iper") + RAR IF (0 ("iperar"));
 REMOVE:0044 ("ipip") + RAR IF (0 ("iperar"));
 REMOVE:0045 ("pissap") + TRANSVERB IF (NEGATE *0 ANIMAL);
+REMOVE:0046 TIME + 4SgPoss IF (0 Lok); #Vælger N+Lok frem for N+4SgPoss
 
 ###################################
 # Frequent and safe rules - nouns #
@@ -2024,6 +2025,8 @@ SELECT:1700 Abs + Pl IF (-*1C INTRANSVERB + 3Pl OR 4Pl)(NEGATE *1 INTRANSVERB + 
 #Pronominer
 SELECT DemPron + Pl IF (1C N + Pl) ;
 SELECT ReflPron + 4Sg IF (*1 V +  3Sg OR V + 4Sg BARRIER V) ;
+SELECT:1710 ReflPron + Abs IF (1 INTRANSVERB);
+SELECT:1711 ReflPron + Rel IF (1 TRANSVERB OR POSSESSUM);
 
 
 #Verber
@@ -2412,8 +2415,16 @@ SELECT PRON + Rel + 4Pl IF (1* TRANSVERB + 3Pl) ; #tamaq (Rel) vs. tamaq (Abs)
 
 SELECT 3SgPoss IF (<*-1 @PRED + 3Sg)(-1 BOS) ; #Vælger 3SgPoss hen over sætningsgrænse
 
+#===============
+# Implicitte objekter
+#===============
+
 #en usikker disambiguering af Rel + Pl vs. Abs + Pl efter CAU hvis intet objekt til subjekt eller evt. hvis intet subjekt til objektet
 SELECT Rel + Pl IF (-1 Cau + 4Pl)(NEGATE *1 N + Pl)(*1 TRANSVERB + 3Pl) ;
+
+#Når causativs subjekt er implicit objekt i følgende nexus
+SELECT:8530 3SgO + @PRED IF (*-1 Cau + 3Sg)(NEGATE *-1 Abs + Sg BARRIER Cau) ;
+SELECT:8531 3PlO + @PRED IF (*-1 Cau + 3Pl)(NEGATE *-1 Abs + Pl BARRIER Cau) ;
 
 #Disambiguerer 3SgO fra 3PlO ved implicit objekt
 #SELECT:8540 3SgO + @PRED IF (NEGATE -*1 Abs + Pl)(-*1 Inf + 3SgO BARRIER TRANSVERB) ;
