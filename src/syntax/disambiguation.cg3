@@ -1208,6 +1208,9 @@ REMOVE:0044 ("ipip") + RAR IF (0 ("iperar"));
 REMOVE:0045 ("pissap") + TRANSVERB IF (NEGATE *0 ANIMAL);
 REMOVE:0046 TIME + 4SgPoss IF (0 Lok); #Vælger N+Lok frem for N+4SgPoss
 
+#siornatigut sjældent possessum, oftest i-ADVL> til adled
+SELECT:0047 ("siornatigut") + part IF (1 vn) ;
+
 ###################################
 # Frequent and safe rules - nouns #
 ###################################
@@ -1240,14 +1243,14 @@ REMOVE Abs + Sg + MI IF (*0 Abs + Sg) ; #20101013 Lokalis tagget som subjekt med
 
 SELECT Rel + Pl IF (1 DemPron + Rel LINK 1 3PlPoss);
 SELECT Rel + Sg IF (1 DemPron + Rel LINK 1 3SgPoss);
-SELECT Rel + Pl IF (1C 3PlPoss);
+SELECT Rel + Pl IF (1C 3PlPoss)(NEGATE 1 ("siuneq") + Via); #må ikke hitte på siornatigut
 SELECT Rel + Sg IF (1C 3SgPoss)(NEGATE 0 Ins LINK 1 QAR OR LIK); #asanninnermik pigisaqarneranut er ikke en possessor-possessum forbindelse
 SELECT 3SgPoss IF (-1C Rel + Sg)(NEGATE *1 VERB-NOTINF + TRANSVERB + 3Sg BARRIER VFIN);
 
 #Sikre possessorer. Den foerste er et specialtilfaelde for også at tage højde for 'Maaniittut ukua ilaasa .. '
 
 #Overfloedige relativer
-SELECT Rel + Pl IF (1C 3PlPoss) ; 
+SELECT Rel + Pl IF (1C 3PlPoss)(NEGATE 1 ("siuneq") + Via); #må ikke hitte på siornatigut
 REMOVE Rel + Sg IF (NEGATE *1 3SgPoss)(NEGATE *0 TRANSVERB + 3Sg) ;
 REMOVE Rel + Pl  IF (NEGATE *1 3PlPoss)(NEGATE *0 TRANSVERB + 3Pl)(NEGATE 0 LU LINK -1 3Pl) ;
 REMOVE Rel + 4SgPoss + Pl IF (NEGATE 1 3PlPoss)(NEGATE *1 TRANSVERB + Par + 3Pl OR TRANSVERB + Cau + 3Pl OR TRANSVERB + Con + 3Pl) ;
@@ -1264,7 +1267,7 @@ SELECT 3PlPoss IF (-1 ("\,"))(-2C 3PlPoss); #opremsning med komma
 SELECT 3PlPoss IF (0 LU)(-1C 3PlPoss); #3. led i opremsning med komma eller andet uden komma
 #Sikre possessum
 REMOVE PAK IF (0 VFIN BARRIER VFIN) ; #Vælg finit Vb frem for PAK+Pl hvis eneste VFIN. Skal komme før følgende SELECT
-SELECT:0150 3PlPoss IF (-1 Rel + Pl)(NEGATE *1 TRANSVERB + 3Pl)(NEGATE 0 ADJEKTIVISK)(NEGATE 0 N*)(NEGATE 0 ("ila") + GE + Ind); #siulittaasuisa nuannarineqarnersaat. 
+SELECT:0150 3PlPoss IF (-1 Rel + Pl)(NEGATE *1 TRANSVERB + 3Pl)(NEGATE 0 ADJEKTIVISK)(NEGATE 0 N*)(NEGATE 0 ("ila") + GE + Ind)(NEGATE 0 ("siornatigut")); #siulittaasuisa nuannarineqarnersaat. 
 
 SELECT:Ila01 ("ila") + 3PlPoss IF (-1 BOS)(-1**< VFIN + 3Pl)(NEGATE -1**< ("ilaaq"));
 #'Ilaat' først i en sætning er partitiv, hvis subjektet i foregående sætning er 3. plur. Og hvis vi der ikke har været snakket om lapper i sætningen før.
@@ -1531,11 +1534,13 @@ MAP:0100 (@FOC) TARGET FOKUSPART + (part) IF (NEGATE *0 VFIN) ;
 MAP:0110 (@CONJ) TARGET ("tassa") + part IF (-*1 V OR vn)(*1 V OR vn OR Prop OR ("\:")) ; #"tassa" brugt foer forklarende hovedsaetning eller i consekutiv bisaetning
 MAP:0120 (@i-ADVL>) TARGET (part) IF (1 N + @<SUBJ) ;
 MAP:0130 (@ADVL>) TARGET part IF (0 LU)(-1 N)(1 N);
-MAP:0140 (@CONJ) TARGET part IF (-1 Abs)(*1 Abs BARRIER VFIN) ; #2.4. tilfoejet  MAP:0HvilkenAdverbial foer denne for at forhindre @CONJ på 'Aasaanerani naasut tamalaat alutornartut ILAATIGULLU ruuat ..'
+#MAP:0140 (@CONJ) TARGET part IF (-1 Abs)(*1 Abs BARRIER VFIN) ; #2.4. tilfoejet  MAP:0HvilkenAdverbial foer denne for at forhindre @CONJ på 'Aasaanerani naasut tamalaat alutornartut ILAATIGULLU ruuat ..'
 MAP:0150 (@CONJ) TARGET part IF (-1 Rel)(*1 Rel BARRIER VFIN) ;
 MAP:0160 (@CL-ADVL>) TARGET part IF (-2 BOS OR ("\,"))(-1 Interj)(NEGATE 0 KONJUNKTION)(*1 V) ; #20091109 .., aasiit TAAMATUT, ...
 MAP:0170 (@CL-ADVL>) TARGET part IF (-1 BOS)(NEGATE 0 KONJUNKTION) ;
 MAP:0171 (@V>) TARGET ("taama") OR ("taamak") IF (1 TIGE) ;
+MAP:0172 (@i-ADVL>) TARGET ("siornatigut") + part IF (1 vn) ;
+
 
 
 # Nominer - De sikre MAP regler
@@ -2615,6 +2620,7 @@ REMOVE:5562 LIK + U IF (0 LIUR) ;
 REMOVE:5563 ("iluaq") + GIP IF (0 ("iluaq") + GE ) ;
 REMOVE:5564 ("pissuseq") + LIR IF (0 ("pissuseq") + LIRSUR) ;
 REMOVE:5565 MIUQ IF (0 MIU) ;
+REMOVE:5566 GE + TAQ + vn + LIR + nv IF (0 TAR + LIR + vv) ; #..gisalerpaa er nok TAR=LIR+vv
 
 # Enkelte substantiver
 REMOVE ("pineq") IF (NEGATE *0 ("kamik")) ; #20091103 pineq+QAR vs. pineqar-
