@@ -1030,7 +1030,8 @@ SET FOOD = EDIBLE | DRINKABLE ;
 LIST THING = "alussaat" "aqqusineq" ("ati" TAQ) "ilullissiaq" "siu" "timi" "savik";
 LIST MATERIAL = "ameq" "ulik" "qipik" ;
 LIST f-an_SG = "qaneq" "qingaq" ;
-LIST TIME = "aasaq" "arfininngor" "ataasinngor" "ippassaq" "marlunngor" "nali" "pingasunngor" "qeqqa" "sapaat" "sisamanngor" "siulleq" "tallimanngor" "ukioq" "ullaa" "ullaaq" "ulloq" "unnuaq";
+LIST TIME = "aasaq" ("arfineq" NNGUR) ("ataaseq" NNGUR) "ippassaq" "marlunngor" "nali" ("pingasut" NNGUR) "pingasunngor" "qeqqa" "sapaat" ("sisamat" NNGUR) "sisamanngor" "siulleq" ("tallimat" NNGUR) "tallimanngor" "ukioq" "ullaa" "ullaaq" "ulloq" "unnuaq";
+LIST UGEDAGE = ("arfineq" NNGUR) ("ataaseq" NNGUR) "marlunngor" ("pingasut" NNGUR) "pingasunngor" "sapaat" ("sisamat" NNGUR) "sisamanngor" ("tallimat" NNGUR) "tallimanngor" ;
 LIST NUMHOVED = "dollar" "dollari" "euro" "gram" "kapitali" "kapitel" "kiilu" "kilo" "koruuni" "krone" "milliardi" "million" "oori" "øre";
 LIST COMPOUND_N = "Windows" "Linux" "program" ;
 LIST LANDTRANSPORT = "bussi" "biili" "bil" ;
@@ -1046,7 +1047,7 @@ SET sinerOBJ = GEOOBJ | Prop ;
 LIST Mal = "Trond" "Per" ;
 LIST Fem = "Kirsten" ;
 LIST Sur = "Rasmussen" "Trosterud" ;
-LIST TITEL = ("siulittar" TUQ) "kunngi" ;
+LIST TITEL = ("siulittar" TUQ) "kunngi" "fru" "hr" ;
 
 SET FIRSTNAME = Mal | Fem | ("Frederik") | ("Nuka") | ("A") | ("B") | ("C") | ("Chr") | ("D") | ("E") | ("F") | ("G") | ("H") | ("I") | ("J") | ("K") | ("Kr") | ("L") | ("M") | ("N") | ("O") | ("P") | ("Q") | ("R") | ("S") | ("T") | ("U") | ("V") | ("W") | ("X") | ("Y") | ("Z") | ("Æ") | ("Ø") | ("Å") ;
 SET NAME = FIRSTNAME | Sur ;
@@ -1199,17 +1200,17 @@ REMOVE Prop + Attr IF (0 Prop + Sg)(-1 N + Sg)(1 N + Sg + LU)(*1 VFIN + 3Pl BARR
 SELECT Ind IF (NEGATE *0 VFIN BARRIER LU OR LI OR KOMMA)(NEGATE 0 NIR) ;
 
 # Vælg Interj hvis fulgt af '?' eller efter foregående Imp
-SELECT:0040 ("aat") IF (1 ("?"));
-SELECT:0041 ("aat") IF (-*1C Imp);
+SELECT:0020 ("aat") IF (1 ("?"));
+SELECT:0021 ("aat") IF (-*1C Imp);
 
-REMOVE:0042 ("ipi") + RAR IF (0 ("iperar"));
-REMOVE:0043 ("iper") + RAR IF (0 ("iperar"));
-REMOVE:0044 ("ipip") + RAR IF (0 ("iperar"));
-REMOVE:0045 ("pissap") + TRANSVERB IF (NEGATE *0 ANIMAL);
-REMOVE:0046 TIME + 4SgPoss IF (0 Lok); #Vælger N+Lok frem for N+4SgPoss
+REMOVE:0022 ("ipi") + RAR IF (0 ("iperar"));
+REMOVE:0023 ("iper") + RAR IF (0 ("iperar"));
+REMOVE:0024 ("ipip") + RAR IF (0 ("iperar"));
+REMOVE:0025 ("pissap") + TRANSVERB IF (NEGATE *0 ANIMAL);
+REMOVE:0026 TIME + 4SgPoss IF (0 Lok); #Vælger N+Lok frem for N+4SgPoss
 
 #siornatigut sjældent possessum, oftest i-ADVL> til adled
-SELECT:0047 ("siornatigut") + part IF (1 vn) ;
+SELECT:0027 ("siornatigut") + part IF (1 vn) ;
 
 ###################################
 # Frequent and safe rules - nouns #
@@ -1280,7 +1281,7 @@ REMOVE 3PlPoss + Abs + Pl IF (*1 VFIN + INTRANSVERB + 3Pl)(NEGATE 1 Num + Abs)(N
 
 #Overfloedige possessumformer
 SELECT 2SgPoss IF (*0 ("qujanaq"))(NEGATE -1 ("uanga"))(NEGATE *0 VFIN) ; #Kontekst, der maa sikres foer foelgende REMOVE
-REMOVE Abs + 2SgPoss IF (NEGATE *0 ("illit") OR Imp + 2Sg) ; 
+REMOVE Abs + 2SgPoss IF (NEGATE *0 ("illit") OR Imp + 2Sg) (NEGATE *1 3SgO)(NEGATE *1 INTRANSVERB + 3Sg BARRIER Abs + Sg); 
 #REMOVE Abs + 2SgPoss IF (-1C Inf + 4Pl OR InfNeg + 4Pl)(NEGATE *1 Rel + Pl LINK *1 TRANSVERB + GE + 3SgO); #0 maa vaere plur hvis nabo til en ledsagemaade, men der maa tages hoejde for muligheden af et OSV verbum.
 REMOVE Abs + 2SgPoss + TUQ IF (NEGATE *0 ("illit")); #1.4. Evt. elaboreres med TAQ og UTE
 REMOVE Rel + Pl + 2SgPoss IF (NEGATE *0 ("illit"));
@@ -1362,10 +1363,10 @@ SELECT part + ("aamma")
 
 SELECT ("soorlu") IF (*1 Par OR Inf OR InfNeg BARRIER V ) ;
 
-REMOVE:048 ("una") + DemInterj	IF (0 ("tassa") + Interj) ;
+REMOVE:038 ("una") + DemInterj	IF (0 ("tassa") + Interj) ;
 
 #Template NexusHøjre =  (*1 Abs LINK *1 INTRANSVERB) OR (*1 Rel LINK *1 TRANSVERB) OR (*1 Abs + Sg LINK *1 TRANSVERB + 3SgO) OR (*1 Abs + Pl LINK *1 TRANSVERB + 3PlO) ; 
-REMOVE:049 ("tassa") + Interj IF (T:NexusHøjre); #Vælger noget adverbielt eller verbalt hvis nexus til højre
+REMOVE:039 ("tassa") + Interj IF (T:NexusHøjre); #Vælger noget adverbielt eller verbalt hvis nexus til højre
 
 ########################
 # Frequent and safe rules - pronouns #
@@ -1373,11 +1374,14 @@ REMOVE:049 ("tassa") + Interj IF (T:NexusHøjre); #Vælger noget adverbielt elle
 
 REMOVE IntPron IF ( 0 IndefPron ) (NEGATE *1 ("\?")) ;
 SELECT PersPron + Abs + 1Sg IF (*1 INTRANSVERB + 1Sg)(NEGATE 1 1SgPoss); #vælg uanga+Abs for uanga+Rel
+SELECT PersPron + 1Sg IF (*1 V + 1Sg OR V + 1SgO); #sletter DemAdv-læsningen
 SELECT ReflPron + Via + Sg IF (NEGATE -1 Via + Pl) ; # immikkut+Pl teoretisk adled til Via+Pl. Ellers altid Sg
 SELECT PRON + Abs IF (-1C Abs) ;
 SELECT PRON + Rel IF (-1C Rel) ;
-
-REMOVE Rel + PersPron  IF (NEGATE *1 3PlPoss)(NEGATE *0 TRANSVERB + 3Pl)(NEGATE 0 LU LINK -1 3Pl) ;
+SELECT:044 PersPron + Rel + 1Sg IF (*1 TRANSVERB + 1Sg BARRIER Rel);
+SELECT:045 PersPron + Abs + 1Sg IF (*1 INTRANSVERB + 1Sg BARRIER Abs);
+#Følgende 046 skal checkes. Sletter bl.a. PersPron-læsning i Uanga aanagakkit. Derfor reglerne 044 og 045
+REMOVE:046 Rel + PersPron  IF (NEGATE *1 3PlPoss)(NEGATE *0 TRANSVERB + 3Pl)(NEGATE 0 LU LINK -1 3Pl) ;
 
 
 ######################
@@ -1512,7 +1516,7 @@ MAP:0495 (@SUBJ>) TARGET Prop + Rel IF (-*1 Rel LINK *-1 Rel LINK *1 TRANSVERB L
 
 MAP:0177 (@<APPOS) TARGET Prop + Sg IF (-1 N + Sg)(1 N + Sg + LU)(*1 VFIN + 3Pl BARRIER KOMMA) ;
 
-MAP:1350 (@PROP>) TARGET Prop OR FIRSTNAME IF (1 Prop);
+MAP:1350 (@PROP>) TARGET Prop OR FIRSTNAME OR TITEL IF (1 Prop);
 
 MAP:1370 (@N>) TARGET (Prop Abbr) IF (1 Num);
 
@@ -2002,7 +2006,7 @@ SELECT FIRSTNAME IF (1 Prop + Sg) ; #vælger stort bogstav qua forkortelse frem 
 SELECT Abs IF (-2 Prop + Abs)(-1 ("\,"))(NEGATE 0 Rel LINK 1 POSSESSUM3); #'Enoksen, SIUMUT' 'Kleist, INUIT Ataqatigiit'
 SELECT Abs IF (-3 Prop + Abs)(-2 ("\,"))(-1 Abs)(NEGATE 0 Rel LINK 1 POSSESSUM3); #'Enoksen, SIUMUT' 'Kleist, Inuit ATAQATIGIIT'
 
-#Nominer - kongruens
+#Nominer - kongruens og paratakse
 SELECT N + Sg IF (1 N + Sg)(NEGATE *0 V) ; # Vedr. overskrifter og sætningsemner
 
 SELECT Ins + LU IF (-1C Ins) ;
@@ -2029,6 +2033,9 @@ SELECT Abs + Pl IF (*-1 VFIN + 3Pl)(*1 INTRANSVERB + Inf + 4Pl BARRIER V); #2.4.
 SELECT Abs + Pl IF (*-1 Inf + 4Pl BARRIER VFIN OR Par)(*1 VFIN + 3PlO); #2.4. Maa vaere objekt da subjekt formodes at komme foer ledsagemaaden. 'OR Par' tilføjet 17.4. pga. ledsagemåder i participiale bisætninger
 
 SELECT:1700 Abs + Pl IF (-*1C INTRANSVERB + 3Pl OR 4Pl)(NEGATE *1 INTRANSVERB + 3Pl OR 4Pl)(NEGATE *1 TRANSVERB + 3PlO)(NEGATE *1 3PlPoss BARRIER KOMMA); 
+
+SELECT:1701 Abl + LU IF (-1 Abl);
+SELECT:1702 Ins + LU IF (-1 Ins);
 
 #Pronominer
 SELECT DemPron + Pl IF (1C N + Pl) ;
@@ -2259,6 +2266,8 @@ SELECT (Par @PRED) IF (*1 34SGOBJVERB)(*1 ORATIOOBLVERB); #Pers tilfoejelse 2 06
 
 SELECT (Abs Sg) IF (0C (@SUBJ>))(*1C 3SGSUBJVERB);
 
+SELECT:2559 Abs + 4SgPoss IF (*1 INTRANSVERB + 3Sg LINK *1 TRANSVERB + 3Sg + 3SgO) (NEGATE *1 Inf + 3PlO); #panini inequnarmat asavaa, men flertal hvis ledsagemåde imellem
+SELECT:2560 Abs + 4SgPoss IF (*1 TRANSVERB + 3Sg + 3SgO BARRIER INTRANSVERB ) ; 
 
 # NP-er
 # -----
@@ -2539,6 +2548,9 @@ REMOVE ("saa") + Refl ; #fravælger 'bestrø hinanden' til fordel for 'henvende 
 SELECT ("aasar") + LIR + TUQ ; #fravælger aa+TAQ+vn+LIR+nv+TUQ og aa+TAR=LIR+vv+TUQ
 SELECT ("pileri") + AFFINGERET IF (0 ("pileraaq")) ;
 REMOVE:5450 ("erlip") + NAR IF (0 ("erlinnar"));
+REMOVE:5451 ("anner") + LAAR IF (0 ("annilaar"));
+REMOVE:5452 ("ilik") + U IF (0 ("ilior"));
+
 
 
 # nv eller vv?
@@ -2594,7 +2606,7 @@ REMOVE HTR + NAR; #naeppe en mulig kombination
 REMOVE SSAQ + LIUR IF (0 HUMAN) ; #'ilassiorpoq' ikke 'ila+SSAQ=LIUR'
 REMOVE VIP IF (0 IntransTrans); #HTR mest sandsynlig
 REMOVE NIQ + U IF (0 NIRU + TIP); # nuannernerulersittarpai
-REMOVE NIQ + U IF (0 NIRU ); # 17.4. Ad hoc og alt for bred. Maa indsnævres når der viser sig eksempler
+REMOVE NIQ + U IF (0 NIRU )(NEGATE 0 UGEDAGE); # 17.4. Ad hoc og alt for bred. Maa indsnævres når der viser sig eksempler
 REMOVE ("niver" NGA) IF (*-1 Abs - HUMAN) ; # kun mennesker niver+NGA. Ting nivinga
 REMOVE SSAQ + IR + NNGIT IF ( 0 SSAQ + U + NNGIT) ; #20091108
 REMOVE ("paatsivik") + IRUP IF ( 0 ("paatsiveerup")) ; # 20091108
@@ -2630,6 +2642,9 @@ REMOVE:5563 ("iluaq") + GIP IF (0 ("iluaq") + GE ) ;
 REMOVE:5564 ("pissuseq") + LIR IF (0 ("pissuseq") + LIRSUR) ;
 REMOVE:5565 MIUQ IF (0 MIU) ;
 REMOVE:5566 GE + TAQ + vn + LIR + nv IF (0 TAR + LIR + vv) ; #..gisalerpaa er nok TAR=LIR+vv
+REMOVE:5567 TIGE IF (NEGATE -1 ("taamak") OR ("qanoq") OR ("ima") OR ("taama"))(NEGATE -1 BOS LINK 1 EOS); #Sidste NEGATE for typen Ajortigisoq!
+REMOVE:5568 UTIGE IF (0 TRANSVERB + UTE + GE);
+REMOVE:5569 IR + LIR IF (0 IP + LIR) ; #Rent statistisk betingelse
 
 # Enkelte substantiver
 REMOVE ("pineq") IF (NEGATE *0 ("kamik")) ; #20091103 pineq+QAR vs. pineqar-
