@@ -16,9 +16,9 @@ if CAN_DOCC
 
 JSP_PAGES=root-morphology.jspwiki \
 		  derivations-inflections-affixes.jspwiki \
+		  nouns-stems.jspwiki \
 		  numerals-affixes.jspwiki \
-		  propernouns-affixes.jspwiki \
-		  nouns-stems.jspwiki
+		  propernouns-affixes.jspwiki 
 # compounding-morphology.jspwiki   \
 # abbreviations-stems.jspwiki      \
 # acronyms-stems.jspwiki           \
@@ -41,7 +41,6 @@ JSP_PAGES=root-morphology.jspwiki \
 # adjectives-affixes.jspwiki       \
 # verbs-affixes.jspwiki
 ALLINONE_JSP_PAGE=$(GTLANG).jspwiki
-
 LINKS=Links.jspwiki
 
 endif # CAN_DOCC
