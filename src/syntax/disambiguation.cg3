@@ -875,6 +875,7 @@ LIST VIP_SINNAA_NNGIT = VIP\=SINNAA\=NNGIT ;
 
 LIST AASIIT = AASIIT ;
 LIST AASIINNGOOQ = AASIINNGOOQ ;
+LIST AA = AA ;
 
 LIST GOOQ = GOOQ ;
 LIST GOORUNA = GOORUNA ;
@@ -1216,6 +1217,9 @@ SELECT:0027 ("siornatigut") + part IF (1 vn) ;
 
 #'din luvart' fremfor 'meget' næsten utænkelig
 REMOVE ("assoq") + 2SgPoss IF (0 ("assut") + part);
+
+#Vokativ meget sjælden uden proprium
+REMOVE AA IF (NEGATE 0 Prop);
 
 ###################################
 # Frequent and safe rules - nouns #
@@ -1573,7 +1577,7 @@ MAP:0180 (@<SUBJ) TARGET (Abs) IF (*-1 @FOC BARRIER V);
 MAP:0187 (@N>) TARGET Num IF (1 NUMHOVED); # ' .. 2 oorimoorlutik ..' specialfald før 189-190
 MAP:0188 (@N>) TARGET NUMHOVED IF (1 Num); # ' .. kapitel 2 ..' specialfald før de følgende
 MAP:0189 (@HNOUN) TARGET N OR Abbr OR Num IF (NEGATE *0 V)(1 ParagrafSlut); #20100827 Safe headlines
-MAP:0190 (@HNOUN) TARGET APPELLATIV + Abs OR Prop + Abs OR Abbr - FIRSTNAME IF (NEGATE *0 VERB-NOTINF)(NEGATE 1 TRANSVERB + Inf OR TRANSVERB + InfNeg);
+MAP:0190 (@HNOUN) TARGET APPELLATIV + Abs OR Prop + Abs OR Abbr - FIRSTNAME IF (NEGATE *0 VERB-NOTINF)(NEGATE *1 TRANSVERB + Inf OR TRANSVERB + InfNeg);
 MAP:0200 (@i-ADVL>) TARGET Trm IF (1 N + (vn)) ;
 MAP:0210 (@<OBJ) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (-1 TRANSVERB + 3SgO)(*1 CLB OR EOS BARRIER 3SgO)(NEGATE *-1 ORATIOOBLVERB LINK *1 V + 3Sg); #20100227 Tronds tilfoejelse. 20100322 NEGATE forebygger forkerte hit paa subjekter (PL)
 
@@ -1626,7 +1630,7 @@ MAP:0399 (@POSS>) TARGET Rel + Sg IF (1 KOMMA LINK 1 Rel + Sg LINK 1 3SgPoss) ; 
 MAP:0400 (@POSS>) TARGET Rel + Sg IF (1 DemPron + Rel LINK 1 3SgPoss) ;
 MAP:0401 (@POSS>) TARGET Rel + Sg IF (1 3SgPoss) ;
 
-MAP:0409 (@POSS>) TARGET Rel + Sg IF (*1 3SgPoss) (NEGATE *1 Rel + LU BARRIER TRANSVERB + 3Sg) ; #i NN-ip aappaatalu må aappaatalu ikke opfyldebetingelsen
+MAP:0409 (@POSS>) TARGET Rel + Sg IF (*1 3SgPoss BARRIER TRANSVERB + 3Sg) (NEGATE *1 Rel + LU BARRIER TRANSVERB + 3Sg) ; #i NN-ip aappaatalu må aappaatalu ikke opfyldebetingelsen
 MAP:0410 (@POSS>) TARGET Rel + Pl IF (1 3PlPoss) ;
 ADD:0420 (@MIK-OBJ>) TARGET Ins IF (*1 HTR + V); #Ikke MAP fordi ogsaa ADVL> mulig
 MAP:0430 (@i-MIK-OBJ>) TARGET Ins IF (1 HTR + vn - V) ; #20091106
@@ -1743,7 +1747,7 @@ MAP:0940 (@i-ADVL>) TARGET Inf IF (1 vn) ;
 # Mapping af ledsagemåde til hovedverbal
 
 #MAP:0948 (@ADVL>) TARGET Inf + TRANSVERB OR InfNeg + TRANSVERB IF (*1 VFIN OR Par + TRANSVERB);
-MAP:0948 (@ADVL>) TARGET INF + TRANSVERB IF (1 V);
+MAP:0948 (@ADVL>) TARGET INF + TRANSVERB IF (*1 V)(NEGATE 1 vn);
 MAP:0949 (@i-ADVL>) TARGET INF + TRANSVERB IF (1 vn);
 #mapper uagtet subjekt alle transitive ledsagemåder med finit til højre
 MAP:0950 (@ADVL>) TARGET Inf + 1Sg OR InfNeg + 1Sg IF (*1 VFIN + 1Sg);
@@ -2061,10 +2065,11 @@ SELECT:1701 Abl + LU IF (-1 Abl);
 SELECT:1702 Ins + LU IF (-1 Ins);
 
 #Pronominer
-SELECT DemPron + Pl IF (1C N + Pl) ;
-SELECT ReflPron + 4Sg IF (*1 V +  3Sg OR V + 4Sg BARRIER V) ;
+SELECT:1708 DemPron + Pl IF (1C N + Pl) ;
+SELECT:1709 ReflPron + 4Sg IF (*1 V +  3Sg OR V + 4Sg BARRIER V) ;
 SELECT:1710 ReflPron + Abs IF (1 INTRANSVERB);
 SELECT:1711 ReflPron + Rel IF (1 TRANSVERB OR POSSESSUM);
+SELECT:1712 PersPron + 1Sg IF (1 1SgPoss); #uangaana N-ga er ikke una+Abl+UNA
 
 
 #Verber
@@ -2334,7 +2339,9 @@ REMOVE (POSSESSUM @HNOUN) IF (NEGATE -1 (@POSS)) ;
 
 REMOVE Lok + Pl IF (-1 Rel + Sg)(0 3SgPoss)(NEGATE 1 3SgPoss); #'ippiup QAANI narsartami toqqissumiipput' NEGATE for at forebygge hit paa 'Perip Namminersornerusuni sulinera'
 
-SELECT:08200 Aeq + Sg + 4SgPoss IF (*-1 @SUBJ> + Sg)(*1 V + 3Sg) ;
+SELECT:0820 Aeq + Sg + 4SgPoss IF (*-1 @SUBJ> + Sg)(*1 V + 3Sg) ;
+
+SELECT:0821 Sg + 4SgPoss IF (*-1 Sg + @SUBJ>)(*1 3SgO); #fjerner Lok + Pl og vælger coref objekt
 
 
 # Verbal disambiguering
@@ -2459,7 +2466,10 @@ SELECT Abs + Pl + @SUBJ> IF (-1C Abs + Pl + @SUBJ>)(1 INTRANSVERB + 3Pl OR INTRA
 SELECT PRON + Abs + 1Sg + @OBJ> IF (1* TRANSVERB + 1SgO) ; #kisima (Rel) vs. kisima (Abs)
 SELECT PRON + Rel + 4Pl IF (1* TRANSVERB + 3Pl) ; #tamaq (Rel) vs. tamaq (Abs)
 
-SELECT 3SgPoss IF (<*-1 @PRED + 3Sg)(-1 BOS)(NEGATE 0 Abs + 4SgPoss + Pl LINK *1 3PlO) ; #Vælger 3SgPoss hen over sætningsgrænse, men forhindrer at 4. persons objekt læses som lokalis)
+#Specialitet før følgende ved 'aanaa'
+REMOVE:8440 3SgPoss IF (0 ("aanaa") + Sg + Abs) ;
+
+SELECT:8441 3SgPoss IF (<*-1 @PRED + 3Sg)(-1 BOS)(NEGATE 0 Abs + 4SgPoss + Pl LINK *1 3PlO) ; #Vælger 3SgPoss hen over sætningsgrænse, men forhindrer at 4. persons objekt læses som lokalis)
 
 SELECT:8450 Abs + 4SgPoss + Pl + @OBJ> IF (*1 3Sg + 3PlO BARRIER V)(NEGATE 0 Prop ) ; #vælger objekt frem for Lok+@ADVL>
 
@@ -2579,7 +2589,7 @@ REMOVE:5455 ("nassar") + INTRANSVERB IF (0 ("nassap"))(NEGATE -*1 Ins); #
 REMOVE:5456 ("ilap") IF (0 ("ila") + V)(NEGATE *0 HUMAN + @ALLSUBJ) ;
 REMOVE:5457 ("toqup") + NGA IF (0 ("toqu")) ;
 REMOVE:5458 ("toqup") + INTRANSVERB IF (0 ("toqu"));
-
+REMOVE:5459 ("paa") + SI IF (0 ("paasi")) ;
 # nv eller vv?
 SELECT:5493 QATE + vn + GE IF (0 QATE + nn + GE)(NEGATE *-1 HUMAN + @OBJ>) ;
 REMOVE:5494 ("pi") + nv IF (0 ("pi") + vv); # vaelger pi+LIR=TIP frem for pi+LIR+TIP
@@ -2706,6 +2716,7 @@ REMOVE:5757 ("utoqqalinersiuteq") IF (0 ("utoqqalineq") + SIUT) ; #stammen er pl
 REMOVE:5758 ("pissut") + LIR IF (0 ("pissuseq")) ;
 REMOVE:5759 ("ani") + NGA IF (0 ("aningaasartuut") OR ("aningaasaq"));
 REMOVE:5760 ("akik") IF (0 ("aki")); # "aki" dækker både "modhage" og "pris"
+REMOVE:5761 ("aqqalu") IF (0 ("ateq") + 3SgPoss)(*1 V + 3SgO)(NEGATE 0 ("<\\p{Lu}.*>"r)); #Vælg ateq + 3Sg hvis objekt og ikke med upper case
 
 # Ugedagene
 REMOVE ("ataaseq") + NNGUR + NIRU IF (0 ("ataaseq") + NNGUR + NIQ + U) ;
