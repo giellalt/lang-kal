@@ -1491,8 +1491,15 @@ REMOVE ("båndi") IF (0 ("bånd")) ;
 MAP:0000 (@PRED) TARGET VFIN ; #Et finit verbum er altid prædikat
 MAP:0001 (@PRED2) TARGET Par IF (@1 Interj)(NEGATE *0 VFIN); #Ved emfase og udbrud 
 
+#Ledsagemåde som erstatningsform ved paratakse
+
 MAP:0010 (@PRED) TARGET Inf + LU OR InfNeg + LU IF (1 VFIN) ;
+MAP:0011 (@CAU) TARGET Inf + LU OR InfNeg + LU IF (1 Cau) ;
+
+MAP:0018 (@PRED) TARGET Inf + TRANSVERB OR InfNeg + TRANSVERB IF (-2 VFIN)(-1 Abs + LU) ; #Paratakser med transitive verber med objekt som andet led
+MAP:0019 (@CAU) TARGET Inf + TRANSVERB OR InfNeg + TRANSVERB IF (-2 Cau)(-1 Abs + LU) ; #Paratakser med transitive verber med objekt som andet led
 MAP:0020 (@PRED) TARGET Inf + LU OR InfNeg + LU IF (-1 VFIN) ;
+MAP:0021 (@CAU) TARGET Inf + LU OR InfNeg + LU IF (-1 Cau) ;
 
 # Bisætninger og indskud, der må håndteres før andre sætningsled
 # ===============================================
@@ -1682,7 +1689,11 @@ MAP:0590 (@<OBJ) TARGET APPELLATIV + Abs OR Prop + Abs OR PRON + Abs IF (-*1 TRA
 ADD:0600 (@<OBJ) TARGET APPELLATIV + (Abs) OR Prop + (Abs) OR (PRON Abs) IF (-*1 TRANSVERB - Inf BARRIER Inf OR ("\,"));
 
 #Appellativer og proprier i relativ kasus kan være element af syntagmerne subjekt og possessor 
-ADD:0610 (@SUBJ>) TARGET APPELLATIV + (Rel) OR Prop + (Rel) IF (*1 TRANSVERB BARRIER 3SgPoss) ;
+ADD:0608 (@SUBJ>) TARGET APPELLATIV + Rel + Sg OR Prop + Rel + Sg IF (*1 TRANSVERB)(*1 Rel LINK *1 3SgPoss OR 3PlPoss BARRIER TRANSVERB ) ;
+ADD:0609 (@SUBJ>) TARGET APPELLATIV + Rel + Pl OR Prop + Rel + Pl IF (*1 TRANSVERB)(*1 Rel LINK *1 3SgPoss OR 3PlPoss BARRIER TRANSVERB ) ;
+
+ADD:0610 (@SUBJ>) TARGET APPELLATIV + Rel + Sg OR Prop + Rel + Sg IF (*1 TRANSVERB BARRIER 3SgPoss ) ;
+ADD:0611 (@SUBJ>) TARGET APPELLATIV + Rel + Pl OR Prop + Rel + Pl IF (*1 TRANSVERB BARRIER 3PlPoss ) ;
 ADD:0620 (@<SUBJ) TARGET APPELLATIV + (Rel) OR Prop + (Rel) OR (PRON) IF (-*1 TRANSVERB + VERB-NOTINF BARRIER ("\,")) ;
 
 #Nomen i oblik kasus kan være adverbalt adled
