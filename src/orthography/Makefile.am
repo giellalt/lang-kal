@@ -9,7 +9,7 @@ GT_ORTHOGRAPHIC_SRCS=inituppercase.regex \
 					 allcaps.xfscript    \
 					 spellrelax.regex    \
 					 spellrelax-mobile-keyboard.regex \
-					 kleinschmidt2norm.xfscript
+					 oldorthography2norm.xfscript
 
 ####### Automake targets: ########
 
@@ -19,14 +19,14 @@ GT_ORTHOGRAPHIC_FSTS+=allcaps.hfst \
 					  inituppercase.hfst \
 					  spellrelax.hfst \
 					  spellrelax-mobile-keyboard.hfst \
-					  kleinschmidt2norm.hfst
+					  oldorthography2norm.hfst
 endif
 if CAN_XFST
 GT_ORTHOGRAPHIC_FSTS+=allcaps.xfst \
 					  inituppercase.xfst \
 					  spellrelax.xfst \
 					  spellrelax-mobile-keyboard.xfst \
-					  kleinschmidt2norm.xfst
+					  oldorthography2norm.xfst
 endif
 
 include $(top_srcdir)/am-shared/orthography-include.am
