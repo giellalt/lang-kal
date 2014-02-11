@@ -29,4 +29,4 @@ GT_ORTHOGRAPHIC_FSTS+=allcaps.xfst \
 					  oldorthography2norm.xfst
 endif
 
-include $(top_srcdir)/am-shared/orthography-include.am
+include $(top_srcdir)/am-shared/src-orthography-dir-include.am
