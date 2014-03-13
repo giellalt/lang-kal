@@ -995,7 +995,7 @@ SET MOVE-VERB = LOKVERB | ABLVERB | TRMVERB ;
 # 20091106 Foelgende med tak til Tino for at forebygge at "oqar" + USIQ opfattes som inquit
 LIST ORATIOOBLVERBnOQAR = "aalajanger" "aalianger" "eqqarsar" "eqqartor" "ilisimatitsissut" "isuma"
 "isummer" "malugaa" "malunnarsi" "naatsorsor" "nalu" "nalunaar" "nalunaarut" "neriup" "qular"
-"qularnar" "qinnuigaa" "paasi" "pinngitsaali" "siunnersor" "taku" "unner" "uppernarsar" ;
+"qularnar" "qinnuigaa" "paasi" "pinngitsaali" "sinnattoraa" "siunnersor" "taku" "unner" "uppernarsar" ;
 SET OQARnUSIQ = ("oqar") - (USIQ) ;
 SET ALLAANNGIT = ("alla") + U + NNGIT ;
 SET ORATIOOBLVERB = ORATIOOBLVERBnOQAR OR OQARnUSIQ OR ALLAANNGIT ;
@@ -1220,6 +1220,10 @@ REMOVE ("assoq") + 2SgPoss IF (0 ("assut") + part);
 
 #Vokativ meget sjælden uden proprium
 REMOVE AA IF (NEGATE 0 Prop);
+
+#Usandsynlige morfemkombinationer
+REMOVE:0030 TUQ + LIR + nv IF (0 ("ilungersor") + LIR) ;
+
 
 ###################################
 # Frequent and safe rules - nouns #
@@ -1504,15 +1508,12 @@ MAP:0021 (@CAU) TARGET Inf + LU OR InfNeg + LU IF (-1 Cau) ;
 # Bisætninger og indskud, der må håndteres før andre sætningsled
 # ===============================================
 
-#MAP:0029 (@PRED2) TARGET INTRANSVERB + Inf + 4Pl IF (*-1 Abs + Pl OR Abs + Sg + LU)(*1 Abs LINK *1 INTRANSVERB OR Rel LINK *1 TRANSVERB) ; #(NEGATE *0 ORATIOOBLVERB BARRIER VFIN)(1 Abs  OR ("\,")); #koncessive saetninger uden konjunktion
+MAP:0028 (@PRED2) TARGET INTRANSVERB + Inf + 4Pl IF (*-1 Abs + Pl OR Abs + Sg + LU) (T:NexusHøjre)(NEGATE 1 vn) ; #(NEGATE *0 ORATIOOBLVERB BARRIER VFIN)(1 Abs  OR ("\,")); #koncessive saetninger uden konjunktion
 
-MAP:0029 (@PRED2) TARGET INTRANSVERB + Inf + 4Pl IF (*-1 Abs + Pl OR Abs + Sg + LU) (T:NexusHøjre)(NEGATE 1 vn) ; #(NEGATE *0 ORATIOOBLVERB BARRIER VFIN)(1 Abs  OR ("\,")); #koncessive saetninger uden konjunktion
+MAP:0029 (@PRED2) TARGET INTRANSVERB + Par + 3Pl IF (*-1 Abs + Pl)(NEGATE *0 ORATIOOBLVERB BARRIER VFIN)(1 Abs OR ("\,")); #koncessive saetninger uden konjunktion
+MAP:0030 (@PRED2) TARGET INTRANSVERB + Par + 3Sg IF (*-1 Abs + Sg)(NEGATE *0 ORATIOOBLVERB BARRIER VFIN); #(1 Abs OR ("\,")); #koncessive saetninger uden konjunktion
 
-#MAP:0029 (@PRED2) TARGET INTRANSVERB + Inf + 4Pl IF (*-1 Abs + Pl OR Abs + Sg + LU)(*1 NEXUS) (NEGATE 1 vn); #(NEGATE *0 ORATIOOBLVERB BARRIER VFIN)(1 Abs  OR ("\,")); #koncessive saetninger uden konjunktion
-
-MAP:0030 (@PRED2) TARGET INTRANSVERB + Par + 3Pl IF (*-1 Abs + Pl)(NEGATE *0 ORATIOOBLVERB BARRIER VFIN)(1 Abs OR ("\,")); #koncessive saetninger uden konjunktion
-MAP:0031 (@PRED2) TARGET INTRANSVERB + Par + 3Sg IF (*-1 Abs + Sg)(NEGATE *0 ORATIOOBLVERB BARRIER VFIN); #(1 Abs OR ("\,")); #koncessive saetninger uden konjunktion
-
+MAP:0031 (@SUBJ>) TARGET N + Abs + LU IF (*1 INF + 1Pl OR 2Pl OR 4Pl BARRIER V) ;
 MAP:0032 (@SUBJ>) TARGET N + Abs + LU IF (-1 VFIN + 3Sg)(1 Inf + 4Pl)(2 N + Sg LINK *1 V + 3Sg) ;
 MAP:0033 (@SUBJ>) TARGET N + Abs + LU IF (-1 VFIN + 3Sg)(1 Inf + 4Pl)(2 N + Pl LINK *1 V + 3Pl) ;
 
@@ -1621,7 +1622,7 @@ MAP:326 (@OBJ>) TARGET N + Abs + Pl OR PRON + Abs + Pl OR Num + Abs IF (*1 TRANS
 # Partikler anden runde
 # =====================
 MAP:0330 (@i-ADVL>) TARGET (part) IF (1 N + @<SUBJ) ;
-ADD:0340 (@ADVL>) TARGET part IF (1 V);
+#ADD:0340 (@ADVL>) TARGET part IF (1 V);
 MAP:0350 (@i-ADVL>) TARGET part IF (1 NIQ); #ingerlaannaq piviusunngortitsineq
 MAP:0360 (@ADVL>) TARGET part IF (*1 V BARRIER ("\,"))(NEGATE *-1 V BARRIER ("\,")); #20091112 tilfoejet komma som BARRIER
 
@@ -1687,15 +1688,15 @@ MAP:0565 (@i->V) TARGET Abs + Sg + NIQ IF (1 ("ajor")) ;
 
 MAP:0580 (@SUBJ>) TARGET APPELLATIV + Abs OR Prop + Abs OR Num + Abs IF (*1 INTRANSVERB)(NEGATE *1 TRANSVERB)(NEGATE -1 ("\(")) ; #nyt forsoeg 30.3.
 MAP:0590 (@<OBJ) TARGET APPELLATIV + Abs OR Prop + Abs OR PRON + Abs IF (-*1 TRANSVERB - Inf BARRIER Inf + @ADVL> OR Inf + @<ADVL OR ("\,"))(NEGATE *1 TRANSVERB); #20091111 af Beatrine. (linie 1243)
-ADD:0600 (@<OBJ) TARGET APPELLATIV + (Abs) OR Prop + (Abs) OR (PRON Abs) IF (-*1 TRANSVERB - Inf BARRIER Inf OR ("\,"));
+#ADD:0600 (@<OBJ) TARGET APPELLATIV + (Abs) OR Prop + (Abs) OR (PRON Abs) IF (-*1 TRANSVERB - Inf BARRIER Inf OR ("\,"));
 
 #Appellativer og proprier i relativ kasus kan være element af syntagmerne subjekt og possessor 
-ADD:0608 (@SUBJ>) TARGET APPELLATIV + Rel + Sg OR Prop + Rel + Sg IF (*1 TRANSVERB)(*1 Rel LINK *1 3SgPoss OR 3PlPoss BARRIER TRANSVERB ) ;
-ADD:0609 (@SUBJ>) TARGET APPELLATIV + Rel + Pl OR Prop + Rel + Pl IF (*1 TRANSVERB)(*1 Rel LINK *1 3SgPoss OR 3PlPoss BARRIER TRANSVERB ) ;
-
-ADD:0610 (@SUBJ>) TARGET APPELLATIV + Rel + Sg OR Prop + Rel + Sg IF (*1 TRANSVERB BARRIER 3SgPoss ) ;
-ADD:0611 (@SUBJ>) TARGET APPELLATIV + Rel + Pl OR Prop + Rel + Pl IF (*1 TRANSVERB BARRIER 3PlPoss ) ;
-ADD:0620 (@<SUBJ) TARGET APPELLATIV + (Rel) OR Prop + (Rel) OR (PRON) IF (-*1 TRANSVERB + VERB-NOTINF BARRIER ("\,")) ;
+#ADD:0608 (@SUBJ>) TARGET APPELLATIV + Rel + Sg OR Prop + Rel + Sg IF (*1 TRANSVERB)(*1 Rel LINK *1 3SgPoss OR 3PlPoss BARRIER TRANSVERB ) ;
+#ADD:0609 (@SUBJ>) TARGET APPELLATIV + Rel + Pl OR Prop + Rel + Pl IF (*1 TRANSVERB)(*1 Rel LINK *1 3SgPoss OR 3PlPoss BARRIER TRANSVERB ) ;
+#
+#ADD:0610 (@SUBJ>) TARGET APPELLATIV + Rel + Sg OR Prop + Rel + Sg IF (*1 TRANSVERB BARRIER 3SgPoss ) ;
+#ADD:0611 (@SUBJ>) TARGET APPELLATIV + Rel + Pl OR Prop + Rel + Pl IF (*1 TRANSVERB BARRIER 3PlPoss ) ;
+#ADD:0620 (@<SUBJ) TARGET APPELLATIV + (Rel) OR Prop + (Rel) OR (PRON) IF (-*1 TRANSVERB + VERB-NOTINF BARRIER ("\,")) ;
 
 #Nomen i oblik kasus kan være adverbalt adled
 MAP:0630 (@ADVL>) TARGET Lok IF (-1 BOS) ; 
@@ -1714,7 +1715,7 @@ MAP:0720 (@AGENS) TARGET Abl IF (*1 PASSIV)(NEGATE 0 TIME); #Tidsadverbaler må 
 MAP:0730 (@i-ADVL>) TARGET (Trm) IF (*1 vn BARRIER V);
 MAP:0740 (@ADVL>) TARGET (Lok) OR (Trm) OR (Abl) OR (Via) OR (Aeq) IF (*1 V); #Foerst adled til vn og i-ADVL, derefter andre ADVL
 
-ADD:0750 (@<ADVL) TARGET (Lok) OR (Trm) OR (Abl) OR (Via) OR (Aeq) OR (Ins) IF (-*1 V BARRIER ("\,") OR LU)(NEGATE -1 ("\("))(NEGATE 1 vn) ; # 20091109 sidste NEGATE
+#ADD:0750 (@<ADVL) TARGET (Lok) OR (Trm) OR (Abl) OR (Via) OR (Aeq) OR (Ins) IF (-*1 V BARRIER ("\,") OR LU)(NEGATE -1 ("\("))(NEGATE 1 vn) ; # 20091109 sidste NEGATE
 
 MAP:0760 (@<ADVL) TARGET N IF (-1 ("\("))(1 ("\)"))(-2 @<ADVL) ; #Parantetiske indskud samme led som foregående ord
 
@@ -1730,8 +1731,8 @@ MAP:0790 (@N>) TARGET ("ua" 1Sg) IF (1 (1SgPoss)) ;
 # ===================================
 MAP:0800 (@SUBJ>) TARGET PRON + 4Sg IF (*1C INTRANSVERB + 3Sg) ;
 MAP:0801 (@SUBJ>) TARGET PRON + 4Pl IF (*1C INTRANSVERB + 3Pl) ;
-ADD:0810 (@OBJ>) TARGET PRON + Abs + 1Sg IF (*1 TRANSVERB + (1SgO)) ;
-ADD:0820 (@SUBJ>) TARGET (PRON 1Sg) IF (*1 TRANSVERB + (1Sg)) ;
+#ADD:0810 (@OBJ>) TARGET PRON + Abs + 1Sg IF (*1 TRANSVERB + (1SgO)) ;
+#ADD:0820 (@SUBJ>) TARGET (PRON 1Sg) IF (*1 TRANSVERB + (1Sg)) ;
 
 #Konjunktioner er konjunktioner, når de indleder en sætning, ellers er de adverbier
 MAP:0830 (@ADVL>) TARGET ADVERBIUM IF (*1 Par OR Inf OR InfNeg BARRIER VFIN) ; #20091109
@@ -1767,7 +1768,7 @@ MAP:0960 (@<ADVL) TARGET Inf + 1Sg OR InfNeg + 1Sg IF (*-1 VFIN + 1Sg)(NEGATE 0 
 MAP:0970 (@ADVL>) TARGET Inf + 2Sg OR InfNeg + 2Sg IF (*1 VFIN + 2Sg);
 MAP:0980 (@<ADVL) TARGET Inf + 2Sg OR InfNeg + 2Sg IF (*-1 VFIN + 2Sg)(NEGATE 0 LU);
 MAP:0990 (@ADVL>) TARGET Inf + 4Sg OR InfNeg + 4Sg IF (*1 VFIN + 3Sg);
-MAP:1000 (@<ADVL) TARGET Inf + 4Sg OR InfNeg + 4Sg IF (*-1 VFIN + 3Sg)(NEGATE 0 LU);
+MAP:1000 (@<ADVL) TARGET INF + 4Sg IF (*-1 VFIN + 3Sg BARRIER KOMMA)(NEGATE 0 LU); #BARRIER for at forebygge, at ledsagemåden peger baglæns i stedet for forlæns ved komma
 MAP:1010 (@ADVL>) TARGET Inf + 1Pl OR InfNeg + 1Pl IF (*1 VFIN + 1Pl);
 MAP:1020 (@<ADVL) TARGET Inf + 1Pl OR InfNeg + 1Pl IF (*-1 VFIN + 1Pl)(NEGATE 0 LU);
 MAP:1030 (@ADVL>) TARGET Inf + 2Pl OR InfNeg + 2Pl IF (*1 VFIN + 2Pl);
@@ -1807,7 +1808,9 @@ MAP:1171 (@CL-<CIT) TARGET Par + TRANSVERB IF (*-1 ORATIOOBLVERB);
 MAP:1180 (@CL-CIT>) TARGET Par + INTRANSVERB + 3Sg OR Inf + INTRANSVERB + 4Sg OR InfNeg + INTRANSVERB + 4Sg OR Cau + INTRANSVERB + 3Sg IF (*1 ORATIOOBLVERB)(-*1 Abs + Sg); #(NEGATE 1 Prop + Abs OR Prop + Attr); #forstaar ikke Prop begraensningerne 12.03
 MAP:1181 (@CL-CIT>) TARGET Par + INTRANSVERB + 3Pl OR Inf + INTRANSVERB + 4Pl OR InfNeg + INTRANSVERB + 4Pl OR Cau + INTRANSVERB + 3Pl IF (*1 ORATIOOBLVERB)(-*1 Abs + Pl); #(NEGATE 1 Prop + Abs OR Prop + Attr); #forstaar ikke Prop begraensningerne 12.03
 
-MAP:1190 (@<CL-CIT) TARGET Par + INTRANSVERB + 3Sg OR Inf + INTRANSVERB + 4Sg OR InfNeg + INTRANSVERB + 4Sg OR Cau + INTRANSVERB + 3Sg IF (-*1 ORATIOOBLVERB)(-*1 Abs + Sg BARRIER ORATIOOBLVERB)(NEGATE 1 Prop + Abs OR Prop + Attr)(NEGATE 0 nv LINK *1 Par + Sg); #20100322 Sidste NEGATE for skyld oo, hvor et verbalnomen er subjekt
+MAP:1189 (ADVL>) TARGET INF + 4Sg IF (*1 INF + 4Sg BARRIER V) ; #Før 1190 for at forhindre adverbial ledsagemåde tagges som oratio oblique 
+
+MAP:1190 (@<CL-CIT) TARGET Par + INTRANSVERB + 3Sg OR INF + INTRANSVERB + 4Sg OR Cau + INTRANSVERB + 3Sg IF (-*1 ORATIOOBLVERB)(-*1 Abs + Sg BARRIER ORATIOOBLVERB)(NEGATE 1 Prop + Abs OR Prop + Attr)(NEGATE 0 nv LINK *1 Par + Sg); #20100322 Sidste NEGATE for skyld oo, hvor et verbalnomen er subjekt
 MAP:1191 (@<CL-CIT) TARGET Par + INTRANSVERB + 3Pl OR Inf + INTRANSVERB + 4Pl OR InfNeg + INTRANSVERB + 4Pl OR Cau + INTRANSVERB + 3Pl IF (-*1 ORATIOOBLVERB)(-*1 Abs + Pl BARRIER ORATIOOBLVERB)(NEGATE 1 Prop + Abs OR Prop + Attr)(NEGATE 0 nv LINK *1 Par + Sg); #20100322 Sidste NEGATE for skyld oo, hvor et verbalnomen er subjekt
 MAP:1192 (@<CL-CIT) TARGET Inf + INTRANSVERB + 1Sg OR InfNeg + INTRANSVERB + 1Sg OR Cau + INTRANSVERB + 1Sg IF (-*1 ORATIOOBLVERB + 1Sg BARRIER ORATIOOBLVERB)(NEGATE 1 Prop + Abs OR Prop + Attr)(NEGATE 0 nv LINK *1 Par + Sg); #20100322 Sidste NEGATE for skyld oo, hvor et verbalnomen er subjekt
 
@@ -2012,10 +2015,14 @@ SELECT INTRANSVERB + Par + 3Pl IF (*1 ORATIOOBLVERB)(-*1 Abs + Pl LINK NEGATE *1
 
 SELECT Par + INTRANSVERB + 3Sg OR Inf + INTRANSVERB + 4Sg OR InfNeg + INTRANSVERB + 4Sg OR Cau + INTRANSVERB + 3Sg IF (-*1 ORATIOOBLVERB)(-*1 Abs + Sg BARRIER ORATIOOBLVERB)(NEGATE 1 Prop + Abs OR Prop + Attr)(NEGATE 0 nv LINK *1 Par + Sg); #20100322 Sidste NEGATE for skyld oo, hvor et verbalnomen er subjekt
 
-SELECT:204 Par + INTRANSVERB + 3Pl OR Inf + INTRANSVERB + 4Pl OR InfNeg + INTRANSVERB + 4Pl OR Cau + INTRANSVERB + 3Pl IF (-*1 ORATIOOBLVERB)(-*1 Abs + Pl BARRIER ORATIOOBLVERB)(NEGATE 1 Prop + Abs OR Prop + Attr)(NEGATE 0 nv LINK *1 Par + Sg); #20100322 Sidste NEGATE for skyld oo, hvor et verbalnomen er subjekt
+SELECT:0204 Par + INTRANSVERB + 3Pl OR Inf + INTRANSVERB + 4Pl OR InfNeg + INTRANSVERB + 4Pl OR Cau + INTRANSVERB + 3Pl IF (-*1 ORATIOOBLVERB)(-*1 Abs + Pl BARRIER ORATIOOBLVERB)(NEGATE 1 Prop + Abs OR Prop + Attr)(NEGATE 0 nv LINK *1 Par + Sg); #20100322 Sidste NEGATE for skyld oo, hvor et verbalnomen er subjekt
+
+#Oratio oblique med eksplicit subjekt
+SELECT:0205 Par + 3Sg + TRANSVERB IF (*-1 ORATIOOBLVERB BARRIER VFIN LINK *1 N + Rel LINK *1 Par + TRANSVERB) ;
 
 #Oratio oblique uden eksplicit subjekt
-SELECT:205 Par + 3Sg IF (*-1 ORATIOOBLVERB BARRIER V) ;
+SELECT:0206 Par + 3Sg IF (*-1 ORATIOOBLVERB BARRIER V) ;
+
 #Fjern Par hvis intet inquit og sikkert objekt for TRANSVERB til højre
 REMOVE Par IF (NEGATE *0 ORATIOOBLVERB BARRIER TRANSVERB)(*1 TRANSVERB BARRIER TRANSVERB) ;
 
@@ -2742,6 +2749,7 @@ REMOVE:5758 ("pissut") + LIR IF (0 ("pissuseq")) ;
 REMOVE:5759 ("ani") + NGA IF (0 ("aningaasartuut") OR ("aningaasaq"));
 REMOVE:5760 ("akik") IF (0 ("aki")); # "aki" dækker både "modhage" og "pris"
 REMOVE:5761 ("aqqalu") IF (0 ("ateq") + 3SgPoss)(*1 V + 3SgO)(NEGATE 0 ("<\\p{Lu}.*>"r)); #Vælg ateq + 3Sg hvis objekt og ikke med upper case
+REMOVE:5762 ("iteq") + UTE + nn ; # Helt usandsynlig kombination
 
 # Ugedagene
 REMOVE ("ataaseq") + NNGUR + NIRU IF (0 ("ataaseq") + NNGUR + NIQ + U) ;
