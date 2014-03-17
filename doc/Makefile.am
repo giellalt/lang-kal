@@ -40,8 +40,8 @@ JSP_PAGES=root-morphology.jspwiki \
 # adjectives-oahpa-affixes.jspwiki \
 # adjectives-affixes.jspwiki       \
 # verbs-affixes.jspwiki
-ALLINONE_JSP_PAGE=$(GTLANG).jspwiki
-LINKS=Links.jspwiki
+ALLINONE_JSP_PAGE=$(srcdir)/$(GTLANG).jspwiki
+LINKS=$(srcdir)/Links.jspwiki
 
 endif # CAN_DOCC
 
