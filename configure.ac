@@ -133,6 +133,8 @@ AC_CONFIG_FILES([Makefile \
                  test/tools/spellcheckers/Makefile \
                  tools/Makefile \
                  tools/grammarcheckers/Makefile \
+                 tools/mt/Makefile \
+                 tools/mt/apertium/Makefile \
                  tools/preprocess/Makefile \
                  tools/shellscripts/Makefile \
                  tools/spellcheckers/Makefile \
