@@ -994,7 +994,7 @@ LIST TRMVERB = "iser" ;
 SET MOVE-VERB = LOKVERB | ABLVERB | TRMVERB ;
 
 # 20091106 Foelgende med tak til Tino for at forebygge at "oqar" + USIQ opfattes som inquit
-LIST ORATIOOBLVERBnOQAR = "aalajanger" "aalianger" "eqqarsar" "eqqartor" "ilisimatitsissut" "isuma"
+LIST ORATIOOBLVERBnOQAR = "aalajanger" "aalianger" "eqqarsar" "eqqartor" "ilimagaa" "ilisimatitsissut" "isuma"
 "isummer" "malugaa" "malunnarsi" "naatsorsor" "nalu" "nalunaar" "nalunaarut" "neriup" "qular"
 "qularnar" "qinnuigaa" "paasi" "pinngitsaali" "sinnattoraa" "siunnersor" "taku" "unner" "uppernarsar" ;
 SET OQARnUSIQ = ("oqar") - (USIQ) ;
@@ -1340,6 +1340,10 @@ REMOVE:0550 Via + 3PlPoss IF (0 3SgPoss)(Negate -1 Pl + Rel) ;
 
 REMOVE:0551 Lok + Aeq IF (0 Aeq + 4SgPoss)(*1 TRANSVERB + 3Sg) ;
 
+REMOVE:5766 ("anaq") + U IF (0 ("anaana") ) ;
+REMOVE:5767 ("Ana") + U IF (0 ("anaana") ) ;
+
+
 ##########################################
 # Frequent and safe rules - proper names #
 ##########################################
@@ -1418,8 +1422,8 @@ SELECT:050 ("nammineq") + Abs + Sg IF (NEGATE -1 N) ;
 REMOVE:080 3PlO IF (0 3SgO)(*-1C Abs + Sg BARRIER INTRANSVERB + 3Sg OR 4Sg) ;
 REMOVE:081 3SgO IF (0 3PlO)(*-1C Abs + Pl BARRIER INTRANSVERB + 3Pl OR 4Pl) ;
 
-REMOVE:085 Refl IF (NEGATE *-1 ("immi"));
-#20100822 disambiguerer refleksiv fra monovalente former
+REMOVE:085 Refl IF (NEGATE *-1 ("immi"))(NEGATE 0 ("paasi"))(NEGATE 0 ("paa") + SI);
+#20100822 disambiguerer refleksiv fra monovalente former men må ikke overskrive regel 5556
 
 REMOVE NO_HTR + HTR IF (NEGATE 0 vn + GE); #"allap" USIQ vn GE nv HTR vv SSA vv V Inf 1Sg REMOVE:1416 går galt. Derfor NEGATWE
 #20091108 - umulige kombinationer som ("allap" HTR)
@@ -1467,6 +1471,9 @@ SELECT 3Pl IF (-1C Rel + Pl)(1 EOS OR ("\,")); #" begraensning til saetningsfina
 SELECT Inf + 4Sg IF (-*1 ORATIOOBLVERB + 3Sg)(NEGATE *1 Inf) (NEGATE *1 Par);
 SELECT Inf + 4Pl IF (-*1 ORATIOOBLVERB + 3Pl)(NEGATE *1 Inf)(NEGATE *1 Par) ;
 #Simpel oratio obliqua uden andre ledsagemåder end CL-CIT
+
+#Et forsøg på at fjerne læsninger som N i stedet for som Par
+SELECT:0090 Par + SSA IF (0 N + SSA);
 
 ################################################################
 # Frequent and safe rules - specific derivatives (remember also to check the final probabilistic loop) #
@@ -1591,7 +1598,7 @@ MAP:0188 (@N>) TARGET NUMHOVED IF (1 Num); # ' .. kapitel 2 ..' specialfald før
 MAP:0189 (@HNOUN) TARGET N OR Abbr OR Num IF (NEGATE *0 V)(1 ParagrafSlut); #20100827 Safe headlines
 MAP:0190 (@HNOUN) TARGET APPELLATIV + Abs OR Prop + Abs OR Abbr - FIRSTNAME IF (NEGATE *0 VERB-NOTINF)(NEGATE *1 TRANSVERB + Inf OR TRANSVERB + InfNeg);
 MAP:0200 (@i-ADVL>) TARGET Trm IF (1 N + (vn)) ;
-MAP:0210 (@<OBJ) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (-1 TRANSVERB + 3SgO)(*1 CLB OR EOS BARRIER 3SgO)(NEGATE *-1 ORATIOOBLVERB LINK *1 V + 3Sg); #20100227 Tronds tilfoejelse. 20100322 NEGATE forebygger forkerte hit paa subjekter (PL)
+MAP:0210 (@<OBJ) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (-1 TRANSVERB + 3SgO)(*1 CLB OR EOS BARRIER 3SgO)(NEGATE *-1 ORATIOOBLVERB LINK *1 V + 3Sg)(NEGATE *1 V + 3Sg); #20100227 Tronds tilfoejelse. 20100322 første NEGATE forebygger forkerte hit paa subjekter (PL), andet NEGATE pga. .. pillugu PER nalorsarpoq,hvor PER ikke må pege på pillugu
 
 MAP:0220 (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (*1 Rel)(*1 TRANSVERB + 3SgO BARRIER VERB-NOTINF) ; #Typen O S V-GE udvidet til også at hitte uden GE
 #MAP:0220 (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (*1 Rel)(*1 TRANSVERB + GE + 3SgO BARRIER VERB-NOTINF) ; #Til typen O S V-GE
@@ -1620,7 +1627,11 @@ MAP:0320 (@POSS>) TARGET ("kalaaleq") + Rel + Pl IF (1 ("oqaaseq") OR ("nuna") O
 MAP:0321 @<OBJ TARGET LIK + Sg + Abs OR QAR + Sg + Abs IF (*-1 TRANSVERB + 3SgO LINK *-1 Sg + Abs) ;
 
 #De mest generelle OBJ-regler
+MAP:0324 (@SUBJ>) TARGET N + Abs + Sg OR PRON + Abs + Sg IF (*1 INTRANSVERB LINK *-1 INF + 3SgO LINK -1 Abs + Sg) ;
+#Særtilfælde for at forhindre OBJ-tagging Per i Per tamanna pillugu nalusarpoq
+
 MAP:325 (@OBJ>) TARGET N + Abs + Sg OR PRON + Abs + Sg IF (*1 TRANSVERB + 3SgO BARRIER INTRANSVERB + 3Sg OR 4Sg) ;
+
 MAP:326 (@OBJ>) TARGET N + Abs + Pl OR PRON + Abs + Pl OR Num + Abs IF (*1 TRANSVERB + 3PlO BARRIER INTRANSVERB + 3Pl OR 4Pl) ;
 
 # Partikler anden runde
@@ -1689,6 +1700,7 @@ MAP:0565 (@i->V) TARGET Abs + Sg + NIQ IF (1 ("ajor")) ;
 # Nominer 
 # =======
 #Appellativer i absolut kasus kan være element af syntagmerne subjekt, objekt, tidsangivelse, overskriftsord 
+#Vedr. subjekter se også 0324 ovenfor
 
 MAP:0580 (@SUBJ>) TARGET APPELLATIV + Abs OR Prop + Abs OR Num + Abs IF (*1 INTRANSVERB)(NEGATE *1 TRANSVERB)(NEGATE -1 ("\(")) ; #nyt forsoeg 30.3.
 MAP:0590 (@<OBJ) TARGET APPELLATIV + Abs OR Prop + Abs OR PRON + Abs IF (-*1 TRANSVERB - Inf BARRIER Inf + @ADVL> OR Inf + @<ADVL OR ("\,"))(NEGATE *1 TRANSVERB); #20091111 af Beatrine. (linie 1243)
@@ -1924,7 +1936,7 @@ SELECT:ContempPost Par + INTRANSVERB IF (*-1 VFIN - ORATIOOBLVERB)(NEGATE -*1 VF
 SELECT:VnIkkePar02 vn + Sg IF (-*1 N + Sg)(1 vn + Sg + LU LINK *1C Par) ;
 #Specialfald til foelgende hvor vn vn+LU foelges af Par
 
-SELECT:OverskriftParSg Par + 3Sg IF (-*1 N + Sg)(NEGATE *0 VFIN)(NEGATE *1C Par) ;
+SELECT:0098 Par + 3Sg IF (-*1 Abs + Sg)(NEGATE *0 VFIN)(NEGATE *1C Par) ;
 #Participium i overskrifter. Anden NEGATE pga. VnIkkePar til venstre for en overskrifts-Par
 
 REMOVE:099 Par + 3Pl IF (NEGATE *0 VFIN)(NEGATE 0 VFIN)(*1 Par + 3Pl) ; # evt. også (@1 ("tassa")) som IF, hvis for bred
@@ -2722,6 +2734,8 @@ REMOVE:5570 LIAQ + U IF (0 LIAR) ; #N-liaatessaavaa snarere end N-LIAQ+U+TIP+SSA
 REMOVE:5571 NIQSSAQ IF (0 NIQ + SSAQ)(-*1 @POSS> + HUMAN) ;
 REMOVE:5572 GIP IF (0 GE + 3SgPoss) ; #ikiortigilluarnera - måske ad hoc. Skal checkes!
 REMOVE:5573 ("oqar") + USIQ IF (0 ("oqaaseq")) ;
+REMOVE:5574 ("kingu") + SI IF (0 ("kingusip")) ;
+SELECT:5575 SURE IF (0 GE)(0 2Sg + 1SgO) ; #'Du mener om mig' mere sandsynlig end 'du har mig'
 
 
 # Enkelte substantiver
@@ -2758,6 +2772,8 @@ REMOVE:5762 ("iteq") + UTE + nn ; # Helt usandsynlig kombination
 REMOVE:5763 ("qanik") + NIAR + nv IF (0 ("qanip") + NIAR + vv) ;
 REMOVE:5764 ("nipi") + RUJUK IF (0 ("niperujoor"));
 REMOVE:5765 ("pissiaq") + GIP IF (0 ("pissiaq") + GE) ;
+#REMOVE:5766 ("anaq") + U IF (0 ("anaana") ) ; #Flyttet til Before-section for at undgå 
+#REMOVE:5767 ("Ana") + U IF (0 ("anaana") ) ; #konflikt med InfNeg reglerne
 
 
 # Ugedagene
