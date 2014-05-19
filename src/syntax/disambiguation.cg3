@@ -968,6 +968,8 @@ LIST POSS_ABBR = "sap" ; # forkortelser, der oftest anvendes som possessor
 
 SET PRON = DemPron | IntPron | IndefPron | DivPron | PersPron | ReflPron | Adj ;
 
+SET NOMEN = N | N* ;
+
 # Partikler
 # ---------
 LIST KONJUNKTION = "aamma" "kisianni" "imaluunniit" "taava" ;
@@ -1051,8 +1053,8 @@ SET sinerOBJ = GEOOBJ | Prop ;
 LIST Mal = "Trond" "Per" ;
 LIST Fem = "Kirsten" ;
 LIST Sur = "Rasmussen" "Trosterud" ;
-LIST TITEL = ("siulittar" TUQ) "kunngi" "fru" "hr" ;
-
+LIST TITEL = ("siulittar" TUQ) "kunngi" "fru" "hr" "lektor" ("pisoq" TAQ) "borgmester" ;
+ 
 SET FIRSTNAME = Mal | Fem | ("Frederik") | ("Nuka") | ("A") | ("B") | ("C") | ("Chr") | ("D") | ("E") | ("F") | ("G") | ("H") | ("I") | ("J") | ("K") | ("Kr") | ("L") | ("M") | ("N") | ("O") | ("P") | ("Q") | ("R") | ("S") | ("T") | ("U") | ("V") | ("W") | ("X") | ("Y") | ("Z") | ("Æ") | ("Ø") | ("Å") ;
 SET NAME = FIRSTNAME | Sur ;
 SET NOT-FIRST = WORD - FIRSTNAME ;
@@ -1356,7 +1358,7 @@ REMOVE (Prop Attr) IF (NEGATE 1 Prop);
 REMOVE Prop + Attr IF (1 Prop + LU) ;
 # fordi Judithe ikke skal være Attr i 'Judithe Perilu'
 
-SELECT Prop + Attr IF (1 Prop + Sg + Abs LINK (NEGATE 0 Prop + IP)); #Ny 20101013. Må ikke hitte på 'Per Nuummiittoq'
+SELECT Prop + Attr IF (1 Prop + Sg + Abs) (NEGATE 1 Prop + IP); #Ny 20101013. Må ikke hitte på 'Per Nuummiittoq'
 
 REMOVE:0501 Prop IF (-1 BOS)(1 DemPron) ; #Arnaq eller arnaq først i sætningen?
 
@@ -1508,27 +1510,33 @@ MAP:0001 (@PRED2) TARGET Par IF (@1 Interj)(NEGATE *0 VFIN); #Ved emfase og udbr
 
 #Ledsagemåde som erstatningsform ved paratakse
 
-MAP:0010 (@PRED) TARGET Inf + LU OR InfNeg + LU IF (1 VFIN) ;
-MAP:0011 (@CAU) TARGET Inf + LU OR InfNeg + LU IF (1 Cau) ;
+MAP:0005 (@PRED) TARGET Inf + LU OR InfNeg + LU IF (1 VFIN) ;
+MAP:0006 (@CAU) TARGET Inf + LU OR InfNeg + LU IF (1 Cau) ;
 
-MAP:0018 (@PRED) TARGET Inf + TRANSVERB OR InfNeg + TRANSVERB IF (-2 VFIN)(-1 Abs + LU) ; #Paratakser med transitive verber med objekt som andet led
-MAP:0019 (@CAU) TARGET Inf + TRANSVERB OR InfNeg + TRANSVERB IF (-2 Cau)(-1 Abs + LU) ; #Paratakser med transitive verber med objekt som andet led
-MAP:0020 (@PRED) TARGET Inf + LU OR InfNeg + LU IF (-1 VFIN) ;
-MAP:0021 (@CAU) TARGET Inf + LU OR InfNeg + LU IF (-1 Cau) ;
+MAP:0007 (@PRED) TARGET Inf + TRANSVERB OR InfNeg + TRANSVERB IF (-2 VFIN)(-1 Abs + LU) ; #Paratakser med transitive verber med objekt som andet led
+MAP:0008 (@CAU) TARGET Inf + TRANSVERB OR InfNeg + TRANSVERB IF (-2 Cau)(-1 Abs + LU) ; #Paratakser med transitive verber med objekt som andet led
+MAP:0009 (@PRED) TARGET Inf + LU OR InfNeg + LU IF (-1 VFIN) ;
+MAP:0010 (@CAU) TARGET Inf + LU OR InfNeg + LU IF (-1 Cau) ;
 
 # Bisætninger og indskud, der må håndteres før andre sætningsled
 # ===============================================
 
-MAP:0028 (@PRED2) TARGET INTRANSVERB + Inf + 4Pl IF (*-1 Abs + Pl OR Abs + Sg + LU) (T:NexusHøjre)(NEGATE 1 vn) ; #(NEGATE *0 ORATIOOBLVERB BARRIER VFIN)(1 Abs  OR ("\,")); #koncessive saetninger uden konjunktion
+MAP:0015 (@PRED2) TARGET INTRANSVERB + Inf + 4Pl IF (*-1 Abs + Pl OR Abs + Sg + LU) (T:NexusHøjre)(NEGATE 1 vn) ; #(NEGATE *0 ORATIOOBLVERB BARRIER VFIN)(1 Abs  OR ("\,")); #koncessive saetninger uden konjunktion
 
-MAP:0029 (@PRED2) TARGET INTRANSVERB + Par + 3Pl IF (*-1 Abs + Pl)(NEGATE *0 ORATIOOBLVERB BARRIER VFIN)(1 Abs OR ("\,")); #koncessive saetninger uden konjunktion
-MAP:0030 (@PRED2) TARGET INTRANSVERB + Par + 3Sg IF (*-1 Abs + Sg)(NEGATE *0 ORATIOOBLVERB BARRIER VFIN); #(1 Abs OR ("\,")); #koncessive saetninger uden konjunktion
+MAP:0016 (@PRED2) TARGET INTRANSVERB + Par + 3Pl IF (*-1 Abs + Pl)(NEGATE *0 ORATIOOBLVERB BARRIER VFIN)(1 Abs OR ("\,")); #koncessive saetninger uden konjunktion
+MAP:0017 (@PRED2) TARGET INTRANSVERB + Par + 3Sg IF (*-1 Abs + Sg)(NEGATE *0 ORATIOOBLVERB BARRIER VFIN); #(1 Abs OR ("\,")); #koncessive saetninger uden konjunktion
 
-MAP:0031 (@SUBJ>) TARGET N + Abs + LU IF (*1 INF + 1Pl OR 2Pl OR 4Pl BARRIER V) ;
-MAP:0032 (@SUBJ>) TARGET N + Abs + LU IF (-1 VFIN + 3Sg)(1 Inf + 4Pl)(2 N + Sg LINK *1 V + 3Sg) ;
-MAP:0033 (@SUBJ>) TARGET N + Abs + LU IF (-1 VFIN + 3Sg)(1 Inf + 4Pl)(2 N + Pl LINK *1 V + 3Pl) ;
+MAP:0030 @<APPOS TARGET Abs + Sg + NOMEN + TUQ IF ( *-1 Abs + Sg BARRIER V LINK 1 KOMMA ); # Per, NN-imeersoq(@<APPOS), oqarpoq
+MAP:0031 (@PROP>) TARGET Prop OR FIRSTNAME OR TITEL IF (1 Prop); #fra 1350 for at udelukke overtallig SUBJ-tagging
+MAP:0032 @<APPOS TARGET Prop + Abs + Sg - LU IF (-1 Prop + Attr)(-2 N + Abs + Sg )(NEGATE -2 @PROP>)(NEGATE -2 TITEL) ; # N per langgård
+MAP:0033 @<APPOS TARGET Prop + Abs + Sg - LU IF (-1 N + Abs + Sg)(NEGATE -1 @PROP> )(NEGATE -1 TITEL) ; # N Per
+#første NEGATE for at forhindre hit på fx (Royal Arctic Line)@SUBJ> VERBUM og -LU for ikke at hitte på Danmark Islandilu og andet NEGATE for at blokere PISORTAQ Per Langgård oqarpoq
 
-MAP:0040 (@CL-<ADVL) TARGET Par + 3Pl + 4SgO OR Par + 4Sg IF (*-1 VFIN) ; #20091109 participium på -gaanni altid neksusadverbial
+MAP:0036 (@SUBJ>) TARGET N + Abs + LU IF (*1 INF + 1Pl OR 2Pl OR 4Pl BARRIER V) ;
+MAP:0037 (@SUBJ>) TARGET N + Abs + LU IF (-1 VFIN + 3Sg)(1 Inf + 4Pl)(2 N + Sg LINK *1 V + 3Sg) ;
+MAP:0038 (@SUBJ>) TARGET N + Abs + LU IF (-1 VFIN + 3Sg)(1 Inf + 4Pl)(2 N + Pl LINK *1 V + 3Pl) ;
+
+MAP:0045 (@CL-<ADVL) TARGET Par + 3Pl + 4SgO OR Par + 4Sg IF (*-1 VFIN) ; #20091109 participium på -gaanni altid neksusadverbial
 MAP:0050 (@PRED2) TARGET Par IF (*-1 ADVERBIUM OR UNA BARRIER V)(NEGATE *0 ORATIOOBLVERB) ; #20091109
 MAP:0051 (@PRED2) TARGET Par OR Inf OR InfNeg IF (*-1 ("soorlu") BARRIER V)(NEGATE *0 VFIN) ;
 MAP:0052 (@PRED2) TARGET Par + 3Pl IF (NEGATE *0 VFIN)(NEGATE 0 VFIN) ; #MAP-er SELECT:100
@@ -1554,7 +1562,7 @@ MAP:0495 (@SUBJ>) TARGET Prop + Rel IF (-*1 Rel LINK *-1 Rel LINK *1 TRANSVERB L
 
 MAP:0177 (@<APPOS) TARGET Prop + Sg IF (-1 N + Sg)(1 N + Sg + LU)(*1 VFIN + 3Pl BARRIER KOMMA) ;
 
-MAP:1350 (@PROP>) TARGET Prop OR FIRSTNAME OR TITEL IF (1 Prop);
+#MAP:1350 (@PROP>) TARGET Prop OR FIRSTNAME OR TITEL IF (1 Prop);#Flyttet til 0030 for at forebygge SUBJ-mappinger
 
 MAP:1370 (@N>) TARGET (Prop Abbr) IF (1 Num);
 
@@ -2070,8 +2078,8 @@ SELECT ("pingaartumik") + part IF (NEGATE -1 Ins + Sg) (NEGATE *1 QAR OR LIK BAR
 SELECT COMPOUND_N + Prop + Attr IF (1 COMPOUND_N) ; #Nominer, der bruges compound-lignende (Windows, program, Linux)
 SELECT Prop + Attr IF (1 Prop + Sg) ;
 SELECT FIRSTNAME IF (1 Prop + Sg) ; #vælger stort bogstav qua forkortelse frem for lille bogstav
-SELECT Abs IF (-2 Prop + Abs)(-1 ("\,"))(NEGATE 0 Rel LINK 1 POSSESSUM3); #'Enoksen, SIUMUT' 'Kleist, INUIT Ataqatigiit'
-SELECT Abs IF (-3 Prop + Abs)(-2 ("\,"))(-1 Abs)(NEGATE 0 Rel LINK 1 POSSESSUM3); #'Enoksen, SIUMUT' 'Kleist, Inuit ATAQATIGIIT'
+SELECT Abs + Prop IF (-2 Prop + Abs)(-1 ("\,"))(NEGATE 0 Rel LINK 1 POSSESSUM3); #'Enoksen, SIUMUT' 'Kleist, INUIT Ataqatigiit'
+SELECT Abs + Prop IF (-3 Prop + Abs)(-2 ("\,"))(-1 Abs)(NEGATE 0 Rel LINK 1 POSSESSUM3); #'Enoksen, SIUMUT' 'Kleist, Inuit ATAQATIGIIT'
 
 #Nominer - kongruens og paratakse
 SELECT N + Sg IF (1 N + Sg)(NEGATE *0 V) ; # Vedr. overskrifter og sætningsemner
@@ -2387,7 +2395,7 @@ REMOVE Lok + Pl IF (-1 Rel + Sg)(0 3SgPoss)(NEGATE 1 3SgPoss); #'ippiup QAANI na
 
 SELECT:0820 Aeq + Sg + 4SgPoss IF (*-1 @SUBJ> + Sg)(*1 V + 3Sg) ;
 
-SELECT:0821 Sg + 4SgPoss IF (*-1 Sg + @SUBJ>)(*1 3SgO); #fjerner Lok + Pl og vælger coref objekt
+SELECT:0821 Sg + Abs + 4SgPoss IF (*-1 Sg + Rel + @SUBJ>)(*1 3SgO); #fjerner Lok + Pl og vælger coref objekt
 
 
 # Verbal disambiguering
