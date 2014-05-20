@@ -1121,6 +1121,7 @@ LIST @ABSOLUT_PRED = @ABSOLUT_PRED ;	#Participier med nexus inde i en NP eller a
 LIST @i->V = @i->V ; 	# NIQ ved ajor, saper, artor, nalu
 LIST @SUBJ_COMP = @SUBJ_COMP ;	#Prædikat til subjekt/ subjective complement
 LIST @>V = @>V ;
+LIST §noun-comma = §noun-comma ;
 
 SET TAGGED = @PRED OR @SUBJ> OR @<SUBJ OR @OBJ> OR @<OBJ OR @ADVL> OR @<ADVL OR @CL-ADVL> OR @CL-<ADVL OR @CL-CIT> OR @CL-<CIT OR @i-SUBJ> OR @i-<SUBJ OR @i-OBJ_DOTR> OR @i-<OBJ OR @i-ADVL> OR @i-<ADVL OR @INTERJ OR @PROP> OR @HNOUN OR @>N OR @N< OR @i->N OR @i-N< OR @POSS OR @POSS> OR @>V ;
 
@@ -1427,19 +1428,23 @@ REMOVE:081 3SgO IF (0 3PlO)(*-1C Abs + Pl BARRIER INTRANSVERB + 3Pl OR 4Pl) ;
 REMOVE:085 Refl IF (NEGATE *-1 ("immi"))(NEGATE 0 ("paasi"))(NEGATE 0 ("paa") + SI);
 #20100822 disambiguerer refleksiv fra monovalente former men må ikke overskrive regel 5556
 
-REMOVE NO_HTR + HTR IF (NEGATE 0 vn + GE); #"allap" USIQ vn GE nv HTR vv SSA vv V Inf 1Sg REMOVE:1416 går galt. Derfor NEGATWE
+REMOVE:0086 NO_HTR + HTR IF (NEGATE 0 vn + GE); #"allap" USIQ vn GE nv HTR vv SSA vv V Inf 1Sg REMOVE:1416 går galt. Derfor NEGATWE
 #20091108 - umulige kombinationer som ("allap" HTR)
 
-REMOVE Opt IF (0 ("suli") OR ("aali") OR ("illit")) ; #naesten helt sikkert partikel/ pronomen
-REMOVE Opt + 3Pl IF (NEGATE 1 EOS); #fanger ambiguiteter med LIK+Pl ved at postulere, at Opt altid saetningsfinal 
-REMOVE Imp IF (*0C Ind) ;
+REMOVE:0087 Opt IF (0 ("suli") OR ("aali") OR ("illit")) ; #naesten helt sikkert partikel/ pronomen
+REMOVE:0088 Opt + 3Pl IF (NEGATE 1 EOS); #fanger ambiguiteter med LIK+Pl ved at postulere, at Opt altid saetningsfinal 
+REMOVE:0089 Imp IF (*0C Ind) ;
 #Overfloedige finitte verber
 
 #REMOVE TRANSVERB + GE + 2Sg OR TRANSVERB + QE + 2Sg IF (NEGATE -1**< ("illit"));
 #Overfloedige 2Sg subjekter ved transitive schwa stammer fx "nalunaar" QE vv V Ind 2Sg 3SgO 
 
-REMOVE:7500 Ind + 2Sg + 3SgO + SchwaDerivativ IF (NEGATE -1**< ("illit"));
+REMOVE:00900 Ind + 2Sg + 3SgO + SchwaDerivativ IF (NEGATE -1**< ("illit"));
 #Overfloedige 2Sg subjekter ved transitive schwa stammer fx "nalunaar" QE vv V Ind 2Sg 3SgO 
+
+SELECT:0091 Inf + 4SgO + LU OR InfNeg + 4SgO + LU IF (-1C V + 4SgO) ;
+SELECT:0092 Inf + 4PlO + LU OR InfNeg + 4PlO + LU IF (-1C V + 4PlO) ;
+#Parataktiske coref objekter sikres før de følgende
 
 SELECT Inf + 1Sg + LU OR InfNeg + 1Sg + LU IF (-1C V + 1Sg) ;
 SELECT Inf + 2Sg + LU OR InfNeg + 2Sg + LU IF (-1C V + 2Sg) ;
@@ -1475,7 +1480,7 @@ SELECT Inf + 4Pl IF (-*1 ORATIOOBLVERB + 3Pl)(NEGATE *1 Inf)(NEGATE *1 Par) ;
 #Simpel oratio obliqua uden andre ledsagemåder end CL-CIT
 
 #Et forsøg på at fjerne læsninger som N i stedet for som Par
-SELECT:0090 Par + SSA IF (0 N + SSA);
+SELECT:0099 Par + SSA IF (0 N + SSA);
 
 ################################################################
 # Frequent and safe rules - specific derivatives (remember also to check the final probabilistic loop) #
@@ -1521,12 +1526,13 @@ MAP:0010 (@CAU) TARGET Inf + LU OR InfNeg + LU IF (-1 Cau) ;
 # Bisætninger og indskud, der må håndteres før andre sætningsled
 # ===============================================
 
+ADD (§noun-comma) Abs + Sg (1 KOMMA) ; #tag for mulige kandidater til apposition mellem komma
 MAP:0015 (@PRED2) TARGET INTRANSVERB + Inf + 4Pl IF (*-1 Abs + Pl OR Abs + Sg + LU) (T:NexusHøjre)(NEGATE 1 vn) ; #(NEGATE *0 ORATIOOBLVERB BARRIER VFIN)(1 Abs  OR ("\,")); #koncessive saetninger uden konjunktion
 
 MAP:0016 (@PRED2) TARGET INTRANSVERB + Par + 3Pl IF (*-1 Abs + Pl)(NEGATE *0 ORATIOOBLVERB BARRIER VFIN)(1 Abs OR ("\,")); #koncessive saetninger uden konjunktion
 MAP:0017 (@PRED2) TARGET INTRANSVERB + Par + 3Sg IF (*-1 Abs + Sg)(NEGATE *0 ORATIOOBLVERB BARRIER VFIN); #(1 Abs OR ("\,")); #koncessive saetninger uden konjunktion
 
-MAP:0030 @<APPOS TARGET Abs + Sg + NOMEN + TUQ IF ( *-1 Abs + Sg BARRIER V LINK 1 KOMMA ); # Per, NN-imeersoq(@<APPOS), oqarpoq
+MAP:0030 @<APPOS TARGET Abs + Sg + NOMEN + TUQ IF ( *-1 §noun-comma BARRIER V ); # Per, NN-imeersoq(@<APPOS), oqarpoq
 MAP:0031 (@PROP>) TARGET Prop OR FIRSTNAME OR TITEL IF (1 Prop); #fra 1350 for at udelukke overtallig SUBJ-tagging
 MAP:0032 @<APPOS TARGET Prop + Abs + Sg - LU IF (-1 Prop + Attr)(-2 N + Abs + Sg )(NEGATE -2 @PROP>)(NEGATE -2 TITEL) ; # N per langgård
 MAP:0033 @<APPOS TARGET Prop + Abs + Sg - LU IF (-1 N + Abs + Sg)(NEGATE -1 @PROP> )(NEGATE -1 TITEL) ; # N Per
@@ -1997,8 +2003,8 @@ REMOVE INTRANSVERB + Par + 3Pl IF (-1 Con OR Cau LINK *-1 Abs) ;
 
 REMOVE:ParUdenInquitPl INTRANSVERB + Par + 3Pl IF (NEGATE *0 ORATIOOBLVERB); 
 
-REMOVE:ParUdenInquitSg INTRANSVERB + Par + 3Sg IF (NEGATE *0 ORATIOOBLVERB)(NEGATE *-1 TIME + Sg + Abs)  ;
-#komma forekommer også mellem oratio recte og obliqua. NEGATE for ikke at slette absolut tempus
+REMOVE:ParUdenInquitSg INTRANSVERB + Par + 3Sg IF (NEGATE *0 ORATIOOBLVERB)(NEGATE *-1 TIME + Sg + Abs)(NEGATE *-1 Interj OR ("sunaaffa") BARRIER V )  ;
+#komma forekommer også mellem oratio recte og obliqua. NEGATE for ikke at slette absolut tempus. Sidste NEGATE for ikke at slette emfase, concession
 
 REMOVE INTRANSVERB + Par + 3Pl IF (1 3PlPoss + Sg)(*1 TRANSVERB + 3SgO) ;
 
@@ -2008,7 +2014,7 @@ REMOVE INTRANSVERB + Par + 3Pl IF (NEGATE *-1 Abs + Pl - 4SgPoss BARRIER V)(NEGA
 REMOVE INTRANSVERB + Par + 3Pl IF (1 Con)(2 TRANSVERB + 3Pl) ;
 #Det er subjektet
 
-REMOVE INTRANSVERB + Par + 3Sg IF (NEGATE *-1 Abs + Sg BARRIER V)(NEGATE *0 ORATIOOBLVERB)(NEGATE 1 VFIN) ;
+REMOVE INTRANSVERB + Par + 3Sg IF (NEGATE *-1 Abs + Sg BARRIER V)(NEGATE *0 ORATIOOBLVERB)(NEGATE 1 VFIN)(NEGATE *-1 Interj OR ("sunaaffa") BARRIER V) ;
 
 REMOVE INTRANSVERB + Par + 3Sg IF (0 Abs + Sg)(1 Inf + 3SgO - ORATIOOBLVERB); # fjerner ' .. ujarak eqqaminnut TUTTOQ takullugu .. '
 
@@ -2039,7 +2045,7 @@ SELECT INTRANSVERB + Par + 3Pl IF (*1 ORATIOOBLVERB)(-*1 Abs + Pl LINK NEGATE *1
 
 SELECT Par + INTRANSVERB + 3Sg OR Inf + INTRANSVERB + 4Sg OR InfNeg + INTRANSVERB + 4Sg OR Cau + INTRANSVERB + 3Sg IF (-*1 ORATIOOBLVERB)(-*1 Abs + Sg BARRIER ORATIOOBLVERB)(NEGATE 1 Prop + Abs OR Prop + Attr)(NEGATE 0 nv LINK *1 Par + Sg); #20100322 Sidste NEGATE for skyld oo, hvor et verbalnomen er subjekt
 
-SELECT:0204 Par + INTRANSVERB + 3Pl OR Inf + INTRANSVERB + 4Pl OR InfNeg + INTRANSVERB + 4Pl OR Cau + INTRANSVERB + 3Pl IF (-*1 ORATIOOBLVERB)(-*1 Abs + Pl BARRIER ORATIOOBLVERB)(NEGATE 1 Prop + Abs OR Prop + Attr)(NEGATE 0 nv LINK *1 Par + Sg); #20100322 Sidste NEGATE for skyld oo, hvor et verbalnomen er subjekt
+SELECT:0204 Par + INTRANSVERB + 3Pl OR INF + INTRANSVERB + 4Pl OR Cau + INTRANSVERB + 3Pl IF (-*1 ORATIOOBLVERB)(-*1 Abs + Pl BARRIER ORATIOOBLVERB)(NEGATE 1 Prop + Abs OR Prop + Attr)(NEGATE 1 3PlO) ; #(NEGATE 0 nv LINK *1 Par + Sg); #20100322 Sidste NEGATE for skyld oo, hvor et verbalnomen er subjekt. Forstår ikke sidste NEGATE men tilføjer i stedet en åbning for objekt i pluralis til følgende V
 
 #Oratio oblique med eksplicit subjekt
 SELECT:0205 Par + 3Sg + TRANSVERB IF (*-1 ORATIOOBLVERB BARRIER VFIN LINK *1 N + Rel LINK *1 Par + TRANSVERB) ;
@@ -2135,7 +2141,7 @@ REMOVE Int IF (*0C Ind) ;
 #REMOVE:ReImpIfInd Imp IF (*0C Ind) ; #Flyttes meget tidligt 3.4.
 REMOVE Imp IF (-1 Ind)(0 LU); #2.4. da ReImpIfInd ikke finder 'Amerlanerit ipiitsuinnaanngivipput ILAASALU ikusii .. ' 
 SELECT:1800 NIQAR + V IF (-*1 @SUBJ> + Abs) ; #Disambiguerer NIQAR fra NIQ efterfulgt af QAR.
-SELECT:1801 NIQAR + V IF (-*1 Abs BARRIER TRANSVERB) ; #Disambiguerer NIQAR fra NIQ efterfulgt af QAR. BARRIER af hensyn til muligheden af at Abs er objekt for et transitivt verbum
+SELECT:1801 NIQAR + V + 3Pl IF (-*1 Abs + 3Pl BARRIER TRANSVERB)(NEGATE 1 3PlO ) ; #Disambiguerer NIQAR fra NIQ efterfulgt af QAR. BARRIER af hensyn til muligheden af at Abs er objekt for et transitivt verbum
 SELECT:1802 1Sg + Con IF (*1 V + 1Sg BARRIER V ) ;
 SELECT:1802 2Sg + Con IF (*1 V + 2Sg BARRIER V ) ;
 
@@ -2199,7 +2205,7 @@ SELECT N* + 3Sg + IP IF (-1 (Rel Sg)) ; #Virker ikke 18.1. sen aften
 
 #SELECT @POSSESSUM IF (-1 Rel Sg) (0 3Sg); 
 #SELECT SPATIAL + Sg IF (0 POSSESSUM) ;
-SELECT @HNOUN IF (NEGATE *0 V - Inf OR V - InfNeg) ;
+SELECT @HNOUN IF (NEGATE *0 V - Inf OR V - InfNeg)(NEGATE 0 V ) ;
 
 REMOVE @<ARG IF (NEGATE *-1 V)(NEGATE *-1 (@FOC)) ;
 REMOVE @ALL-ARG> IF (NEGATE *1 V) ; # Ikke @ARG> fordi ingen V t.h.
@@ -2293,7 +2299,7 @@ REMOVE HTR IF (0 vn + QAR); #en skummel regel, der skal lukke op for @i->N og bl
 SELECT @i-MIK-OBJ> IF (1 HTR + vn - V) ; #20091106
 SELECT @MIK-OBJ> IF (*1 HTR) ;
 
-REMOVE @ALLOBJ> IF (0 Abs)(*1C INTRANSVERB - Par BARRIER ("\,")) ; #20091105 udelukket Par og tilfoejet BARRIER
+REMOVE @ALLOBJ> IF (0 Abs)(*1C INTRANSVERB - Par BARRIER ("\,") OR TRANSVERB ) ; #20091105 udelukket Par og tilfoejet BARRIER
 	## Trond sinippoq.
 	# Trond sover
 
@@ -2326,8 +2332,8 @@ SELECT (DemPron Abs 1Sg @SUBJ>) IF (*1 (V 1Sg));
 SELECT:2540 Rel + Pl IF (*1 TRANSVERB + 3Pl + 3PlO)(-1 Par + 3Pl); #Subjektet, når bisætningens subjekt er implicit objekt 'Pinngussanik ilaatigut qaqutiguuissunik pinngualersorlutik pinnguartut SIMAARTUAQQAT silataaniit isiginnaarrappaat ... '
 
 SELECT:2548 Rel + Pl IF (*1 TRANSVERB + 3Pl + 3SgO)(*-1 Abs + Sg BARRIER TRANSVERB)(NEGATE *1 Abs + Sg BARRIER TRANSVERB);
-SELECT:2549 Rel + Pl IF (*1 TRANSVERB + 3Pl + 3PlO)(*-1 Abs + Pl BARRIER TRANSVERB)(NEGATE *1 Abs + Pl BARRIER TRANSVERB); 
-#OSV som specialtilfælde
+SELECT:2549 Rel + Pl IF (*1 TRANSVERB + GE + 3Pl + 3PlO)(*-1 Abs + Pl BARRIER TRANSVERB)(NEGATE *1 Abs + Pl BARRIER TRANSVERB); 
+#OSV som specialtilfælde. Forudsætter vist GE??
 
 SELECT:2550 Rel + Pl IF (*1 TRANSVERB + 3Pl + 3SgO)(*1 Abs + Sg BARRIER TRANSVERB); #Den normale SOV
 SELECT:2551 Rel + Pl IF (*1 TRANSVERB + 3Pl + 3PlO)(*1 Abs + Pl BARRIER TRANSVERB); #Den normale SOV
@@ -2656,7 +2662,7 @@ REMOVE:5500 ("ilunger") + TUQ IF (0 ("ilungersor"));
 REMOVE:5501 ("taa") + vn OR ("taa") + INTRANSVERB IF (NEGATE -1 ("immi"))(0 ("taar"));
 SELECT:5502 ("siner") IF (*-1 sinerOBJ + @OBJ>) ; 
 REMOVE:5503 ("siner") IF (0 ("sinip"))(NEGATE *0 sinerOBJ + @OBJ> OR @ADVL>);
-REMOVE:5504 ("ajor") + ALLAP IF (0 ("ajuar") + LLAP) ;
+REMOVE:5504 ("ajuar") + LLAP IF (0 ("ajor") + ALLAP) ; #pludselige bylder er ikke sandsynlige
 REMOVE:5505 ("akip") IF (0 ("aki")) ;
 REMOVE:5506 ("igaa") + USAR IF (0 ("igip") + USAR) ;
 REMOVE:5507 ("naap") IF (0 ("naa")) ; #Rent statistisk. Fandt slet ingen forekomster af 'naappoq' i Ind i samlecorpus
