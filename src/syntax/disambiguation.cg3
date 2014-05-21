@@ -1050,9 +1050,9 @@ SET sinerOBJ = GEOOBJ | Prop ;
 # Proprier
 # Desse skal vi hente frå leksikon
 
-LIST Mal = "Trond" "Per" ;
-LIST Fem = "Kirsten" ;
-LIST Sur = "Rasmussen" "Trosterud" ;
+LIST Mal = "Eri" "Erik" "Eskild" "Jens" "Mik" "Miki" "Morten" "Ole" "Per" "Rasmus" "Trond" ;
+LIST Fem = "Anna" "Emilie" "Gitte" "Jane" "Kirsten" "Margrethe" "Mette" ;
+LIST Sur = "Jensen" "Jenseni" "Møller" "Rasmussen" "Trosterud" ;
 LIST TITEL = ("siulittar" TUQ) "kunngi" "fru" "hr" "lektor" ("pisoq" TAQ) "borgmester" ;
  
 SET FIRSTNAME = Mal | Fem | ("Frederik") | ("Nuka") | ("A") | ("B") | ("C") | ("Chr") | ("D") | ("E") | ("F") | ("G") | ("H") | ("I") | ("J") | ("K") | ("Kr") | ("L") | ("M") | ("N") | ("O") | ("P") | ("Q") | ("R") | ("S") | ("T") | ("U") | ("V") | ("W") | ("X") | ("Y") | ("Z") | ("Æ") | ("Ø") | ("Å") ;
@@ -1228,6 +1228,7 @@ REMOVE AA IF (NEGATE 0 Prop);
 #Usandsynlige morfemkombinationer
 REMOVE:0030 TUQ + LIR + nv IF (0 ("ilungersor") + LIR) ;
 
+SELECT:0031 ("illuttut") + part IF (*1 LIK OR QAR BARRIER V); #Næppe sneblinde, men tosidet N
 
 ###################################
 # Frequent and safe rules - nouns #
@@ -1368,6 +1369,9 @@ SELECT (Prop) IF (0 ("<\\p{Lu}.*>"r)) (NEGATE -1 BOS OR (""")) ;
 
 SELECT ("Guuti") + Prop + Sg (NEGATE 0 AFFINGERET) ;
 # Altid Guuti undtagen guuteqarpoq o.lign.
+
+REMOVE:0502 Via IF (0 NAME + KKUT LINK *1 3Pl OR 3PlO ) ;
+# Filtrerer Via fra NAME + KKUT som subjekt eller objekt
 
 REMOVE ("\\p{Lu}.*i"r) IF (0 ("\\p{Lu}.*[^i]"r)) ;
 #Fjerner Ruthi og vælger Ruth m.fl. NB tags er ad hoc og altså ikke listede!
@@ -2088,7 +2092,15 @@ SELECT Abs + Prop IF (-2 Prop + Abs)(-1 ("\,"))(NEGATE 0 Rel LINK 1 POSSESSUM3);
 SELECT Abs + Prop IF (-3 Prop + Abs)(-2 ("\,"))(-1 Abs)(NEGATE 0 Rel LINK 1 POSSESSUM3); #'Enoksen, SIUMUT' 'Kleist, Inuit ATAQATIGIIT'
 
 #Nominer - kongruens og paratakse
-SELECT N + Sg IF (1 N + Sg)(NEGATE *0 V) ; # Vedr. overskrifter og sætningsemner
+SELECT:0210 N + Sg + Abs IF (1 N + Sg + Abs)(NEGATE *0 V) ; # Vedr. overskrifter og sætningsemner
+SELECT:0211 N + Sg + Rel IF (1 N + Sg + Rel)(NEGATE *0 V) ; # Vedr. overskrifter og sætningsemner
+SELECT:0212 N + Sg + Lok IF (1 N + Sg + Lok)(NEGATE *0 V) ; # Vedr. overskrifter og sætningsemner
+SELECT:0213 N + Sg + Trm IF (1 N + Sg + Trm)(NEGATE *0 V) ; # Vedr. overskrifter og sætningsemner
+SELECT:0214 N + Sg + Ins IF (1 N + Sg + Ins)(NEGATE *0 V) ; # Vedr. overskrifter og sætningsemner
+SELECT:0215 N + Sg + Abl IF (1 N + Sg + Abl)(NEGATE *0 V) ; # Vedr. overskrifter og sætningsemner
+SELECT:0216 N + Sg + Via IF (1 N + Sg + Via)(NEGATE *0 V) ; # Vedr. overskrifter og sætningsemner
+SELECT:0217 N + Sg + Aeq IF (1 N + Sg + Aeq)(NEGATE *0 V) ; # Vedr. overskrifter og sætningsemner
+ 
 
 SELECT Ins + LU IF (-1C Ins) ;
 SELECT Abs + LU + Pl IF (-1C Abs + Pl);
@@ -2293,7 +2305,7 @@ REMOVE (Via @N<) IF (NEGATE -1 Via OR Rel);
 # ====================== #
 SELECT Rel + Pl IF (1 vn + Rel + Pl)(2 3PlPoss); # 'ADVL SUBJ> NAASORPASSUIT qalipaatigissaartut akornanni pinnguarput ...' Antager, at vn normalt er et adled. Ny regel 30.3.
 
-SELECT Abs + Pl IF (*1C INTRANSVERB + VFIN + 3Pl BARRIER 3PlPoss)(NEGATE 0 Lok + Pl); #må ikke hitte på Lok i 'subjekt lokalis-plur Vb'
+SELECT:7490 Abs + Pl IF (*1C INTRANSVERB + VFIN + 3Pl BARRIER 3PlPoss)(NEGATE 0 Lok + Pl)(NEGATE 0 Via + Sg)(NEGATE 0 part); #må ikke hitte på Lok i 'subjekt lokalis-plur Vb'eller slette Via eller slette partikler
 
 REMOVE HTR IF (0 vn + QAR); #en skummel regel, der skal lukke op for @i->N og blokere @MIK-OBJ
 SELECT @i-MIK-OBJ> IF (1 HTR + vn - V) ; #20091106
@@ -2809,7 +2821,7 @@ SELECT ("taanna\(taavaniittoq\)") IF (-1**< ("avannaq"));
 SELECT ("taanna"); #Den hyppigste
 
 # Spatial med eller uden possessor?
-SELECT Via - POSSESSUM IF (NEGATE -1 Rel);
+SELECT Via - POSSESSUM IF (NEGATE -1 Rel)(NEGATE 0 Prop + KKUT); #sidste NEGATE for ikke at få Via på proprierne
 #"qaaq" N Via Sg 3PlPoss @i-ADVL> eller "qaaq" N Via Pl @i-ADVL>
 
 # Possessum singularis eller pluralis?
