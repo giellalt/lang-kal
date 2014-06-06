@@ -9,7 +9,8 @@ GT_ORTHOGRAPHIC_SRCS=inituppercase.regex \
 					 allcaps.xfscript    \
 					 spellrelax.regex    \
 					 spellrelax-mobile-keyboard.regex \
-					 oldorthography2norm.xfscript
+					 oldorthography2norm.xfscript \
+					 downcase-derived_proper-strings.xfscript
 
 ####### Automake targets: ########
 
@@ -19,14 +20,24 @@ GT_ORTHOGRAPHIC_FSTS+=allcaps.hfst \
 					  inituppercase.hfst \
 					  spellrelax.hfst \
 					  spellrelax-mobile-keyboard.hfst \
-					  oldorthography2norm.hfst
+					  oldorthography2norm.hfst \
+					  downcase-derived_proper-strings.hfst
 endif
 if CAN_XFST
 GT_ORTHOGRAPHIC_FSTS+=allcaps.xfst \
 					  inituppercase.xfst \
 					  spellrelax.xfst \
 					  spellrelax-mobile-keyboard.xfst \
-					  oldorthography2norm.xfst
+					  oldorthography2norm.xfst \
+					  downcase-derived_proper-strings.xfst
 endif
+
+# This pattern rule is required to block inversion of the xfscript fst's.
+# We do want inversion in the general case, but not for the orthographic fst's.
+%s.hfst: %s.tmp.hfst
+	$(AM_V_GEN)cp -f $< $@
+
+%s.xfst: %s.tmp.xfst
+	$(AM_V_GEN)cp -f $< $@
 
 include $(top_srcdir)/am-shared/src-orthography-dir-include.am
