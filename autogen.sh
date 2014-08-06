@@ -60,13 +60,13 @@ if test x$langvar = xlangvar ; then
 		echo
 		exit 1
 	else
-		if test x$GTLANG_kal = x$LANGDIR ; then
-			echo "\$GTLANG_kal already defined."
+		if test x${GTLANG_kal} = x${LANGDIR} ; then
+			echo "\${GTLANG_kal} already defined."
 		else
 			# Already defined with a different value:
-			if test x$GTLANG_kal != x ; then
+			if test x${GTLANG_kal} != x ; then
 				renew=renew
-				OLDLANGDIR=$GTLANG_kal
+				OLDLANGDIR=${GTLANG_kal}
 			fi
 
 			# Add the variable to the login script:
@@ -76,14 +76,15 @@ if test x$langvar = xlangvar ; then
 
 			# Feedback depending on whether it was added or redefined:
 			if test x$renew = xrenew ; then
-			 echo "The env. variable \$GTLANG_kal has been redefined in"
-			 echo "$LOGINFILE. The old value $OLDLANGDIR is no longer in use."
+			 echo "The env. variable \${GTLANG_kal} has been redefined in"
+			 echo "$LOGINFILE. The old value ${OLDLANGDIR} is no longer in use."
 			else
-			 echo "The env. variable \$GTLANG_kal has been added to $LOGINFILE."
-    		 echo "Your built fst's (those you get after 'make') will be used"
-    		 echo "with the analyser and generator scripts. There's a backup of"
-    		 echo "your old $LOGINFILE in $LOGINFILE.gtbackup.${DATE}-${TIME}."
-    		 echo "Please log out and log in again for the variable to be used."
+			 echo "The env. variable \${GTLANG_kal} has been added"
+			 echo "to $LOGINFILE. Your built fst's (those you get after"
+			 echo "'make') will be used with the analyser and generator"
+			 echo "scripts. There's a backup of your old $LOGINFILE in"
+			 echo " $LOGINFILE.gtbackup.${DATE}-${TIME}."
+    		 echo "Please log out and in again for the variable to take effect."
 			fi
 		fi
 	fi
@@ -91,18 +92,19 @@ fi
 
 # Check whether the variable is defined, warn the user if not or different from
 # the current dir:
-if   test x$GTLANG_kal = x ; then
-	echo "WARNING: The variable \$GTLANG_kal has not been defined. You will not"
-	echo "be able to use your own fst's with the analyser and generator scripts"
-	echo "if not defined. Please consider rerunning this script with option -l:"
+if   test x${GTLANG_kal} = x ; then
+	echo "WARNING: The variable \${GTLANG_kal} has not been defined. You"
+	echo "will not be able to use your own fst's with the analyser and"
+	echo "generator scripts if not defined. Please consider rerunning this"
+	echo "script with option -l:"
 	echo
 	echo "$0 -l"
 	echo
-elif test x$GTLANG_kal != x$LANGDIR ; then
-	echo "WARNING: The variable \$GTLANG_kal has the value:"
-	echo "  $GTLANG_kal"
+elif test x${GTLANG_kal} != x${LANGDIR} ; then
+	echo "WARNING: The variable \${GTLANG_kal} has the value:"
+	echo "  ${GTLANG_kal}"
 	echo "instead of the expected:"
-	echo "  $LANGDIR"
+	echo "  ${LANGDIR}"
 	echo "Please consider rerunning this script with option -l to update the"
 	echo "variable:"
 	echo
