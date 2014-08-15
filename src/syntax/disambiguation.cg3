@@ -1361,6 +1361,7 @@ REMOVE:0141 Lok + Aeq IF (0 Aeq + 4SgPoss)(*1 TRANSVERB + 3Sg) ;
 REMOVE:0142 ("anaq") + U IF (0 ("anaana") ) ;
 REMOVE:0143 ("Ana") + U IF (0 ("anaana") ) ;
 
+SELECT:0145 ("assi") + GE + TAQ + Abs + Pl + 3PlPoss + LU IF (1 EOS); #assigisaallu før punktum vist altid sætningsemne
 
 ##########################################
 # Frequent and safe rules - proper names #
@@ -1599,6 +1600,9 @@ MAP:M0066 (@CL-<ADVL) TARGET Par + 4Sg IF (*-1 VFIN) ;
 
 MAP:M0067 @V> TARGET Abs + NIQ IF (1 ("ajor") OR ("saper")) ;
 
+MAP:M0068 @INTERIM TARGET ("assi") + GE + TAQ + Abs + Pl + 3PlPoss + LU IF (1 EOS); #assigisaallu før punktum vist altid sætningsemne. Taggen skal ændres
+
+
 # Proprier - MAP-regler
 #==============
 MAP:M0194 (@SUBJ>) TARGET Prop + Rel IF (-*1 TRANSVERB LINK *-1 Rel LINK *1 Abs LINK *1 KOMMA)(*1 Abs BARRIER V)(NEGATE 1 POSSESSUM3) ; # 20101014 Opremsning uden transitive verber men må ikke tagge possessor-possessum
@@ -1740,7 +1744,8 @@ MAP:M0700 (@<SUBJ) TARGET (Rel) IF (-*1 TRANSVERB + VERB-NOTINF + 34Sg)(0 (Sg)) 
 MAP:M0710 (@<SUBJ) TARGET (Rel) IF (-*1 TRANSVERB + 34Pl)(0 (Pl)) ;
 MAP:M0720 (@<SUBJ) TARGET (Abs Sg) IF (-*1C INTRANSVERB + 3Sg OR INTRANSVERB + 4Sg BARRIER ("tassa") LINK NOT 0 (TUQ vn QAR nv)) (NEGATE -1 ("\("))(NEGATE 1 Abs + Sg LINK *1 V) (NEGATE 0 LU LINK *1 Rel + Sg LINK *1 TRANSVERB + 3Sg); #20091109 - næstsidste NEGATE, 20101013 sidste NEGATE for at forhindre hit på 'S V O-LU S V'
 
-MAP:M0730 (@<SUBJ) TARGET (Abs Pl) IF (-*1C INTRANSVERB + 3Pl OR 4Pl)(NEGATE *1 INTRANSVERB + 3Pl OR 4Pl)(NEGATE *1 TRANSVERB + 3PlO); #2.4.
+#MAP:M0730 (@<SUBJ) TARGET (Abs Pl) IF (-*1C INTRANSVERB + 3Pl OR 4Pl)(NEGATE *1 INTRANSVERB + 3Pl OR 4Pl)(NEGATE *1 TRANSVERB + 3PlO); #2.4.
+MAP:M0730 (@<SUBJ) TARGET (Abs Pl) IF (-*1C INTRANSVERB + 3Pl OR 4Pl BARRIER V)(NEGATE 0 vn LINK *-1 Abs + Pl);
 
 # Nominer i absolut kasus er oftest subjekt for intransitivt verbum 
 MAP:M0740 (@SUBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs OR DemPron + Abs + Sg IF (*1 INTRANSVERB + 3Sg)(NEGATE *1 TRANSVERB + VFIN)(NEGATE 1 Inf + TRANSVERB);
@@ -1762,7 +1767,7 @@ MAP:M0765 (@i->V) TARGET Abs + Sg + NIQ IF (1 ("ajor")) ;
 #Appellativer i absolut kasus kan være element af syntagmerne subjekt, objekt, tidsangivelse, overskriftsord 
 #Vedr. subjekter se også 0324 ovenfor
 
-MAP:M0780 (@SUBJ>) TARGET APPELLATIV + Abs OR Prop + Abs OR Num + Abs IF (*1 INTRANSVERB)(NEGATE *1 TRANSVERB)(NEGATE -1 ("\(")) ; #nyt forsoeg 30.3.
+MAP:M0780 (@SUBJ>) TARGET APPELLATIV + Abs OR Prop + Abs OR Num + Abs IF (*1 INTRANSVERB BARRIER KOMMA)(NEGATE *1 TRANSVERB)(NEGATE -1 ("\(")) ; #nyt forsoeg 30.3.
 MAP:M0790 (@<OBJ) TARGET APPELLATIV + Abs OR Prop + Abs OR PRON + Abs IF (-*1 TRANSVERB - Inf BARRIER Inf + @ADVL> OR Inf + @<ADVL OR ("\,"))(NEGATE *1 TRANSVERB); #20091111 af Beatrine. (linie 1243)
 #ADD:M0800 (@<OBJ) TARGET APPELLATIV + (Abs) OR Prop + (Abs) OR (PRON Abs) IF (-*1 TRANSVERB - Inf BARRIER Inf OR ("\,"));
 
@@ -2192,7 +2197,7 @@ REMOVE Aeq + Pl IF (0 Aeq + Sg)(NEGATE 0 POSSESSUM) ;
 SELECT Abs + Pl IF (*-1 VFIN + 3Pl)(*1 INTRANSVERB + Inf + 4Pl BARRIER V); #2.4. ' .. alinneqartiterput iluatigut ATISAAT ILULLISSIAT ersiallattarlutik.'
 SELECT Abs + Pl IF (*-1 Inf + 4Pl BARRIER VFIN OR Par)(*1 VFIN + 3PlO); #2.4. Maa vaere objekt da subjekt formodes at komme foer ledsagemaaden. 'OR Par' tilføjet 17.4. pga. ledsagemåder i participiale bisætninger
 
-SELECT:1700 Abs + Pl IF (-*1C INTRANSVERB + 3Pl OR 4Pl)(NEGATE *1 INTRANSVERB + 3Pl OR 4Pl)(NEGATE *1 TRANSVERB + 3PlO)(NEGATE *1 3PlPoss BARRIER KOMMA); 
+SELECT:1700 Abs + Pl IF (-*1C INTRANSVERB + 3Pl OR 4Pl)(NEGATE *1 INTRANSVERB + 3Pl OR 4Pl)(NEGATE *1 TRANSVERB + 3PlO)(NEGATE *1 3PlPoss BARRIER KOMMA)(NEGATE 0 vn LINK *-1 Rel + Pl); #må ikke hitte på adled til Rel+Pl
 
 SELECT:1701 Abl + LU IF (-1 Abl);
 SELECT:1702 Ins + LU IF (-1 Ins);
@@ -2625,6 +2630,8 @@ SELECT:8441 3SgPoss IF (<*-1 @PRED + 3Sg)(-1 BOS)(NEGATE 0 Abs + 4SgPoss + Pl LI
 SELECT:8450 Abs + 4SgPoss + Pl + @OBJ> IF (*1 3Sg + 3PlO BARRIER V)(NEGATE 0 Prop ) ; #vælger objekt frem for Lok+@ADVL>
 
 SELECT:8451 3Sg + 2SgO IF (*-1 @SUBJ> + Rel + Sg BARRIER V ) ; # fjerner 2Sg + 3PlO
+
+SELECT:8455 NIQAR IF (*-1 @AGENS BARRIER V); #Disambiguerer NIQ + QAR fra NIQAR
 
 #===============
 # Implicitte objekter
