@@ -220,6 +220,7 @@ LIST GIARTUR_TAR = GIARTUR\=TAR ;
 LIST GIARTUR_TIP = GIARTUR\=TIP ;
 LIST GIARTUR_TIP_GUMA = GIARTUR\=TIP\=GUMA ;
 LIST GIIP = GIIP ;
+LIST GIIT = GIIT ;
 LIST GIP = GIP ;
 LIST GUMA = GUMA ;
 LIST GUMA_GUNNAIR = GUMA\=GUNNAIR ;
@@ -1231,22 +1232,27 @@ REMOVE:0019 AA IF (NEGATE 0 Prop);
 REMOVE:0020 ("su") + Opt IF (0 ("suli") + part ) ;
 
 #Usandsynlige morfemkombinationer
-REMOVE:0030 TUQ + LIR + nv IF (0 ("ilungersor") + LIR) ;
+REMOVE:0025 TUQ + LIR + nv IF (0 ("ilungersor") + LIR) ;
 
-SELECT:0031 ("illuttut") + part IF (*1 LIK OR QAR BARRIER V); #Næppe sneblinde, men tosidet N
+SELECT:0026 ("illuttut") + part IF (*1 LIK OR QAR BARRIER V); #Næppe sneblinde, men tosidet N
 
 #TAQ vs. GE skaber problemer. Vælg altid GE, hvis mulig sammenblanding med TAQ og hvis ikke andre finitte verber i sætningen
-SELECT:0032 GE + TRANSVERB IF (0 TAQ)(NEGATE *0 VFIN);
+SELECT:0028 GE + TRANSVERB IF (0 TAQ)(NEGATE *0 VFIN);
 
 #Farlig regel, der skal checkes, men så længe både (3Pl+3PlO+SUB) og (3Sg+3PlO) eksisterer er det umuligt at disambiguere Rel+Pl som subjekt fra Abs+Pl som objekt.
-REMOVE:0033 3Pl + 3PlO + SUB IF (0 3Sg + 3PlO)(*-1 Abs + Pl ) ;
+REMOVE:0030 3Pl + 3PlO + SUB IF (0 3Sg + 3PlO)(*-1 Abs + Pl ) ;
 
 #lokalis eller 4SgPoss: Næppe possessum hvis taamaattuni er adled
-SELECT:0036 Lok + Pl IF (1 ("taamak") + Lok + Pl) ;
-SELECT:0037 ("taamak") + Lok + Pl IF (-1 Lok + Pl) ;
+SELECT:0032 Lok + Pl IF (1 ("taamak") + Lok + Pl) ;
+SELECT:0033 ("taamak") + Lok + Pl IF (-1 Lok + Pl) ;
 
 #Transitiv participium som absolut tid
-SELECT:0038 U + Par + 3Sg + 3SgO ;
+SELECT:0035 U + Par + 3Sg + 3SgO ;
+
+#Absolut tidsangivelse i Abs med possessor
+SELECT:0037 TIME + Rel IF (-1 BOS)(1 ("ila") + 3SgPoss + Abs LINK *1 T:NexusHøjre ) ;
+SELECT:0038 ("ila") + 3SgPoss + Abs IF (-1 TIME + Rel)(*1 T:NexusHøjre ) ;
+
 
 ###################################
 # Frequent and safe rules - nouns #
@@ -1368,6 +1374,8 @@ REMOVE:0142 ("anaq") + U IF (0 ("anaana") ) ;
 REMOVE:0143 ("Ana") + U IF (0 ("anaana") ) ;
 
 SELECT:0145 ("assi") + GE + TAQ + Abs + Pl + 3PlPoss + LU IF (1 EOS); #assigisaallu før punktum vist altid sætningsemne
+
+ 
 
 ##########################################
 # Frequent and safe rules - proper names #
@@ -1637,6 +1645,9 @@ MAP:M0067 @V> TARGET Abs + NIQ IF (1 ("ajor") OR ("saper")) ;
 MAP:M0068 @INTERIM TARGET ("assi") + GE + TAQ + Abs + Pl + 3PlPoss + LU IF (1 EOS); #assigisaallu før punktum vist altid sætningsemne. Taggen skal ændres
 
 MAP:M0070 @CL-ADVL> TARGET U + Par + 3Sg + 3SgO ; #Den særlige transitive Par altid sætningsadverbial
+
+MAP:M0072 @CL-ADVL> TARGET ("ila") + 3SgPoss + Abs IF (-1 TIME + Rel)(*1 T:NexusHøjre ) ; #Absolut tid med possessor
+
 
 # Proprier - MAP-regler
 #==============
@@ -2050,6 +2061,7 @@ SELECT:0414 Par + PASSIV + 3Pl IF (-3 Rel)(-2 Abs + Pl)(-1 Ins)(1 POSSESSUM);
 SELECT:0416 Par + 3Pl (-*1 ("soorlu") BARRIER ("\,") LINK 1 Rel LINK 1 Abs + Pl);
 # Sammenligninger - non-coref
 SELECT:0418 Par + 3Pl (-*1 ("soorlu") BARRIER ("\,") LINK 1 Abs + Pl);
+SELECT:0419 Par IF (-*1 ("soorlu") BARRIER ("\,"))(NEGATE *0 VFIN BARRIER KOMMA);
 
 #Egentlig tidsbisætning med vistnok helt sikker kontekst
 SELECT:0420 Par + 3Sg  IF (0 TEMPUSVERB)(-1 Abs + Sg)(-*1 TIME)(*1 VFIN - 3Sg);
@@ -2224,6 +2236,8 @@ SELECT:0617 N + Sg + Aeq IF (1 N + Sg + Aeq)(NEGATE *0 V) ; # Vedr. overskrifter
 SELECT Ins + LU IF (-1C Ins) ;
 SELECT Abs + LU + Pl IF (-1C Abs + Pl);
 SELECT Abs + LU + Sg IF (-1C Abs + Sg)(NEGATE 0 Rel + Sg LINK 1 3SgPoss);
+SELECT:1610 Abs + LU IF (*1 INTRANSVERB + 3Pl BARRIER V)(NEGATE 0 Rel + Pl LINK 1 3PlPoss) ; # Et parataktisk subjekt. Skal komme før 1641 for at holde Lok + 3SgPoss ude fra Abs + 4SgPoss, men må ikke hitte på possessor i pluralis
+
 SELECT Rel + Pl IF (1 DemPron + Rel + Pl); #'ILLUT taakku eqqaanni @SUBJ> ... @PRED'
 SELECT Aeq + Pl IF (-1C Aeq + Pl);
 SELECT Aeq + Pl IF (1C Aeq + Pl);
@@ -2231,7 +2245,7 @@ SELECT Aeq + Pl IF (1C Aeq + Pl);
 #Nominer - andre disambigueringer
 SELECT:1640 ("allaat") + part ; #Skal håndteres før 1641
 
-SELECT:1641 3SgPoss IF (-1 Rel + Sg) ;
+SELECT:1641 3SgPoss IF (-1 Rel + Sg)(NEGATE -1 Rel + Sg LINK *1 TRANSVERB + 3Sg BARRIER V)(NEGATE 0 3PlPoss LINK -1 Rel + Pl) ; #To NEGATE tilføjet 20140824, fordi OBJ blev *POSS og fordi korrekt pluralis POSS undertiden slettet
 SELECT 3PlPoss IF (-1 Rel + Pl) ;
 #Disambiguerer  "inngili" N Rel Sg 3PlPoss fra "inngili" N Rel Sg 3SgPoss i "Naalakkap inngiliata"
 SELECT:1650 Abs + 4SgPoss IF (1 Abs + vn)(*1 V + 3SgO) ; #PANINI er ikke lokalis i Perip PANINI pinnersoq pulaarpaa
@@ -2257,10 +2271,14 @@ SELECT:1702 Ins + LU IF (-1 Ins);
 REMOVE:1703 Aeq + Pl + 3SgPoss IF (NEGATE -1 Rel + Sg);
 REMOVE:1704 Aeq + Pl + 3PlPoss IF (NEGATE -1 Rel + Pl);
 
+#SELECT:0146 Rel + Sg + 4SgPoss IF (*1 TRANSVERB + 3Sg OR TRANSVERB + 4Sg BARRIER V)(NEGATE 0 Cau + 4Sg)(NEGATE 1 POSSESSUM + 3SgPoss); # TAQ + 4Sg undertiden homonym med Cau + 4Sg og som possessor håndteres den af den følgende regel
+
+SELECT:1707 ("oqaaseq") + Rel + Pl + 4SgPoss IF (1 POSSESSUM + 3PlPoss - Lok)(NEGATE 0 Cau + 4Sg); #Specialfald fordi oqaaseq oftest pluralis
+SELECT:1708 Rel + Sg + 4SgPoss IF (1 POSSESSUM + 3SgPoss - Lok)(NEGATE 0 Cau + 4Sg); # TAQ + 4SgPoss undertiden homonym med Cau + 4Sg. -Lok fordi alt for mange hit på homonyme Abs+4SgPoss og Lok+3SgPoss. Flyttet til efter Par-reglerne, da fejl pga. U+Par blandes med Aeq+3SgPoss
 
 
 #Pronominer
-SELECT:1708 DemPron + Pl IF (1C N + Pl) ;
+SELECT:1710 DemPron + Pl IF (1C N + Pl) ;
 SELECT:1712 PersPron + 1Sg IF (1 1SgPoss); #uangaana N-ga er ikke una+Abl+UNA
 
 SELECT:1715 Abs + Pl IF (1 ("tamaq") + 4Pl LINK *1 INTRANSVERB + 3Pl OR 4Pl BARRIER V ) ;
@@ -2892,7 +2910,7 @@ REMOVE:5555 ("oqalup") + TUQ IF (0 ("oqaluttuup"));
 REMOVE:5556 TAR + RIAQ + QAR IF (0 TARIAQAR) ;
 REMOVE:5557 LIR + nv + RIIR IF (0 LIR + vv + RIIR) ;
 REMOVE:5558 ("ip") + LLAP IF (0 ("illar"));
-REMOVE:5559 QATE + GIIP IF (0 QATIGIIP) ;
+REMOVE:5559 QATE + GIIP OR QATE + GIIT IF (0 QATIGIIP) ;
 REMOVE:5560 ("ukior") + QATE IF (0 ("ukioq") + QATE) ;
 REMOVE:5561 ("ilik") + U + USIQ IF (0 ("ilior") + USIQ) ;
 REMOVE:5562 LIK + U IF (0 LIUR) ;
