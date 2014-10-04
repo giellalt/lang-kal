@@ -20,6 +20,7 @@ JSP_PAGES=root-morphology.jspwiki \
 		  numerals-affixes.jspwiki \
 		  propernouns-affixes.jspwiki 
 # compounding-morphology.jspwiki   \
+# derivation-morphology.jspwiki   \
 # abbreviations-stems.jspwiki      \
 # acronyms-stems.jspwiki           \
 # adjectives-oahpa-stems.jspwiki   \
