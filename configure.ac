@@ -50,6 +50,9 @@ m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 ### It is possible to specify also subversion revision: 0.1.2-12345
 _gtd_core_min_version=0.2.18
 
+### Required version of the Hfst tools:
+_required_hfst_version=3.8.0
+
 ### Earliest LibreOffice version that supports the language in question.
 ### Used for building the LO-voikko oxt package for the language.
 AC_SUBST([LO_min_version], [3.6])
@@ -87,11 +90,11 @@ gt_PROG_SCRIPTS_PATHS
 # kal uses m4 to process
 AC_PATH_PROGS([M4], [m4 gm4])
 
-# Tests and sets up HFST
-gt_PROG_HFST
-
 # Tests and sets up XFST
 gt_PROG_XFST
+
+# Tests and sets up HFST
+gt_PROG_HFST
 
 # Tests and sets up vislcg3
 gt_PROG_VISLCG3
