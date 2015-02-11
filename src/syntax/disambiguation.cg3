@@ -1053,8 +1053,8 @@ SET sinerOBJ = GEOOBJ | Prop ;
 # Proprier
 # Desse skal vi hente frå leksikon
 
-LIST Mal = "Eri" "Erik" "Eskild" "Jens" "Mik" "Miki" "Morten" "Ole" "Per" "Rasmus" "Trond" ;
-LIST Fem = "Anna" "Emilie" "Gitte" "Jane" "Kirsten" "Margrethe" "Mette" ;
+LIST Mal = "Eri" "Erik" "Eskild" "Hans" "Jens" "Mik" "Miki" "Morten" "Ole" "Per" "Rasmus" "Trond" ;
+LIST Fem = "Anna" "Dagmar" "Emilie" "Gitte" "Jane" "Kirsten" "Margrethe" "Mette" ;
 LIST Sur = "Jensen" "Jenseni" "Møller" "Rasmussen" "Trosterud" ;
 LIST TITEL = ("siulittar" TUQ) "kunngi" "fru" "hr" "lektor" ("pisoq" TAQ) "borgmester" ;
  
@@ -1545,6 +1545,19 @@ SELECT:0373 Inf + 4Pl IF (-*1 ORATIOOBLVERB + 3Pl)(NEGATE *1 Inf)(NEGATE *1 Par)
 #Et forsøg på at fjerne læsninger som N i stedet for som Par
 SELECT:0374 Par + SSA IF (0 N + SSA);
 
+#Specialfald med OSV før de følgende
+SELECT:0380 Ind + GE + 3Sg + 3SgO + TRANSVERB IF (NEGATE *0 VFIN)(*-1 Abs + Sg LINK *1 Rel + Sg BARRIER VFIN) ;
+SELECT:0381 Ind + GE + 3Sg + 3PlO + TRANSVERB IF (NEGATE *0 VFIN)(*-1 Abs + Pl LINK *1 Rel + Sg BARRIER VFIN );
+SELECT:0382 Ind + GE + 3Pl + 3SgO + TRANSVERB IF (NEGATE *0 VFIN)(*-1 Abs + Sg LINK *1 Rel + Pl BARRIER VFIN) ;
+SELECT:0383 Ind + GE + 3Pl + 3PlO + TRANSVERB IF (NEGATE *0 VFIN)(*-1 Abs + Pl LINK *1 Rel + Pl BARRIER VFIN) ;
+
+#En farlig regel, der altid vælger Ind + TRANSVERB ved eneste finitte, hvis både subjekt og objekt til venstre
+SELECT:0385 Ind + 3Sg + 3SgO IF (NEGATE *0 VFIN)(*-1 Rel + Sg LINK *1 Abs + Sg BARRIER VFIN) ;
+SELECT:0386 Ind + 3Sg + 3PlO IF (NEGATE *0 VFIN)(*-1 Rel + Sg LINK *1 Abs + Pl BARRIER VFIN) ;
+SELECT:0387 Ind + 3Pl + 3SgO IF (NEGATE *0 VFIN)(*-1 Rel + Pl LINK *1 Abs + Sg BARRIER VFIN) ;
+SELECT:0388 Ind + 3Pl + 3PlO IF (NEGATE *0 VFIN)(*-1 Rel + Pl LINK *1 Abs + Pl BARRIER VFIN) ;
+
+
 ################################################################
 # Frequent and safe rules - specific derivatives (remember also to check the final probabilistic loop) #
 ################################################################
@@ -1554,10 +1567,10 @@ SELECT:0374 Par + SSA IF (0 N + SSA);
 #REMOVE GE + vv IF (NEGATE 0 VERB_medGE) ; #NB Forudsætter, at tags rækkefølge gøres signifikant
 #Fjerner GE+vv bortset fra de få leksikalt markerede
 
-REMOVE:0380 VERB_udenUTE IF (0 UTE + vn) ;
+REMOVE:0390 VERB_udenUTE IF (0 UTE + vn) ;
 #Fjerner overflødige UTE+vn
 
-REMOVE:0381 U + Imp + 1Pl IF (0 POSSESSUM3) ; #fjerner "kigut" U nv V Imp 1Pl for "kigut" N Rel Pl 3PlPoss
+REMOVE:0391 U + Imp + 1Pl IF (0 POSSESSUM3) ; #fjerner "kigut" U nv V Imp 1Pl for "kigut" N Rel Pl 3PlPoss
 
 ########
 SECTION#
@@ -1605,8 +1618,15 @@ MAP:M0015 (@PRED2) TARGET INTRANSVERB + Inf + 4Pl IF (*-1 Abs + Pl OR Abs + Sg +
 MAP:M0016 (@PRED2) TARGET INTRANSVERB + Par + 3Pl IF (*-1 Abs + Pl)(NEGATE *0 ORATIOOBLVERB BARRIER VFIN)(1 Abs OR ("\,")); #koncessive saetninger uden konjunktion
 MAP:M0017 (@PRED2) TARGET INTRANSVERB + Par + 3Sg IF (*-1 Abs + Sg)(NEGATE *0 ORATIOOBLVERB BARRIER VFIN); #(1 Abs OR ("\,")); #koncessive saetninger uden konjunktion
 
-MAP:M0030 @<APPOS TARGET Abs + Sg + NOMEN + TUQ IF ( *-1 §noun-comma BARRIER V ); # Per, NN-imeersoq(@<APPOS), oqarpoq
-MAP:M0031 (@PROP>) TARGET Prop OR FIRSTNAME OR TITEL IF (1 Prop)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + LU LINK *1 V + 3Pl BARRIER N + Pl ); #fra 1350 for at udelukke overtallig SUBJ-tagging. NEGATE for at forebygge typen 'Per NN-ikkut isermata Vb'. Andet NEGATE for parataktiske Karen Perilu anipput
+MAP:M0028 @<APPOS TARGET Abs + Sg + NOMEN + TUQ IF ( *-1 §noun-comma BARRIER V ); # Per, NN-imeersoq(@<APPOS), oqarpoq
+
+#Specialtilfælde før M0031 - (Prop Prop=subjekt) (Prop=possessor possessum) samt (Prop Prop=subjekt) (Prop=objekt)
+MAP:M0029 @PROP> TARGET FIRSTNAME OR TITEL IF (1 Prop)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + LU LINK *1 V + 3Pl BARRIER N + Pl )(2 Prop + Rel LINK 1 POSSESSUM);
+
+MAP:M0030 @PROP> TARGET FIRSTNAME OR TITEL IF (1 Prop)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + LU LINK *1 V + 3Pl BARRIER N + Pl )(2 Prop + Sg LINK *1 TRANSVERB + 3SgO BARRIER V);
+
+MAP:M0031 (@PROP>) TARGET Prop OR FIRSTNAME OR TITEL IF (1 Prop)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + LU LINK *1 V + 3Pl )(NEGATE 1 Prop LINK 1 Prop); 
+#MAP:M0031 (@PROP>) TARGET Prop OR FIRSTNAME OR TITEL IF (1 Prop)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop #+ LU LINK *1 V + 3Pl BARRIER N + Pl )(NEGATE 1 Prop LINK 1 Prop); #fra 1350 for at udelukke overtallig SUBJ-tagging. ##NEGATE for at forebygge typen 'Per NN-ikkut isermata Vb'. Andet NEGATE for parataktiske Karen Perilu anipput. Tredie #NEGATE for at forebygge @PROP på subjektet i (SUBJ)(PROP> propriuskærne) 
 MAP:M0032 @<APPOS TARGET Prop + Abs + Sg - LU IF (-1 Prop + Attr)(-2 N + Abs + Sg )(NEGATE -2 @PROP>)(NEGATE -2 TITEL) ; # N per langgård
 MAP:M0033 @<APPOS TARGET Prop + Abs + Sg - LU IF (-1 N + Abs + Sg)(NEGATE -1 @PROP> )(NEGATE -1 TITEL) ; # N Per
 #første NEGATE for at forhindre hit på fx (Royal Arctic Line)@SUBJ> VERBUM og -LU for ikke at hitte på Danmark Islandilu og andet NEGATE for at blokere PISORTAQ Per Langgård oqarpoq
@@ -2880,6 +2900,9 @@ REMOVE:5536 ("nipip") + RUJUUR IF ( 0 ("nipi") + RUJUUR ) ;
 REMOVE:5537 ("isigaa") IF (0 ("isi") + GE ) ;
 REMOVE:5538 ("tunni") + U + TIP IF (0 ("tunniup")) ; #næppe ansigtstatoveringer
 REMOVE:5539 ("salloq") + LIUR IF ( 0 ("sallu") + LIUR ) ; #lave løgn, ikke *lave mager
+REMOVE:5540 ("nuap") + NAR IF ( 0 ("nuannaraa") ) ;
+REMOVE:5541 ("sikker") + LIR IF ( 0 ("sikkiler"))(-1 Abl OR Trm) ;
+REMOVE:5542 ("isi") + GIP IF ( 0 ("isigaaq") )(-1 Trm); #
 
 # Enkelte derivativer
 REMOVE NIRU IF (0 TIME) ; #20091109 "tallimanngor" NIRU
@@ -3031,8 +3054,9 @@ REMOVE ("(.*)i"r) IF (0 ("$1"v)) ;
 
  # Heuristiske regler:
  # Hvis alt andet har været prøvet vælg den statistisk mest sandsynlige
-REMOVE SSAQ + LIUR IF ( 0 SIUR) ; # N-SIUR sandsynligere end N-SSAQ=LIUR
-REMOVE ("iluar") + TUQ + UTE IF ( 0 TUQ + U + TIP ) ; # iluar+TUQ+U+TIP+TAQ frem for iluar+TUQ+UTE+TAAR
+REMOVE:9950 SSAQ + LIUR IF ( 0 SIUR) ; # N-SIUR sandsynligere end N-SSAQ=LIUR
+REMOVE:9951 ("iluar") + TUQ + UTE IF ( 0 TUQ + U + TIP ) ; # iluar+TUQ+U+TIP+TAQ frem for iluar+TUQ+UTE+TAAR
+REMOVE:9952 ("sikker") + LIR IF ( 0 ("sikkiler"))(NEGATE *0 ("naasoq")) ;
 
 SECTION
 SELECT (@CL-<CIT) IF (*-1 ORATIOOBLVERB BARRIER V-NOT-Par) ;
