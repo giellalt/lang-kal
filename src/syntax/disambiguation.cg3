@@ -1077,7 +1077,7 @@ LIST NON-POSSESSUM = "utoqqaq" ; #en klasse af ord, der sjældent eller aldrig h
 # TEMPLATES
 # ==========
 Template NexusHøjre =  (*1 Abs LINK *1 INTRANSVERB) OR (*1 Rel LINK *1 TRANSVERB) OR (*1 Abs + Sg LINK *1 TRANSVERB + 3SgO) OR (*1 Abs + Pl LINK *1 TRANSVERB + 3PlO) ; #3. og 4. OR på grund af transitiv med implicit subjekt
-Template NexusVenstre =  (-*1 Abs LINK *1 INTRANSVERB) OR (-*1 Rel LINK *1 TRANSVERB) ;
+Template NexusVenstre =  (-*1 Abs LINK *1 INTRANSVERB) OR (-*1 Rel LINK *1 TRANSVERB) OR (*-1 Abs + Pl LINK *1 TRANSVERB + 3PlO);
 
 # Tags
 # ====
@@ -1746,7 +1746,9 @@ MAP:M0230 (@CONJ) TARGET KONJUNKTION IF (-1 BOS OR ("\,")) ; #Flyttet fra 1168 f
 MAP:M0231 (@CONJ) TARGET ("aamma") + LU OR ("taamatut") + LU; #vistnok undtagelsesløs
 MAP:M0240 (@CL-<ADVL) TARGET KONJUNKTION IF (1 EOS)(NEGATE -1 BOS) ; #Sidste betingelse for at undgaa at tagge isolerede konjunktioner
 MAP:M0245 (@HEADLINE) TARGET KONJUNKTION IF (1 EOS)(-1 BOS) ; #Sidste betingelse for at undgaa at tagge isolerede konjunktioner
-MAP:M0250 (@FOC) TARGET FOKUSPART + (part) IF (NEGATE *0 VFIN BARRIER KOMMA) ;
+MAP:M0248 @FOC TARGET FOKUSPART + part IF (*-1 T:NexusVenstre BARRIER KOMMA)(1 Abs)(2 EOS) ; #Specialiteten Nexus tassa N.
+MAP:M0249 @FOC TARGET FOKUSPART + part IF (*1 T:NexusHøjre BARRIER KOMMA) ;
+MAP:M0250 (@FOC) TARGET FOKUSPART + (part) IF (NEGATE *0 VERB-NOTINF BARRIER KOMMA) ;
 MAP:M0260 (@CONJ) TARGET ("tassa") + part IF (-*1 V OR vn)(*1 V OR vn OR Prop OR ("\:")) ; #"tassa" brugt foer forklarende hovedsaetning eller i consekutiv bisaetning
 MAP:M0270 (@i-ADVL>) TARGET (part) IF (1 N + @<SUBJ) ;
 MAP:M0280 (@ADVL>) TARGET part IF (0 LU)(-1 N)(1 N);
@@ -1772,7 +1774,7 @@ MAP:M0316 (@ADVL>) TARGET TIME + Abs + Sg IF (NEGATE *1 INTRANSVERB + 3Sg OR TRA
 MAP:M0318 (@ADVL>) TARGET Lok + TIME IF (*1 V) ;
 MAP:M0319 (@<ADVL) TARGET Lok + TIME IF (-*1 V) ;
 
-MAP:M0400 (@<SUBJ) TARGET (Abs) IF (*-1 @FOC BARRIER V);
+MAP:M0400 @SUBJ_COMP TARGET Abs IF (-1 @FOC)(1 EOS OR KOMMA); # N tassa N. eller Tassa N.
 MAP:M0407 (@N>) TARGET Num IF (1 NUMHOVED); # ' .. 2 oorimoorlutik ..' specialfald før 189-190
 MAP:M0408 (@N>) TARGET NUMHOVED IF (1 Num); # ' .. kapitel 2 ..' specialfald før de følgende
 MAP:M0409 (@HNOUN) TARGET N OR Abbr OR Num IF (NEGATE *0 V)(1 ParagrafSlut); #20100827 Safe headlines
@@ -1926,6 +1928,12 @@ MAP:M0960 (@<ADVL) TARGET N IF (-1 ("\("))(1 ("\)"))(-2 @<ADVL) ; #Parantetiske 
 
 # Pronominer - De sikre MAP regler
 # ================================
+#Sætningsemner med possessor med eller uden inderiveret direkte objekt
+MAP:M0965 @POSS> TARGET PersPron + 2Pl IF (1 Abs LINK 1 Abs + 2PlPoss) ;
+MAP:M096 @OBJ> TARGET Abs IF (-1 PersPron + 2Pl)(1 Abs + 2PlPoss) ;
+
+
+
 #"uanga" og "uagut" er subjekt for V i første person hvis ikke adnominalt adled til 1SgPoss eller 1PlPoss resp.
 MAP:M0970 (@SUBJ>) TARGET ("ua" 1Sg Abs) IF (*1 INTRANSVERB + (1Sg) BARRIER (1SgPoss)) ; 
 MAP:M0980 (@SUBJ>) TARGET ("ua" 1Pl Abs) IF (*1 INTRANSVERB + (1Pl) BARRIER (1PlPoss)) ; 
@@ -2438,7 +2446,7 @@ SELECT (@POSS Sg) IF (1 POSSESSUM + 3SgPoss) ;
 SELECT Abl IF (*1 PASSIV); #Regel for agens tilfoejet 9.11.
 
 #Partiklernes SELECT og REMOVE
-SELECT (@FOC part) IF (*1 (@<SUBJ) BARRIER V ) ;
+SELECT (@FOC part) IF (*1 @SUBJ_COMP BARRIER V ) ;
 
 # Tidlige syntaktiske regler
 #SELECT N* + 3Sg + IP IF (-1 (Rel Sg)) ; #Virker ikke 18.1. sen aften
