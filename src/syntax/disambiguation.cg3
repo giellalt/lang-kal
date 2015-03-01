@@ -1273,7 +1273,7 @@ SELECT:0031 ("ila") + 3SgPoss + Abs IF (-1 TIME + Rel)(*1 T:NexusHøjre ) ;
 SELECT:0036 Rel + 4SgPoss IF (*1 TRANSVERB + 3Sg + Con BARRIER V)(NEGATE 0 Interj)(NEGATE 0 V)(NEGATE 1 3SgPoss)(NEGATE 0 VIK + Lok)(NEGATE 0 Rel + Pl LINK 1 POSSESSUM + 3PlPoss); #fx Ikke Ilami! og anillakkami, ikke possessor og ikke ADVL
 SELECT:0037 Rel + 4SgPoss IF (*1 TRANSVERB + 3Sg + Cau BARRIER V)(NEGATE 0 Interj)(NEGATE 0 V)(NEGATE 1 3SgPoss)(NEGATE 0 VIK + Lok)(NEGATE 0 Rel + Pl LINK 1 POSSESSUM + 3PlPoss); #fx Ilami! og anillakkami
 SELECT:0038 Rel + 4SgPoss IF (*1 TRANSVERB + 3Sg + Par BARRIER V)(NEGATE 0 Interj)(NEGATE 0 V)(NEGATE 1 3SgPoss)(NEGATE 0 VIK + Lok)(NEGATE 0 Rel + Pl LINK 1 POSSESSUM + 3PlPoss); #fx Ilami! og anillakkami
-
+REMOVE:0039 Abs + 3SgPoss IF (0 Int + 3Sg)(1 ("?")); # .. toqua? er ikke 'hendes død'
 
 ###################################
 # Frequent and safe rules - nouns #
@@ -1461,6 +1461,9 @@ REMOVE:0192 ("ila") + 3PlPoss IF (0 ("ilaanni") + part)(NEGATE -1 Rel + Pl) ;
 # Frequent and safe rules - pronouns #
 ########################
 
+SELECT:0198 PersPron + Rel IF (1 Abs LINK 1 POSSESSUM12) ;
+SELECT:0199 PersPron + Rel IF (1 POSSESSUM12) ;
+
 REMOVE:0200 IntPron IF ( 0 IndefPron ) (NEGATE *1 ("\?")) ;
 SELECT:0201 PersPron + Abs + 1Sg IF (*1 INTRANSVERB + 1Sg)(NEGATE 1 1SgPoss); #vælg uanga+Abs for uanga+Rel
 SELECT:0202 PersPron + 1Sg IF (*1 V + 1Sg OR V + 1SgO); #sletter DemAdv-læsningen
@@ -1470,7 +1473,7 @@ SELECT:0205 PRON + Rel IF (-1C Rel) ;
 SELECT:0206 PersPron + Rel + 1Sg IF (*1 TRANSVERB + 1Sg BARRIER Rel);
 SELECT:0207 PersPron + Abs + 1Sg IF (*1 INTRANSVERB + 1Sg BARRIER Abs);
 #Følgende 046 skal checkes. Sletter bl.a. PersPron-læsning i Uanga aanagakkit. Derfor reglerne 044 og 045
-REMOVE:0208 Rel + PersPron  IF (NEGATE *1 3PlPoss)(NEGATE *0 TRANSVERB + 3Pl)(NEGATE 0 LU LINK -1 3Pl) ;
+REMOVE:0208 Rel + PersPron  IF (NEGATE *1 POSSESSUM12)(NEGATE *0 TRANSVERB + 1Sg OR TRANSVERB + 2Sg OR TRANSVERB + 1Pl OR TRANSVERB + 2Pl)(NEGATE 0 LU LINK -1 1Sg OR 2Sg OR 1Pl OR 2Pl) ;
 REMOVE:0209 ("kina") + Via IF (0 ("kina") + Pl); #kikkut højst usandsynlig i vialis
 SELECT:0210 IntPron + Rel IF (*1 TRANSVERB BARRIER V) ;
 SELECT:0211 IntPron + Abs IF (*1 INTRANSVERB BARRIER V) ;
@@ -1924,13 +1927,17 @@ MAP:M0940 (@ADVL>) TARGET (Lok) OR (Trm) OR (Abl) OR (Via) OR (Aeq) IF (*1 V); #
 
 #ADD:0750 (@<ADVL) TARGET (Lok) OR (Trm) OR (Abl) OR (Via) OR (Aeq) OR (Ins) IF (-*1 V BARRIER ("\,") OR LU)(NEGATE -1 ("\("))(NEGATE 1 vn) ; # 20091109 sidste NEGATE
 
-MAP:M0960 (@<ADVL) TARGET N IF (-1 ("\("))(1 ("\)"))(-2 @<ADVL) ; #Parantetiske indskud samme led som foregående ord
+MAP:M0950 (@<ADVL) TARGET N IF (-1 ("\("))(1 ("\)"))(-2 @<ADVL) ; #Parantetiske indskud samme led som foregående ord
 
 # Pronominer - De sikre MAP regler
 # ================================
 #Sætningsemner med possessor med eller uden inderiveret direkte objekt
+MAP:M0962 @POSS> TARGET PersPron + 1Pl IF (1 Abs LINK 1 Abs + 1PlPoss) ;
+MAP:M0963 @OBJ> TARGET Abs IF (-1 PersPron + 1Pl)(1 Abs + 1PlPoss) ;
+MAP:M0964 @POSS> TARGET PersPron + 1Pl IF (1 Abs + 1PlPoss) ;
 MAP:M0965 @POSS> TARGET PersPron + 2Pl IF (1 Abs LINK 1 Abs + 2PlPoss) ;
-MAP:M096 @OBJ> TARGET Abs IF (-1 PersPron + 2Pl)(1 Abs + 2PlPoss) ;
+MAP:M0966 @OBJ> TARGET Abs IF (-1 PersPron + 2Pl)(1 Abs + 2PlPoss) ;
+MAP:M0967 @POSS> TARGET PersPron + 2Pl IF (1 Abs + 2PlPoss) ;
 
 
 
@@ -3120,7 +3127,7 @@ REMOVE:5851 3PlPoss IF (-*1 @POSS> + Sg )(0 3SgPoss); #vælg sing. possessor hvi
 SELECT ("eqqissisar") IF (0 ("eqqissi") + TAR);
 
 #20091031 NIAR nv eller NIAR vv??
-REMOVE NIAR + nv IF ( NEGATE 0 ANIMAL)(NEGATE 0 NIQAR) ; #Sidste NEGATE forebygger hit på akiniaaffigineqartarlutillu
+REMOVE NIAR + nv IF ( NEGATE 0 ANIMAL)(NEGATE 0 NIQAR)(NEGATE 0 VIK + GE) ; #Næstsidste NEGATE forebygger hit på akiniaaffigineqartarlutillu og sidste sekvenser med niaaffige..
 REMOVE ("ilik") + NIAR ; #20091112 - ad hoc regel, der skal erstattes, naar --ordered opdateres
 
 # Generelle regler
@@ -3147,7 +3154,9 @@ REMOVE:9952 ("sikker") + LIR IF ( 0 ("sikkiler"))(NEGATE *0 ("naasoq")) ;
 REMOVE:9953 ("eqqaap") + 3SgO IF ( 0 ("eqqaa") + 3SgO) ; #beskydning normalt med pluralis objekt
 REMOVE:9954 2Sg IF (0 1Sg)(NEGATE *0 ("illit") OR 2Sg) ; # Hvis helt uden kontekst inden for rækkevidde er 1Sg nok lidt hyppigere end 2Sg
 
-#Forsøg på at disambiguere taku+SAR fra taku+TAR. Forsøget virker ikke
+#Forsøg på at disambiguere taku+SAR fra taku+TAR. Først reddes TAR=TAR+vv+TAQ+vn
+REMOVE:9955 SAR + TAR + TAQ IF (0 TAR + TAR + TAQ) ;
+SELECT:9956 ("taku") + SAR IF (-1 Trm)(O ("taku") + TAR) ; 
 #REMOVE:9955 ("taku") + TAR IF ( 0 ("taku") + SAR )(*-1 @OBJ> + HUMAN)(NEGATE 0 LIR) (NEGATE *0 TAR) ; #
 
 SECTION
