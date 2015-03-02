@@ -312,6 +312,7 @@ LIST LIUR_UTE = LIUR\=UTE ;
 LIST LLAP = LLAP ;
 LIST LLAR = LLAR ;
 LIST LUAR = LUAR ;
+LIST LLUAR = LLUAR ;
 LIST LUAR_LIR = LUAR\=LIR ;
 LIST LUAR_LIR_RIIR_QQU_GALUAR = LUAR\=LIR\=RIIR\=QQU\=GALUAR ;
 LIST LUAR_RIAR = LUAR\=RIAR ;
@@ -1326,7 +1327,7 @@ SELECT:0075 Abs + Pl IF (1 Abs + DemPron + Pl);
 REMOVE:0076 Rel + 4PlPoss IF (NEGATE *0 V + 3Pl) ; #Vælg Ins hvis intet V
 
 SELECT:0077 3PlPoss IF (-1 Rel + Pl)(NEGATE *1 TRANSVERB + 3Pl)(0 ADJEKTIVISK + TAQ);
-REMOVE:0078 Abs + Sg + 4SgPoss IF (NEGATE *1 3SgO OR Cau + 3Sg OR Con + 3Sg OR Par + 3Sg BARRIER VFIN)(NEGATE 0 LU)(NEGATE 0 Sg + Pl); #Sidste NEGATE forhindrer hit på N* Sg, men N Pl)
+REMOVE:0078 Abs + Sg + 4SgPoss IF (NEGATE *1 TRANSVERB + 3SgO OR Cau + 3Sg OR Con + 3Sg OR Par + 3Sg BARRIER VFIN)(NEGATE 0 LU)(NEGATE 0 Sg + Pl); #Sidste NEGATE forhindrer hit på N* Sg, men N Pl)
 REMOVE:0079 Abs + Pl + 4SgPoss IF (NEGATE *1 3PlO OR Cau + 3Pl OR Con + 3Pl BARRIER VFIN)(NEGATE 0 LU);
 #Fjern de helt sikkert overflødige possessumformer, der kan interferere med Par-reglerne. Den foerste vedroerer siulittaasuisa nuannarineqarnersaat, der skal hitte foer de foelgende regler. 20100408 Tilføjet NEGATE LU på grund af subjektsparatakser
 
@@ -1938,6 +1939,8 @@ MAP:M0964 @POSS> TARGET PersPron + 1Pl IF (1 Abs + 1PlPoss) ;
 MAP:M0965 @POSS> TARGET PersPron + 2Pl IF (1 Abs LINK 1 Abs + 2PlPoss) ;
 MAP:M0966 @OBJ> TARGET Abs IF (-1 PersPron + 2Pl)(1 Abs + 2PlPoss) ;
 MAP:M0967 @POSS> TARGET PersPron + 2Pl IF (1 Abs + 2PlPoss) ;
+MAP:M0968 @POSS> TARGET PersPron + 1Sg IF (1 Abs + 1SgPoss) ;
+MAP:M0969 @POSS> TARGET PersPron + 2Sg IF (1 Abs + 2SgPoss) ;
 
 
 
@@ -2125,7 +2128,7 @@ MAP:M1930 @SUBJ> ReflPron + Abs + 4Sg IF (NEGATE *0 V)(-1**< @PRED + 3Sg); #Elip
 #########################################################################################
 
 #Hvis ikke objekt, så nok subjekt
-MAP:M1940 @SUBJ> Abs + Sg IF (*1 INTRANSVERB + 3Sg BARRIER TRANSVERB + 3SgO) ;
+MAP:M1940 @SUBJ> Abs + Sg IF (*1 INTRANSVERB + 3Sg OR INTRANSVERB + 4Sg BARRIER TRANSVERB + 3SgO) ;
  
   
 # Denne tag er for alle ord vi ikke har funktion til.
@@ -2993,6 +2996,11 @@ REMOVE:5545 ("suliaq") + TU IF ( 0 ("suli") + GIARTUR ) ; # suliartor- mere sand
 REMOVE:5546 ("toqusar") IF ( 0 ("toqu") + TAR )(NEGATE *-1 @SUBJ> + ANIMAL ) ;
 REMOVE:5547 ("qaar") + QQU IF ( 0 ("qaa") + QQU ) ; #sprænge vs. invitere
 REMOVE:5548 ("paa") + NIAQ IF ( 0 ("paasi") + NIAQ ) ;
+SELECT:5549 ("issor") + RAR IF ( 0 ("issu") OR ("issup") );
+REMOVE:5550 ("sinik") + LIR IF ( 0 ("sinip") + LIR );
+REMOVE:5551 ("sini") + LIR IF ( 0 ("sinip") + LIR )(NEGATE *-1 @SUBJ> + THING );
+REMOVE:5552 ("ip") + LLUAR IF ( 0 ("illuar") ) ;
+
 
 # Enkelte derivativer
 REMOVE NIRU IF (0 TIME) ; #20091109 "tallimanngor" NIRU
