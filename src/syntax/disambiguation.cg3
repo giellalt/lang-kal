@@ -1357,7 +1357,7 @@ SELECT:0090 ("ila") + 3PlPoss IF (-1 BOS)(-1**< VFIN + 3Pl)(NEGATE -1**< ("ilaaq
 
 SELECT:0092 TAQ + Abs + Pl + 3PlPoss IF (-1 BOS)(1-**< VFIN + 3Pl)(*1 VFIN + INTRANSVERB + 3Pl);
 REMOVE:0093 3PlPoss + Abs + Pl IF (*1 VFIN + INTRANSVERB + 3Pl)(NEGATE 1 Num + Abs)(NEGATE -1 Rel + Pl LINK -1 Abs + Pl)(NEGATE 0 ("ila")); #Fjern possessumlaesning trods mulig possessor, hvis der ikke staar et adnominalt adled og der tidligere staar et subjekt
-REMOVE:0099 TIME + POSSESSUM12 ; # Må være en udelukket kombination
+REMOVE:0099 TIME + POSSESSUM12 IF (NEGATE 0 SIUR + VIK) ; # Må være en udelukket kombination men må ikke slette fx aasarsiorfik
 #Overfloedige possessumformer
 SELECT:0100 2SgPoss IF (*0 ("qujanaq"))(NEGATE -1 ("uanga"))(NEGATE *0 VFIN) ; #Kontekst, der maa sikres foer foelgende REMOVE
 REMOVE:0101 Abs + 2SgPoss IF (NEGATE *0 ("illit") OR Imp + 2Sg) (NEGATE *1 3SgO)(NEGATE *1 INTRANSVERB + 3Sg BARRIER Abs + Sg)(NEGATE 1 ("tassa") LINK 1C Sg); #Sidste NEGATE for skyld "Soraluannguit tassa niviarsiaq .."
@@ -1811,7 +1811,7 @@ MAP:M0407 (@N>) TARGET Num IF (1 NUMHOVED); # ' .. 2 oorimoorlutik ..' specialfa
 MAP:M0408 (@N>) TARGET NUMHOVED IF (1 Num); # ' .. kapitel 2 ..' specialfald før de følgende
 MAP:M0409 (@HNOUN) TARGET N OR Abbr OR Num IF (NEGATE *0 V)(1 ParagrafSlut); #20100827 Safe headlines
 MAP:M0410 (@HNOUN) TARGET APPELLATIV + Abs OR Prop + Abs OR Abbr - FIRSTNAME IF (NEGATE *0 VERB-NOTINF)(NEGATE *1 TRANSVERB + Inf OR TRANSVERB + InfNeg)(NEGATE *-1 ("tassa") LINK *1 INF + 4Sg BARRIER VFIN) ;
-MAP:M0415 (@i-ADVL>) TARGET Trm IF (1 N + (vn)) ;
+MAP:M0415 (@i-ADVL>) TARGET Trm IF (1 N + (vn))(NEGATE 1 Lok + IP + TUQ + Trm) ; #må ikke tagge på basis af sit eget kongrunsadled
 MAP:M0420 (@<OBJ) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (-1 TRANSVERB + 3SgO)(*1 CLB OR EOS BARRIER 3SgO)(NEGATE *-1 ORATIOOBLVERB LINK *1 V + 3Sg)(NEGATE *1 V + 3Sg); #20100227 Tronds tilfoejelse. 20100322 første NEGATE forebygger forkerte hit paa subjekter (PL), andet NEGATE pga. .. pillugu PER nalorsarpoq,hvor PER ikke må pege på pillugu
 
 MAP:M0430 (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (*1 Rel BARRIER INTRANSVERB LINK *1 TRANSVERB + 3SgO BARRIER VERB-NOTINF OR KOMMA) ; #Typen O S V-GE udvidet til også at hitte uden GE. Komma tilføjet for at undgå hit på subjekter med possessor-possessum appositioner
@@ -1957,7 +1957,7 @@ MAP:M0890 (@i-ADVL>) TARGET (Via) IF (1 vn - NAR )(NEGATE 1 TAR + RIAQ + IRUP)(N
 MAP:M0900 (@i-ADVL>) TARGET (Aeq) IF (1 vn - NAR )(NEGATE 1 Rel LINK 1 POSSESSUM3 + Aeq )(NEGATE 1 LU + (Aeq)); #Kun Trm til vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse
 MAP:M0910 (@i-ADVL>) TARGET (Ins) IF (1 vn - NAR )(NEGATE 1 TAR + RIAQ + IRUP)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Ins )(NEGATE 1 LU + (Ins)); #20091109 
 MAP:M0920 (@AGENS) TARGET Abl IF (*1 PASSIV)(NEGATE 0 TIME); #Tidsadverbaler må ikke blive agens
-MAP:M0930 (@i-ADVL>) TARGET (Trm) IF (*1 vn BARRIER V);
+MAP:M0930 (@i-ADVL>) TARGET Trm - Prop IF (*1 vn BARRIER V)(NEGATE 1 Lok + IP + TUQ + Trm); #må ikke hitte på sit eget kongruensadled
 MAP:M0940 (@ADVL>) TARGET (Lok) OR (Trm) OR (Abl) OR (Via) OR (Aeq) IF (*1 V); #Foerst adled til vn og i-ADVL, derefter andre ADVL
 
 #ADD:0750 (@<ADVL) TARGET (Lok) OR (Trm) OR (Abl) OR (Via) OR (Aeq) OR (Ins) IF (-*1 V BARRIER ("\,") OR LU)(NEGATE -1 ("\("))(NEGATE 1 vn) ; # 20091109 sidste NEGATE
@@ -3062,7 +3062,7 @@ REMOVE:5553 ("kaaveq") + LIR + nv IF ( 0 ("kaavip") + LIR + vv );
 REMOVE:5554 ("oqaluut") + LIRI IF ( 0 ("oqalup") + USIQ ) ;
 REMOVE:5555 ("iseq") + LIR IF ( 0 ("iser") + LIR );
 REMOVE:5556 ("isi") + LIR IF ( 0 ("iser") + LIR );
-
+SELECT:5557 ("nissaap") IF ( 0 nv + U )(-*1 @SUBJ> + HUM); #med humant subjekt nok 'ræbe/bøvse)
 
 # Enkelte derivativer
 REMOVE NIRU IF (0 TIME) ; #20091109 "tallimanngor" NIRU
@@ -3126,6 +3126,8 @@ REMOVE:5580 LLAR IF (0 ("aallar"));
 REMOVE:5581 TIR IF (0 TIP) ; #skal måske blødes lidt op (20150323)
 SELECT:5582 NIQSSAQ IF (0 NIQ + SSAQ)(NEGATE 0 Arch )(NEGATE 0 TRANSINTRANS OR NNGUR) ; #Enkelte archaiske intrans med transitive endelser skal holdes ude ligesom ord med både trans og intrans former
 REMOVE:5583 ("anger") + SSUSIQ IF ( 0 ("angi") + SSUSIQ) ;
+REMOVE:5584 SSIP IF ( 0 ("assi") + TIP) ; #ingen fodring med billeder
+REMOVE:5585 TUQ + U IF (0 TUUR OR ("akunnattoor") );
 
 # Enkelte substantiver
 REMOVE ("pineq") IF (NEGATE *0 ("kamik")) ; #20091103 pineq+QAR vs. pineqar-
