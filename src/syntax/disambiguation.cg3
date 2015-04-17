@@ -1422,7 +1422,9 @@ SELECT:0145 ("assi") + GE + TAQ + Abs + Pl + 3PlPoss + LU IF (1 EOS); #assigisaa
 REMOVE:0146 Rel + 3PlPoss IF ( 0 Rel + 3SgPoss)(*-1 INF + 4Sg BARRIER V) ; # Sikker singularis possessor
 
 SELECT:0147 ("affaq") + Ins IF (1 ("kalaaleq") OR ("qatanngut"));
- 
+
+REMOVE:0148 4PlPoss IF (NEGATE *0 V + 3Pl OR V + 4Pl)(NEGATE 0 ("meeraq") LINK 1 3PlPoss LINK *1 V + 3Sg OR V + 4Sg) ; # Må ikke slette 'Sg Vb deres børns N'
+REMOVE:0148B 4PlPoss + Rel IF (0 Ins + Sg)(1 INTRANSVERB) ; #
 
 ##########################################
 # Frequent and safe rules - proper names #
@@ -2814,10 +2816,7 @@ SELECT:8423 3SgO IF (*-1 @CL-CIT>) ; #Vælg inquit med Sg frem for Pl
 
 SELECT:8424 3SgO IF (0 @CL-CIT>)(-*1 3Sg BARRIER @OBJ> + Pl) ;
 SELECT @SUBJ> + Sg IF (*1 Par + 3Sg BARRIER V); #Forhindrer følgende ADVL-regel i at slette SUBJ
-SELECT @ADVL> IF (1 V) ; #Disambiguerer @ADVL> og @<ADVL
 SELECT @ADVL> IF (1 @POSS)(2 @ADVL>) ; #Disambiguerer @ADVL> og @<ADVL i NP med possessor-possessum
-
-SELECT @ADVL> IF (1 V) ; #Disambiguerer @ADVL> og @<ADVL
 
 REMOVE @SUBJ> IF (NEGATE *-1 V)(NEGATE *1 V);
 REMOVE @OBJ> IF (NEGATE *-1 V)(NEGATE *1 V);
@@ -2875,7 +2874,7 @@ SELECT:8456 @PRED + 3SgO IF (*1 @<CL-CIT) ;
 SELECT:8457 @POSS> IF (1 Ins)(2 POSSESSUM) ;
 SELECT:8458 @POSS> IF (1 POSSESSUM) ;
 
-SELECT:8459 Abs + Pl + @SUBJ> IF (*1 INTRANSVERB + 3Pl OR 4Pl BARRIER V );
+SELECT:8459 Abs + Pl + @SUBJ> IF (*1 INTRANSVERB + 3Pl OR 4Pl BARRIER V )(NEGATE 0 Lok LINK *-1 @SUBJ>); #mange fejlhit på lokalis. Udelades fra denne regel
 SELECT:8460 Abs + Sg + @SUBJ> IF (*1 INTRANSVERB + 3Sg OR 4Sg BARRIER V );
 
 
@@ -2900,7 +2899,7 @@ SELECT:8540 3SgO IF (NEGATE *-1 Abs + Pl + @OBJ> BARRIER V )(*-1 Rel + Pl + @SUB
 
 SELECT:8549 Rel + @SUBJ> + Sg IF (*1 TRANSVERB + @PRED BARRIER INTRANSVERB + 3Sg OR INTRANSVERB + 4Sg);
 SELECT:8550 Rel + @SUBJ> + Pl IF (*1 TRANSVERB + @PRED BARRIER INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl);
-SELECT:8551 Abs + @SUBJ> IF (*1 INTRANSVERB + @PRED);
+SELECT:8551 Abs + @SUBJ> IF (*1 INTRANSVERB + @PRED)(NEGATE 0 Lok LINK *-1 @SUBJ>); #mange fejlhit på lokalis. Udelades fra denne regel;
 
 #To regler der vælger subjekter før hhv. Lok og Ins ved oratio oblique
 SELECT:8552 Rel + @SUBJ> + 4SgPoss IF (*1 TRANSVERB + 4SgO) ;
@@ -3152,6 +3151,7 @@ SELECT:5582 NIQSSAQ IF (0 NIQ + SSAQ)(NEGATE 0 Arch )(NEGATE 0 TRANSINTRANS OR N
 REMOVE:5583 ("anger") + SSUSIQ IF ( 0 ("angi") + SSUSIQ) ;
 REMOVE:5584 SSIP IF ( 0 ("assi") + TIP) ; #ingen fodring med billeder
 REMOVE:5585 TUQ + U IF (0 TUUR OR ("akunnattoor") );
+REMOVE:5586 ("kalak") + U + LIR IF ( 0 ("kalaaleq"));
 
 # Enkelte substantiver
 REMOVE ("pineq") IF (NEGATE *0 ("kamik")) ; #20091103 pineq+QAR vs. pineqar-
@@ -3199,6 +3199,7 @@ REMOVE:5769 ("utoqqaq") + UTE + nn IF (0 Pl OR Rel ) ;
 REMOVE:5770 ("Angu") + MI IF (0 ("angut"));
 SELECT:5771 ("Saatani") + Prop + Abs IF (0 ("saatani") + Abs) ;
 SELECT:5772 ("Italia") IF (0 ("ip") + TAQ) ;
+REMOVE:5773 ("aleqaq") IF ( 0 ("aleqa")) ;
 
 # Ugedagene
 REMOVE ("ataaseq") + NNGUR + NIRU IF (0 ("ataaseq") + NNGUR + NIQ + U) ;
@@ -3254,8 +3255,11 @@ REMOVE Via + 2SgPoss IF (NEGATE -1 ("illit"))(NEGATE *0 VERB-NOTINF + 2Sg LINK N
 REMOVE ("(.*)i"r) IF (0 ("$1"v)) ;
 
 
+
  # Heuristiske regler:
  # Hvis alt andet har været prøvet vælg den statistisk mest sandsynlige
+#SELECT:9949 @ADVL> IF (1 V)(NEGATE 0 @OBJ> LINK -1 @OBJ>); #Disambiguerer @ADVL> og @<ADVL men må ikke hitte på kongruensadled
+SELECT:9949 @ADVL> IF (1 V) ; #Disambiguerer @ADVL> og @<ADVL
 REMOVE:9950 SSAQ + LIUR IF ( 0 SIUR) ; # N-SIUR sandsynligere end N-SSAQ=LIUR
 REMOVE:9951 ("iluar") + TUQ + UTE IF ( 0 TUQ + U + TIP ) ; # iluar+TUQ+U+TIP+TAQ frem for iluar+TUQ+UTE+TAAR
 REMOVE:9952 ("sikker") + LIR IF ( 0 ("sikkiler"))(NEGATE *0 ("naasoq")) ;
