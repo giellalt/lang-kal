@@ -863,6 +863,7 @@ LIST U = U ;
 LIST U_NIRAR = U\=NIRAR ;
 LIST USAR = USAR ;
 LIST USAAR = USAAR ;
+LIST USAQ = USAQ ;
 LIST USIQ = USIQ ;
 LIST UTE = UTE ;
 LIST UTIGE = UTIGE ;
@@ -1043,7 +1044,7 @@ SET FOOD = EDIBLE | DRINKABLE ;
 LIST THING = "alussaat" "aqqusineq" ("ati" TAQ) "ilullissiaq" "siu" "timi" "savik" "torsuusaq";
 LIST MATERIAL = "ameq" "ulik" "qipik" ;
 LIST f-an_SG = "qaneq" "qingaq" ;
-LIST TIME = ("aallar" QQAAR UTE) "aasaq" ("arfineq" NNGUR) ("ataaseq" NNGUR) "ippassaq" "marlunngor" "nali" ("pingasut" NNGUR) "pingasunngor" "qeqqa" "sapaat" ("sisamat" NNGUR) "sisamanngor" "siulleq" ("tallimat" NNGUR) "tallimanngor" "ualeq" "ukiaq" ("ukiar" TUQ) "ukiartoq" "ukioq" "ullaa" "ullaaq" "ulloq" "unnuaq";
+LIST TIME = ("aallar" QQAAR UTE) "aasaq" ("arfineq" NNGUR) ("ataaseq" NNGUR) "ippassaq" "marlunngor" "nali" ("pingasut" NNGUR) "pingasunngor" "qeqqa" "sapaat" ("sisamat" NNGUR) "sisamanngor" "sivisu" "siulleq" ("tallimat" NNGUR) "tallimanngor" "ualeq" "ukiaq" ("ukiar" TUQ) "ukiartoq" "ukioq" "ullaa" "ullaaq" "ulloq" "unnuaq";
 LIST UGEDAGE = ("arfineq" NNGUR) ("ataaseq" NNGUR) "marlunngor" ("pingasut" NNGUR) "pingasunngor" "sapaat" ("sisamat" NNGUR) "sisamanngor" ("tallimat" NNGUR) "tallimanngor" ;
 LIST NUMHOVED = "dollar" "dollari" "euro" "gram" "kapitali" "kapitel" "kiilu" "kilo" "koruuni" "krone" "milliardi" "million" "oori" "øre";
 LIST COMPOUND_N = "Windows" "Linux" "program" ;
@@ -1537,7 +1538,7 @@ SELECT:0244 ReflPron + Abs + 4Pl IF (1 INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl); 
 SELECT:0245 ReflPron + Rel + 4Pl IF (1 part)(2 TRANSVERB + 3Sg OR INTRANSVERB + 4Sg OR POSSESSUM); #Særtilfælde til 0246
 SELECT:0246 ReflPron + Rel + 4Pl IF (1 TRANSVERB + 3Sg OR TRANSVERB + 4Sg OR POSSESSUM);
 
-SELECT:0260 ReflPron + Abs + 4Sg IF (NEGATE *0 VFIN)(-1**< @PRED + 3Sg); #Elipser med 3Sg i foregående sætning
+SELECT:0250 ReflPron + Abs + 4Sg IF (NEGATE *0 VFIN)(-1**< @PRED + 3Sg); #Elipser med 3Sg i foregående sætning
 
 #SELECT:0212 ("nammineq") + Abs + Sg IF (NEGATE -1 N)(NEGATE *1 TRANSVERB + INF BARRIER V)(NEGATE *1 TRANSVERB + 3Sg OR 4Sg BARRIER V) ; #et isoleret ReflPron kan være subjekt
 
@@ -1645,7 +1646,14 @@ SELECT:0392A Rel + Sg - POSSESSUM IF (*1 Abs + Sg - vn BARRIER V OR KOMMA LINK *
 #SELECT:0392B Rel + Sg - POSSESSUM IF (*1 Abs + Pl - vn BARRIER V OR KOMMA LINK *1 3Sg + 3PlO BARRIER V OR KOMMA)(NEGATE 1 POSSESSUM); 
 #SELECT:0392C Rel + Pl - POSSESSUM IF (*1 Abs + Sg - vn BARRIER V OR KOMMA LINK *1 3Pl + 3SgO BARRIER V OR KOMMA)(NEGATE 1 POSSESSUM); 
 SELECT:0392D Rel + Pl - POSSESSUM IF (*1 Abs + Pl - vn - ("arlaq") BARRIER V OR KOMMA LINK *1 3Pl + 3PlO BARRIER V OR KOMMA)(NEGATE 1 POSSESSUM); #hvis arlallit næppe et objekt
- 
+
+##################################################################################
+# Tidlige regler til komplicerede sammenfald af oratio obliqua og direkte objekt #
+##################################################################################
+
+SELECT:0259 Par + 3Sg IF (0 NIQ + U)(-1 NIQ)(1 3Sg + 3SgO)(NEGATE *-1 ORATIOOBLVERB) ; #En ad hoc regel, der vist kun håndterer en enkelt specifik sætning
+
+SELECT:0260 Abs + Sg + nv IF (-1C Abs + Sg)(1 TRANSVERB + 3SgO)(NEGATE *-1 ORATIOOBLVERB)(NEGATE 0 NIR) ; #Med NIR vist altid oratio obl.
 
 ########
 SECTION#
@@ -1743,6 +1751,9 @@ MAP:M0040 (@SUBJ>) TARGET N + Abs + LU IF (-1 VFIN + 3Sg)(1 Inf + 4Pl)(2 N + Sg 
 MAP:M0041 (@SUBJ>) TARGET N + Abs + LU IF (-1 VFIN + 3Sg)(1 Inf + 4Pl)(2 N + Pl LINK *1 V + 3Pl) ;
 
 MAP:M0045 (@CL-<ADVL) TARGET Par + 3Pl + 4SgO OR Par + 4Sg IF (*-1 VFIN) ; #20091109 participium på -gaanni altid neksusadverbial
+MAP:M0046 (@CL-ADVL>) TARGET Par + 3Pl + 4SgO OR Par + 4Sg IF (-1 BOS OR KOMMA) ; #20091109 participium på -gaanni altid neksusadverbial
+MAP:M0047 (@CL-ADVL>) TARGET Par + 3Pl + 4SgO OR Par + 4Sg IF (*1 VFIN BARRIER V)(NEGATE 0 Par + 4Sg + 3PlO) ; #20091109 participium på -gaanni altid neksusadverbial. De særlige Par på -gini, som erstatter ledsagemåde holdes udenfor
+
 MAP:M0050 (@PRED2) TARGET Par IF (*-1 ADVERBIUM OR UNA BARRIER V)(NEGATE *0 ORATIOOBLVERB) ; #20091109
 MAP:M0051 (@PRED2) TARGET Par OR Inf OR InfNeg IF (*-1 ("soorlu") BARRIER V)(NEGATE *0 VFIN) ;
 MAP:M0052 (@PRED2) TARGET Par + 3Pl IF (NEGATE *0 VFIN)(NEGATE 0 VFIN) ; #MAP-er SELECT:100
@@ -1758,19 +1769,21 @@ MAP:M0062 (@CL-<CIT) TARGET Inf + 4Pl IF (-*1 ORATIOOBLVERB + 3Pl)(NEGATE *1 Inf
 MAP:M0063 (@CL-<CIT) TARGET Inf + TRANSVERB IF (-*1 ORATIOOBLVERB)(NEGATE *1 Inf)(NEGATE *1 Par) ;
 #Simpel co-ref oratio obliqua uden andre ledsagemåder end CL-CIT
 
-MAP:M0065 (@CL-ADVL>) TARGET Par + 4Sg IF (*1 VFIN) ; # neksusadverbial der modificerer t.h. 
-MAP:M0066 (@CL-<ADVL) TARGET Par + 4Sg IF (*-1 VFIN) ;
+MAP:M0065 @V> TARGET Abs + NIQ IF (1 ("ajor") OR ("saper")) ;
 
-MAP:M0067 @V> TARGET Abs + NIQ IF (1 ("ajor") OR ("saper")) ;
+MAP:M0066 @INTERIM TARGET ("assi") + GE + TAQ + Abs + Pl + 3PlPoss + LU IF (1 EOS); #assigisaallu før punktum vist altid sætningsemne. Taggen skal ændres
 
-MAP:M0068 @INTERIM TARGET ("assi") + GE + TAQ + Abs + Pl + 3PlPoss + LU IF (1 EOS); #assigisaallu før punktum vist altid sætningsemne. Taggen skal ændres
+#Sætningsadverbialer
 
 MAP:M0070 @CL-ADVL> TARGET U + Par + 3Sg + 3SgO ; #Den særlige transitive Par altid sætningsadverbial
 
 MAP:M0072 @CL-ADVL> TARGET ("ila") + 3SgPoss + Abs IF (-1 TIME + Rel)(*1 T:NexusHøjre ) ; #Absolut tid med possessor
 
 MAP:M0073 @CL-ADVL> TARGET TEMPUSVERB + Par + 3Sg IF (-1 BOS) ;
+
 #Sætningsadverbiel tidsangivelse
+MAP:M0074 @CL-ADVL> TARGET INF IF (-3 BOS)(-2 TIME + Ins)(-1 Lok)(NEGATE 1 V); #
+
 
 # Proprier - MAP-regler
 #==============
@@ -2969,6 +2982,7 @@ REMOVE:8508B ("kingorna") IF ( 0 ("kinguneq") ) (-1 Rel + Sg);
 REMOVE:8508C ("kingornagut") IF ( 0 ("kinguneq") ) (-1 Rel + Sg);
 REMOVE:8508D ("kingornatigut") IF ( 0 ("kinguneq") ) (-1 Rel + Sg);
 SELECT:8509 ("isaariaq") ;
+REMOVE:8510 ("siuaq") + USAQ IF (0 ("siuaa") + TAQ) ; # ingen "fortandslignende" hvis "forfædre"
 
 
 # Nomen eller partikel?
@@ -3032,7 +3046,7 @@ REMOVE:5463 ("kaa") + VIK IF (0 ("kaavip"));
 
 # nv eller vv?
 SELECT:5493 QATE + vn + GE IF (0 QATE + nn + GE)(NEGATE *-1 HUMAN + @OBJ>) ;
-REMOVE:5494 ("pi") + nv IF (0 ("pi") + vv); # vaelger pi+LIR=TIP frem for pi+LIR+TIP
+REMOVE:5494 ("pi") + nv IF (0 ("pi") + vv)(NEGATE 0 NIQAR); # vaelger pi+LIR=TIP frem for pi+LIR+TIP
 SELECT:5495 ("pi") + nn ; # ad hoc for at disambiguere pi+nn fra pi+vn
 REMOVE:5496 ("pup") + LAAR IF (0 ("pulaar")) ; 
 REMOVE:5497 ("pulaa") IF (0 ("pulaar")) ; #ad hoc. Hvad betyder 'pulaavoq'??
@@ -3164,6 +3178,7 @@ REMOVE:5583 ("anger") + SSUSIQ IF ( 0 ("angi") + SSUSIQ) ;
 REMOVE:5584 SSIP IF ( 0 ("assi") + TIP) ; #ingen fodring med billeder
 REMOVE:5585 TUQ + U IF (0 TUUR OR ("akunnattoor") );
 REMOVE:5586 ("kalak") + U + LIR IF ( 0 ("kalaaleq"));
+REMOVE:5587 TAQ + LIR + nv IF (0 TAR + LIR + vv) ;
 
 # Enkelte substantiver
 REMOVE ("pineq") IF (NEGATE *0 ("kamik")) ; #20091103 pineq+QAR vs. pineqar-
@@ -3280,8 +3295,8 @@ REMOVE:9953 ("eqqaap") + 3SgO IF ( 0 ("eqqaa") + 3SgO) ; #beskydning normalt med
 REMOVE:9954 2Sg IF (0 1Sg)(NEGATE *0 ("illit") OR 2Sg) ; # Hvis helt uden kontekst inden for rækkevidde er 1Sg nok lidt hyppigere end 2Sg
 
 #Forsøg på at disambiguere taku+SAR fra taku+TAR. Først reddes TAR=TAR+vv+TAQ+vn
-REMOVE:9955 SAR + TAR + TAQ IF (0 TAR + TAR + TAQ) ;
-SELECT:9956 ("taku") + SAR IF (-1 Trm)(O ("taku") + TAR) ; 
+REMOVE:9955 SAR + TAR + TAQ IF (0 TAR + TAR + TAQ) ; #Dette virker næppe nogensinde
+SELECT:9956 ("taku") + SAR IF (-1 Trm)(O ("taku") + TAR) ; #Hvis terminalis sandsynligvis takusarpaa og ikke taku+TAR 
 REMOVE:9957 ("akik") IF (0 ("akiler")) ;
 REMOVE:9958 ("akip") IF (0 ("akiler") ) ;
 REMOVE:9959 ("najak") IF (0 ("naja")) ;
