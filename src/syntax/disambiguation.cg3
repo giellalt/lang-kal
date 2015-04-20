@@ -16,7 +16,7 @@
 	# Tilhængspartikler (line 812) 
 	# Syntactic and morphological sets
 		# Generelt for alle ordklasser (linie 854)
-		# Verber (linie 862)
+		# Verber (linie 862):
 		# Nominer (linie 885)
 		# Partikler (linie 900)
 	# Lexical sets (907)
@@ -1035,7 +1035,7 @@ LIST ANIMAL = "qimmeq" "qitsuk" "puisi" ;
 LIST ABSTRACT = "taaq" ;
 
 LIST PLACE = "illu" "imaq" ;
-LIST ADJEKTIVISK = "akutakujooq" "akutakujuk" "qaqqorik";
+LIST ADJEKTIVISK = "akutakujooq" "akutakujuk" "itisooq" "qaqqorik";
 
 LIST EDIBLE = "neqi" "iffiaq" "kaagi" ;
 LIST DRINKABLE = "kaffi" "tii" "immuk" "whisky" "immiaaraq" "immiaq" "baaja" ;
@@ -1044,7 +1044,7 @@ SET FOOD = EDIBLE | DRINKABLE ;
 LIST THING = "alussaat" "aqqusineq" ("ati" TAQ) "ilullissiaq" "siu" "timi" "savik" "torsuusaq";
 LIST MATERIAL = "ameq" "ulik" "qipik" ;
 LIST f-an_SG = "qaneq" "qingaq" ;
-LIST TIME = ("aallar" QQAAR UTE) "aasaq" ("arfineq" NNGUR) ("ataaseq" NNGUR) "ippassaq" "marlunngor" "nali" ("pingasut" NNGUR) "pingasunngor" "qeqqa" "sapaat" ("sisamat" NNGUR) "sisamanngor" "sivisu" "siulleq" ("tallimat" NNGUR) "tallimanngor" "ualeq" "ukiaq" ("ukiar" TUQ) "ukiartoq" "ukioq" "ullaa" "ullaaq" "ulloq" "unnuaq";
+LIST TIME = ("aallar" QQAAR UTE) "aasaq" ("arfineq" NNGUR) ("ataaseq" NNGUR) "ippassaq" "marlunngor" "nali" ("pingasut" NNGUR) "pingasunngor" "qaammat" "qeqqa" "sapaat" ("sisamat" NNGUR) "sisamanngor" "sivisu" "siulleq" ("tallimat" NNGUR) "tallimanngor" "ualeq" "ukiaq" ("ukiar" TUQ) "ukiartoq" "ukioq" "ullaa" "ullaaq" "ulloq" "unnuaq";
 LIST UGEDAGE = ("arfineq" NNGUR) ("ataaseq" NNGUR) "marlunngor" ("pingasut" NNGUR) "pingasunngor" "sapaat" ("sisamat" NNGUR) "sisamanngor" ("tallimat" NNGUR) "tallimanngor" ;
 LIST NUMHOVED = "dollar" "dollari" "euro" "gram" "kapitali" "kapitel" "kiilu" "kilo" "koruuni" "krone" "milliardi" "million" "oori" "øre";
 LIST COMPOUND_N = "Windows" "Linux" "program" ;
@@ -1062,7 +1062,7 @@ LIST Mal = "Eri" "Erik" "Eskild" "Hans" "Jens" "Mik" "Miki" "Morten" "Ole" "Per"
 LIST Fem = "Anette" "Anna" "Dagmar" "Emilie" "Gitte" "Jane" "Kirsten" "Margrethe" "Mette" ;
 LIST Sur = "Jensen" "Jenseni" "Møller" "Rasmussen" "Trosterud" ;
 LIST TITEL = "borgmester" "fru" "Gammel" "hr" "kunngi" "lektor" ("pisoq" TAQ) ("siulittar" TUQ) ;
-LIST GeoProp = "Danmark" "Danmarki" "Finland" "Gladsaxe" "Tåstrup" ;
+LIST GeoProp = "Danmark" "Danmarki" "Finland" "Gladsaxe" "Mose" "Tåstrup" ;
  
 SET FIRSTNAME = Mal | Fem | ("Frederik") | ("Nuka") | ("A") | ("B") | ("C") | ("Chr") | ("D") | ("E") | ("F") | ("G") | ("H") | ("I") | ("J") | ("K") | ("Kr") | ("L") | ("M") | ("N") | ("O") | ("P") | ("Q") | ("R") | ("S") | ("T") | ("U") | ("V") | ("W") | ("X") | ("Y") | ("Z") | ("Æ") | ("Ø") | ("Å") ;
 SET NAME = FIRSTNAME | Sur ;
@@ -1229,6 +1229,9 @@ SELECT:0003 Ind IF (NEGATE *0 VFIN BARRIER LU OR LI OR KOMMA)(NEGATE 0 NIR) ;
 #Fjern umulige possessum
 REMOVE:0004 POSSESSUM IF (0 NON-POSSESSUM) ;
 
+#KKUT vs. Via
+REMOVE:0005 KKUT IF (0 GeoProp);
+REMOVE:0006 ("qaap") IF (0 ("qaammat"));
 # Vælg Interj hvis fulgt af '?' eller efter foregående Imp
 SELECT:0010 ("aat") IF (1 ("?"));
 SELECT:0011 ("aat") IF (-*1C Imp);
@@ -1717,6 +1720,9 @@ MAP:M0019 @PRED2 TARGET INTRANSVERB + Par + 3Sg IF (-1 Par)(T:NexusHøjre);
 #Koncessiver med konjunktion
 MAP:M0020 @PRED2 TARGET Par IF (*-1 KONCESSIV BARRIER V);
 
+#Tidsbisætninger med subjekt
+MAP:M0021 @PRED2 TARGET INTRANSVERB + Par + 3Pl IF (-1 Abs + Pl)(*1 VFIN - 3Pl BARRIER V);
+
 #Vokativer
 MAP:M0023 @VOK TARGET N + Abs IF (-2 ("aa") + Interj LINK 1 KOMMA)(1 KOMMA) ; #Typen Aa, N, ..
 MAP:M0024 @VOK TARGET N + Abs IF (-1 ("aa") + Interj)(1 KOMMA)(NEGATE 0 POSSESSUM3) ; #Typen Aa N, .. men hvis N er possessum er det noget andet end vokativ
@@ -1874,7 +1880,7 @@ MAP:M0510 (@OBJ>) TARGET Abs + Sg IF (1 Abs + Sg)(2 Inf + 3SgO OR InfNeg + 3SgO)
 MAP:M0520 (@POSS>) TARGET ("kalaaleq") + Rel + Pl IF (1 ("oqaaseq") OR ("nuna") OR ("Nuna")); #20091103 Kalaallit Nunaat
 
 #adled til OBJ kløvet af V som 'OBJ> SUBJ> oqaaseraat isumaqartoq
-MAP:M0521 @<OBJ TARGET LIK + Sg + Abs OR QAR + Sg + Abs IF (*-1 TRANSVERB + 3SgO LINK *-1 Sg + Abs) ;
+MAP:M0521 @<OBJ TARGET LIK + Sg + Abs OR QAR + Sg + Abs IF (*-1 TRANSVERB + 3SgO LINK *-1 Sg + Abs)(NEGATE *1 3SgO BARRIER V) ;
 
 #De mest generelle OBJ-regler
 MAP:M0524 (@SUBJ>) TARGET N + Abs + Sg OR PRON + Abs + Sg IF (*1 INTRANSVERB LINK *-1 INF + 3SgO LINK -1 Abs + Sg) ;
@@ -2123,6 +2129,7 @@ MAP:M1425 (@CL-ADVL>) TARGET Ite OR Cau OR Con IF (*1 VFIN) ;
 MAP:M1430 (@<CL-CIT) TARGET Par + INTRANSVERB + 3Pl IF (*-1 ORATIOOBLVERB)(*-1 ("\,"))(*-1 Abs + Pl BARRIER ("\,")); 
 MAP:M1440 (@i-SUBJ>) TARGET Trm IF (*1 DOTR);
 
+MAP:M1449 (@i-OBJ_DOTR>) TARGET Ins IF (-*1 Abs)(1 Ins + vn OR Ins + ADJEKTIVISK)(2 DOTR);
 MAP:M1450 (@i-OBJ_DOTR>) TARGET Ins IF (-*1 Abs)(1 DOTR);
 
 ADD:M1460 (@OBJ>) TARGET Ins IF (*1 IntransTrans);
@@ -2317,7 +2324,7 @@ REMOVE:0471 Par IF (*-1 Prop LINK *1 ("\,") BARRIER V)(*1 ("\,"))(NEGATE *0 VFIN
 REMOVE:0473 INTRANSVERB + Par + 3Pl IF (-1 Con OR Cau LINK *-1 Abs) ;
 #Bisætning med participium står ikke uden subjekt umiddelbart efter finit Cau og Con
 
-REMOVE:0475 INTRANSVERB + Par + 3Pl IF (NEGATE *0 ORATIOOBLVERB); 
+REMOVE:0475 INTRANSVERB + Par + 3Pl IF (NEGATE *0 ORATIOOBLVERB)(NEGATE -1 Abs + Pl + TIME); #Sidste NEGATE for at hitte på tidsparticipier
 
 REMOVE:0477 INTRANSVERB + Par + 3Sg IF (NEGATE *0 ORATIOOBLVERB)(NEGATE *-1 TIME + Sg + Abs)(NEGATE *-1 Interj OR ("sunaaffa") BARRIER V )  ;
 #komma forekommer også mellem oratio recte og obliqua. NEGATE for ikke at slette absolut tempus. Sidste NEGATE for ikke at slette emfase, concession
@@ -2912,13 +2919,13 @@ SELECT:8531 3PlO + @PRED IF (*-1 Cau + 3Pl)(NEGATE *-1 Abs + Pl BARRIER Cau) ;
 #SELECT:8540 3SgO + @PRED IF (NEGATE -*1 Abs + Pl)(-*1 Inf + 3SgO BARRIER TRANSVERB) ;
 
 #Usikre regler, der disambiguerer 3SgO fra 3PlO når der ikke findes et eksplicit objekt. Rækkefølgen vigtig for at forebygge, at 8540 sletter 3PlO i fx 'Ilaasa aperaat.'
-SELECT:8538 3PlO IF (NEGATE *-1 Abs + Sg + @OBJ> BARRIER V)(*-1< PLURSUBJVERB) ;
+SELECT:8538 3PlO IF (NEGATE *-1 Abs + Sg + @OBJ> BARRIER V)(*-1< PLURSUBJVERB)(NEGATE -*1 Abs + Sg BARRIER V) ;
 SELECT:8539 ("ila") + 3PlPoss + @SUBJ> IF (*1 @PRED + 3Pl) ;
 SELECT:8540 3SgO IF (NEGATE *-1 Abs + Pl + @OBJ> BARRIER V )(*-1 Rel + Pl + @SUBJ> BARRIER V) ;
 
 SELECT:8549 Rel + @SUBJ> + Sg IF (*1 TRANSVERB + @PRED BARRIER INTRANSVERB + 3Sg OR INTRANSVERB + 4Sg);
 SELECT:8550 Rel + @SUBJ> + Pl IF (*1 TRANSVERB + @PRED BARRIER INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl);
-SELECT:8551 Abs + @SUBJ> IF (*1 INTRANSVERB + @PRED)(NEGATE 0 Lok LINK *-1 @SUBJ>); #mange fejlhit på lokalis. Udelades fra denne regel;
+SELECT:8551 Abs + @SUBJ> IF (*1 INTRANSVERB + @PRED)(NEGATE 0 Lok LINK *-1 @SUBJ>)(NEGATE 0 INTRANSVERB + Par + 3Pl LINK -1 Abs + Pl); #mange fejlhit på lokalis. Udelades fra denne regel. Sidste NEGATE for ikke at slette tidsparticipier med subjekt
 
 #To regler der vælger subjekter før hhv. Lok og Ins ved oratio oblique
 SELECT:8552 Rel + @SUBJ> + 4SgPoss IF (*1 TRANSVERB + 4SgO) ;
@@ -2934,6 +2941,9 @@ REMOVE:8555 Rel + Pl IF (0 Abs + Pl)(1 Rel)(2 Abs + Pl + POSSESSUM) ;
 #Aequalis med possessor uden foranstående pronomen
 SELECT:8556 2SgPoss + Aeq IF (*1 V + 2Sg OR V + 2SgO) ;
 
+SELECT:8557 N + Pl IF (1C Pl + vn OR Pl + ADJEKTIVISK) ; #kernens numerus bestemt af adleddet
+
+SELECT:8558 INTRANSVERB + Par + 3Pl IF (-1 TIME + Abs + Pl)(*1 V - 3Pl BARRIER V); #hvis verbet ikke 3Pl er det nok participium (tid og koncession) 
 
 # ========================= #
 #     Final sektion         #
@@ -3260,6 +3270,9 @@ REMOVE:9500 Pl + Lok IF (0 Abs + Pl + 4SgPoss)(1 Abs + Pl LINK *1 3PlO) ;
 REMOVE:5850 3PlPoss IF (-*1 @POSS> + 3SgPoss OR 4SgPoss BARRIER 3PlPoss)(0 3SgPoss); #vælg sing. possessor hvis sing til venstre
 REMOVE:5851 3PlPoss IF (-*1 @POSS> + Sg )(0 3SgPoss); #vælg sing. possessor hvis sing til venstre
 
+#Possessum sing eller plur? Hvis NIQ sandsynligvis sing
+SELECT:5852 NIQ + Sg IF (0 NIQ + Pl);
+
 #20091112 Regler for disambiguering af SAR og TAR. Skal maaske laves om til sets??
 SELECT ("eqqissisar") IF (0 ("eqqissi") + TAR);
 
@@ -3272,6 +3285,8 @@ REMOVE ("ilik") + NIAR ; #20091112 - ad hoc regel, der skal erstattes, naar --or
 #SELECT:SeAffingeret AFFINGERET ; # Vælg den analyserede form frem for den leksikaliserede 
 #SELECT:SS_SeAffingeret AFFINGERET IF (0C $$TAGGED); # Vælg den analyserede form frem for den leksikaliserede 
 REMOVE:SS_SeLeksikaliseret AFFINGERET IF (0C $$TAGGED); # Vælg den leksikalisered form frem for den analyserede
+
+SELECT:9935 HTR IF (*-1 @MIK-OBJ> BARRIER V);
 
 REMOVE (Arch) ;
 REMOVE:9940 SUB;
