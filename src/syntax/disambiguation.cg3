@@ -1729,6 +1729,9 @@ MAP:M0024 @VOK TARGET N + Abs IF (-1 ("aa") + Interj)(1 KOMMA)(NEGATE 0 POSSESSU
 #Specialitet ved interjektioner som "tuavi!"
 MAP:M0025 @VOK TARGET Prop + Abs IF (-1 BOS)(1 KOMMA)(2 Interj)(3 EOS);
 MAP:M0026 @VOK TARGET Prop + Abs IF (-1 BOS)(1 KOMMA)(*0 V); #For uden V sandsynligvis HNOUN
+#Interjektioner med og uden komma
+MAP:M0027 @VOK TARGET Prop + Abs IF (-3 BOS)(-2 Interj)(-1 KOMMA)(NEGATE *1 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO BARRIER V);
+MAP:M0028 @VOK TARGET Prop + Abs IF (-2 BOS)(-1 Interj)(NEGATE *1 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO BARRIER V);
 
 
 MAP:M0028 @<APPOS TARGET Abs + Sg + NOMEN + TUQ IF ( *-1 §noun-comma BARRIER V ); # Per, NN-imeersoq(@<APPOS), oqarpoq
@@ -2584,8 +2587,8 @@ REMOVE Par + 3Pl + 4SgO IF (0 Par + 4Sg)(NEGATE *-1 Sg + @SUBJ>) ;
 REMOVE 3Pl + 3PlO IF (*-1C (@SUBJ> ACR Rel)); #20090306 INTERIM. Skal goeres generel
 
 
-SELECT (3Sg) IF (NEGATE *-1 (@SUBJ> Sg))(NEGATE *1 (@<SUBJ Sg))(-1*W (@PRED 3Sg));
-#Hvis intet subjekt i saetningen vaelges 3Sg, hvis foregaaende PRED er 3Sg
+SELECT (3Sg) IF (NEGATE *-1 (@SUBJ> Sg))(NEGATE *1 (@<SUBJ Sg))(-1*W (@PRED 3Sg))(NEGATE 0 2Sg LINK *1 2Sg);
+#Hvis intet subjekt i saetningen vaelges 3Sg, hvis foregaaende PRED er 3Sg. Der tages højde for QE + 2Sg vs. QE + 3Sg + 2SgO
 
 #SELECT 3Pl + 3PlO IF (-1 Abs + Pl)(NEGATE 0 GE); #20100419 kommenteret ud. Hitter forkert 
 
@@ -2941,7 +2944,9 @@ REMOVE:8555 Rel + Pl IF (0 Abs + Pl)(1 Rel)(2 Abs + Pl + POSSESSUM) ;
 #Aequalis med possessor uden foranstående pronomen
 SELECT:8556 2SgPoss + Aeq IF (*1 V + 2Sg OR V + 2SgO) ;
 
-SELECT:8557 N + Pl IF (1C Pl + vn OR Pl + ADJEKTIVISK) ; #kernens numerus bestemt af adleddet
+SELECT:8557A N + Pl + Abs IF (1C Pl + Abs + vn OR Pl + Abs + ADJEKTIVISK) ; #kernens numerus bestemt af adleddet
+SELECT:8557B N + Pl + Rel IF (1C Pl + Rel + vn OR Pl + Rel + ADJEKTIVISK) ; #kernens numerus bestemt af adleddet
+SELECT:8557C N + Pl + OBLIQUE IF (1C Pl + OBLIQUE + vn OR Pl + OBLIQUE + ADJEKTIVISK)(NEGATE 1 Lok + IP) ; #kernens numerus bestemt af adleddet. Mange fejl på verbalnominer med Lok+IP
 
 SELECT:8558 INTRANSVERB + Par + 3Pl IF (-1 TIME + Abs + Pl)(*1 V - 3Pl BARRIER V); #hvis verbet ikke 3Pl er det nok participium (tid og koncession) 
 
@@ -3288,6 +3293,10 @@ REMOVE:SS_SeLeksikaliseret AFFINGERET IF (0C $$TAGGED); # Vælg den leksikaliser
 
 SELECT:9935 HTR IF (*-1 @MIK-OBJ> BARRIER V);
 
+#Sen disambiguering forårsaget af synkretisme mellem QE+2Sg og QE+3Sg+2SgO
+SELECT:9936 TRANSVERB + 2Sg IF (*1 2Sg)(*-1 Abs + Pl);
+SELECT:9936 INTRANSVERB + 2Sg IF (*1 2Sg);
+
 REMOVE (Arch) ;
 REMOVE:9940 SUB;
 
@@ -3316,6 +3325,9 @@ REMOVE:9957 ("akik") IF (0 ("akiler")) ;
 REMOVE:9958 ("akip") IF (0 ("akiler") ) ;
 REMOVE:9959 ("najak") IF (0 ("naja")) ;
 REMOVE:9960 TAQ + UTE + nn IF (0 TAQ + POSSESSUM);
+
+#Oblique kasus med 3PlPoss slører numerus. Alt andet lige vælg sing
+REMOVE:9965 OBLIQUE + Pl IF (0 OBLIQUE + Sg); 
 
 SECTION
 SELECT (@CL-<CIT) IF (*-1 ORATIOOBLVERB BARRIER V-NOT-Par) ;
