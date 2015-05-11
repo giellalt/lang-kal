@@ -125,11 +125,11 @@ AC_PATH_PROGS([M4], [m4 gm4])
 # Tests and sets up XFST
 gt_PROG_XFST
 
-# Tests and sets up HFST
-gt_PROG_HFST
-
 # Tests and sets up FOMA
 gt_PROG_FOMA
+
+# Tests and sets up HFST
+gt_PROG_HFST
 
 # Tests and sets up vislcg3
 gt_PROG_VISLCG3
