@@ -1045,13 +1045,13 @@ SET FOOD = EDIBLE | DRINKABLE ;
 LIST THING = "alussaat" "aqqusineq" ("ati" TAQ) "ilullissiaq" "siu" "timi" "savik" "torsuusaq";
 LIST MATERIAL = "ameq" "ulik" "qipik" ;
 LIST f-an_SG = "qaneq" "qingaq" ;
-LIST TIME = ("aallar" QQAAR UTE) "aasaq" ("arfineq" NNGUR) ("ataaseq" NNGUR) "ippassaq" "marlunngor" "nali" ("pingasut" NNGUR) "pingasunngor" "qaammat" "qeqqa" "sapaat" ("sisamat" NNGUR) "sisamanngor" "sivisu" "siulleq" ("tallimat" NNGUR) "tallimanngor" "ualeq" "ukiaq" ("ukiar" TUQ) "ukiartoq" "ukioq" "ullaa" "ullaaq" "ulloq" "unnuaq";
+LIST TIME = ("aallar" QQAAR UTE) "aasaq" ("arfineq" NNGUR) ("ataaseq" NNGUR) "ippassaq" "marlunngor" "nali" ("pingasut" NNGUR) "pingasunngor" "piffik" "qaammat" "qeqqa" "sapaat" ("sisamat" NNGUR) "sisamanngor" "sivisu" "siulleq" ("tallimat" NNGUR) "tallimanngor" "ualeq" "ukiaq" ("ukiar" TUQ) "ukiartoq" "ukioq" "ullaa" "ullaaq" "ulloq" "unnuaq";
 LIST UGEDAGE = ("arfineq" NNGUR) ("ataaseq" NNGUR) "marlunngor" ("pingasut" NNGUR) "pingasunngor" "sapaat" ("sisamat" NNGUR) "sisamanngor" ("tallimat" NNGUR) "tallimanngor" ;
 LIST NUMHOVED = "dollar" "dollari" "euro" "gram" "kapitali" "kapitel" "kiilu" "kilo" "koruuni" "krone" "milliardi" "million" "oori" "øre";
 LIST COMPOUND_N = "Windows" "Linux" "program" ;
 LIST LANDTRANSPORT = "bussi" "biili" "bil" ;
 LIST AIRTRANSPORT = "qajaq" "timmi" "helikopter" "helikopteri" "qulimiguulik" "zeppeliner" ;
-LIST BIRDS = "timmiaq" "tulugaq" "naaja" "aqisseq" "nattoralik" "uppik" "qupaloraarsuk" "orpimmiutaq" "kussak" "appa" "miteq" "oqaatsoq" "appaliarsuk" "serfaq" "taateraaq" "tuullik" ;
+LIST BIRDS = "appa" "appaliarsuk" "aqisseq" "kukkukooq" "kussak" "miteq" "naaja" "nattoralik" "oqaatsoq" "orpimmiutaq" "qupaloraarsuk" "serfaq" "taateraaq" "timmiaq" "tulugaq" "tuullik" "uppik" ;
 SET AIRBORNE = BIRDS | AIRTRANSPORT ;
 LIST GEOOBJ = "imaq" ("naalap" VIK) "qarmaq" "qeqertaq" "sineriak" "sissaq" "tungi"; # et specifikt set af mulige objekter til disambiguering af sinip vs. siner
 SET sinerOBJ = GEOOBJ | Prop ; 
@@ -1073,6 +1073,8 @@ LIST FAM = "illoq" ("ilaqutaq" GIIT) "ataata" "anaana" "aanaq" "aataq" "aana" ;
 LIST HUM = "inuk" "arnaq" "angut" "ila" ("ajor" TUQ) "kalaaleq" "qallunaaq" "niviarsiaraq" ;
 
 SET HUMAN = FAM OR NAME OR TITEL OR ORGANISATION OR HUM OR Prop ;
+SET NON_HUMAN = N - HUMAN ;
+
 
 LIST FAM_UNIK = "ui" "nuliaq" "anaana" "ataata" "aana" "aanaq" "ittoq" "aata" "aataq" ;
 # betegnelser som sjældent optræder uden for sing.
@@ -1287,6 +1289,8 @@ REMOVE:0039 Abs + 3SgPoss IF (0 Int + 3Sg)(1 ("?")); # .. toqua? er ikke 'hendes
 REMOVE:0039A ("sani") + LIK IF ( 0 ("sanileq"));
 SELECT:0039B part + ("aamma") ;
 
+REMOVE:0040A TIME + KKUT IF (-1 BOS); #Kan vist kun være Via i den position
+
 
 
 ###################################
@@ -1322,7 +1326,9 @@ REMOVE:0060 Abs + Sg + MI IF (*0 Abs + Sg) ; #20101013 Lokalis tagget som subjek
 
 SELECT:0061 Rel + Pl IF (1 DemPron + Rel LINK 1 3PlPoss);
 SELECT:0062 Rel + Sg IF (1 DemPron + Rel LINK 1 3SgPoss);
-SELECT:0063 Rel + Pl IF (1C 3PlPoss)(NEGATE 1 ("siuneq") + Via); #må ikke hitte på siornatigut
+REMOVE:0063X 3SgPoss IF (0 3PlPoss LINK *-1 Rel + Pl BARRIER KOMMA )(NEGATE *-1 Rel + Sg)(NEGATE *-1 3PlPoss LINK *-1 Rel + Pl); #nødvendig disambiguering før 0063. Sidste NEGATE på gr. af helt andre possessum længere til venstre
+
+SELECT:0063 Rel + Pl IF (1C 3PlPoss)(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb) ; #må ikke hitte på siornatigut
 SELECT:0064 Rel + Sg IF (1C 3SgPoss)(NEGATE 0 Ins LINK 1 QAR OR LIK)(NEGATE 1 LU)(NEGATE 0 ("affaq"))(NEGATE 0 PLACE + 4SgPoss ); #asanninnermik pigisaqarneranut er ikke en possessor-possessum forbindelse
 SELECT:0065 3SgPoss IF (-1C Rel + Sg)(NEGATE *1 VERB-NOTINF + TRANSVERB + 3Sg BARRIER VFIN);
 
@@ -1333,7 +1339,7 @@ SELECT:0068 ("n") + 3SgPoss IF (-2 BOS OR KOMMA)(-1 Rel)(NEGATE 0 ("naamik")) ;
 #Sikre possessorer. Den foerste er et specialtilfaelde for også at tage højde for 'Maaniittut ukua ilaasa .. '
 
 #Overfloedige relativer
-SELECT:0070 Rel + Pl IF (1C 3PlPoss)(NEGATE 1 ("siuneq") + Via); #må ikke hitte på siornatigut
+SELECT:0070 Rel + Pl IF (1C 3PlPoss)(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb) ; #må ikke hitte på siornatigut
 REMOVE:0071 Rel + Sg IF (NEGATE *1 3SgPoss)(NEGATE *0 TRANSVERB + 3Sg OR TRANSVERB + 4Sg)(NEGATE 0 ReflPron); #ReflPron må vist håndteres separat
 #Før 0072 for at holde på den før andet gennemløb sletter possessum med regel 0105
 SELECT:0072A Rel + Pl IF (1 INF + 4Pl)(2 3PlPoss) ;
@@ -2013,7 +2019,7 @@ MAP:M0870 (@i-ADVL>) TARGET Lok + Sg IF (1 vn + Sg )(NEGATE 1 NAR)(NEGATE 1 Rel 
 MAP:M0871 (@i-ADVL>) TARGET Lok + Pl IF (1 vn + Pl )(NEGATE 1 NAR)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Lok)(NEGATE 1 LU + (Lok)); #Kun Trm til vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse
 MAP:M0880 (@i-ADVL>) TARGET (Abl) IF (1 vn - NAR )(NEGATE 1 Rel LINK 1 POSSESSUM3 + Abl)(NEGATE 1 LU + (Abl))(NEGATE *1 PASSIV); #Kun Trm til vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse. Hvis PASSIV muligvis Agens
 MAP:M0890 (@i-ADVL>) TARGET (Via) IF (1 vn - NAR )(NEGATE 1 TAR + RIAQ + IRUP)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Via )(NEGATE 1 LU + (Via)); #Kun Trm til vn med NAR. RIAQ i TARIAARUP kvalificerer ikke som vn. Rettet 2.4. NEGATE nr. 3 20091104 for at haandtere paratakse
-MAP:M0900 (@i-ADVL>) TARGET (Aeq) IF (1 vn - NAR )(NEGATE 1 Rel LINK 1 POSSESSUM3 + Aeq )(NEGATE 1 LU + (Aeq)); #Kun Trm til vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse
+MAP:M0900 (@i-ADVL>) TARGET (Aeq) IF (1 vn - NAR )(NEGATE 1 Rel LINK 1 POSSESSUM3 + Aeq )(NEGATE 1 LU + Aeq)(NEGATE 0 LU LINK -1 Aeq); #Kun Trm til vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse
 MAP:M0910 (@i-ADVL>) TARGET (Ins) IF (1 vn - NAR )(NEGATE 1 TAR + RIAQ + IRUP)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Ins )(NEGATE 1 LU + (Ins)); #20091109 
 MAP:M0920 (@AGENS) TARGET Abl IF (*1 PASSIV)(NEGATE 0 TIME); #Tidsadverbaler må ikke blive agens
 MAP:M0930 (@i-ADVL>) TARGET Trm - Prop IF (*1 vn BARRIER V)(NEGATE 1 Lok + IP + TUQ + Trm); #må ikke hitte på sit eget kongruensadled
@@ -2076,7 +2082,7 @@ MAP:M1140 (@i-ADVL>) TARGET Inf IF (1 vn)(NEGATE 1 V) ; #i-ADVL til vn, men ikke
 # Mapping af ledsagemåde til hovedverbal
 
 #MAP:0948 (@ADVL>) TARGET Inf + TRANSVERB OR InfNeg + TRANSVERB IF (*1 VFIN OR Par + TRANSVERB);
-MAP:M1148 (@ADVL>) TARGET INF + TRANSVERB IF (*1 V)(NEGATE 1 vn);
+MAP:M1148 (@ADVL>) TARGET INF + TRANSVERB IF (*1 V)(NEGATE 1 vn + N);
 MAP:M1149 (@i-ADVL>) TARGET INF + TRANSVERB IF (1 vn);
 #mapper uagtet subjekt alle transitive ledsagemåder med finit til højre
 MAP:M1150 (@ADVL>) TARGET Inf + 1Sg OR InfNeg + 1Sg IF (*1 VFIN + 1Sg);
@@ -2173,6 +2179,8 @@ MAP:M1610 (@N>) TARGET Ord IF (1 N) ;
 	## 1. august.
 
 MAP:M1611 (@OBJ>) TARGET PersPron + 2Sg IF (*1 @SUBJ> LINK *1 GE + 2SgO) ;
+MAP:M1612 @OBJ> TARGET Akk + 3Pl IF (-1 Abs + Pl)(NEGATE 0 ("tamaq") LINK -1 ("ulloq")) ;
+MAP:M1613 @ADVL> TARGET ("tamaq") + Akk + Pl IF (-1 ("ulloq") + Abs + Pl) ;
 
 #De "normale" adverbale infinitiver
 MAP:M1620 (@ADVL>) TARGET Inf + 4Pl OR InfNeg + 4Pl IF (*1 VFIN + 3Pl)(NEGATE *0 ORATIOOBLVERB) ; #EQIMMALLUTIK ippiup qaani narsartami toqqissumiipput.
@@ -2323,13 +2331,13 @@ SELECT:0460 Par + NNGIT + 3Sg IF (@1 ("suli") + part)(*-1 Abs + Sg BARRIER Par)(
 SELECT:0461 INTRANSVERB + Par + 3Sg IF (@1 KONCESSIV);
 #Koncessive saetninger med konjunktionen
 
-SELECT:0463 INTRANSVERB + Par + 3Pl IF (@1 KONCESSIV );
+SELECT:0463 INTRANSVERB + Par + 3Pl IF (@1 KONCESSIV )(NEGATE 1 DivPron + 4Pl LINK *1 Par + 3Pl);
 #Koncessive saetninger med konjunktionen
 
 SELECT:0465 INTRANSVERB + Par + 3Sg IF (-*1 KONCESSIV );
 #Koncessive saetninger med konjunktionen
 
-SELECT:0467 INTRANSVERB + Par + 3Pl IF (-*1 KONCESSIV );
+SELECT:0467 INTRANSVERB + Par + 3Pl IF (-*1 KONCESSIV )(NEGATE 1 DivPron + 4Pl LINK *1 Par + 3Pl);
 #Koncessive saetninger med konjunktionen
 
 REMOVE:0469 Par IF (-1 Trm)(1 Prop);
@@ -2916,7 +2924,8 @@ SELECT:8456 @PRED + 3SgO IF (*1 @CL-<CIT) ;
 SELECT:8457 @POSS> IF (1 Ins)(2 POSSESSUM) ;
 SELECT:8458 @POSS> IF (1 POSSESSUM)(NEGATE 0 Lok + PLACE) ;
 
-SELECT:8459 Abs + Pl + @SUBJ> IF (*1 INTRANSVERB + 3Pl OR 4Pl BARRIER V )(NEGATE 0 Lok LINK *-1 @SUBJ>); #mange fejlhit på lokalis. Udelades fra denne regel
+SELECT:8459X Abs + Pl + @SUBJ> IF (*-1 ORATIOOBLVERB)(*1 Par + 3Pl); #Subjekt for Par th må ikke læses som Par selv 
+SELECT:8459 Abs + Pl + @SUBJ> IF (*1 INTRANSVERB + 3Pl OR 4Pl BARRIER V )(NEGATE 0 Lok LINK *-1 @SUBJ>)(NEGATE 0 Par LINK *-1 ORATIOOBLVERB); #mange fejlhit på lokalis. Udelades fra denne regel. Skal ikke SELECTe indirekte tale.
 SELECT:8460 Abs + Sg + @SUBJ> IF (*1 INTRANSVERB + 3Sg OR 4Sg BARRIER V );
 
 
@@ -2956,6 +2965,8 @@ REMOVE:8555 Rel + Pl IF (0 Abs + Pl)(1 Rel)(2 Abs + Pl + POSSESSUM) ;
 
 #Aequalis med possessor uden foranstående pronomen
 SELECT:8556 2SgPoss + Aeq IF (*1 V + 2Sg OR V + 2SgO) ;
+
+#SELECT:8557X Rel + Pl IF (1 3PlPoss)(NEGATE 1 ("siuneq") + Via); #Regel 0063 gentaget uden C før 8557A
 
 SELECT:8557A N + Pl + Abs IF (1C Pl + Abs + vn OR Pl + Abs + ADJEKTIVISK) ; #kernens numerus bestemt af adleddet
 SELECT:8557B N + Pl + Rel IF (1C Pl + Rel + vn OR Pl + Rel + ADJEKTIVISK) ; #kernens numerus bestemt af adleddet
@@ -3011,6 +3022,7 @@ REMOVE:8508C ("kingornagut") IF ( 0 ("kinguneq") ) (-1 Rel + Sg);
 REMOVE:8508D ("kingornatigut") IF ( 0 ("kinguneq") ) (-1 Rel + Sg);
 SELECT:8509 ("isaariaq") ;
 REMOVE:8510 ("siuaq") + USAQ IF (0 ("siuaa") + TAQ) ; # ingen "fortandslignende" hvis "forfædre"
+REMOVE:8511 ("eqqoq") + TU IF (0 ("eqqor") ) (NEGATE *-1 BIRDS);
 
 
 # Nomen eller partikel?
@@ -3210,6 +3222,7 @@ REMOVE:5585 TUQ + U IF (0 TUUR OR ("akunnattoor") );
 REMOVE:5586 ("kalak") + U + LIR IF ( 0 ("kalaaleq"));
 REMOVE:5587 TAQ + LIR + nv IF (0 TAR + LIR + vv) ;
 REMOVE:5588 ("quer") + POSSESSUM IF (0 ("qui") + POSSESSUM); #næppe nogens hoster
+REMOVE:5589 ("nilleq") + PALLAP IF (0 ("niller"));
 
 # Enkelte substantiver
 REMOVE ("pineq") IF (NEGATE *0 ("kamik")) ; #20091103 pineq+QAR vs. pineqar-
