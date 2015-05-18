@@ -1059,7 +1059,7 @@ SET sinerOBJ = GEOOBJ | Prop ;
 # Proprier
 # Desse skal vi hente frå leksikon
 
-LIST Mal = "Eri" "Erik" "Eskild" "Hans" "Jens" "Mik" "Miki" "Morten" "Ole" "Per" "Rasmus" "Trond" ;
+LIST Mal = "Aron" "Eri" "Erik" "Eskild" "Hans" "Jens" "Mik" "Miki" "Morten" "Ole" "Per" "Piitaq" "Rasmus" "Trond" ;
 LIST Fem = "Anette" "Anna" "Dagmar" "Emilie" "Gitte" "Jane" "Kirsten" "Margrethe" "Mette" ;
 LIST Sur = "Jensen" "Jenseni" "Møller" "Rasmussen" "Trosterud" ;
 LIST TITEL = "borgmester" "fru" "Gammel" "hr" "kunngi" "lektor" ("pisoq" TAQ) ("siulittar" TUQ) ;
@@ -1683,8 +1683,8 @@ SELECT:0270 Abs IF (*-1 ("tassa") LINK *-1 ORATIOOBLVERB BARRIER V) ;
 SECTION#
 ########
 
-ADD:0400 (§noun-comma) Abs + Sg (1 KOMMA) ;
-#tag for mulige kandidater til apposition mellem komma
+ADD:0400 (§noun-comma) Abs + Sg (1 KOMMA)(NEGATE 1 KOMMA LINK 1 Abs + Sg LINK 1 Abs + Sg + LU) ;
+#tag for mulige kandidater til apposition mellem komma, men må ikke tagge opremsninger
 
 ADD:0401 (§PropNexusSg) TARGET Prop + Abs + Sg IF (*1 3Sg OR 4Sg + Cau OR Con) ; 
 ADD:0402 (§PropNexusPl) TARGET Prop + Abs + Pl IF (*1 3Pl OR 4Pl + Cau OR Con) ; 
@@ -1852,6 +1852,9 @@ MAP:M0230 (@CONJ) TARGET KONJUNKTION IF (-1 BOS OR ("\,")) ; #Flyttet fra 1168 f
 MAP:M0231 (@CONJ) TARGET ("aamma") + LU OR ("taamatut") + LU; #vistnok undtagelsesløs
 MAP:M0240 (@CL-<ADVL) TARGET KONJUNKTION IF (1 EOS)(NEGATE -1 BOS) ; #Sidste betingelse for at undgaa at tagge isolerede konjunktioner
 MAP:M0245 (@HEADLINE) TARGET KONJUNKTION IF (1 EOS)(-1 BOS) ; #Sidste betingelse for at undgaa at tagge isolerede konjunktioner
+MAP:M0247A @FOC TARGET ("AA") + DemPron + Sg IF (-1 BOS)(1 Abs + Sg) ;
+MAP:M0247B @FOC TARGET ("AA") + DemPron + Pl IF (-1 BOS)(1 Abs + Pl) ;
+
 MAP:M0248 @FOC TARGET FOKUSPART + part IF (*-1 T:NexusVenstre BARRIER KOMMA)(1 Abs)(2 EOS) ; #Specialiteten Nexus tassa N.
 MAP:M0249 @FOC TARGET FOKUSPART + part IF (*1 T:NexusHøjre BARRIER KOMMA) ;
 MAP:M0250 (@FOC) TARGET FOKUSPART + (part) IF (NEGATE *0 VERB-NOTINF BARRIER KOMMA) ;
@@ -1871,7 +1874,9 @@ MAP:M0299 @SUBJ> TARGET Abs + Sg IF (*1 Abs + Sg LINK 1 INF + 3SgO LINK *1 Par +
 
 MAP:M0300 @SUBJ> TARGET Abs + Sg IF (*1 Par + 3Sg BARRIER 3SgO)(*0 ORATIOOBLVERB)(NEGATE 1 INF + 3SgO) ; #NEGATE for ikke at hitte på TAMANNA i Nalunngilat Per TAMANNA pillugu sulisartoq
 
-MAP:M0301 @<SUBJ TARGET Abs IF (*-1 ("tassa") LINK *-1 ORATIOOBLVERB BARRIER V OR KOMMA) ; 
+MAP:M0301 @<SUBJ TARGET Abs IF (*-1 ("tassa") LINK *-1 ORATIOOBLVERB BARRIER V OR KOMMA) ;
+
+MAP:M0302 @<SUBJ TARGET Abs IF (-1 ("AA") + DemPron) ; 
 
 
 # Nominer - De sikre MAP regler
@@ -1887,6 +1892,8 @@ MAP:M0318 (@ADVL>) TARGET Lok + TIME IF (*1 V) ;
 MAP:M0319 (@<ADVL) TARGET Lok + TIME IF (-*1 V) ;
 
 MAP:M0400 @SUBJ_COMP TARGET Abs IF (-1 @FOC)(1 EOS OR KOMMA); # N tassa N. eller Tassa N.
+MAP:M0401 @SUBJ_COMP TARGET Abs + Prop IF (-1 Abs + Pl)(1 Abs + Prop + LU);
+MAP:M0402 @SUBJ_COMP TARGET Abs + Prop + LU IF (-2 Abs + Pl)(-1 Abs + Prop);
 MAP:M0407 (@N>) TARGET Num IF (1 NUMHOVED); # ' .. 2 oorimoorlutik ..' specialfald før 189-190
 MAP:M0408 (@N>) TARGET NUMHOVED IF (1 Num); # ' .. kapitel 2 ..' specialfald før de følgende
 MAP:M0409 (@HNOUN) TARGET N OR Abbr OR Num IF (NEGATE *0 V)(1 ParagrafSlut); #20100827 Safe headlines
@@ -1922,7 +1929,8 @@ MAP:M0521 @<OBJ TARGET LIK + Sg + Abs OR QAR + Sg + Abs IF (*-1 TRANSVERB + 3SgO
 
 #De mest generelle OBJ-regler
 MAP:M0524 (@SUBJ>) TARGET N + Abs + Sg OR PRON + Abs + Sg IF (*1 INTRANSVERB LINK *-1 INF + 3SgO LINK -1 Abs + Sg) ;
-MAP:M0523 @SUBJ> TARGET Abs + LU IF (*1 PLURSUBJVERB BARRIER V) ; #20140523 Meget bred. Skal checkes
+MAP:M0522 @SUBJ> TARGET Abs + LU IF (-1 Abs)(1 Abs + LU OR KOMMA) ; 
+MAP:M0523 @SUBJ> TARGET Abs + LU IF (*1 PLURSUBJVERB BARRIER V OR KOMMA) ; #20140523 Meget bred. Skal checkes
 #Særtilfælde for at forhindre OBJ-tagging Per i Per tamanna pillugu nalusarpoq
 
 MAP:M0525 (@OBJ>) TARGET N + Abs + Sg OR PRON + Abs + Sg IF (*1 TRANSVERB + 3SgO BARRIER INTRANSVERB + 3Sg OR 4Sg) ;
@@ -1930,13 +1938,13 @@ MAP:M0525 (@OBJ>) TARGET N + Abs + Sg OR PRON + Abs + Sg IF (*1 TRANSVERB + 3SgO
 MAP:M0526 (@OBJ>) TARGET N + Abs + Pl OR PRON + Abs + Pl OR Num + Abs IF (*1 TRANSVERB + 3PlO BARRIER INTRANSVERB + 3Pl OR 4Pl) ;
 
 MAP:M0527 @OBJ> TARGET Abs + Sg IF (1 Abs + Sg + LU OR Abs + Pl + LU LINK *1 3PlO BARRIER INTRANSVERB + 3Pl);
-MAP:M0528 @OBJ> TARGET Abs + Sg + LU IF (-1 Abs + Sg)(*1 3PlO BARRIER INTRANSVERB + 3Pl);
+MAP:M0528 @OBJ> TARGET Abs + Sg + LU IF (-1 Abs + Sg)(*1 3PlO BARRIER INTRANSVERB + 3Pl OR KOMMA);
 MAP:M0528A @OBJ> TARGET Abs + Pl + LU IF (-1 Abs + Sg)(*1 3PlO BARRIER INTRANSVERB + 3Pl);
  
 # Partikler anden runde
 # =====================
 MAP:M0529 @CL-ADVL> TARGET part + ("kingorna") ; # Vist altid sætningsadverbal
-MAP:M0530 (@i-ADVL>) TARGET (part) IF (1 N + @<SUBJ) ;
+MAP:M0530 (@i-ADVL>) TARGET part IF (1 vn + N + @<SUBJ) ;
 #ADD:0340 (@ADVL>) TARGET part IF (1 V);
 MAP:M0550 (@i-ADVL>) TARGET part IF (1 NIQ); #ingerlaannaq piviusunngortitsineq
 MAP:M0560 (@ADVL>) TARGET part IF (*1 V BARRIER ("\,"))(NEGATE *-1 V BARRIER ("\,")); #20091112 tilfoejet komma som BARRIER
@@ -1954,7 +1962,7 @@ MAP:M0599 (@POSS>) TARGET Rel + Sg IF (1 KOMMA LINK 1 Rel + Sg LINK 1 3SgPoss) ;
 MAP:M0600 (@POSS>) TARGET Rel + Sg IF (1 DemPron + Rel LINK 1 3SgPoss) ;
 MAP:M0601 (@POSS>) TARGET Rel + Sg IF (1 3SgPoss) ;
 
-MAP:M0608 (@POSS>) TARGET Prop + Rel + Sg IF (*1 3SgPoss BARRIER TRANSVERB + 3Sg) (NEGATE *1 Rel + LU BARRIER TRANSVERB + 3Sg)(NEGATE 1 Prop + Abs) ; #i NN-ip aappaatalu må aappaatalu ikke opfyldebetingelsen. Sidste NEGATE for at blokere NN-ip NN1 ...
+MAP:M0608 (@POSS>) TARGET Prop + Rel + Sg IF (*1 3SgPoss BARRIER TRANSVERB + 3Sg) (NEGATE *1 Rel + LU BARRIER TRANSVERB + 3Sg)(NEGATE 1 Prop + Abs)(NEGATE 1 Prop + Rel LINK 1 POSSESSUM3) ; #i NN-ip aappaatalu må aappaatalu ikke opfyldebetingelsen. Sidste NEGATE for at blokere NN-ip NN1 ...
 
 MAP:M0609 (@POSS>) TARGET Rel + Sg - Prop IF (*1 3SgPoss BARRIER TRANSVERB + 3Sg) (NEGATE *1 Rel + LU BARRIER TRANSVERB + 3Sg) ; #i NN-ip aappaatalu må aappaatalu ikke opfyldebetingelsen. Sidste NEGATE for at blokere NN-ip NN1 ...
 MAP:M0610 (@POSS>) TARGET Rel + Pl IF (1 Lok OR Ins OR Aeq OR INF)(2 3PlPoss) ; #Særtilfælde med adled til possessum
