@@ -1015,7 +1015,7 @@ SET OQARnUSIQ = ("oqar") - (USIQ) ;
 SET ALLAANNGIT = ("alla") + U + NNGIT ;
 SET ORATIOOBLVERB = ORATIOOBLVERBnOQAR OR OQARnUSIQ OR ALLAANNGIT ;
 
-LIST humverb = "suli" "nalunaar" "oqqap"; # Verb der vil ha humane subj, og ikke er i andre set
+LIST humverb = "isiginnaar" "nalunaar" "oqqap" "suli" ; # Verb der vil ha humane subj, og ikke er i andre set
 LIST thingverb = "nalunaap" "ersip";
 LIST animalverb = "qilup" "pangalip" ; #forudsætter subjekt ANIMAL
 SET HUMVERB = humverb OR ORATIOOBLVERB ; # alle verb  der vil ha humane subj
@@ -1036,11 +1036,11 @@ LIST SPATIAL = "aki" "arlaq" "at" "ati" "illuatungi"  "ilu" "eqqaq" "quli" "sani
 LIST USPATIAL = "sanik" "ateq";
 
 LIST ORGANISATION = "Inatsisartut" "parti" "Siumut" "Atassut" "IA" ("Naalakkersuisoq" Pl) "Demokratit";
-LIST ANIMAL = "qimmeq" "qitsuk" "puisi" ;
+LIST ANIMAL = "qeerlutooq" "qimmeq" "qitsuk" "puisi" ;
 LIST ABSTRACT = "taaq" ;
 
 LIST PLACE = "illu" "imaq" ("atuar" VIK) ("oqalup" VIK);
-LIST ADJEKTIVISK = "akutakujooq" "akutakujuk" "angut" "arnaq" "itisooq" "qaqqorik"; #angut og arnaq medtaget lidt skummelt, men anvendes ofte adjektivisk
+LIST ADJEKTIVISK = "akutakujooq" "akutakujuk" "angut" "arnaq" "itisooq" ("portu" JAAR) "qaqqorik"; #angut og arnaq medtaget lidt skummelt, men anvendes ofte adjektivisk
 
 LIST EDIBLE = "neqi" "iffiaq" "kaagi" ;
 LIST DRINKABLE = "kaffi" "tii" "immuk" "whisky" "immiaaraq" "immiaq" "baaja" ;
@@ -1064,7 +1064,7 @@ SET sinerOBJ = GEOOBJ | Prop ;
 # Desse skal vi hente frå leksikon
 
 LIST Mal = "Aron" "Eri" "Erik" "Eskild" "Hans" "Jens" "Mik" "Miki" "Morten" "Ole" "Per" "Piitaq" "Rasmus" "Trond" ;
-LIST Fem = "Anette" "Anna" "Dagmar" "Emilie" "Gitte" "Jane" "Kirsten" "Margrethe" "Mette" ;
+LIST Fem = "Anette" "Anna" "Dagmar" "Emilie" "Gitte" "Hanne" "Jane" "Kirsten" "Margrethe" "Mette" ;
 LIST Sur = "Jensen" "Jenseni" "Møller" "Rasmussen" "Trosterud" ;
 LIST TITEL = "borgmester" "fru" "Gammel" "hr" "kunngi" "lektor" ("pisoq" TAQ) ("siulittar" TUQ) ;
 LIST GeoProp = "Danmark" "Danmarki" "Finland" "Gladsaxe" "Mose" "Tåstrup" ;
@@ -1073,7 +1073,7 @@ SET FIRSTNAME = Mal | Fem | ("Frederik") | ("Nuka") | ("A") | ("B") | ("C") | ("
 SET NAME = FIRSTNAME | Sur ;
 SET NOT-FIRST = WORD - FIRSTNAME ;
 
-LIST FAM = "illoq" ("ilaqutaq" GIIT) "ataata" "anaana" "aanaq" "aataq" "aana" "nuliaq" "ui";
+LIST FAM = "aanaq" "aataq" "aana" "ataata" "anaana" "angaaq" "illoq" ("ilaqutaq" GIIT) "nuliaq" "ui";
 LIST HUM = "inuk" "arnaq" "angut" "ila" ("ajor" TUQ) "kalaaleq" "qallunaaq" "niviarsiaraq" ;
 
 SET HUMAN = FAM OR NAME OR TITEL OR ORGANISATION OR HUM OR Prop ;
@@ -1713,9 +1713,9 @@ SELECT:0408B Abs + Sg + vn IF (-*1 N - vn + Abs + Sg LINK 1 vn + Abs + Sg LINK 1
 
 #Temporale og koncessive sætninger efter punktum eller komma. Må ikke hitte på nominale paratakser og paratakser med possessor på andet led og ikke på opremsninger med komma. Heller ikke subjekter for CON_CAU eller objekter for transverb umiddelbart til højre
 SELECT:0410 Par + INTRANSVERB + 3Pl IF (@1 Abs + Pl)(NEGATE *-1 VERB-NOTINF)(NEGATE 1 Abs + LU + Pl)(NEGATE 1 LU + Rel LINK 1 Abs + Pl)(NEGATE *1 CON_CAU + 3Pl OR CON_CAU + 4Pl BARRIER V)(NEGATE *1 3PlO BARRIER V)(*1 T:NexusHøjre);
-SELECT:0411 Par + INTRANSVERB + 3Sg IF (@1 Abs + Sg)(NEGATE *-1 VERB-NOTINF)(NEGATE 1 Abs + LU + Sg)(*1 T:NexusHøjre);
-#Må ikke hitte på Rel+Pl SUBJ>
-SELECT:0412 Par + INTRANSVERB + 3Pl IF (*-1 KOMMA LINK 1 Abs + Pl)(NEGATE 1 Abs + LU + Pl)(*1 T:NexusHøjre)(NEGATE -1 KOMMA LINK 2 KOMMA)(NEGATE 0 Rel + Pl LINK *1 TRANSVERB + 3Pl BARRIER VERB-NOTINF ) ;
+SELECT:0411 Par + INTRANSVERB + 3Sg - ADJEKTIVISK IF (@1 Abs + Sg)(NEGATE *-1 VERB-NOTINF)(NEGATE 1 Abs + LU + Sg)(*1 T:NexusHøjre);
+#Må ikke hitte på Rel+Pl SUBJ>. Må heller ikke hitte på kongruensadled efter komma
+SELECT:0412 Par + INTRANSVERB + 3Pl IF (*-1 KOMMA LINK 1 Abs + Pl)(NEGATE 1 Abs + LU + Pl)(*1 T:NexusHøjre)(NEGATE -1 KOMMA LINK 2 KOMMA)(NEGATE 0 Rel + Pl LINK *1 TRANSVERB + 3Pl BARRIER VERB-NOTINF )(NEGATE -2 KOMMA LINK 1 ("ila")) ;
 SELECT:0413 Par + INTRANSVERB + 3Sg IF (*-1 KOMMA LINK 1 Abs + Sg)(NEGATE 1 Abs + LU + Sg)(*1 T:NexusHøjre);
 
 # Verber - De sikre MAP regler 1. runde
@@ -1790,7 +1790,7 @@ MAP:M0030 @PROP> TARGET FIRSTNAME OR TITEL IF (1 Prop - GeoProp)(NEGATE 1 (§Pro
 
 MAP:M0031A @PROP> TARGET Prop + Attr IF (1 Prop)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + LU LINK *1 V + 3Pl )(NEGATE 1 Prop LINK 1 Prop)(NEGATE 0 FIRSTNAME LINK 1 FIRSTNAME)(NEGATE 0 FIRSTNAME LINK 1 ("Kalaallit")); #Mange fejlhit på Kalaallit Illuutaat og Kalaallit Nunaat
 
-MAP:M0031 (@PROP>) TARGET Prop + Abs OR FIRSTNAME + Abs OR TITEL + Abs IF (1 Prop)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + LU LINK *1 V + 3Pl )(NEGATE 1 Prop LINK 1 Prop)(NEGATE 0 FIRSTNAME LINK 1 FIRSTNAME)(NEGATE 0 FIRSTNAME LINK 1 ("Kalaallit")); 
+MAP:M0031 (@PROP>) TARGET Prop + Abs OR FIRSTNAME + Abs OR TITEL + Abs IF (1 Prop)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + LU LINK *1 V + 3Pl )(NEGATE 1 Prop LINK 1 Prop)(NEGATE 0 FIRSTNAME LINK 1 FIRSTNAME)(NEGATE 0 FIRSTNAME LINK 1 ("Kalaallit"))(NEGATE 1 FIRSTNAME + LU); 
 #MAP:M0031 (@PROP>) TARGET Prop OR FIRSTNAME OR TITEL IF (1 Prop)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop #+ LU LINK *1 V + 3Pl BARRIER N + Pl )(NEGATE 1 Prop LINK 1 Prop); #fra 1350 for at udelukke overtallig SUBJ-tagging. ##NEGATE for at forebygge typen 'Per NN-ikkut isermata Vb'. Andet NEGATE for parataktiske Karen Perilu anipput. Tredie #NEGATE for at forebygge @PROP på subjektet i (SUBJ)(PROP> propriuskærne) 
 MAP:M0032 @<APPOS TARGET Prop + Abs + Sg - LU IF (-1 Prop + Attr)(-2 N + Abs + Sg )(NEGATE -2 @PROP>)(NEGATE -2 TITEL) ; # N per langgård
 MAP:M0033 @<APPOS TARGET Prop + Abs + Sg - LU IF (-1 N + Abs + Sg)(NEGATE -1 @PROP> )(NEGATE -1 TITEL) ; # N Per
@@ -2758,7 +2758,9 @@ SELECT:2549 Rel + Pl IF (*1 TRANSVERB + GE + 3Pl + 3PlO)(*-1 Abs + Pl BARRIER TR
 #OSV som specialtilfælde. Forudsætter vist GE??
 
 SELECT:2550 Rel + Pl IF (*1 TRANSVERB + 3Pl + 3SgO)(*1 Abs + Sg BARRIER TRANSVERB); #Den normale SOV
-SELECT:2551 Rel + Pl IF (*1 TRANSVERB + 3Pl + 3PlO BARRIER INF + 3PlO OR TRANSVERB)(*1 Abs + Pl )(NEGATE *1 Abs + Pl + LU BARRIER V) (NEGATE *1 LU + Rel BARRIER V LINK 1 Abs + Pl); #(NEGATE *1 Abs + Pl + LU BARRIER V) (NEGATE *1 LU + Rel BARRIER V LINK 1 Abs + Pl); #Den normale SOV, men ved INF kan der være tale om objekt med kongruensadled i stedet for subjekt og objekt. Må ikke hitte på parataktiske objekter med eller uden kongruensadled
+REMOVE:2551A Rel + Pl + ANIMAL IF (*1 humverb + 3Pl BARRIER V )(NEGATE 1 3PlPoss);
+
+SELECT:2551 Rel + Pl IF (*1 TRANSVERB + 3Pl + 3PlO BARRIER INF + 3PlO OR TRANSVERB)(*1 Abs + Pl )(NEGATE *1 Abs + Pl + LU BARRIER V) (NEGATE *1 LU + Rel BARRIER V LINK 1 Abs + Pl); #(NEGATE *1 Abs + Pl + LU BARRIER V) (NEGATE *1 LU + Rel BARRIER V LINK 1 Abs + Pl); #Den normale SOV, men ved INF kan der være tale om objekt med kongruensadled i stedet for subjekt og objekt. Må ikke hitte på parataktiske objekter med eller uden kongruensadled. ANIMAL må ikke være subjekt for et humverb
 
 
 REMOVE @SUBJ> IF (0 N)(NEGATE 0 LU)(*1C 12SUBJVERB BARRIER V);
@@ -3290,6 +3292,10 @@ REMOVE:5589 ("nilleq") + PALLAP IF (0 ("niller"));
 REMOVE:5590 QATE + GIIP + nn IF (0 QATE + GIIP + nv);
 REMOVE:5591 GIP + QQU IF (0 GE + QQU) ;
 REMOVE:5592 USAAQ IF (0 U + SAAR) ;
+REMOVE:5593 U + SAAR IF (0 TUQ + USAAR);
+REMOVE:5594 ("pitsak") + USAAR IF (0 ("pitsak") + U + SAAR) ; 
+REMOVE:5595 ("pitsak") + USAQ + U IF (0 ("pitsak") + U + SAAR) ; 
+
 
 # Enkelte substantiver
 REMOVE ("pineq") IF (NEGATE *0 ("kamik")) ; #20091103 pineq+QAR vs. pineqar-
@@ -3339,6 +3345,8 @@ SELECT:5771 ("Saatani") + Prop + Abs IF (0 ("saatani") + Abs) ;
 SELECT:5772 ("Italia") IF (0 ("ip") + TAQ) ;
 REMOVE:5773 ("aleqaq") IF ( 0 ("aleqa")) ;
 REMOVE:5774 ("anneq") + LAAQ + nn IF ( 0 ("annilaar"));
+REMOVE:5775 12SUBJVERB + ("ittuk") ; #så er det nok ip + TUQ eller ittu eller ittoor
+SELECT:5776 ("ittoor") + SSA IF (0 ("ittu") OR ("ittoq"));
 
 # Ugedagene
 REMOVE ("ataaseq") + NNGUR + NIRU IF (0 ("ataaseq") + NNGUR + NIQ + U) ;
@@ -3412,6 +3420,7 @@ REMOVE ("(.*)i"r) IF (0 ("$1"v)) ;
 REMOVE:9947 ("paasi") + TARIAQAR + Refl IF (NEGATE -1 ("immi")); # 
 
 REMOVE:9948 NIQSSAQ IF (0 NIQ + SSAQ) ; #Disambiguerer transitive passiviserede fra intransitive
+SELECT:9949A HUMAN + Abs + @OBJ> + Sg IF (1 3SgO); #HUMAN medtaget lidt arbitrært for at forebygge hit på Lok som fx aviisini
 #SELECT:9949 @ADVL> IF (1 V)(NEGATE 0 @OBJ> LINK -1 @OBJ>); #Disambiguerer @ADVL> og @<ADVL men må ikke hitte på kongruensadled
 SELECT:9949 @ADVL> IF (1 V) ; #Disambiguerer @ADVL> og @<ADVL
 REMOVE:9950 SSAQ + LIUR IF ( 0 SIUR) ; # N-SIUR sandsynligere end N-SSAQ=LIUR
