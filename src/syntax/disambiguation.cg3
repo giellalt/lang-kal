@@ -988,6 +988,12 @@ SET LIK_QAR = LIK | QAR ;
 
 SET NOMEN = N | N* ;
 
+# Kombinationer af verber og nominer
+LIST Sgs = 4SgPoss 3Sg ; # Matcher den ene af tags
+LIST Pls = 4PlPoss 3Pl ;
+SET Xposs = Sgs OR Pls ; # anvendes sammen med && (set-unification), som betyder 'vælg fra set og gør det igen senere i reglen'
+
+
 # Partikler
 # ---------
 LIST KONJUNKTION = "aamma" "kisianni" "imaluunniit" ("immaqa" LUUNNIIT ) "taava" ;
@@ -1467,6 +1473,9 @@ REMOVE:0148 4PlPoss IF (NEGATE *0 V + 3Pl OR V + 4Pl)(NEGATE 0 ("meeraq") LINK 1
 REMOVE:0148B 4PlPoss + Rel IF (0 Ins + Sg)(1 INTRANSVERB) ; #
 
 
+REMOVE:0149 &&Xposs + Rel + Sg IF (*1 POSSESSUM + Abs LINK *1 INTRANSVERB + VFIN + &&Xposs BARRIER V)(NEGATE 1 3SgPoss + Abs LINK 1 TARIAQAR + NNGIT + Ind + 3Sg) ; #NEGATE pga. eksemplet på mærkelig syntaks i " .. anaanami imminorsimanera oqaluttuarisarialiortariaqanngilaq"
+
+
 ##########################################
 # Frequent and safe rules - proper names #
 ##########################################
@@ -1524,6 +1533,7 @@ REMOVE:0192 ("ila") + 3PlPoss IF (0 ("ilaanni") + part)(NEGATE -1 Rel + Pl) ;
 ########################
 # Frequent and safe rules - pronouns #
 ########################
+SELECT:0194 DivPron + Nom + 4Sg IF (-1 ("tassa") LINK -1 BOS) ; #Tassa kisimi! som udbrud
 
 REMOVE:0195A DivPron + Rel + 3Sg ;
 REMOVE:0195B DivPron + Rel + 3Pl ;
@@ -2101,6 +2111,13 @@ MAP:M0766 @SUBJ> TARGET Prop + Rel + Sg IF (*1 TRANSVERB + 3Sg OR TRANSVERB + 4S
 #Appellativer i absolut kasus kan være element af syntagmerne subjekt, objekt, tidsangivelse, overskriftsord 
 #Vedr. subjekter se også 0324 ovenfor
 
+#DivPron-regler. Flyttet før M0780 for ikke at blokere for M0991D
+MAP:M0991A @OBJ> TARGET DivPron + Akk IF (*1 TRANSVERB BARRIER KOMMA) ;
+MAP:M0991B @<OBJ TARGET DivPron + Akk IF (*-1 TRANSVERB BARRIER KOMMA) ;
+MAP:M0991C @CL-ADVL> TARGET DivPron + Akk + 3Pl;
+MAP:M0991D @CL-ADVL> TARGET Abs + Pl IF (1 DivPron + Akk + 3Pl); #ullut tamaasa typen
+
+
 MAP:M0780 (@SUBJ>) TARGET APPELLATIV + Abs OR Prop + Abs OR Num + Abs IF (*1 INTRANSVERB BARRIER KOMMA)(NEGATE *1 TRANSVERB)(NEGATE -1 ("\(")) ; #nyt forsoeg 30.3.
 MAP:M0790 (@<OBJ) TARGET APPELLATIV + Abs OR Prop + Abs OR PRON-REFL + Abs IF (-*1 TRANSVERB - Inf BARRIER Inf + @ADVL> OR Inf + @<ADVL OR ("\,"))(NEGATE *1 TRANSVERB); #20091111 af Beatrine. (linie 1243)
 
@@ -2155,10 +2172,9 @@ MAP:M0981B @SUBJ> TARGET DivPron + Nom + 4Sg IF (*1 V + 3Sg OR V + 4Sg) ;
 MAP:M0981C @SUBJ> TARGET DivPron + Nom + 4Pl IF (*1 V + 3Pl OR V + 4Pl) ;
 MAP:M0990 (@N>) TARGET ("ua" 1Sg) IF (1 (1SgPoss)) ;
 
-#DivPron-regler
-MAP:M0991A @OBJ> TARGET DivPron + Akk IF (*1 TRANSVERB BARRIER KOMMA) ;
-MAP:M0991B @<OBJ TARGET DivPron + Akk IF (*-1 TRANSVERB BARRIER KOMMA) ;
-MAP:M0991C @CL-ADVL> TARGET DivPron + Akk + 3Pl;
+MAP:M0991 @HNOUN TARGET DivPron + Nom + 4Sg IF (-1 ("tassa") LINK -1 BOS) ; #Tassa kisimi! som udbrud
+
+
 
 # Adjektiver - både ADD og MAP regler
 # ===================================
@@ -2368,7 +2384,7 @@ MAP:M1942B @PRED TARGET INF + 4Pl IF (NEGATE *0 VFIN)(*-1 ("tassa"))(NEGATE *1 I
 #################################
 
 #Opremsninger af N med komma er ikke Par
-REMOVE:0408 Par + 3Pl IF (-1 KOMMA)(-2 Abs + Pl)(1 KOMMA) 
+REMOVE:0408 Par + 3Pl IF (-1 KOMMA)(-2 Abs + Pl)(1 KOMMA) ;
 
 #Specialitet ved dobbelttransitiv efter oratio obliqua. Skal måske gøres bredere??
 SELECT:0409 Par + 3Pl IF (*0 ORATIOOBLVERB)(*-1 INF + NIRAR OR SURE BARRIER V) ;
