@@ -131,6 +131,9 @@ gt_PROG_FOMA
 # Tests and sets up HFST
 gt_PROG_HFST
 
+# Tests and sets up Voikko
+gt_PROG_VFST
+
 # Tests and sets up vislcg3
 gt_PROG_VISLCG3
 
@@ -185,6 +188,7 @@ AC_CONFIG_FILES([Makefile \
                  tools/spellcheckers/fstbased/filters/Makefile \
                  tools/spellcheckers/fstbased/foma/Makefile \
                  tools/spellcheckers/fstbased/hfst/Makefile \
+                 tools/spellcheckers/fstbased/vfst/Makefile \
                  tools/spellcheckers/fstbased/weighting/Makefile \
                  tools/spellcheckers/listbased/Makefile \
                  tools/spellcheckers/listbased/filters/Makefile])
