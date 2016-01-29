@@ -1030,7 +1030,7 @@ SET OQARnUSIQ = ("oqar") - (USIQ) ;
 SET ALLAANNGIT = ("alla") + U + NNGIT ;
 SET ORATIOOBLVERB = ORATIOOBLVERBnOQAR OR OQARnUSIQ OR ALLAANNGIT ;
 
-LIST humverb = "isiginnaar" "nalunaar" "oqqap" "suli" ; # Verb der vil ha humane subj, og ikke er i andre set
+LIST humverb = "isiginnaar" "nalunaar" "oqqap" "suli" "upperaa"; # Verb der vil ha humane subj, og ikke er i andre set
 LIST thingverb = "nalunaap" "ersip";
 LIST animalverb = "qilup" "pangalip" ; #forudsætter subjekt ANIMAL
 SET HUMVERB = humverb OR ORATIOOBLVERB ; # alle verb  der vil ha humane subj
@@ -1161,6 +1161,9 @@ LIST @>V = @>V ;
 LIST @VOK = @VOK ;
 LIST @NIQ_OBJ> = @NIQ_OBJ> ; #Kun til objekter for absolutte konstruktioner med NIQ+Abl (NIQ+Ins)
 LIST @<INF_TASSA = @<INF_TASSA ; #Ledsagemåder, der står som subjektprædikater efter "tassa"
+
+LIST @SML_HNOUN = @SML_HNOUN ;
+
 LIST §noun-comma = §noun-comma ;
 LIST §PropNexusPl = §PropNexusPl ;
 LIST §PropNexusSg = §PropNexusSg ;
@@ -1271,6 +1274,9 @@ SELECT:0017 ("siornatigut") + part IF (1 vn) ;
 #Archaisk tamap+Imp meget usandsynlig
 REMOVE:0017A ("tamap") + Imp IF (0 DemPron) ;
 
+#Usandsynlig kombination
+REMOVE:0017B ("anneq") + LAAQ IF (0 ("annilaar"));
+
 #'din luvart' fremfor 'meget' næsten utænkelig
 REMOVE:0018 ("assoq") + 2SgPoss IF (0 ("assut") + part);
 
@@ -1313,8 +1319,15 @@ SELECT:0031 ("ila") + 3SgPoss + Abs IF (-1 TIME + Rel)(*1 T:NexusHøjre ) ;
 REMOVE:0032 Par + 3Sg + 1SgO + MI IF (0 Ite + 4Sg LINK *1 VFIN + 3Sg) ;
 
 #Rel + 4SgPoss sammenblandes ofte med Lok. Derfor en tidlig regel til at selecte sikre subjekter
-SELECT:0036 Rel + 4SgPoss IF (*1 TRANSVERB + 3Sg + Con BARRIER V)(NEGATE 0 Interj)(NEGATE 0 V)(NEGATE 1 3SgPoss)(NEGATE 0 VIK + Lok)(NEGATE 0 Rel + Pl LINK 1 POSSESSUM + 3PlPoss); #fx Ikke Ilami! og anillakkami, ikke possessor og ikke ADVL
-SELECT:0037 Rel + 4SgPoss IF (*1 TRANSVERB + 3Sg + Cau BARRIER V)(NEGATE 0 Interj)(NEGATE 0 V)(NEGATE 1 3SgPoss)(NEGATE 0 VIK + Lok)(NEGATE 0 Rel + Pl LINK 1 POSSESSUM + 3PlPoss); #fx Ilami! og anillakkami
+SELECT:0036 Rel + 4SgPoss IF (*1 TRANSVERB + 3Sg + CON_CAU BARRIER V)(NEGATE 0 Interj)(NEGATE 0 V)(NEGATE 1 3SgPoss)(NEGATE 0 VIK + Lok)(NEGATE 0 Rel + Pl LINK 1 POSSESSUM + 3PlPoss); #fx Ikke Ilami! og anillakkami, ikke possessor og ikke ADVL
+#Parataktiske possessorer
+REMOVE:0037AX Rel + 4SgPoss - LU IF (-1 Rel + LU LINK -1 Rel)(0 Lok)(1 POSSESSUM + 3PlPoss + NIQ);
+SELECT:0037A Rel + 4SgPoss IF (1 Rel + LU LINK 1 Lok OR Ins LINK 1 POSSESSUM + 3PlPoss) ;
+SELECT:0037B Rel + 4SgPoss IF (1 Rel + LU LINK 1 POSSESSUM + Rel LINK 1 POSSESSUM + 3PlPoss) ;
+SELECT:0037C Rel + 4SgPoss IF (1 Rel + LU LINK 1 POSSESSUM + 3PlPoss) ;
+SELECT:0037D Rel + LU IF (-1 Rel + 4SgPoss)(1 Lok OR Ins LINK 1 POSSESSUM + 3PlPoss) ;
+
+#SELECT:0037 Rel + 4SgPoss IF (*1 TRANSVERB + 3Sg + Cau BARRIER V)(NEGATE 0 Interj)(NEGATE 0 V)(NEGATE 1 3SgPoss)(NEGATE 0 VIK + Lok)(NEGATE 0 Rel + Pl LINK 1 POSSESSUM + 3PlPoss); #fx Ilami! og anillakkami
 SELECT:0038 Rel + 4SgPoss IF (*1 TRANSVERB + 3Sg + Par BARRIER V)(NEGATE 0 Interj)(NEGATE 0 V)(NEGATE 1 3SgPoss)(NEGATE 0 VIK + Lok)(NEGATE 0 Rel + Pl LINK 1 POSSESSUM + 3PlPoss); #fx Ilami! og anillakkami
 REMOVE:0039 Abs + 3SgPoss IF (0 Int + 3Sg)(1 ("?")); # .. toqua? er ikke 'hendes død'
 REMOVE:0039A ("sani") + LIK IF ( 0 ("sanileq"));
@@ -1329,6 +1342,13 @@ REMOVE:0040D Par + 3Pl IF (1 Par + 3Pl + NIR); #Må være subjektet og ikke Par
 REMOVE:0040E 4PlO + Inf - Dobbelttransitiv ; #Er vist en utænkelig kombination?? 
 
 SELECT:0040F TIME + Abs IF (1 ("tamaq") + Akk);
+
+#HNOUN NP i citationstegn med og uden komma
+SELECT:0040GX Abs IF (1 Abs)(2 KOMMA)(3 ("”"))(*1 ORATIOOBLVERB) ;
+SELECT:0040HX Abs IF (-1 Abs)(1 KOMMA)(2 ("”"))(*1 ORATIOOBLVERB) ;
+SELECT:0040G Abs IF (1 Abs)(2 ("”"))(*1 ORATIOOBLVERB) ;
+SELECT:0040H Abs IF (-1 Abs)(1 ("”"))(*1 ORATIOOBLVERB) ;
+
 
 
 
@@ -1946,6 +1966,16 @@ MAP:M0074 @CL-ADVL> TARGET INF IF (-3 BOS)(-2 TIME + Ins)(-1 Lok)(NEGATE 1 V); #
 MAP:M0080A @CL-ADVL> TARGET ("kinguneq") + 3SgPoss IF (-2 BOS OR KOMMA)(-1 Rel) ;
 MAP:M0080B @CL-ADVL> TARGET ("nali") + 3SgPoss IF (-2 BOS OR KOMMA)(-1 Rel) ;
 
+#HNOUN NP i citationstegn med og uden komma
+MAP:M0081A @HNOUN TARGET Abs IF (1 Abs)(2 KOMMA)(3 ("”"))(*1 ORATIOOBLVERB) ;
+MAP:M0081B @N< TARGET Abs IF (-1 Abs)(1 KOMMA)(2 ("”"))(*1 ORATIOOBLVERB) ;
+MAP:M0081C @HNOUN TARGET Abs IF (1 Abs)(2 ("”"))(*1 ORATIOOBLVERB) ;
+MAP:M0081D @N< TARGET Abs IF (-1 Abs)(1 ("”"))(*1 ORATIOOBLVERB) ;
+
+#Sammenlignings NP uden verbum
+MAP:M0082A @SML_HNOUN TARGET Abs IF (-1 ("soorlu"))(1 Abs + vn)(NEGATE *1 V) ;
+MAP:M0082B @N< TARGET Abs IF (-2 ("soorlu"))(-1 Abs)(NEGATE *1 V);
+
 
 # Proprier - MAP-regler
 #==============
@@ -2096,14 +2126,25 @@ MAP:M0608 (@POSS>) TARGET Prop + Rel + Sg IF (*1 3SgPoss BARRIER TRANSVERB + 3Sg
 MAP:M0609 (@POSS>) TARGET Rel + Sg - Prop IF (*1 3SgPoss BARRIER TRANSVERB + 3Sg) (NEGATE *1 Rel + LU BARRIER TRANSVERB + 3Sg) ; #i NN-ip aappaatalu må aappaatalu ikke opfyldebetingelsen. Sidste NEGATE for at blokere NN-ip NN1 ...
 MAP:M0610 (@POSS>) TARGET Rel + Pl IF (1 Lok OR Ins OR Aeq OR INF)(2 3PlPoss) ; #Særtilfælde med adled til possessum
 MAP:M0611 (@POSS>) TARGET Rel + Pl IF (1 3PlPoss) ;
+
+#Parataktiske possessorer
+MAP:M0612A @POSS> TARGET Rel + 4SgPoss IF (1 Rel + LU LINK 1 Lok LINK 1 POSSESSUM + 3PlPoss) ;
+MAP:M0612B @POSS> TARGET Rel + 4SgPoss IF (1 Rel + LU LINK 1 POSSESSUM + Rel LINK 1 POSSESSUM + 3PlPoss) ;
+MAP:M0612C @POSS> TARGET Rel + 4SgPoss IF (1 Rel + LU LINK 1 POSSESSUM + 3PlPoss) ;
+MAP:M0612D @POSS> TARGET Rel + LU IF (-1 Rel + 4SgPoss)(1 Lok OR Ins LINK 1 POSSESSUM + 3PlPoss) ;
+MAP:M0612E @POSS> TARGET Rel + LU IF (-1 Rel + 4SgPoss)(1 POSSESSUM + 3PlPoss) ;
+
+
 ADD:M0620 (@MIK-OBJ>) TARGET Ins IF (*1 HTR + V BARRIER V); #Ikke MAP fordi ogsaa ADVL> mulig
 MAP:M0630 (@i-MIK-OBJ>) TARGET Ins IF (1 HTR + vn - V) ; #20091106
 MAP:M0631 (@SUBJ>) TARGET Rel + Sg IF (1 Rel LINK 1 POSSESSUM3 LINK *1 TRANSVERB + (3Sg) OR (4Sg) BARRIER POSSESSUM3) ; #Særtilfælde til 440 med en possessor-possessum mellem subjekt og verbum
 MAP:M0638 (@SUBJ>) TARGET Rel + Sg IF (*1 Rel + Sg + LU LINK *1 TRANSVERB + 3Pl OR 4Pl BARRIER POSSESSUM3) ;
 MAP:M0639 (@SUBJ>) TARGET Rel + Sg + LU IF (*-1 Rel + Sg BARRIER POSSESSUM3 OR TRANSVERB + 3Pl OR 4Pl) ;
 
+MAP:M0640BX @SUBJ> TARGET Rel + Sg + 4SgPoss IF (*1 TRANSVERB - Ind + 3Sg)(NEGATE 1 POSSESSUM3) ;#Ikke 4. som subjekt for finit
+
 MAP:M0640A @SUBJ> TARGET Rel + Sg IF (*1 TRANSVERB + INF)(NEGATE 1 POSSESSUM3) ;
-MAP:M0640B @SUBJ> TARGET Rel + Sg IF (*1 TRANSVERB + 3Sg)(NEGATE 1 POSSESSUM3) ;
+MAP:M0640B @SUBJ> TARGET Rel + Sg - 4SgPoss IF (*1 TRANSVERB + 3Sg)(NEGATE 1 POSSESSUM3) ;
 MAP:M0640C @SUBJ> TARGET Rel + Sg IF (*1 TRANSVERB + 4Sg)(NEGATE 1 POSSESSUM3);
 MAP:M0650 (@SUBJ>) TARGET Rel + Pl IF (*1 TRANSVERB + (3Pl) OR (4Pl) BARRIER 3PlPoss) ;
 MAP:M0651 @<APPOS TARGET Abs + $$NUMERUS IF (*-1 Prop + Abs + $$NUMERUS BARRIER VERB-NOTINF)(1 KOMMA)(NEGATE 1 KOMMA LINK *1 Rel + LU LINK 1 Abs)(NEGATE 1 KOMMA LINK 1 Abs + LU) ; #må ikke tagge opremsninger
@@ -2375,7 +2416,9 @@ MAP:M1710 (@POSS>) TARGET Rel IF (1 @POSS);
 MAP:M1720 (@SUBJ>) TARGET Adj IF (-1 @SUBJ>); #2.4. for bred og upraecis??
 MAP:M1721 (@ADVL>) TARGET PRON IF (-1 @ADVL>); #2.4. for bred og upraecis??
 MAP:M1722A @OBJ> TARGET Abs + vn + $$NUMERUS IF (-1 Abs + $$NUMERUS);
-MAP:M1722A @OBJ> TARGET Num + $$NUMERUS IF (-1 Abs + $$NUMERUS);
+MAP:M1722A @OBJ> TARGET Num + $$NUMERUS IF (-1 Abs + $$NUMERUS)(NEGATE -1 @HNOUN);
+MAP:M1722C @N< TARGET Num + $$NUMERUS IF (-1 Abs + $$NUMERUS)(-1 @HNOUN); #særlig for HNOUN NP 
+
 
 #Attributter med komma
 MAP:M1729 (@<OBJ) TARGET TAQ + Abs IF (*-1 @<OBJ LINK *1 KOMMA BARRIER V) ;
@@ -3380,6 +3423,7 @@ SELECT:5557 ("nissaap") IF ( 0 nv + U )(-*1 @SUBJ> + HUM); #med humant subjekt n
 REMOVE:5558 ("kamak") + UTE + nn IF (0 ("kamap") + UTE + vn ) ; #*kamaat ret usandsynlig
 REMOVE:5559 ("pisaq") + LIR + nv IF (0 ("pisar") + LIR + vv);
 SELECT:5560 ("paasi") + SURE IF (0 ("paasi") + TUQ + GE);
+SELECT:5561 ("qaar") IF (0 (PALUP)); #sprængningslyd mere sandsynlig end lyd af madras eller pande eller at komme 
 
 # Enkelte derivativer
 REMOVE NIRU IF (0 TIME) ; #20091109 "tallimanngor" NIRU
@@ -3473,6 +3517,7 @@ REMOVE:5605 ("iloq") IF (0 ("iluk"))(NEGATE -1 ("igalaaq"))(NEGATE 0 QAR OR LIK)
 REMOVE:5606 ("ilu") + Trm ; # vist altid ilumoor- eller ilumut+part
 REMOVE:5607 ("eqqoq") + Lok IF (0 ("eqqumiip")) ;
 REMOVE:5608 ("aa") + TAQ IF (0 ("aasaq") + SIUR) ;
+REMOVE:5609 ("iseq") + Rel IF (1 POSSESSUM3 + humverb) ; 
 
 # Appellativ eller proprium?
 SELECT Prop IF (0 (@HNOUN)) ;
@@ -3515,6 +3560,7 @@ REMOVE:5774 ("anneq") + LAAQ + nn IF ( 0 ("annilaar"));
 REMOVE:5775 12SUBJVERB + ("ittuk") ; #så er det nok ip + TUQ eller ittu eller ittoor
 SELECT:5776A ("ip") + TUQ IF (0 ("ittoor"))(-1 Aeq) ; #tut ippoq reddes før 5776B
 SELECT:5776B ("ittoor") + SSA IF (0 ("ittu") OR ("ittoq"));
+REMOVE:5777 ("Inuk") + Prop + U If (0 ("inuk") + U) ;
 
 # Ugedagene
 REMOVE ("ataaseq") + NNGUR + NIRU IF (0 ("ataaseq") + NNGUR + NIQ + U) ;
