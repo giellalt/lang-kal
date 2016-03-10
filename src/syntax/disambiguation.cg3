@@ -1090,7 +1090,7 @@ SET NAME = FIRSTNAME | Sur ;
 SET NOT-FIRST = WORD - FIRSTNAME ;
 
 LIST FAM = "aanaq" "aataq" "aana" "ataata" "anaana" "angaaq" "ilaqutaq" "illoq" ("ilaqutaq" GIIT) "nuliaq" "ui";
-LIST HUM = "inuk" "arnaq" "angut" "ila" ("ajor" TUQ) "kalaaleq" "qallunaaq" "niviarsiaraq" ;
+LIST HUM = ("ajor" TUQ) "arnaq" "angut" "ila" "inuk" ("inuusup" TUQ) "kalaaleq" "meeraq" "niviarsiaraq" "qallunaaq" "utoqqaq" ;
 
 SET HUMAN = FAM OR NAME OR TITEL OR ORGANISATION OR HUM OR Prop ;
 SET NON_HUMAN = N - HUMAN ;
@@ -1112,6 +1112,7 @@ LIST @<APPOS = @<APPOS ;		# appositioner med og uden komma
 LIST @AGENS = @AGENS ;		# agens ved PASSIV
 LIST @PRED = @PRED ; 		 # predikat
 LIST @SUBJ> = @SUBJ> ;		 # subjekt med pred t.h.
+LIST @SUBJ>+SUB = @SUBJ>+SUB ;		 # subjekt med pred t.h. men forkert kasus
 LIST @<SUBJ = @<SUBJ ;		 # subjekt med pred t.v.
 LIST @OBJ> = @OBJ> ;		 # objekt med pred t.h.
 LIST @<OBJ = @<OBJ ;		 # objekt med pred t.v.
@@ -1191,7 +1192,7 @@ SET @ALL-<ARG = @<ARG OR @CL-<ARG ;
 LIST @ALLOBJ> = @OBJ> @i-OBJ_DOTR> ;
 LIST @<ALLOBJ = @<OBJ @i-<OBJ ;
 
-LIST @ALLSUBJ> = @SUBJ> @i-SUBJ> ;
+LIST @ALLSUBJ> = @SUBJ> @i-SUBJ> @SUBJ>+SUB ;
 LIST @<ALLSUBJ = @<SUBJ @i-<SUBJ ;
 SET @ALLSUBJ = @ALLSUBJ> OR @<ALLSUBJ ;
 SET @ALLMIK-OBJ = @MIK-OBJ> OR @i-MIK-OBJ> ;
@@ -2467,6 +2468,8 @@ MAP:M1941B @SUBJ> TARGET Abs + Pl IF (*1 INF + 4Pl)(NEGATE *0 VFIN)(*-1 ("tassa"
 MAP:M1942A @PRED TARGET INF + 4Sg IF (NEGATE *0 VFIN)(*-1 ("tassa"))(NEGATE *1 INF + 4Sg) ;
 MAP:M1942B @PRED TARGET INF + 4Pl IF (NEGATE *0 VFIN)(*-1 ("tassa"))(NEGATE *1 INF + 4Pl) ;
 
+#Ungt sprog
+MAP:M1950A @SUBJ>+SUB TARGET Rel + Sg IF (*1 3Sg + HTR + @PRED BARRIER @ALLSUBJ>);
   
 # Denne tag er for alle ord vi ikke har funktion til.
 #MAP:M1740 (@X) TARGET WORD ; #20100227 Tronds genindsaettelse 20120501 Pers sletning for anden gang
@@ -2535,7 +2538,7 @@ SELECT:0439 Par + 3Sg IF (-*1 Abs + Sg)(NEGATE *0 VFIN)(NEGATE *1C Par) ;
 REMOVE:0441 Par + 3Pl IF (NEGATE *0 VFIN)(NEGATE 0 VFIN)(*1 Par + 3Pl) ; # evt. også (@1 ("tassa")) som IF, hvis for bred
 #vn, som er subjekt to SELECT:100 er ikke selv Par
 
-SELECT:0443 Par + 3Pl IF (NEGATE *0 VFIN)(NEGATE 0 VFIN)(NEGATE *1 INF + 3PlO)(NEGATE *1 3PlO BARRIER V ) ; #2009115 'ajoraatsit' selv baade Par og Ind. Må ikke hitte på ledsagemåders objekter.
+SELECT:0443 Par + 3Pl IF (NEGATE *0 VFIN)(NEGATE 0 VFIN)(NEGATE *1 INF + 3PlO)(NEGATE *1 3PlO BARRIER V )(NEGATE 0 HUMAN LINK 1 HUMAN + LU) ; #2009115 'ajoraatsit' selv baade Par og Ind. Må ikke hitte på ledsagemåders objekter. Sidste NEGATE for at få 'inuusuttut' i opremsninger til IKKE at være Par
 #Participium i overskrifter
 
 SELECT:0445 INTRANSVERB + Par + 3Pl IF (-*1 Inf + 4Pl)(NEGATE *0 ORATIOOBLVERB)(*1 Abs + Pl OR DemPron + Pl LINK *1 VFIN + INTRANSVERB + 3Pl)(NEGATE 1 LU)(NEGATE -1 BOS OR Con OR Cau)(NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER N + Rel + Pl) ;
@@ -3628,7 +3631,12 @@ SELECT:9937B PersPron + Rel + $$PERSON IF (*1 TRANSVERB + $$PERSON)(NEGATE *1 Re
 #Sen disambiguering af verbalnomen og Par i sætningsinitiale bisætninger
 SELECT:9938 @PRED2 + 3Sg IF (*-1 @SUBJ> + Sg )(*1 V) ;
 
- 
+#Sen regel til at disambiguere NIQ+1SgPoss fra NIQ+3SgPoss
+SELECT:9939A NIQ + 1SgPoss IF (0*W 1Sg)(0 NIQ + 3SgPoss) ; #Possessor 1.Sg hvis 1. Sg i omgivende sætninger
+
+#Sen regel til at disambiguere 3SgPoss+Rel+Pl fra 3PlPoss+Rel+Pl
+REMOVE:9939B 3SgPoss IF (0*W 3Pl)(0 3PlPoss) ; #Possessor 3Pl hvis 3Pl i omgivende sætninger
+
 REMOVE (Arch) ;
 REMOVE:9940 SUB;
 
