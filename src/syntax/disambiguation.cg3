@@ -1040,7 +1040,7 @@ LIST animalverb = "qilup" "pangalip" ; #forudsætter subjekt ANIMAL
 SET HUMVERB = humverb OR ORATIOOBLVERB ; # alle verb  der vil ha humane subj
 
 LIST IntransTrans = "neri" "ilassior"; #Set til disambiguering af Ins, VIP vs. HTR mv.
-LIST TEMPUSVERB = "qaanger" ("qaqutigut" U) "taamaali" "ataasinngor" "marlunngor" "ukiar" ;
+LIST TEMPUSVERB = "qaanger" ("qaqutigut" U) "taamaali" "ataasinngor" "marlunngor" "ukiar" ("ukioq" U) ;
 LIST VERB_medGE = "ipianngu" "miki" ; #Set til stammer, der kan tage GE+vv
 LIST VERB_udenUTE = "inor" ; #Set til de enormt mange verber, der ikke kan tage UTE+vn
 LIST TRANSINTRANS = "naalap" "nuup" "oqar"; #Set til verber med både transitive og intransitive stammer
@@ -1096,7 +1096,7 @@ SET FIRSTNAME = Mal | Fem | ("Frederik") | ("Nuka") | ("A") | ("B") | ("C") | ("
 SET NAME = FIRSTNAME | Sur ;
 SET NOT-FIRST = WORD - FIRSTNAME ;
 
-LIST FAM = "aanaq" "aataq" "aana" "ataata" "anaana" "angaaq" "ilaqutaq" "illoq" ("ilaqutaq" GIIT) "nuliaq" "ui";
+LIST FAM = "aanaq" ("aappaq" GIIT) "aataq" "aana" "ataata" "anaana" "angaaq" "ilaqutaq" "illoq" ("ilaqutaq" GIIT) "nuliaq" "ui";
 LIST HUM = ("ajor" TUQ) "arnaq" "angut" "ila" "inuk" ("inuusup" TUQ) "kalaaleq" "meeraq" "niviarsiaraq" "qallunaaq" "tarneq" "tarnik" "utoqqaq" ; #tarneq og tarnik medtaget da ofte objekt for +HUM verber
 
 SET HUMAN = FAM OR NAME OR TITEL OR ORGANISATION OR HUM OR Prop ;
@@ -1376,7 +1376,7 @@ REMOVE:0041A ("ilaaq") - AFFINGERET IF (0 ("ila") + POSSESSUM) ; #'ilaaq' uden Q
 REMOVE:0041B ("isu") + MAA IF (0 ("isuma"));
 
 #En tidlig regel fjerner læsning af KKUT som possessor i strukturen possessor vialis possessum som i ilaqutama timmisartukkut aqqutissaat
-REMOVE:0041C KKUT IF (-1 Rel + Pl)(1 3PlPoss)(0 Via) ; 
+REMOVE:0041C KKUT IF (-1 Rel + Pl)(1 3PlPoss)(0 Via)(NEGATE 0 Prop LINK -1 FAM + Pl); 
 
 SELECT:0042 Comp IF (1 ("ajor") OR ("artor") OR ("saper") OR ("nalu"));
 REMOVE:0043 Comp IF (NEGATE 1 ("ajor") OR ("artor") OR ("saper") OR ("nalu"));
@@ -1687,7 +1687,7 @@ SELECT:0300 Par + 3SgO IF (*-1 Abs + Sg BARRIER V)(*1 ("tassa") BARRIER V)(NEGAT
 REMOVE:0320 3PlO IF (0 3SgO)(*-1C Abs + Sg BARRIER INTRANSVERB + 3Sg OR 4Sg) ;
 REMOVE:0321 3SgO IF (0 3PlO)(*-1C Abs + Pl BARRIER INTRANSVERB + 3Pl OR 4Pl) ;
 
-REMOVE:0322 Refl IF (NEGATE *-1 ("immi"))(NEGATE 0 ("paasi"))(NEGATE 0 ("paa") + SI);
+REMOVE:0322 Refl IF (NEGATE *-1 ("immi") BARRIER KOMMA)(NEGATE 0 ("paasi"))(NEGATE 0 ("paa") + SI);
 #20100822 disambiguerer refleksiv fra monovalente former men må ikke overskrive regel 5556
 
 REMOVE:0323 NO_HTR + HTR IF (NEGATE 0 vn + GE); #"allap" USIQ vn GE nv HTR vv SSA vv V Inf 1Sg REMOVE:1416 går galt. Derfor NEGATWE
@@ -1879,7 +1879,7 @@ MAP:M0012D @CL-<ADVL TARGET TempPart IF (-*1 VFIN)(NEGATE *1 VFIN BARRIER KOMMA)
 MAP:M0013A @PRED2 TARGET KASIK IF (1 EOS) ;
 MAP:M0013B @POSS TARGET Prop + Abs + Sg IF (-1 Interj)(1 SSUSIQ + 3SgPoss LINK 1 KOMMA OR EOS) ; #Talesprogsnære Abs som possessor i udbrud
 
-MAP:M0014 @PRED2 TARGET TEMPUSVERB + Par IF (-1 BOS); #Initial participium som tidsbisætning
+MAP:M0014 @PRED2 TARGET TEMPUSVERB + Par IF (-1 BOS OR KOMMA); #Initial participium som tidsbisætning
 
 MAP:M0015 (@PRED2) TARGET INTRANSVERB + Inf + 4Pl IF (*-1 Abs + Pl OR Abs + Sg + LU) (T:NexusHøjre)(NEGATE 1 vn) ; #(NEGATE *0 ORATIOOBLVERB BARRIER VFIN)(1 Abs  OR ("\,")); #koncessive saetninger uden konjunktion
 
@@ -3404,6 +3404,8 @@ REMOVE:5467 ("qinngar") + SAAR IF (0 ("qinngasaar"));
 REMOVE:5468 ("tassaar") IF (0 ("tassa") + U LINK 1 Abs)(*-1 ORATIOOBLVERB);
 REMOVE:5469 ("innap") + JAAR IF (0 ("innar") + JAAR ) ;
 REMOVE:5470 ("qipik") + TU IF (0 ("qipittor")) ; #putte sig mere sandsynlig end stordynet
+REMOVE:5471 ("pilere") IF (0 ("pileri")) ;
+REMOVE:5472 ("uere") IF (0 ("ueri")) ;
 
 # nv eller vv?
 SELECT:5493 QATE + vn + GE IF (0 QATE + nn + GE)(NEGATE *-1 HUMAN + @OBJ>) ;
@@ -3703,7 +3705,9 @@ REMOVE Via + 2SgPoss IF (NEGATE -1 ("illit"))(NEGATE *0 VERB-NOTINF + 2Sg LINK N
 REMOVE ("(.*)i"r) IF (0 ("$1"v)) ;
 
 #En isoleret Abl eller Ins sidst i sætningen er sikkert begrundende Abl hvis ikke i<N til QAR eller LIK
-SELECT:9946A Abl IF (-1 KOMMA)(1 EOS)(NEGATE *-1 QAR OR LIK) ;
+SELECT:9946A Abl + NIQ IF (-1 KOMMA)(1 EOS)(NEGATE *-1 QAR OR LIK) ;
+SELECT:9946B Ins IF (-1 KOMMA)(1 EOS);
+
 
 #Abl eller Ins? Sandsynligvis Abl ved NIQ, men med forbehold for QAR og LIK
 SELECT:9946B Abl + NIQ IF (NEGATE *1 QAR OR LIK);
@@ -3737,7 +3741,7 @@ REMOVE:9965 OBLIQUE + Pl IF (0 OBLIQUE + Sg)(NEGATE 0 HUM LINK 1 HTR);
 
 SECTION
 SELECT (@CL-<CIT) IF (*-1 ORATIOOBLVERB BARRIER V-NOT-Par) ;
-SELECT:9969 TUQ + Abs IF (-1 V + U)(1 KOMMA OR EOS) ;
+SELECT:9969 TUQ + Abs IF (-1 V + U)(1 KOMMA OR EOS)(NEGATE -1 TEMPUSVERB + Par) ;
 SELECT:9970 (@CL-CIT>) IF (*1 ORATIOOBLVERB BARRIER V-NOT-Par)(NEGATE 0 Abs + Sg + nv LINK -1 Sg + Abs) ; #Uden NEGATE hit på adled til objekt
 SELECT:9971 @CL-CIT> IF (*-1 @SUBJ> + 4SgPoss)(*1 ORATIOOBLVERB + VFIN) ;
 #SELECT:9972 @OBJ> IF (-1 Abs + Sg)(1 3SgO) ;
