@@ -1096,8 +1096,8 @@ SET FIRSTNAME = Mal | Fem | ("Frederik") | ("Nuka") | ("A") | ("B") | ("C") | ("
 SET NAME = FIRSTNAME | Sur ;
 SET NOT-FIRST = WORD - FIRSTNAME ;
 
-LIST FAM = "aanaq" ("aappaq" GIIT) "aataq" "aana" "ataata" "anaana" "angaaq" "ilaqutaq" "illoq" ("ilaqutaq" GIIT) "nuliaq" "ui";
-LIST HUM = ("ajor" TUQ) "arnaq" "angut" "ila" "inuk" ("inuusup" TUQ) "kalaaleq" "meeraq" "niviarsiaraq" "qallunaaq" "tarneq" "tarnik" "utoqqaq" ; #tarneq og tarnik medtaget da ofte objekt for +HUM verber
+LIST FAM = "aana" "aanaq" ("aappaq" GIIT) "aataq" "aja" "ajak" "anaana" "angaaq" "angajoqqaaq" "ataata" "ilaqutaq" ("ilaqutaq" GIIT) "illoq" "nuliaq" "ui";
+LIST HUM = ("ajor" TUQ) "arnaq" "angut" "ikinngut" "ila" "inuk" ("inuusup" TUQ) "kalaaleq" "meeraq" "niviarsiaraq" "qallunaaq" "tarneq" "tarnik" "utoqqaq" ; #tarneq og tarnik medtaget da ofte objekt for +HUM verber
 
 SET HUMAN = FAM OR NAME OR TITEL OR ORGANISATION OR HUM OR Prop ;
 SET NON_HUMAN = N - HUMAN ;
@@ -1152,6 +1152,7 @@ LIST @i->N = @i->N ;		 # adled der står til inkorporeret nominal t.h.
 LIST @i-N< = @i-N< ;		 # adled der står til inkorporeret nominal t.v.
 LIST @POSS = @POSS ;		 # possessor
 LIST @POSS> = @POSS> ;		 # possessor
+LIST @<POSS = @<POSS ; #løst efterstillet afterthought-lignende præcisering af tidligere nævnt possessor
 LIST @V> = @V> ;                 # adled til verbum # asaneq ajorpara og taama nuannertigivoq
 LIST @<V = @<V ;                 # adled til verbum # N-tut ippaa
 LIST @FOC = @FOC ;		# partikler mv., der erstatter et verballed
@@ -1362,9 +1363,14 @@ REMOVE:0040I NAAR - NAAR_VERBER ; #Sletter irriterende fejlanalyser med NAAR på
 
 REMOVE:0040K TRANSVERB + TUQ + U + Imp ; #Hyppigt forekommende fejlanalyser. 20160504 Skal måske begrænses hvis for bred 
 
+#mange fejlanalyser hvor KKUT læses som Via
+REMOVE:0040L Via + FAM OR Via + Prop IF (0 KKUT) ;
 
+#forebygge at NIQ+Pl læses som NIR+Par+2Sg
+REMOVE:0040M NIR + Par + 2Sg IF (0 NIQ + Pl)(NEGATE *-1 PersPron + Rel + 2Sg)(NEGATE *-1 ORATIOOBLVERB) ;
 
-
+# Speciel possessor-konstruktion med løst tilføjet adled til led til venstre må håndteres tidligt jf. :M0067. Må ikke slette Prop, der står som apposition 
+SELECT:0040N Rel IF (NEGATE *1 V)(*-1 KOMMA LINK *-1 Rel LINK 1 POSSESSUM3)(NEGATE 0 Prop + $$KASUS LINK -1 $$KASUS) ;
 
 ###################################
 # Frequent and safe rules - nouns #
@@ -1975,6 +1981,9 @@ MAP:M0065 @V> TARGET Abs + NIQ - POSSESSUM IF (1 ("ajor") OR ("saper")) ;
 
 MAP:M0066 @INTERIM TARGET ("assi") + GE + TAQ + Abs + Pl + 3PlPoss + LU IF (1 EOS); #assigisaallu før punktum vist altid sætningsemne. Taggen skal ændres
 
+#Løst tilføjede adled til led til venstre
+MAP:M0067 @<POSS TARGET N + Rel IF (NEGATE *1 V)(*-1 KOMMA LINK *-1 Rel LINK 1 POSSESSUM3)(NEGATE 1 POSSESSUM3) ;
+
 #Sætningsadverbialer
 
 MAP:M0069A @CL-ADVL> TARGET TIME + Abs IF (1 ("tamaq") + Akk);
@@ -2193,7 +2202,9 @@ MAP:M0659 @SUBJ> TARGET Abs + Sg IF (*1 INF + 4Sg BARRIER V) (NEGATE *1 INF + 3S
 MAP:M0660 (@SUBJ>) TARGET Abs + Sg IF (*1 INTRANSVERB + VERB-NOTINF + 3Sg OR INTRANSVERB + VERB-NOTINF + 4Sg BARRIER POSSESSUM3 OR TRANSVERB)(NEGATE -1 ("\(")) ; #TRANSVERB tilføjet for at forhindre tag på obj i: SUBJ OBJ TRANSVERB INTRANSVERB
 #MAP:M0661 (@SUBJ>) TARGET PersPron + Abs + 1Sg IF (*1 INTRANSVERB + VERB-NOTINF + 1Sg OR INTRANSVERB + VERB-NOTINF + 1Sg BARRIER POSSESSUM3 OR TRANSVERB)(NEGATE -1 ("\(")) ; #TRANSVERB tilføjet for at forhindre tag på obj i: SUBJ OBJ TRANSVERB INTRANSVERB
 MAP:M0661 @SUBJ> TARGET PersPron + Abs + 1Sg IF (*1 VERB-NOTINF + 1Sg BARRIER TRANSVERB + 1SgO)(NEGATE -1 ("\(")) ; #Ny formulering testet 20150318
-MAP:M0662 @SUBJ> TARGET PersPron + Rel + 1Sg IF (*1 VERB-NOTINF + TRANSVERB + 1Sg BARRIER TRANSVERB + 1SgO)(NEGATE -1 ("\("))(NEGATE 1 1SgPoss) ;
+MAP:M0661A @SUBJ> TARGET PersPron + Abs + 2Sg IF (*1 VERB-NOTINF + 2Sg BARRIER TRANSVERB + 2SgO)(NEGATE *1 2SgO)(NEGATE -1 ("\(")) ; #Ny formulering testet 20150318
+MAP:M0662 @SUBJ> TARGET PersPron + Rel + 1Sg IF (*1 VERB-NOTINF + TRANSVERB + 1Sg BARRIER TRANSVERB + 1SgO)(NEGATE *1 1SgO)(NEGATE -1 ("\("))(NEGATE 1 1SgPoss) ;
+MAP:M0662A @SUBJ> TARGET PersPron + Rel + 2Sg IF (*1 VERB-NOTINF + TRANSVERB + 2Sg BARRIER TRANSVERB + 2SgO)(NEGATE -1 ("\("))(NEGATE 1 2SgPoss) ;
 
 MAP:M0670 (@SUBJ>) TARGET Abs + Pl IF (*1 INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl BARRIER TRANSVERB + 3PlO) ; #så er det et objekt for TRANSVERB
 MAP:M0680 (@SUBJ>) TARGET (Rel) IF (*1 TRANSVERB + 34IV BARRIER POSSESSUM3 OR INTRANSVERB + 34IV) ;
@@ -2855,10 +2866,7 @@ SELECT Abl IF (*1 PASSIV)(NEGATE 0 Ins LINK *1 QAR BARRIER V); #Regel for agens 
 SELECT (@FOC part) IF (*1 @SUBJ_COMP BARRIER V ) ;
 
 # Tidlige syntaktiske regler
-#SELECT N* + 3Sg + IP IF (-1 (Rel Sg)) ; #Virker ikke 18.1. sen aften
 
-#SELECT @POSSESSUM IF (-1 Rel Sg) (0 3Sg); 
-#SELECT SPATIAL + Sg IF (0 POSSESSUM) ;
 SELECT @HNOUN IF (NEGATE *0 V - Inf OR V - InfNeg)(NEGATE 0 V ) ;
 
 REMOVE @<ARG IF (NEGATE *-1 V)(NEGATE *-1 (@FOC)) ;
@@ -3334,6 +3342,7 @@ REMOVE:8510 ("siuaq") + USAQ IF (0 ("siuaa") + TAQ) ; # ingen "fortandslignende"
 REMOVE:8511 ("eqqoq") + TU IF (0 ("eqqor") ) (NEGATE *-1 BIRDS);
 REMOVE:8512 ("nalunaaqut") + 	IR + NIAR IF (0 ("nalunaaqutaq") + IR + NIAR);
 REMOVE:8513 ("qulleq") + LIUR IF (0 ("qulli") + LIUR) ; #gråd langt sandsynligere end lampelavning
+REMOVE:8514 ("ajak") IF (0 ("aja")) ; #arbitrær disambiguering. Begge former valide
 
 # Nomen eller partikel?
 SELECT ("aamma") ; # "aamma" mere sandsynlig end "aak"+Rel
