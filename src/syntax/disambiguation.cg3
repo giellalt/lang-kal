@@ -706,6 +706,7 @@ LIST SINNAA_SSA_GALUAR = SINNAA\=SSA\=GALUAR ;
 LIST SINNAA_SSA_NNGIT = SINNAA\=SSA\=NNGIT ;
 LIST SINNAA_TUAR = SINNAA\=TUAR ;
 LIST SINNAA_TIP = SINNAA\=TIP ;
+LIST SINNAAQ = SINNAAQ ;
 LIST SIUR = SIUR ;
 LIST SIUT = SIUT ;
 LIST SUR = SUR ;
@@ -1167,6 +1168,7 @@ LIST @PRED2 = @PRED2 ; # saettes paa verbet i en bunden ledsaetning
 LIST @ABSOLUT_PRED = @ABSOLUT_PRED ;	#Participier med nexus inde i en NP eller afterthoughts
 LIST @i->V = @i->V ; 	# NIQ ved ajor, saper, artor, nalu
 LIST @SUBJ_COMP = @SUBJ_COMP ;	#Prædikat til subjekt/ subjective complement
+LIST @OBJ_COMP = @OBJ_COMP ; #Prædikat til objekt
 LIST @<SUBJ_COMP = @<SUBJ_COMP ; #Prædikat til subjekt til venstre fx typen Arnaavunga pikkorissoq
 LIST @>V = @>V ;
 LIST @VOK = @VOK ;
@@ -1388,22 +1390,26 @@ MAP:M0040X1 @POSS> TARGET ReflPron + Rel + 4Sg + LU OR LUMI IF (*-1 TRANSVERB + 
 SELECT:0040X2 Abs IF (-1 ReflPron + Rel + 4Sg + LU OR LUMI)(*-1 TRANSVERB + 3Sg LINK -*1 Abs)(NEGATE *1 V) ;
 MAP:M0040X2 @<OBJ Abs IF (-1 ReflPron + Rel + 4Sg + LU OR LUMI)(*-1 TRANSVERB + 3Sg LINK -*1 Abs)(NEGATE *1 V)  ;
 
-
+#I sekvensen Subjekt+Prop+Abs : Possessor+Prop : Objekt+vn : INF+3SgO : INTRANSVERB+3Sg må subjektet ikke blive objekt og objektet ikke objektskomplement
+SELECT:0041A Prop + Abs IF (1 Prop + Rel + Sg LINK 1 3SgPoss LINK *1 INF + 3SgO LINK *1 INTRANSVERB + 3Sg BARRIER KOMMA OR VFIN) ;
+MAP:M0041AX @SUBJ> TARGET Prop + Abs IF (1 Prop + Rel + Sg LINK 1 3SgPoss LINK *1 INF + 3SgO LINK *1 INTRANSVERB + 3Sg BARRIER KOMMA OR VFIN) ;
+SELECT:0041B Abs + 3SgPoss IF (-1 Prop + Rel + Sg)(*1 INF + 3SgO LINK *1 INTRANSVERB + 3Sg BARRIER KOMMA OR VFIN) ;
+MAP:M0041BX @OBJ> TARGET Abs + 3SgPoss IF (-1 Prop + Rel + Sg)(*1 INF + 3SgO LINK *1 INTRANSVERB + 3Sg BARRIER KOMMA OR VFIN) ;
 
 ###################################
 # Frequent and safe rules - nouns #
 ###################################
 #En tidlig regel, der fjerner Par + 3Sg fra kongruensadled i objektsyntagmer forudsat, der ikke findes et inquit
-SELECT:0041 ADJEKTIVISK + Abs + Sg IF (-1 Abs + Sg)(*1 3SgO BARRIER V)(NEGATE *0 ORATIOOBLVERB) ; 
+SELECT:0042 ADJEKTIVISK + Abs + Sg IF (-1 Abs + Sg)(*1 3SgO BARRIER V)(NEGATE *0 ORATIOOBLVERB) ; 
 
-REMOVE:0041A ("ilaaq") - AFFINGERET IF (0 ("ila") + POSSESSUM) ; #'ilaaq' uden QAR el. lign. usandsynlig
-REMOVE:0041B ("isu") + MAA IF (0 ("isuma"));
+REMOVE:0042A ("ilaaq") - AFFINGERET IF (0 ("ila") + POSSESSUM) ; #'ilaaq' uden QAR el. lign. usandsynlig
+REMOVE:0042B ("isu") + MAA IF (0 ("isuma"));
 
 #En tidlig regel fjerner læsning af KKUT som possessor i strukturen possessor vialis possessum som i ilaqutama timmisartukkut aqqutissaat
-REMOVE:0041C KKUT IF (-1 Rel + Pl)(1 3PlPoss)(0 Via)(NEGATE 0 Prop LINK -1 FAM + Pl); 
+REMOVE:0042C KKUT IF (-1 Rel + Pl)(1 3PlPoss)(0 Via)(NEGATE 0 Prop LINK -1 FAM + Pl); 
 
-SELECT:0042 Comp IF (1 ("ajor") OR ("artor") OR ("saper") OR ("nalu"));
-REMOVE:0043 Comp IF (NEGATE 1 ("ajor") OR ("artor") OR ("saper") OR ("nalu"));
+SELECT:0043A Comp IF (1 ("ajor") OR ("artor") OR ("saper") OR ("nalu"));
+REMOVE:0043B Comp IF (NEGATE 1 ("ajor") OR ("artor") OR ("saper") OR ("nalu"));
 #20100228 NY (PL): Vælger og fjerner alle transitiver med NIQ
 
 REMOVE:0044 NIQ + UTE IF ( 0 NIUT ) ;
@@ -1857,6 +1863,20 @@ REMOVE:0407A Par + INTRANSVERB + 3Pl IF (-1 Prop + Ins) ;
 SELECT:0408A Abs + Sg + vn IF (-*1 N - vn + Abs + Sg)(1 vn + Abs + Sg LINK *1 Rel LINK *1 3SgO); 
 SELECT:0408B Abs + Sg + vn IF (-*1 N - vn + Abs + Sg LINK 1 vn + Abs + Sg LINK 1 vn + Abs + Sg)(*1 Rel LINK *1 3SgO); 
 
+######################
+# 4SgPoss eller Lok+Pl?
+# Skal håndteres før temp og konf sætninger for at adskille OBJ> fulgt af vn + @OBJ_COMP med TRANSVERB til højre
+######################
+
+REMOVE:0409A ("ila") + UTE IF (-1 ("ulloq")) ; #Må fjernes for ikke at blive valgt af næste 
+SELECT:0409B Abs + Sg + 4SgPoss - Arch IF (*1 Abs + Sg LINK *1 3SgO BARRIER KOMMA) ; #Objekt med adled for V til højre. Må ikke vælge Arch-former, der er synonyme med Lokalis former
+MAP:M0409BX @OBJ> TARGET Abs + Sg + 4SgPoss - Arch IF (*1 Abs + Sg LINK *1 3SgO BARRIER KOMMA) ;
+SELECT:0409C Abs + Sg + vn IF (-*1 Abs + Sg BARRIER V)(*1 3SgO BARRIER KOMMA) ;
+MAP:M0409CX @OBJ_COMP TARGET Abs + Sg + vn IF (-*1 Abs + Sg - Attr BARRIER V)(*1 3SgO BARRIER KOMMA)(NEGATE -1 Abs + Sg LINK *1 INF + 3SgO LINK *1 INTRANSVERB + 3Sg BARRIER KOMMA OR VFIN) ; # Ikke Attr+Abs fordi Attr ikke har syntaktisk funktion i sig selv. Sidste NEGATE fordi TARGET er objekt i sekvensen SUBJ+Abs : OBJ : INF+3SgO : INTRANSVERB+3Sg
+MAP:M0409CXX @OBJ_COMP TARGET Abs + Sg + vn IF (-*1 Abs + Sg LINK -*1 Abs + Sg)(*1 3SgO BARRIER KOMMA) ; # Men OK hvis TARGET er objektskomplement i sekvensen SUBJ+Abs : OBJ : OBJ_COMP : INF+3SgO : INTRANSVERB+3Sg
+
+
+
 #Temporale og koncessive sætninger efter punktum eller komma. Må ikke hitte på nominale paratakser og paratakser med possessor på andet led og ikke på opremsninger med komma. Heller ikke subjekter for CON_CAU eller objekter for transverb umiddelbart til højre
 SELECT:0410 Par + INTRANSVERB + 3Pl IF (@1 Abs + Pl)(NEGATE *-1 VERB-NOTINF)(NEGATE 1 Abs + LU + Pl)(NEGATE 1 LU + Rel LINK 1 Abs + Pl)(NEGATE *1 CON_CAU + 3Pl OR CON_CAU + 4Pl BARRIER V)(NEGATE *1 3PlO BARRIER V)(*1 T:NexusHøjre)(-2 (*)); #sidste betingelse (der skal stå et eller andet i position -2) forebygger hit på target selv
 SELECT:0411 Par + INTRANSVERB + 3Sg - ADJEKTIVISK IF (@1 Abs + Sg)(NEGATE *-1 VERB-NOTINF)(NEGATE 1 Abs + LU + Sg)(*1 T:NexusHøjre)(-2 (*))(NEGATE 0 Abs + LU LINK -1 Abs); #Må ikke hitte på @1
@@ -1866,6 +1886,7 @@ SELECT:0412B vn + Pl + Rel IF (1 3PlPoss)(NEGATE 0 Par + 3Pl LINK *-1 Abs + Pl L
 
 SELECT:0412 Par + INTRANSVERB + 3Pl IF (*-1 KOMMA LINK 1 Abs + Pl)(NEGATE 1 Abs + LU + Pl)(*1 T:NexusHøjre)(NEGATE -1 KOMMA LINK 2 KOMMA)(NEGATE 0 Rel + Pl LINK *1 TRANSVERB + 3Pl BARRIER VERB-NOTINF )(NEGATE -2 KOMMA LINK 1 ("ila")) ;
 SELECT:0413 Par + INTRANSVERB + 3Sg IF (*-1 KOMMA LINK 1 Abs + Sg)(NEGATE 1 Abs + LU + Sg)(*1 T:NexusHøjre);
+
 
 # Verber - De sikre MAP regler 1. runde
 # =====================================
@@ -2757,12 +2778,6 @@ SELECT Abs + Prop IF (-2 Prop + Abs)(-1 ("\,"))(NEGATE 0 Rel LINK 1 POSSESSUM3);
 SELECT Abs + Prop IF (-3 Prop + Abs)(-2 ("\,"))(-1 Abs)(NEGATE 0 Rel LINK 1 POSSESSUM3); #'Enoksen, SIUMUT' 'Kleist, Inuit ATAQATIGIIT'
 
 SELECT:2222 Prop + Lok IF (-1 Lok) ;
-
-######################
-# 4SgPoss eller Lok+Pl?
-######################
-REMOVE:0601A ("ila") + UTE IF (-1 ("ulloq")) ; #Må fjernes for ikke at blive valgt af næste 
-SELECT:0601 Abs + Sg + 4SgPoss - Arch IF (*1 Abs + Sg LINK *1 3SgO BARRIER KOMMA) ; #Objekt med adled for V til højre. Må ikke vælge Arch-former, der er synonyme med Lokalis former
 
 
 #Nominer - kongruens og paratakse
@@ -3673,6 +3688,7 @@ REMOVE:5777 ("Inuk") + Prop + U If (0 ("inuk") + U) ;
 #Verbum eller nomen
 REMOVE:5850 ("erner") + 4SgO IF (0 ("erneq") + Lok) ;
 REMOVE:5851 ("issaq") + U IF (0 ("issaa")) ;
+REMOVE:5852 SINNAAQ + LIR + nv IF (0 SINNAA + LIR + vv) ;
 
 #Partiklerne
 REMOVE:5860 ("taamak") + Interj IF (0 ("taamak") + part LINK 1 V) ;
