@@ -1149,7 +1149,7 @@ LIST @PROP> = @PROP> ;		 # proprium til venstre i propriumskede
 LIST @HNOUN = @HNOUN ;		 # løst nomen uden predikat
 LIST @HEADLINE = @HEADLINE ;	# loes partikel eller verbum i overskrifter
 LIST @N> = @N> ;		     # prenominalt adled (slagter Hansen) og determinativ (UA allaffinni/ 1. maj)
-LIST @N< = @N< ;	    	 # postnominalt adled
+LIST @<N = @<N ;	    	 # postnominalt adled
 LIST @i->N = @i->N ;		 # adled der står til inkorporeret nominal t.h.
 LIST @i-N< = @i-N< ;		 # adled der står til inkorporeret nominal t.v.
 LIST @POSS = @POSS ;		 # possessor
@@ -1182,7 +1182,7 @@ LIST §PropNexusPl = §PropNexusPl ;
 LIST §PropNexusSg = §PropNexusSg ;
 
 
-SET TAGGED = @PRED OR @SUBJ> OR @<SUBJ OR @OBJ> OR @<OBJ OR @ADVL> OR @<ADVL OR @CL-ADVL> OR @CL-<ADVL OR @CL-CIT> OR @CL-<CIT OR @i-SUBJ> OR @i-<SUBJ OR @i-OBJ_DOTR> OR @i-<OBJ OR @i-ADVL> OR @i-<ADVL OR @INTERJ OR @PROP> OR @HNOUN OR @N> OR @N< OR @i->N OR @i-N< OR @POSS OR @POSS> OR @>V ;
+SET TAGGED = @PRED OR @SUBJ> OR @<SUBJ OR @OBJ> OR @<OBJ OR @ADVL> OR @<ADVL OR @CL-ADVL> OR @CL-<ADVL OR @CL-CIT> OR @CL-<CIT OR @i-SUBJ> OR @i-<SUBJ OR @i-OBJ_DOTR> OR @i-<OBJ OR @i-ADVL> OR @i-<ADVL OR @INTERJ OR @PROP> OR @HNOUN OR @N> OR @<N OR @i->N OR @i-N< OR @POSS OR @POSS> OR @>V ;
 
 # Syntaks
 # =======
@@ -2051,13 +2051,13 @@ MAP:M0080B @CL-ADVL> TARGET ("nali") + 3SgPoss IF (-2 BOS OR KOMMA)(-1 Rel) ;
 
 #HNOUN NP i citationstegn med og uden komma
 MAP:M0081A @HNOUN TARGET Abs IF (1 Abs)(2 KOMMA)(3 ("”"))(*1 ORATIOOBLVERB) ;
-MAP:M0081B @N< TARGET Abs IF (-1 Abs)(1 KOMMA)(2 ("”"))(*1 ORATIOOBLVERB) ;
+MAP:M0081B @<N TARGET Abs IF (-1 Abs)(1 KOMMA)(2 ("”"))(*1 ORATIOOBLVERB) ;
 MAP:M0081C @HNOUN TARGET Abs IF (1 Abs)(2 ("”"))(*1 ORATIOOBLVERB) ;
-MAP:M0081D @N< TARGET Abs IF (-1 Abs)(1 ("”"))(*1 ORATIOOBLVERB) ;
+MAP:M0081D @<N TARGET Abs IF (-1 Abs)(1 ("”"))(*1 ORATIOOBLVERB) ;
 
 #Sammenlignings NP uden verbum
 MAP:M0082A @SML_HNOUN TARGET Abs IF (-1 ("soorlu"))(1 Abs + vn)(NEGATE *1 V) ;
-MAP:M0082B @N< TARGET Abs IF (-2 ("soorlu"))(-1 Abs)(NEGATE *1 V);
+MAP:M0082B @<N TARGET Abs IF (-2 ("soorlu"))(-1 Abs)(NEGATE *1 V);
 
 
 # Proprier - MAP-regler
@@ -2089,6 +2089,10 @@ MAP:M0220 (@PROP>) TARGET Abbr IF (*1 Prop BARRIER NOT-Abbr) ;
 #Konjunktioner er konjunktioner, når de indleder en sætning, ellers er de adverbier
 MAP:M0230 (@CONJ) TARGET KONJUNKTION IF (-1 BOS OR ("\,")) ; #Flyttet fra 1168 forebygge konflikt med @ADVL>
 MAP:M0231 (@CONJ) TARGET ("aamma") + LU OR ("taamatut") + LU; #vistnok undtagelsesløs
+MAP:M0235A @<N TARGET ("allaat") + part IF (-1 Trm); #Typen umiatsiaaqqanut allaat angallapput
+MAP:M0235B @V> TARGET ("allaat") + part IF (1 Rel LINK 1 Trm + POSSESSUM); #allaat Nuup imartaanut pipput   
+MAP:M0235C @V> TARGET ("allaat") + part IF (1 Trm); #allaat Nuummut pipput   
+
 MAP:M0240 (@CL-<ADVL) TARGET KONJUNKTION IF (1 EOS)(NEGATE -1 BOS) ; #Sidste betingelse for at undgaa at tagge isolerede konjunktioner
 MAP:M0245 (@HEADLINE) TARGET KONJUNKTION IF (1 EOS)(-1 BOS) ; #Sidste betingelse for at undgaa at tagge isolerede konjunktioner
 MAP:M0247A @FOC TARGET ("AA") + DemPron + Sg IF (-1 BOS)(1 Abs + Sg) ;
@@ -2167,8 +2171,8 @@ MAP:M0460 (@OBJ>) TARGET APPELLATIV + Abs + Pl IF (1 TRANSVERB + 3PlO)(-*1 Rel B
 MAP:M0470 @OBJ> TARGET APPELLATIV + Abs + Pl OR Prop + Abs + Pl IF ( *1 TRANSVERB - 3Pl + 3PlO BARRIER INTRANSVERB + 3Pl) ; #20091105 Kun sikker, naar subjekt != 3Pl. Der maa mere avancerede regler til at adskille implicit subjekt 3Pl fra objekt Pl. BARRIER fordi somme tider subjekt for cau, con etc. i stedet for objekt for et senere V
 
 MAP:M0480 (@POSS>) TARGET POSS_ABBR IF (1 POSSESSUM3); #sap. akunnera
-MAP:M0490 (@N<) TARGET Trm IF (-1 ("qujanaq"))(NEGATE *1 V) ;
-MAP:M0500 (@N<) TARGET Trm IF (-1C Trm)(NEGATE *1 V) ;
+MAP:M0490 @<N TARGET Trm IF (-1 ("qujanaq"))(NEGATE *1 V) ;
+MAP:M0500 @<N TARGET Trm IF (-1C Trm)(NEGATE *1 V) ;
 #At adskille Inf's objekt fra V's subjekt
 MAP:M0510 (@OBJ>) TARGET Abs + Sg IF (1 Abs + Sg)(2 Inf + 3SgO OR InfNeg + 3SgO)(NEGATE *1 V + 3Sg BARRIER Abs + Sg);
 
@@ -2518,7 +2522,7 @@ MAP:M1720 (@SUBJ>) TARGET Adj IF (-1 @SUBJ>); #2.4. for bred og upraecis??
 MAP:M1721 (@ADVL>) TARGET PRON IF (-1 @ADVL>); #2.4. for bred og upraecis??
 MAP:M1722A @OBJ> TARGET Abs + vn + $$NUMERUS IF (-1 Abs + $$NUMERUS);
 MAP:M1722A @OBJ> TARGET Num + $$NUMERUS IF (-1 Abs + $$NUMERUS)(NEGATE -1 @HNOUN);
-MAP:M1722C @N< TARGET Num + $$NUMERUS IF (-1 Abs + $$NUMERUS)(-1 @HNOUN); #særlig for HNOUN NP 
+MAP:M1722C @<N TARGET Num + $$NUMERUS IF (-1 Abs + $$NUMERUS)(-1 @HNOUN); #særlig for HNOUN NP 
 
 
 #Attributter med komma
@@ -2983,18 +2987,18 @@ SELECT (@CL->N) IF (-1C @ARG>);
 SELECT 4Sg IF (0C (@CL->N))(1 (N Sg)); # eksperimentell
 SELECT 4Pl IF (0C (@CL->N))(1 (N Pl)); # eksperimentell
 
-REMOVE (Rel @N<) IF (NEGATE -1 (N Rel));
+REMOVE (Rel @<N) IF (NEGATE -1 (N Rel));
 	## Atuagaq Trosterudip tiguaa.
 
-REMOVE:KasusKongruens $$NOT-REL + @N< IF (NEGATE -1 $$NOT-REL OR Rel);
+REMOVE:KasusKongruens $$NOT-REL + @<N IF (NEGATE -1 $$NOT-REL OR Rel);
 
-REMOVE (Abs @N<) IF (NEGATE -1 Abs OR Rel);
-REMOVE (Lok @N<) IF (NEGATE -1 Lok OR Rel);
-REMOVE (Trm @N<) IF (NEGATE -1 Trm OR Rel);
-REMOVE (Abs @N<) IF (NEGATE -1 Abs OR Rel);
-REMOVE (Ins @N<) IF (NEGATE -1 Ins OR Rel);
-REMOVE (Aeq @N<) IF (NEGATE -1 Aeq OR Rel);
-REMOVE (Via @N<) IF (NEGATE -1 Via OR Rel);
+REMOVE (Abs @<N) IF (NEGATE -1 Abs OR Rel);
+REMOVE (Lok @<N) IF (NEGATE -1 Lok OR Rel);
+REMOVE (Trm @<N) IF (NEGATE -1 Trm OR Rel);
+REMOVE (Abs @<N) IF (NEGATE -1 Abs OR Rel);
+REMOVE (Ins @<N) IF (NEGATE -1 Ins OR Rel);
+REMOVE (Aeq @<N) IF (NEGATE -1 Aeq OR Rel);
+REMOVE (Via @<N) IF (NEGATE -1 Via OR Rel);
 
 SELECT:7485A DivPron + 1Sg + @SUBJ> IF (*1 V + 1Sg BARRIER V OR KOMMA);
 SELECT:7485B DivPron + 2Sg + @SUBJ> IF (*1 V + 2Sg BARRIER V OR KOMMA);
@@ -3694,6 +3698,7 @@ REMOVE:5852 SINNAAQ + LIR + nv IF (0 SINNAA + LIR + vv) ;
 
 #Partiklerne
 REMOVE:5860 ("taamak") + Interj IF (0 ("taamak") + part LINK 1 V) ;
+REMOVE:5861 ("alla") + POSSESSUM IF ( 0 ("allaat") + part ) ; #
 
 # Ugedagene
 REMOVE ("ataaseq") + NNGUR + NIRU IF (0 ("ataaseq") + NNGUR + NIQ + U) ;
