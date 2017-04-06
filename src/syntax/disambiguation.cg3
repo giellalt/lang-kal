@@ -164,6 +164,7 @@ LIST ParagrafSlut = "¶" "." ; #To be added in all corpora in order to deal effi
 
 # Derivatives #
 
+LIST A = A ;
 LIST ALLAP = ALLAP ;
 LIST ALLAP_TIP = ALLAP\=TIP ;
 LIST ALLAP_TIP_HTR = ALLAP\=TIP\=HTR ;
@@ -1009,6 +1010,7 @@ LIST ADVERBIUM = "ima" "qanoq" ; #20091109 tilfoejet 'qanoq', der maaske staar l
 LIST FOKUSPART = ("AA" una) "tassa" "aali" "sunaaffa" ; #oqaqqarniutit imal. oqaaseqatigiinni oqaluutitaqanngitsut 
 LIST KONCESSIV = "naak" "uffa" "sunaaffa" ; #oqaaseqatigiinni minnerni oqaluummik pisariaqartitsisut
 LIST SPØRGEPARTIKEL = "naak" "sumi" "suna" "qanoq" ; #
+LIST TIDSPARTIKEL = "ilaanni" ;
 
 # Syntaktiske sets
 # ============
@@ -1933,6 +1935,8 @@ MAP:M0013B @POSS TARGET Prop + Abs + Sg IF (-1 Interj)(1 SSUSIQ + 3SgPoss LINK 1
 
 MAP:M0014 @PRED2 TARGET TEMPUSVERB + Par IF (-1 BOS OR KOMMA); #Initial participium som tidsbisætning
 
+MAP:M0015A @PRED2 TARGET INTRANSVERB + Inf + 4Pl IF (*-1 Rel + Sg BARRIER KOMMA)(-1 TIDSPARTIKEL) (T:NexusHøjre)(NEGATE 1 vn) ; #tid- og koncessive saetninger uden konjunktion midt inde i nexus - Eriup ilaanni pulaarlutik arni oqarfigaa
+
 MAP:M0015 (@PRED2) TARGET INTRANSVERB + Inf + 4Pl IF (*-1 Abs + Pl OR Abs + Sg + LU) (T:NexusHøjre)(NEGATE 1 vn) ; #(NEGATE *0 ORATIOOBLVERB BARRIER VFIN)(1 Abs  OR ("\,")); #koncessive saetninger uden konjunktion
 
 MAP:M0016 (@PRED2) TARGET INTRANSVERB + Par + 3Pl IF (*-1 Abs + Pl)(NEGATE *0 ORATIOOBLVERB BARRIER VFIN)(1 Abs OR ("\,")); #koncessive saetninger uden konjunktion
@@ -2342,7 +2346,7 @@ MAP:M0950 (@<ADVL) TARGET N IF (-1 ("\("))(1 ("\)"))(-2 @<ADVL) ; #Parantetiske 
 
 # Pronominer - De sikre MAP regler
 # ================================
-MAP:M0960 @SUBJ> TARGET DivPron + Nom + $$PERSON IF (*1 INTRANSVERB + $$PERSON BARRIER KOMMA) ;
+MAP:M0960 @SUBJ> TARGET DivPron + Nom + $$PERSON - V IF (*1 INTRANSVERB + $$PERSON BARRIER KOMMA) ; #-V for at forebygge hit på Lok+IP konstruktioner
 
 
 #Sætningsemner med possessor med eller uden inderiveret direkte objekt
@@ -3632,6 +3636,7 @@ REMOVE:5604A NNGIR IF (0 ("ikip") + NNGIT ); #næppe sårfjerner
 REMOVE:5604B NNGIR IF (0 ("ani") + NNGIT ); #næppe storebrorsfjerner
 REMOVE:5604C NNGIR IF (0 ("aak") + QAR + NNGIT ); #næppe 'aaqa', der fjernes
 REMOVE:5604D NNGIR IF (0 ("aki") + NNGIT ); #næppe nordlandet, der fjernes
+REMOVE:5605 A + LLAP IF (0 ALLAP) ; # Varigheds A og pludseligheds LLAP lidt usandsynlig
 
 
 
@@ -3647,6 +3652,7 @@ REMOVE:5708 ("aa") + TAQ IF (0 ("aasaq") + SIUR) ;
 REMOVE:5709 ("iseq") + Rel IF (1 POSSESSUM3 + humverb) ;
 REMOVE:5710 POSSESSUM IF (0 ("inuk") + INNAQ) ; 
 REMOVE:5711 ("avataq") IF (0 ("avat") LINK -1 Prop + Rel) ;#disambiguerer avataq fra avate 
+REMOVE:5712 ("missaq") IF (0 ("missi") LINK -1 Num ) ; #næppe Num's stormfugl
 
 # Appellativ eller proprium?
 SELECT Prop IF (0 (@HNOUN)) ;
