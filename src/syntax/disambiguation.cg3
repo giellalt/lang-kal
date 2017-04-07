@@ -164,7 +164,7 @@ LIST ParagrafSlut = "¶" "." ; #To be added in all corpora in order to deal effi
 
 # Derivatives #
 
-LIST A = A ;
+LIST A* = A* ;
 LIST ALLAP = ALLAP ;
 LIST ALLAP_TIP = ALLAP\=TIP ;
 LIST ALLAP_TIP_HTR = ALLAP\=TIP\=HTR ;
@@ -1010,7 +1010,7 @@ LIST ADVERBIUM = "ima" "qanoq" ; #20091109 tilfoejet 'qanoq', der maaske staar l
 LIST FOKUSPART = ("AA" una) "tassa" "aali" "sunaaffa" ; #oqaqqarniutit imal. oqaaseqatigiinni oqaluutitaqanngitsut 
 LIST KONCESSIV = "naak" "uffa" "sunaaffa" ; #oqaaseqatigiinni minnerni oqaluummik pisariaqartitsisut
 LIST SPØRGEPARTIKEL = "naak" "sumi" "suna" "qanoq" ; #
-LIST TIDSPARTIKEL = "ilaanni" ;
+LIST TIDSPARTIKEL = "ilaanni" ("qaammat" Trm) ("ulloq" Trm) ;
 
 # Syntaktiske sets
 # ============
@@ -1441,6 +1441,8 @@ SELECT:0062 Rel + Sg IF (1 DemPron + Rel LINK 1 3SgPoss);
 REMOVE:0063X 3SgPoss IF (0 3PlPoss LINK *-1 Rel + Pl BARRIER KOMMA )(NEGATE *-1 Rel + Sg)(NEGATE *-1 3PlPoss LINK *-1 Rel + Pl); #nødvendig disambiguering før 0063. Sidste NEGATE på gr. af helt andre possessum længere til venstre
 #Disambiguering af possessor fulgt af partikel og adled som i "Kalaallit taamanikkut sulilluartut pigisaat"
 SELECT:0063Z Rel + Pl IF (1 part LINK 1 Rel + Pl LINK 1C 3PlPoss)(NEGATE 1 ("siuneq") + Via) ; #må ikke hitte på siornatigut og ikke på opremsede participier med assigisaallu og heller ikke på opremsninger med ilaat .. ilaat
+
+SELECT:0063A Rel + Pl IF (1 TIDSPARTIKEL LINK 1C 3PlPoss)(NEGATE 2 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 2 ("assi") + POSSESSUM + LU)(NEGATE -1 ("ila") LINK 3 ("ila")) ; #må ikke hitte på siornatigut og ikke på opremsede participier med assigisaallu og heller ikke på opremsninger med ilaat .. ilaat. Tilføjet 20170407
 
 SELECT:0063 Rel + Pl IF (1C 3PlPoss)(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 1 ("assi") + POSSESSUM + LU)(NEGATE -1 ("ila") LINK 2 ("ila")) ; #må ikke hitte på siornatigut og ikke på opremsede participier med assigisaallu og heller ikke på opremsninger med ilaat .. ilaat
 SELECT:0064 Rel + Sg IF (1C 3SgPoss)(NEGATE 0 Ins LINK 1 QAR OR LIK)(NEGATE 1 LU)(NEGATE 0 ("affaq"))(NEGATE 0 PLACE + 4SgPoss ); #asanninnermik pigisaqarneranut er ikke en possessor-possessum forbindelse
@@ -2225,7 +2227,7 @@ MAP:M0601 (@POSS>) TARGET Rel + Sg IF (1 3SgPoss) ;
 MAP:M0608 (@POSS>) TARGET Prop + Rel + Sg IF (*1 3SgPoss BARRIER TRANSVERB + 3Sg) (NEGATE *1 Rel + LU BARRIER TRANSVERB + 3Sg)(NEGATE 1 Prop + Abs)(NEGATE 1 Prop + Rel LINK 1 POSSESSUM3) ; #i NN-ip aappaatalu må aappaatalu ikke opfyldebetingelsen. Sidste NEGATE for at blokere NN-ip NN1 ...
 
 MAP:M0609 (@POSS>) TARGET Rel + Sg - Prop IF (*1 3SgPoss BARRIER TRANSVERB + 3Sg) (NEGATE *1 Rel + LU BARRIER TRANSVERB + 3Sg) ; #i NN-ip aappaatalu må aappaatalu ikke opfyldebetingelsen. Sidste NEGATE for at blokere NN-ip NN1 ...
-MAP:M0610 (@POSS>) TARGET Rel + Pl IF (1 Lok OR Ins OR Aeq OR INF)(2 3PlPoss) ; #Særtilfælde med adled til possessum
+MAP:M0610 (@POSS>) TARGET Rel + Pl IF (1 Lok OR Ins OR Aeq OR INF OR TIDSPARTIKEL)(2 3PlPoss) ; #Særtilfælde med adled til possessum. TIDSPARTIKEL tilføjet 20170407
 MAP:M0611 (@POSS>) TARGET Rel + Pl IF (1 3PlPoss) ;
 
 #Parataktiske possessorer
@@ -3636,7 +3638,7 @@ REMOVE:5604A NNGIR IF (0 ("ikip") + NNGIT ); #næppe sårfjerner
 REMOVE:5604B NNGIR IF (0 ("ani") + NNGIT ); #næppe storebrorsfjerner
 REMOVE:5604C NNGIR IF (0 ("aak") + QAR + NNGIT ); #næppe 'aaqa', der fjernes
 REMOVE:5604D NNGIR IF (0 ("aki") + NNGIT ); #næppe nordlandet, der fjernes
-REMOVE:5605 A + LLAP IF (0 ALLAP) ; # Varigheds A og pludseligheds LLAP lidt usandsynlig
+REMOVE:5605 A* + LLAP IF (0 ALLAP) ; # Varigheds A og pludseligheds LLAP lidt usandsynlig
 
 
 
