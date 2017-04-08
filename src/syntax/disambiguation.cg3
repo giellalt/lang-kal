@@ -1874,7 +1874,7 @@ SELECT:0408B Abs + Sg + vn IF (-*1 N - vn + Abs + Sg LINK 1 vn + Abs + Sg LINK 1
 
 REMOVE:0409A ("ila") + UTE IF (-1 ("ulloq")) ; #Må fjernes for ikke at blive valgt af næste 
 SELECT:0409B Abs + Sg + 4SgPoss - Arch IF (*1 Abs + Sg LINK *1 3SgO BARRIER KOMMA) ; #Objekt med adled for V til højre. Må ikke vælge Arch-former, der er synonyme med Lokalis former
-MAP:M0409BX @OBJ> TARGET Abs + Sg + 4SgPoss - Arch IF (*1 Abs + Sg LINK *1 3SgO BARRIER KOMMA) ;
+MAP:M0409BX @OBJ> TARGET Abs + Sg + 4SgPoss - Arch IF (*1 Abs + Sg LINK *1 3SgO BARRIER KOMMA)(NEGATE -1 Abs LINK 1 Abs + LU LINK *1 PLURSUBJVERB) ; #Sidste NEGATE forebygger hit på parataktiske subjekter
 SELECT:0409C Abs + Sg + vn IF (-*1 Abs + Sg BARRIER V)(*1 3SgO BARRIER KOMMA)(NEGATE *-1 Abs + Sg LINK *1 Par + 3Sg LINK *1 ORATIOOBLVERB) ; #Må ikke tagge Subj or Par som hhv. OBJ og OBJ_COMP
 MAP:M0409CX @OBJ_COMP TARGET Abs + Sg + vn IF (-*1 Abs + Sg - Attr - TITEL BARRIER V)(*1 3SgO BARRIER KOMMA)(NEGATE -1 Abs + Sg LINK *1 INF + 3SgO LINK *1 INTRANSVERB + 3Sg BARRIER KOMMA OR VFIN) ; # Ikke Attr+Abs og ikke TITEL fordi de ikke har syntaktisk funktion i sig selv. Sidste NEGATE fordi TARGET er objekt i sekvensen SUBJ+Abs : OBJ : INF+3SgO : INTRANSVERB+3Sg
 MAP:M0409CXX @OBJ_COMP TARGET Abs + Sg + vn IF (-*1 Abs + Sg BARRIER VFIN OR KOMMA LINK -*1 Abs + Sg)(*1 3SgO BARRIER KOMMA)(NEGATE *-1 Abs + Sg LINK 1 NIQ + Ins) ; # Men OK hvis TARGET er objektskomplement i sekvensen SUBJ+Abs : OBJ : OBJ_COMP : INF+3SgO : INTRANSVERB+3Sg. Sidste NEGATE er en ad hoc regel for at undgå hit på @NIQ_OBJ
@@ -2192,7 +2192,8 @@ MAP:M0521 @<OBJ TARGET LIK + Sg + Abs OR QAR + Sg + Abs IF (*-1 TRANSVERB + 3SgO
 MAP:M0524 (@SUBJ>) TARGET N + Abs + Sg OR PRON + Abs + Sg IF (*1 INTRANSVERB BARRIER KOMMA LINK *-1 INF + 3SgO LINK -1 Abs + Sg) ;
 MAP:M0522 @SUBJ> TARGET Abs + LU IF (-1 Abs)(1 Abs + LU OR KOMMA) ; 
 MAP:M0523A @SUBJ> TARGET Abs IF (1 Abs + LU)(*1 PLURSUBJVERB BARRIER V OR KOMMA) ; #Paratakse ved 0523B. 20150710 Meget bred. Skal checkes
-MAP:M0523B @SUBJ> TARGET Abs + LU IF (*1 PLURSUBJVERB BARRIER V OR KOMMA) ; #20140523 Meget bred. Skal checkes
+MAP:M0523B @SUBJ> TARGET Abs + LU IF (-1 Abs)(*1 PLURSUBJVERB BARRIER V OR KOMMA) ; #20140523 Meget bred. Skal checkes
+MAP:M0523C @SUBJ> TARGET Abs + LU IF (-1 BOS OR part LINK -1 BOS)(*1 PLURSUBJVERB) ; #20170408. Smal regel til parataktiske subjekt med implicit førsteled
 #Særtilfælde for at forhindre OBJ-tagging Per i Per tamanna pillugu nalusarpoq
 
 MAP:M0525 (@OBJ>) TARGET N + Abs + Sg OR PRON + Abs + Sg IF (*1 TRANSVERB + 3SgO BARRIER INTRANSVERB + 3Sg OR 4Sg) ;
@@ -3366,7 +3367,7 @@ SELECT:8562 Abs + Sg IF (-1 ("tassa") + U + 3Sg)(NEGATE *1 INTRANSVERB + 3Sg OR 
 REMOVE:8498 ("illoq") + QAR + VIK IF ( 0 ("illu") + QAR + VIK) ;
 SELECT:8499 ("ip") + TUQ IF (-1 ("qanoq"))(NEGATE 0 ("ili") + USIQ ) ; # fjerner ittuk og ittoq, men bevarer iliuseq
 SELECT:Se_illuHnoun ("illu") IF (0 (@HNOUN)); # "illoq" er usandsynlig i absolut form
-SELECT:SeHumHum HUMAN IF (-*1 HUMVERB)(NEGATE 0 ("ilaanni") + part )(Negate 0 ("illu") + 3PlPoss LINK -1 ("kalaaleq") + Rel + Pl OR ("utoqqaq") + Rel + Pl) ; # ikke "illu" før HUMVERB. NEGATE kun statistisk begrundet idet ilaanni oftest betyder part
+SELECT:SeHumHum HUMAN - V IF (-*1 HUMVERB)(NEGATE 0 ("ilaanni") + part )(Negate 0 ("illu") + 3PlPoss LINK -1 ("kalaaleq") + Rel + Pl OR ("utoqqaq") + Rel + Pl) ; # ikke "illu" før HUMVERB. NEGATE kun statistisk begrundet idet ilaanni oftest betyder part. -V for at udelukke verber med incorporeret HUMAN
 SELECT:Se_illuNot_illoq ("illu") ; # "illu" mere sandsynlig end "illoq"
 SELECT:Se_ataata ("ataata") ; # mere sandsynlig end "ataataq"
 SELECT:Se_qaliaq ("qaliaq") ; # ad hoc for at forebygge 'hårbåndet' qaleq
@@ -3404,6 +3405,7 @@ REMOVE:8511 ("eqqoq") + TU IF (0 ("eqqor") ) (NEGATE *-1 BIRDS);
 REMOVE:8512 ("nalunaaqut") + 	IR + NIAR IF (0 ("nalunaaqutaq") + IR + NIAR);
 REMOVE:8513 ("qulleq") + LIUR IF (0 ("qulli") + LIUR) ; #gråd langt sandsynligere end lampelavning
 REMOVE:8514 ("ajak") IF (0 ("aja")) ; #arbitrær disambiguering. Begge former valide
+REMOVE:8515 ("oqaq") + U IF (0 ("oqaasinnaaq")) ;
 
 # Nomen eller partikel?
 SELECT ("aamma") ; # "aamma" mere sandsynlig end "aak"+Rel
@@ -3477,6 +3479,7 @@ REMOVE:5470 ("qipik") + TU IF (0 ("qipittor")) ; #putte sig mere sandsynlig end 
 REMOVE:5471 ("pilere") IF (0 ("pileri")) ;
 REMOVE:5472 ("uere") IF (0 ("ueri")) ;
 REMOVE:5473 ("ataasi") + JA IF (0 ("ataasiar"));
+REMOVE:5474 ("ila") + SSAQ + LIUR IF (0 ("ilassior")) ;
 
 # nv eller vv?
 SELECT:5493 QATE + vn + GE IF (0 QATE + nn + GE)(NEGATE *-1 HUMAN + @OBJ>) ;
@@ -3550,6 +3553,8 @@ SELECT:5560 ("paasi") + SURE IF (0 ("paasi") + TUQ + GE);
 SELECT:5561 ("qaar") IF (0 (PALUP)); #sprængningslyd mere sandsynlig end lyd af madras eller pande eller at komme 
 REMOVE:5562 ("ippap") + SAR IF (0 ("ippassaa")) ;
 REMOVE:5563 ("anger") IF (0 ("angi") + QE ) ; #angeqaaq næppe 'bejae meget' 
+REMOVE:5564A ("qimarnu") + TIP + TRANSVERB IF (0 ("qimarnup") + TRANSVERB)(NEGATE *0 Trm) ; #bortføre objekt sandsynligere en at søge tilflugt uden terminalis nævn
+REMOVE:5564A ("qimarngu") + TIP + TRANSVERB IF (0 ("qimarngup") + TRANSVERB)(NEGATE *0 Trm) ; #bortføre objekt sandsynligere en at søge tilflugt uden terminalis nævn
 
 # Enkelte derivativer
 REMOVE NIRU IF (0 TIME) ; #20091109 "tallimanngor" NIRU
