@@ -274,6 +274,7 @@ LIST KAR = KAR ;
 LIST KKUT = KKUT ;
 LIST KAAP = KAAP ;
 LIST KASIK = KASIK ;
+LIST KULUUQ = KULUUQ ;
 LIST KUQ = KUQ ;
 LIST LAAQ = LAAQ ;
 LIST LAAR = LAAR ;
@@ -1067,7 +1068,7 @@ LIST EVALUERENDE_VERBER = "kajungeraa" ; #verber med semantik der betinger objek
 #partit (@POSS) siulittar+HTR+TUQ vs. siu+LIK=TAQ+U+TUQ: ORGANISATION og TITEL listes og begge tilføjes SET HUMAN. Så kan man selecte HUMAN hvis @POSS er HUMAN
 
 LIST MAANED = "januaari" "februaari" "marsi" "apriili" "maaji" "juuni" "juuli" "aggusti" "augusti" "septembari" "oktobari" "novembari" "decembari";
-LIST SPATIAL = "aki" "arlaq" "at" "ati" "illuatungi"  "ilu" "eqqaq" "quli" "sani" "silat" "siu" "tungi" "tunu" "ungat" ;
+LIST SPATIAL = "aki" "arlaq" "at" "ati" "illuatungi" "ilu" "eqqaq" "quli" "saaq" "sani" "silat" "siu" "tungi" "tunu" "ungat" ;
 LIST USPATIAL = "sanik" "ateq";
 
 LIST ORGANISATION = "Inatsisartut" "parti" "Siumut" "Atassut" "IA" ("Naalakkersuisoq" Pl) "Demokratit";
@@ -1275,7 +1276,7 @@ REMOVE:0001 Prop + Attr IF (0 Prop + Sg)(-1 N + Sg)(*1 VFIN + 3Sg BARRIER KOMMA)
 REMOVE:0002 Prop + Attr IF (0 Prop + Sg)(-1 N + Sg)(1 N + Sg + LU)(*1 VFIN + 3Pl BARRIER KOMMA) ;
 
 #Vælg Indikativ verbum, hvis eneste finitte. NIR undtaget, da ofte fejl for NIQ plus noget. BARRIER reduceret fra BARRIER LU OR LI OR KOMMA til kun KOMMA på gr. af mange hit på nominalparatakser med LU og adverbialer med LI
-SELECT:0003 Ind - SUB IF (NEGATE *0 VFIN BARRIER KOMMA)(NEGATE 0 NIR)(NEGATE 0 Int LINK 1 ("?"))(NEGATE 0 Par LINK *-1 KONCESSIV) ; #SUB undtaget for ikke at gøre Via som matuagut til Ind 1Pl. Må ikke slette Par i koncessiver og efterlade fx GALUAQ + GE + Ind
+SELECT:0003 Ind - SUB IF (NEGATE *0 VFIN BARRIER KOMMA)(NEGATE 0 NIR)(NEGATE 0 Int LINK 1 ("?"))(NEGATE 0 Par LINK *-1 KONCESSIV)(NEGATE -1 NIQ + Comp) ; #SUB undtaget for ikke at gøre Via som matuagut til Ind 1Pl. Må ikke slette Par i koncessiver og efterlade fx GALUAQ + GE + Ind. Må ikke slette NIQ fulgt af Par 
 
 #Fjern umulige possessum
 REMOVE:0004 POSSESSUM IF (0 NON-POSSESSUM)(NEGATE 0 TAQ + nn) ;
@@ -1551,6 +1552,8 @@ SELECT:0110 FAM + KKUT + Abs IF (*1 V + 3Pl OR V + 3PlO);
 REMOVE:0112 OBLIQUE + 1SgPoss IF (NEGATE -1 ("uanga") + 1Sg)(NEGATE *0 VERB-NOTINF + 1Sg)(NEGATE 0*W 1Sg) ; # (0*W (someset))
 REMOVE:0113 OBLIQUE + 2SgPoss IF (NEGATE -1 ("illit"))(NEGATE *0 VERB-NOTINF + 2Sg) ;
 
+REMOVE:0114 Abs + 4SgPoss IF (0 SPATIAL + Lok LINK -1 Rel)(NEGATE 0 ("ati") + TAQ) ; # Olep saani næppe subjekt og objekt men possessor possessum. Må dog ikke hitte på atisat
+
 #REMOVE:0110 Abl + 1SgPoss IF (NEGATE -1 ("uanga"))(NEGATE *0 VERB-NOTINF + 1Sg ) ;
 #REMOVE:0111 Abl + 2SgPoss IF (NEGATE -1 ("illit"))(NEGATE *0 VERB-NOTINF + 2Sg) ;
 #REMOVE:0111 Abl + 2SgPoss IF (NEGATE -1 ("illit"))(NEGATE *0 VERB-NOTINF + 2Sg) ;
@@ -1730,6 +1733,8 @@ SELECT:0250 ReflPron + Abs + 4Sg IF (NEGATE *0 VFIN)(-1**< @PRED + 3Sg); #Elipse
 ######################
 # Frequent and safe rules - verbs #
 ######################
+
+REMOVE:0280 ("ajoraa") IF (0 ("ajor") LINK -1 NIQ + Comp) ; # ..NIQ ajor + Par må ikke læses som ajoraa + Ind
 
 ##################################
 #Archaiske og sjældne participier#
@@ -3127,7 +3132,10 @@ SELECT:2561 Abs + Pl IF (@0 (*) LINK -*1W V + 3Pl - SUB BARRIER BOS OR V)(*1 TRA
 #SELECT:2561 Abs + Pl IF (*1 3PlO BARRIER V OR 3PlPoss)(NEGATE *1 3Pl + GE LINK *1 Abs ) ; #objekt for nærmeste transitive hvis ikke possessum. Der tages også forbehold for S V O ved GE. Skal reformuleres. Den sletter mange Rel+Pl subjekter med implicit objekt
 
 #Følgende til sikre transitiver i Con Cau og Ite. Må ikke hitte på parataktiske objekter heller ikke objekter med possessor. Må ikke hitte på ("assoq") for assut+part. 2562A en undtagelse ved objektsprædikat til meget tungt OBJ i OSV konstruktion
-# Denne regel virker ikke. SELECT:2562A TUQ + Abs + Pl IF (*-1 Abs + Pl LINK 1 Abs + Pl LINK 1 Inf + 3PlO) ; #BARRIER sig selv og Inf med sticky numerus   
+# Denne regel virker ikke. SELECT:2562A TUQ + Abs + Pl IF (*-1 Abs + Pl LINK 1 Abs + Pl LINK 1 Inf + 3PlO) ; #BARRIER sig selv og Inf med sticky numerus 
+#2562X forebygger at 4PlPoss + Rel forstås som subjekt frem for adverbielt Ins
+REMOVE:2562X1 Rel + 4PlPoss + Sg IF ( 0 Ins + Sg)(NEGATE *1 TRANSVERB + 3Sg LINK *1 VFIN) ;   
+REMOVE:2562X2 Rel + 4PlPoss + Pl IF ( 0 Ins + Sg)(NEGATE *1 TRANSVERB + 3Pl LINK *1 VFIN) ;   
 SELECT:2562 Rel + Pl - ("assoq") IF (*1 TRANSVERB + 3Pl BARRIER V)(NEGATE *-1 Rel + Pl)(NEGATE *1 LU + Abs + Pl BARRIER V LINK *1 TRANSVERB + 3PlO)(NEGATE *1 LU + Rel BARRIER V LINK 1 Abs + Pl LINK *1 TRANSVERB + 3PlO);
 SELECT:2563 TRANSVERB + 3Pl IF (-1 Rel + Pl) ;
 
@@ -3442,6 +3450,7 @@ REMOVE:8512 ("nalunaaqut") + 	IR + NIAR IF (0 ("nalunaaqutaq") + IR + NIAR);
 REMOVE:8513 ("qulleq") + LIUR IF (0 ("qulli") + LIUR) ; #gråd langt sandsynligere end lampelavning
 REMOVE:8514 ("ajak") IF (0 ("aja")) ; #arbitrær disambiguering. Begge former valide
 REMOVE:8515 ("oqaq") + U IF (0 ("oqaasinnaaq")) ;
+REMOVE:8516 ("kaaveq") + KULUUQ IF (0 ("kaavikulooq") ) ; #kaavikulooq har intet med top/isse at gøre
 
 #De særlige former af TUQ + Aeq på transitiver fulgt af "ippaa" slettes hvis ikke fulgt af "ippaa"
 REMOVE:8599 TUQ + Aeq - vn IF (0 TUQ + Aeq + vn)(NEGATE 1 ("ip")); 
@@ -3521,6 +3530,9 @@ REMOVE:5473 ("ataasi") + JA IF (0 ("ataasiar"));
 REMOVE:5474 ("ila") + SSAQ + LIUR IF (0 ("ilassior")) ;
 REMOVE:5475 ("tup") + NIUP IF (0 ("tunniup"));
 REMOVE:5476 ("ilar") + HTR IF (0 ("ila") + U)(NEGATE -1 Ins) ; #ilauvoq vs. ilaivoq
+REMOVE:5477 ("iluar") + TIP IF (0 ("iluarsaap"));
+REMOVE:5478 ("uti") IF (0 ("uter"))(NEGATE *-1 ("ameq"));
+
 
 # nv eller vv?
 SELECT:5493 QATE + vn + GE IF (0 QATE + nn + GE)(NEGATE *-1 HUMAN + @OBJ>) ;
