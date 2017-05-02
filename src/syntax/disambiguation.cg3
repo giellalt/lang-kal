@@ -1085,7 +1085,7 @@ SET FOOD = EDIBLE | DRINKABLE ;
 LIST THING = "alussaat" "aqqusineq" ("ati" TAQ) "ilullissiaq" "siu" "timi" "savik" "torsuusaq";
 LIST MATERIAL = "ameq" "ulik" "qipik" ;
 LIST f-an_SG = "qaneq" "qingaq" ;
-LIST TIME = ("aallar" QQAAR UTE) "aasaq" ("arfineq" NNGUR) ("ataaseq" NNGUR) "ippassaq" "marlunngor" "nali" ("pingasut" NNGUR) "pingasunngor" "piffik" "qaammat" "qeqqa" "sapaat" ("sisamat" NNGUR) "sisamanngor" "sivisu" "siulleq" ("tallimat" NNGUR) "tallimanngor" "ualeq" "ukiaq" ("ukiar" TUQ) "ukiartoq" "ukioq" "ullaa" "ullaaq" "ulloq" "unnuaq";
+LIST TIME = ("aallar" QQAAR UTE) "aasaq" ("arfineq" NNGUR) ("ataaseq" NNGUR) "ippassaq" "marlunngor" "nali" ("pingasut" NNGUR) "pingasunngor" "piffik" "qaammat" "qeqqa" "sapaat" ("sisamat" NNGUR) "sisamanngor" "sivisu" "siulleq" "taarsi" ("tallimat" NNGUR) "tallimanngor" "ualeq" "ukiaq" ("ukiar" TUQ) "ukiartoq" "ukioq" "ullaa" "ullaaq" "ulloq" "unnuaq";
 LIST UGEDAGE = ("arfineq" NNGUR) ("ataaseq" NNGUR) "marlunngor" ("pingasut" NNGUR) "pingasunngor" "sapaat" ("sisamat" NNGUR) "sisamanngor" ("tallimat" NNGUR) "tallimanngor" ;
 LIST NUMHOVED = "dollar" "dollari" "euro" "gram" "kapitali" "kapitel" "kiilu" "kilo" "koruuni" "krone" "milliardi" "million" "oori" "øre";
 LIST COMPOUND_N = "Windows" "Linux" "program" ;
@@ -2733,7 +2733,7 @@ REMOVE:0473 INTRANSVERB + Par + 3Pl IF (-1 Con OR Cau LINK *-1 Abs) ;
 
 REMOVE:0475 INTRANSVERB + Par + 3Pl IF (NEGATE *0 ORATIOOBLVERB)(NEGATE -1 Abs + Pl + TIME); #Sidste NEGATE for at hitte på tidsparticipier
 
-REMOVE:0477 INTRANSVERB + Par + 3Sg IF (NEGATE *0 ORATIOOBLVERB)(NEGATE *-1 TIME + Sg + Abs)(NEGATE *-1 Interj OR ("sunaaffa") BARRIER V )(NEGATE -2 BOS OR KOMMA OR ("-") LINK 1 Abs + Sg)  ;
+REMOVE:0477 INTRANSVERB + Par + 3Sg - TIME IF (NEGATE *0 ORATIOOBLVERB)(NEGATE *-1 TIME + Sg + Abs)(NEGATE *-1 Interj OR ("sunaaffa") BARRIER V )(NEGATE -2 BOS OR KOMMA OR ("-") LINK 1 Abs + Sg)(NEGATE -1 ("tassa") LINK -1 BOS)  ;
 #komma forekommer også mellem oratio recte og obliqua. NEGATE for ikke at slette absolut tempus. Næsstsidste NEGATE for ikke at slette emfase, concession. Sidste for at håndtere tidsbisætning efter fx komma
 
 REMOVE:0479 INTRANSVERB + Par + 3Pl IF (1 3PlPoss + Sg)(*1 TRANSVERB + 3SgO) ;
@@ -2745,7 +2745,7 @@ REMOVE:0483 INTRANSVERB + Par + 3Pl IF (1 Con)(2 TRANSVERB + 3Pl) ;
 #Det er subjektet
 #Specialitet: Tidsbisætning med Par fulgt af anden tidsangivelse i Par
 SELECT:0484 INTRANSVERB + Par + 3Sg IF (-1 Par)(T:NexusHøjre);
-REMOVE:0485 INTRANSVERB + Par + 3Sg IF (NEGATE *-1 Abs + Sg BARRIER V)(NEGATE *0 ORATIOOBLVERB)(NEGATE 1 VFIN)(NEGATE *-1 Interj OR ("sunaaffa") BARRIER V) ;
+REMOVE:0485 INTRANSVERB + Par + 3Sg IF (NEGATE *-1 Abs + Sg BARRIER V)(NEGATE *0 ORATIOOBLVERB)(NEGATE 1 VFIN)(NEGATE *-1 Interj OR ("sunaaffa") BARRIER V)(NEGATE -1 ("tassa") LINK -1 BOS) ;
 
 REMOVE:0487 INTRANSVERB + Par + 3Sg IF (0 Abs + Sg)(1 Inf + 3SgO)(NEGATE 1 ORATIOOBLVERB); # fjerner ' .. ujarak eqqaminnut TUTTOQ takullugu .. ' 20170404 må være forkert for taku er ORATIOOBLVERB
 
@@ -3884,8 +3884,11 @@ REMOVE:9947 ("paasi") + TARIAQAR + Refl IF (NEGATE -1 ("immi")); #
 REMOVE:9948 NIQSSAQ IF (0 NIQ + SSAQ) ; #Disambiguerer transitive passiviserede fra intransitive
 SELECT:9949A HUMAN + Abs + @OBJ> + Sg IF (1 3SgO); #HUMAN medtaget lidt arbitrært for at forebygge hit på Lok som fx aviisini
 #SELECT:9949 @ADVL> IF (1 V)(NEGATE 0 @OBJ> LINK -1 @OBJ>); #Disambiguerer @ADVL> og @<ADVL men må ikke hitte på kongruensadled
-SELECT:9949 @ADVL> IF (1 V)(NEGATE 0 DivPron + Nom)(NEGATE 0 Abs + Pl LINK *1 3PlO) ; #Disambiguerer @ADVL> og @<ADVL, men må ikke hitte på DivPron som subjekt og må ikke tagge objekt med 4SgPoss til TRANSVERB til højre
-REMOVE:9949B part IF (0 DivPron + 4Pl LINK *1 3Pl OR 4Pl) ;
+SELECT:9949B TIME + Par IF (-1 BOS)(*1 VFIN); #Disambiguerer absolut concessiv og tempus fra vn før 9949
+MAP:M9949B @CL-ADVL> TARGET TIME + Par IF (-1 BOS LINK *1 VFIN) ;
+
+SELECT:9949 @ADVL> IF (1 V)(NEGATE 0 DivPron + Nom)(NEGATE 0 Abs + Pl LINK *1 3PlO)(NEGATE 0 TIME + Par LINK -1 BOS); #Disambiguerer @ADVL> og @<ADVL, men må ikke hitte på DivPron som subjekt og må ikke tagge objekt med 4SgPoss til TRANSVERB til højre. Må ikke hitte på absolut tempus og concessiv først i sætningen
+REMOVE:9949C part IF (0 DivPron + 4Pl LINK *1 3Pl OR 4Pl) ;
 REMOVE:9950 SSAQ + LIUR IF ( 0 SIUR) ; # N-SIUR sandsynligere end N-SSAQ=LIUR
 REMOVE:9951 ("iluar") + TUQ + UTE IF ( 0 TUQ + U + TIP ) ; # iluar+TUQ+U+TIP+TAQ frem for iluar+TUQ+UTE+TAAR
 REMOVE:9952 ("sikker") + LIR IF ( 0 ("sikkiler"))(NEGATE *0 ("naasoq")) ;
