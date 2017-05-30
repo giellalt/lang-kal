@@ -1110,7 +1110,7 @@ SET FIRSTNAME = Mal | Fem | ("Frederik") | ("Nuka") | ("A") | ("B") | ("C") | ("
 SET NAME = FIRSTNAME | Sur ;
 SET NOT-FIRST = WORD - FIRSTNAME ;
 
-LIST FAM = "aana" "aanaq" ("aappaq" GIIT) "aataq" "aja" "ajak" "anaana" "angaaq" "angajoqqaaq" "ataata" "ilaqutaq" ("ilaqutaq" GIIT) "illoq" "nuliaq" "ui";
+LIST FAM = "aana" "aanaq" ("aappaq" GIIT) "aataq" "aja" "ajak" "anaana" "angaaq" "angajoqqaaq" "ataata" "ilaqutaq" ("ilaqutaq" GIIT) "illoq" "nuliaq" "panik" "ui";
 LIST HUM = ("ajor" TUQ) "arnaq" "angut" "ikinngut" "ila" "inuk" ("inuusup" TUQ) "kalaaleq" "meeraq" "niviarsiaraq" "qallunaaq" "tarneq" "tarnik" "utoqqaq" ; #tarneq og tarnik medtaget da ofte objekt for +HUM verber
 
 SET HUMAN = FAM OR NAME OR TITEL OR ORGANISATION OR HUM OR Prop ;
@@ -1412,6 +1412,9 @@ MAP:M0041AX @SUBJ> TARGET Prop + Abs IF (1 Prop + Rel + Sg LINK 1 3SgPoss LINK *
 SELECT:0041B Abs + 3SgPoss IF (-1 Prop + Rel + Sg)(*1 INF + 3SgO LINK *1 INTRANSVERB + 3Sg BARRIER KOMMA OR VFIN) ;
 MAP:M0041BX @OBJ> TARGET Abs + 3SgPoss IF (-1 Prop + Rel + Sg)(*1 INF + 3SgO LINK *1 INTRANSVERB + 3Sg BARRIER KOMMA OR VFIN) ;
 
+#Proprium med MI er næsten altid lokativ
+REMOVE:0042 Prop + MI IF (0 Prop + Lok);
+
 ###################################
 # Frequent and safe rules - nouns #
 ###################################
@@ -1550,7 +1553,7 @@ REMOVE:0106 Abs + 3PlPoss + Sg IF (NEGATE -1 Rel + Pl)(NEGATE 0 ("ila"))(NEGATE 
 #Foelgende fjerner overflødige possessum. Inf og InfNeg undtaget, fordi de altid indeholder alle personer. Forinden en regel til ikke at få KKUT læst som Via
 SELECT:0110 FAM + KKUT + Abs IF (*1 V + 3Pl OR V + 3PlO);
 
-REMOVE:0112 OBLIQUE + 1SgPoss IF (NEGATE -1 ("uanga") + 1Sg)(NEGATE *0 VERB-NOTINF + 1Sg)(NEGATE 0*W 1Sg) ; # (0*W (someset))
+REMOVE:0112 OBLIQUE + 1SgPoss IF (NEGATE -1 ("uanga") + 1Sg)(NEGATE *0 VERB-NOTINF + 1Sg)(NEGATE 0*W 1Sg)(NEGATE 0 FAM + POSSESSUM + Ins LINK *1 HTR); # (0*W (someset)) Sidste NEGATE forebygger sletning af possessum i mik-objekter når der er tale om familiebetegnelser
 REMOVE:0113 OBLIQUE + 2SgPoss IF (NEGATE -1 ("illit"))(NEGATE *0 VERB-NOTINF + 2Sg) ;
 
 REMOVE:0114 Abs + 4SgPoss IF (0 SPATIAL + Lok LINK -1 Rel)(NEGATE 0 ("ati") + TAQ) ; # Olep saani næppe subjekt og objekt men possessor possessum. Må dog ikke hitte på atisat
@@ -1569,7 +1572,7 @@ REMOVE:0114 Abs + 4SgPoss IF (0 SPATIAL + Lok LINK -1 Rel)(NEGATE 0 ("ati") + TA
 #REMOVE:0120 Lok + 1SgPoss IF (NEGATE -1 ("uanga"))(NEGATE *0 VERB-NOTINF + 1Sg) ;
 #REMOVE:0121 Lok + 2SgPoss IF (NEGATE -1 ("illit"))(NEGATE *0 VERB-NOTINF + 2Sg) ;
 REMOVE:0122 Rel + 2PlPoss IF (NEGATE -1 ("illit") + 2Pl)(NEGATE *0 VERB-NOTINF + 2Pl) ;
-REMOVE:0123 NOT-REL + 1SgPoss IF (NEGATE -1 ("uanga"))(NEGATE *0 V + 1Sg)(NEGATE 1* (<<<) LINK 1*W V + 1Sg BARRIER VFIN OR (<<<)) ;
+REMOVE:0123 NOT-REL + 1SgPoss IF (NEGATE -1 ("uanga"))(NEGATE *0 V + 1Sg)(NEGATE 1* (<<<) LINK 1*W V + 1Sg BARRIER VFIN OR (<<<))(NEGATE 0 FAM + POSSESSUM + Ins LINK *1 HTR); # Sidste NEGATE forebygger sletning af possessum i mik-objekter når der er tale om familiebetegnelser;
 SELECT:0124 1SgPoss IF (-1 ("uanga") + 1Sg) ;
 
 REMOVE:0130 KKUT + Abs IF (NEGATE *1 INTRANSVERB + 3Pl)(NEGATE *0 3PlO) ;
@@ -1906,6 +1909,11 @@ MAP:M0409BX @OBJ> TARGET Abs + Pl + 4SgPoss - Arch IF (*1 Abs + Pl LINK *1 3PlO 
 
 
 #Temporale og koncessive sætninger efter punktum eller komma. Må ikke hitte på nominale paratakser og paratakser med possessor på andet led og ikke på opremsninger med komma. Heller ikke subjekter for CON_CAU eller objekter for transverb umiddelbart til højre
+#Regel 0410X forebygger hit på adnominaler i specifikke kontekster
+SELECT:0410X HTR + TUQ + Pl IF (@1 Pl LINK 1 Ins LINK *1 V + 3Pl);
+MAP:M0410X @<N TARGET HTR + TUQ + Pl IF (@1 Pl LINK 1 Ins LINK *1 V + 3Pl);
+MAP:M0410Z @i-MIK-OBJ> TARGET Ins IF (@1 Pl LINK *1 HTR LINK *1 V + 3Pl);
+
 SELECT:0410 Par + INTRANSVERB + 3Pl IF (@1 Abs + Pl)(NEGATE *-1 VERB-NOTINF)(NEGATE 1 Abs + LU + Pl)(NEGATE 1 LU + Rel LINK 1 Abs + Pl)(NEGATE *1 CON_CAU + 3Pl OR CON_CAU + 4Pl BARRIER V)(NEGATE *1 3PlO BARRIER V)(*1 T:NexusHøjre)(-2 (*)); #sidste betingelse (der skal stå et eller andet i position -2) forebygger hit på target selv
 SELECT:0411 Par + INTRANSVERB + 3Sg - ADJEKTIVISK IF (@1 Abs + Sg)(NEGATE *-1 VERB-NOTINF)(NEGATE 1 Abs + LU + Sg)(*1 T:NexusHøjre)(-2 (*))(NEGATE 0 Abs + LU LINK -1 Abs); #Må ikke hitte på @1
 #Må ikke hitte på Rel+Pl SUBJ>. Må heller ikke hitte på kongruensadled efter komma. 0412A fordi nv adled til subjekt for ledsagemåde er ikke Par 
