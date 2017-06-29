@@ -51,7 +51,7 @@ STRING_REGEX_EDIT_DISTANCE=2
 # * txt   - use only the txt file as source
 # * regex - use only the regex file as source
 # * both  - use both the txt and regex files as sources
-FINAL_STRING_EDITS=no
+FINAL_STRING_EDITS=txt
 
 # Variable to define whether to enable whole-word replacements. Possible values:
 # - yes
