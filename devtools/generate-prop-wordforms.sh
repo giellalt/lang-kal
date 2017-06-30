@@ -17,16 +17,15 @@ fi
 
 ######### USER Variables - change these to your liking: #########
 # Codes for the word forms to be generated - list as many or few as needed:
-morf_codes="+N+Prop+Sg+Nom \
-            +N+Prop+Sg+Gen \
-            +N+Prop+Sg+Ill \
-            +N+Prop+Sg+Com \
-            +N+Prop+Pl+Nom \
-            +N+Prop+Pl+Com \
-            +N+Prop+Ess"
+morf_codes="+N+Prop+Abs+Sg \
+            +N+Prop+Rel+Sg \
+            +N+Prop+Trm+Sg \
+            +N+Prop+Abl+Sg \
+            +N+Prop+Abs+Pl \
+            +N+Prop+Lok+Pl"
 
 # Lexicon source file for lexicons and lemmas:
-source_file=src/morphology/generated_files/smi-sma-propernouns.lexc
+source_file=src/morphology/stems/propernouns.lexc
 
 # Lexicons that should NOT be used to extract lemmas (egrep expression):
 exception_lexicons="(flagK)"
