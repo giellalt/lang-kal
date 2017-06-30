@@ -11,6 +11,10 @@ echo << Vi definerer konsonanterne... >>
 define Cns [ c2 | d | f | g | g2 | g3 | g4 | h | j | k | l | m |
              n | p | q | r | s | t | v | v2 ]  ; !v2 er v-er i låneord, der ikke skal slettes
 
+! These symbols will be turned into real quotes by a separate processing step;
+! the quasi-rule here is just to silence a warning in (hfst-)xfst.
+define esc [ «7 -> «7 ,, »7 -> »7 ,, "[<]" -> "[<]" ,, "[>]" -> "[>]" ] ;
+
 echo << Vi definerer sæt af segmenter... >>
 define Segment [ Cns | Vow ] ;
 define Uvular [ q | r ] ;
@@ -62,7 +66,7 @@ define SEQtrunkering [ [ s | n | m ] [ e | a ] q -> 0 || _ %> %CVqTRUNC ] ;
 !define CVqTRUNC_vaek [ %CVqTRUNC -> 0 ] ;
 define Vtrunkering [ Vow (Cns) -> 0 || _ %> %VTRUNC ] ;
 
-echo << Vi definerer tilhaengspartiklernes lydregler >>
+echo << Vi definerer tilhængspartiklernes lydregler >>
 define clitkgFusion [ k %CLIT g2 -> g ] ;
 define clitqgFusion [ [ r | q ] %CLIT g2 -> r ] ;
 define Tclitisg1 [ [ t | p ] -> n || _ %CLIT g2 ] ;
@@ -90,7 +94,7 @@ define ttaaqReduktion [ t -> 0 || Cns %CLIT _ t a a ] ;
 define ttaaqAssibilering [ t t -> s s || i %CLIT _ ] ;
 
  
-! Assimilationsrægler
+! Assimilationsregler
 ! - - - - - - - - - - 
 
 echo << Vi definerer regressiv assimilation >>
@@ -107,7 +111,7 @@ define vAssimilation [ NonUvular -> p || Vow _ %> v ] ;
 define qAssimilation [ Cns -> q || Vow _ %> (\Segment) q ] ; 
 define gAssimilation [ [ g | g3 ] -> k || [p | k ] %> _ ] ;
 
-echo << Vi definerer så en del andre rægler >>
+echo << Vi definerer så en del andre regler >>
 
 define kgFusion [ [ p | k ] %> g2 -> g ] ;
 !define qgFusion [ [ r | q ] (\Segment) %> [ g | g2 ] -> r ] ;
@@ -407,4 +411,6 @@ DummyDeletion ![ Dummy -> 0 ]
 .o.
 vSlet ![ v -> 0 || u _ [ i | e | a ] ] en anden rent ortografisk regel
 .o.
-v2Slet ] ; 
+v2Slet
+.o.
+esc ] ; 
