@@ -2838,7 +2838,13 @@ SELECT:0497 Par + INTRANSVERB + 3Sg IF (*1 ORATIOOBLVERB + V BARRIER ("\,") OR V
 #koncession og temporal uden konjunktion fulgt af subjekt#Ny 3.4.
 
 #koncessioner uden konjunktion med OSV paa gr. af GE
-SELECT:0499 TRANSVERB + GE + Par + 3Pl + 3SgO IF (*-1 Abs + Sg LINK *1 Rel + Pl)(*1 VFIN); 
+SELECT:0499 TRANSVERB + GE + Par + 3Pl + 3SgO IF (*-1 Abs + Sg LINK *1 Rel + Pl)(*1 VFIN);
+ 
+SELECT:0501X INTRANSVERB + Par + 3Pl IF (*-1 ORATIOOBLVERB)(-*1 Abs + Pl BARRIER VFIN)(1 Par + 3Pl LINK 1 Par + 3Pl + LU)(NEGATE *1 TRANSVERB + 3PlO BARRIER ("\,")); #20171013 Helt speciel regel til opremsninger, hvor flere Par alle skal være CL-<CIT
+
+SELECT:0501A N + vn + $$KASUS IF (*-1 ORATIOOBLVERB)(-1 N + $$KASUS)(*1 Par)(NEGATE 0 part); #vn-adled til subjekt i or. obl. må ikke læses som Par. En partikel med mulig N-læsning må ikke vælges på dette sted (imaaliallaannaq)
+MAP @<N TARGET N + vn + $$KASUS IF (*-1 ORATIOOBLVERB)(-1 N + $$KASUS)(*1 Par); #vn-adled til subjekt i or. obl. må ikke læses som Par
+
 
 SELECT:0501 INTRANSVERB + Par + 3Pl IF (*-1 ORATIOOBLVERB)(-*1 Abs + Pl BARRIER VFIN)(-*1 LU OR VFIN)(NEGATE *1 TRANSVERB + 3PlO BARRIER ("\,")); #20091105 - Sidste NEGATE forebygger hit paa '.. atuartup misigissutsini SUUGALUARTUT oqaasinngortinniartarumaarai, ..'
 #ny 3.4.
@@ -3556,10 +3562,13 @@ REMOVE:4911 ("kisi") + 3PlPoss IF (0 ("kisianni") + part) ;
 REMOVE:4912A ("naaq") + Lok IF (0 ("naamik"));
 REMOVE:4912B ("naaq") + Abl IF (0 ("naamik"));
 REMOVE:4913 ("taamak") + IP + TUQ (0 ("taamaattumik") + part)(NEGATE *1 QAR OR LIK BARRIER KOMMA) ;
+REMOVE:4913A N + INNAQ IF (0 part) ; #partikler med INNAQ fejllæses tit som N
 
-
-# Nomen eller numerale
-SELECT Num IF ( 0 N) ; #Alt andet lige det sikreste bud
+# Nomen eller numerale. Mulige Num, som ikke er adled, skal nok være N + KASUS frem for Num. Dette gælder dog ikke ved klokken
+SELECT:4914A Num + Trm IF (0 N - Num)(1 ("qiteqqup") ) ;  
+REMOVE:4914B Num IF (0 N - Num)(NEGATE -1 N + $$KASUS LINK 1 Num + $$KASUS) ; 
+#SELECT Num IF ( 0 N) ; #Alt andet lige det sikreste bud. 20171013 udkommenteret. Forstår ikke hvorfor den er med. Forsøger med følgende
+SELECT:4915 Num + $$KASUS IF (-1 N + $$KASUS);
 
 # Semantiske constraints på verber
 REMOVE:4920A ("taap") IF (NEGATE *1 CLOTHES) ; 
