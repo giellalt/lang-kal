@@ -2233,7 +2233,7 @@ MAP:M0319 (@<ADVL) TARGET Lok + TIME IF (-*1 V) ;
 MAP:M0350 @<N TARGET N + $$KASUS + $$NUMERUS - LU - Prop IF (-1 Prop + $$KASUS + $$NUMERUS)(NEGATE -1 Rel LINK 1 Rel LINK 1 POSSESSUM3 OR POSSESSUM4)(NEGATE -1 Rel LINK 1 Rel + POSSESSUM3 LINK 1 Prop)(NEGATE 0 Prop + Attr LINK -1 Prop + Attr) ;
 
 #kongruensadled af typen vn må mappes tidligt for at undgå at kerneleddet tagges som inderiveret adverbial. Possessorer må ikke tagges som kongruensadled. Sidste NEGATE for at forebygge at objekt til V til højre tagges som adled
-MAP:M0351 @<N TARGET vn + $$KASUS + $$NUMERUS - LU IF (-1 N + $$KASUS + $$NUMERUS)(NEGATE 0 Rel + Sg LINK 1 3SgPoss)(NEGATE 0 Rel + Pl LINK 1 3PlPoss)(NEGATE 1 3SgO OR 3PlO)  ;
+MAP:M0351 @<N TARGET vn + $$KASUS + $$NUMERUS - LU IF (-1 N + $$KASUS + $$NUMERUS)(NEGATE 0 Rel + Sg LINK 1 3SgPoss)(NEGATE 0 Rel + Pl LINK 1 3PlPoss)(NEGATE 1 3SgO) ; #20171121 rettet NEGATE fra ..  OR 3PlO), der vist udelukker de fleste adled ??
 
 MAP:M0399 @SUBJ_COMP TARGET Abs IF (-2 @FOC)(-1 OBLIQUE)(NEGATE *0 VERB-NOTINF); # tassa OBL N eller Una OBL N.
 
@@ -2264,7 +2264,9 @@ MAP:M0460 (@OBJ>) TARGET APPELLATIV + Abs + Pl IF (1 TRANSVERB + 3PlO)(-*1 Rel B
 MAP:M0470A @OBJ> TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (1 Abs + LU LINK *1 TRANSVERB - 3Pl + 3PlO BARRIER INTRANSVERB + 3Pl) ;
 MAP:M0470B @OBJ> TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (1 KOMMA LINK 1 Abs LINK 1 Abs + LU LINK *1 TRANSVERB - 3Pl + 3PlO BARRIER INTRANSVERB + 3Pl) ;
 
-MAP:M0470 @OBJ> TARGET APPELLATIV + Abs + Pl OR Prop + Abs + Pl IF ( *1 TRANSVERB - 3Pl + 3PlO BARRIER INTRANSVERB + 3Pl) ; #20091105 Kun sikker, naar subjekt != 3Pl. Der maa mere avancerede regler til at adskille implicit subjekt 3Pl fra objekt Pl. BARRIER fordi somme tider subjekt for cau, con etc. i stedet for objekt for et senere V
+MAP:M0470 @OBJ> TARGET APPELLATIV + Abs + Pl OR Prop + Abs + Pl IF ( *1 TRANSVERB - 3Pl + 3PlO BARRIER INTRANSVERB + 3Pl)(NEGATE *-1 Abs + Pl BARRIER V + 3PlO) ; #20091105 Kun sikker, naar subjekt != 3Pl. Der maa mere avancerede regler til at adskille implicit subjekt 3Pl fra objekt Pl. BARRIER fordi somme tider subjekt for cau, con etc. i stedet for objekt for et senere V. Sidste NEGATE fordi adled skal have @<N i stedet for @OBJ
+
+MAP:M0471 @<N TARGET N + Abs + Pl - LU IF (-*1 N + Abs + Pl + @OBJ> BARRIER TRANSVERB ); #Kongruensadled til objektskerner et godt stykke til venstre
 
 MAP:M0480 (@POSS>) TARGET POSS_ABBR IF (1 POSSESSUM3); #sap. akunnera
 MAP:M0490 @<N TARGET Trm IF (-1 ("qujanaq"))(NEGATE *1 V) ;
@@ -2288,7 +2290,7 @@ MAP:M0523C @SUBJ> TARGET Abs + LU IF ((-1 BOS) OR (-1 part LINK -1 BOS))(*1 PLUR
 
 MAP:M0525 (@OBJ>) TARGET N + Abs + Sg OR PRON + Abs + Sg IF (*1 TRANSVERB + 3SgO BARRIER INTRANSVERB + 3Sg OR 4Sg) ;
 
-MAP:M0526 (@OBJ>) TARGET N + Abs + Pl OR PRON + Abs + Pl OR Num + Abs IF (*1 TRANSVERB + 3PlO BARRIER INTRANSVERB + 3Pl OR 4Pl) ;
+MAP:M0526 (@OBJ>) TARGET N + Abs + Pl OR PRON + Abs + Pl OR Num + Abs IF (*1 TRANSVERB + 3PlO BARRIER INTRANSVERB + 3Pl OR 4Pl) (NEGATE *-1 Abs + Pl BARRIER V + 3PlO) ; #20091105 PL Sidste NEGATE fordi adled skal have @<N i stedet for @OBJ;
 
 MAP:M0527 @OBJ> TARGET Abs + Sg IF (1 Abs + Sg + LU OR Abs + Pl + LU LINK *1 3PlO BARRIER INTRANSVERB + 3Pl);
 MAP:M0528 @OBJ> TARGET Abs + Sg + LU IF (-1 Abs + Sg)(*1 3PlO BARRIER INTRANSVERB + 3Pl OR KOMMA);
@@ -2355,7 +2357,7 @@ MAP:M0661A @SUBJ> TARGET PersPron + Abs + 2Sg IF (*1 VERB-NOTINF + 2Sg BARRIER T
 MAP:M0662 @SUBJ> TARGET PersPron + Rel + 1Sg IF (*1 VERB-NOTINF + TRANSVERB + 1Sg BARRIER TRANSVERB + 1SgO)(NEGATE *1 1SgO)(NEGATE -1 ("\("))(NEGATE 1 1SgPoss) ;
 MAP:M0662A @SUBJ> TARGET PersPron + Rel + 2Sg IF (*1 VERB-NOTINF + TRANSVERB + 2Sg BARRIER TRANSVERB + 2SgO)(NEGATE -1 ("\("))(NEGATE 1 2SgPoss) ;
 
-MAP:M0670 (@SUBJ>) TARGET Abs + Pl IF (*1 INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl BARRIER TRANSVERB + 3PlO) ; #så er det et objekt for TRANSVERB
+MAP:M0670 (@SUBJ>) TARGET Abs + Pl IF (*1 INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl BARRIER TRANSVERB + 3PlO)(NEGATE *-1 Rel + Sg LINK *1 3Sg + 3PlO) ; #så er det et objekt for TRANSVERB. NEGATE tilføjet 20171121 for at redde objekter for V til højre
 MAP:M0680 (@SUBJ>) TARGET (Rel) IF (*1 TRANSVERB + 34IV BARRIER POSSESSUM3 OR INTRANSVERB + 34IV) ;
 MAP:M0681 @SUBJ> TARGET Abs + 1Pl IF (*1 INTRANSVERB + 1Pl BARRIER VFIN)(NEGATE *1 TRANSVERB + 1PlO BARRIER INTRANSVERB + 1Pl) ; 
 MAP:M0690 (@SUBJ>) TARGET N IF (-1 ("\("))(1 ("\)"))(-2 @SUBJ>) ; #Parantetiske indskud samme led som foregående ord
@@ -3546,6 +3548,7 @@ REMOVE:8513 ("qulleq") + LIUR IF (0 ("qulli") + LIUR) ; #gråd langt sandsynlige
 REMOVE:8514 ("ajak") IF (0 ("aja")) ; #arbitrær disambiguering. Begge former valide
 REMOVE:8515 ("oqaq") + U IF (0 ("oqaasinnaaq")) ;
 REMOVE:8516 ("kaaveq") + KULUUQ IF (0 ("kaavikulooq") ) ; #kaavikulooq har intet med top/isse at gøre
+REMOVE:8517 ("uigoq") + U + TIR IF (0 ("uiguut")) ;
 
 #De særlige former af TUQ + Aeq på transitiver fulgt af "ippaa" slettes hvis ikke fulgt af "ippaa"
 REMOVE:8599 TUQ + Aeq - vn IF (0 TUQ + Aeq + vn)(NEGATE 1 ("ip")); 
