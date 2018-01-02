@@ -1988,7 +1988,7 @@ SELECT:0413 Par + INTRANSVERB + 3Sg IF (*-1 KOMMA LINK 1 Abs + Sg)(NEGATE 1 Abs 
 #ADD (@baseform-no-i) ("\\p{Lu}.*[^i]"r) ;
 #REMOVE ("\\p{Lu}.*i"r) IF (0 ("\\p{Lu}.*[^i]"r)) ;
 
-
+MAP:M00000 @N> TARGET ("nalunaaqutaq") IF (1 Num + Trm) ;
 MAP:M0000 (@PRED) TARGET VFIN ; #Et finit verbum er altid prædikat
 MAP:M0001 (@PRED2) TARGET Par IF (@1 Interj)(NEGATE *0 VFIN); #Ved emfase og udbrud 
 
@@ -2276,7 +2276,7 @@ MAP:M0350Y @N> TARGET Aeq IF (-1 Rel)(1 POSSESSUM) ;
 MAP:M0350 @<N TARGET N + $$KASUS + $$NUMERUS - LU - Prop IF (-1 Prop + $$KASUS + $$NUMERUS)(NEGATE -1 Rel LINK 1 Rel LINK 1 POSSESSUM3 OR POSSESSUM4)(NEGATE -1 Rel LINK 1 Rel + POSSESSUM3 LINK 1 Prop)(NEGATE 0 Prop + Attr LINK -1 Prop + Attr) ;
 
 #kongruensadled af typen vn må mappes tidligt for at undgå at kerneleddet tagges som inderiveret adverbial. Possessorer må ikke tagges som kongruensadled. Sidste NEGATE for at forebygge at objekt til V til højre tagges som adled
-MAP:M0351 @<N TARGET vn + $$KASUS + $$NUMERUS - LU IF (-1 N + $$KASUS + $$NUMERUS)(NEGATE 0 Rel + Sg LINK 1 3SgPoss)(NEGATE 0 Rel + Pl LINK 1 3PlPoss)(NEGATE 1 3SgO) ; #20171121 rettet NEGATE fra ..  OR 3PlO), der vist udelukker de fleste adled ??
+MAP:M0351 @<N TARGET vn + $$KASUS + $$NUMERUS - LU IF (-1 N + $$KASUS + $$NUMERUS)(NEGATE 0 Rel + Sg LINK 1 3SgPoss)(NEGATE 0 Rel + Pl LINK 1 3PlPoss OR 4PlPoss)(NEGATE 1 3SgO) ((NOT 0 POSSESSUM) OR (0 $$POSSESSUM LINK -1 $$POSSESSUM)) ; #20171121 rettet NEGATE fra ..  OR 3PlO), der vist udelukker de fleste adled ??
 
 MAP:M0399 @SUBJ_COMP TARGET Abs IF (-2 @FOC)(-1 OBLIQUE)(NEGATE *0 VERB-NOTINF); # tassa OBL N eller Una OBL N.
 
@@ -2386,7 +2386,7 @@ MAP:M0640A @SUBJ> TARGET Rel + Sg IF (*1 TRANSVERB + INF)(NEGATE 1 POSSESSUM3) ;
 MAP:M0640B @SUBJ> TARGET Rel + Sg - 4SgPoss IF (*1 TRANSVERB + 3Sg)(NEGATE 1 POSSESSUM3) ;
 MAP:M0640C @SUBJ> TARGET Rel + Sg IF (*1 TRANSVERB + 4Sg)(NEGATE 1 POSSESSUM3);
 #En possessor mellem subjekt og verbum må ikke tagges som subjekt. Derfor M0649 før M0650
-MAP:M0649 @POSS> TARGET Rel + Pl IF (1 3PlPoss) ;
+MAP:M0649 @POSS> TARGET Rel + Pl IF (1 3PlPoss OR 4PlPoss) ;
 MAP:M0650 (@SUBJ>) TARGET Rel + Pl IF (*1 TRANSVERB + 3Pl OR TRANSVERB + 4Pl) ;
 MAP:M0651 @<APPOS TARGET Abs + $$NUMERUS IF (*-1 Prop + Abs + $$NUMERUS BARRIER VERB-NOTINF)(1 KOMMA)(NEGATE 1 KOMMA LINK *1 Rel + LU LINK 1 Abs)(NEGATE 1 KOMMA LINK 1 Abs + LU) ; #må ikke tagge opremsninger
 
@@ -2741,7 +2741,7 @@ MAP:M1961 @SUBJ> TARGET Abs + LU IF (*1 PLURSUBJVERB BARRIER V)(NEGATE -1 Abs) ;
 
 MAP:M1979 @PRED TARGET Par IF (NEGATE *0 @PRED) ; #udbrudsagtige/ spørgende hovedsætninger
 MAP:M1980 @PRED2 TARGET Par IF (1 @PRED) ; #Meget bred men meget sen til type Suna eqqarsaatigigit akornuserpakkit
-
+MAP (VSTR:$1) TARGET (N) (*1 (N LU /\(@.*\)/r) BARRIER (*) - @<N) ;
 
 # MAP:M1980A @HNOUN TARGET (PersPron Abs) + $$PN IF (-1 BOS) (1* VFIN LINK NOT 0 $$PN) ;
 
@@ -3477,6 +3477,8 @@ SELECT:8456 @PRED + 3SgO IF (*1 @CL-<CIT) ;
 
 SELECT:8457 @POSS> IF (1 Ins)(2 POSSESSUM) ;
 SELECT:8458 @POSS> IF (1 POSSESSUM)(NEGATE 0 Lok + PLACE) ;
+REMOVE:8458A @POSS> IF (NEGATE *1 POSSESSUM CBARRIER (*) - @<N) ;
+
 
 SELECT:8459X Abs + Pl + @SUBJ> IF (*-1 ORATIOOBLVERB)(*1 Par + 3Pl); #Subjekt for Par th må ikke læses som Par selv 
 SELECT:8459 Abs + Pl + @SUBJ> - LU IF (*1 INTRANSVERB + 3Pl OR 4Pl BARRIER V )(NEGATE 0 Lok LINK *-1 @SUBJ>)(NEGATE 0 Par LINK *-1 ORATIOOBLVERB); #mange fejlhit på lokalis. Udelades fra denne regel. Skal ikke SELECTe indirekte tale. LU udeladt 
@@ -3865,6 +3867,11 @@ REMOVE:5612 INNAQ + LIR IF (0 INNAR + LIR) ;
 REMOVE:5613 RIAQ + NIAR IF (0 RIAR + NIAR) ;
 REMOVE:5614 RIAQ + IRUTE IF (0 TARIAARUTE) ;
 REMOVE:5615 ("ikor") + ALLAP OR ("ikup") + ALLAP IF (0 ("ikuallap"));
+REMOVE:5616 (/__LIR\ nv\(\ [it]v\)?\ NIQ__/l) ;
+REMOVE:5617 (/__UTE\ nn__/l) ;
+REMOVE:5618 (/"quja"\ tv\ NAR__/l) ; #en formodning om at qujanar- har en intransitiv stamme
+REMOVE:5619 (/"\(pi\)"\ NGAAR\ vv\ tv__/l) ; #en formodning om at pi oftest har en intransitiv stamme
+
 
 # Enkelte substantiver
 REMOVE ("pineq") IF (NEGATE *0 ("kamik")) ; #20091103 pineq+QAR vs. pineqar-
@@ -4084,6 +4091,7 @@ REMOVE:9961B PALUK + nv IF (0 PALUK + vv) ;
 #Tvivlsomme heuristiske regler for ord som Arnaq og Nuuk først i sætningen
 REMOVE:9962A N - geoProp IF (-1 BOS)(0 Prop + geoProp) ;
 REMOVE:9962B Prop - geoProp IF (-1 BOS)(0 N - Prop); 
+REMOVE:9962C humProp IF (0 geoProp) ;
 
 #Oblique kasus med 3PlPoss slører numerus. Alt andet lige vælg sing dog ikke ved HUM + MIK-OBJ jf.  9491A
 REMOVE:9965 OBLIQUE + Pl IF (0 OBLIQUE + Sg)(NEGATE 0 HUM LINK 1 HTR);
@@ -4092,10 +4100,10 @@ REMOVE:9965 OBLIQUE + Pl IF (0 OBLIQUE + Sg)(NEGATE 0 HUM LINK 1 HTR);
 #Specifikke regler til disambiguering af iv vs. tv
 ##################################################
 
-SELECT:9966 iv + NIQ IF (0 tv + NIQ) ; #heuristisk valg af intransitiv sent i kaskaden 
+SELECT:9966 (/__iv\ NIQ__/l) IF (0 (/__tv\ NIQ__/l)) ; #heuristisk valg af intransitiv sent i kaskaden 
 SELECT:9966A (/__iv\ TIP__/l) IF (0 (/__tv\ TIP__/l)) ; #heuristisk valg af intransitiv sent i kaskaden 
 #SELECT:9966A (/__iv__TIP IF (0 (/__tv__TIP__/l)) ; #heuristisk valg af intransitiv sent i kaskaden 
-
+SELECT:9968 (/__iv\ TUQ__/l) IF (0 (/__tv\ TUQ__/l)) ; #heuristisk valg af intransitiv sent i kaskaden 
 
 
 SECTION
@@ -4106,5 +4114,6 @@ SELECT:9971 @CL-CIT> IF (*-1 @SUBJ> + 4SgPoss)(*1 ORATIOOBLVERB + VFIN) ;
 
 #Karlssons lov anden version: Vælg den mest komplette af flere ord, hvoraf ingen er hele stammer
 REMOVE:9972 ("([^<].*)"r) IF (0 (VSTR:"$1.+"r)) ;
+REMOVE:9972A ("([^<]...*)."r) IF (0 (VSTR:"$1..+"r)) ;
 
 REMOVE:9973 OLang/DAN ; # Slet låneord, hvis ikke eneste læsning
