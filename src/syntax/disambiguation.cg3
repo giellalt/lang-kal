@@ -138,6 +138,21 @@ LIST 2Pl = 2Pl ;
 LIST 3Pl = 3Pl ;
 LIST 4Pl = 4Pl ;
 
+LIST PN = 1Sg 2Sg 3Sg 4Sg 1Pl 2Pl 3Pl 4Pl ;
+
+LIST 1S = 1Sg 1SgPoss ;
+LIST 2S = 2Sg 2SgPoss ;
+LIST 3S = 3Sg 3SgPoss ;
+LIST 4S = 4Sg 4SgPoss ;
+LIST 1P = 1Pl 1PlPoss ;
+LIST 2P = 2Pl 2PlPoss ;
+LIST 3P = 3Pl 3PlPoss ;
+LIST 4P = 4Pl 4PlPoss ;
+
+ 
+SET PN& = 1S OR 2S OR 3S OR 4S OR 1P OR 2P OR 3P OR 4P ;
+
+
 LIST 34IV = 3Sg 3Pl 4Sg 4Pl ;
 LIST 34Sg = 3Sg 4Sg ;
 LIST 34Pl = 3Pl 4Pl ;
@@ -1723,10 +1738,16 @@ SELECT:0205 PRON + Rel IF (-1C Rel) ;
 SELECT:0206 PersPron + Rel + 1Sg IF (*1 TRANSVERB + 1Sg BARRIER Rel);
 SELECT:0207 PersPron + Abs + 1Sg IF (*1 INTRANSVERB + 1Sg BARRIER Abs);
 #Følgende 046 skal checkes. Sletter bl.a. PersPron-læsning i Uanga aanagakkit. Derfor reglerne 044 og 045
-REMOVE:0208 Rel + PersPron  IF (NEGATE *1 POSSESSUM12)(NEGATE *0 TRANSVERB + 1Sg OR TRANSVERB + 2Sg OR TRANSVERB + 1Pl OR TRANSVERB + 2Pl)(NEGATE 0 LU LINK -1 1Sg OR 2Sg OR 1Pl OR 2Pl) ;
+REMOVE:0208 Rel + PersPron - TTAAQ IF (NEGATE *1 POSSESSUM12)(NEGATE *0 TRANSVERB + 1Sg OR TRANSVERB + 2Sg OR TRANSVERB + 1Pl OR TRANSVERB + 2Pl)(NEGATE 0 LU LINK -1 1Sg OR 2Sg OR 1Pl OR 2Pl) ;
 REMOVE:0209 ("kina") + Via IF (0 ("kina") + Pl); #kikkut højst usandsynlig i vialis
 SELECT:0210 IntPron + Rel IF (*1 TRANSVERB BARRIER V) ;
 SELECT:0211 IntPron + Abs IF (*1 INTRANSVERB BARRIER V) ;
+
+#Anaforisk brug af PersPron med implicit possessum først i sætningen
+SELECT:0211A PersPron + Rel + $$PN + &&PN& IF (-1 BOS) (*1 VFIN BARRIER POSSESSUM + &&PN& LINK NOT 0 $$PN) ;
+
+MAP:M0211A @SUBJ> TARGET PersPron + Rel + $$PN + &&PN& IF (-1 BOS) (*1 VFIN BARRIER POSSESSUM + &&PN& LINK NOT 0 $$PN) ;
+
 SELECT:0212 PersPron + Abs IF (*1 INTRANSVERB OR 1SgO OR 2SgO BARRIER V);
 SELECT:0213 IntPron + U + Int + 3Pl IF (0 ("qassi") + U); #Næppe forsamlingshus eller bjergkedel
 ############
@@ -2721,8 +2742,13 @@ MAP:M1961 @SUBJ> TARGET Abs + LU IF (*1 PLURSUBJVERB BARRIER V)(NEGATE -1 Abs) ;
 MAP:M1979 @PRED TARGET Par IF (NEGATE *0 @PRED) ; #udbrudsagtige/ spørgende hovedsætninger
 MAP:M1980 @PRED2 TARGET Par IF (1 @PRED) ; #Meget bred men meget sen til type Suna eqqarsaatigigit akornuserpakkit
 
+
+# MAP:M1980A @HNOUN TARGET (PersPron Abs) + $$PN IF (-1 BOS) (1* VFIN LINK NOT 0 $$PN) ;
+
 # Denne tag er for alle ord vi ikke har funktion til.
 #MAP:M1999 (@X) TARGET WORD ; 
+
+
 
 # ================== #
 # ================== #
@@ -3985,6 +4011,9 @@ SELECT:9937B PersPron + Rel + $$PERSON IF (*1 TRANSVERB + $$PERSON)(NEGATE *1 Re
 
 #Sen disambiguering af verbalnomen og Par i sætningsinitiale bisætninger
 SELECT:9938 @PRED2 + 3Sg IF (*-1 @SUBJ> + Sg )(*1 V) ;
+
+#Par brugt "uden begrundelse" stilistisk i stedet for Ind
+MAP:M0999 @PRED2 TARGET Par IF (NEGATE *0 ORATIOOBLVERB) (NEGATE @1 KONCESSIV OR TIDSPARTIKEL) ;
 
 #Sen regel til at disambiguere NIQ+1SgPoss fra NIQ+3SgPoss
 SELECT:9939A NIQ + 1SgPoss IF (0*W 1Sg)(0 NIQ + 3SgPoss) ; #Possessor 1.Sg hvis 1. Sg i omgivende sætninger
