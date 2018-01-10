@@ -1088,7 +1088,7 @@ LIST TRANSINTRANS = "naalap" "nuup" "oqar"; #Set til verber med både transitive
 LIST SEKVENTIELLE_VERBER = "ani" "innar" ; #Sæt til anvendelse sammen med coref tidsbisætning
 LIST NAAR_VERBER = "angi" ("aki" KIP) "amerla" "isorartu" "kingusip" "miki" "oqip" "sivikip" "siusip" ; #stammer, der kan tage NAAR. Alle andre slettes
 LIST EVALUERENDE_VERBER = "kajungeraa" ; #verber med semantik der betinger objekt efter NIQ+Ins/Abl
-
+LIST INDERIVERENDE_SUBSTANTIV = ("inatsit") ;
 
 # Nominernes leksikalske klasser
 # =============================
@@ -2470,6 +2470,8 @@ MAP:M0840 (@ADVL>) TARGET (Ins) IF (*1 V - DOTR BARRIER vn)(NEGATE *1 ("quleriil
 MAP:M0850 (@i-<ADVL) TARGET (Lok) + POSSESSUM3 IF (-2 vn - NAR)(-1 Rel)(NEGATE *1 V OR vn - LU) ; #20091104
 MAP:M0860 (@i-<ADVL) TARGET (Lok) IF (0 LU)(-1 (Lok) + (@i-<ADVL)) ; #20091104
 
+#Særlig regel før M0940 til inderiverede adverbale adled inkl. de særlige substantiver, der inderiverer selv om de ikke er vn (fx inatsit). LU holdes udenfor da oftest paratakse og LINK til Ins fulgt af V til sekvenser af fx type Ins-adled Lok-adled V 
+MAP:M0869 @i-ADVL> TARGET OBLIQUE IF (1 vn + N OR INDERIVERENDE_SUBSTANTIV)(NEGATE 0 LU + $$KASUS LINK -1 $$KASUS)(NEGATE 0 $$KASUS LINK 1 $$KASUS + LU)(NEGATE 1 OBLIQUE LINK 1 V) ; 
 MAP:M0870 (@i-ADVL>) TARGET Lok + Sg IF (1 vn + Sg )(NEGATE 1 NAR)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Lok)(NEGATE 1 LU + (Lok))(NEGATE -1 ("ulloq") LINK -1 BOS); #Kun Trm til vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse. 20170425 sidste negate er nok ullut ilaanni og nexusadverbial
 MAP:M0871 (@i-ADVL>) TARGET Lok + Pl IF (1 vn + Pl )(NEGATE 1 NAR)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Lok)(NEGATE 1 LU + (Lok)); #Kun Trm til vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse
 MAP:M0880 (@i-ADVL>) TARGET (Abl) IF (1 vn - NAR )(NEGATE 1 Rel LINK 1 POSSESSUM3 + Abl)(NEGATE 1 LU + (Abl))(NEGATE *1 PASSIV); #Kun Trm til vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse. Hvis PASSIV muligvis Agens
@@ -2550,7 +2552,8 @@ MAP:M1140 (@i-ADVL>) TARGET Inf - TRANSVERB IF (1 vn)(NEGATE 1 V) ; #i-ADVL til 
 
 # Mapping af ledsagemåde til hovedverbal
 
-#MAP:0948 (@ADVL>) TARGET Inf + TRANSVERB OR InfNeg + TRANSVERB IF (*1 VFIN OR Par + TRANSVERB);
+#Tagning af inderiveret 'pillugu' til vn umiddelbart efter
+MAP:M1147 @i-ADVL> TARGET INF + TRANSVERB + ("pi") IF (1 vn OR INDERIVERENDE_SUBSTANTIV) ;
 MAP:M1148 @ADVL> TARGET INF + TRANSVERB IF (*1 V) (NEGATE *-1 ORATIOOBLVERB) ; #20170127 (NEGATE 1 vn + N); fjernet
 
 MAP:M1148A1 @CL-<CIT TARGET INF + TRANSVERB IF (*-1 ORATIOOBLVERB BARRIER Par OR KOMMA)(*1 Rel BARRIER KOMMA LINK *1 Par + TRANSVERB) ; #20171010 oratio obl. fulgt af nok en or. obl.
