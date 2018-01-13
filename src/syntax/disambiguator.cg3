@@ -152,6 +152,13 @@ LIST 4P = 4Pl 4PlPoss ;
  
 SET PN& = 1S OR 2S OR 3S OR 4S OR 1P OR 2P OR 3P OR 4P ;
 
+#Set til DivPron i Akk
+LIST Akk1S = (1Sg Akk) 1SgO ;
+LIST Akk2S = (2Sg Akk) 2SgO ;
+LIST Akk1P = (1Pl Akk) 1PlO ;
+LIST Akk2P = (2Pl Akk) 2PlO ;
+
+SET DivPronOBJ = Akk1S | Akk2S  | Akk1P | Akk2P ;
 
 LIST 34IV = 3Sg 3Pl 4Sg 4Pl ;
 LIST 34Sg = 3Sg 4Sg ;
@@ -1724,8 +1731,11 @@ REMOVE:0195B DivPron + Rel + 3Pl ;
 
 SELECT:0196A PersPron + Rel + $$PERSON IF (*1 TRANSVERB + $$PERSON BARRIER KOMMA)(NEGATE *1 Rel LINK *1 2SgO BARRIER KOMMA)(NEGATE *1 INF LINK *1 TRANSVERB + $$PERSON ) ;
 
-#Regler for DivPron
-SELECT:0197 DivPron + Nom + $$PERSON IF (*1 INTRANSVERB + $$PERSON BARRIER KOMMA) ;
+#Regler for DivPron. 0197X før 0197 for at lade DivPron-objekter overleve
+
+SELECT:0197X DivPron + &&DivPronOBJ IF (*1 &&DivPronOBJ) ;
+
+SELECT:0197 DivPron + Nom + $$PERSON IF (*1C INTRANSVERB + $$PERSON BARRIER KOMMA) ;
 
 SELECT:0198 PersPron + Rel IF (1 Abs LINK 1 POSSESSUM12) ;
 SELECT:0199 PersPron + Rel IF (1 POSSESSUM12)(NEGATE 1 ("aak") + Rel + 1SgPoss) ; #mange forkerte hits på aamma
@@ -2085,6 +2095,8 @@ MAP:M0028 @<APPOS TARGET Abs + Sg + NOMEN + TUQ IF ( *-1 §noun-comma BARRIER V 
 MAP:M0029 @PROP> TARGET FIRSTNAME + Abs OR TITEL + Abs IF (1 Prop)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + LU LINK *1 V + 3Pl BARRIER N + Pl )(2 Prop + Rel LINK 1 POSSESSUM);
 
 MAP:M0030 @PROP> TARGET FIRSTNAME OR TITEL IF (1 Prop - GeoProp)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + LU LINK *1 V + 3Pl BARRIER N + Pl )(2 Prop + Sg LINK *1 TRANSVERB + 3SgO BARRIER V)(NEGATE -1 Abs + Sg + FAM); # Har indføjet - GeoProp for at hindre hit på fx NAVN fulgt af toleddet prop som Høje Tåstrup. Nok en NEGATE 20150512 for at forhindre hit på apposition
+
+MAP:M0031X @PROP> TARGET Prop + Attr IF (1 Prop + Attr)(2 humProp) ; #Til tagning af dobbeltnavne
 
 MAP:M0031A @PROP> TARGET Prop + Attr IF (1 Prop)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + LU LINK *1 V + 3Pl )(NEGATE 1 Prop LINK 1 Prop)(NEGATE 0 FIRSTNAME LINK 1 FIRSTNAME)(NEGATE 0 FIRSTNAME LINK 1 ("Kalaallit")); #Mange fejlhit på Kalaallit Illuutaat og Kalaallit Nunaat
 
@@ -2750,7 +2762,8 @@ MAP:M1979 @PRED TARGET Par IF (NEGATE *0 @PRED) ; #udbrudsagtige/ spørgende hov
 MAP:M1980 @PRED2 TARGET Par IF (1 @PRED) ; #Meget bred men meget sen til type Suna eqqarsaatigigit akornuserpakkit
 MAP (VSTR:$1) TARGET (N) (*1 (N LU /\(@.*\)/r) BARRIER (*) - @<N) ;
 
-# MAP:M1980A @HNOUN TARGET (PersPron Abs) + $$PN IF (-1 BOS) (1* VFIN LINK NOT 0 $$PN) ;
+#Sen tagging af adverbialled, der endnu ikke er tagget
+#MAP:M1990 @ADVL> TARGET OBLIQUE IF (*1 V);
 
 # Denne tag er for alle ord vi ikke har funktion til.
 #MAP:M1999 (@X) TARGET WORD ; 
@@ -3550,7 +3563,6 @@ SELECT:8563A Abs + Pl + @OBJ> IF (*1 3PlO BARRIER V) ;
 SELECT:8563B Abs + Sg + @OBJ> IF (*1 3SgO BARRIER V)(NEGATE *1 ORATIOOBLVERB LINK T:NexusHøjre)(NEGATE 0 Par LINK *1 ORATIOOBLVERB) (NEGATE 1 Num + Pl) ; 
 
 
-
 # ========================= #
 #     Final sektion         #
 # ========================= #
@@ -3899,6 +3911,7 @@ REMOVE:5713 ("aqqalu") - Abs IF (0 ("aqqaluk") ) ; #mere eller mindre arbitræt
 REMOVE:5714 FAM_UNIK + Pl IF (0 FAM_UNIK + Sg);
 REMOVE:5715 ("aaq") + QAR IF (0 ("aak") + QAR LINK *-1 ("arnaq")) ;
 REMOVE:5716 ("alersi") IF (0 ("alerseq"));
+REMOVE:5717 ("tulloq") + U IF (0 ("tulluup")); #'hvalvorte' sjælden og sandsynligvis archaisk
 
 # Appellativ eller proprium?
 SELECT Prop IF (0 (@HNOUN)) ;
