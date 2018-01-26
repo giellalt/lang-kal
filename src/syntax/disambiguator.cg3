@@ -160,6 +160,13 @@ LIST Akk2P = (2Pl Akk) 2PlO ;
 
 SET DivPronOBJ = Akk1S | Akk2S  | Akk1P | Akk2P ;
 
+#Set til OBJ + Inf
+LIST OBJS = (Abs Sg) (Inf 3SgO) ;
+LIST OBJP = (Abs Pl) (Inf 3PlO) ;
+
+SET OBJ_INF = OBJS | OBJP ;
+
+
 LIST 34IV = 3Sg 3Pl 4Sg 4Pl ;
 LIST 34Sg = 3Sg 4Sg ;
 LIST 34Pl = 3Pl 4Pl ;
@@ -2105,8 +2112,11 @@ MAP:M0031X @PROP> TARGET Prop + Attr IF (1 Prop + Attr)(2 humProp) ; #Til tagnin
 MAP:M0031A @PROP> TARGET Prop + Attr IF (1 Prop)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + LU LINK *1 V + 3Pl )(NEGATE 1 Prop LINK 1 Prop)(NEGATE 0 FIRSTNAME LINK 1 FIRSTNAME)(NEGATE 0 FIRSTNAME LINK 1 ("Kalaallit")); #Mange fejlhit på Kalaallit Illuutaat og Kalaallit Nunaat
 
 MAP:M0031 (@PROP>) TARGET Prop + Abs OR FIRSTNAME + Abs OR TITEL + Abs IF (1 Prop)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + LU LINK *1 V + 3Pl )(NEGATE 1 Prop LINK 1 Prop)(NEGATE 0 FIRSTNAME LINK 1 FIRSTNAME)(NEGATE 0 FIRSTNAME LINK 1 ("Kalaallit"))(NEGATE 1 FIRSTNAME + LU); 
-#MAP:M0031 (@PROP>) TARGET Prop OR FIRSTNAME OR TITEL IF (1 Prop)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop #+ LU LINK *1 V + 3Pl BARRIER N + Pl )(NEGATE 1 Prop LINK 1 Prop); #fra 1350 for at udelukke overtallig SUBJ-tagging. ##NEGATE for at forebygge typen 'Per NN-ikkut isermata Vb'. Andet NEGATE for parataktiske Karen Perilu anipput. Tredie #NEGATE for at forebygge @PROP på subjektet i (SUBJ)(PROP> propriuskærne) 
-MAP:M0032 @<APPOS TARGET Prop + Abs + Sg - LU IF (-1 Prop + Attr)(-2 N + Abs + Sg )(NEGATE -2 @PROP>)(NEGATE -2 TITEL) ; # N per langgård
+#MAP:M0031 (@PROP>) TARGET Prop OR FIRSTNAME OR TITEL IF (1 Prop)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop #+ LU LINK *1 V + 3Pl BARRIER N + Pl )(NEGATE 1 Prop LINK 1 Prop); #fra 1350 for at udelukke overtallig SUBJ-tagging. ##NEGATE for at forebygge typen 'Per NN-ikkut isermata Vb'. Andet NEGATE for parataktiske Karen Perilu anipput. Tredie #NEGATE for at forebygge @PROP på subjektet i (SUBJ)(PROP> propriuskærne)
+
+#Forsøg på en mere generel regel for Prop der er @<APPOS til noget ikke-Prop
+MAP:M0032 @<APPOS TARGET Prop + $$KASUS - LU IF (-*1 N + $$KASUS - Prop BARRIER (*) - KOMMA ) ;
+MAP:M0032A @<APPOS TARGET Prop + Abs + Sg - LU IF (-1 Prop + Attr)(-2 N + Abs + Sg )(NEGATE -2 @PROP>)(NEGATE -2 TITEL) ; # N per langgård
 MAP:M0033 @<APPOS TARGET Prop + Abs + Sg - LU IF (-1 N + Abs + Sg)(NEGATE -1 @PROP> )(NEGATE -1 TITEL) ; # N Per
 #første NEGATE for at forhindre hit på fx (Royal Arctic Line)@SUBJ> VERBUM og -LU for ikke at hitte på Danmark Islandilu og andet NEGATE for at blokere PISORTAQ Per Langgård oqarpoq
 
@@ -2276,7 +2286,7 @@ MAP:M304B @i-ADVL> TARGET Trm IF (-1 Abl)(1 N + vn OR ("isikkivik")) ; #
 #Appositioner og afterthoughts. Må ikke overskrive @i>N
 MAP:M0305 @<ADVL TARGET Lok OR Ins OR Abl OR Trm OR Via OR Aeq IF (-1 KOMMA)(*-1 VFIN)(NEGATE *1 V)(NEGATE *1 LIK OR QAR) ; 
 MAP:M0306 @<ADVL TARGET LU + Lok OR Ins OR Abl OR Trm OR Via OR Aeq IF (-*1 KOMMA BARRIER V)(NEGATE *1 V)(NEGATE *1 LIK OR QAR) ; 
-MAP:M0310 @<APPOS TARGET Prop + Lok IF (-1 Lok) ;
+MAP:M0310 @<APPOS TARGET Prop + Lok - LU IF (-1 Lok) ;
 
 # Appositions without comma including parataxis
 MAP:M0316 (@ADVL>) TARGET TIME + Abs + Sg IF (NEGATE *1 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO) ; 
@@ -2292,8 +2302,8 @@ MAP:M0350Y @>N TARGET Aeq IF (-1 Rel)(1 POSSESSUM) ;
 #Adnominale adled (adjektiver). Bredeste regel. -LU for at forhindre hit på parataktiske NP og NEGATE nødvendig for ikke at tagge en possessor efter proprium i relativ. NEGATE for at forhindre hit på possessor fulgt af apposition og NEGATE for at udelukke fornavn fulgt af efternavn
 MAP:M0350 @<N TARGET N + $$KASUS + $$NUMERUS - LU - Prop IF (-1 Prop + $$KASUS + $$NUMERUS)(NEGATE -1 Rel LINK 1 Rel LINK 1 POSSESSUM3 OR POSSESSUM4)(NEGATE -1 Rel LINK 1 Rel + POSSESSUM3 LINK 1 Prop)(NEGATE 0 Prop + Attr LINK -1 Prop + Attr) ;
 
-#kongruensadled af typen vn må mappes tidligt for at undgå at kerneleddet tagges som inderiveret adverbial. Possessorer må ikke tagges som kongruensadled. Sidste NEGATE for at forebygge at objekt til V til højre tagges som adled
-MAP:M0351 @<N TARGET vn + $$KASUS + $$NUMERUS - LU OR Num + $$KASUS + $$NUMERUS - LU IF (-*1 N + $$KASUS + $$NUMERUS BARRIER (*) - part)(NEGATE 0 Rel + Sg LINK 1 3SgPoss)(NEGATE 0 Rel + Pl LINK 1 3PlPoss OR 4PlPoss) (NEGATE 1 3SgO) ((NOT 0 POSSESSUM) OR (0 $$POSSESSUM LINK -1 $$POSSESSUM)) ; #20171121 rettet NEGATE fra ..  OR 3PlO), der vist udelukker de fleste adled ??
+#kongruensadled af typen vn må mappes tidligt for at undgå at kerneleddet tagges som inderiveret adverbial. Possessorer må ikke tagges som kongruensadled. Næstsidste NEGATE for at forebygge at objekt til V til højre tagges som adled sidste for skyld indskudt transitiv ledsagemåde mellem subjekt og V
+MAP:M0351 @<N TARGET vn + $$KASUS + $$NUMERUS - LU OR Num + $$KASUS + $$NUMERUS - LU IF (-*1 N + $$KASUS + $$NUMERUS BARRIER (*) - part)(NEGATE 0 Rel + Sg LINK 1 3SgPoss)(NEGATE 0 Rel + Pl LINK 1 3PlPoss OR 4PlPoss) (NEGATE 1 3SgO) ((NOT 0 POSSESSUM) OR (0 $$POSSESSUM LINK -1 $$POSSESSUM))(NEGATE 0 Abs + &&OBJ_INF LINK 1 INF + &&OBJ_INF) ; #20171121 rettet NEGATE fra ..  OR 3PlO), der vist udelukker de fleste adled ??
 
 MAP:M0352 @<N TARGET vn + LU + $$KASUS + $$NUMERUS IF (-1 vn + $$KASUS + $$NUMERUS + LU OR Num + $$KASUS + $$NUMERUS + LU)(-1 N + $$KASUS + $$NUMERUS + vn);#(NEGATE 0 Rel + Sg LINK 1 3SgPoss)(NEGATE 0 Rel + Pl LINK 1 3PlPoss OR 4PlPoss) (NEGATE 1 3SgO) ((NOT 0 POSSESSUM) OR (0 $$POSSESSUM LINK -1 $$POSSESSUM)) ; #20171121 rettet NEGATE fra ..  OR 3PlO), der vist udelukker de fleste adled ??
 
@@ -2327,10 +2337,10 @@ MAP:M0460 (@OBJ>) TARGET APPELLATIV + Abs + Pl IF (1 TRANSVERB + 3PlO)(-*1 Rel B
 MAP:M0470A @OBJ> TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (1 Abs + LU LINK *1 TRANSVERB - 3Pl + 3PlO BARRIER INTRANSVERB + 3Pl) ;
 MAP:M0470B @OBJ> TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (1 KOMMA LINK 1 Abs LINK 1 Abs + LU LINK *1 TRANSVERB - 3Pl + 3PlO BARRIER INTRANSVERB + 3Pl) ;
 
-MAP:M0470 @OBJ> TARGET APPELLATIV + Abs + Pl OR Prop + Abs + Pl IF ( *1 TRANSVERB - 3Pl + 3PlO BARRIER INTRANSVERB + 3Pl)(NEGATE *-1 Abs + Pl BARRIER V + 3PlO) ; #20091105 Kun sikker, naar subjekt != 3Pl. Der maa mere avancerede regler til at adskille implicit subjekt 3Pl fra objekt Pl. BARRIER fordi somme tider subjekt for cau, con etc. i stedet for objekt for et senere V. Sidste NEGATE fordi adled skal have @<N i stedet for @OBJ
+MAP:M0470 @OBJ> TARGET APPELLATIV + Abs + Pl OR Prop + Abs + Pl IF ( *1 TRANSVERB - 3Pl + 3PlO BARRIER INTRANSVERB + 3Pl)(NEGATE *-1 Abs + Pl BARRIER V + 3PlO)(NEGATE 1 Abs + Pl LINK 1 INF + 3PlO) ; #20091105 Kun sikker, naar subjekt != 3Pl. Der maa mere avancerede regler til at adskille implicit subjekt 3Pl fra objekt Pl. BARRIER fordi somme tider subjekt for cau, con etc. i stedet for objekt for et senere V. Sidste NEGATE fordi adled skal have @<N i stedet for @OBJ. Sidste NEGATE for at forebygge at subjekter tagges som objekter for en ledsagemåde til venstre, som i forevejen har et objekt
 
 #MAP:M0470G @OBJ> TARGET 
-MAP:M0471 @<N TARGET N + Abs + Pl - LU IF (-*1 N + Abs + Pl + @OBJ> BARRIER TRANSVERB ) (NEGATE -1 Num LINK 2 Num) ; #Kongruensadled til objektskerner et godt stykke til venstre. Sidste negate for at hindre sammenblanding af subjekt og objekt for transitivt verbum som kongruerer i kasus og numerus.
+MAP:M0471 @<N TARGET N + Abs + Pl - LU IF (-*1 N + Abs + Pl + @OBJ> BARRIER TRANSVERB ) (NEGATE -1 Num LINK 2 Num) (NEGATE 0 Abs + &&OBJ_INF LINK 1 INF + &&OBJ_INF); #Kongruensadled til objektskerner et godt stykke til venstre. Sidste negate for at hindre sammenblanding af subjekt og objekt for transitivt verbum som kongruerer i kasus og numerus.
 
 
 MAP:M0480 (@POSS>) TARGET POSS_ABBR IF (1 POSSESSUM3); #sap. akunnera
@@ -2355,7 +2365,7 @@ MAP:M0523C @SUBJ> TARGET Abs + LU IF ((-1 BOS) OR (-1 part LINK -1 BOS))(*1 PLUR
 
 MAP:M0525 (@OBJ>) TARGET N + Abs + Sg OR PRON + Abs + Sg IF (*1 TRANSVERB + 3SgO BARRIER INTRANSVERB + 3Sg OR 4Sg) ;
 
-MAP:M0526 (@OBJ>) TARGET N + Abs + Pl OR PRON + Abs + Pl OR Num + Abs IF (*1 TRANSVERB + 3PlO BARRIER INTRANSVERB + 3Pl OR 4Pl) (NEGATE *-1 Abs + Pl BARRIER V + 3PlO) ; #20091105 PL Sidste NEGATE fordi adled skal have @<N i stedet for @OBJ;
+MAP:M0526 (@OBJ>) TARGET N + Abs + Pl OR PRON + Abs + Pl OR Num + Abs IF (*1 TRANSVERB + 3PlO BARRIER INTRANSVERB + 3Pl OR 4Pl) (NEGATE *-1 Abs + Pl BARRIER V + 3PlO)(NEGATE 1 Abs + Pl LINK 1 INF + 3PlO) ; #20091105 PL Sidste NEGATE fordi adled skal have @<N i stedet for @OBJ;
 
 MAP:M0527 @OBJ> TARGET Abs + Sg IF (1 Abs + Sg + LU OR Abs + Pl + LU LINK *1 3PlO BARRIER INTRANSVERB + 3Pl);
 MAP:M0528 @OBJ> TARGET Abs + Sg + LU IF (-1 Abs + Sg)(*1 3PlO BARRIER INTRANSVERB + 3Pl OR KOMMA);
@@ -2421,7 +2431,8 @@ MAP:M0661 @SUBJ> TARGET PersPron + Abs + 1Sg IF (*1 VERB-NOTINF + 1Sg BARRIER TR
 MAP:M0661A @SUBJ> TARGET PersPron + Abs + 2Sg IF (*1 VERB-NOTINF + 2Sg BARRIER TRANSVERB + 2SgO)(NEGATE *1 2SgO)(NEGATE -1 ("\(")) ; #Ny formulering testet 20150318
 MAP:M0662 @SUBJ> TARGET PersPron + Rel + 1Sg IF (*1 VERB-NOTINF + TRANSVERB + 1Sg BARRIER TRANSVERB + 1SgO)(NEGATE *1 1SgO)(NEGATE -1 ("\("))(NEGATE 1 1SgPoss) ;
 MAP:M0662A @SUBJ> TARGET PersPron + Rel + 2Sg IF (*1 VERB-NOTINF + TRANSVERB + 2Sg BARRIER TRANSVERB + 2SgO)(NEGATE -1 ("\("))(NEGATE 1 2SgPoss) ;
-
+#Særregel ved SUBJ> + Pl ; OBJ> + Pl ; INF + 3PlO ; 
+MAP:M0669 @SUBJ> TARGET Abs + Pl IF (*1 Abs + Pl LINK *1 INF + 3PlO LINK *1 INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl BARRIER TRANSVERB + 3PlO)(NEGATE *-1 Rel + Sg LINK *1 3Sg + 3PlO) ; 
 MAP:M0670 (@SUBJ>) TARGET Abs + Pl IF (*1 INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl BARRIER TRANSVERB + 3PlO)(NEGATE *-1 Rel + Sg LINK *1 3Sg + 3PlO) ; #så er det et objekt for TRANSVERB. NEGATE tilføjet 20171121 for at redde objekter for V til højre
 MAP:M0680 (@SUBJ>) TARGET (Rel) IF (*1 TRANSVERB + 34IV BARRIER POSSESSUM3 OR INTRANSVERB + 34IV) ;
 MAP:M0681 @SUBJ> TARGET Abs + 1Pl IF (*1 INTRANSVERB + 1Pl BARRIER VFIN)(NEGATE *1 TRANSVERB + 1PlO BARRIER INTRANSVERB + 1Pl) ; 
@@ -2482,7 +2493,7 @@ MAP:M0790 (@<OBJ) TARGET APPELLATIV + Abs OR Prop + Abs OR PRON-REFL + Abs IF (-
 #ADD:M0820 (@<SUBJ) TARGET APPELLATIV + (Rel) OR Prop + (Rel) OR (PRON) IF (-*1 TRANSVERB + VERB-NOTINF BARRIER ("\,")) ;
 
 #Nomen i oblik kasus kan være adverbalt adled
-MAP:M0830 (@ADVL>) TARGET Lok IF (-1 BOS) ; 
+MAP:M0830 (@ADVL>) TARGET Lok IF (-1 BOS)(NEGATE 1 Lok + LU LINK 1 vn) ; #NEGATE for ikke at fejltagge parataktiske i-ADVL
 MAP:M0840 (@ADVL>) TARGET (Ins) IF (*1 V - DOTR BARRIER vn)(NEGATE *1 ("quleriilik") OR V + QAR OR V + LIK ) ; #OR vn fjernet og BARRIER tilfoejet 20091109
 
 MAP:M0850 (@i-<ADVL) TARGET (Lok) + POSSESSUM3 IF (-2 vn - NAR)(-1 Rel)(NEGATE *1 V OR vn - LU) ; #20091104
@@ -2491,6 +2502,9 @@ MAP:M0860 (@i-<ADVL) TARGET (Lok) IF (0 LU)(-1 (Lok) + (@i-<ADVL)) ; #20091104
 #Særlig regel før M0940 til inderiverede adverbale adled inkl. de særlige substantiver, der inderiverer selv om de ikke er vn (fx inatsit). LU holdes udenfor da oftest paratakse og LINK til Ins fulgt af V til sekvenser af fx type Ins-adled Lok-adled V 
 MAP:M0869 @i-ADVL> TARGET OBLIQUE IF (1 vn + N OR INDERIVERENDE_SUBSTANTIV)(NEGATE 0 LU + $$KASUS LINK -1 $$KASUS)(NEGATE 0 $$KASUS LINK 1 $$KASUS + LU)(NEGATE 1 OBLIQUE LINK 1 V) ; 
 MAP:M0870 (@i-ADVL>) TARGET Lok + Sg IF (1 vn + Sg )(NEGATE 1 NAR)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Lok)(NEGATE 1 LU + (Lok))(NEGATE -1 ("ulloq") LINK -1 BOS); #Kun Trm til vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse. 20170425 sidste negate er nok ullut ilaanni og nexusadverbial
+#Særregel for parataktiske i-ADVL>
+MAP:M0871A @i-ADVL> TARGET Lok IF (1 Lok + LU)(2 vn + Pl )(NEGATE 2 NAR)(NEGATE 2 Rel LINK 1 POSSESSUM3 + Lok); #Kun Trm til vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse
+
 MAP:M0871 (@i-ADVL>) TARGET Lok + Pl IF (1 vn + Pl )(NEGATE 1 NAR)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Lok)(NEGATE 1 LU + (Lok)); #Kun Trm til vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse
 MAP:M0880 (@i-ADVL>) TARGET (Abl) IF (1 vn - NAR )(NEGATE 1 Rel LINK 1 POSSESSUM3 + Abl)(NEGATE 1 LU + (Abl))(NEGATE *1 PASSIV); #Kun Trm til vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse. Hvis PASSIV muligvis Agens
 MAP:M0890 (@i-ADVL>) TARGET (Via) IF (1 vn - NAR )(NEGATE 1 TAR + RIAQ + IRUTE)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Via )(NEGATE 1 LU + (Via)); #Kun Trm til vn med NAR. RIAQ i TARIAARUP kvalificerer ikke som vn. Rettet 2.4. NEGATE nr. 3 20091104 for at haandtere paratakse
@@ -3921,6 +3935,7 @@ REMOVE:5717 ("tulloq") + U IF (0 ("tulluup")); #'hvalvorte' sjælden og sandsynl
 REMOVE:5718 ("iver") + tv + TAQ IF (0 ("ivigaq")) ;
 
 # Appellativ eller proprium?
+SELECT:5730 Prop IF (-1 BOS)(1 Prop + LU); #Stochastisk overvejelse. Paratakse af appellativ og proprium ikke ret sandsynlig
 SELECT Prop IF (0 (@HNOUN)) ;
 REMOVE Prop IF (0 ("Aleqa") OR ("Anersaaq")) ;
 REMOVE ("qanik") + QAR IF ( *0 @SUBJ> + HUMAN ) ;
@@ -3967,6 +3982,7 @@ SELECT:5779 ("Inatsisartut") + Prop IF (0 ("inap") + HTR + TAR) ;
 
 
 REMOVE:5840 ("Piita") IF (0 ("Piitaq")) ; #Et rent stochastisk gæt
+REMOVE:5841 ("Greenland") + geoProp IF (0 humProp LINK -1 ("Air")) ; #Særregel til Air Greenland
 
 #Verbum eller nomen
 REMOVE:5850 ("erner") + 4SgO IF (0 ("erneq") + Lok) ;
