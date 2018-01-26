@@ -1397,6 +1397,9 @@ SELECT:0031 ("ila") + 3SgPoss + Abs IF (-1 TIME + Rel)(*1 T:NexusHøjre ) ;
 #Det ret usandsynlige participium 3Sg-1SgO + MI er homonymt med Ite + 4Sg. Slettes hvis VFIN + 3Sg
 REMOVE:0032 Par + 3Sg + 1SgO + MI IF (0 Ite + 4Sg LINK *1 VFIN + 3Sg) ;
 
+#20180124 NIR i verbalnomen vistnok helt usandsynlig
+SELECT:0033 NIR + V ;
+
 #Rel + 4SgPoss sammenblandes ofte med Lok. Derfor en tidlig regel til at selecte sikre subjekter
 SELECT:0036 Rel + 4SgPoss IF (*1 TRANSVERB + 3Sg + CON_CAU BARRIER V)(NEGATE 0 Interj)(NEGATE 0 V)(NEGATE 1 3SgPoss)(NEGATE 0 VIK + Lok)(NEGATE 0 Rel + Pl LINK 1 POSSESSUM + 3PlPoss); #fx Ikke Ilami! og anillakkami, ikke possessor og ikke ADVL
 #Parataktiske possessorer
@@ -1594,7 +1597,7 @@ SELECT:0100Y Pl + $$KASUS IF (1 Num + Pl + $$KASUS) (0 2SgPoss) ;
 
 SELECT:0100A 2SgPoss IF (*0 ("qujanaq"))(NEGATE -1 ("uanga"))(NEGATE *0 VFIN) ; #Kontekst, der maa sikres foer foelgende REMOVE
 SELECT:0100B 2SgPoss - ("massak") - SSA IF (NEGATE *0 V)(*1 ("?"))(NEGATE 0 V + 2Sg)(NEGATE *0 IntPron + Pl) ; #Kontekst, der maa sikres foer foelgende REMOVE. Specialitet at massak+Via opfattes som 2SgPoss og ikke vn med SSA
-SELECT:0101X Abs + 2SgPoss IF (*1 Ind + 3Sg + INTRANSVERB BARRIER TRANSVERB + 3SgO) ; #Et sikkert subjekt må ikke læses som plur. BARRIER pga. mulig ledsagemåde med objekt
+SELECT:0101X Abs + 2SgPoss IF (*1 Ind + 3Sg + INTRANSVERB BARRIER TRANSVERB + 3SgO)(NEGATE 0 Pl + Abs LINK *1 Par + 3Pl) ; #Et sikkert subjekt må ikke læses som plur. BARRIER pga. mulig ledsagemåde med objekt. Der tages højde for en mulig or. obl. før verbet
 REMOVE:0101 Abs + 2SgPoss IF (NEGATE *0 ("illit") OR Imp + 2Sg) (NEGATE *1 3SgO)(NEGATE *1 INTRANSVERB + 3Sg BARRIER Abs + Sg)(NEGATE 1 ("tassa") LINK 1C Sg); #Sidste NEGATE for skyld "Soraluannguit tassa niviarsiaq .."
 #REMOVE Abs + 2SgPoss IF (-1C Inf + 4Pl OR InfNeg + 4Pl)(NEGATE *1 Rel + Pl LINK *1 TRANSVERB + GE + 3SgO); #0 maa vaere plur hvis nabo til en ledsagemaade, men der maa tages hoejde for muligheden af et OSV verbum.
 REMOVE:0102 Abs + 2SgPoss + TUQ IF (NEGATE *0 ("illit")); #1.4. Evt. elaboreres med TAQ og UTE
@@ -2069,7 +2072,7 @@ MAP:M0019AX @PRED2 TARGET INF + TRANSVERB IF (*1 ORATIOOBLVERB LINK *1 Par)(*-1 
 MAP:M0020B @PRED2 TARGET Par IF (*-1 KONCESSIV BARRIER V);
 
 #Tidsbisætninger med subjekt
-MAP:M0021 @PRED2 TARGET INTRANSVERB + Par + 3Pl IF (-1 Abs + Pl)(*1 VFIN - 3Pl BARRIER V);
+MAP:M0021 @PRED2 TARGET INTRANSVERB + Par + 3Pl IF (-1 Abs + Pl)(*1 VFIN - 3Pl - ORATIOOBLVERB BARRIER V);
 
 #Co-referentielle tidsbisætninger
 MAP:M0022A @PRED2 TARGET INF + TRANSVERB + RIAR IF (-3 BOS LINK 1 Abs LINK 1 Abs + LU)(*1 Ind + SEKVENTIELLE_VERBER); #Indeholder pt. kun ("innar") og ("ani"), men må udvides med sådanne, som giver mening ved tidsbisætninger
@@ -2290,7 +2293,7 @@ MAP:M0350Y @>N TARGET Aeq IF (-1 Rel)(1 POSSESSUM) ;
 MAP:M0350 @<N TARGET N + $$KASUS + $$NUMERUS - LU - Prop IF (-1 Prop + $$KASUS + $$NUMERUS)(NEGATE -1 Rel LINK 1 Rel LINK 1 POSSESSUM3 OR POSSESSUM4)(NEGATE -1 Rel LINK 1 Rel + POSSESSUM3 LINK 1 Prop)(NEGATE 0 Prop + Attr LINK -1 Prop + Attr) ;
 
 #kongruensadled af typen vn må mappes tidligt for at undgå at kerneleddet tagges som inderiveret adverbial. Possessorer må ikke tagges som kongruensadled. Sidste NEGATE for at forebygge at objekt til V til højre tagges som adled
-MAP:M0351 @<N TARGET vn + $$KASUS + $$NUMERUS - LU OR Num + $$KASUS + $$NUMERUS - LU IF (-1 N + $$KASUS + $$NUMERUS)(NEGATE 0 Rel + Sg LINK 1 3SgPoss)(NEGATE 0 Rel + Pl LINK 1 3PlPoss OR 4PlPoss) (NEGATE 1 3SgO) ((NOT 0 POSSESSUM) OR (0 $$POSSESSUM LINK -1 $$POSSESSUM)) ; #20171121 rettet NEGATE fra ..  OR 3PlO), der vist udelukker de fleste adled ??
+MAP:M0351 @<N TARGET vn + $$KASUS + $$NUMERUS - LU OR Num + $$KASUS + $$NUMERUS - LU IF (-*1 N + $$KASUS + $$NUMERUS BARRIER (*) - part)(NEGATE 0 Rel + Sg LINK 1 3SgPoss)(NEGATE 0 Rel + Pl LINK 1 3PlPoss OR 4PlPoss) (NEGATE 1 3SgO) ((NOT 0 POSSESSUM) OR (0 $$POSSESSUM LINK -1 $$POSSESSUM)) ; #20171121 rettet NEGATE fra ..  OR 3PlO), der vist udelukker de fleste adled ??
 
 MAP:M0352 @<N TARGET vn + LU + $$KASUS + $$NUMERUS IF (-1 vn + $$KASUS + $$NUMERUS + LU OR Num + $$KASUS + $$NUMERUS + LU)(-1 N + $$KASUS + $$NUMERUS + vn);#(NEGATE 0 Rel + Sg LINK 1 3SgPoss)(NEGATE 0 Rel + Pl LINK 1 3PlPoss OR 4PlPoss) (NEGATE 1 3SgO) ((NOT 0 POSSESSUM) OR (0 $$POSSESSUM LINK -1 $$POSSESSUM)) ; #20171121 rettet NEGATE fra ..  OR 3PlO), der vist udelukker de fleste adled ??
 
