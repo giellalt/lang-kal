@@ -1118,7 +1118,9 @@ LIST ANIMAL = "qeerlutooq" "qimmeq" "qitsuk" "puisi" ;
 LIST ABSTRACT = "taaq" ;
 
 LIST PLACE = "illu" "imaq" ("atuar" VIK) ("oqalup" VIK);
-LIST ADJEKTIVISK = "akutakujooq" "akutakujuk" "angut" "arnaq" "itisooq" ("portu" JAAR) "qaqqorik"; #angut og arnaq medtaget lidt skummelt, men anvendes ofte adjektivisk
+LIST ADJEKTIVISK = "akutakujooq" "akutakujuk" "angisooq" "angut" "arnaq" "itisooq" "manissoq" ("portu" JAAR)  "takisooq"; #angut og arnaq medtaget lidt skummelt, men anvendes ofte adjektivisk
+LIST COLOUR = "aappaluttoq" "qaqortoq" "qaqqorik" "qernertoq" "qorsuk" "sungaartoq" "tungujortoq" ;
+SET ATTRIBUTIV = ADJEKTIVISK | COLOUR ;
 
 LIST EDIBLE = "neqi" "iffiaq" "kaagi" ;
 LIST DRINKABLE = "kaffi" "tii" "immuk" "whisky" "immiaaraq" "immiaq" "baaja" ;
@@ -2303,10 +2305,14 @@ MAP:M0350Y @>N TARGET Aeq IF (-1 Rel)(1 POSSESSUM) ;
 # Adnominale adled - Forsøg på ny, mere generel struktur 20180128 #
 ###################################################################
 
-MAP:M0350NY @<N TARGET vn + $$KASUS - LU OR Num + $$KASUS - LU OR LIK + $$KASUS - LU IF (-*1 N + $$KASUS BARRIER (*) - OBLIQUE - part);
+#Kongruensadled er typisk vn, Num eller ATTRIBUTIV. LU vil ofte være udtryk for en parataktisk kerne, hvorfor parataktiske kongruensadled behandles separat i regel :M0351NY. i-adled til inderivering til højre er ikke kongruensadled
+MAP:M0350NY @<N TARGET vn + $$KASUS - LU OR Num + $$KASUS - LU OR LIK + $$KASUS - LU IF (-*1 N + $$KASUS BARRIER (*) - OBLIQUE - part)(NEGATE 0 Ins LINK *1 QAR OR LIK BARRIER VFIN); #VFIN som barrier ret tilfældigt valgt
 
-#Skriv en følgende regel, der tagger parataktiske adled som i 'puiaasat imaqanngitsut imallillu'
+#Regel til parataktiske adled som i 'puiaasat imaqanngitsut imallillu'
+MAP:M0351NY @<N TARGET vn + $$KASUS + LU OR Num + $$KASUS + LU OR LIK + $$KASUS + LU IF (-*1 N + $$KASUS + @<N BARRIER (*) - OBLIQUE - part)(NEGATE 0 Ins LINK *1 QAR OR LIK);
 
+#Tunge adled efter V
+MAP:M0352NY @<N TARGET $$KASUS + $$NUMERUS IF (*-1 KOMMA LINK *-1 N + $$NUMERUS + $$KASUS)(1 EOS) ; #Forsøgsvist flyttet fra M1800
 
 #Adnominale adled (adjektiver). Bredeste regel. -LU for at forhindre hit på parataktiske NP og NEGATE nødvendig for ikke at tagge en possessor efter proprium i relativ. NEGATE for at forhindre hit på possessor fulgt af apposition og NEGATE for at udelukke fornavn fulgt af efternavn
 MAP:M0350 @<N TARGET N + $$KASUS + $$NUMERUS - LU - Prop IF (-1 Prop + $$KASUS + $$NUMERUS)(NEGATE -1 Rel LINK 1 Rel LINK 1 POSSESSUM3 OR POSSESSUM4)(NEGATE -1 Rel LINK 1 Rel + POSSESSUM3 LINK 1 Prop)(NEGATE 0 Prop + Attr LINK -1 Prop + Attr) ;
@@ -2745,7 +2751,8 @@ MAP:M1799 @INTERJ TARGET Interj ;
 # Adnominale adled
 ##################
 #Tunge adled efter V
-MAP:M1800 @<N TARGET Abs + $$NUMERUS IF (*-1 KOMMA LINK *-1 @<OBJ + $$NUMERUS)(1 EOS) ;
+#MAP:M1800 @<N TARGET Abs + $$NUMERUS IF (*-1 KOMMA LINK *-1 @<OBJ + $$NUMERUS)(1 EOS) ; #Forsøgsvist flyttet til M0352NY
+
 
 #######################
 # Mapning af ReflPron #
@@ -3942,6 +3949,7 @@ REMOVE:5715 ("aaq") + QAR IF (0 ("aak") + QAR LINK *-1 ("arnaq")) ;
 REMOVE:5716 ("alersi") IF (0 ("alerseq"));
 REMOVE:5717 ("tulloq") + U IF (0 ("tulluup")); #'hvalvorte' sjælden og sandsynligvis archaisk
 REMOVE:5718 ("iver") + tv + TAQ IF (0 ("ivigaq")) ;
+REMOVE:5719 ("imaq") IF (0 ("ima") + QAR OR ("ima") + LIK) ;
 
 # Appellativ eller proprium?
 SELECT:5730 Prop IF (-1 BOS)(1 Prop + LU); #Stochastisk overvejelse. Paratakse af appellativ og proprium ikke ret sandsynlig
