@@ -2285,15 +2285,15 @@ MAP:M0302 @<SUBJ TARGET Abs IF (-1 ("AA") + DemPron) ;
 MAP:M304A @i-ADVL> TARGET Abl IF (1 Trm)(2 N + vn OR ("isikkivik")) ; #
 MAP:M304B @i-ADVL> TARGET Trm IF (-1 Abl)(1 N + vn OR ("isikkivik")) ; #
 
-#Appositioner og afterthoughts. Må ikke overskrive @i>N
-MAP:M0305 @<ADVL TARGET Lok OR Ins OR Abl OR Trm OR Via OR Aeq IF (-1 KOMMA)(*-1 VFIN)(NEGATE *1 V)(NEGATE *1 LIK OR QAR) ; 
-MAP:M0306 @<ADVL TARGET LU + Lok OR Ins OR Abl OR Trm OR Via OR Aeq IF (-*1 KOMMA BARRIER V)(NEGATE *1 V)(NEGATE *1 LIK OR QAR) ; 
+#Appositioner og afterthoughts. Må ikke overskrive @i>N. Må ikke overskrive i-ADVL til følgende vn
+MAP:M0305 @<ADVL TARGET OBLIQUE IF (-1 KOMMA)(*-1 VFIN)(NEGATE *1 V)(NEGATE *1 LIK OR QAR)(NEGATE 1 vn) ; 
+MAP:M0306 @<ADVL TARGET LU + OBLIQUE IF (-*1 KOMMA BARRIER V)(NEGATE *1 V)(NEGATE *1 LIK OR QAR)(NEGATE 1 vn) ; 
 MAP:M0310 @<APPOS TARGET Prop + Lok - LU IF (-1 Lok) ;
 
-# Appositions without comma including parataxis
+# Appositions without comma including parataxis må ikke overskrive i-ADVL
 MAP:M0316 (@ADVL>) TARGET TIME + Abs + Sg IF (NEGATE *1 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO) ; 
 MAP:M0318 (@ADVL>) TARGET Lok + TIME IF (*1 V) ;
-MAP:M0319 (@<ADVL) TARGET Lok + TIME IF (-*1 V) ;
+MAP:M0319 (@<ADVL) TARGET Lok + TIME IF (-*1 V)(NEGATE 1 vn) ;
 
 #En særregel, der blokerer at Lok efter Lok i et helt andet syntagme ikke læses som @<N i forbindelse med atatip etc.
 MAP:M0350X @>N TARGET Lok IF (1 Trm)(2 ("pi") + INF OR ("ata") + INF OR ("tunnga") + INF) ; 
@@ -2312,7 +2312,7 @@ MAP:M0350NY @<N TARGET vn + $$KASUS - LU OR Num + $$KASUS - LU OR LIK + $$KASUS 
 MAP:M0351NY @<N TARGET vn + $$KASUS + LU OR Num + $$KASUS + LU OR LIK + $$KASUS + LU IF (-*1 N + $$KASUS + @<N BARRIER (*) - OBLIQUE - part)(NEGATE 0 Ins LINK *1 QAR OR LIK);
 
 #Tunge adled efter V
-MAP:M0352NY @<N TARGET $$KASUS + $$NUMERUS IF (*-1 KOMMA LINK *-1 N + $$NUMERUS + $$KASUS)(1 EOS) ; #Forsøgsvist flyttet fra M1800
+MAP:M0352NY @<N TARGET $$KASUS + $$NUMERUS IF (*-1 KOMMA LINK *-1 N + $$NUMERUS + $$KASUS)(1 EOS)(NEGATE 0 LU LINK *-1 ("tassa") BARRIER V)(NEGATE -1 OBLIQUE + LU LINK *-1 ("tassa") BARRIER V) ; #Forsøgsvist flyttet fra M1800. NEGATE tilføjet 20180205. Må ikke hitte på andet led i parataksen 'SUBJ tassaavoq @SUBJ_COMP1 (Adv + LU) @SUBJ_COMP2 (+LU)'. BARRIER medtaget lidt tilfældigt 
 
 #Adnominale adled (adjektiver). Bredeste regel. -LU for at forhindre hit på parataktiske NP og NEGATE nødvendig for ikke at tagge en possessor efter proprium i relativ. NEGATE for at forhindre hit på possessor fulgt af apposition og NEGATE for at udelukke fornavn fulgt af efternavn
 MAP:M0350 @<N TARGET N + $$KASUS + $$NUMERUS - LU - Prop IF (-1 Prop + $$KASUS + $$NUMERUS)(NEGATE -1 Rel LINK 1 Rel LINK 1 POSSESSUM3 OR POSSESSUM4)(NEGATE -1 Rel LINK 1 Rel + POSSESSUM3 LINK 1 Prop)(NEGATE 0 Prop + Attr LINK -1 Prop + Attr) ;
@@ -2322,6 +2322,11 @@ MAP:M0351 @<N TARGET vn + $$KASUS + $$NUMERUS - LU OR Num + $$KASUS + $$NUMERUS 
 
 MAP:M0352 @<N TARGET vn + LU + $$KASUS + $$NUMERUS IF (-1 vn + $$KASUS + $$NUMERUS + LU OR Num + $$KASUS + $$NUMERUS + LU)(-1 N + $$KASUS + $$NUMERUS + vn);#(NEGATE 0 Rel + Sg LINK 1 3SgPoss)(NEGATE 0 Rel + Pl LINK 1 3PlPoss OR 4PlPoss) (NEGATE 1 3SgO) ((NOT 0 POSSESSUM) OR (0 $$POSSESSUM LINK -1 $$POSSESSUM)) ; #20171121 rettet NEGATE fra ..  OR 3PlO), der vist udelukker de fleste adled ??
 
+#Subjektskomplementer ved "tassa" med og uden inderiveret OBLIQUE. 396 en specialitet ved komma
+MAP:M0396 @SUBJ_COMP TARGET Abs IF (-1 OBLIQUE + LU LINK -1 KOMMA LINK *-1 ("tassa") LINK *-1 Abs BARRIER V); 
+
+MAP:M0397 @SUBJ_COMP TARGET Abs IF (-1 OBLIQUE + LU LINK -1 Abs LINK *-1 ("tassa") LINK *-1 Abs BARRIER V); 
+MAP:M0398 @SUBJ_COMP TARGET Abs + LU IF (-1 Abs LINK *-1 ("tassa") LINK *-1 Abs BARRIER V); 
 MAP:M0399 @SUBJ_COMP TARGET Abs IF (-2 @FOC)(-1 OBLIQUE)(NEGATE *0 VERB-NOTINF); # tassa OBL N eller Una OBL N.
 
 MAP:M0400 @SUBJ_COMP TARGET Abs IF (-1 @FOC)(1 EOS OR KOMMA); # N tassa N. eller Tassa N.
