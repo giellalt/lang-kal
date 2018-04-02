@@ -2181,7 +2181,8 @@ MAP:M0061B (@CL-<CIT) TARGET Cont + 2Sg IF (-*1 ORATIOOBLVERB + 2Sg)(NEGATE *1 C
 MAP:M0061C (@CL-<CIT) TARGET Cont + 1Pl IF (-*1 ORATIOOBLVERB + 1Pl)(NEGATE *1 Cont) (NEGATE *1 Par);
 MAP:M0061D (@CL-<CIT) TARGET Cont + 2Pl IF (-*1 ORATIOOBLVERB + 2Pl)(NEGATE *1 Cont) (NEGATE *1 Par);
 MAP:M0062 (@CL-<CIT) TARGET Cont + 4Pl IF (-*1 ORATIOOBLVERB + 3Pl)(NEGATE *1 Cont)(NEGATE *1 Par) ;
-MAP:M0063 (@CL-<CIT) TARGET CONT + TRANSVERB IF (-*1 ORATIOOBLVERB)(NEGATE *1 Cont)(NEGATE *1 Par) ;
+MAP:M0062A (@CL-<CIT) TARGET CONT + 4Pl IF (-*1 ORATIOOBLVERB + 3Sg)(NEGATE *1 Cont)(NEGATE *1 Par)(-1*W 3Pl) ;
+MAP:M0063 (@CL-<CIT) TARGET CONT + TRANSVERB IF (-*1 ORATIOOBLVERB)(NEGATE *1 Cont)(NEGATE *1 Par) ; #Eqqaamavaa inuppassuullutik kongruerer ikke.
 #Simpel co-ref oratio obliqua uden andre ledsagemåder end CL-CIT
 
 MAP:M0065 @V> TARGET Abs + NIQ - POSSESSUM IF (1 ("ajor") OR ("saper")) ;
@@ -2445,6 +2446,7 @@ MAP:M0612C @POSS> TARGET Rel + 4SgPoss IF (1 Rel + LU LINK 1 POSSESSUM + 3PlPoss
 MAP:M0612D @POSS> TARGET Rel + LU IF (-1 Rel + 4SgPoss)(1 Lok OR Ins LINK 1 POSSESSUM + 3PlPoss) ;
 MAP:M0612E @POSS> TARGET Rel + LU IF (-1 Rel + 4SgPoss)(1 POSSESSUM + 3PlPoss) ;
 
+MAP:M0615A @MIK-OBJ> TARGET Ins IF (*1 Gram/HV + V BARRIER V) (NEGATE -1 @MIK-OBJ>) ; #Ikke MAP fordi ogsaa ADVL> mulig
 
 ADD:M0620 (@MIK-OBJ>) TARGET Ins IF (*1 HTR + V BARRIER V); #Ikke MAP fordi ogsaa ADVL> mulig
 MAP:M0630 (@i-MIK-OBJ>) TARGET Ins IF (1 HTR + Der/vn - V) ; #20091106
@@ -2651,7 +2653,10 @@ MAP:M1250 (@ADVL>) TARGET CONT + 4Pl IF (*1 VFIN + 3Pl OR CON_CAU + 3Pl OR 4Pl);
 MAP:M1251 @ADVL> TARGET CONT IF (*1 Par BARRIER VERB-NOTCONT ) ;
 MAP:M1260 (@<ADVL) TARGET Cont + 4Pl OR ContNeg + 4Pl IF (*-1 VFIN + 3Pl)(NEGATE 0 LU);
 
-MAP:M1265 (@<ADVL) TARGET CONT IF (*-1 KOMMA LINK *-1 @PRED)(NEGATE *-1 LU BARRIER @PRED); #ad hoc. Skal udbygges med templates
+MAP:M1266X (@PRED) TARGET CONT IF (-1 CONT LINK -1 LU LINK -1 KOMMA) ; #Flyttet for at forebygge hits på parataktiske hovedsætninger i M1266. Skal nok revideres.
+MAP:M1266Y @ADVL> TARGET CONT IF (1* CONT + @PRED BARRIER VFIN) ;
+
+MAP:M1266 @<ADVL TARGET CONT - LU - LI IF (*-1 VFIN) (NEGATE *1 VFIN)(NEGATE -1* LI + N OR LU + N BARRIER V)(NEGATE 1* CONT + @PRED BARRIER VFIN); #Sen mapping til lugu/git efter overordnet verbum. #LU for at forebygge hit på paratakser. #Regler tilføjet for at hindre hit på inussiarnisaarluni i 'oqaluunniaraanganilu inussiarnisaarluni akisarlugu.' og på alle i 'baajeeriarlunilu sikkilerluni aallarluni.' 
 
 # Neksusadverbialerne
 # ===================
@@ -3073,6 +3078,9 @@ SELECT:1641 3SgPoss IF (-1 Rel + Sg)(NEGATE -1 Rel + Sg LINK *1 TRANSVERB + 3Sg 
 SELECT 3PlPoss IF (-1C Rel + Pl) ;
 #Disambiguerer  "inngili" N Rel Sg 3PlPoss fra "inngili" N Rel Sg 3SgPoss i "Naalakkap inngiliata"
 SELECT:1650 Abs + 4SgPoss IF (1 Abs + Der/vn)(*1 V + 3SgO) ; #PANINI er ikke lokalis i Perip PANINI pinnersoq pulaarpaa
+
+REMOVE:1670 1SgPoss IF (0 (Num))(*1 QAR OR LIK BARRIER V) ;  #Arfinilinnik ukioqarlunga. Kan nok gøres bredere.
+REMOVE:1671 2SgPoss IF (0 (Num))(*1 QAR OR LIK BARRIER V) ;   
 
 SELECT:1680 1SgPoss IF (*1 V + 1Sg BARRIER V ) ;    #disambiguerer 1SgPoss fra 2SgPoss 
 SELECT:1681 2SgPoss IF (*1 V + 2Sg BARRIER V ) ;       
@@ -4203,6 +4211,8 @@ REMOVE:9965C Gram/TV + TUQ + N IF (0 Gram/IV + TUQ + N)(NEGATE *-1 ("immi")) ; #
 SELECT:9966 (/__Gram\/IV\ NIQ__/l) IF (0 (/__Gram\/TV\ NIQ__/l)) ; #heuristisk valg af intransitiv sent i kaskaden 
 SELECT:9966A (/__Gram\/IV\ TIP__/l) IF (0 (/__Gram\/TV\ TIP__/l)) ; #heuristisk valg af intransitiv sent i kaskaden 
 SELECT:9966B (/__Gram\/IV\ TUQ__/l) IF (0 (/__Gram\/TV\ TUQ__/l)) ; #heuristisk valg af intransitiv sent i kaskaden 
+
+SELECT:9966C (Gram/HV) IF (NOT -*1 ("immi") BARRIER V) ; #heuristisk valg af halvtransitiv sent i kaskaden
 
 REMOVE:9967A ("(\"[^<].*\"\sGram\/TV\sTIP)"r) IF (0 ("(\"[^<].*\"\sGram\/IV\sTIP)"r)); #Virker ikke 20180304
 
