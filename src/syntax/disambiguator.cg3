@@ -1144,6 +1144,7 @@ LIST CLOTHES = "kamik" "annoraaq" "kavaajaq" "alersi" "alerseq" "skuu" ;
 SET FOOD = EDIBLE | DRINKABLE ;
 LIST THING = "alussaat" "aqqusineq" ("ati" TAQ) "ilullissiaq" "siu" "timi" "savik" "torsuusaq";
 LIST MATERIAL = "ameq" "ulik" "qipik" ;
+LIST TOOL = "savik" ;
 LIST f-an_SG = "qaneq" "qingaq" ;
 LIST TIME = ("aallar" QQAAR UTE) "aasaq" ("arfineq" NNGUR) ("ataaseq" NNGUR) "ippassaq" "marlunngor" "nali" ("pingasut" NNGUR) "pingasunngor" "piffik" "qaammat" "qeqqa" "sapaat" ("sisamat" NNGUR) "sisamanngor" "sivisu" "siulleq" "taarsi" ("tallimat" NNGUR) "tallimanngor" "ualeq" "ukiaq" ("ukiar" TUQ) "ukiartoq" "ukioq" "ullaa" "ullaaq" "ulloq" "unnuaq" "unnuk";
 LIST UGEDAGE = ("arfineq" NNGUR) ("ataaseq" NNGUR) "marlunngor" ("pingasut" NNGUR) "pingasunngor" "sapaat" ("sisamat" NNGUR) "sisamanngor" ("tallimat" NNGUR) "tallimanngor" ;
@@ -1205,7 +1206,7 @@ LIST @OBJ> = @OBJ> ;		 # objekt med pred t.h.
 LIST @<OBJ = @<OBJ ;		 # objekt med pred t.v.
 LIST @ADVL> = @ADVL> ;		 # adverbial med kerne t.h.
 LIST @<ADVL = @<ADVL ;		 # adverbal med kerne t.v.
-LIST @CONJ = @CONJ ;
+LIST @CONJ = @CONJ ;			 # konjunktion
 LIST @CON = @CON ;	# erstatter de foelgende ved conditionalis - baade coref og non-coref
 LIST @CAU = @CAU ;	# erstatter de foelgende ved causativ - baade coref og non-coref
 LIST @CL-ADVL> = @CL-ADVL> ; # neksusadverbial der modificerer t.h. 
@@ -1217,8 +1218,8 @@ LIST @i-<SUBJ = @i-<SUBJ ;   # "dativ-objektet" ved dotr verbal t.v.
 LIST @MIK-OBJ> = @MIK-OBJ> ; # indef objekt ved HTR til hoejre
 #LIST @<MIK-OBJ = @<MIK-OBJ ; # indef objekt ved HTR til venstre #Findes den kontekst overhovedet??
 LIST @i-MIK-OBJ> = @i-MIK-OBJ> ; #objekt ved inderiveret halvtransitiv 20091106
-LIST @i-OBJ_DOTR> = @i-OBJ_DOTR> ;     # tingsobjekt i Ins eller personobjekt i Trm ved dotr th
-
+LIST @i-OBJ-DOTR> = @i-OBJ-DOTR> ;     # tingsobjekt i Ins eller personobjekt i Trm ved dotr th
+LIST @OBJ-DOTR> = @OBJ-DOTR> ; #Objekt for et dobbelttransitivt verbum
 LIST @i-<OBJ = @i-<OBJ ;	 # tingsobjekt i Ins eller personobjekt i Trm ved dotr tv
 LIST @i-ADVL> = @i-ADVL> ;	 # adverbial der står til inkorporeret verbal t.h.
 LIST @i-<ADVL = @i-<ADVL ;	 # adverbial der står til inkorporeret verbal t.v.
@@ -1260,7 +1261,7 @@ LIST §PropNexusPl = §PropNexusPl ;
 LIST §PropNexusSg = §PropNexusSg ;
 
 
-SET TAGGED = @PRED OR @SUBJ> OR @<SUBJ OR @OBJ> OR @<OBJ OR @ADVL> OR @<ADVL OR @CL-ADVL> OR @CL-<ADVL OR @CL-CIT> OR @CL-<CIT OR @i-SUBJ> OR @i-<SUBJ OR @i-OBJ_DOTR> OR @i-<OBJ OR @i-ADVL> OR @i-<ADVL OR @INTERJ OR @PROP> OR @HNOUN OR @>N OR @<N OR @i->N OR @i-N< OR @POSS OR @POSS> OR @>V ;
+SET TAGGED = @PRED OR @SUBJ> OR @<SUBJ OR @OBJ> OR @<OBJ OR @ADVL> OR @<ADVL OR @CL-ADVL> OR @CL-<ADVL OR @CL-CIT> OR @CL-<CIT OR @i-SUBJ> OR @i-<SUBJ OR @i-OBJ-DOTR> OR @OBJ-DOTR> OR @i-<OBJ OR @i-ADVL> OR @i-<ADVL OR @INTERJ OR @PROP> OR @HNOUN OR @>N OR @<N OR @i->N OR @i-N< OR @POSS OR @POSS> OR @>V ;
 
 # Syntaks
 # =======
@@ -1279,7 +1280,7 @@ SET @ALL-ARG> = @ARG> OR @CL-ARG> ;
 SET @ALL-<ARG = @<ARG OR @CL-<ARG ; 
 
 
-LIST @ALLOBJ> = @OBJ> @i-OBJ_DOTR> ;
+LIST @ALLOBJ> = @OBJ> @i-OBJ-DOTR> @OBJ-DOTR> ;
 LIST @<ALLOBJ = @<OBJ @i-<OBJ ;
 
 LIST @ALLSUBJ> = @SUBJ> @i-SUBJ> @SUBJ>+SUB ;
@@ -2221,6 +2222,8 @@ MAP:M0061D (@CL-<CIT) TARGET Cont + 2Pl IF (-*1 ORATIOOBLVERB + 2Pl)(NEGATE *1 C
 MAP:M0062 (@CL-<CIT) TARGET Cont + 4Pl IF (-*1 ORATIOOBLVERB + 3Pl)(NEGATE *1 Cont)(NEGATE *1 Par) ;
 MAP:M0062A (@CL-<CIT) TARGET CONT + 4Pl IF (-*1 ORATIOOBLVERB + 3Sg)(NEGATE *1 Cont)(NEGATE *1 Par)(-1*W 3Pl) ;
 MAP:M0063 (@CL-<CIT) TARGET CONT + TRANSVERB IF (-*1 ORATIOOBLVERB BARRIER @PRED)(NEGATE *1 Cont)(NEGATE *1 Par) ; #Eqqaamavaa inuppassuullutik kongruerer ikke.
+#MAP:M0063A (@CL-<CIT) TARGET CONT + TRANSVERB IF (-*1 ORATIOOBLVERB BARRIER @PRED)(NEGATE *1 Cont)(NEGATE *1 Par)(NEGATE *-1C Par LINK *1 (<<<) BARRIER ORATIOOBLVERB ) ; #Eqqaamavaa inuppassuullutik kongruerer ikke.
+
 #Simpel co-ref oratio obliqua uden andre ledsagemåder end CL-CIT
 
 MAP:M0065 @V> TARGET Abs + NIQ - POSSESSUM IF (1 ("ajor") OR ("saper")) ;
@@ -2642,7 +2645,7 @@ MAP:M0929B @ADVL> TARGET Trm IF (1 KOMMA)(2 Trm OR Ins)(3 Trm)(4 KOMMA);
 MAP:M0930 (@i-ADVL>) TARGET Trm - Prop IF (*1 Der/vn BARRIER V)(NEGATE 1 Lok + IP + TUQ + Trm)(NEGATE 1 @<N); #(NEGATE 0 TIME LINK *-1 BOS BARRIER (*) - ("taamaakkaluartoq")); #må ikke hitte på sit eget kongruensadled. (NEGATE3) Må ikke hitte på nexusadverbial evt. efter koncessiv virker ikke endnu 20180207
 MAP:M0630B (@i-MIK-OBJ>) TARGET Ins IF (*1 HTR + Der/vn - V BARRIER HTR OR (*) - @i-ADVL> - @<N) ; # dubleret M0630
 
-MAP:M0940 (@ADVL>) TARGET OBLIQUE IF (*1 V BARRIER ("quleriilik") LINK NOT 0 QAR OR LIK)(NEGATE 0 Par LINK *-1 ORATIOOBLVERB)(NEGATE 0 Ins LINK 1 DOTR)(NEGATE 0 Ins LINK 1 Ins LINK 1 DOTR)(NEGATE 0 DivPron + 4Sg LINK *1 V + 4Sg)(NEGATE 0 DivPron + 4Sg LINK 1 POSSESSUM + 3SgPoss) ; #Foerst adled til Der/vn og i-ADVL, derefter andre ADVL. Må ikke hitte or. obl. med Lok + IP + Par og må ikke blokere for @i-OBJ_DOTR>
+MAP:M0940 (@ADVL>) TARGET OBLIQUE IF (*1 V BARRIER ("quleriilik") LINK NOT 0 QAR OR LIK)(NEGATE 0 Par LINK *-1 ORATIOOBLVERB)(NEGATE 0 Ins LINK 1 DOTR)(NEGATE 0 Ins LINK 1 Ins LINK 1 DOTR)(NEGATE 0 DivPron + 4Sg LINK *1 V + 4Sg)(NEGATE 0 DivPron + 4Sg LINK 1 POSSESSUM + 3SgPoss) ; #Foerst adled til Der/vn og i-ADVL, derefter andre ADVL. Må ikke hitte or. obl. med Lok + IP + Par og må ikke blokere for @i-OBJ-DOTR>
 
 MAP:M0950X @<ADVL TARGET N IF (-1 ("\("))(1 ("\)"))(-2 @<ADVL) ; #Parantetiske indskud samme led som foregående ord
 MAP:M0951 @<ADVL TARGET OBLIQUE - V IF (-*1 V) (NEGATE *1 VFIN BARRIER KOMMA) ; # -V for at undgå at den rammer verbalierede obliquer.
@@ -2796,8 +2799,8 @@ MAP:M1425 (@CL-ADVL>) TARGET IteCau OR Cau OR Con IF (*1 VFIN) ;
 MAP:M1430 (@CL-<CIT) TARGET Par + INTRANSVERB + 3Pl IF (*-1 ORATIOOBLVERB)(*-1 ("\,"))(*-1 Abs + Pl BARRIER ("\,")); 
 MAP:M1440 (@i-SUBJ>) TARGET Trm IF (*1 DOTR);
 
-MAP:M1449 (@i-OBJ_DOTR>) TARGET Ins IF (-*1 Abs)(1 Ins + Der/vn OR Ins + ADJEKTIVISK)(2 DOTR);
-MAP:M1450 (@i-OBJ_DOTR>) TARGET Ins IF (-*1 Abs)(*1 DOTR BARRIER (*) - @<N) ;
+MAP:M1449 (@i-OBJ-DOTR>) TARGET Ins IF (-*1 Abs)(1 Ins + Der/vn OR Ins + ADJEKTIVISK)(2 DOTR);
+MAP:M1450 (@i-OBJ-DOTR>) TARGET Ins IF (-*1 Abs)(*1 DOTR BARRIER (*) - @<N) ;
 
 ADD:M1460 (@OBJ>) TARGET Ins IF (*1 IntransTrans);
 MAP:M1470 (@ADVL> @<ADVL) TARGET Ins ;
@@ -2995,8 +2998,8 @@ SELECT:0447 INTRANSVERB + Par + 3Pl IF (-*1 Cont + 4Pl)(NEGATE *0 ORATIOOBLVERB)
 #Specialtilfælde til følgende, hvor bisætningens subjekt er implicit, men nexus klar nok på gr. af ledsagemåde uden for overordnet nexus' scope. 
 #Pinngussanik ilaatigut qaqutiguuissunik pinngualersorlutik pinnguartut simaartuaqqat silataaniit isiginnaarrappaat ilaasa kaasarfisik kaallugit kakkitik millutillattaarlugit.
 
-SELECT:0449 Par + 3Pl IF (-1 BOS)(*1 VFIN + INTRANSVERB - 3Pl OR VFIN + TRANSVERB - 3PlO BARRIER Con OR Cau OR ("\,"))(NEGATE 0 Rel + Sg LINK *1 3SgPoss)(NEGATE 0 Rel + Pl LINK 1 3PlPoss)(NEGATE 1 ("ila"));
-#En tidsbisætning som kun er participiet. Der skal være et verballed, men det må ikke være 3. plur og det må udelukkes, at "participiet" ikke er et objekt. Også muligheden af relativ sing + enklitis må udelukkes. Og muligheden af possessor.
+SELECT:0449 Par + 3Pl IF (-1 BOS)(*1 VFIN + INTRANSVERB - 3Pl OR VFIN + TRANSVERB - 3PlO BARRIER Con OR Cau OR ("\,"))(NEGATE 0 Rel + Sg LINK *1 3SgPoss)(NEGATE 0 Rel + Pl LINK 1 3PlPoss)(NEGATE 1 ("ila"))(NEGATE 1 ORATIOOBLVERB LINK *1 Par) ;
+#En tidsbisætning som kun er participiet. Der skal være et verballed, men det må ikke være 3. plur og det må udelukkes, at "participiet" ikke er et objekt. Også muligheden af relativ sing + enklitis må udelukkes. Og muligheden af possessor. #Sidste NEGATE for at udelukke to oo'er til samme inquit.
 
 SELECT:0451 Par + 3Pl + TEMPUSVERB IF (-1 BOS)(*1 Abs LINK *1 VFIN + INTRANSVERB BARRIER Con OR Cau OR ("\,"))(NEGATE *1 Rel LINK *1 VFIN + TRANSVERB BARRIER Con OR Cau OR ("\,"))(NEGATE 0 Rel + Sg LINK *1 3SgPoss);
 #En tidsbisætning som kun er participiet. Næsten som ParPred01, men uden krav om at at hovednexus ikke må være pluralis. Til gengæld med en leksikal begrænsning i 0.
@@ -3168,8 +3171,10 @@ SELECT:1650 Abs + 4SgPoss IF (1 Abs + Der/vn)(*1 V + 3SgO) ; #PANINI er ikke lok
 REMOVE:1670 1SgPoss IF (0 (Num))(*1 QAR OR LIK BARRIER V) ;  #Arfinilinnik ukioqarlunga. Kan nok gøres bredere.
 REMOVE:1671 2SgPoss IF (0 (Num))(*1 QAR OR LIK BARRIER V) ;   
 
-SELECT:1680 1SgPoss IF (*1 V + 1Sg BARRIER V ) ;    #disambiguerer 1SgPoss fra 2SgPoss 
-SELECT:1681 2SgPoss IF (*1 V + 2Sg BARRIER V ) ;       
+REMOVE:1678 2SgPoss IF (*1 V + 1Sg BARRIER V) ; #20180405 REMOVE i stedet for SELECT for at bibeholde pluralislæsning som ikke er poss efter k-stammer. Reglen er sikrere og forkaster ikke de mange korrekte læsninger som SELECT-reglen.
+REMOVE:1679 1SgPoss IF (*1 V + 2Sg BARRIER V) ;
+#SELECT:1680 1SgPoss IF (*1C V + 1Sg BARRIER V ) ;    #disambiguerer 1SgPoss fra 2SgPoss 
+#SELECT:1681 2SgPoss IF (*1 V + 2Sg BARRIER V ) ;       
 
 SELECT Abs + Sg IF (1 Cont + 3SgO)(NEGATE 0 Part) ; #reglen sletter fx ilaannilu før Vb-TARlugu
 SELECT Abs + Pl IF (1 Cont + 3PlO) ;
@@ -4325,4 +4330,5 @@ REMOVE:9973 OLang/DAN ; # Slet låneord, hvis ikke eneste læsning
 
 AFTER-SECTIONS
 SUBSTITUTE:S0033A (/@.*/r) (@<N) TARGET (/__TUQ\ Der\/vn\ N__/l) + $$KASUS + $$NUMERUS + (/@\(<?SUBJ>?|<?OBJ>?|SUBJ_COMP|<?MIK-OBJ>?\)/r) (**-1 N + $$KASUS + $$NUMERUS BARRIER (*) - @i-ADVL> - @i-MIK-OBJ> - @<N LINK 0 (VSTR:/@$1/r)) ;
-SUBSTITUTE @ADVL> (@OBJ-DOTR>) TARGET Ins OR Trm IF (1 Gram/Db) ;
+SUBSTITUTE:S0034 @ADVL> @OBJ-DOTR> TARGET Ins OR Trm IF (*1 Gram/Db BARRIER (*) - @<N - TIME - TOOL) ;
+SUBSTITUTE:S0035 @i-ADVL> @i-OBJ-DOTR> TARGET Ins OR Trm IF (*1 Gram/Db BARRIER (*) - @<N - TIME - TOOL) ;
