@@ -1378,32 +1378,10 @@ SELECT:0001Y ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"$1"r)) ;
 
 #REMOVE:0001XX UGEDAGE + Gram/TV IF (0 UGEDAGE + Gram/IV) ; #NNGUR + Gram/TV utænkelig ved ugedages navne #udkommenteret og gjort listen entydig i stedet.
 
-# Appositional proper noun without comma
-REMOVE:0001A Prop + Sem/FirstName IF (0 Prop + Sg)(-1 N + Sg)(*1 VFIN + 3Sg BARRIER KOMMA);
-# Same construct case LU
-REMOVE:0001B Prop + Sem/FirstName IF (0 Prop + Sg)(-1 N + Sg)(1 N + Sg + LU)(*1 VFIN + 3Pl BARRIER KOMMA) ;
-
 #Exclm og Guess overgenerer voldsomt. Skal kun overleve, når de er eneste læsning
 REMOVE:0002A Exclm ;
 REMOVE:0002B Guess ;
 
-#Vælg Indikativ verbum, hvis eneste finitte. NIR undtaget, da ofte fejl for NIQ plus noget. BARRIER reduceret fra BARRIER LU OR LI OR KOMMA til kun KOMMA på gr. af mange hit på nominalparatakser med LU og adverbialer med LI
-SELECT:0003 Ind - SUB IF (NEGATE *0 VFIN BARRIER KOMMA)(NEGATE 0 NIR)(NEGATE 0 Int LINK 1 ("?"))(NEGATE 0 Par LINK *-1 KONCESSIV)(NEGATE -1 NIQ + Comp) ; #SUB undtaget for ikke at gøre Via som matuagut til Ind 1Pl. Må ikke slette Par i koncessiver og efterlade fx GALUAQ + GE + Ind. Må ikke slette NIQ fulgt af Par 
-
-#Fjern umulige possessum
-REMOVE:0004 POSSESSUM IF (0 NON-POSSESSUM)(NEGATE 0 TAQ + Der/nn) ;
-
-#KKUT vs. Via
-REMOVE:0005A KKUT IF (0 GeoProp);
-REMOVE:0005B ("massak") + KKUT IF (0 ("massakkut")); #næppe nogensinde 'milt m.fl.'
-REMOVE:0005C Via + FAM OR Via + Prop IF (0 KKUT) ;
-
-# Vælg Interj hvis fulgt af '?' eller efter foregående Imp
-SELECT:0010 ("aat") IF (1 ("?"));
-SELECT:0011 ("aat") IF (-*1C Imp);
-
-#Vokativ meget sjælden uden proprium
-REMOVE:0019 AA IF (NEGATE 0 Prop);
 
 ### Usandsynlige morfemkombinationer ###
 #======================================#
@@ -1425,6 +1403,13 @@ REMOVE:0022 (/__TUQ\ Der\/vn\ LIR\ Der/nv__/l) IF (0 ("ilungersor") + LIR) ;
 REMOVE:0022A UTE + Der/nn + NOT-POSSESSUM - SSAQ - PALAAQ - SUAQ IF ( 0 POSSESSUM); #SSAQ og PALAAQ medtaget som mulige +Der/nn
 REMOVE:0039A ("sani") + LIK IF ( 0 ("sanileq"));
 
+REMOVE:0040I NAAR - NAAR_VERBER ; #Sletter irriterende fejlanalyser med NAAR på verber, der ikke kan indeholde et element af vurdering
+
+#KKUT vs. Via
+REMOVE:0005A KKUT IF (0 GeoProp);
+REMOVE:0005B ("massak") + KKUT IF (0 ("massakkut")); #næppe nogensinde 'milt m.fl.'
+REMOVE:0005C Via + FAM OR Via + Prop IF (0 KKUT) ;
+
 SELECT:0039B Part + ("aamma") ;
 SELECT:0023 ("illuttut") + ADVERBIEL IF (*1 LIK OR QAR BARRIER V); #Næppe sneblinde, men tosidet N
 
@@ -1436,6 +1421,7 @@ SELECT:0017 ("siornatigut") + ADVERBIEL IF (1 Der/vn) ;
 
 #Farlig regel, der skal checkes, men så længe både (3Pl+3PlO+SUB) og (3Sg+3PlO) eksisterer er det umuligt at disambiguere Rel+Pl som subjekt fra Abs+Pl som objekt.
 REMOVE:0026 3Pl + 3PlO + SUB IF (0 3Sg + 3PlO)(*-1 Abs + Pl ) ;
+
 
 ### NIR ###
 #=========#
@@ -1467,8 +1453,11 @@ REMOVE:0040A TIME + KKUT IF (-1 BOS); #Kan vist kun være Via i den position
 SELECT:0040F TIME + Abs IF (1 ("tamaq") + Akk);
 
 
-### 4SgPoss ###
-#=============#
+### POSSESSUM ###
+#===============#
+
+#Fjern umulige possessum
+REMOVE:0004 POSSESSUM IF (0 NON-POSSESSUM)(NEGATE 0 TAQ + Der/nn) ;
 
 #lokalis eller 4SgPoss: Næppe possessum hvis taamaattuni er adled
 SELECT:0027 Lok + Pl IF (1 ("taama") + Lok + Pl) ;
@@ -1476,6 +1465,7 @@ SELECT:0028 ("taama") + Lok + Pl IF (-1 Lok + Pl) ;
 
 #Rel + 4SgPoss sammenblandes ofte med Lok. Derfor en tidlig regel til at selecte sikre subjekter
 SELECT:0036 Rel + 4SgPoss IF (*1 TRANSVERB + 3Sg + CON_CAU BARRIER V)(NEGATE 0 Interj)(NEGATE 0 V)(NEGATE 1 3SgPoss)(NEGATE 0 VIK + Lok)(NEGATE 0 Rel + Pl LINK 1 POSSESSUM + 3PlPoss); #fx Ikke Ilami! og anillakkami, ikke possessor og ikke ADVL
+
 #Parataktiske possessorer
 REMOVE:0037AX Rel + 4SgPoss - LU IF (-1 Rel + LU LINK -1 Rel)(0 Lok)(1 POSSESSUM + 3PlPoss + NIQ);
 SELECT:0037A Rel + 4SgPoss IF (1 Rel + LU LINK 1 Lok OR Ins LINK 1 POSSESSUM + 3PlPoss) ;
@@ -1490,6 +1480,9 @@ SELECT:0038 Rel + 4SgPoss IF (*1 TRANSVERB + 3Sg + Par BARRIER V)(NEGATE 0 Inter
 REMOVE:0039 Abs + 3SgPoss IF (0 Int + 3Sg)(1 ("?")); # .. toqua? er ikke 'hendes død'
 
 
+### MODUS ###
+#===========#
+
 #Det ret usandsynlige participium 3Sg-1SgO + MI er homonymt med IteCau + 4Sg. Slettes hvis VFIN + 3Sg
 REMOVE:0032 Par + 3Sg + 1SgO + MI IF (0 IteCau + 4Sg LINK *1 VFIN + 3Sg) ;
 
@@ -1497,7 +1490,31 @@ REMOVE:0040B Par + 3Sg IF (-2 N + Sg + $$KASUS LINK 1 ("taamatut") LINK 1 Der/vn
 REMOVE:0040C Par + 3Pl IF (-2 N + Pl + $$KASUS LINK 1 ("taamatut") LINK 1 Der/vn + Pl + $$KASUS);
 REMOVE:0040D Par + 3Pl IF (1 Par + 3Pl + NIR); #Må være subjektet og ikke Par
 
-REMOVE:0040E 4PlO + Cont - Dobbelttransitiv ; #Er vist en utænkelig kombination?? 
+REMOVE:0040E 4PlO + CONT - Dobbelttransitiv ; #Er vist en utænkelig kombination?? 
+
+#Vælg Indikativ verbum, hvis eneste finitte. NIR undtaget, da ofte fejl for NIQ plus noget. BARRIER reduceret fra BARRIER LU OR LI OR KOMMA til kun KOMMA på gr. af mange hit på nominalparatakser med LU og adverbialer med LI
+SELECT:0003 Ind - SUB IF (NEGATE *0 VFIN BARRIER KOMMA)(NEGATE 0 NIR)(NEGATE 0 Int LINK 1 ("?"))(NEGATE 0 Par LINK *-1 KONCESSIV)(NEGATE -1 NIQ + Comp) ; #SUB undtaget for ikke at gøre Via som matuagut til Ind 1Pl. Må ikke slette Par i koncessiver og efterlade fx GALUAQ + GE + Ind. Må ikke slette NIQ fulgt af Par 
+
+
+### INTERJEKTION, VOKATIV og IMPERATIV ###
+#========================================#
+
+# Vælg Interj hvis fulgt af '?' eller efter foregående Imp
+SELECT:0010 ("aat") IF (1 ("?"));
+SELECT:0011 ("aat") IF (-*1C Imp);
+
+#Vokativ meget sjælden uden proprium
+REMOVE:0019 AA IF (NEGATE 0 Prop);
+
+REMOVE:0040K TRANSVERB + TUQ + U + Imp ; #Hyppigt forekommende fejlanalyser. 20160504 Skal måske begrænses hvis for bred 
+
+
+
+# Appositional proper noun without comma
+REMOVE:0001A Prop + Sem/FirstName IF (0 Prop + Sg)(-1 N + Sg)(*1 VFIN + 3Sg BARRIER KOMMA);
+# Same construct case LU
+REMOVE:0001B Prop + Sem/FirstName IF (0 Prop + Sg)(-1 N + Sg)(1 N + Sg + LU)(*1 VFIN + 3Pl BARRIER KOMMA) ;
+
 
 #HNOUN NP i citationstegn med og uden komma
 SELECT:0040GX Abs IF (1 Abs)(2 KOMMA)(3 ("”"))(*1 ORATIOOBLVERB) ;
@@ -1505,17 +1522,13 @@ SELECT:0040HX Abs IF (-1 Abs)(1 KOMMA)(2 ("”"))(*1 ORATIOOBLVERB) ;
 SELECT:0040G Abs IF (1 Abs)(2 ("”"))(*1 ORATIOOBLVERB) ;
 SELECT:0040H Abs IF (-1 Abs)(1 ("”"))(*1 ORATIOOBLVERB) ;
 
-REMOVE:0040I NAAR - NAAR_VERBER ; #Sletter irriterende fejlanalyser med NAAR på verber, der ikke kan indeholde et element af vurdering
-
-REMOVE:0040K TRANSVERB + TUQ + U + Imp ; #Hyppigt forekommende fejlanalyser. 20160504 Skal måske begrænses hvis for bred 
 
 # Speciel possessor-konstruktion med løst tilføjet adled til led til venstre må håndteres tidligt jf. :M0067. Må ikke slette Prop, der står som apposition eller vælge ("taama")+POSSESSUM frem for  ("taamaattumik")
 SELECT:0040N Rel IF (NEGATE *1 V)(*-1 KOMMA LINK *-1 Rel LINK 1 POSSESSUM3)(NEGATE 0 Prop + $$KASUS LINK -1 $$KASUS)(NEGATE 0 ("taamaattumik")) ;
 
 # Konstruktioner med possessor til inderiveret nomen. Skal stå før @POSS.
 #MAP:POSS0040Q @i-POSS> TARGET Rel IF (1 POSSESSUM + IP + TUQ) ;
-MAP:POSS0040Q @i-POSS> TARGET Rel IF (1 POSSESSUM + IP + ("ati")) ;
-#SUBJTRANSVERB&
+MAP:POSS0040Q @i-POSS> TARGET Rel IF (1 POSSESSUM + IP + SPATIAL) ;
 
 #Enkeltvise komplekse konstruktioner, der er nærmest er uløselige med generelle regler. 
 #0040Vn er strukturen 3PlPoss+SUBJ> ADLED 3PlPoss+Lok+ADVL> Gram/CorefPron Adled til Lok V+3Pl som i "Meeraat nukarliliarsuit erneranni nammineq illulimmi inissisimasinnaapput
