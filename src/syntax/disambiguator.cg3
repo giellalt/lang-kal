@@ -1450,33 +1450,6 @@ REMOVE:0040A TIME + KKUT IF (-1 BOS); #Kan vist kun være Via i den position
 SELECT:0040F TIME + Abs IF (1 ("tamaq") + Akk);
 
 
-### POSSESSUM ###
-#===============#
-
-#Fjern umulige possessum
-REMOVE:0004 POSSESSUM IF (0 NON-POSSESSUM)(NEGATE 0 TAQ + Der/nn) ;
-
-#lokalis eller 4SgPoss: Næppe possessum hvis taamaattuni er adled
-SELECT:0027 Lok + Pl IF (1 ("taama") + Lok + Pl) ;
-SELECT:0028 ("taama") + Lok + Pl IF (-1 Lok + Pl) ;
-
-#Rel + 4SgPoss sammenblandes ofte med Lok. Derfor en tidlig regel til at selecte sikre subjekter
-SELECT:0036 Rel + 4SgPoss IF (*1 TRANSVERB + 3Sg + CON_CAU BARRIER V)(NEGATE 0 Interj)(NEGATE 0 V)(NEGATE 1 3SgPoss)(NEGATE 0 VIK + Lok)(NEGATE 0 Rel + Pl LINK 1 POSSESSUM + 3PlPoss); #fx Ikke Ilami! og anillakkami, ikke possessor og ikke ADVL
-
-#Parataktiske possessorer
-REMOVE:0037AX Rel + 4SgPoss - LU IF (-1 Rel + LU LINK -1 Rel)(0 Lok)(1 POSSESSUM + 3PlPoss + NIQ);
-SELECT:0037A Rel + 4SgPoss IF (1 Rel + LU LINK 1 Lok OR Ins LINK 1 POSSESSUM + 3PlPoss) ;
-SELECT:0037B Rel + 4SgPoss IF (1 Rel + LU LINK 1 POSSESSUM + Rel LINK 1 POSSESSUM + 3PlPoss) ;
-SELECT:0037C Rel + 4SgPoss IF (1 Rel + LU LINK 1 POSSESSUM + 3PlPoss) ;
-SELECT:0037D Rel + LU IF (-1 Rel + 4SgPoss)(1 Lok OR Ins LINK 1 POSSESSUM + 3PlPoss) ;
-
-#SELECT:0037 Rel + 4SgPoss IF (*1 TRANSVERB + 3Sg + Cau BARRIER V)(NEGATE 0 Interj)(NEGATE 0 V)(NEGATE 1 3SgPoss)(NEGATE 0 VIK + Lok)(NEGATE 0 Rel + Pl LINK 1 POSSESSUM + 3PlPoss); #fx Ilami! og anillakkami
-SELECT:0038 Rel + 4SgPoss IF (*1 TRANSVERB + 3Sg + Par BARRIER V)(NEGATE 0 Interj)(NEGATE 0 V)(NEGATE 1 3SgPoss)(NEGATE 0 VIK + Lok)(NEGATE 0 Rel + Pl LINK 1 POSSESSUM + 3PlPoss); #fx Ilami! og anillakkami
-
-
-REMOVE:0039 Abs + 3SgPoss IF (0 Int + 3Sg)(1 ("?")); # .. toqua? er ikke 'hendes død'
-
-
 ### MODUS ###
 #===========#
 
@@ -1506,11 +1479,16 @@ REMOVE:0019 AA IF (NEGATE 0 Prop);
 REMOVE:0040K TRANSVERB + TUQ + U + Imp ; #Hyppigt forekommende fejlanalyser. 20160504 Skal måske begrænses hvis for bred 
 
 
+### PROPRIUM ###
+#==============#
 
 # Appositional proper noun without comma
 REMOVE:0001A Prop + Sem/FirstName IF (0 Prop + Sg)(-1 N + Sg)(*1 VFIN + 3Sg BARRIER KOMMA);
 # Same construct case LU
 REMOVE:0001B Prop + Sem/FirstName IF (0 Prop + Sg)(-1 N + Sg)(1 N + Sg + LU)(*1 VFIN + 3Pl BARRIER KOMMA) ;
+
+#Proprium med MI er næsten altid lokativ
+REMOVE:0042 Prop + MI IF (0 Prop + Lok);
 
 
 #HNOUN NP i citationstegn med og uden komma
@@ -1519,6 +1497,31 @@ SELECT:0040HX Abs IF (-1 Abs)(1 KOMMA)(2 ("”"))(*1 ORATIOOBLVERB) ;
 SELECT:0040G Abs IF (1 Abs)(2 ("”"))(*1 ORATIOOBLVERB) ;
 SELECT:0040H Abs IF (-1 Abs)(1 ("”"))(*1 ORATIOOBLVERB) ;
 
+
+### POSSESSUM ###
+#===============#
+
+#Fjern umulige possessum
+REMOVE:0004 POSSESSUM IF (0 NON-POSSESSUM)(NEGATE 0 TAQ + Der/nn) ;
+
+#lokalis eller 4SgPoss: Næppe possessum hvis taamaattuni er adled
+SELECT:0027 Lok + Pl IF (1 ("taama") + Lok + Pl) ;
+SELECT:0028 ("taama") + Lok + Pl IF (-1 Lok + Pl) ;
+
+#Rel + 4SgPoss sammenblandes ofte med Lok. Derfor en tidlig regel til at selecte sikre subjekter
+SELECT:0036 Rel + 4SgPoss IF (*1 TRANSVERB + 3Sg + CON_CAU BARRIER V)(NEGATE 0 Interj)(NEGATE 0 V)(NEGATE 1 3SgPoss)(NEGATE 0 VIK + Lok)(NEGATE 0 Rel + Pl LINK 1 POSSESSUM + 3PlPoss); #fx Ikke Ilami! og anillakkami, ikke possessor og ikke ADVL
+
+#Parataktiske possessorer
+REMOVE:0037AX Rel + 4SgPoss - LU IF (-1 Rel + LU LINK -1 Rel)(0 Lok)(1 POSSESSUM + 3PlPoss + NIQ);
+SELECT:0037A Rel + 4SgPoss IF (1 Rel + LU LINK 1 Lok OR Ins LINK 1 POSSESSUM + 3PlPoss) ;
+SELECT:0037B Rel + 4SgPoss IF (1 Rel + LU LINK 1 POSSESSUM + Rel LINK 1 POSSESSUM + 3PlPoss) ;
+SELECT:0037C Rel + 4SgPoss IF (1 Rel + LU LINK 1 POSSESSUM + 3PlPoss) ;
+SELECT:0037D Rel + LU IF (-1 Rel + 4SgPoss)(1 Lok OR Ins LINK 1 POSSESSUM + 3PlPoss) ;
+
+#SELECT:0037 Rel + 4SgPoss IF (*1 TRANSVERB + 3Sg + Cau BARRIER V)(NEGATE 0 Interj)(NEGATE 0 V)(NEGATE 1 3SgPoss)(NEGATE 0 VIK + Lok)(NEGATE 0 Rel + Pl LINK 1 POSSESSUM + 3PlPoss); #fx Ilami! og anillakkami
+SELECT:0038 Rel + 4SgPoss IF (*1 TRANSVERB + 3Sg + Par BARRIER V)(NEGATE 0 Interj)(NEGATE 0 V)(NEGATE 1 3SgPoss)(NEGATE 0 VIK + Lok)(NEGATE 0 Rel + Pl LINK 1 POSSESSUM + 3PlPoss); #fx Ilami! og anillakkami
+
+REMOVE:0039 Abs + 3SgPoss IF (0 Int + 3Sg)(1 ("?")); # .. toqua? er ikke 'hendes død'
 
 # Speciel possessor-konstruktion med løst tilføjet adled til led til venstre må håndteres tidligt jf. :M0067. Må ikke slette Prop, der står som apposition eller vælge ("taama")+POSSESSUM frem for  ("taamaattumik")
 SELECT:0040N Rel IF (NEGATE *1 V)(*-1 KOMMA LINK *-1 Rel LINK 1 POSSESSUM3)(NEGATE 0 Prop + $$KASUS LINK -1 $$KASUS)(NEGATE 0 ("taamaattumik")) ;
@@ -1548,8 +1551,6 @@ MAP:M0041AX @SUBJ> TARGET Prop + Abs IF (1 Prop + Rel + Sg LINK 1 3SgPoss LINK *
 SELECT:0041B Abs + 3SgPoss IF (-1 Prop + Rel + Sg)(*1 CONT + 3SgO BARRIER KOMMA OR VFIN LINK *1 INTRANSVERB + 3Sg BARRIER KOMMA OR VFIN) ;
 MAP:M0041BX @OBJ> TARGET Abs + 3SgPoss IF (-1 Prop + Rel + Sg)(*1 CONT + 3SgO BARRIER KOMMA OR VFIN LINK *1 INTRANSVERB + 3Sg BARRIER KOMMA OR VFIN) ;
 
-#Proprium med MI er næsten altid lokativ
-REMOVE:0042 Prop + MI IF (0 Prop + Lok);
 
 #("taaq") + POSSESSUM er ret usandsynlig
 REMOVE:0042A ("taaq") + POSSESSUM IF (0 ("taava") + Part ) ; 
@@ -2264,7 +2265,7 @@ MAP:M0045 (@CL-<ADVL) TARGET Par + 3Pl + 4SgO OR Par + INTRANSVERB + 4Sg IF (*-1
 MAP:M0046 (@CL-ADVL>) TARGET Par + 3Pl + 4SgO OR Par + 4Sg IF (-1 BOS OR KOMMA) ; #20091109 participium på -gaanni altid neksusadverbial
 MAP:M0047 (@CL-ADVL>) TARGET Par + 3Pl + 4SgO OR Par + 4Sg IF (*1 VFIN BARRIER V)(NEGATE 0 Par + 4Sg + 3PlO) ; #20091109 participium på -gaanni altid neksusadverbial. De særlige Par på -gini, som erstatter ledsagemåde holdes udenfor
 
-MAP:M0048 @i-ADVL> TARGET CONT (1 DOTR)(NEGATE (0 4Sg LINK 1 3Sg OR 4Sg) OR (0 4Pl LINK 1 3Pl OR 4Pl))(NEGATE 0 4Sg LINK -*1 VFIN + 3Sg BARRIER CLB OR VFIN)(NEGATE (1 ("pilluar") + QQU))(NEGATE 1 ("ingerla") + TIP) ; #Til trivalente verber hvor det inderiverede subjekt har et underordnet verbum i Cont lige foran sig. #NEGATE fordi trivalent pilluaqqu- og ingerlatip- er usandsynlige. Inersimasut siunnersorpaannga pulateriaarsunnik ipititsisartunik titartaasarnera unitsissagiga, ammasunik matoqqasunilluunniit, TAARSIULLUGULI aalluteqquaat nunalerutit, oqaluttuarisaaneq, kisitsisilerineq oqaasilerinerlu. 
+MAP:M0048 @i-ADVL> TARGET CONT (1 DOTR)(NEGATE (0 4Sg LINK 1 3Sg OR 4Sg) OR (0 4Pl LINK 1 3Pl OR 4Pl))(NEGATE 0 4Sg LINK -*1 VFIN + 3Sg BARRIER CLB OR VFIN)(NEGATE 1 ("pilluar") + QQU OR ("ingerla") + TIP) ; #Til trivalente verber hvor det inderiverede subjekt har et underordnet verbum i Cont lige foran sig. #NEGATE fordi trivalent pilluaqqu- og ingerlatip- er usandsynlige. Inersimasut siunnersorpaannga pulateriaarsunnik ipititsisartunik titartaasarnera unitsissagiga, ammasunik matoqqasunilluunniit, TAARSIULLUGULI aalluteqquaat nunalerutit, oqaluttuarisaaneq, kisitsisilerineq oqaasilerinerlu. 
 
 MAP:M0050 (@PRED2) TARGET Par IF (*-1 ADVERBIUM OR UNA BARRIER V)(NEGATE *0 ORATIOOBLVERB) ; #20091109
 MAP:M0051 (@PRED2) TARGET Par OR Cont OR ContNeg IF (*-1 ("soorlu") BARRIER V)(NEGATE *0 VFIN) ;
@@ -2574,7 +2575,6 @@ MAP:M0500 @<N TARGET Trm IF (-1C Trm)(NEGATE *1 V) ;
 
 MAP:M1722C @<N TARGET Num + $$NUMERUS IF (-1 Abs + $$NUMERUS)(-1 @HNOUN); #særlig for HNOUN NP 
 
-MAP:M0510 @<N TARGET Abs + Sg + N IF (*-1 §noun-comma BARRIER V) ; #Adnominale adled adskilt af komma, som ikker appositioner. #Silassorippasigisannik naapitsigaangama titartagara siulleq, taamanili TOQQORTARISIMASARA, atorlugu misilittaasarpunga. 
 
 MAP:M0570 (@POSS>) TARGET Gram/ACR + Rel IF (1 3SgPoss);
 MAP:M0580 (@POSS>) TARGET Gram/ACR + Rel IF (1 Via)(2 Der/vn + 3SgPoss) ;
@@ -2949,6 +2949,8 @@ MAP:M1799 @INTERJ TARGET Interj ;
 #MAP:M1800 @<N TARGET Abs + $$NUMERUS IF (*-1 KOMMA LINK *-1 @<OBJ + $$NUMERUS)(1 EOS) ; #Forsøgsvist flyttet til M0352NY
 #Tunge adled efter V
 MAP:M1800 @<N TARGET $$KASUS + $$NUMERUS IF (*-1 KOMMA LINK *-1 N + $$NUMERUS + $$KASUS)(1 EOS)(NEGATE 0 LU LINK *-1 ("tassa") BARRIER V)(NEGATE -1 OBLIQUE + LU LINK *-1 ("tassa") BARRIER V) ; #Forsøgsvist flyttet fra M1800. NEGATE tilføjet 20180205. Må ikke hitte på andet led i parataksen 'SUBJ tassaavoq @SUBJ_COMP1 (Adv + LU) @SUBJ_COMP2 (+LU)'. BARRIER medtaget lidt tilfældigt #Flyttet tilbage fra M0352NY pga. opremsninger.
+
+MAP:M1801 @<N TARGET Abs + Sg + N IF (*-1 §noun-comma BARRIER V)(NEGATE -1 Rel) ; #Adnominale adled adskilt af komma, som ikker appositioner. #Silassorippasigisannik naapitsigaangama titartagara siulleq, taamanili TOQQORTARISIMASARA, atorlugu misilittaasarpunga. #Negate for at undgå at hitte på possessum i Tassa Anna, taassuma ERNERA angusimasoq.
 
 
 #######################
@@ -4397,7 +4399,7 @@ MAP:M0099C @PRED2 TARGET V (*0 @PRED);
 ##################################################
 
 REMOVE:9965B Gram/TV + INTRANSVERB IF (0 Gram/IV + INTRANSVERB)(NEGATE *-1 ("immi")) ; #20180402 MEGET bred regel, der sikkert skal revideres
-REMOVE:9965C Gram/TV + TUQ + N IF (0 Gram/IV + TUQ + N)(NEGATE *-1 ("immi"))(NEGATE (0 (/__Gram\/TV.*Gram\/IV.*TUQ__/l))) ; #20180402 MEGET bred regel, der sikkert skal revideres
+REMOVE:9965C Gram/TV + TUQ + N IF (0 Gram/IV + TUQ + N)(NEGATE *-1 ("immi"))(NEGATE 0 (/__Gram\/TV.*Gram\/IV.*TUQ__/l)) ; #20180402 MEGET bred regel, der sikkert skal revideres
 
 SELECT:9966X (/__Gram\/TV\ TIP__/l) + TRANSVERB IF (-1C Trm OR Ins LINK -1C Abs - TIME LINK NOT 0 HUMAN)(NEGATE -1 Trm + SPATIAL) ; #heuristisk valg af transitiv sent i kaskaden ved dobbelttransitiver. HUMAN og TIME og SPATIAL tilføjet for at gøre den sikrere. Suliara inersimasunut TAKUTILLUGU aperaakka taanna ersigineraat.
 
