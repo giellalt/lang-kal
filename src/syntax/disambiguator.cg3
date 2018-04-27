@@ -1098,7 +1098,7 @@ SET CONJ-S = Conj - CONJ-C ; #Underordnende konjunktioner
 LIST ADVERBIUM = "ima" "qanoq" ; #20091109 tilfoejet 'qanoq', der maaske staar lidt malplaceret her
 SET ADVERBIEL = Adv | Pali ;
 LIST FOKUSPART = ("una" Prefix/AA) "tassa" "aali" "sunaaffa" ; #oqaqqarniutit imal. oqaaseqatigiinni oqaluutitaqanngitsut 
-LIST KONCESSIV = "naak" "uffa" "sunaaffa" ; #oqaaseqatigiinni minnerni oqaluummik pisariaqartitsisut
+LIST KONCESSIV = "massa" "naak" "uffa" "sunaaffa" ; #oqaaseqatigiinni minnerni oqaluummik pisariaqartitsisut
 LIST SPØRGEPARTIKEL = "naak" "sumi" "suna" "qanoq" ; #
 LIST TIDSPARTIKEL = "ilaanni" ("qaammat" Trm) ("ulloq" Trm) ;
 
@@ -1108,6 +1108,9 @@ SET NEXUS = (Rel LINK *1 TRANSVERB) OR (Abs LINK 1* INTRANSVERB) ;
 
 # Lexical sets
 # ==============
+
+#("tassa") i 2 variationer
+LIST TASSA = "tassa" ("una" Prefix/TA);
 
 # Verbernes leksikalske klasser
 # =============================
@@ -1217,7 +1220,7 @@ LIST NON-POSSESSUM = "malunnar" "utoqqaq" ; #en klasse af ord, der sjældent ell
 # TEMPLATES
 # ==========
 Template NexusHøjre =  (*1 Abs LINK *1 INTRANSVERB) OR (*1 Rel LINK *1 TRANSVERB) OR (*1 Abs + Sg LINK *1 TRANSVERB + 3SgO) OR (*1 Abs + Pl LINK *1 TRANSVERB + 3PlO) ; #3. og 4. OR på grund af transitiv med implicit subjekt
-Template NexusVenstre =  (-*1 Abs LINK *1 INTRANSVERB BARRIER _TARGET_) OR (-*1 Rel LINK *1 TRANSVERB) OR (*-1 Abs + Pl LINK *1 TRANSVERB + 3PlO); # OR (*-1 VFIN + @PRED); #20170417 tilføjet VFIN + @PRED til nexus med implicit subjekt
+Template NexusVenstre =  (-*1 Abs LINK *1 INTRANSVERB BARRIER _TARGET_) OR (-*1 Rel LINK *1 TRANSVERB BARRIER _TARGET_) OR (*-1 Abs + Pl LINK *1 TRANSVERB + 3PlO BARRIER _TARGET_); # OR (*-1 VFIN + @PRED); #20170417 tilføjet VFIN + @PRED til nexus med implicit subjekt
 
 
 
@@ -1495,7 +1498,9 @@ SELECT:0011 ("aat") IF (-*1C Imp);
 REMOVE:0019 AA IF (NEGATE 0 Prop);
 
 REMOVE:0040K TRANSVERB + TUQ + U + Imp ; #Hyppigt forekommende fejlanalyser. 20160504 Skal måske begrænses hvis for bred 
-
+SELECT:0020NY Interj - TASSA IF (-1 BOS)(NEGATE 0 ("ila") + 4SgPoss + Rel LINK 1 POSSESSUM3)(NEGATE 0 KONCESSIV LINK *1 Par BARRIER V)(NEGATE 0 ("taama") LINK 1 V); #TASSA holdes uden for reglen og type 'Ilami illuanut iserpoq' ikke interjektion SKAL RAFFINERES YDERLIGERE 20180427
+SELECT:7250 Interj IF (-1 BOS OR ("\,"))(1 EOS); #Ny 20180407 En isoleret partikel er en interjektion
+REMOVE:7251 Interj IF (*1 V BARRIER KOMMA)(0 Adv) ; #Ny 20180409 
 
 ### PROPRIUM ###
 #==============#
@@ -1550,10 +1555,10 @@ SELECT:0040N Rel IF (NEGATE *1 V)(*-1 KOMMA LINK *-1 Rel LINK 1 POSSESSUM3)(NEGA
 
 ### SPATIAL ###
 #=============#
+REMOVE:0113 SPATIAL + LIR IF (0 ("ungasip")); #20120422 ("ungat")+LIR vist altid bare forkert analyse af 'ungasip'
 
 REMOVE:0114 Abs + 4SgPoss IF (0 SPATIAL + Lok LINK -1 Rel)(NEGATE 0 ("ati") + TAQ) ; # Olep saani næppe subjekt og objekt men possessor possessum. Må dog ikke hitte på atisat
-SELECT SPATIAL + (Sg) IF (0 POSSESSUM)(NEGATE 0 ("ati") + TAQ)(NEGATE 0 ("ataata")) ; #2.4. hitter paa ati + TAQ og på "ataata"
-REMOVE SPATIAL + LIR ; #20120422 vqist altid forkert analyse af et verbum
+SELECT:0115 SPATIAL + (Sg) IF (0 POSSESSUM)(NEGATE 0 ("ati") + TAQ)(NEGATE 0 ("ataata")) ; #2.4. hitter paa ati + TAQ og på "ataata"
 REMOVE SPATIAL IF (0 QAR) ; #Forstår ikke reglen 20120422
 
 # Konstruktioner med possessor til inderiveret nomen. Skal stå før @POSS.
@@ -1745,7 +1750,10 @@ SELECT:0100Y Pl + $$KASUS IF (1 Num + Pl + $$KASUS) (0 2SgPoss) ;
 
 SELECT:0100A 2SgPoss IF (*0 ("quja" NAR Gram/Exclm))(NEGATE -1 ("uanga"))(NEGATE *0 VFIN) ; #Kontekst, der maa sikres foer foelgende REMOVE
 SELECT:0100B 2SgPoss - ("massak") - SSA IF (NEGATE *0 V)(*1 ("?"))(NEGATE 0 V + 2Sg)(NEGATE *0 Gram/IntPron + Pl) ; #Kontekst, der maa sikres foer foelgende REMOVE. Specialitet at massak+Via opfattes som 2SgPoss og ikke Der/vn med SSA
-SELECT:0101X Abs + 2SgPoss IF (*1 Ind + 3Sg + INTRANSVERB BARRIER TRANSVERB + 3SgO)(NEGATE 0 Pl + Abs LINK *1 Par + 3Pl) ; #Et sikkert subjekt må ikke læses som plur. BARRIER pga. mulig ledsagemåde med objekt. Der tages højde for en mulig or. obl. før verbet
+#SELECT:0101X Abs + 2SgPoss IF (*1 Ind + 3Sg + INTRANSVERB BARRIER TRANSVERB + 3SgO)(NEGATE 0 Pl + Abs LINK *1 Par + 3Pl) ; #Et sikkert subjekt må ikke læses som plur. BARRIER pga. mulig ledsagemåde med objekt. Der tages højde for en mulig or. obl. før verbet
+#Ny formulering, da tagger forkert fx 'amerlanerit sinippiaratik .. '
+SELECT:0101X Abs + 2SgPoss IF (*1 Ind + 3Sg + INTRANSVERB BARRIER V)(NEGATE *1 TRANSVERB + 3SgO)(NEGATE 0 Pl + Abs LINK *1 Par + 3Pl) ; #Et sikkert subjekt må ikke læses som plur. BARRIER pga. mulig ledsagemåde med objekt. Der tages højde for en mulig or. obl. før verbet
+
 REMOVE:0101 Abs + 2SgPoss IF (NEGATE *0 ("illit") OR Imp + 2Sg) (NEGATE *1 3SgO)(NEGATE *1 INTRANSVERB + 3Sg BARRIER Abs + Sg)(NEGATE 1 ("tassa") LINK 1C Sg); #Sidste NEGATE for skyld "Soraluannguit tassa niviarsiaq .."
 #REMOVE Abs + 2SgPoss IF (-1C Cont + 4Pl OR ContNeg+ 4Pl)(NEGATE *1 Rel + Pl LINK *1 TRANSVERB + GE + 3SgO); #0 maa vaere plur hvis nabo til en ledsagemaade, men der maa tages hoejde for muligheden af et OSV verbum.
 REMOVE:0102 Abs + 2SgPoss + TUQ IF (NEGATE *0 ("illit")); #1.4. Evt. elaboreres med TAQ og UTE
@@ -2372,6 +2380,12 @@ MAP:M0220 (@PROP>) TARGET Gram/Abbr IF (*1 Prop BARRIER NOT-Abbr) ;
 
 # Partikler
 # =========
+
+
+#Konjunktioner
+#en konjunktion er en konjunktion når den sideordner to nexus
+REMOVE:0229 KONJUNKTION + Adv IF (0 KONJUNKTION + Conj)(T:NexusVenstre)(T:NexusHøjre) ;
+
 #Konjunktioner er konjunktioner, når de indleder en sætning, ellers er de adverbier
 MAP:M0230 (@CONJ) TARGET KONJUNKTION IF (-1 BOS OR ("\,")) ; #Flyttet fra 1168 forebygge konflikt med @ADVL>
 MAP:M0231 (@CONJ) TARGET ("aamma" LU) OR ("taamatut") + LU; #vistnok undtagelsesløs
@@ -2801,7 +2815,7 @@ MAP:M1110 (@ABSOLUT_PRED) TARGET Par + PASSIV + 3Pl IF (-3 Rel)(-2 Abs + Pl)(-1 
 MAP:M1120 (@i-ADVL>) TARGET ContNeg IF (1 Part)(2 NIQ); #Eqqarsaatigiinnarnagu ingerlaannaq piviusunngortitsineq
 MAP:M1130 (@i-ADVL>) TARGET Cont IF (1 Part)(2 NIQ); #
 # Mapping af ledsagemåde til inderiveret verbum
-MAP:M1140 (@i-ADVL>) TARGET Cont - TRANSVERB IF (1 Der/vn)(NEGATE 1 V) ; #i-ADVL til vn, men ikke hvis Der/vn senere  bliver nv. TRANSVERB tilføjet 20170125 (usandsynlig som i-ADVL??)
+MAP:M1140 @i-ADVL> TARGET CONT - TRANSVERB + &&Cont& IF (1 Der/vn)(NEGATE *-1 N + &&Cont& BARRIER V)(NEGATE 1 V) ; #i-ADVL til vn, men ikke hvis del af en nexus og ikke hvis Der/vn senere  bliver nv. TRANSVERB tilføjet 20170125 (usandsynlig som i-ADVL??)
 
 # Mapping af ledsagemåde til hovedverbal
 
@@ -3428,10 +3442,10 @@ REMOVE N IF (0 ("Nuuk" Prop Lok));
 REMOVE @POSS> IF (NEGATE *1 POSSESSUM3) ; #Pers tilfoejelse 0608
 
 # Part
-#SELECT Interj IF (-1 BOS OR ("\,")); #20091109 #PL fjernet 20180407. Masser af fejlhits
-SELECT:7250 Interj IF (-1 BOS OR ("\,"))(1 EOS); #Ny 20180407 En isoleret partikel er en interjektion
+#Følgende 2 flyttet til afsnit ### INTERJEKTION, VOKATIV og IMPERATIV ###
 
-REMOVE:7251 Interj IF (*1 V BARRIER KOMMA)(0 Adv) ; #Ny 20180409 
+#SELECT:7250 Interj IF (-1 BOS OR ("\,"))(1 EOS); #Ny 20180407 En isoleret partikel er en interjektion
+#REMOVE:7251 Interj IF (*1 V BARRIER KOMMA)(0 Adv) ; #Ny 20180409 
 
 ##7251 skal revideres til en lidt mindre kritisk formulering. Den hitter alt for sjældent (20180407)
 SELECT:7251A KONCESSIV + Conj IF (-1 BOS OR KOMMA)(*1 Par OR CONT BARRIER VFIN) ; #Den generelle regel for koncessive bisætninger
@@ -3907,6 +3921,7 @@ REMOVE:4913 ("taama") + IP + TUQ (0 ("taamaattumik") + Part)(NEGATE *1 QAR OR LI
 REMOVE:4913A N + INNAQ IF (0 Part) ; #partikler med INNAQ fejllæses tit som N
 
 # Nomen eller numerale. Mulige Num, som ikke er adled, skal nok være N + KASUS frem for Num. Dette gælder dog ikke ved klokken
+REMOVE:4914X ("ata") + USIQ IF (0 ("ataaseq")) ; #Irriterende genkommende fejl
 SELECT:4914A Num + Trm IF (0 N - Num)(1 ("qiteqqup") ) ;  
 REMOVE:4914B Num IF (0 N - Num)(NEGATE -1 N + $$KASUS LINK 1 Num + $$KASUS) ; 
 #SELECT Num IF ( 0 N) ; #Alt andet lige det sikreste bud. 20171013 udkommenteret. Forstår ikke hvorfor den er med. Forsøger med følgende
