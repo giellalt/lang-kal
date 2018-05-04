@@ -2095,14 +2095,14 @@ SECTION#
 ADD:0400 (§noun-comma) Abs + Sg (1 KOMMA)(NEGATE 1 KOMMA LINK 1 Abs + Sg LINK 1 Abs + Sg + LU)(NOT 0 §noun-comma) ;
 #tag for mulige kandidater til apposition mellem komma, men må ikke tagge opremsninger
 
-ADD:0401 (§PropNexusSg) TARGET Prop + Abs + Sg IF (*1 3Sg OR 4Sg + Cau OR Con) ; 
-ADD:0402 (§PropNexusPl) TARGET Prop + Abs + Pl IF (*1 3Pl OR 4Pl + Cau OR Con) ; 
+ADD:0401 (§PropNexusSg) TARGET Prop + Abs + Sg IF (*1 3Sg OR 4Sg + Cau OR Con)(NOT 0 §PropNexusSg) ; 
+ADD:0402 (§PropNexusPl) TARGET Prop + Abs + Pl IF (*1 3Pl OR 4Pl + Cau OR Con)(NOT 0 §PropNexusPl) ; 
 #tag for mulige Prop-subjekter i bisætninger mellem @SUBJ> og @PRED NN1-SUBJ1 NN2-SUBJ2 Cau/Con2 PRED1
 
 REMOVE:0403 NIQ + PAK IF (0 NIRPAAQ) ;
 REMOVE:0405 ("ip") + LLAR IF (0 ("illar")) ;
 #En generel regel, der fjerner låneord på udlydende -i, hvis samme låneord forekommer uden -i
-REMOVE:0406 ("båndi") IF (0 ("bånd")) ;
+#REMOVE:0406 ("båndi") IF (0 ("bånd")) ; #udkommenteret 20180504, da den er overflødig. Håndteres i REMOVE9945F
 
 #Proprium som mik-objekt næppe ved Par. Vist altid vn
 REMOVE:0407A Par + INTRANSVERB + 3Pl IF (-1 Prop + Ins) ;
@@ -4355,7 +4355,7 @@ REMOVE:9945B Orth/Alt ;
 REMOVE Via + 2SgPoss IF (NEGATE -1 ("illit"))(NEGATE *0 VERB-NOTCONT + 2Sg LINK NEGATE 0 ("taku")) ;
 
 #Man kan have en regel helt til sidst der fjerner i-versionen hvis en uden-i findes (Tinos formulering)
-REMOVE ("(.*)i"r) IF (0 ("$1"v))(NEGATE 0 (/__\"at\"\ OLang\/DAN__/l)) ; #Negate tilføjet 20180502 for at undgå at fjerne spatial ati for dansk at.
+REMOVE:9945F ("(.*)i"r) IF (0 ("$1"v))(NEGATE 0 (/__\"at\"\ OLang\/DAN__/l)) ; #Negate tilføjet 20180502 for at undgå at fjerne spatial ati for dansk at.
 
 #En isoleret Abl eller Ins sidst i sætningen er sikkert begrundende Abl hvis ikke i<N til QAR eller LIK
 SELECT:9946A Abl + NIQ IF (-1 KOMMA)(1 EOS)(NEGATE *-1 QAR OR LIK) ;
