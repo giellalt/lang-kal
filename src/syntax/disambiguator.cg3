@@ -1164,7 +1164,7 @@ LIST ORGANISATION = "Inatsisartut" "parti" "Siumut" "Atassut" "IA" ("Naalakkersu
 LIST ANIMAL = "qeerlutooq" "qimmeq" "qitsuk" "puisi"  "pulateriaarsuk" ;
 LIST ABSTRACT = "taaq" ;
 
-LIST PLACE = "illu" "imaq" ("atuar" VIK) ("oqalup" VIK) "nuna" "orpippassuaq" ;
+LIST PLACE = "illu" "imaq" ("atuar" VIK) ("oqalup" VIK) "nuna" "orpippassuaq" "siku";
 LIST ADJEKTIVISK = "akutakujooq" "akutakujuk" "angisooq" "angut" "arnaq" "itisooq" "manissoq" ("portu" JAAR)  "takisooq" "siulleq" ; #angut og arnaq medtaget lidt skummelt, men anvendes ofte adjektivisk
 LIST COLOUR = "aappaluttoq" "qaqortoq" "qaqqorik" "qernertoq" "qorsuk" "sungaartoq" "tungujortoq" ;
 SET ATTRIBUTIV = ADJEKTIVISK | COLOUR ;
@@ -1439,6 +1439,7 @@ REMOVE:0044C KKUT IF (-1 Rel + Pl)(1 3PlPoss)(0 Via)(NEGATE 0 Prop LINK -1 FAM +
 SELECT:0110D FAM + KKUT + Abs IF (*1 V + 3Pl OR V + 3PlO) ;
 REMOVE:0130 KKUT + Abs IF (NEGATE *1 INTRANSVERB + 3Pl)(NEGATE *0 3PlO) ;
 REMOVE:0131 KKUT + Rel IF (NEGATE *1 TRANSVERB + 3Pl)(NEGATE 1 3PlPoss OR 3SgPoss) ;
+REMOVE:0131 KKUT IF (0 PLACE) ;
 
 
 ### NIR ###
@@ -2826,7 +2827,7 @@ MAP:M1140 @i-ADVL> TARGET CONT - TRANSVERB + &&Cont& IF (1 Der/vn)(NEGATE *-1 N 
 
 #Tagning af inderiveret 'pillugu' til Der/vn umiddelbart efter
 MAP:M1147 @i-ADVL> TARGET CONT + TRANSVERB + ("pi") IF ((1 Der/vn + N) OR (1 INDERIVERENDE_SUBSTANTIV LINK NOT 1 ("ajor"))) ;
-MAP:M1148 @ADVL> TARGET CONT + TRANSVERB IF (*1 V) (NEGATE *-1 ORATIOOBLVERB) ; #20170127 (NEGATE 1 Der/vn + N); fjernet
+MAP:M1148 @ADVL> TARGET CONT + TRANSVERB IF (*1 V) (NEGATE *-1 ORATIOOBLVERB - TAQ) ; #20170127 (NEGATE 1 Der/vn + N); fjernet
 
 MAP:M1148A1 @CL-<CIT TARGET CONT + TRANSVERB IF (*-1 ORATIOOBLVERB BARRIER Par OR KOMMA)(*1 Rel BARRIER KOMMA LINK *1 Par + TRANSVERB) ; #20171010 oratio obl. fulgt af nok en or. obl.
 
@@ -4421,6 +4422,9 @@ REMOVE Gram/Refl + 3Pl IF (0 Gram/IV + 3Pl - Gram/Refl)(NEGATE *-1 ("immi")) ;
 #Mapping af resterende verber
 MAP:M0099C @PRED TARGET V (NOT *0 @PRED);
 MAP:M0099C @PRED2 TARGET V (*0 @PRED);
+
+#Mapping af restende nominer
+MAP:M0099D @OBJ> TARGET N + Abs + Pl (1* TRANSVERB + 3PlO);
 
 
 ##################################################
