@@ -1408,6 +1408,7 @@ REMOVE:0143 ("Ana") + U IF (0 ("anaana") ) ;
 SELECT:0145 ("assi") + GE + TAQ + Abs + Pl + 3PlPoss + LU IF (1 EOS); #assigisaallu før punktum vist altid sætningsemne
 SELECT:0147 ("affaq") + Ins IF (1 ("kalaaleq") OR ("qatanngut"));
 SELECT:0147A (/__\"aki\"\ QAR__/l) ;
+REMOVE:0147B (/__\"peer\"\ Gram\/IV\ JA__/l) IF (0 ("piiar") + HTR);
 
 REMOVE:0040I NAAR - NAAR_VERBER ; #Sletter irriterende fejlanalyser med NAAR på verber, der ikke kan indeholde et element af vurdering
 
@@ -1420,6 +1421,9 @@ SELECT:0024 GE + TRANSVERB IF (0 TAQ)(NEGATE *0 VFIN);
 
 #siornatigut sjældent possessum, oftest i-ADVL> til adled
 SELECT:0017 ("siornatigut") + ADVERBIEL IF (1 Der/vn) ;
+
+#ajoraluartumik og ikke ajoraluartumit
+SELECT:0017A (/__\"ajor\"\ Gram\/IV\ GALUAR\ Der\/vv\ Gram\/IV\ TUQ\ Der\/vn\ N\ Ins__/l) IF (0 Abl) ; 
 
 #Farlig regel, der skal checkes, men så længe både (3Pl+3PlO+SUB) og (3Sg+3PlO) eksisterer er det umuligt at disambiguere Rel+Pl som subjekt fra Abs+Pl som objekt.
 REMOVE:0026 3Pl + 3PlO + SUB IF (0 3Sg + 3PlO)(*-1 Abs + Pl ) ;
@@ -2260,8 +2264,8 @@ MAP:M0031X @PROP> TARGET Prop + Sem/FirstName IF (1 Prop + Sem/FirstName)(2 humP
 
 MAP:M0031A @PROP> TARGET Prop + Sem/FirstName IF (1 Prop)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + LU LINK *1 V + 3Pl )(NEGATE 1 Prop LINK 1 Prop)(NEGATE 0 FIRSTNAME LINK 1 FIRSTNAME)(NEGATE 0 FIRSTNAME LINK 1 ("Kalaallit")); #Mange fejlhit på Kalaallit Illuutaat og Kalaallit Nunaat
 
-MAP:M0031 (@PROP>) TARGET Prop + Abs OR FIRSTNAME + Abs OR TITEL + Abs IF (1 Prop)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + LU LINK *1 V + 3Pl )(NEGATE 1 Prop LINK 1 Prop)(NEGATE 0 FIRSTNAME LINK 1 FIRSTNAME)(NEGATE 0 FIRSTNAME LINK 1 ("Kalaallit"))(NEGATE 1 FIRSTNAME + LU); 
-#MAP:M0031 (@PROP>) TARGET Prop OR FIRSTNAME OR TITEL IF (1 Prop)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop #+ LU LINK *1 V + 3Pl BARRIER N + Pl )(NEGATE 1 Prop LINK 1 Prop); #fra 1350 for at udelukke overtallig SUBJ-tagging. ##NEGATE for at forebygge typen 'Per NN-ikkut isermata Vb'. Andet NEGATE for parataktiske Karen Perilu anipput. Tredie #NEGATE for at forebygge @PROP på subjektet i (SUBJ)(PROP> propriuskærne)
+MAP:M0031 (@PROP>) TARGET Prop + Abs OR FIRSTNAME + Abs OR TITEL + Abs IF (1 Prop)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + LU LINK *1 V + 3Pl )(NEGATE 1 Prop + LU LINK *1 V + 3PlO)(NEGATE 1 Prop LINK 1 Prop)(NEGATE 0 FIRSTNAME LINK 1 FIRSTNAME)(NEGATE 0 FIRSTNAME LINK 1 ("Kalaallit"))(NEGATE 1 FIRSTNAME + LU); 
+#MAP:M0031 (@PROP>) TARGET Prop OR FIRSTNAME OR TITEL IF (1 Prop)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop #+ LU LINK *1 V + 3Pl BARRIER N + Pl )(NEGATE 1 Prop LINK 1 Prop); #fra 1350 for at udelukke overtallig SUBJ-tagging. ##NEGATE for at forebygge typen 'Per NN-ikkut isermata Vb'. Andet NEGATE for parataktiske Karen Perilu anipput. Tredie #NEGATE for at parataktiske Karen Perilu ilagalugit. Fjerde #NEGATE for at forebygge @PROP på subjektet i (SUBJ)(PROP> propriuskærne)
 
 #Forsøg på en mere generel regel for Prop der er @<APPOS til noget ikke-Prop
 MAP:M0032 @<APPOS TARGET PROP + $$KASUS - LU IF (-*1 N + $$KASUS - Prop BARRIER (*) - KOMMA ) ;
@@ -2493,8 +2497,8 @@ MAP:M0351NY @<N TARGET Der/vn + $$KASUS + LU OR Num + $$KASUS + LU OR LIK + $$KA
 #Adnominale adled (adjektiver). Bredeste regel for adled til proprier. -LU for at forhindre hit på parataktiske NP og NEGATE nødvendig for ikke at tagge en possessor efter proprium i relativ. NEGATE for at forhindre hit på possessor fulgt af apposition og NEGATE for at udelukke fornavn fulgt af efternavn
 MAP:M0350 @<N TARGET N + $$KASUS + $$NUMERUS - LU - Prop IF (-1 Prop + $$KASUS + $$NUMERUS)(NEGATE -1 Rel LINK 1 Rel LINK 1 POSSESSUM3 OR POSSESSUM4)(NEGATE -1 Rel LINK 1 Rel + POSSESSUM3 LINK 1 Prop)(NEGATE 0 Prop + Sem/FirstName LINK -1 Prop + Sem/FirstName)(NEGATE 0 (*) - TIME LINK -1* TIME) ; #Sidste negate for at undgå at tidsudtryk og ikke-tidsudtryk bliver adnominale til hinanden.
 
-#Adnominale adled (adjektiver). Bredeste regel for adled til substantiver. -LU for at forhindre hit på parataktiske NP og NEGATE nødvendig for ikke at tagge en possessor efter proprium i relativ. NEGATE for at forhindre hit på possessor fulgt af apposition og NEGATE for at udelukke fornavn fulgt af efternavn
-MAP:M0350A @<N TARGET N + $$KASUS + $$NUMERUS - LU - LUUNNIIT IF (-1 N + $$KASUS + $$NUMERUS OR Pron + $$KASUS + $$NUMERUS OR Adv + $$KASUS)(NEGATE -1 Rel LINK 1 Rel LINK 1 POSSESSUM3 OR POSSESSUM4)(NEGATE -1 Rel LINK 1 Rel + POSSESSUM3 LINK 1 Prop) ;
+#Adnominale adled (adjektiver). Bredeste regel for adled til substantiver. -LU for at forhindre hit på parataktiske NP og NEGATE nødvendig for ikke at tagge en possessor efter proprium i relativ. NEGATE for at forhindre hit på possessor fulgt af apposition og NEGATE for at udelukke fornavn fulgt af efternavn. NEGATE fordi HTR TUQ QAR ikker er <N til et Ins, men Ins er @i-MIK-OBJ> til HTR TUQ QAR. 
+MAP:M0350A @<N TARGET N + $$KASUS + $$NUMERUS - LU - LUUNNIIT IF (-1 N + $$KASUS + $$NUMERUS OR Pron + $$KASUS + $$NUMERUS OR Adv + $$KASUS)(NEGATE -1 Rel LINK 1 Rel LINK 1 POSSESSUM3 OR POSSESSUM4)(NEGATE -1 Rel LINK 1 Rel + POSSESSUM3 LINK 1 Prop)(NEGATE 0 (/__HTR\ Der\/vv\ Gram\/IV\ TUQ\ Der\/vn\ QAR__/l) LINK -1 Ins LINK -1 BOS) ;
 
 #kongruensadled af typen Der/vn må mappes tidligt for at undgå at kerneleddet tagges som inderiveret adverbial. Possessorer må ikke tagges som kongruensadled. Næstsidste NEGATE for at forebygge at objekt til V til højre tagges som adled sidste for skyld indskudt transitiv ledsagemåde mellem subjekt og V
 MAP:M0351 @<N TARGET Der/vn + $$KASUS + $$NUMERUS - LU OR Num + $$KASUS + $$NUMERUS - LU IF (-*1 N + $$KASUS + $$NUMERUS BARRIER (*) - Part)(NEGATE 0 Rel + Sg LINK 1 3SgPoss)(NEGATE 0 Rel + Pl LINK 1 3PlPoss OR 4PlPoss) (NEGATE 1 3SgO) ((NOT 0 POSSESSUM) OR (0 $$POSSESSUM LINK -1 $$POSSESSUM))(NEGATE 0 Abs + &&OBJ_CONT LINK 1 CONT + &&OBJ_CONT) ; #20171121 rettet NEGATE fra ..  OR 3PlO), der vist udelukker de fleste adled ??
@@ -2571,6 +2575,8 @@ MAP:M0528A @OBJ> TARGET Abs + Pl + LU IF (-1 Abs + Sg)(*1 3PlO BARRIER INTRANSVE
 # Inderiverede adverbaler #
 ###########################
 
+# Sikre adled som ikke skal mappes som inderiverede adverbaler 
+MAP:0740 @i-MIK-OBJ> TARGET Ins IF (1 (/__HTR\ Der\/vv\ Gram\/IV\ TUQ\ Der\/vn\ QAR__/l)) ;
 
 # Ins er tit adled til inkorporet objekt
 MAP:M0750 (@i->N) TARGET (Ins) OR ("imatut") IF (*1 QAR OR LIK OR ("quleriilik") BARRIER KOMMA OR V)(NEGATE -*1 Ins BARRIER (*) - Adv - Pali - Interj - @POSS> - (/@i-.*/r))(NEGATE 1 (/__HTR\ Der\/vv\ Gram\/IV\ TUQ\ Der\/vn\ QAR__/l)) ; # "tit" skal præciseres eller reduceres til en ADD-regel #NEGATE tilføjet 20180507 fordi det altid er @i-MIK-OBJ> ved N-mik takunnittoqarpoq.
@@ -3295,7 +3301,7 @@ REMOVE:1679 1SgPoss IF (*1 V + 2Sg BARRIER V) ;
 #SELECT:1680 1SgPoss IF (*1C V + 1Sg BARRIER V ) ;    #disambiguerer 1SgPoss fra 2SgPoss 
 #SELECT:1681 2SgPoss IF (*1 V + 2Sg BARRIER V ) ;       
 
-SELECT Abs + Sg IF (1 Cont + 3SgO)(NEGATE 0 Pali) ; #reglen sletter fx ilaannilu før Vb-TARlugu
+SELECT Abs + Sg IF (1 Cont + 3SgO)(NEGATE 0 Pali OR Conj) ; #reglen sletter fx ilaannilu før Vb-TARlugu
 SELECT Abs + Pl IF (1 Cont + 3PlO) ;
 SELECT:1690 Abs + Sg IF (*1C INTRANSVERB + 3Sg BARRIER Cont + 3SgO OR KOMMA)(NEGATE 0 Abs + Pl LINK *1 3Pl OR 4Pl)(NEGATE 0 Lok)(NEGATE 0 Rel + Sg LINK 1 POSSESSUM + 3SgPoss)(NEGATE 0 ("imaaliallaannaq"))(NEGATE 0 Ind + 3Pl LINK 1 LU LINK *1 VFIN)(NEGATE 0 Par + 3Sg LINK *1 ORATIOOBLVERB) ; #novembarimi skal ikke vaere Abs+MI. NEGATE Part, der kan fejllæses som Abs
 SELECT N + NIQAR + NIQ + Sg; #Passivt verbalnomen i pluralis er sjaeldent
@@ -3919,6 +3925,7 @@ REMOVE:4904 ("alla") + 3PlPoss IF (0 ("allaat") + Part ) ;
 SELECT:4905 ("imaaliallaannaq") ; #vist undtagelsesløst partikel
 SELECT:4906 ("soorlu") IF (0 ("sooq") + LU );
 SELECT:4907 ("ullumikkut") + Part IF (0 ("ulloq"));
+SELECT:4907A ("ullumi") + Pali IF (0 ("ulloq"));
 REMOVE:4908 ("naaq") + Ins IF (0 ("naamik"));
 REMOVE:4909 ("toqup") + SIMA + NIQ ; #toqusimaneq i passiv betydning må være helt eller næsten ikke-eksisterende
 REMOVE:4910 ("issar") IF (0 ("issaq") + Part + Aeq) ; 
