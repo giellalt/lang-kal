@@ -1139,7 +1139,7 @@ SET HUMVERB = humverb OR ORATIOOBLVERB ; # alle verb  der vil ha humane subj
 LIST IntransTrans = "neri" "ilassior" Gram/HV ; #Set til disambiguering af Ins, VIP vs. HTR mv.
 
 SET UGEDAGE = (/__\"arfineq\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"ataaseq\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"marluk\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"pingasut\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | ("sapaat") | (/__\"sisamat\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"tallimat\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) ;
-LIST OTHERTIME = Sem/Time ("aallar" QQAAR UTE) ("aasaq") ("inuk" U NIQ) ("ippassaq") ("maanna") ("nali") ("piffik") ("qaammat") ("qeqqa") ("sapaat") ("sivisu") ("siulleq") ("taarsi") ("ualeq") ("ukiaq") ("ukiar" TUQ) ("ukiartoq") ("ukioq") ("ullaa") ("ullaaq") ("ulloq") ("unnuaq") ("unnuk") ;
+LIST OTHERTIME = Sem/Time ("aallar" QQAAR UTE) ("aasaq") ("inuk" U NIQ) ("ippassaq") ("kingulleq" Ins) ("maanna") ("nali") ("piffik") ("qaammat") ("qeqqa") ("sapaat") ("sivisu") ("siulleq") ("taarsi") ("ualeq") ("ukiaq") ("ukiar" TUQ) ("ukiartoq") ("ukioq") ("ullaa") ("ullaaq") ("ulloq") ("unnuaq") ("unnuk") ;
 SET TEMPUSVERB = UGEDAGE | ("qaanger") | ("qaqutigut" U) | ("taamaali") | ("ukiar") | ("ukioq" U) ;
 SET TIME = TEMPUSVERB | OTHERTIME ;
 LIST VERB_medGE = "ipianngu" "miki" ; #Set til stammer, der kan tage GE+Der/vv
@@ -1149,7 +1149,7 @@ LIST SEKVENTIELLE_VERBER = "ani" "innar" ; #Sæt til anvendelse sammen med coref
 LIST NAAR_VERBER = "angi" ("aki" KIP) "amerla" "isorartu" "kingusip" "miki" "oqip" "sivikip" "siusip" ; #stammer, der kan tage NAAR. Alle andre slettes
 LIST EVALUERENDE_VERBER = "kajungeraa" ; #verber med semantik der betinger objekt efter NIQ+Ins/Abl
 LIST INDERIVERENDE_SUBSTANTIV = ("inatsit") ;
-LIST INSOBJVERB = SI TAAR (/__LIR\ Der\/nv__/l) ;
+LIST INSOBJVERB = SI TAAR SIUR (/__LIR\ Der\/nv__/l) ;
 
 # Nominernes leksikalske klasser
 # =============================
@@ -2483,6 +2483,9 @@ MAP:M0069X2 @<N TARGET Gram/Cong + Akk IF (-1 Abs) ; #PL 20171205 lidt skummelt,
 #Til adnominale adled i Lok med komma og imatut imellem: atuakkiami, imatut atilimmi "Oqaluttuat ilumoortut".
 MAP:M0340 @<N TARGET Lok IF (-1 ("imatut") LINK -1 KOMMA LINK *-1 Lok BARRIER V) ;
 
+#Til afterthoughts, der er adnominale adled.
+MAP:0340A @<N TARGET Ins + $$NUMERUS IF (-1** Ins + $$NUMERUS LINK 1* KOMMA LINK 1* KOMMA BARRIER (*) - Ins OR (-*) - Ins) ; #kan udvides til også at gælde andre kasus
+
 #Til adverbale adled som står i paratakse.
 MAP:M0340B @<ADVL TARGET Ins IF (0 LUUNNIIT)(-1 Ins)(*-1 V) ;
 
@@ -2585,8 +2588,10 @@ MAP:M0528A @OBJ> TARGET Abs + Pl + LU IF (-1 Abs + Sg)(*1 3PlO BARRIER INTRANSVE
 # Sikre adled som ikke skal mappes som inderiverede adverbaler 
 MAP:0740 @i-MIK-OBJ> TARGET Ins IF (1 (/__HTR\ Der\/vv\ Gram\/IV\ TUQ\ Der\/vn\ QAR__/l)) ;
 
+MAP:M0741 @i->N TARGET Num + Ins IF (1 ("ukioq") + LIK_QAR) ;
+
 # Ins er tit adled til inkorporet objekt
-MAP:M0750 (@i->N) TARGET (Ins) OR ("imatut") IF (*1 QAR OR LIK OR ("quleriilik") BARRIER KOMMA OR V)(NEGATE -*1 Ins BARRIER (*) - Adv - Pali - Interj - @POSS> - (/@i-.*/r))(NEGATE 1 (/__HTR\ Der\/vv\ Gram\/IV\ TUQ\ Der\/vn\ QAR__/l)) ; # "tit" skal præciseres eller reduceres til en ADD-regel #NEGATE tilføjet 20180507 fordi det altid er @i-MIK-OBJ> ved N-mik takunnittoqarpoq.
+MAP:M0750 (@i->N) TARGET (Ins) OR ("imatut") IF (*1 INSOBJVERB OR LIK_QAR OR ("quleriilik") BARRIER KOMMA OR V)(NEGATE -*1 Ins BARRIER (*) - Adv - Pali - Interj - @POSS> - (/@i-.*/r))(NEGATE 1 (/__HTR\ Der\/vv\ Gram\/IV\ TUQ\ Der\/vn\ QAR__/l))(NEGATE 0 TIME) ; # "tit" skal præciseres eller reduceres til en ADD-regel #NEGATE tilføjet 20180507 fordi det altid er @i-MIK-OBJ> ved N-mik takunnittoqarpoq.
 MAP:M0760 (@i-N<) TARGET Ins IF (*-1 QAR OR LIK OR TAAR BARRIER (*) - @<N - @i-N<) (NEGATE *1 QAR OR LIK OR TAAR BARRIER KOMMA)(NEGATE 1 Der/vn)(NEGATE 1 V)(NEGATE 0 CONJ-C LINK -*1 @i-N<) ; # Næstsidste NEGATE for at forebygge hit paa 'ilunni QATSORTITASSAANNGIVISSUMIK anorersuartorsuaq,'
 
 # Efterstillet adled til inkorporeret objekt kan stå i absolut
@@ -3310,7 +3315,7 @@ REMOVE:1679 1SgPoss IF (*1 V + 2Sg BARRIER V) ;
 
 SELECT Abs + Sg IF (1 Cont + 3SgO)(NEGATE 0 Pali OR Conj) ; #reglen sletter fx ilaannilu før Vb-TARlugu
 SELECT Abs + Pl IF (1 Cont + 3PlO) ;
-SELECT:1689 Adv + ("ima") IF (1 ("isikku")) ; #For ikke at tagge Titartagara siullerpaaq IMA isikkoqarpoq forkert.
+SELECT:1689 Adv + ("ima") (NEGATE 0 ("imaluunniit")) ;#IF (1 ("isikku")) ; #For ikke at tagge Titartagara siullerpaaq IMA isikkoqarpoq forkert.
 SELECT:1690 Abs + Sg IF (*1C INTRANSVERB + 3Sg BARRIER Cont + 3SgO OR KOMMA)(NEGATE 0 Abs + Pl LINK *1 3Pl OR 4Pl)(NEGATE 0 Lok)(NEGATE 0 Rel + Sg LINK 1 POSSESSUM + 3SgPoss)(NEGATE 0 ("imaaliallaannaq"))(NEGATE 0 Ind + 3Pl LINK 1 LU LINK *1 VFIN)(NEGATE 0 Par + 3Sg LINK *1 ORATIOOBLVERB) ; #novembarimi skal ikke vaere Abs+MI. NEGATE Part, der kan fejllæses som Abs
 SELECT N + NIQAR + NIQ + Sg; #Passivt verbalnomen i pluralis er sjaeldent
 SELECT N + NIQAR + TUQ + Sg; #Passivt verbalnomen i pluralis er sjaeldent
@@ -4197,6 +4202,7 @@ REMOVE:5619 (/__\"pi\"\(\ [a-z][a-zA-Z]+\)*\ Gram\/TV__/l) ; #en formodning om a
 REMOVE:5620 (/__NNGUR\ nv\(\ [it]v\)?\ UTE__/l) IF (0 (/__NNGUAQ\ Der/nn\(\ [it]v\)?\ U__/l)) ; # Det er dog muligt at der hos Ole Brandt forekommer ægte ambiguiteter: nuannattunnguupput
 REMOVE:5621 (/__TAQ\ Der\/nn\ IR__/l) IF (0 (/__TAAR\ Der\/nv__/l)) ; 
 #REMOVE:5621 TAQ + IR IF (0 TAAR + Der/nv); #Ren stochastik #håndteres sikrere af ovenstående
+REMOVE:5622 (/__RIAR\ Der\/vv\ Gram\/IV\ TUQ__/l) IF (0 (/__GIARTUR\ Der\/vv\ LIR__/l)) ;
 
 # Enkelte substantiver
 REMOVE ("pineq") IF (NEGATE *0 ("kamik")) ; #20091103 pineq+QAR vs. pineqar-
