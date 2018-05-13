@@ -74,6 +74,7 @@ LIST N* = N* ; #Præprocessorens tagging af N, der indgår i compounds
 LIST iV = iV ; #Præprocessorens tagging af V, som skifter ordklasse senere i ordet.
 LIST iN = iN ; #Præprocessorens tagging af N, som skifter ordklasse senere i ordet.
 LIST iProp = iProp ; #Præprocessorens tagging af Prop, som skifter ordklasse senere i ordet.
+SET iALL = iV | iN | iProp ;
 LIST Part = Part Pali Adv ^"ma" ^"av" ^"pav" ^"qav" ^"kan" ^"qam" ^"sam" ^"pik" ^"iv" ^"ik" ^"kig" ^"uv" "aali" "aamma" "imaluunniit" "kisianni" "naak" "qanorli" "soorli" "tassali" "tassa" "taamaattoq" "unnit";
 LIST Pali = Pali ;
 LIST Conj = Conj ;
@@ -2509,7 +2510,7 @@ MAP:M0350 @<N TARGET N + $$KASUS + $$NUMERUS - LU - Prop IF (-1 Prop + $$KASUS +
 MAP:M0350A @<N TARGET N + $$KASUS + $$NUMERUS - LU - LUUNNIIT IF (-1 N + $$KASUS + $$NUMERUS OR Pron + $$KASUS + $$NUMERUS OR Adv + $$KASUS)(NEGATE -1 Rel LINK 1 Rel LINK 1 POSSESSUM3 OR POSSESSUM4)(NEGATE -1 Rel LINK 1 Rel + POSSESSUM3 LINK 1 Prop)(NEGATE 0 (/__HTR\ Der\/vv\ Gram\/IV\ TUQ\ Der\/vn\ QAR__/l) LINK -1 Ins LINK -1 BOS) ;
 
 #kongruensadled af typen Der/vn må mappes tidligt for at undgå at kerneleddet tagges som inderiveret adverbial. Possessorer må ikke tagges som kongruensadled. Næstsidste NEGATE for at forebygge at objekt til V til højre tagges som adled sidste for skyld indskudt transitiv ledsagemåde mellem subjekt og V
-MAP:M0351 @<N TARGET Der/vn + $$KASUS + $$NUMERUS - LU OR Num + $$KASUS + $$NUMERUS - LU IF (-*1 N + $$KASUS + $$NUMERUS BARRIER (*) - Part)(NEGATE 0 Rel + Sg LINK 1 3SgPoss)(NEGATE 0 Rel + Pl LINK 1 3PlPoss OR 4PlPoss) (NEGATE 1 3SgO) ((NOT 0 POSSESSUM) OR (0 $$POSSESSUM LINK -1 $$POSSESSUM))(NEGATE 0 Abs + &&OBJ_CONT LINK 1 CONT + &&OBJ_CONT) ; #20171121 rettet NEGATE fra ..  OR 3PlO), der vist udelukker de fleste adled ??
+MAP:M0351 @<N TARGET Der/vn + $$KASUS + $$NUMERUS - LU - iALL OR Num + $$KASUS + $$NUMERUS - LU IF (-*1 N + $$KASUS + $$NUMERUS BARRIER (*) - Part)(NEGATE 0 Rel + Sg LINK 1 3SgPoss)(NEGATE 0 Rel + Pl LINK 1 3PlPoss OR 4PlPoss) (NEGATE 1 3SgO) ((NOT 0 POSSESSUM) OR (0 $$POSSESSUM LINK -1 $$POSSESSUM))(NEGATE 0 Abs + &&OBJ_CONT LINK 1 CONT + &&OBJ_CONT) ; #20171121 rettet NEGATE fra ..  OR 3PlO), der vist udelukker de fleste adled ??
 
 MAP:M0352 @<N TARGET Der/vn + LU + $$KASUS + $$NUMERUS IF (-1 Der/vn + $$KASUS + $$NUMERUS + LU OR Num + $$KASUS + $$NUMERUS + LU)(-1 N + $$KASUS + $$NUMERUS + Der/vn);#(NEGATE 0 Rel + Sg LINK 1 3SgPoss)(NEGATE 0 Rel + Pl LINK 1 3PlPoss OR 4PlPoss) (NEGATE 1 3SgO) ((NOT 0 POSSESSUM) OR (0 $$POSSESSUM LINK -1 $$POSSESSUM)) ; #20171121 rettet NEGATE fra ..  OR 3PlO), der vist udelukker de fleste adled ??
 
@@ -2591,11 +2592,13 @@ MAP:0740 @i-MIK-OBJ> TARGET Ins IF (1 (/__HTR\ Der\/vv\ Gram\/IV\ TUQ\ Der\/vn\ 
 MAP:M0741 @i->N TARGET Num + Ins IF (1 ("ukioq") + LIK_QAR) ;
 
 # Ins er tit adled til inkorporet objekt
-MAP:M0750 (@i->N) TARGET (Ins) OR ("imatut") IF (*1 INSOBJVERB OR LIK_QAR OR ("quleriilik") BARRIER KOMMA OR V)(NEGATE -*1 Ins BARRIER (*) - Adv - Pali - Interj - @POSS> - (/@i-.*/r))(NEGATE 1 (/__HTR\ Der\/vv\ Gram\/IV\ TUQ\ Der\/vn\ QAR__/l))(NEGATE 0 TIME) ; # "tit" skal præciseres eller reduceres til en ADD-regel #NEGATE tilføjet 20180507 fordi det altid er @i-MIK-OBJ> ved N-mik takunnittoqarpoq.
-MAP:M0760 (@i-N<) TARGET Ins IF (*-1 QAR OR LIK OR TAAR BARRIER (*) - @<N - @i-N<) (NEGATE *1 QAR OR LIK OR TAAR BARRIER KOMMA)(NEGATE 1 Der/vn)(NEGATE 1 V)(NEGATE 0 CONJ-C LINK -*1 @i-N<) ; # Næstsidste NEGATE for at forebygge hit paa 'ilunni QATSORTITASSAANNGIVISSUMIK anorersuartorsuaq,'
+MAP:M0750 (@i->N) TARGET (Ins) OR ("imatut") IF (*1 INSOBJVERB OR LIK_QAR OR ("quleriilik") BARRIER KOMMA OR V)(NEGATE -*1 Ins BARRIER (*) - Adv - Pali - Interj - @POSS> - (/@i-.*/r))(NEGATE 1 (/__HTR\ Der\/vv\ Gram\/IV\ TUQ\ Der\/vn\ QAR__/l))(NEGATE 0 TIME - ("inuk")) ; # "tit" skal præciseres eller reduceres til en ADD-regel #NEGATE tilføjet 20180507 fordi det altid er @i-MIK-OBJ> ved N-mik takunnittoqarpoq.
+MAP:M0760 (@i-N<) TARGET Ins IF (*-1 INSOBJVERB OR LIK_QAR BARRIER (*) - @<N - @i-N<) (NEGATE *1 INSOBJVERB OR LIK_QAR BARRIER KOMMA)(NEGATE 1 Der/vn)(NEGATE 1 V)(NEGATE 0 CONJ-C LINK -*1 @i-N<) ; # Næstsidste NEGATE for at forebygge hit paa 'ilunni QATSORTITASSAANNGIVISSUMIK anorersuartorsuaq,'
+
+MAP:M0755 @i->N TARGET Ins + $$NUMERUS IF (*1 INSOBJVERB BARRIER V) (NEGATE -1 Ins + $$NUMERUS)(NEGATE *1 LIK_QAR) ;
 
 # Efterstillet adled til inkorporeret objekt kan stå i absolut
-MAP:M0760A @i-N< TARGET Abs IF (*-1 QAR OR LIK BARRIER VFIN) (*1 CLB BARRIER (*) - Abs - PUNCT) ;
+MAP:M0760A @i-N< TARGET Abs IF (*-1 LIK_QAR BARRIER VFIN) (*1 CLB BARRIER (*) - Abs - PUNCT) ;
 
 ###################
 # Adverbale adled # #Ny struktur 20180404
@@ -2657,7 +2660,6 @@ MAP:M0612D @POSS> TARGET Rel + LU IF (-1 Rel + 4SgPoss)(1 Lok OR Ins LINK 1 POSS
 MAP:M0612E @POSS> TARGET Rel + LU IF (-1 Rel + 4SgPoss)(1 POSSESSUM + 3PlPoss) ;
 
 MAP:M0615A @MIK-OBJ> TARGET Ins IF (*1 Gram/HV + V BARRIER V) (NEGATE -1 @MIK-OBJ>) ; #Ikke MAP fordi ogsaa ADVL> mulig
-MAP:M0616 @i->N TARGET Ins + $$NUMERUS IF (*1 INSOBJVERB BARRIER V) (NEGATE -1 Ins + $$NUMERUS)(NEGATE *1 QAR OR LIK) ;
 
 MAP:M0619 (@i-MIK-OBJ>) TARGET Ins IF (*1 HTR + V + Der/vn BARRIER V);
 ADD:M0620 (@MIK-OBJ>) TARGET Ins IF (*1 HTR + V BARRIER V); #Ikke MAP fordi ogsaa ADVL> mulig
@@ -2765,12 +2767,13 @@ MAP:M0880 (@i-ADVL>) TARGET (Abl) IF (1 Der/vn - NAR )(NEGATE 1 Rel LINK 1 POSSE
 MAP:M0890 (@i-ADVL>) TARGET (Via) IF (1 Der/vn - NAR )(NEGATE 1 TAR + RIAQ + IRUTE)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Via )(NEGATE 1 LU + (Via)); #Kun Trm til Der/vn med NAR. RIAQ i TARIAARUP kvalificerer ikke som vn. Rettet 2.4. NEGATE nr. 3 20091104 for at haandtere paratakse
 MAP:M0900 (@i-ADVL>) TARGET (Aeq) IF (1 Der/vn - NAR )(NEGATE 1 Rel LINK 1 POSSESSUM3 + Aeq )(NEGATE 1 LU + Aeq)(NEGATE 0 LU LINK -1 Aeq); #Kun Trm til Der/vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse
 MAP:M0910 (@i-ADVL>) TARGET (Ins) IF (1 Der/vn - NAR )(NEGATE 1 TAR + RIAQ + IRUP)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Ins )(NEGATE 1 LUUNNIIT + Ins)(NEGATE 1 LU + Ins)(NEGATE 0 $$KASUS LINK -*1 $$KASUS BARRIER (*) - Adv - Pali - Interj - @POSS> - (/@i-.*/r)) ; #20091109 
-MAP:M0920 (@AGENS) TARGET Abl - V IF (*1 PASSIV)(NEGATE 0 TIME); #Tidsadverbaler må ikke blive agens. -V for at forhindre hit på verber med IR og IP
+MAP:M0920 (@AGENS) TARGET Abl - V IF (*1 PASSIV BARRIER VFIN)(NEGATE 0 TIME); #Tidsadverbaler må ikke blive agens. -V for at forhindre hit på verber med IR og IP
 #Specialitet ved opremsninger med og uden adled. Skal komme før M0930
 MAP:M0929A @ADVL> TARGET Trm IF (1 KOMMA)(2 Trm )(3 KOMMA);
 MAP:M0929B @ADVL> TARGET Trm IF (1 KOMMA)(2 Trm OR Ins)(3 Trm)(4 KOMMA);
 MAP:M0930 (@i-ADVL>) TARGET Trm - Prop IF (*1 Der/vn BARRIER V)(NEGATE 1 Lok + IP + TUQ + Trm)(NEGATE 1 @<N); #(NEGATE 0 TIME LINK *-1 BOS BARRIER (*) - ("taamaakkaluartoq")); #må ikke hitte på sit eget kongruensadled. (NEGATE3) Må ikke hitte på nexusadverbial evt. efter koncessiv virker ikke endnu 20180207
 MAP:M0630B (@i-MIK-OBJ>) TARGET Ins IF (*1 HTR + Der/vn - V BARRIER HTR OR (*) - @i-ADVL> - @<N) ; # dubleret M0630
+MAP:M0935 @i-ADVL> TARGET TIME + N + Abs IF (-1 CLB LINK **1 (*) - V) ;
 
 MAP:M0940 (@ADVL>) TARGET OBLIQUE IF (*1 V BARRIER ("quleriilik") LINK NOT 0 QAR OR LIK)(NEGATE 0 Par LINK *-1 ORATIOOBLVERB)(NEGATE 0 Ins LINK 1 DOTR)(NEGATE 0 Ins LINK 1 Ins LINK 1 DOTR)(NEGATE 0 Gram/Cong + 4Sg LINK *1 V + 4Sg)(NEGATE 0 Gram/Cong + 4Sg LINK 1 POSSESSUM + 3SgPoss)(NEGATE *1 KOMMA BARRIER (*) - @<N - @<ADVL);#(NEGATE 0 $$KASUS LINK -*1 $$KASUS BARRIER (*) - Adv - Pali - Interj - @POSS> - (/@i-.*/r)) ; #Foerst adled til Der/vn og i-ADVL, derefter andre ADVL. Må ikke hitte or. obl. med Lok + IP + Par og må ikke blokere for @i-OBJ-DOTR> #NEGATE tilføjet for afterthoughts. #BARRIER tilføjet for at gøre den sikrere.
 
