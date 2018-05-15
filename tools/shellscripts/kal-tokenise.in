@@ -1,0 +1,97 @@
+#!/usr/bin/env perl
+# -*- mode: cperl; indent-tabs-mode: nil; tab-width: 3; cperl-indent-level: 3; -*-
+BEGIN { $| = 1; }
+use strict;
+use warnings;
+use utf8;
+use FileHandle;
+use IPC::Open2;
+
+my $prefix = '@prefix@';
+my @fsts = ('', "@datarootdir@/giella/@GTLANG@/tokeniser-disamb-gt-desc.pmhfst", '/usr/local/share/giella/@GTLANG@/tokeniser-disamb-gt-desc.pmhfst', '/usr/share/giella/@GTLANG@/tokeniser-disamb-gt-desc.pmhfst');
+if (defined $ARGV[0] && -s $ARGV[0]) {
+   $fsts[0] = $ARGV[0];
+}
+my $fst = '';
+foreach my $f (@fsts) {
+   if ($f && -s $f && -r $f) {
+      $fst = $f;
+      last;
+   }
+}
+
+if (!$fst || !-s $fst) {
+   die("No usable tokeniser.pmhfst given or found!\n");
+}
+
+my $t = "hfst-tokenize -L ${fst}";
+
+# Prefixes from root.lexc ca. lines 14-15
+my @p = ('AA', 'TA');
+
+# Main POS tags from root.lexc ca. lines 19-29
+my @m = ('N', 'V', 'Pali', 'Conj', 'Adv', 'Interj', 'Pron', 'Prop', 'Num');
+
+# Other POS tags from root.lexc ca. lines 114-180
+my @a = (
+   'Sg', 'Du', 'Pl',
+   'Abs', 'Rel', 'Trm', 'Abl', 'Lok', 'Aeq', 'Ins', 'Via',
+   'Nom', 'Akk',
+   'Ind', 'Int', 'Imp', 'Opt', 'Cau', 'Con', 'Par', 'Cont', 'ContNeg', 'IteCau',
+   '1Sg', '2Sg', '3Sg', '4Sg', '1Pl', '2Pl', '3Pl', '4Pl', '1Du', '2Du', '3Du', '4Du',
+   '1SgO', '2SgO', '3SgO', '4SgO', '1PlO', '2PlO', '3PlO', '4PlO', '1DuO', '2DuO', '3DuO', '4DuO',
+   '1SgPoss', '2SgPoss', '3SgPoss', '4SgPoss', '1PlPoss', '2PlPoss', '3PlPoss', '4PlPoss',
+   );
+
+my $pp = join('|', @p);
+my $mp = join('|', @m);
+my $ap = join('|', @a);
+my $i = 'i';
+
+open2(*OUT, *IN, $t) or die $!;
+
+sub analyze {
+   my ($in,$n) = @_;
+   if (!$n) {
+      $n = 0;
+   }
+
+   # Give up trying to make sense of input at this point...
+   if ($n >= 3) {
+      return $in;
+   }
+
+   my $nonce = '<nonce-'.rand().'>';
+   print IN "$in\n$nonce\n";
+   my $out = '';
+   while ($out !~ /\Q$nonce\E/) {
+      $out .= <OUT>;
+   }
+   $out =~ s@\Q$nonce\E\s*@@sg;
+
+   # Work around HFST bug by recursing un-analyzed chunks
+   if ($out =~ /\n([^<"\t][^\n]*)\n/) {
+      my $f = $1;
+      my $m = analyze($f, $n + 1);
+      if ($f ne $m) {
+         $out =~ s/\n\Q$f\E\n/\n$m\n/g;
+      }
+   }
+
+   return $out;
+}
+
+while (<STDIN>) {
+   my $out = analyze($_);
+
+   my @ls = split(/\n+/, $out);
+   foreach (@ls) {
+      if (m@^\s+"@ || m@^\s+($pp) "@) {
+         # Move prefixes after the base form
+         s@^(\s+)($pp) (".+?" )@$1$3Prefix/$2 @;
+         # Mark all internal POS tags so they don't confuse the later steps
+         while (s@ ($mp|$ap)( .+ (?:$mp))@ $i$1$2@g) {}
+      }
+      print "$_\n";
+   }
+}

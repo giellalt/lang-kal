@@ -8,4 +8,6 @@
 # following line with an indent and a comment, though, to fool the automake
 # processing.
 bin_SCRIPTS=ukal-gt.sh \
+	kal-generate \
+	kal-tokenise \
 	# Let this line end the definition

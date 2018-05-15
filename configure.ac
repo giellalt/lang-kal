@@ -142,6 +142,9 @@ gt_CONFIG_FILES
 ##### BEGIN: Add language-specific list of files to ######
 ########## be processed by autoconf below here: ##########
 
+AC_CONFIG_FILES([tools/shellscripts/kal-tokenise], [chmod +x tools/shellscripts/kal-tokenise])
+AC_CONFIG_FILES([tools/shellscripts/kal-generate], [chmod +x tools/shellscripts/kal-generate])
+
 ############ END: Language-specific scripts. #############
 
 # This must be near the end of all configure.ac files:
