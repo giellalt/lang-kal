@@ -104,7 +104,7 @@ LIST SUB = Orth/Arch Orth/Alt Orth/Young ;
 LIST Orth/Arch = Orth/Arch ;
 LIST Orth/Alt = Orth/Alt ;
 LIST Orth/Young = Orth/Young ;
-LIST Comp = Gram/Comp Comp ; #20100228 Ny tag udelukkende til neq ajor/saper/artor/nalu (PL)
+LIST Gram/Comp = Gram/Comp ; #20100228 Ny tag udelukkende til neq ajor/saper/artor/nalu (PL)
 LIST Coll = Coll ; #20100406 Ny tag til ikke-godkendte proprier
 LIST TempPart = TempPart ; #De særlige verbumlignende nominer med tempusfunktion
 LIST Gram/Exclm = Gram/Exclm ;
@@ -186,6 +186,7 @@ SET OBJ_CONT = OBJS | OBJP ;
 LIST 34IV = 3Sg 3Pl 4Sg 4Pl ;
 LIST 34Sg = 3Sg 4Sg ;
 LIST 34Pl = 3Pl 4Pl ;
+LIST 12IV = 1Sg 1Pl 2Sg 2Pl ;
 
 LIST 1SgPoss = 1SgPoss ; #Ny tag 22.1.2008
 LIST 2SgPoss = 2SgPoss ; #Ny do.
@@ -1494,7 +1495,7 @@ REMOVE:0040D Par + 3Pl IF (1 Par + 3Pl + NIR); #Må være subjektet og ikke Par
 REMOVE:0040E 4PlO + CONT - Dobbelttransitiv ; #Er vist en utænkelig kombination?? 
 
 #Vælg Indikativ verbum, hvis eneste finitte. NIR undtaget, da ofte fejl for NIQ plus noget. BARRIER reduceret fra BARRIER LU OR LI OR KOMMA til kun KOMMA på gr. af mange hit på nominalparatakser med LU og adverbialer med LI
-SELECT:0003 Ind - SUB IF (NEGATE *0 VFIN BARRIER KOMMA)(NEGATE 0 NIR)(NEGATE 0 Int LINK 1 ("?"))(NEGATE 0 Par LINK *-1 KONCESSIV)(NEGATE -1 NIQ + Comp) ; #SUB undtaget for ikke at gøre Via som matuagut til Ind 1Pl. Må ikke slette Par i koncessiver og efterlade fx GALUAQ + GE + Ind. Må ikke slette NIQ fulgt af Par 
+SELECT:0003 Ind - SUB IF (NEGATE *0 VFIN BARRIER KOMMA)(NEGATE 0 NIR)(NEGATE 0 Int LINK 1 ("?"))(NEGATE 0 Par LINK *-1 KONCESSIV)(NEGATE -1 NIQ + Gram/Comp) ; #SUB undtaget for ikke at gøre Via som matuagut til Ind 1Pl. Må ikke slette Par i koncessiver og efterlade fx GALUAQ + GE + Ind. Må ikke slette NIQ fulgt af Par 
 
 
 ### INTERJEKTION, VOKATIV og IMPERATIV ###
@@ -1617,8 +1618,8 @@ SELECT:0044 ADJEKTIVISK + Abs + Sg IF (-1 Abs + Sg)(*1 3SgO BARRIER V)(NEGATE *0
 REMOVE:0044A ("ilaaq") - AFFINGERET IF (0 ("ila") + POSSESSUM) ; #'ilaaq' uden QAR el. lign. usandsynlig
 REMOVE:0044B ("isu") + MAA IF (0 ("isuma"));
 
-SELECT:0045A Comp IF (1 ("ajor") OR ("artor") OR ("saper") OR ("nalu"));
-REMOVE:0045B Comp IF (NEGATE 1 ("ajor") OR ("artor") OR ("saper") OR ("nalu"));
+SELECT:0045A Gram/Comp IF (1 ("ajor") OR ("artor") OR ("saper") OR ("nalu"));
+REMOVE:0045B Gram/Comp IF (NEGATE 1 ("ajor") OR ("artor") OR ("saper") OR ("nalu"));
 #20100228 NY (PL): Vælger og fjerner alle transitiver med NIQ
 
 REMOVE:0046 (/__NIQ\ Der\/vn\ UTE__/l) IF ( 0 NIUTE ) ;
@@ -1957,7 +1958,7 @@ SELECT:0250 Gram/Coref + Pron + Abs + 4Sg IF (NEGATE *0 VFIN)(-1**< @PRED + 3Sg)
 # Frequent and safe rules - verbs #
 ######################
 
-REMOVE:0280 ("ajoraa") IF (0 ("ajor") LINK -1 NIQ + Comp) ; # ..NIQ ajor + Par må ikke læses som ajoraa + Ind
+REMOVE:0280 ("ajoraa") IF (0 ("ajor") LINK -1 NIQ + Gram/Comp) ; # ..NIQ ajor + Par må ikke læses som ajoraa + Ind
 #SELECT:0043B INTRANSVERB - HTR + Gram/Refl IF (0 LIRSUR) ; #Forsøg på en meget tidlig disambiguering af LIRSUR ##Udkommenteret 20180511 Forstår ikke reglen, som iøvrigt konsekvent fejllæser. Ex Assigiinngitsunilli pissusilersorput. er ikke refleksiv
 
 
@@ -2692,7 +2693,7 @@ MAP:M0662A @SUBJ> TARGET Gram/Pers + Pron + Rel + 2Sg IF (*1 VERB-NOTCONT + TRAN
 #Særregel ved SUBJ> + Pl ; OBJ> + Pl ; CONT + 3PlO ; 
 MAP:M0669 @SUBJ> TARGET Abs + Pl IF (*1 Abs + Pl LINK *1 CONT + 3PlO LINK *1 INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl BARRIER TRANSVERB + 3PlO)(NEGATE *-1 Rel + Sg LINK *1 3Sg + 3PlO) ; 
 MAP:M0670 (@SUBJ>) TARGET Abs + Pl IF (*1 INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl BARRIER TRANSVERB + 3PlO)(NEGATE *-1 Rel + Sg LINK *1 3Sg + 3PlO) ; #så er det et objekt for TRANSVERB. NEGATE tilføjet 20171121 for at redde objekter for V til højre
-MAP:M0680 (@SUBJ>) TARGET (Rel) IF (*1 TRANSVERB + 34IV BARRIER POSSESSUM3 OR INTRANSVERB + 34IV LINK NEGATE 0 VFIN LINK *-1 _TARGET_ LINK 0 4SgPoss OR 4PlPoss) ;
+MAP:M0680 (@SUBJ>) TARGET (Rel) - 12IV IF (*1 TRANSVERB + 34IV BARRIER POSSESSUM3 OR INTRANSVERB + 34IV LINK NEGATE 0 VFIN LINK *-1 _TARGET_ LINK 0 4SgPoss OR 4PlPoss) ;
 MAP:M0681 @SUBJ> TARGET Abs + 1Pl IF (*1 INTRANSVERB + 1Pl BARRIER VFIN)(NEGATE *1 TRANSVERB + 1PlO BARRIER INTRANSVERB + 1Pl) ; 
 MAP:M0690 (@SUBJ>) TARGET N IF (-1 ("\("))(1 ("\)"))(-2 @SUBJ>) ; #Parantetiske indskud samme led som foregående ord
 
@@ -2717,7 +2718,7 @@ MAP:M0762 (@HNOUN) TARGET N + Abs IF (-1 BOS)(1 KOMMA)(*1 Imp) ; #Et isoleret no
 MAP:M0763 (@HNOUN) TARGET N + Abs IF (1 KOMMA)(*1 Imp) ; #Et isoleret nomen er vokativ
 #M761 og M762 virker ikke. M763 er alt for bred og skal slettes når de andre er klaret
 
-MAP:M0765 (@i->V) TARGET Comp + NIQ IF (1 ("ajor")) ; 
+MAP:M0765 (@i->V) TARGET Gram/Comp + NIQ IF (1 ("ajor")) ; 
 MAP:M0766 @SUBJ> TARGET Prop + Rel + Sg IF (*1 TRANSVERB + 3Sg OR TRANSVERB + 4Sg BARRIER V) ;
 MAP:M0767 @HNOUN TARGET (/__Gram\/Dem\ Pron__/l) IF (-1 BOS)(1 EOS);
 
