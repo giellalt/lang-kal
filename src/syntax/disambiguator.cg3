@@ -122,6 +122,9 @@ LIST Sg = Sg ;
 LIST Du = Du ;
 LIST Pl = Pl ;
 
+LIST iSg = iSg ;
+LIST iPl = iPl ;
+
 LIST Abs = Abs ;
 LIST Rel = Rel ;
 LIST Trm = Trm ;
@@ -132,6 +135,17 @@ LIST Ins = Ins ;
 LIST Via = Via ;
 LIST Akk = Akk ;
 LIST Nom = Nom ;
+
+LIST iAbs = iAbs ;
+LIST iRel = iRel ;
+LIST iTrm = iTrm ;
+LIST iAbl = iAbl ;
+LIST iLok = iLok ;
+LIST iAeq = iAeq ;
+LIST iIns = iIns ;
+LIST iVia = iVia ;
+LIST iAkk = iAkk ;
+LIST iNom = iNom ;
 
 LIST Ind = Ind ;
 LIST Int = Int ;
@@ -153,6 +167,15 @@ LIST 1Pl = 1Pl ;
 LIST 2Pl = 2Pl ;
 LIST 3Pl = 3Pl ;
 LIST 4Pl = 4Pl ;
+
+LIST i1Sg = i1Sg ;
+LIST i2Sg = i2Sg ;
+LIST i3Sg = i3Sg ;
+LIST i4Sg = i4Sg ;
+LIST i1Pl = i1Pl ;
+LIST i2Pl = i2Pl ;
+LIST i3Pl = i3Pl ;
+LIST i4Pl = i4Pl ;
 
 LIST PN = 1Sg 2Sg 3Sg 4Sg 1Pl 2Pl 3Pl 4Pl ;
 
@@ -196,6 +219,15 @@ LIST 1PlPoss = 1PlPoss ; #Ny do.
 LIST 2PlPoss = 2PlPoss ; #Ny do.
 LIST 3PlPoss = 3PlPoss ; #Ny do.
 LIST 4PlPoss = 4PlPoss ; #Ny do.
+
+LIST i1SgPoss = i1SgPoss ; #Ny tag
+LIST i2SgPoss = i2SgPoss ; #Ny do.
+LIST i3SgPoss = i3SgPoss ; #Ny do.
+LIST i4SgPoss = i4SgPoss ; #Ny do.
+LIST i1PlPoss = i1PlPoss ; #Ny do.
+LIST i2PlPoss = i2PlPoss ; #Ny do.
+LIST i3PlPoss = i3PlPoss ; #Ny do.
+LIST i4PlPoss = i4PlPoss ; #Ny do.
 
 LIST 1SgO = 1SgO ;
 LIST 2SgO = 2SgO ;
@@ -1038,20 +1070,29 @@ SET PASSIV = (GE SIMA) OR NIQAR OR (TRANSVERB TAQ U) ;
 LIST NO_HTR = "allap" ; #20091108 - Verber, der ikke kan kombinere med HTR
 SET SchwaDerivativ = GE | TARE | QE ;
 SET PERSON = 1Sg | 2Sg | 3Sg | 4Sg | 1Pl | 2Pl | 3Pl | 4Pl ;
+SET iPERSON = i1Sg | i2Sg | i3Sg | i4Sg | i1Pl | i2Pl | i3Pl | i4Pl ;
 SET PROP = Prop | iProp ;
 
 # Nominer
 # -------
 SET KASUS = Abs | Rel | Trm | Abl | Lok | Aeq | Ins | Via ;
+SET iKASUS = iAbs | iRel | iTrm | iAbl | iLok | iAeq | iIns | iVia ;
 SET NOT-REL = KASUS - Rel ;
 SET OBLIQUE =  Trm | Abl | Lok | Aeq | Ins | Via ;
 SET NUMERUS = Sg | Pl ;
+SET iNUMERUS = iSg | iPl ;
 
 SET POSSESSUM3 = (N 3SgPoss) | (N 3PlPoss) | (N* 3SgPoss) | (N* 3PlPoss) | (Num 3SgPoss) | (Num 3PlPoss) | (DivPron 3PlPoss) ;
 SET POSSESSUM4 = (N 4SgPoss) | (N 4PlPoss) | (N* 4SgPoss) | (N* 4PlPoss) ;
 SET POSSESSUM12 = (N 1SgPoss) | (N 2SgPoss) | (N* 1SgPoss) | (N* 2SgPoss)| (N 1PlPoss) | (N 2PlPoss) | (N* 1PlPoss) | (N* 2PlPoss) ;
 
+SET iPOSSESSUM3 = (iN i3SgPoss) | (iN i3PlPoss) ;
+SET iPOSSESSUM4 = (iN i4SgPoss) | (iN i4PlPoss) ;
+SET iPOSSESSUM12 = (iN i1SgPoss) | (iN i2SgPoss) | (iN i1PlPoss) | (iN i2PlPoss) ;
+
 SET POSSESSUM = POSSESSUM12 OR POSSESSUM3 OR POSSESSUM4 ; 
+
+SET iPOSSESSUM = iPOSSESSUM12 OR iPOSSESSUM3 OR iPOSSESSUM4 ; 
 
 SET NOT-POSSESSUM = N - POSSESSUM ;
 
@@ -1569,12 +1610,13 @@ SELECT:0040N Rel IF (NEGATE *1 V)(*-1 KOMMA LINK *-1 Rel LINK 1 POSSESSUM3)(NEGA
 REMOVE:0113 SPATIAL + LIR IF (0 ("ungasip")); #20120422 ("ungat")+LIR vist altid bare forkert analyse af 'ungasip'
 
 REMOVE:0114 Abs + 4SgPoss IF (0 SPATIAL + Lok LINK -1 Rel)(NEGATE 0 ("ati") + TAQ) ; # Olep saani næppe subjekt og objekt men possessor possessum. Må dog ikke hitte på atisat
-SELECT:0115 SPATIAL + (Sg) IF (0 POSSESSUM)(NEGATE 0 (/__\"ati\"\ Gram\/TV\ TAQ__/l))(NEGATE 0 ("ataata")) ; #2.4. hitter paa ati + TAQ og på "ataata"
+SELECT:0115 SPATIAL + Sg IF (0 POSSESSUM)(NEGATE 0 (/__\"ati\"\ Gram\/TV\ TAQ__/l))(NEGATE 0 ("ataata")) ; #2.4. hitter paa ati + TAQ og på "ataata"
+SELECT:0116 SPATIAL + iSg IF (0 iPOSSESSUM)(NEGATE 0 (/__\"ati\"\ Gram\/TV\ TAQ__/l))(NEGATE 0 ("ataata")) ; #2.4. hitter paa ati + TAQ og på "ataata"
 REMOVE SPATIAL IF (0 QAR) ; #Forstår ikke reglen 20120422
 
 # Konstruktioner med possessor til inderiveret nomen. Skal stå før @POSS.
-#MAP:POSS0040Q @i-POSS> TARGET Rel IF (1 POSSESSUM + IP + TUQ) ;
-MAP:POSS0040Q @i-POSS> TARGET Rel IF (1 POSSESSUM + IP + SPATIAL) ;
+#MAP:POSS0040Q @i-POSS> TARGET Rel IF (1 iPOSSESSUM + IP + TUQ) ;
+MAP:POSS0040Q @i-POSS> TARGET Rel IF (1 iPOSSESSUM + IP + SPATIAL) ;
 
 
 ### ULØSELIGHEDER ###
@@ -1656,6 +1698,7 @@ SELECT:0063A Rel + Pl IF (1 TIDSPARTIKEL LINK 1C 3PlPoss)(NEGATE 2 ("siuneq") + 
 SELECT:0063 Rel + Pl - FAM_UNIK IF (1C 3PlPoss)(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 1 ("assi") + POSSESSUM + LU)(NEGATE -1 ("ila") LINK 2 ("ila")) ; #må ikke hitte på siornatigut og ikke på opremsede participier med assigisaallu og heller ikke på opremsninger med ilaat .. ilaat. Må ikke hitte på fx nuliami pii
 SELECT:0064 Rel + Sg IF (1C 3SgPoss)(NEGATE 0 Ins LINK 1 LIK_QAR)(NEGATE 1 LU)(NEGATE 0 ("affaq"))(NEGATE 0 PLACE + 4SgPoss ); #asanninnermik pigisaqarneranut er ikke en possessor-possessum forbindelse
 SELECT:0065 3SgPoss IF (-1C Rel + Sg)(NEGATE *1 VERB-NOTCONT + TRANSVERB + 3Sg BARRIER VFIN);
+SELECT:0066 i3SgPoss IF (-1C Rel + Sg)(NEGATE *1 VERB-NOTCONT + TRANSVERB + 3Sg BARRIER VFIN);
 
 #Nexusadverbialer med kinguneq og nali
 SELECT:0067 ("kinguneq") + 3SgPoss IF (-2 BOS OR KOMMA)(-1 Rel)(NEGATE 0 ("naamik")) ;
@@ -2597,7 +2640,8 @@ MAP:M0750 (@i->N) TARGET (Ins) OR ("imatut") IF (*1 INSOBJVERB OR LIK_QAR OR ("q
 MAP:M0760 (@i-N<) TARGET Ins IF (*-1 INSOBJVERB OR LIK_QAR BARRIER (*) - @<N - @i-N<) (NEGATE *1 INSOBJVERB OR LIK_QAR BARRIER KOMMA)(NEGATE 1 Der/vn)(NEGATE 1 V)(NEGATE 0 CONJ-C LINK -*1 @i-N<) ; # Næstsidste NEGATE for at forebygge hit paa 'ilunni QATSORTITASSAANNGIVISSUMIK anorersuartorsuaq,'
 
 MAP:M0755 @i->N TARGET Ins + $$NUMERUS IF (*1 INSOBJVERB BARRIER V) (NEGATE -1 Ins + $$NUMERUS)(NEGATE *1 LIK_QAR) ;
-
+MAP:M0756 @i->N TARGET Lok IF (1 iLok) ;
+MAP:M0757 @i->N TARGET Abl IF (1 iAbl) ;
 # Efterstillet adled til inkorporeret objekt kan stå i absolut
 MAP:M0760A @i-N< TARGET Abs IF (*-1 LIK_QAR BARRIER VFIN) (*1 CLB BARRIER (*) - Abs - PUNCT) ;
 
@@ -2700,7 +2744,7 @@ MAP:M0690 (@SUBJ>) TARGET N IF (-1 ("\("))(1 ("\)"))(-2 @SUBJ>) ; #Parantetiske 
 MAP:M0694 (@SUBJ>) TARGET Rel IF (-*1 TRANSVERB LINK *-1 Rel LINK *1 Abs LINK *1 KOMMA)(*1 Abs BARRIER V) ; # Opremsning uden transitive verber
 MAP:M0695 (@SUBJ>) TARGET Rel IF (-*1 Rel LINK *-1 Rel LINK *1 TRANSVERB LINK *1 KOMMA)(*1 Abs BARRIER V) ; # Opremsning uden transitive verber
 MAP:M0696 (@OBJ>) TARGET Abs IF (-*1 Rel BARRIER KOMMA OR V)(-1 Abs)(0 LU) ; # Opremsning uden transitive verber
-MAP:M0697 (@OBJ>) TARGET Abs IF (-1 Rel)(1 KOMMA OR LU OR LUUNNIIT OR EOS) ; # Opremsning uden transitive verber
+MAP:M0697 (@OBJ>) TARGET Abs IF (-1 Rel)(1 KOMMA OR LU OR LUUNNIIT OR EOS)(NEGATE 1 EOS LINK NOT 0* TRANSVERB) ; # Opremsning uden transitive verber
 MAP:M0698 (@SUBJ>) TARGET Rel IF (-*1 Rel LINK *1 TRANSVERB LINK *1 KOMMA)(*1 Abs LINK *1 KOMMA) ; # Opremsning uden transitive verber
 MAP:M0699 (@OBJ>) TARGET Abs IF (-1 Rel)(1 KOMMA) ; # Opremsning uden transitive verber
 MAP:M0700 (@<SUBJ) TARGET (Rel) IF (-*1 TRANSVERB + VERB-NOTCONT + 34Sg)(0 (Sg)) ;
@@ -3206,7 +3250,7 @@ REMOVE:0493 Par + 4Sg IF (-1 Rel + Pl)(0 3PlPoss + NIQ);
 REMOVE:0495 Par + 3Pl IF (-1 N + Pl)(1 VFIN + ORATIOOBLVERB)(*1 Par) ;
 #Forebygger hit på amerlanerussuteqartut i 'Qallunaat amerlanerussuteqartut isumaqarput or. obliqua*
 
-SELECT:0497 Par + INTRANSVERB + 3Sg IF (*1 ORATIOOBLVERB + V BARRIER ("\,") OR VFIN)(*-1 Abs + Sg)(NEGATE 0 LU LINK -1 Abs + Sg)(NEGATE 0 Der/nv + TUQ LINK -1 Abs + Sg) ; #sidste NEGATE forebygger hit på kongruensadled til objekter
+SELECT:0497 Par + INTRANSVERB + 3Sg IF (*1 ORATIOOBLVERB + V BARRIER ("\,") OR VFIN)(*-1 Abs + Sg)(NEGATE 0 LU LINK -1 Abs + Sg)(NEGATE 0 TUQ LINK -1 Abs + Sg) ;#sidste NEGATE forebygger hit på kongruensadled til objekter
 #koncession og temporal uden konjunktion fulgt af subjekt#Ny 3.4.
 
 #koncessioner uden konjunktion med OSV paa gr. af GE
@@ -4177,6 +4221,7 @@ REMOVE:5594 ("pitsak") + USAAR IF (0 ("pitsak") + U + SAAR) ;
 REMOVE:5595 ("pitsak") + USAQ + U IF (0 ("pitsak") + U + SAAR) ; 
 SELECT:5596 NIR IF (0 NIQ)(NEGATE *0 VFIN ) ;
 REMOVE:5597 ("oqaq") + PALLAP IF (0 ("oqar") + PALLAP) ;
+REMOVE:5597B ("oqaq") + RIAR IF (0 ("oqar") + RIAR) ;
 REMOVE:5598 LLAQQIP IF (0 ("aallar")); #hverken krybefangst (aarpoq) eller afhentning (aavaa)
 REMOVE:5599 NIR + TUQ + POSSESSUM ; # vist altid NIQ+SUAQ
 REMOVE:5600 GIIP + UTE IF (0 GIIT + U) ;
