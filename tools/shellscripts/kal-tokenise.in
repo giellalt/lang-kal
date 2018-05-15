@@ -1,11 +1,18 @@
 #!/usr/bin/env perl
 # -*- mode: cperl; indent-tabs-mode: nil; tab-width: 3; cperl-indent-level: 3; -*-
-BEGIN { $| = 1; }
 use strict;
 use warnings;
 use utf8;
 use FileHandle;
 use IPC::Open2;
+
+BEGIN {
+	$| = 1;
+	binmode(STDIN, ':encoding(UTF-8)');
+	binmode(STDOUT, ':encoding(UTF-8)');
+}
+use open qw( :encoding(UTF-8) :std );
+use feature 'unicode_strings';
 
 my $prefix = '@prefix@';
 my @fsts = ('', "@datarootdir@/giella/@GTLANG@/tokeniser-disamb-gt-desc.pmhfst", '/usr/local/share/giella/@GTLANG@/tokeniser-disamb-gt-desc.pmhfst', '/usr/share/giella/@GTLANG@/tokeniser-disamb-gt-desc.pmhfst');
@@ -49,6 +56,10 @@ my $ap = join('|', @a);
 my $i = 'i';
 
 open2(*OUT, *IN, $t) or die $!;
+binmode(OUT, ':encoding(UTF-8)');
+binmode(IN, ':encoding(UTF-8)');
+autoflush OUT 1;
+autoflush IN 1;
 
 sub analyze {
    my ($in,$n) = @_;
