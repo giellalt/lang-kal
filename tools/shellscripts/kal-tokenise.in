@@ -87,6 +87,30 @@ sub analyze {
    }
    $out =~ s@\Q$nonce\E\s*@@sg;
 
+   # Work around HFST bug where abbreviations without space after are misanalyzed
+   my $seen = '';
+   my $did = 1;
+   while ($did) {
+      $did = 0;
+      my @ms = ($out =~ m@^.*("<.+?>"\n.+?(?:Gram/Abbr|\?)\n\.).*(?:$seen)@sg);
+      if (!@ms) {
+         # Work around HFST bug that happens WITHOUT hyperminimisation
+         @ms = ($out =~ m@^.*("<.+?>"\n.+?(?:Gram/Abbr|\?)\n"<\.>"\n\t"\." CLB).*(?:$seen)@sg);
+      }
+      foreach my $f (@ms) {
+         my ($w) = ($f =~ /"<(.+?)>"/);
+
+         $seen = "$w.*$seen";
+         $did = 1;
+
+         $w .= '.';
+         my $m = analyze($w, $n + 1);
+         if ($f ne $m && $m =~ /\t/) {
+            $out =~ s/\Q$f\E\n/$m/s;
+         }
+      }
+   }
+
    # Work around HFST bug by recursing un-analyzed chunks
    foreach my $f ($out =~ /\n([^<"\t][^\n]*)\n/g) {
       my $m = analyze($f, $n + 1);
