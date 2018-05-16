@@ -64,16 +64,24 @@ while (<STDIN>) {
    if (/^"<.+>"/) {
       next;
    }
+   # Skip empty lines
+   if (/^\s*$/) {
+      next;
+   }
 
    # Turn CG readings into FST lines, minding that baseforms can have spaces in them
-   if (/^\s+"([^"]+)"/) {
+   if (/^\s*"([^"]+)"/) {
       my $b = $1;
       # Protect baseform and outdent
-      s/^\s+"\Q$b\E"/XBASEFORMX/;
+      s/^\s*"\Q$b\E"/XBASEFORMX/;
       # Turn spaces into +
       s/\s+/\+/g;
       # Restore baseform
       s/XBASEFORMX/$b/;
+   }
+
+   if (/^[^\t]+\t[^\t+]+\+/) {
+      s/^[^\t]+\t([^\t+]+\+)/$1/;
    }
 
    # Move Prefix/XX in front of the baseform
