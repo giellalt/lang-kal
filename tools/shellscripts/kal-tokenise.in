@@ -88,8 +88,7 @@ sub analyze {
    $out =~ s@\Q$nonce\E\s*@@sg;
 
    # Work around HFST bug by recursing un-analyzed chunks
-   if ($out =~ /\n([^<"\t][^\n]*)\n/) {
-      my $f = $1;
+   foreach my $f ($out =~ /\n([^<"\t][^\n]*)\n/g) {
       my $m = analyze($f, $n + 1);
       if ($f ne $m) {
          $out =~ s/\n\Q$f\E\n/\n$m\n/g;
