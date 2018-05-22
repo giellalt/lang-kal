@@ -1283,7 +1283,7 @@ LIST @CONT->N = @CONT->N ;	# tag forbeholdt de saerlige adnominale transitive in
 LIST @PARATAKSE_CONT->N = @PARATAKSE_CONT->N ; # Placeholder for infinitiv i paratakse med substantiv. Skal udskiftes i allersidste section
 LIST @PRED2 = @PRED2 ; # saettes paa verbet i en bunden ledsaetning
 LIST @ABSOLUT_PRED = @ABSOLUT_PRED ;	#Participier med nexus inde i en NP eller afterthoughts
-LIST @i->V = @i->V ; 	# NIQ ved ajor, saper, artor, nalu
+#LIST @i->V = @i->V ; 	# NIQ ved ajor, saper, artor, nalu #Udkommenteret 20180522. @V>
 LIST @SUBJ_COMP = @SUBJ_COMP ;	#Prædikat til subjekt/ subjective complement
 #LIST @OBJ_COMP = @OBJ_COMP ; #Prædikat til objekt Udkommenteret til fordel for @<N
 LIST @<SUBJ_COMP = @<SUBJ_COMP ; #Prædikat til subjekt til venstre fx typen Arnaavunga pikkorissoq
@@ -1612,7 +1612,7 @@ SELECT:0043A Abs + Sg + Der/nv - NIQ IF (-1 Prop + Abs)(*1 INTRANSVERB + 3Sg LIN
 ###################################
 
 #Til overskrifter uden VFIN
-REMOVE:0044X N IF (0 Par)(NEGATE *0 VFIN OR ("tassa"))(NEGATE 0* KOMMA) ;
+REMOVE:0044X N IF (0 Par)(NEGATE *0 VFIN OR ("tassa"))(NEGATE 0* KOMMA)(NEGATE 0 UNA) ;
 
 #En tidlig regel, der fjerner Par + 3Sg fra kongruensadled i objektsyntagmer forudsat, der ikke findes et inquit
 SELECT:0044 ADJEKTIVISK + Abs + Sg IF (-1 Abs + Sg)(*1 3SgO BARRIER V)(NEGATE *0 ORATIOOBLVERB) ; 
@@ -2576,7 +2576,7 @@ MAP:M0523B @SUBJ> TARGET Abs + LU IF (-1 Abs)(*1 PLURSUBJVERB BARRIER V OR KOMMA
 MAP:M0523C @SUBJ> TARGET Abs + LU IF ((-1 BOS) OR (-1 Part LINK -1 BOS))(*1 PLURSUBJVERB) ; #20170408. Smal regel til parataktiske subjekt med implicit førsteled
 #Særtilfælde for at forhindre OBJ-tagging Per i Per tamanna pillugu nalusarpoq
 
-MAP:M0525 (@OBJ>) TARGET N + Abs + Sg OR PRON + Abs + Sg IF (*1 TRANSVERB + 3SgO BARRIER INTRANSVERB + 3Sg OR 4Sg)(NEGATE 1 KOMMA LINK 1 TRANSVERB);
+MAP:M0525 (@OBJ>) TARGET N + Abs + Sg OR PRON + Abs + Sg IF (*1 TRANSVERB + 3SgO BARRIER INTRANSVERB + 3Sg OR 4Sg)(NEGATE 1 KOMMA LINK 1 TRANSVERB) ;
 MAP:M0525a (@OBJ>) TARGET Prop + Abs + Sg IF (*1 TRANSVERB + 3SgO BARRIER INTRANSVERB + 3Sg OR 4Sg)(NEGATE 1 KOMMA LINK 1 TRANSVERB)(NEGATE -1 (/__\"ateq\"\ QAR__/l) OR (/__\"ateq\"\ LIK__/l))(NEGATE *1 ("tassa"))(NEGATE -1 KOMMA OR PUNCT LINK 2 KOMMA) ; #Proprier tagges ikke som N. #Aqqaluartaavagooq ateqarpoq ANGERLARTOQ, kisiannigooq naalisarlugu taasarpaat Angerla. 
 
 
@@ -2585,6 +2585,7 @@ MAP:M0526 (@OBJ>) TARGET N + Abs + Pl OR PRON + Abs + Pl OR Num + Abs IF (*1 TRA
 MAP:M0527 @OBJ> TARGET Abs + Sg IF (1 Abs + Sg + LU OR Abs + Pl + LU LINK *1 3PlO BARRIER INTRANSVERB + 3Pl);
 MAP:M0528 @OBJ> TARGET Abs + Sg + LU IF (-1 Abs + Sg)(*1 3PlO BARRIER INTRANSVERB + 3Pl OR KOMMA);
 MAP:M0528A @OBJ> TARGET Abs + Pl + LU IF (-1 Abs + Sg)(*1 3PlO BARRIER INTRANSVERB + 3Pl);
+MAP:M0529 @OBJ> TARGET N + Abs + Sg OR PRON + Abs + Sg IF (*1 ("(") LINK *1 INTRANSVERB + 3Sg LINK *1 (")") LINK 1* TRANSVERB + 3SgO) ; #Til sætninger med parenteser der ligger mellem objekt og verbum.
 
 ###########################
 # Inderiverede adverbaler #
@@ -4457,6 +4458,8 @@ MAP:M0099C @PRED2 TARGET V (*0 @PRED);
 #Mapping af restende nominer
 MAP:M0099D @OBJ> TARGET N + Abs + Pl (1* TRANSVERB + 3PlO);
 
+#Mapping af resterende partikler
+MAP:M0099E @FOC TARGET UNA ; #20180522. Den skal afgrænses.
 
 ##################################################
 #Specifikke regler til disambiguering af Gram/IV vs. Gram/TV
