@@ -1189,7 +1189,7 @@ LIST LANDTRANSPORT = "bussi" "biili" "bil" ;
 LIST AIRTRANSPORT = "qajaq" "timmi" "helikopter" "helikopteri" "qulimiguulik" "zeppeliner" ;
 LIST BIRDS = "appa" "appaliarsuk" "aqisseq" "kukkukooq" "kussak" "miteq" "naaja" "nattoralik" "oqaatsoq" "orpimmiutaq" "qupaloraarsuk" "serfaq" "taateraaq" "timmiaq" "tulugaq" "tuullik" "uppik" ;
 SET AIRBORNE = BIRDS | AIRTRANSPORT ;
-LIST GEOOBJ = "imaq" ("naalap" VIK) "qarmaq" "qeqertaq" "sineriak" "sissaq" "tungi"; # et specifikt set af mulige objekter til disambiguering af sinip vs. siner
+LIST GEOOBJ = "imaq" ("naalap" VIK) "nuna" "qarmaq" "qeqertaq" "sermeq" "sineriak" "sissaq" "tungi"; # et specifikt set af mulige objekter til disambiguering af fx sinip vs. siner og ersi vs. ersip
 SET sinerOBJ = GEOOBJ | Prop ; 
 
 LIST SEMIOTIC = ("titartar" TAQ) "aviisi" ("atuar" TAQ) ;
@@ -4049,6 +4049,8 @@ REMOVE:5479 ("ip") IF (0 ("innersuup") ) ; #("ip") + NIQ og eller NIR næppe
 REMOVE:5480 ("inner") + TUQ IF (0 ("innersuup")) ;
 SELECT:5481 ("ukiorissi") IF (0 ("ukiorik") + SI) ;
 REMOVE:5482 ("ingerla") + TRANSVERB IF (NEGATE *0 Sem/Unit + @<OBJ OR Sem/Unit + @OBJ> BARRIER VFIN) ;
+REMOVE:5483 ("qila") IF ( 0 ("qilap"))(NEGATE *0W ("angakkoq")); #åndemaning stochastisk usandsynlig men dog taget forbehold for en shaman i konteksten
+REMOVE:5484 ("ersip") + Cont IF ( 0 ("ersi") + Cont)(NEGATE *-1 GEOOBJ BARRIER V) ; #"ersip" er sjælden i Cont bortset fra enkelttilfælde, hvor fx en udsigt til noget geografisk omtales
 
 # Der/nv eller Der/vv?
 SELECT:5493 QATE + Der/vn + GE IF (0 QATE + Der/nn + GE)(NEGATE *-1 HUMAN + @OBJ>) ;
@@ -4514,8 +4516,10 @@ SELECT:9971 @CL-CIT> IF (*-1 @SUBJ> + 4SgPoss)(*1 ORATIOOBLVERB + VFIN) ;
 SELECT:9971A HTR - V IF (*-1 @i-MIK-OBJ> BARRIER (*) - @i-ADVL> - @<N) ;
 
 #Karlssons lov anden version: Vælg den mest komplette af flere ord, hvoraf ingen er hele stammer
-REMOVE:9972 ("([^<].*)"r) IF (0 (VSTR:"$1.+"r)) ;
-REMOVE:9972A ("([^<]...*)."r) IF (0 (VSTR:"$1..+"r)) ;
+#Eckhards forslag for at forebygge at konsonantstammer automatisk sletter vokalstammer ("ersip" sletter "ersi")
+REMOVE:9972 ("([^<].*)"r) IF (0 (VSTR:"$1.+"r)) ((0 (VSTR:"$1..+"r)) OR (0 ("<+[^aiu]>"r)) OR (NOT 0 (VSTR:"$1p"))) ;
+#REMOVE:9972 ("([^<].*)"r) IF (0 (VSTR:"$1.+"r)) ;
+#REMOVE:9972A ("([^<]...*)."r) IF (0 (VSTR:"$1..+"r)) ;
 REMOVE:9972B ("([^<]...*).."r) + (/Der\/.*/r) IF (0 (VSTR:"$1...+"r) - (/Der\/.*/r)) ; #En mere farlig regel end 9972A, men kræver til gengæld derivation. Skrevet til ord som 'aqerluusaq'.
 
 REMOVE:9973 OLang/DAN ; # Slet låneord, hvis ikke eneste læsning
