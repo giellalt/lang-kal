@@ -1264,6 +1264,7 @@ LIST @HNOUN = @HNOUN ;		 # løst nomen uden predikat
 LIST @HEADLINE = @HEADLINE ;	# loes partikel eller verbum i overskrifter
 LIST @>N = @>N ;		     # prenominalt adled (slagter Hansen) og determinativ (UA allaffinni/ 1. maj)
 LIST @<N = @<N ;	    	 # postnominalt adled
+LIST @Pron>N = @Pron>N ; # Pronominale adled, der vender "den forkerte vej" - Taakku meeqqat naalapput
 LIST @i->N = @i->N ;		 # adled der står til inkorporeret nominal t.h.
 LIST @i-N< = @i-N< ;		 # adled der står til inkorporeret nominal t.v.
 LIST @POSS = @POSS> @<POSS ;		 # sæt af de to possessorer
@@ -1513,6 +1514,8 @@ SELECT:0011 ("aat") IF (-*1C Imp);
 REMOVE:0019 AA IF (NEGATE 0 Prop);
 
 REMOVE:0040K TRANSVERB + TUQ + U + Imp ; #Hyppigt forekommende fejlanalyser. 20160504 Skal måske begrænses hvis for bred 
+SELECT:0019NY ("qanoq") + Adv IF (*1 IP OR ("ip") OR ("ilior") OR ("ili")); 
+MAP:M0019NY @ADVL> TARGET ("qanoq") + Adv IF (*1 IP OR ("ip") OR ("ilior") OR ("ili")); 
 SELECT:0020NY Interj - TASSA - ("immaqa") IF (-1 BOS)(NEGATE 0 ("ila") + 4SgPoss + Rel LINK 1 POSSESSUM3)(NEGATE 0 KONCESSIV LINK *1 Par BARRIER V)(NEGATE 0 ("taama") LINK 1 V); #TASSA holdes uden for reglen og type 'Ilami illuanut iserpoq' ikke interjektion SKAL RAFFINERES YDERLIGERE 20180427. PL: immaqa tilføjet 20180526. Måske skal i stedet immaqa+Interj helt væk?? immaqa + Part og immaqa + Interj udkommenteret fra fst 20180526
 REMOVE:0020AdHoc ("immaqa") + Pali ; #fjernet fra fst og vil ikke længere optræde efter update
 SELECT:7250 Interj IF (-1 BOS OR ("\,"))(1 EOS); #Ny 20180407 En isoleret partikel er en interjektion
@@ -2095,9 +2098,14 @@ SELECT:0260 Abs + Sg + Der/nv IF (-1C Abs + Sg)(1 TRANSVERB + 3SgO)(NEGATE *-1 O
 
 #Efter nye tags forår 18 optræder "tassa" pr. 20180328 i 5 former "tassa" Pali; "tassa" Interj; uv Prefix/TA Gram/Dem Interj; "tassa" Adv samt "tassa" Conj
 
+#Specialiteten adnominale Pron, der peger mod højre, må ind før @FOC-reglerne
+MAP:M0230NY @Pron>N TARGET Gram/Dem + Pron + Abs + Pl IF (1 N + Abs + Pl)(NEGATE *1 3PlO BARRIER VFIN) ; #Skal i stedet have et unification set PL 20180530
+MAP:M0230NY2 @Pron>N TARGET Gram/Dem + Pron + Abs + Sg IF (1 N + Abs + Sg)(NEGATE *1 3SgO BARRIER VFIN)(NEGATE 0 ("manna") LINK -1 OTHERTIME) ; #Skal i stedet have et unification set PL 20180530
+#M0230NY flyttet fra afsnit om adnominale adled
+
 #"tassa" vikarierer for inquit når først i sætningen og fulgt af Par-nexus uden finit V i sætningen
 SELECT:0280 ("tassa") + Pali IF (-1 BOS)(NEGATE *1 VFIN)(*1 Par)(NEGATE *1 VFIN BARRIER KOMMA ) ; #Kan evt. præciseres med et N + Par unification
-MAP:M0249 @FOC TARGET FOKUSPART + Pali OR Pron IF (*1 T:NexusHøjre BARRIER KOMMA) ;
+MAP:M0249 @FOC TARGET FOKUSPART + Pali OR Pron IF (*1 T:NexusHøjre BARRIER KOMMA)(NEGATE 0 ("manna") LINK -1 OTHERTIME) ;
 SELECT:0281 ("tassa") + Adv IF (1 VFIN)(*-1 TIME BARRIER V) ; #maannalu tassa unnuaroreerpoq
 MAP:M0281 @ADVL> TARGET ("tassa") + Adv IF (1 VFIN) ; #
 #"tassa" er en slags konjunktion ofte svarende til dansk dvs. når anaforisk først i sætning uden finit V
@@ -2490,6 +2498,12 @@ MAP:M0330Y @>N TARGET Aeq IF (-1 Rel)(1 POSSESSUM) ;
 # Adnominale adled - Forsøg på ny, mere generel struktur 20180128 #
 ###################################################################
 
+#Specialitet til at håndtere pronominer, der vender "den forkerte vej" som Taakku meeqqat naalapput. Til formålet en ny tag pr. 20180530 @Pron>N.
+#Strukturen er skummel, fordi Pron afhængig af kontekst og anaforer kan være meget andet end adnominalt adled hvorfor der i første omgang alene tages højde for de sikreste adled, nemlig dem til subjekter for intransitive verber. Skal senere udbygges med andre kontekster. REMOVE af Rel håndteres af regel 0072
+
+#MAP:M0230NY @Pron>N TARGET Gram/Dem + Pron + Abs + $$NUMERUS IF (1 N + Abs + $$NUMERUS)(NEGATE *1 3PlO BARRIER VFIN) ; #Skal i stedet have et unification set PL 20180530
+#M0230NY flyttet før 2101:M0249
+
 MAP:M0235A @<N TARGET ("allaat") + Adv IF (-1 Trm); #Typen umiatsiaaqqanut allaat angallapput
 
 MAP:M0082B @<N TARGET Abs IF (-2 ("soorlu"))(-1 Abs)(NEGATE *1 V);
@@ -2529,7 +2543,7 @@ MAP:M0351NY @<N TARGET Der/vn + $$KASUS + LU OR Num + $$KASUS + LU OR LIK + $$KA
 MAP:M0350 @<N TARGET N + $$KASUS + $$NUMERUS - LU - Prop IF (-1 Prop + $$KASUS + $$NUMERUS)(NEGATE -1 Rel LINK 1 Rel LINK 1 POSSESSUM3 OR POSSESSUM4)(NEGATE -1 Rel LINK 1 Rel + POSSESSUM3 LINK 1 Prop)(NEGATE 0 Prop + Sem/FirstName LINK -1 Prop + Sem/FirstName)(NEGATE 0 (*) - TIME LINK -1* TIME) ; #Sidste negate for at undgå at tidsudtryk og ikke-tidsudtryk bliver adnominale til hinanden.
 
 #Adnominale adled (adjektiver). Bredeste regel for adled til substantiver. -LU for at forhindre hit på parataktiske NP og NEGATE nødvendig for ikke at tagge en possessor efter proprium i relativ. NEGATE for at forhindre hit på possessor fulgt af apposition og NEGATE for at udelukke fornavn fulgt af efternavn. NEGATE fordi HTR TUQ QAR ikker er <N til et Ins, men Ins er @i-MIK-OBJ> til HTR TUQ QAR. 
-MAP:M0350A @<N TARGET N - V + $$KASUS + $$NUMERUS - LU - LUUNNIIT IF (-1 N + $$KASUS + $$NUMERUS OR Pron + $$KASUS + $$NUMERUS OR Adv + $$KASUS)(NEGATE -1 Rel LINK 1 Rel LINK 1 POSSESSUM3 OR POSSESSUM4)(NEGATE -1 Rel LINK 1 Rel + POSSESSUM3 LINK 1 Prop)(NEGATE 0 (/__HTR\ Der\/vv\ Gram\/IV\ TUQ\ Der\/vn\ QAR__/l) LINK -1 Ins LINK -1 BOS) ;
+MAP:M0350A @<N TARGET N - V + $$KASUS + $$NUMERUS - LU - LUUNNIIT IF (-1 N + $$KASUS + $$NUMERUS OR Pron + $$KASUS + $$NUMERUS OR Adv + $$KASUS)(NEGATE -1 Rel LINK 1 Rel LINK 1 POSSESSUM3 OR POSSESSUM4)(NEGATE -1 Rel LINK 1 Rel + POSSESSUM3 LINK 1 Prop)(NEGATE 0 (/__HTR\ Der\/vv\ Gram\/IV\ TUQ\ Der\/vn\ QAR__/l) LINK -1 Ins LINK -1 BOS)(NEGATE -1 @Pron>N) ; #NB Sidste NEGATE for skyld typen 'Taakku meeqqat naalapput'
 #Specialitet ved parataktiske adnominaler. NY 20180526
 MAP:M0350AX @<N TARGET N - V + $$KASUS + $$NUMERUS + LU OR LUUNNIIT IF (-1 @<N + $$KASUS + $$NUMERUS OR Pron + $$KASUS + $$NUMERUS OR Adv + $$KASUS)(NEGATE -1 Rel LINK 1 Rel LINK 1 POSSESSUM3 OR POSSESSUM4)(NEGATE -1 Rel LINK 1 Rel + POSSESSUM3 LINK 1 Prop)(NEGATE 0 (/__HTR\ Der\/vv\ Gram\/IV\ TUQ\ Der\/vn\ QAR__/l) LINK -1 Ins LINK -1 BOS) ;
 
