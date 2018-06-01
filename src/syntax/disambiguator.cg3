@@ -1422,6 +1422,7 @@ REMOVE:0147C ("ige") IF (NEGATE *-1 ("qanoq") BARRIER V) ;
 REMOVE:0040I NAAR - NAAR_VERBER ; #Sletter irriterende fejlanalyser med NAAR på verber, der ikke kan indeholde et element af vurdering
 
 #SELECT:0039B Part + ("aamma") ; #PL 20180527. Giver ikke længere mening
+REMOVE:0039B ("aak") OR ("aaq") IF (0 ("aamma")) ;
 SELECT:0039C Adv IF (-1 ("sooq") LINK 1 ("aamma")) ;
 SELECT:0023 ("illuttut") + ADVERBIEL IF (*1 LIK OR QAR BARRIER V); #Næppe sneblinde, men tosidet N
 
@@ -2744,7 +2745,7 @@ MAP:M0697 (@OBJ>) TARGET Abs IF (-1 Rel)(1 KOMMA OR LU OR LUUNNIIT OR EOS)(NEGAT
 MAP:M0698 (@SUBJ>) TARGET Rel IF (-*1 Rel LINK *1 TRANSVERB LINK *1 KOMMA)(*1 Abs LINK *1 KOMMA) ; # Opremsning uden transitive verber
 MAP:M0699 (@OBJ>) TARGET Abs IF (-1 Rel)(1 KOMMA) ; # Opremsning uden transitive verber
 MAP:M0700 (@<SUBJ) TARGET (Rel) IF (-*1 TRANSVERB + VERB-NOTCONT + 34Sg)(0 (Sg)) ;
-MAP:M0710 (@<SUBJ) TARGET (Rel) IF (-*1 TRANSVERB + 34Pl)(0 (Pl)) ;
+MAP:M0710 (@<SUBJ) TARGET (Rel) IF (-*1 TRANSVERB + 34Pl)(0 (Pl))(NEGATE -1 KOMMA LINK 1* POSSESSUM OR TRANSVERB) ;
 MAP:M0720 @<SUBJ TARGET Abs + Sg - ("kinguneq") IF (-*1C INTRANSVERB + 3Sg OR INTRANSVERB + 4Sg BARRIER ("tassa") LINK NOT 0 (TUQ Der/vn QAR Der/nv)) (NEGATE -1 ("\("))(NEGATE 1 Abs + Sg LINK *1 V) (NEGATE 0 LU LINK *1 Rel + Sg LINK *1 TRANSVERB + 3Sg)(NEGATE -*1 TRANSVERB + 3Sg BARRIER INTRANSVERB + 3Sg)(NEGATE -1 Abs + Sg - Der/vn); #20091109 - trediesidste NEGATE, 20101013 næstsidste NEGATE for at forhindre hit på 'S V O-LU S V', sidste NEGATE for ikke at hitte på kongruensadled. 20170425 -kinguneq for at forebygge hit på sætningsadverbialer
 
 #MAP:M0730 (@<SUBJ) TARGET (Abs Pl) IF (-*1C INTRANSVERB + 3Pl OR 4Pl)(NEGATE *1 INTRANSVERB + 3Pl OR 4Pl)(NEGATE *1 TRANSVERB + 3PlO); #2.4.
@@ -3339,7 +3340,7 @@ SELECT Abs + LU + Pl IF (-1C Abs + Pl);
 SELECT Abs + LU + Sg IF (-1C Abs + Sg)(NEGATE 0 Rel + Sg LINK 1 3SgPoss);
 SELECT:1610 Abs + LU IF (*1 INTRANSVERB + 3Pl BARRIER V)(NEGATE 0 Rel + Pl LINK 1 3PlPoss) ; # Et parataktisk subjekt. Skal komme før 1641 for at holde Lok + 3SgPoss ude fra Abs + 4SgPoss, men må ikke hitte på possessor i pluralis
 
-SELECT Rel + Pl IF (1 (/__Gram\/Dem\ Pron__/l) + Rel + Pl); #'ILLUT taakku eqqaanni @SUBJ> ... @PRED'
+SELECT Rel + Pl IF (1 (/__Gram\/Dem\ Pron__/l) + Rel + Pl)(NEGATE 2 3PlO); #'ILLUT taakku eqqaanni @SUBJ> ... @PRED'
 SELECT Aeq + Pl IF (-1C Aeq + Pl);
 SELECT Aeq + Pl IF (1C Aeq + Pl);
 
@@ -4504,6 +4505,7 @@ MAP:M0099C @PRED2 TARGET V (*0 @PRED);
 
 #Mapping af restende nominer
 MAP:M0099D @OBJ> TARGET N + Abs + Pl (1* TRANSVERB + 3PlO);
+MAP:M0099D1 @POSS> TARGET N + Rel + Pl IF (*1 3PlPoss BARRIER VFIN)(NEGATE *1 TRANSVERB + 3Pl);
 
 #Mapping af resterende partikler
 MAP:M0099E @FOC TARGET UNA ; #20180522. Den skal afgrænses.
