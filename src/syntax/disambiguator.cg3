@@ -1129,7 +1129,7 @@ LIST TRMVERB = "iser" ;
 SET MOVE-VERB = LOKVERB | ABLVERB | TRMVERB ;
 
 # 20091106 Foelgende med tak til Tino for at forebygge at "oqar" + USIQ opfattes som inquit
-LIST ORATIOOBLVERBnOQAR = "aalajanger" "aalianger" "atuar" "eqqaama" "eqqarsar" "eqqartor" ("ili" SIMA) "ilimagaa" "ilimasup" "ilisimatitsissut" "imaap" ("isuma" LIUR) ("isuma" QAR)
+LIST ORATIOOBLVERBnOQAR = "aalajanger" "aalianger" "atuar" "eqqaa" "eqqaama" "eqqarsar" "eqqartor" ("ili" SIMA) "ilimagaa" "ilimasup" "ilisimatitsissut" "imaap" ("isuma" LIUR) ("isuma" QAR)
 "isummer" "maluge" "malunnarsi" "naatsorsor" "nalu" "nalunaar" "nalunaarut" "nassuiar" "neriup" "qular" "qulare" "qularnar" "qinnuige" "paasi" "pinngitsaali" "puigor" "puior" "sinnattore" "siunnersor" ("taku" Gram/TV) "tusaa" "tusar" "unner" "uppernarsar" ;
 SET OQARnUSIQ = ("oqar") - (USIQ) ;
 SET ALLAANNGIT = ("alla") + U + NNGIT ;
@@ -1547,7 +1547,7 @@ SELECT:0040H Abs IF (-1 Abs)(1 ("”"))(*1 ORATIOOBLVERB) ;
 REMOVE:0004 POSSESSUM IF (0 NON-POSSESSUM)(NEGATE 0 TAQ + Der/nn) ;
 
 #("taaq") + POSSESSUM er ret usandsynlig
-REMOVE:0042A ("taaq") + POSSESSUM IF (0 ("taava") + Pali ) ; 
+REMOVE:0042A ("taaq") + POSSESSUM IF (0 ("taava") + Adv ) ; 
 
 #lokalis eller 4SgPoss: Næppe possessum hvis taamaattuni er adled
 SELECT:0027 Lok + Pl IF (1 ("taama") + Lok + Pl) ;
@@ -2151,7 +2151,7 @@ SELECT:0408B Abs + Sg + Der/vn IF (-*1 N - Der/vn + Abs + Sg LINK 1 Der/vn + Abs
 REMOVE:0409A ("ila") + UTE IF (-1 ("ulloq")) ; #Må fjernes for ikke at blive valgt af næste 
 SELECT:0409B Abs + Sg + 4SgPoss - Orth/Arch IF (*1 Abs + Sg BARRIER 3PlO LINK *1 3SgO BARRIER KOMMA) ; #Objekt med adled for V til højre. Må ikke vælge Orth/Arch-former, der er synonyme med Lokalis former. BARRIER 3PlO for ikke at vælge pluralisobjekter for V mellem aktuel og et verbum til venstre med Sg-objekt '..oqaasissani oqaatigereeramigit ... aperaa'
 MAP:M0409BX @OBJ> TARGET Abs + Sg + 4SgPoss - Orth/Arch IF (*1 Abs + Sg LINK *1 3SgO BARRIER KOMMA)(NEGATE -1 Abs LINK 1 Abs + LU LINK *1 PLURSUBJVERB)(NEGATE 1 Abs + LU LINK *1 PLURSUBJVERB) ; #Sidste 2 NEGATE forebygger hit på parataktiske subjekter
-SELECT:0409C Abs + Sg + Der/vn IF (-*1 Abs + Sg BARRIER V)(*1 3SgO BARRIER KOMMA)(NEGATE *-1 Abs + Sg LINK *1 Par + 3Sg LINK *1 ORATIOOBLVERB)(NEGATE -*1 Abs + Prop BARRIER Abs + Sg LINK 1 Prop + Rel)(NEGATE 0 Pl LINK *1 3Pl); #Må ikke tagge Subj or Par som hhv. OBJ og OBJ_COMP. Næstsidste NEGATE for at forhindre hit på fx fornavn til subjekts proprium i Rel. Sidste for ikke at slette nuannequtit+Rel+Pl i Tamanna nuannequtit ilagaat
+SELECT:0409C Abs + Sg + Der/vn IF (-*1 Abs + Sg BARRIER V)(*1 3SgO BARRIER KOMMA)(NEGATE *-1 Abs + Sg LINK *1 Par + 3Sg LINK *1 ORATIOOBLVERB)(NEGATE -*1 Abs + Prop BARRIER Abs + Sg LINK 1 Prop + Rel)(NEGATE 0 Pl LINK *1 3Pl - ("nalinginnaq")); #Må ikke tagge Subj or Par som hhv. OBJ og OBJ_COMP. Næstsidste NEGATE for at forhindre hit på fx fornavn til subjekts proprium i Rel. Sidste for ikke at slette nuannequtit+Rel+Pl i Tamanna nuannequtit ilagaat
 
 #Følgende kopier af 409B men med pluralisobjekter
 SELECT:0409D Abs + Pl + 4SgPoss - Orth/Arch IF (*1 Abs + Pl BARRIER 3SgO LINK *1 3PlO BARRIER KOMMA)(NEGATE 0 3SgPoss LINK -1 Rel + Sg)(NEGATE 0 3PlPoss LINK -1 Rel + Pl)(NEGATE 0 Abs + Sg + LU LINK *1 INTRANSVERB + 3Pl OR 4Pl BARRIER V)(NEGATE 0 Abs + Sg LINK *1 3Sg BARRIER V ) ; #Objekt med adled for V til højre. Må ikke vælge Orth/Arch-former, der er synonyme med Lokalis former. BARRIER 3PlO for ikke at vælge pluralisobjekter for V mellem aktuel og et verbum til venstre med Sg-objekt '..oqaasissani oqaatigereeramigit ... aperaa'. Må heller ikke slette subjekt med implicit paratakse eller Sg-subjekt for infinit til højre 
@@ -2338,13 +2338,13 @@ MAP:M0056 (@PRED2) TARGET CONT + 4Sg IF (*-1 Abs + Sg)(NEGATE *1 V + 3Sg)(1* Abs
 MAP:M0059 @ADVL> TARGET CONT + 4Sg IF (*1 KASIK + @PRED2 BARRIER V LINK 1 EOS) ; #adverbal til KASIK brugt som participium
 MAP:M0060 (@PRED2) TARGET Cont + 1Sg OR ContNeg + 1Sg IF (*-1 ADVERBIUM OR UNA LINK *-1 VFIN + 1Sg)(NEGATE *0 ORATIOOBLVERB) ; #20091109
 MAP:M0061 (@CL-<CIT) TARGET Cont + 4Sg IF (-*1 ORATIOOBLVERB + 3Sg)(NEGATE *1 Cont) (NEGATE *1 Par);
-MAP:M0061A (@CL-<CIT) TARGET Cont + 1Sg IF (-*1 ORATIOOBLVERB + 1Sg)(NEGATE *1 Cont) (NEGATE *1 Par);
+MAP:M0061A (@CL-<CIT) TARGET Cont + 1Sg IF (-*1 ORATIOOBLVERB + 1Sg)(NEGATE *1 Cont) (NEGATE *1 Par)(NEGATE 0 LU LINK -1 KOMMA);
 MAP:M0061B (@CL-<CIT) TARGET Cont + 2Sg IF (-*1 ORATIOOBLVERB + 2Sg)(NEGATE *1 Cont) (NEGATE *1 Par);
 MAP:M0061C (@CL-<CIT) TARGET Cont + 1Pl IF (-*1 ORATIOOBLVERB + 1Pl)(NEGATE *1 Cont) (NEGATE *1 Par);
 MAP:M0061D (@CL-<CIT) TARGET Cont + 2Pl IF (-*1 ORATIOOBLVERB + 2Pl)(NEGATE *1 Cont) (NEGATE *1 Par);
 MAP:M0062 (@CL-<CIT) TARGET Cont + 4Pl IF (-*1 ORATIOOBLVERB + 3Pl)(NEGATE *1 Cont)(NEGATE *1 Par) ;
 MAP:M0062A (@CL-<CIT) TARGET CONT + 4Pl IF (-*1 ORATIOOBLVERB + 3Sg)(NEGATE *1 Cont)(NEGATE *1 Par)(-1*W 3Pl) ;
-MAP:M0063 (@CL-<CIT) TARGET CONT + TRANSVERB IF (-*1 ORATIOOBLVERB - N BARRIER @PRED)(NEGATE *1 Cont)(NEGATE *1 Par) ; #Eqqaamavaa inuppassuullutik kongruerer ikke.
+MAP:M0063 (@CL-<CIT) TARGET CONT + TRANSVERB IF (-*1 ORATIOOBLVERB - N - TAQ BARRIER @PRED)(NEGATE *1 Cont BARRIER KOMMA LINK 1 CONJ-C)(NEGATE -1 LU LINK -1 KOMMA)(NEGATE *1 Par)(NEGATE -1 KOMMA LINK 2 VFIN) ; #Eqqaamavaa inuppassuullutik kongruerer ikke.
 #MAP:M0063A (@CL-<CIT) TARGET CONT + TRANSVERB IF (-*1 ORATIOOBLVERB BARRIER @PRED)(NEGATE *1 Cont)(NEGATE *1 Par)(NEGATE *-1C Par LINK *1 (<<<) BARRIER ORATIOOBLVERB ) ; #Eqqaamavaa inuppassuullutik kongruerer ikke.
 
 #Simpel co-ref oratio obliqua uden andre ledsagemåder end CL-CIT
