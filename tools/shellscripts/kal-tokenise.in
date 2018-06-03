@@ -15,10 +15,12 @@ use open qw( :encoding(UTF-8) :std );
 use feature 'unicode_strings';
 
 use Getopt::Long;
-Getopt::Long::Configure("no_ignore_case");
+Getopt::Long::Configure('no_ignore_case');
 my $opt_fst = 0;
+my $opt_verbose = 0;
 my $rop = GetOptions(
-	"fst|f" => \$opt_fst,
+	'fst|f' => \$opt_fst,
+	'verbose|v' => \$opt_verbose,
                     );
 
 my $prefix = '@prefix@';
@@ -36,6 +38,9 @@ foreach my $f (@fsts) {
 
 if (!$fst || !-s $fst) {
    die("No usable tokeniser.pmhfst given or found!\n");
+}
+if ($opt_verbose) {
+   print STDERR "kal-tokenise: Using ${fst}\n";
 }
 
 my $t = "hfst-tokenize -L ${fst}";
@@ -112,10 +117,23 @@ sub analyze {
    }
 
    # Work around HFST bug by recursing un-analyzed chunks
-   foreach my $f ($out =~ /\n([^<"\t][^\n]*)\n/g) {
-      my $m = analyze($f, $n + 1);
-      if ($f ne $m) {
-         $out =~ s/\n\Q$f\E\n/\n$m\n/g;
+   foreach my $f ($out =~ /(?:^|\n)([^<"\t\n][^\n]*)(?:\n|$)/g) {
+      if ($f =~ /^([^\pL\pN\pM]+)(.+)$/ || $f =~ /^(.+?)([^\pL\pN\pM]+)$/) {
+         # Split non-alphanumeric from alphanumeric and retry them separately
+         my ($f1,$f2) = ($1, $2);
+         my $m1 = analyze($f1, $n + 1);
+         my $m2 = analyze($f2, $n + 1);
+         if ($f1 ne $m1 || $f2 ne $m2) {
+            my $m = "$m1\n$m2";
+            $m =~ s/\n\n+/\n/g;
+            $out =~ s/(^|\n)\Q$f\E(\n|$)/$1$m$2/g;
+         }
+      }
+      else {
+         my $m = analyze($f, $n + 1);
+         if ($f ne $m) {
+            $out =~ s/(^|\n)\Q$f\E(\n|$)/$1$m$2/g;
+         }
       }
    }
 
@@ -125,6 +143,13 @@ sub analyze {
 my $wf = '';
 while (<STDIN>) {
    my $out = analyze($_);
+
+   foreach my $f ($out =~ /(?:^|\n)([^<"\t\n][^\n]*)(?:\n|$)/g) {
+      if ($opt_verbose) {
+         print STDERR "kal-tokenise: Could not analyse: ${f}\n";
+      }
+      $out =~ s/(^|\n)([^<"\t\n][^\n]*)(\n|$)/$1"<$2>"\n\t"$2" ?$3/;
+   }
 
    my @ls = split(/\n+/, $out);
    foreach (@ls) {

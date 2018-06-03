@@ -12,6 +12,13 @@ BEGIN {
 use open qw( :encoding(UTF-8) :std );
 use feature 'unicode_strings';
 
+use Getopt::Long;
+Getopt::Long::Configure('no_ignore_case');
+my $opt_verbose = 0;
+my $rop = GetOptions(
+	'verbose|v' => \$opt_verbose,
+                    );
+
 my $prefix = '@prefix@';
 my @fsts = ('', "@datarootdir@/giella/@GTLANG@/generator-gt-desc.hfstol", '/usr/local/share/giella/@GTLANG@/generator-gt-desc.hfstol', '/usr/share/giella/@GTLANG@/generator-gt-desc.hfstol');
 if (defined $ARGV[0] && -s $ARGV[0]) {
@@ -27,6 +34,9 @@ foreach my $f (@fsts) {
 
 if (!$fst || !-s $fst) {
    die("No usable generator.hfstol given or found!\n");
+}
+if ($opt_verbose) {
+   print STDERR "kal-generate: Using ${fst}\n";
 }
 
 my $t = "hfst-optimized-lookup -p -u ${fst}";
