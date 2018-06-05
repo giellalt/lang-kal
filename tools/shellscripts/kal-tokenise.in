@@ -92,31 +92,34 @@ sub analyze {
    }
    $out =~ s@\Q$nonce\E\s*@@sg;
 
+   # Move prefixes after the base form
+   $out =~ s@^(\s+)($pp) (".+?" )@$1$3Prefix/$2 @mg;
+
    # Remove empty lines, because they were simply spaces in the input
    $out =~ s/\n([\s\t]*\n)+/\n/g;
 
    # Work around HFST bug where abbreviations without space after are misanalyzed
-   my $seen = '';
-   my $did = 1;
-   while ($did) {
-      $did = 0;
-      my @ms = ($out =~ m@^.*("<.+?>"\n.+?(?:Gram/Abbr|\?)\n\.).*(?:$seen)@sg);
-      if (!@ms) {
-         # Work around HFST bug that happens WITHOUT hyperminimisation
-         @ms = ($out =~ m@^.*("<.+?>"\n.+?(?:Gram/Abbr|\?)\n"<\.>"\n\t"\." CLB).*(?:$seen)@sg);
-      }
-      foreach my $f (@ms) {
-         my ($w) = ($f =~ /"<(.+?)>"/);
+   # Normalize to a form that happens WITHOUT hyperminimisation
+   $out =~ s@( (?:Gram/Abbr|\?)\n)\.\n?@$1"<.>"\n\t"." CLB\n@sg;
+   if ($in !~ /^\S+\.$/) {
+      $out =~ s@( (?:Gram/Abbr|\?)\n"<\.>"\n\t"\." CLB\n)@$1\x{e000}@sg;
+   }
+   if ($out =~ /\x{e000}/) {
+      my @ms = split(/\x{e000}/, $out);
 
-         $seen = "$w.*$seen";
-         $did = 1;
+      foreach my $f (@ms) {
+         my ($w) = ($f =~ /"<([^\n]+)>"\n[^<]+"<\.>"\n\t"\." CLB\n$/s);
+         if (!$w) {
+            next;
+         }
 
          $w .= '.';
          my $m = analyze($w, $n + 1);
-         if ($f ne $m && $m =~ /\t/) {
-            $out =~ s/\Q$f\E\n/$m/s;
+         if ($m =~ /\t/) {
+            $f =~ s/"<[^\n]+>"\n[^<]+"<\.>"\n\t"\." CLB\n$/$m/s;
          }
       }
+      $out = join("\n", @ms);
    }
 
    # Remove null analysis from tokens to let later steps retry them in pieces
@@ -182,7 +185,7 @@ while (<STDIN>) {
       if ($opt_verbose) {
          print STDERR "kal-tokenise: Could not analyse: ${f}\n";
       }
-      $out =~ s/(^|\n)([^<"\t\n][^\n]*)(\n|$)/$1"<$2>"\n\t"$2" ?$3/;
+      $out =~ s/(^|\n)[ \t]*([^<"\t\n][^\n]*?)[ \t]*(\n|$)/$1"<$2>"\n\t"$2" ?$3/;
    }
 
    my @ls = split(/\n+/, $out);
@@ -194,20 +197,19 @@ while (<STDIN>) {
             print "\n";
             next;
          }
-         elsif (m@^\s+"([^\n]+?"?[^"]*)"@ || m@^\s+(?:$pp) "([^\n]+?"?[^"]*)"@) {
+         elsif (m@^\s+"([^\n]+?"?[^"]*)"@) {
             # Turn CG back into FST, protecting baseforms with spaces
             my $b = $1;
             s/^\s+//g;
             s/"\Q$b\E"/XBASEFORMX/;
             s/\s+/+/g;
+            s@^(.+)\+Prefix/($pp)@$2+$1@;
             s/XBASEFORMX/$b/;
             # Prepend previously seen wordform
             $_ = "$wf\t$_";
          }
       }
-      elsif (m@^\s+"@ || m@^\s+($pp) "@) {
-         # Move prefixes after the base form
-         s@^(\s+)($pp) (".+?" )@$1$3Prefix/$2 @;
+      elsif (m@^\s+"@) {
          # Mark all internal POS tags so they don't confuse the later steps
          while (s@ ($mp|$ap)( .+ (?:$mp))@ $i$1$2@g) {}
       }
