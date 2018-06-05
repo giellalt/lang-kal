@@ -116,9 +116,29 @@ sub analyze {
       }
    }
 
+   # Remove null analysis from tokens to let later steps retry them in pieces
+   foreach my $f ($out =~ /(?:^|\n)("<[^\n]+?>"\n\t"[^\n]+?" \?)(?:\n|$)/g) {
+      my ($wf) = ($f =~ /"<([^\n]+?)>"/);
+      if ($wf =~ /^(.*?)([^\pL\pN\pM]+)(.*)$/) {
+         $out =~ s/\Q$f\E\n/$wf\n/g;
+      }
+   }
+
    # Work around HFST bug by recursing un-analyzed chunks
    foreach my $f ($out =~ /(?:^|\n)([^<"\t\n][^\n]*)(?:\n|$)/g) {
-      if ($f =~ /^([^\pL\pN\pM]+)(.+)$/ || $f =~ /^(.+?)([^\pL\pN\pM]+)$/) {
+      if ($f =~ /^([^\pL\pN\pM]+)(.+?)([^\pL\pN\pM]+)$/ || $f =~ /^([\pL\pN\pM]+)([^\pL\pN\pM]+)([\pL\pN\pM]+)$/) {
+         # Split non-alphanumeric from alphanumeric and retry them separately
+         my ($f1,$f2,$f3) = ($1, $2, $3);
+         my $m1 = analyze($f1, $n + 1);
+         my $m2 = analyze($f2, $n + 1);
+         my $m3 = analyze($f3, $n + 1);
+         if ($f1 ne $m1 || $f2 ne $m2 || $f3 ne $m3) {
+            my $m = "$m1\n$m2\n$m3";
+            $m =~ s/\n\n+/\n/g;
+            $out =~ s/(^|\n)\Q$f\E(\n|$)/$1$m$2/g;
+         }
+      }
+      elsif ($f =~ /^([^\pL\pN\pM]+)(.+)$/ || $f =~ /^(.+?)([^\pL\pN\pM]+)$/) {
          # Split non-alphanumeric from alphanumeric and retry them separately
          my ($f1,$f2) = ($1, $2);
          my $m1 = analyze($f1, $n + 1);
@@ -134,6 +154,17 @@ sub analyze {
          if ($f ne $m) {
             $out =~ s/(^|\n)\Q$f\E(\n|$)/$1$m$2/g;
          }
+      }
+   }
+
+   # Work around HFST bug by recursing un-analyzed punctuation
+   foreach my $f ($out =~ /(?:^|\n)([^\n\pL\pN\pM]+)(?:\n|$)/g) {
+      if ($f =~ /^"<.+?>"$/) {
+         next;
+      }
+      my $m = analyze($f, $n + 1);
+      if ($f ne $m) {
+         $out =~ s/(^|\n)\Q$f\E(\n|$)/$1$m$2/g;
       }
    }
 
