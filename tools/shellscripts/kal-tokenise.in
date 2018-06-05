@@ -92,6 +92,9 @@ sub analyze {
    }
    $out =~ s@\Q$nonce\E\s*@@sg;
 
+   # Remove empty lines, because they were simply spaces in the input
+   $out =~ s/\n([\s\t]*\n)+/\n/g;
+
    # Work around HFST bug where abbreviations without space after are misanalyzed
    my $seen = '';
    my $did = 1;
@@ -119,8 +122,8 @@ sub analyze {
    # Remove null analysis from tokens to let later steps retry them in pieces
    foreach my $f ($out =~ /(?:^|\n)("<[^\n]+?>"\n\t"[^\n]+?" \?)(?:\n|$)/g) {
       my ($wf) = ($f =~ /"<([^\n]+?)>"/);
-      if ($wf =~ /^(.*?)([^\pL\pN\pM]+)(.*)$/) {
-         $out =~ s/\Q$f\E\n/$wf\n/g;
+      if ($wf =~ /[^\pL\pN\pM]+/) {
+         $out =~ s/(^|\n)\Q$f\E(\n|$)/$1$wf$2/g;
       }
    }
 
@@ -191,7 +194,7 @@ while (<STDIN>) {
             print "\n";
             next;
          }
-         elsif (m@^\s+"([^"]+)"@ || m@^\s+(?:$pp) "([^"]+)"@) {
+         elsif (m@^\s+"([^\n]+?"?[^"]*)"@ || m@^\s+(?:$pp) "([^\n]+?"?[^"]*)"@) {
             # Turn CG back into FST, protecting baseforms with spaces
             my $b = $1;
             s/^\s+//g;
