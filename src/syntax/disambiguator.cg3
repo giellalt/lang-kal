@@ -88,6 +88,7 @@ LIST Gram/Coref = Gram/Coref ;
 LIST Gram/Dem = Gram/Dem ;
 LIST Adj = Adj ;
 LIST Adv = Adv ;
+LIST iAdv = iAdv ;
 LIST Prop = Prop ;
 LIST Interj = Interj ;
 LIST Num = Num ;
@@ -165,6 +166,13 @@ LIST 2P = 2Pl 2PlPoss ;
 LIST 3P = 3Pl 3PlPoss ;
 LIST 4P = 4Pl 4PlPoss ;
 
+LIST iTrm = iTrm ;
+LIST iAbl = iAbl ;
+LIST iLok = iLok ;
+LIST iAeq = iAeq ;
+LIST iIns = iIns ;
+LIST iVia = iVia ;
+
  
 SET PN& = 1S OR 2S OR 3S OR 4S OR 1P OR 2P OR 3P OR 4P ;
 
@@ -196,6 +204,15 @@ LIST 1PlPoss = 1PlPoss ; #Ny do.
 LIST 2PlPoss = 2PlPoss ; #Ny do.
 LIST 3PlPoss = 3PlPoss ; #Ny do.
 LIST 4PlPoss = 4PlPoss ; #Ny do.
+
+LIST i1SgPoss = i1SgPoss ; #Ny tag 07.05.2018
+LIST i2SgPoss = i2SgPoss ; #Ny do.
+LIST i3SgPoss = i3SgPoss ; #Ny do.
+LIST i4SgPoss = i4SgPoss ; #Ny do.
+LIST i1PlPoss = i1PlPoss ; #Ny do.
+LIST i2PlPoss = i2PlPoss ; #Ny do.
+LIST i3PlPoss = i3PlPoss ; #Ny do.
+LIST i4PlPoss = i4PlPoss ; #Ny do.
 
 LIST 1SgO = 1SgO ;
 LIST 2SgO = 2SgO ;
@@ -1287,7 +1304,7 @@ LIST @ABSOLUT_PRED = @ABSOLUT_PRED ;	#Participier med nexus inde i en NP eller a
 #LIST @i->V = @i->V ; 	# NIQ ved ajor, saper, artor, nalu #Udkommenteret 20180522. @V>
 LIST @SUBJ_COMP = @SUBJ_COMP ;	#Prædikat til subjekt/ subjective complement
 #LIST @OBJ_COMP = @OBJ_COMP ; #Prædikat til objekt Udkommenteret til fordel for @<N
-LIST @<SUBJ_COMP = @<SUBJ_COMP ; #Prædikat til subjekt til venstre fx typen Arnaavunga pikkorissoq
+#LIST @<SUBJ_COMP = @<SUBJ_COMP ; #Prædikat til subjekt til venstre fx typen Arnaavunga pikkorissoq. Ændret til @i-N<
 LIST @>V = @>V ;
 LIST @VOK = @VOK ;
 LIST @NIQ_OBJ> = @NIQ_OBJ> ; #Kun til objekter for absolutte konstruktioner med NIQ+Abl (NIQ+Ins)
@@ -2119,9 +2136,16 @@ SELECT:0283A ("tassa") + Adv IF (-1 BOS)(*1 VFIN OR Cau) ; #Særlig regel efter 
 
 MAP:0283 @ADVL> TARGET ("tassa") + Adv IF (*-1 VFIN BARRIER (*) - KOMMA)(*1 VFIN OR Cau) ;
 
+#Dummy for nomen (oftest possessum) der ikke er inderiveret "Eva tassaavoq ikinngutaa"/ "Eva tassa arnaq pikkorissoq". Pga. tassa's dummy-karakter tagges prædikatet med @i-N<
+SELECT:0284 ("tassa") + Adv IF (-1 Abs + $$NUMERUS)(1 Abs + $$NUMERUS);
+ 
+MAP:M0284 @i-N< TARGET Abs + $$NUMERUS IF (-1 ("tassa") LINK -1 Abs + $$NUMERUS ) ;
 
-########
-SECTION#
+#MAP:M0284A @i-N< TARGET Abs IF (-1 @FOC)(1 EOS OR KOMMA); # N tassa N. eller Tassa N.
+
+
+#########
+#SECTION#
 ########
 
 ADD:0400 (§noun-comma) Abs + Sg (1 KOMMA)(NEGATE 1 KOMMA LINK 1 Abs + Sg LINK 1 Abs + Sg + LU)(NOT 0 §noun-comma) ;
@@ -2186,7 +2210,7 @@ SELECT:0413 Par + INTRANSVERB + 3Sg IF (*-1 KOMMA LINK 1 Abs + Sg)(NEGATE 1 Abs 
 MAP:M00000 @>N TARGET ("nalunaaqutaq") IF (1 Num + Trm) ;
 MAP:M0000 (@PRED) TARGET VFIN ; #Et finit verbum er altid prædikat
 MAP:M0001 (@PRED2) TARGET Par IF (@1 Interj)(NEGATE *0 VFIN); #Ved emfase og udbrud 
-MAP:M0002X @i->N TARGET ("suna") + Lok IF (1 (Prefix/TA "ma") + Lok + IP) ; # Sumi tamaaniipput
+MAP:M0002X @i->N TARGET ("suna") + Lok IF (1 (Prefix/TA "ma") + iLok + IP) ; # Sumi tamaaniipput. Tilpasset til ny i-tag 20180607 
 MAP:M0002 @>N TARGET ("suna") + Lok IF (1 (Prefix/TA "ma") + Lok) ; # Sumi tamaani 
 
 #Ledsagemåde som erstatningsform ved paratakse
@@ -2306,15 +2330,14 @@ MAP:M0034A @<SUBJ TARGET Abs + Sg IF (-1 ("tassa") + U + 3Sg)(NEGATE *1 INTRANSV
 
 MAP:M0034 @SUBJ_COMP TARGET Abs + Sg IF (-2 Rel + LU)(-1 Abs + Sg + POSSESSUM)(*-1 U + 3Sg BARRIER V OR KOMMA)(NEGATE *1 VFIN) ; # Specialfald til de følgende. Parataktiske prædikativer med og uden possessor possessum i andet led
 MAP:M0035 @SUBJ_COMP TARGET Abs + Sg IF (-1 Abs + Sg + LU)(*-1 U + 3Sg BARRIER V OR KOMMA)(NEGATE *1 VFIN) ; 
-MAP:M0036 @SUBJ_COMP TARGET Abs + Sg - Pl IF (*-1 U + V OR ("tassa") + U + V + 3Sg BARRIER V OR KOMMA)(NEGATE *1 VFIN)(NEGATE *1 Cau + 3Sg OR 4Sg)(NEGATE *1 Con + 3Sg OR 4Sg)(NEGATE *1 3SgO BARRIER INTRANSVERB OR KOMMA)(NEGATE *1 CONT + 3SgO) ; # NEGATE for at forhindre hit på subjektet i (underordnet V med U) SUBJ> V. + V tilføjet i første betingelse for at forebygge hit på Der/vn + U i fx objekter. -Pl i sættet på gr. af *N IP Sg Pl 
+MAP:M0036 @i-N< TARGET Abs + Sg - Pl IF (*-1 U + V OR ("tassa") + U + V + 3Sg BARRIER V OR KOMMA)(NEGATE *1 VFIN)(NEGATE *1 Cau + 3Sg OR 4Sg)(NEGATE *1 Con + 3Sg OR 4Sg)(NEGATE *1 3SgO BARRIER INTRANSVERB OR KOMMA)(NEGATE *1 CONT + 3SgO) ; # NEGATE for at forhindre hit på subjektet i (underordnet V med U) SUBJ> V. + V tilføjet i første betingelse for at forebygge hit på Der/vn + U i fx objekter. -Pl i sættet på gr. af *N IP Sg Pl 
 MAP:M0037 @SUBJ_COMP TARGET Abs + Pl IF (*-1 U + 3Pl BARRIER V OR KOMMA)(NEGATE *1 VFIN OR CONT + 3PlO) ; #Må ikke tagge objektet for en følgende CONT
-MAP:M0037B @<SUBJ_COMP TARGET TUQ + Abs IF (-1 V + U)(1 KOMMA OR EOS) ; #Arnaavunga pikkorissoq
+MAP:M0037B @i-N< TARGET TUQ + Abs IF (-1 V + U)(1 KOMMA OR EOS) ; #Arnaavunga pikkorissoq
 
 MAP:M0038 @<CONT_TASSA TARGET CONT IF (*-1 ("tassa") + U ) ;
 
 MAP:M0038B @SUBJ> TARGET N + Abs + 4SgPoss IF (1 Abs + LU LINK *1 Par + 3Pl LINK *1 ORATIOOBLVERB) ;
 
-MAP:M0039 @SUBJ> TARGET N + Abs + LU IF (*1 CONT BARRIER V)(T:NexusVenstre) ;
 MAP:M0040 (@SUBJ>) TARGET N + Abs + LU IF (-1 VFIN + 3Sg)(1 Cont + 4Pl)(2 N + Sg LINK *1 V + 3Sg) ;
 #Uggoraa Pitarlu qiteqatigiillualeruttorlutik
 MAP:M0041 (@SUBJ>) TARGET N + Abs + LU OR Prop + Abs + LU IF (-1 VFIN + 3Sg)(1 Cont + 4Pl)(2 N + Pl LINK *1 V + 3Pl) ;
@@ -2564,7 +2587,6 @@ MAP:M0397 @SUBJ_COMP TARGET Abs IF (-1 OBLIQUE + LU LINK -1 Abs LINK *-1 ("tassa
 MAP:M0398 @SUBJ_COMP TARGET Abs + LU IF (-1 Abs LINK *-1 ("tassa") LINK *-1 Abs BARRIER V); 
 MAP:M0399 @SUBJ_COMP TARGET Abs IF (-2 @FOC)(-1 OBLIQUE)(NEGATE *0 VERB-NOTCONT); # tassa OBL N eller Una OBL N.
 
-MAP:M0400 @SUBJ_COMP TARGET Abs IF (-1 @FOC)(1 EOS OR KOMMA); # N tassa N. eller Tassa N.
 MAP:M0401 @SUBJ_COMP TARGET Abs + Prop IF (-1 Abs + Pl)(1 Abs + Prop + LU);
 MAP:M0402 @SUBJ_COMP TARGET Abs + Prop + LU IF (-2 Abs + Pl)(-1 Abs + Prop);
 MAP:M0407A (@>N) TARGET Num IF (1 NUMHOVED); # ' .. 2 oorimoorlutik ..' specialfald før 189-190
@@ -2695,7 +2717,7 @@ MAP:M0601 (@POSS>) TARGET Rel + Sg IF (1 3SgPoss) ;
 
 MAP:M0608 (@POSS>) TARGET Prop + Rel + Sg IF (*1 3SgPoss BARRIER TRANSVERB + 3Sg) (NEGATE *1 Rel + LU BARRIER TRANSVERB + 3Sg)(NEGATE 1 Prop + Abs)(NEGATE 1 Prop + Rel LINK 1 POSSESSUM3) ; #i NN-ip aappaatalu må aappaatalu ikke opfyldebetingelsen. Sidste NEGATE for at blokere NN-ip NN1 ...
 
-MAP:M0609 @POSS> TARGET Rel + Sg - Prop IF (*1 3SgPoss BARRIER TRANSVERB + 3Sg) (NEGATE *1 Rel + LU BARRIER TRANSVERB + 3Sg)(NEGATE 1 Rel + Sg LINK 1 3SgPoss LINK *1 3PlO BARRIER V) ; #i NN-ip aappaatalu må aappaatalu ikke opfyldebetingelsen. Næstsidste NEGATE for at blokere NN-ip NN1 ... Sidste for ikke at tagge subjekter som POSS
+MAP:M0609 @POSS> TARGET Rel + Sg - Prop IF (*1 3SgPoss OR i3SgPoss BARRIER TRANSVERB + 3Sg) (NEGATE *1 Rel + LU BARRIER TRANSVERB + 3Sg)(NEGATE 1 Rel + Sg LINK 1 3SgPoss LINK *1 3PlO BARRIER V) ; #i NN-ip aappaatalu må aappaatalu ikke opfyldebetingelsen. Næstsidste NEGATE for at blokere NN-ip NN1 ... Sidste for ikke at tagge subjekter som POSS
 MAP:M0610 (@POSS>) TARGET Rel + Pl IF (1 Lok OR Ins OR Aeq OR CONT OR TIDSPARTIKEL)(2 3PlPoss) ; #Særtilfælde med adled til possessum. TIDSPARTIKEL tilføjet 20170407
 MAP:M0611 (@POSS>) TARGET Rel + Pl IF (1 3PlPoss) ;
 #MAP:M0611A @POSS> TARGET Rel + Sg IF (1 3PlPoss)((0 LU) OR (-1 @POSS> + LU)) ;
