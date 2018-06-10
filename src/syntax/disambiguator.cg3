@@ -1065,9 +1065,9 @@ SET NOT-REL = KASUS - Rel ;
 SET OBLIQUE =  Trm | Abl | Lok | Aeq | Ins | Via ;
 SET NUMERUS = Sg | Pl ;
 
-SET POSSESSUM3 = (N 3SgPoss) | (N 3PlPoss) | (N* 3SgPoss) | (N* 3PlPoss) | (Num 3SgPoss) | (Num 3PlPoss) | (DivPron 3PlPoss) ;
-SET POSSESSUM4 = (N 4SgPoss) | (N 4PlPoss) | (N* 4SgPoss) | (N* 4PlPoss) ;
-SET POSSESSUM12 = (N 1SgPoss) | (N 2SgPoss) | (N* 1SgPoss) | (N* 2SgPoss)| (N 1PlPoss) | (N 2PlPoss) | (N* 1PlPoss) | (N* 2PlPoss) ;
+SET POSSESSUM3 = (N 3SgPoss) | (N 3PlPoss) | (iN i3SgPoss) | (iN i3PlPoss) | (Num 3SgPoss) | (Num 3PlPoss) | (DivPron 3PlPoss) ;
+SET POSSESSUM4 = (N 4SgPoss) | (N 4PlPoss) | (iN i4SgPoss) | (iN i4PlPoss) ;
+SET POSSESSUM12 = (N 1SgPoss) | (N 2SgPoss) | (iN i1SgPoss) | (iN i2SgPoss)| (N 1PlPoss) | (N 2PlPoss) | (iN i1PlPoss) | (iN i2PlPoss) ;
 
 SET POSSESSUM = POSSESSUM12 OR POSSESSUM3 OR POSSESSUM4 ; 
 
@@ -1085,6 +1085,18 @@ SET LIK_QAR = LIK | QAR ;
 SET NOMEN = N | N* ;
 
 # Kombinationer af verber og nominer
+
+#Unification set til subjekter og intransitiver
+LIST IV1Sg = (Abs 1Sg) (V 1Sg) ;
+LIST IV2Sg = (Abs 2Sg) (V 2Sg) ;
+LIST IV3Sg = (Abs Sg) (V 3Sg) ;
+LIST IV4Sg = (Abs Sg) (V 4Sg) ;
+LIST IV1Pl = (Abs 1Pl) (V 1Pl) ;
+LIST IV2Pl = (Abs 2Pl) (V 2Pl) ;
+LIST IV3Pl = (Abs Pl) (V 3Pl) ;
+LIST IV4Pl = (Abs Pl) (V 4Pl) ;
+SET IV_SUBJ& = IV1Sg OR IV2Sg OR IV3Sg OR IV4Sg OR IV1Pl OR IV2Pl OR IV3Pl OR IV4Pl;
+
 LIST Sgs = 4SgPoss 3Sg ; # Matcher den ene af tags
 LIST Pls = 4PlPoss 3Pl ;
 SET Xposs = Sgs OR Pls ; # anvendes sammen med && (set-unification), som betyder 'vælg fra set og gør det igen senere i reglen'
@@ -1397,11 +1409,14 @@ LIST WFORM = "<.*>"r ;
 LIST BFORM = ".*"r ;
 REMOVE:0001X ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"%l$1"r)) (-1 BOS) (NEGATE 1 Prop) ;
 SELECT:0001Y ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"$1"r)) ;
+#Helt skæve læsninger
+REMOVE:0001A ("ip") + LAAR + Gram/Exclm IF (0 ("ila")) ;
+REMOVE:0001B ("pitsap") + Gram/Exclm ;
 
 #REMOVE:0001XX UGEDAGE + Gram/TV IF (0 UGEDAGE + Gram/IV) ; #NNGUR + Gram/TV utænkelig ved ugedages navne #udkommenteret og gjort listen entydig i stedet.
 
-#Gram/Exclm og Guess overgenerer voldsomt. Skal kun overleve, når de er eneste læsning
-REMOVE:0002A Gram/Exclm ;
+#Gram/Exclm og Guess overgenerer voldsomt. Skal kun overleve, når de er eneste læsning undtagen ved strukturen tassa Gram/Excl.
+REMOVE:0002A Gram/Exclm (NEGATE -1 ("tassa"))(1 EOS);
 REMOVE:0002B Guess ;
 
 
@@ -1516,7 +1531,7 @@ REMOVE:0040D Par + 3Pl IF (1 Par + 3Pl + NIR); #Må være subjektet og ikke Par
 REMOVE:0040E 4PlO + CONT - Dobbelttransitiv ; #Er vist en utænkelig kombination?? 
 
 #Vælg Indikativ verbum, hvis eneste finitte. NIR undtaget, da ofte fejl for NIQ plus noget. BARRIER reduceret fra BARRIER LU OR LI OR KOMMA til kun KOMMA på gr. af mange hit på nominalparatakser med LU og adverbialer med LI
-SELECT:0003 Ind - SUB IF (NEGATE *0 VFIN BARRIER KOMMA)(NEGATE 0 NIR)(NEGATE 0 Int LINK 1 ("?"))(NEGATE 0 Par LINK *-1 KONCESSIV)(NEGATE -1 NIQ + Gram/Comp) ; #SUB undtaget for ikke at gøre Via som matuagut til Ind 1Pl. Må ikke slette Par i koncessiver og efterlade fx GALUAQ + GE + Ind. Må ikke slette NIQ fulgt af Par 
+SELECT:0003 Ind - SUB IF (NEGATE *0 VFIN BARRIER KOMMA)(NEGATE 0 NIR)(NEGATE 0 Int LINK 1 ("?"))(NEGATE 0 Par LINK *-1 KONCESSIV)(NEGATE -1 NIQ + Gram/Comp)(NEGATE 0 Gram/Exclm LINK *1 Par LINK -*1 KONCESSIV) ; #SUB undtaget for ikke at gøre Via som matuagut til Ind 1Pl. Må ikke slette Par i koncessiver og efterlade fx GALUAQ + GE + Ind. Må ikke slette NIQ fulgt af Par. Sidste NEGATE fordi 'ilaat' kan læses som IP + LAAR + Exclm 
 
 
 ### INTERJEKTION, VOKATIV og IMPERATIV ###
@@ -2000,6 +2015,7 @@ REMOVE:0320 3PlO IF (0 3SgO)(*-1C Abs + Sg BARRIER INTRANSVERB + 3Sg OR 4Sg)(NEG
 REMOVE:0321 3SgO IF (0 3PlO)(*-1C Abs + Pl BARRIER INTRANSVERB + 3Pl OR 4Pl) ;
 
 SELECT:0322A Gram/Refl + TIP IF (-1 Abl)(0 INTRANSVERB - Gram/Refl + TIP);
+SELECT:0322B ("taku") + SSA + Gram/Refl + 1Pl ; #Vistnok undtagelsesløs
 REMOVE:0322 Gram/Refl IF (NEGATE *-1 ("immi") BARRIER KOMMA)(NEGATE 0 ("paasi"))(NEGATE 0 ("paa") + SI);
 #20100822 disambiguerer refleksiv fra monovalente former men må ikke overskrive regel 5556
 
@@ -2116,6 +2132,9 @@ SELECT:0260 Abs + Sg + Der/nv IF (-1C Abs + Sg)(1 TRANSVERB + 3SgO)(NEGATE *-1 O
 
 #Efter nye tags forår 18 optræder "tassa" pr. 20180328 i 5 former "tassa" Pali; "tassa" Interj; uv Prefix/TA Gram/Dem Interj; "tassa" Adv samt "tassa" Conj
 
+#tassa Exclm
+SELECT:0229 ("tassa") + Adv IF (1 Gram/Exclm LINK 1 EOS);
+
 #Specialiteten adnominale Pron, der peger mod højre, må ind før @FOC-reglerne
 MAP:M0230NY @Pron>N TARGET Gram/Dem + Pron + Abs + Pl IF (1 N + Abs + Pl)(NEGATE *1 3PlO BARRIER VFIN) ; #Skal i stedet have et unification set PL 20180530
 MAP:M0230NY2 @Pron>N TARGET Gram/Dem + Pron + Abs + Sg IF (1 N + Abs + Sg)(NEGATE *1 3SgO BARRIER VFIN)(NEGATE 0 ("manna") LINK -1 OTHERTIME) ; #Skal i stedet have et unification set PL 20180530
@@ -2127,8 +2146,8 @@ MAP:M0249 @FOC TARGET FOKUSPART + Pali IF (*1 T:NexusHøjre BARRIER KOMMA)(NEGAT
 SELECT:0281 ("tassa") + Adv IF (1 VFIN)(*-1 TIME BARRIER V) ; #maannalu tassa unnuaroreerpoq
 MAP:M0281 @ADVL> TARGET ("tassa") + Adv IF (1 VFIN) ; #
 #"tassa" er en slags konjunktion ofte svarende til dansk dvs. når anaforisk først i sætning uden finit V
-SELECT:0282 ("tassa") + Conj IF (-1 BOS)(NEGATE *1 VFIN OR Cau) ;
-MAP:M0249A @FOC TARGET ("tassa") + Conj IF (NEGATE *1 VFIN)(-1 BOS);
+SELECT:0282 ("tassa") + Adv IF (-1 BOS)(NEGATE *1 VFIN OR Cau) ;
+MAP:M0249A @FOC TARGET ("tassa") + Adv IF (NEGATE *1 VFIN OR Cau)(-1 BOS);
 
 #Konkluderende på foregående nexus ofte forstærkende eller causalt.
 SELECT:0283 ("tassa") + Adv IF (*-1 VFIN BARRIER (*) - KOMMA)(*1 VFIN OR Cau) ;
@@ -2140,6 +2159,11 @@ MAP:0283 @ADVL> TARGET ("tassa") + Adv IF (*-1 VFIN BARRIER (*) - KOMMA)(*1 VFIN
 SELECT:0284 ("tassa") + Adv IF (-1 Abs + $$NUMERUS)(1 Abs + $$NUMERUS);
  
 MAP:M0284 @i-N< TARGET Abs + $$NUMERUS IF (-1 ("tassa") LINK -1 Abs + $$NUMERUS ) ;
+
+#Samme som ovenfor men anaforisk. 'Tassa Emilie.'
+SELECT:0285 ("tassa") + Adv IF (-1 EOS)(1 Abs);
+ 
+MAP:M0285 @i-N< TARGET Abs + &&IV_SUBJ& IF (-1 ("tassa") LINK -1 BOS)(NEGATE *1 &&IV_SUBJ&) ; #Må ikke hitte på subjekter som 'Tassa inuusuttut nuannassuataartut.'
 
 #MAP:M0284A @i-N< TARGET Abs IF (-1 @FOC)(1 EOS OR KOMMA); # N tassa N. eller Tassa N.
 
@@ -4563,7 +4587,9 @@ SELECT:9966 (/__Gram\/IV\ NIQ__/l) IF (0 (/__Gram\/TV\ NIQ__/l)) ; #heuristisk v
 SELECT:9966A (/__Gram\/IV\ TIP__/l) IF (0 (/__Gram\/TV\ TIP__/l)) ; #heuristisk valg af intransitiv sent i kaskaden 
 SELECT:9966B (/__Gram\/IV\ TUQ__/l) IF (0 (/__Gram\/TV\ TUQ__/l)) ; #heuristisk valg af intransitiv sent i kaskaden 
 
-SELECT:9966C (Gram/HV) IF (NOT -*1 ("immi") BARRIER V) ; #heuristisk valg af halvtransitiv sent i kaskaden
+REMOVE:9966CX (Gram/HV) IF ( 0 (/__Gram\/IV\ VIK__/l)) ; #heuristisk valg af halvtransitiv sent i kaskaden. Skal dog ikke hitte på nominaliseringer
+
+SELECT:9966C (Gram/HV) IF (NOT -*1 ("immi") BARRIER V)(NEGATE 0 (/__Gram\/IV\ VIK__/l)) ; #heuristisk valg af halvtransitiv sent i kaskaden. Skal dog ikke hitte på nominaliseringer
 
 REMOVE:9967A ("(\"[^<].*\"\sGram\/TV\sTIP)"r) IF (0 ("(\"[^<].*\"\sGram\/IV\sTIP)"r)); #Virker ikke 20180304
 
