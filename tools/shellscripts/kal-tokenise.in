@@ -16,12 +16,29 @@ use feature 'unicode_strings';
 
 use Getopt::Long;
 Getopt::Long::Configure('no_ignore_case');
+my $opt_bin = '';
 my $opt_fst = 0;
 my $opt_verbose = 0;
 my $rop = GetOptions(
+	'bin|b=s' => \$opt_bin,
 	'fst|f' => \$opt_fst,
 	'verbose|v' => \$opt_verbose,
                     );
+
+my @bins = ($opt_bin, '/usr/local/bin/hfst-tokenise', '/opt/local/bin/hfst-tokenise', '/usr/bin/hfst-tokenise');
+my $bin = '';
+foreach my $f (@bins) {
+   if ($f && -x $f) {
+      $bin = $f;
+      last;
+   }
+}
+if (!$bin || !-x $bin) {
+   die("No usable hfst-tokenise given or found!\n");
+}
+if ($opt_verbose) {
+   print STDERR "kal-tokenise: Using ${bin}\n";
+}
 
 my $prefix = '@prefix@';
 my @fsts = ('', "@datarootdir@/giella/@GTLANG@/tokeniser-disamb-gt-desc.pmhfst", '/usr/local/share/giella/@GTLANG@/tokeniser-disamb-gt-desc.pmhfst', '/usr/share/giella/@GTLANG@/tokeniser-disamb-gt-desc.pmhfst');
@@ -43,7 +60,7 @@ if ($opt_verbose) {
    print STDERR "kal-tokenise: Using ${fst}\n";
 }
 
-my $t = "hfst-tokenize -L ${fst}";
+my $t = "${bin} -L ${fst}";
 
 # Prefixes from root.lexc ca. lines 14-15
 my @p = ('AA', 'TA');
