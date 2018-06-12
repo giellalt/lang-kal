@@ -410,6 +410,7 @@ LIST LUAR_SINNAA_NIQAR = LUAR\=SINNAA\=NIQAR ;
 LIST LUAR_SINNAA_NIQAR_PASIP = LUAR\=SINNAA\=NIQAR\=PASIP ;
 LIST LUINNAQ = LUINNAQ ;
 LIST LUINNAR = LUINNAR ;
+LIST LLUINNAR = LLUINNAR ; #alternativ form/ fejl i fst. Skal findes og fjernes
 LIST LUINNAR_LIR = LUINNAR\=LIR ;
 LIST LUINNAR_GUMA = LUINNAR\=GUMA ;
 LIST LUINNAR_GUNAR = LUINNAR\=GUNAR ;
@@ -1414,7 +1415,8 @@ REMOVE:0001A ("ip") + LAAR + Gram/Exclm IF (0 ("ila")) ;
 REMOVE:0001B ("pitsap") + Gram/Exclm ;
 REMOVE:0001C (/__\"ili\"\ Gram\/IV__/l) IF (NEGATE *-1 ("qanoq")) ; #Accepter kun 'qanoq ililluni/ isilluni' etc. Ellers nok ilivaa/iserpoq/isigivaa etc.
 REMOVE:0001D (/__\"isi\"\ Gram\/IV__/l) IF (NEGATE *-1 ("qanoq")) ;
-
+REMOVE:0001E ("to") + VIK IF (0 ("tui")) ;
+REMOVE:0001F ("ip") IF (NEGATE -1 Aeq OR ("qanoq") OR ("taama") OR ("ima")) ;
 
 #REMOVE:0001XX UGEDAGE + Gram/TV IF (0 UGEDAGE + Gram/IV) ; #NNGUR + Gram/TV utænkelig ved ugedages navne #udkommenteret og gjort listen entydig i stedet.
 
@@ -1659,7 +1661,7 @@ REMOVE:0044X N IF (0 Par)(NEGATE *0 VFIN OR ("tassa"))(NEGATE 0* KOMMA)(NEGATE 0
 #En tidlig regel, der fjerner Par + 3Sg fra kongruensadled i objektsyntagmer forudsat, der ikke findes et inquit
 SELECT:0044 ADJEKTIVISK + Abs + Sg IF (-1 Abs + Sg)(*1 3SgO BARRIER V)(NEGATE *0 ORATIOOBLVERB) ; 
 
-REMOVE:0044A ("ilaaq") - AFFINGERET IF (0 ("ila") + POSSESSUM) ; #'ilaaq' uden QAR el. lign. usandsynlig
+REMOVE:0044A ("ilaaq") - QAR OR LIK IF (0 ("ila") + POSSESSUM) ; #'ilaaq' uden QAR el. lign. usandsynlig
 REMOVE:0044B ("isu") + MAA IF (0 ("isuma"));
 
 SELECT:0045A Gram/Comp IF (1 ("ajor") OR ("artor") OR ("saper") OR ("nalu"));
@@ -1886,9 +1888,9 @@ REMOVE:0154 Prop IF (-1 BOS)(1 (/__Gram\/Dem\ Pron__/l)) ; #Arnaq eller arnaq f�
 SELECT:0155 (Prop) IF (0 ("<\\p{Lu}.*>"r)) (NEGATE -1 BOS OR (""")) ;
 # Select Prop hvis Wordform starter med stort, men ikke hvis første ord i sætning eller i direkte tale
 
-SELECT:0156 ("Guuti") + Prop + Sg (NEGATE 0 AFFINGERET) ;
+#SELECT:0156 ("Guuti") + Prop + Sg (NEGATE 0 AFFINGERET) ;
 # Altid Guuti undtagen guuteqarpoq o.lign.
-
+SELECT:0156 ("Guuti") + Prop + Sg IF ( 0 ("<\\p{Lu}.*>"r)) ;
 REMOVE:0157 Par + 3Pl IF (0 INSTITUTION) ;
 
 REMOVE:0160 Via IF (0 NAME + KKUT LINK *1 3Pl OR 3PlO ) ;
@@ -4005,7 +4007,8 @@ REMOVE:8581 ("ilaaq") IF (0 ("ila"))(NEGATE -1**< ("ilaaq")); # 'toejlapper' sja
 SELECT:Se_alla ("alla") IF (0 NNGUR); #ringe sandsynlighed for 'allak' og 'allaq'
 REMOVE ("allaq") IF (0 ("alla"))(NEGATE *0 animalverb); #
 REMOVE ("allak") + U + NNGIT IF (*1 (@CL-<CIT)) ; #så er det allaanngilaq ... der er på spil
-REMOVE ("nalik") IF ( 0 ("nali") + AFFINGERET ) ; #nali+LIR sandsynlig, nalik+LIR usandsynlig
+#REMOVE ("nalik") IF ( 0 ("nali") + AFFINGERET ) ; #nali+LIR sandsynlig, nalik+LIR usandsynlig
+REMOVE ("nalik") IF ( 0 ("nali") ) ; #Forsøgsvist udkommenteret. 
 SELECT TIME + Lok IF (-1 BOS); #'aasaq' for 'aa+TAQ'
 REMOVE ("mannguk") IF (0 ("manngoq"))(0 POSSESSUM); #'roden' snarere end 'tøvejret' naar possessum
 REMOVE ("ilut") IF (NEGATE 0 GE OR POSSESSUM OR QAR OR LIK) ; #næppe 'jævnaldrende', snarere spatial 'iluk' 
@@ -4085,7 +4088,8 @@ REMOVE ("pi") + NIP IF (0 ("piniar")); #fjerner pi+NIP+UTE fra 'piniutit'
 REMOVE ("asap") IF (NEGATE *-1 ("nateq") OR ("timi") OR ("angallat")) ; #asavdlugo vs. assagdlugo
 SELECT ("naa") IF (*0 ("naatser")); #'naavoq' sandsynligere end 'naappoq' ved 'vae
 REMOVE ("kivi") IF (NEGATE *0 ("imaq")); #
-REMOVE ("allar") IF (NEGATE 0 AFFINGERET LINK *0 ("qilak")) ; #20091103 allar- eller allap-
+#REMOVE ("allar") IF (NEGATE 0 AFFINGERET LINK *0 ("qilak")) ; #20091103 allar- eller allap-
+REMOVE ("allar") IF (NEGATE *0 ("qilak")) ; #20091103 allar- eller allap-
 REMOVE ("ili") IF (0 ("ilisima"))(NEGATE *0 THING + @ALLOBJ> OR THING + @<ALLOBJ) ; #20091109
 REMOVE ("isigip") IF (-1 Trm) ; #20091112 sandsynligvis "isigaa" i den stilling
 REMOVE ("aak") + LISAR IF (0 ("aalisar")) ;
@@ -4095,7 +4099,7 @@ REMOVE ("allip") IF ( 0 NGAAR ) ;
 REMOVE ("saa") + VIK + GE ; #vælger saap+VIK+GE
 REMOVE ("saa") + Gram/Refl ; #fravælger 'bestrø hinanden' til fordel for 'henvende sig til hinanden'
 SELECT ("aasar") + LIR + TUQ ; #fravælger aa+TAQ+vn+LIR+nv+TUQ og aa+TAR=LIR+Der/vv+TUQ
-SELECT ("pileri") + AFFINGERET IF (0 ("pileraaq")) ;
+#SELECT ("pileri") + AFFINGERET IF (0 ("pileraaq")) ;
 REMOVE:5450 ("erlip") + NAR IF (0 ("erlinnar"));
 REMOVE:5451 ("anner") + LAAR IF (0 ("annilaar"));
 REMOVE:5452 ("ilik") + U IF (0 ("ilior"));
@@ -4135,6 +4139,7 @@ SELECT:5481 ("ukiorissi") IF (0 ("ukiorik") + SI) ;
 REMOVE:5482 ("ingerla") + TRANSVERB IF (NEGATE *0 Sem/Unit + @<OBJ OR Sem/Unit + @OBJ> BARRIER VFIN) ;
 REMOVE:5483 ("qila") IF ( 0 ("qilap"))(NEGATE *0W ("angakkoq")); #åndemaning stochastisk usandsynlig men dog taget forbehold for en shaman i konteksten
 REMOVE:5484 ("ersip") + Cont IF ( 0 ("ersi") + Cont)(NEGATE *-1 GEOOBJ BARRIER V) ; #"ersip" er sjælden i Cont bortset fra enkelttilfælde, hvor fx en udsigt til noget geografisk omtales
+REMOVE:5485 ("quaq") + U IF (0 ("quaap") ) ; #Ren sandsynlighedstænkning
 
 # Der/nv eller Der/vv?
 SELECT:5493 QATE + Der/vn + GE IF (0 QATE + Der/nn + GE)(NEGATE *-1 HUMAN + @OBJ>) ;
@@ -4463,7 +4468,7 @@ REMOVE ("ilik") + NIAR ; #20091112 - ad hoc regel, der skal erstattes, naar --or
 
 #En ad hoc regel til et akut problem. I 'Kisima isigaanga' er V ikke intrans + 1Sg
 SELECT:9934 &&DivPronOBJ + V IF (-1 &&DivPronOBJ + DivPron) ;
-REMOVE:SS_SeLeksikaliseret AFFINGERET IF (0C $$TAGGED); # Vælg den leksikalisered form frem for den analyserede
+#REMOVE:SS_SeLeksikaliseret AFFINGERET IF (0C $$TAGGED); # Vælg den leksikalisered form frem for den analyserede
 #udkommenteret fordi jeg ikke forstår den. Spurgt Tino 20151008
 
 SELECT:9935 HTR IF (*-1 @MIK-OBJ> BARRIER V);
@@ -4612,10 +4617,15 @@ SELECT:9971A HTR - V IF (*-1 @i-MIK-OBJ> BARRIER (*) - @i-ADVL> - @<N) ;
 
 #Karlssons lov anden version: Vælg den mest komplette af flere ord, hvoraf ingen er hele stammer
 #Eckhards forslag for at forebygge at konsonantstammer automatisk sletter vokalstammer ("ersip" sletter "ersi")
-REMOVE:9972 ("([^<].*)"r) IF (0 (VSTR:"$1.+"r)) ((0 (VSTR:"$1..+"r)) OR (0 ("<+[^aiu]>"r)) OR (NOT 0 (VSTR:"$1p"))) ;
+REMOVE:9972 ("([^<].*)"r) IF (0 (VSTR:"$1.+"r)) ((0 (VSTR:"$1..+"r)) OR (NOT 0 (VSTR:"$1p"))) ;
+#REMOVE ("([^<].*[^aiu])"r) IF (0 (VSTR:"$1.+"r)) ; #Et forslag fra Eckhard. Skal testes.
+
 #REMOVE:9972 ("([^<].*)"r) IF (0 (VSTR:"$1.+"r)) ;
+
 #REMOVE:9972A ("([^<]...*)."r) IF (0 (VSTR:"$1..+"r)) ;
 REMOVE:9972B ("([^<]...*).."r) + (/Der\/.*/r) IF (0 (VSTR:"$1...+"r) - (/Der\/.*/r)) ; #En mere farlig regel end 9972A, men kræver til gengæld derivation. Skrevet til ord som 'aqerluusaq'.
+
+REMOVE:9975 (/__LLUAR\ Der\/vv\ INNAR__/l) IF (0 LLUINNAR) ;
 
 REMOVE:9973 OLang/DAN ; # Slet låneord, hvis ikke eneste læsning
 
