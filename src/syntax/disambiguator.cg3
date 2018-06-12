@@ -1,4 +1,4 @@
-# -*- cg-pre-pipe: "$GTHOME/giella-core/scripts/preprocess --abbr=$GTHOME/langs/kal/tools/preprocess/abbr.txt | hfst-optimised-lookup  $GTHOME/langs/kal/src/analyser-disamb-gt-desc.hfstol | $GTHOME/giella-core/scripts/lookup2cg" -*-
+# -*- cg-pre-pipe: ~/langtech/kal/tools/shellscripts/kal-tokenise ~/langtech/kal/tools/tokenisers/tokeniser-disamb-gt-desc.pmhfst -*-
 
 # =================================================================== #
 # =================================================================== #
@@ -6,9 +6,9 @@
 # =================================================================== #
 # =================================================================== #
 
-# ====================== #
-#            Short table of contents          #
-# ====================== #
+# ============================= #
+#     Short table of contents   #
+# ============================= #
 
 # Delimiters (line 47)
 # Tags and sets
@@ -1412,6 +1412,9 @@ SELECT:0001Y ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"$1"r)) ;
 #Helt skæve læsninger
 REMOVE:0001A ("ip") + LAAR + Gram/Exclm IF (0 ("ila")) ;
 REMOVE:0001B ("pitsap") + Gram/Exclm ;
+REMOVE:0001C (/__\"ili\"\ Gram\/IV__/l) IF (NEGATE *-1 ("qanoq")) ; #Accepter kun 'qanoq ililluni/ isilluni' etc. Ellers nok ilivaa/iserpoq/isigivaa etc.
+REMOVE:0001D (/__\"isi\"\ Gram\/IV__/l) IF (NEGATE *-1 ("qanoq")) ;
+
 
 #REMOVE:0001XX UGEDAGE + Gram/TV IF (0 UGEDAGE + Gram/IV) ; #NNGUR + Gram/TV utænkelig ved ugedages navne #udkommenteret og gjort listen entydig i stedet.
 
@@ -3997,7 +4000,8 @@ SELECT:Se_illuNot_illoq ("illu") ; # "illu" mere sandsynlig end "illoq"
 SELECT:Se_ataata ("ataata") ; # mere sandsynlig end "ataataq"
 SELECT:Se_qaliaq ("qaliaq") ; # ad hoc for at forebygge 'hårbåndet' qaleq
 SELECT:8580 ("ilaanni") IF (1C V + TAR) ; # 
-SELECT:Se_ila ("ila") + Pl IF (NEGATE -1**< ("ilaaq"))(NEGATE 0 ("ilaanni") + Adv); # 'toejlapper' sjaeldne medens partitiv hyppig
+#SELECT:Se_ila ("ila") + Pl IF (NEGATE -1**< ("ilaaq"))(NEGATE 0 ("ilaanni") + Adv); # 'toejlapper' sjaeldne medens partitiv hyppig. Slettet 20180612. Remover fx ila+Sg i 'ullut ilaanni'
+REMOVE:8581 ("ilaaq") IF (0 ("ila"))(NEGATE -1**< ("ilaaq")); # 'toejlapper' sjaeldne medens partitiv hyppig.
 SELECT:Se_alla ("alla") IF (0 NNGUR); #ringe sandsynlighed for 'allak' og 'allaq'
 REMOVE ("allaq") IF (0 ("alla"))(NEGATE *0 animalverb); #
 REMOVE ("allak") + U + NNGIT IF (*1 (@CL-<CIT)) ; #så er det allaanngilaq ... der er på spil
