@@ -143,15 +143,15 @@ sub analyze {
    }
 
    # Remove null analysis from tokens to let later steps retry them in pieces
-   foreach my $f ($out =~ /(?:^|\n)("<[^\n]+?>"\n\t"[^\n]+?" \?)(?:\n|$)/g) {
+   foreach my $f ($out =~ /(?:^|\n)("<[^\n]+?>"\n\t"[^\n]+?" \?)/g) {
       my ($wf) = ($f =~ /"<([^\n]+?)>"/);
-      if ($wf =~ /[^\pL\pN\pM]+/) {
+      if ($wf =~ /[^\pL\pN\pM]+/ || $wf =~ /\p{Lu}/) {
          $out =~ s/(^|\n)\Q$f\E(\n|$)/$1$wf$2/g;
       }
    }
 
    # Work around HFST bug by recursing un-analyzed chunks
-   foreach my $f ($out =~ /(?:^|\n)([^<"\t\n][^\n]*)(?:\n|$)/g) {
+   foreach my $f ($out =~ /(?:^|\n)([^<"\t\n][^\n]*)/g) {
       if ($f =~ /^([^\pL\pN\pM]+)(.+?)([^\pL\pN\pM]+)$/) {
          # Split non-alphanumeric from alphanumeric and retry them separately
          my ($f1,$f2,$f3) = ($1, $2, $3);
@@ -172,6 +172,24 @@ sub analyze {
          if ($f1 ne $m1 || $f2 ne $m2) {
             my $m = "$m1\n$m2";
             $m =~ s/\n\n+/\n/g;
+            $out =~ s/(^|\n)\Q$f\E(\n|$)/$1$m$2/g;
+         }
+      }
+      elsif ($f =~ /\p{Lu}.*?\p{Lu}/) {
+         # If input has multiple upper-case letters, try it as first-upper
+         my $m = analyze(ucfirst(lc($f)), $n + 1);
+         if ($f ne $m) {
+            $m =~ s@" @" Heur/Case @g;
+            $m =~ s/"<[^\n]+>"/"<$f>"/;
+            $out =~ s/(^|\n)\Q$f\E(\n|$)/$1$m$2/g;
+         }
+      }
+      elsif ($f =~ /\p{Lu}.*?\p{Ll}/ || $f =~ /\p{Ll}.*?\p{Lu}/) {
+         # If input is mixed-case, try it as lower-case
+         my $m = analyze(lc($f), $n + 1);
+         if ($f ne $m) {
+            $m =~ s@" @" Heur/Case @g;
+            $m =~ s/"<[^\n]+>"/"<$f>"/;
             $out =~ s/(^|\n)\Q$f\E(\n|$)/$1$m$2/g;
          }
       }
