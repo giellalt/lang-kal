@@ -1232,8 +1232,8 @@ LIST SEMIOTIC = ("titartar" TAQ) "aviisi" ("atuar" TAQ) ;
 # Proprier
 # Desse skal vi hente frå leksikon
 
-LIST Mask = "Aron" "Eri" "Erik" "Eskild" "Hans" "Jens" "Mik" "Miki" "Morten" "Ole" "Per" "Piitaq" "Rasmus" "Trond" ;
-LIST Fem = "Anette" "Anna" "Arnaq" "Dagmar" "Emilie" "Gitte" "Hanne" "Jane" "Karen" "Kirsten" "Margrethe" "Mette" ;
+LIST Mask = "Aron" "Eri" "Erik" "Eskild" "Hans" "Jens" "Mik" "Miki" "Morten" "Niels" "Ole" "Per" "Piitaq" "Rasmus" "Trond" Sem/Mask ;
+LIST Fem = "Anette" "Anna" "Arnaq" "Dagmar" "Emilie" "Gitte" "Hanne" "Jane" "Karen" "Kirsten" "Margrethe" "Mette" Sem/Fem ;
 LIST Sur = "Jensen" "Jenseni" "Møller" "Rasmussen" "Trosterud" ;
 LIST TITEL = "borgmester" "fru" "Gammel" "hr" "hotel" "kunngi" "lektor" ("pisoq" TAQ) ("siulittar" TUQ) ;
 LIST GeoProp = Sem/Geo "Danmark" "Finland" "Gladsaxe" "Mose" "Tåstrup" ;
@@ -1543,8 +1543,8 @@ REMOVE:0040E 4PlO + CONT - Dobbelttransitiv ; #Er vist en utænkelig kombination
 SELECT:0003 Ind - SUB IF (NEGATE *0 VFIN BARRIER KOMMA)(NEGATE 0 NIR)(NEGATE 0 Int LINK 1 ("?"))(NEGATE 0 Par LINK *-1 KONCESSIV)(NEGATE -1 NIQ + Gram/Comp)(NEGATE 0 Gram/Exclm LINK *1 Par LINK -*1 KONCESSIV) ; #SUB undtaget for ikke at gøre Via som matuagut til Ind 1Pl. Må ikke slette Par i koncessiver og efterlade fx GALUAQ + GE + Ind. Må ikke slette NIQ fulgt af Par. Sidste NEGATE fordi 'ilaat' kan læses som IP + LAAR + Exclm 
 
 
-### INTERJEKTION, VOKATIV og IMPERATIV ###
-#========================================#
+### INTERJEKTION, VOKATIV, FOKUS og IMPERATIV ###
+#===============================================#
 
 # Vælg Interj hvis fulgt af '?' eller efter foregående Imp
 SELECT:0010 ("aat") IF (1 ("?"));
@@ -1561,6 +1561,7 @@ REMOVE:0020AdHoc ("immaqa") + Pali ; #fjernet fra fst og vil ikke længere optr�
 SELECT:7250 Interj IF (-1 BOS OR ("\,"))(1 EOS); #Ny 20180407 En isoleret partikel er en interjektion
 REMOVE:7251 Interj IF (*1 V BARRIER KOMMA)(0 Adv) ; #Ny 20180409 
 REMOVE:7252 ("taap") + Imp IF (0 ("una")) ;
+REMOVE:7253 Par IF (-1* ("una") + Prefix/AA BARRIER (*) - Abs - Part) ;
 
 ### PROPRIUM ###
 #==============#
@@ -2248,7 +2249,7 @@ SELECT:0413 Par + INTRANSVERB + 3Sg IF (*-1 KOMMA LINK 1 Abs + Sg)(NEGATE 1 Abs 
 #REMOVE ("\\p{Lu}.*i"r) IF (0 ("\\p{Lu}.*[^i]"r)) ;
 
 MAP:M00000 @>N TARGET ("nalunaaqutaq") IF (1 Num + Trm) ;
-MAP:M0000 (@PRED) TARGET VFIN ; #Et finit verbum er altid prædikat
+MAP:M0000 (@PRED) TARGET VFIN (NEGATE 0 Gram/Exclm LINK -1* ("una") BARRIER (*) - Abs - Conj) ; #Et finit verbum er altid prædikat
 MAP:M0001 (@PRED2) TARGET Par IF (@1 Interj)(NEGATE *0 VFIN); #Ved emfase og udbrud 
 MAP:M0002X @i->N TARGET ("suna") + Lok IF (1 (Prefix/TA "ma") + iLok + IP) ; # Sumi tamaaniipput. Tilpasset til ny i-tag 20180607 
 MAP:M0002 @>N TARGET ("suna") + Lok IF (1 (Prefix/TA "ma") + Lok) ; # Sumi tamaani 
@@ -2485,8 +2486,8 @@ MAP:M0220 (@PROP>) TARGET Gram/Abbr IF (*1 Prop BARRIER NOT-Abbr) ;
 #"aamma" er adverbiel sammen med negation også når den står hvor en konjunktion plejer at stå. Fejlhitter på NEXUS komma aammami nalunngilaa .., hvor aamma klart er en konjunktion. Fejlhitter også på "SUBJ paasivaa ikiuuttariaqarluni. Aamma .. paasisaqarpoq." Det formodes, at aamma + MI langt oftest vil være en konjunktion derfor tilføjes - MI ligesom det formodes, at "aamma" i @1 næsten altid vil være konjunktion 
 SELECT:0225 ("aamma") + Adv - MI - LU IF (1 NNGIT)(NEGATE -1 BOS) ;
 MAP:M0225 @ADVL> TARGET ("aamma") + Adv - MI - LU IF (1 NNGIT)(NEGATE -1 BOS) ;
-SELECT:0225A ("aamma") + LU + Adv IF (NEGATE *0 V) ; #Udbrudsagtig Adv uden nexus
-MAP:M0225A @INTERJ ("aamma") + LU + Adv IF (NEGATE *0 V) ; #Udbrudsagtig Adv uden nexus
+SELECT:0225A ("aamma") + LU + Adv IF (NEGATE *0 V OR Prefix/AA + ("una")) ; #Udbrudsagtig Adv uden nexus
+MAP:M0225A @INTERJ ("aamma") + LU + Adv IF (NEGATE *0 V OR Prefix/AA + ("una")) ; #Udbrudsagtig Adv uden nexus
 #"aamma" er adverbiel 'også'
 #SELECT:0225B ("aamma") + Adv IF (*0 ("tassa") BARRIER KOMMA) ; #*0 tvivlsom her. En bedre position vil være +/-1 og altså uden BARRIER. Findes den formalisme?
 #SELECT:0225B ("aamma") + Adv IF (1 ("tassa") OR ("taava")) ; 
@@ -4416,6 +4417,8 @@ SELECT:5776B ("ittoor") + SSA IF (0 ("ittu") OR ("ittoq"));
 REMOVE:5777 ("Inuk") + Prop + U If (0 ("inuk") + U) ;
 SELECT:5778 ("Nuna") + Prop + 1PlPoss IF (0 ("nuna") - Prop + 1PlPoss) ;
 SELECT:5779 ("Inatsisartut") + Prop IF (0 ("inap") + HTR + TAR) ;
+REMOVE:5780 ("nanoq") + TAQ + LIK IF (0 ("Nanortalik")) ;
+REMOVE:5781 ("sisi") + MIU IF (0 ("Sisimiut")) ;
 
 
 REMOVE:5840 ("Piita") IF (0 ("Piitaq")) ; #Et rent stochastisk gæt
