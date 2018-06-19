@@ -90,107 +90,191 @@ binmode(IN, ':encoding(UTF-8)');
 autoflush OUT 1;
 autoflush IN 1;
 
-sub analyze {
-   my ($in,$n) = @_;
-   if (!$n) {
-      $n = 0;
-   }
+my %cache = ();
 
-   # Give up trying to make sense of input at this point...
-   if ($n >= 3) {
-      return $in;
-   }
+sub call_tokenizer {
+   my ($in) = @_;
 
-   my $nonce = '<nonce-'.rand().'>';
-   print IN "$in\n$nonce\n";
    my $out = '';
-   while ($out !~ /\Q$nonce\E/) {
-      $out .= <OUT>;
+   if (defined $cache{$in}) {
+      $out = $cache{$in};
    }
-   $out =~ s@\Q$nonce\E\s*@@sg;
+   else {
+      my $nonce = '<nonce-'.rand().'>';
+      print IN "$in\n$nonce\n";
+      while ($out !~ /\Q$nonce\E/) {
+         $out .= <OUT>;
+      }
+      $out =~ s@\Q$nonce\E\s*@@sg;
 
-   # Move prefixes after the base form
-   $out =~ s@^(\s+)($pp) (".+?" )@$1$3Prefix/$2 @mg;
+      # Move prefixes after the base form
+      $out =~ s@^(\s+)($pp) (".+?" )@$1$3Prefix/$2 @mg;
 
-   # Special case +URL
-   $out =~ s/"\+URL/" URL/g;
+      # Special case +URL
+      $out =~ s/"\+URL/" URL/g;
 
-   # Remove empty lines, because they were simply spaces in the input
-   $out =~ s/\n([\s\t]*\n)+/\n/g;
+      # Remove empty lines, because they were simply spaces in the input
+      # $out =~ s/\n([\s\t]*\n)+/\n/g; # HANDLE BETTER
 
-   # Work around HFST bug where abbreviations without space after are misanalyzed
-   # Normalize to a form that happens WITHOUT hyperminimisation
-   $out =~ s@( (?:Gram/Abbr|\?)\n)\.\n?@$1"<.>"\n\t"." CLB\n@sg;
-   if ($in !~ /^\S+\.$/) {
-      $out =~ s@( (?:Gram/Abbr|\?)\n"<\.>"\n\t"\." CLB\n)@$1\x{e000}@sg;
+      if ($in !~ /\s/) {
+         $cache{$in} = $out;
+      }
    }
-   if ($out =~ /\x{e000}/) {
-      my @ms = split(/\x{e000}/, $out);
 
-      foreach my $f (@ms) {
-         my ($w) = ($f =~ /"<([^\n]+)>"\n[^<]+"<\.>"\n\t"\." CLB\n$/s);
-         if (!$w) {
+   return $out;
+}
+
+sub parse_cohorts {
+   my ($out) = @_;
+
+   my @cs = ();
+   my $in_c = 0;
+   my $last = 0;
+   # Parse hfst-tokenize's output to array of cohorts
+   foreach (split(/\n+/, $out)) {
+      s/\s+$//g;
+
+      if (/^"<.*?>"/) {
+         # Start of a cohort
+         if ($in_c) {
+            ++$last;
+         }
+         $cs[$last][0] = $_;
+         $cs[$last][1] = '';
+         $in_c = 1;
+      }
+      elsif (/^\t+/ && $in_c) {
+         # A reading
+         $cs[$last][1] .= "$_\n";
+      }
+      else {
+         # Neither cohort nor reading
+         if ($in_c) {
+            ++$last;
+         }
+         $cs[$last][0] = $_;
+         $cs[$last][1] = '';
+         if (!/^</ && $_) {
+            # Not a tag, so give it a null analysis
+            $cs[$last][0] = "\"<$_>\"";
+            $cs[$last][1] = "\t\"$_\" ?\n";
+         }
+         ++$last;
+         $in_c = 0;
+      }
+   }
+
+   return @cs;
+}
+
+sub analyze {
+   my ($in) = @_;
+   my $out = call_tokenizer($in);
+
+   my @cs = parse_cohorts($out);
+
+   my $did = 1;
+   while ($did) {
+      $did = 0;
+
+      for (my $i=0 ; $i<scalar(@cs) ; ++$i) {
+         # Skip empty lines and tags
+         if (!$cs[$i]->[0] || $cs[$i]->[0] =~ /^</) {
             next;
          }
 
-         $w .= '.';
-         my $m = analyze($w, $n + 1);
-         if ($m =~ /\t/) {
-            $f =~ s/"<[^\n]+>"\n[^<]+"<\.>"\n\t"\." CLB\n$/$m/s;
+         # Work around HFST bug where abbreviations without space after are misanalyzed
+         if (defined $cs[$i+1] && $cs[$i+1]->[0] =~ /^"<\.>"/ && ($cs[$i]->[1] =~ m@ Gram/Abbr\b@ || $cs[$i]->[1] =~ / \?/)) {
+            my ($f) = ($cs[$i]->[0] =~ /^"<(.*)>"/);
+            my $m = call_tokenizer("$f.");
+            if ($m =~ /\t"/ && $m !~ / \?/) {
+               ($cs[$i]->[0], $cs[$i]->[1]) = ($m =~ /^("<[^\n]*>"[^\n]*)\n(.+)$/s);
+               splice(@cs, $i+1, 1);
+               $did = 1;
+               last;
+            }
+         }
+
+         if ($cs[$i]->[1] !~ / \?/) {
+            next;
+         }
+
+         # Work around HFST bug by recursing un-analyzed chunks
+         my ($f) = ($cs[$i]->[0] =~ /^"<(.*)>"/);
+         my %heur = ();
+         my $orig = '';
+
+         my $merge_ncs = sub {
+            my ($m) = @_;
+            my @ncs = parse_cohorts($m);
+            my $h = join(' ', sort(keys(%heur)));
+            foreach my $n (@ncs) {
+               if ($orig) {
+                  $n->[0] =~ s/^("<.*>")/"<$orig>"/;
+               }
+               if ($h) {
+                  $n->[0] =~ s/^("<.*>")/$1 $h/;
+               }
+            }
+            splice(@cs, $i, 1, @ncs);
+            $did = 1;
+         };
+
+         while (42) {
+            # If input has non-alphanumerics, try it again as-is - this catches punctuation
+            if ($f =~ /[^\pL\pN\pM]/) {
+               my $m = call_tokenizer($f);
+               if ($m =~ /\t"[^\n]*"[^?\n]+\n/) {
+                  $merge_ncs->($m);
+                  last;
+               }
+            }
+
+            # Split non-alphanumeric from alphanumeric and retry them separately
+            if ($f =~ /^([^\pL\pN\pM]+)(.+)$/ || $f =~ /^(.+?)([^\pL\pN\pM]+)$/) {
+               my ($f1,$f2) = ($1, $2);
+               my $m = call_tokenizer($f1).call_tokenizer($f2);
+               if ($m =~ /\t"[^\n]*"[^?\n]+\n/) {
+                  $merge_ncs->($m);
+                  last;
+               }
+            }
+
+            # If input has multiple upper-case letters, try it as first-upper
+            if ($f =~ /\p{Lu}.*?\p{Lu}/) {
+               $heur{'Heur/Case'} = 1;
+               $orig = $orig || $f;
+               $f = ucfirst(lc($f));
+               my $m = call_tokenizer($f);
+               if ($m =~ /\t"[^\n]*"[^?\n]+\n/) {
+                  $merge_ncs->($m);
+                  last;
+               }
+               next;
+            }
+
+            # If input is mixed-case, try it as lower-case
+            if ($f =~ /\p{Lu}/) {
+               $heur{'Heur/Case'} = 1;
+               $orig = $orig || $f;
+               $f = lc($f);
+               my $m = call_tokenizer($f);
+               if ($m =~ /\t"[^\n]*"[^?\n]+\n/) {
+                  $merge_ncs->($m);
+                  last;
+               }
+               next;
+            }
+            last;
          }
       }
-      $out = join("\n", @ms);
    }
 
-   # Remove null analysis from tokens to let later steps retry them in pieces
-   foreach my $f ($out =~ /(?:^|\n)("<[^\n]+?>"\n\t"[^\n]+?" \?)(?:\n|$)/g) {
-      my ($wf) = ($f =~ /"<([^\n]+?)>"/);
-      if ($wf =~ /[^\pL\pN\pM]+/) {
-         $out =~ s/(^|\n)\Q$f\E(\n|$)/$1$wf$2/g;
-      }
-   }
-
-   # Work around HFST bug by recursing un-analyzed chunks
-   foreach my $f ($out =~ /(?:^|\n)([^<"\t\n][^\n]*)(?:\n|$)/g) {
-      if ($f =~ /^([^\pL\pN\pM]+)(.+?)([^\pL\pN\pM]+)$/) {
-         # Split non-alphanumeric from alphanumeric and retry them separately
-         my ($f1,$f2,$f3) = ($1, $2, $3);
-         my $m1 = analyze($f1, $n + 1);
-         my $m2 = analyze($f2, $n + 1);
-         my $m3 = analyze($f3, $n + 1);
-         if ($f1 ne $m1 || $f2 ne $m2 || $f3 ne $m3) {
-            my $m = "$m1\n$m2\n$m3";
-            $m =~ s/\n\n+/\n/g;
-            $out =~ s/(^|\n)\Q$f\E(\n|$)/$1$m$2/g;
-         }
-      }
-      elsif ($f =~ /^([^\pL\pN\pM]+)(.+)$/ || $f =~ /^(.+?)([^\pL\pN\pM]+)$/) {
-         # Split non-alphanumeric from alphanumeric and retry them separately
-         my ($f1,$f2) = ($1, $2);
-         my $m1 = analyze($f1, $n + 1);
-         my $m2 = analyze($f2, $n + 1);
-         if ($f1 ne $m1 || $f2 ne $m2) {
-            my $m = "$m1\n$m2";
-            $m =~ s/\n\n+/\n/g;
-            $out =~ s/(^|\n)\Q$f\E(\n|$)/$1$m$2/g;
-         }
-      }
-      else {
-         my $m = analyze($f, $n + 1);
-         if ($f ne $m) {
-            $out =~ s/(^|\n)\Q$f\E(\n|$)/$1$m$2/g;
-         }
-      }
-   }
-
-   # Work around HFST bug by recursing un-analyzed punctuation
-   foreach my $f ($out =~ /(?:^|\n)([^\n\pL\pN\pM]+)(?:\n|$)/g) {
-      if ($f =~ /^"<.+?>"$/) {
-         next;
-      }
-      my $m = analyze($f, $n + 1);
-      if ($f ne $m) {
-         $out =~ s/(^|\n)\Q$f\E(\n|$)/$1$m$2/g;
+   $out = '';
+   foreach my $c (@cs) {
+      $out .= $c->[0]."\n";
+      if ($c->[1]) {
+         $out .= $c->[1];
       }
    }
 
@@ -199,19 +283,16 @@ sub analyze {
 
 my $wf = '';
 while (<STDIN>) {
+   if (scalar(keys(%cache)) > 10000) {
+      %cache = ();
+   }
+
    my $out = "\"<¶>\"\n\t\"¶\" CLB\n";
    if (!/^\s*$/) {
       $out = analyze($_);
    }
 
-   foreach my $f ($out =~ /(?:^|\n)([^<"\t\n][^\n]*)(?:\n|$)/g) {
-      if ($opt_verbose) {
-         print STDERR "kal-tokenise: Could not analyse: ${f}\n";
-      }
-      $out =~ s/(^|\n)[ \t]*([^<"\t\n][^\n]*?)[ \t]*(\n|$)/$1"<$2>"\n\t"$2" ?$3/;
-   }
-
-   my @ls = split(/\n+/, $out);
+   my @ls = split(/\n+/, $out, -1);
    foreach (@ls) {
       if ($opt_fst) {
          if (m@^"<(.+)>"@) {
