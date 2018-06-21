@@ -1713,10 +1713,12 @@ SELECT:0063Z Rel + Pl IF (1 Part LINK 1 Rel + Pl LINK 1C 3PlPoss)(NEGATE 1 ("siu
 SELECT:0063A Rel + Pl IF (1 TIDSPARTIKEL LINK 1C 3PlPoss)(NEGATE 2 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 2 ("assi") + POSSESSUM + LU)(NEGATE -1 ("ila") LINK 3 ("ila")) ; #må ikke hitte på siornatigut og ikke på opremsede participier med assigisaallu og heller ikke på opremsninger med ilaat .. ilaat. Tilføjet 20170407
 
 SELECT:0063 Rel + Pl - FAM_UNIK IF (1C 3PlPoss)(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 1 ("assi") + POSSESSUM + LU)(NEGATE -1 ("ila") LINK 2 ("ila")) ; #må ikke hitte på siornatigut og ikke på opremsede participier med assigisaallu og heller ikke på opremsninger med ilaat .. ilaat. Må ikke hitte på fx nuliami pii
-SELECT:0063B Rel + Pl - FAM_UNIK - 4PlPoss IF (1C Rel + Pl - Prop LINK 1C 3PlPoss - Prop - iALL)(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 1 ("assi") + POSSESSUM + LU)(NEGATE -1 ("ila") LINK 2 ("ila"))(NEGATE 0 ("assut")) ;
+SELECT:0063B Rel + Pl - FAM_UNIK - 4PlPoss - 4SgPoss IF (1C Rel + Pl - Prop LINK 1C 3PlPoss - Prop - iALL)(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 1 ("assi") + POSSESSUM + LU)(NEGATE -1 ("ila") LINK 2 ("ila"))(NEGATE 0 ("assut")) ;
 SELECT:0063C Rel + Pl - FAM_UNIK IF (1C Rel + Pl - Prop LINK 1C Rel + Pl LINK 1 3PlPoss - Prop)(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 1 ("assi") + POSSESSUM + LU)(NEGATE -1 ("ila") LINK 2 ("ila")) ;
 SELECT:0064 Rel + Sg IF (1C 3SgPoss)(NEGATE 0 Ins LINK 1 LIK_QAR)(NEGATE 1 LU)(NEGATE 0 ("affaq"))(NEGATE 0 PLACE + 4SgPoss ); #asanninnermik pigisaqarneranut er ikke en possessor-possessum forbindelse
 SELECT:0065 3SgPoss IF (-1C Rel + Sg)(NEGATE *1 VERB-NOTCONT + TRANSVERB + 3Sg BARRIER VFIN);
+
+SELECT:0066 Aeq IF (0 ("inuiak") LINK 1 ("ulloq") OR ("ullorsior")) ;
 
 #Nexusadverbialer med kinguneq og nali
 SELECT:0067 ("kinguneq") + 3SgPoss IF (-2 BOS OR KOMMA)(-1 Rel)(NEGATE 0 ("naamik")) ;
@@ -2355,16 +2357,23 @@ MAP:M0030 @PROP> TARGET FIRSTNAME OR TITEL IF (1 Prop - GeoProp)(NEGATE 1 (§Pro
 
 MAP:M0031X @PROP> TARGET Prop + Sem/FirstName IF (1 Prop + Sem/FirstName)(2 humProp) ; #Til tagning af dobbeltnavne
 
-MAP:M0031A @PROP> TARGET Prop + Sem/FirstName IF (1 Prop)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + LU LINK *1 V + 3Pl )(NEGATE 1 Prop LINK 1 Prop)(NEGATE 0 FIRSTNAME LINK 1 FIRSTNAME)(NEGATE 0 FIRSTNAME LINK 1 ("Kalaallit")); #Mange fejlhit på Kalaallit Illuutaat og Kalaallit Nunaat
+MAP:M0031A @PROP> TARGET Prop + Abs IF (1 Prop)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + LU LINK *1 V + 3Pl )(NEGATE 1 Prop LINK 1 Prop)(NEGATE 0 FIRSTNAME LINK 1 FIRSTNAME)(NEGATE 0 FIRSTNAME LINK 1 ("Kalaallit")); #Mange fejlhit på Kalaallit Illuutaat og Kalaallit Nunaat
 
+#Tilføjet M0031C-E ad hoc 20180621 efter restrukturering af propernouns med køns-tags for at få regression test til at fungere.
+
+MAP:M0031C @PROP> TARGET FIRSTNAME + Abs IF (1 NAME - Sem/Fem)(NEGATE *1 INTRANSVERB + 3Sg) ; #Fornavne er @PROP til efternavne eller efterfølgende fornavne. Et mandligt navn kan bruges som efternavn.
+
+MAP:M0031D @PROP> TARGET Sem/Fem + Abs IF (1 Sem/Fem + Abs) ;
 #MAP:M0031A @PROP> TARGET Prop + Sem/FirstName IF (1 Prop + Sur)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + LU LINK *1 V + 3Pl )(NEGATE 1 Prop LINK 1 Prop)(NEGATE 0 FIRSTNAME LINK 1 FIRSTNAME)(NEGATE 0 FIRSTNAME LINK 1 ("Kalaallit")); #Mange fejlhit på Kalaallit Illuutaat og Kalaallit Nunaat
 #0031A ændret ad hoc med + Sur i mangel af mulighed for at adskille for- og efternavne
+
+MAP:M0031E @PROP> TARGET Sem/Mask IF (1 Sem/Hum - Sem/Mask - Sem/Fem - Abl) ;
 
 MAP:M0031 (@PROP>) TARGET Prop + Abs OR FIRSTNAME + Abs OR TITEL + Abs IF (1 Prop)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + LU LINK *1 V + 3Pl )(NEGATE 1 Prop + LU LINK *1 V + 3PlO)(NEGATE 1 Prop LINK 1 Prop)(NEGATE 0 FIRSTNAME LINK 1 FIRSTNAME)(NEGATE 0 FIRSTNAME LINK 1 ("Kalaallit"))(NEGATE 1 FIRSTNAME + LU); 
 #MAP:M0031 (@PROP>) TARGET Prop OR FIRSTNAME OR TITEL IF (1 Prop)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop #+ LU LINK *1 V + 3Pl BARRIER N + Pl )(NEGATE 1 Prop LINK 1 Prop); #fra 1350 for at udelukke overtallig SUBJ-tagging. ##NEGATE for at forebygge typen 'Per NN-ikkut isermata Vb'. Andet NEGATE for parataktiske Karen Perilu anipput. Tredie #NEGATE for at parataktiske Karen Perilu ilagalugit. Fjerde #NEGATE for at forebygge @PROP på subjektet i (SUBJ)(PROP> propriuskærne)
 
 #Forsøg på en mere generel regel for Prop der er @<APPOS til noget ikke-Prop
-MAP:M0032 @<APPOS TARGET PROP + $$KASUS - LU IF (-*1 N + $$KASUS - Prop BARRIER (*) - KOMMA ) ;
+MAP:M0032 @<APPOS TARGET PROP + $$KASUS - LU IF (-*1C N + $$KASUS - Prop BARRIER (*) - KOMMA ) ;
 MAP:M0032A @<APPOS TARGET PROP + Abs + Sg - LU IF (-1 Prop + Sem/FirstName)(-2 N + Abs + Sg )(NEGATE -2 @PROP>)(NEGATE -2 TITEL) ; # N per langgård
 MAP:M0033 @<APPOS TARGET PROP + Abs + Sg - LU IF (-1 N + Abs + Sg)(NEGATE -1 @PROP> )(NEGATE -1 TITEL) ; # N Per
 #første NEGATE for at forhindre hit på fx (Royal Arctic Line)@SUBJ> VERBUM og -LU for ikke at hitte på Danmark Islandilu og andet NEGATE for at blokere PISORTAQ Per Langgård oqarpoq
@@ -3908,6 +3917,8 @@ REMOVE @OBJ> IF (0 THING)(*1 IntransTrans BARRIER V);
 
 REMOVE (Prop Ins) IF (0 N + @OBJ>)(*1 IntransTrans BARRIER V);
 REMOVE:SUBJ8433 (@SUBJ> Adj 1Sg) IF (*1 @PRED + (3Sg)) ;
+REMOVE Sem/Geo IF (0 Sem/Hum - Sem/Mask - Sem/Fem LINK -1 FIRSTNAME) ;
+REMOVE Sem/Mask IF (0 Sem/Hum - Sem/Mask LINK -1 Sem/Mask + Abs) ;
 
 SELECT Abs + Pl + @SUBJ> IF (-1C Abs + Pl + @SUBJ>)(1 INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl) ; #20091107 'ajornartorsiutit SUUGALUARTUT oqaasinngortinneqaraangamik'
 
@@ -4663,4 +4674,6 @@ SUBSTITUTE:S0041 @OBJ> @<N TARGET Gram/Cong + Akk IF (-1 N + Rel LINK *2 TRANSVE
 SUBSTITUTE:S0042 @INTERJ @ADVL> TARGET ("qam") + Interj IF (-1 BOS)(*1 VFIN + PALLAP OR VFIN + PALUP); #Talesprogsnær brug af interjektion adverbielt: Taqqama angerpallappoq er helt identisk med Taqqamani el. Taqqamannga
 SUBSTITUTE:S0043 @i-N< @<N TARGET N + $$KASUS IF (*-1 @i-N< + $$KASUS BARRIER KOMMA)(NEGATE 0 CONJ-C) ;
 SUBSTITUTE:S0044 (/@.*/r) (@<N) TARGET (/__TUQ\ Der\/vn\ N__/l) + $$KASUS + Pl + (/@\(<?SUBJ>?|<?OBJ>?|SUBJ_COMP|<?MIK-OBJ>?\)/r) (**-1 N + $$KASUS BARRIER (*) - @i-ADVL> - @i-MIK-OBJ> - @<N LINK 0 (VSTR:/@$1/r) LINK **-1 N + $$KASUS LINK 0 (VSTR:/@$1/r))(NEGATE 0 CONJ-C) ; #aajuku nukappiaraq aamma niviarsiaraq nikorfasut.
+SUBSTITUTE:S0045 @OBJ> @PROP> TARGET §PropNexusSg  + @OBJ> IF (0 @OBJ> LINK 1 @OBJ>) ;
+SUBSTITUTE:S0046 @SUBJ> @PROP> TARGET §PropNexusSg  + @SUBJ> IF (0 @SUBJ> LINK 1 @SUBJ>) ;
 REMOVE:S0036 (*) - (/@.*/r) ; #Fjerner læsninger uden mappings.
