@@ -240,8 +240,19 @@ sub analyze {
                }
             }
 
-            # If input has multiple upper-case letters, try it as first-upper
-            if ($f =~ /\p{Lu}.*?\p{Lu}/) {
+            # If input might be lacking a -, try with one
+            if ($f =~ /^(\p{Lu}+)(\P{Lu}+)$/ && $f !~ /-/) {
+               $orig = $orig || $f;
+               my $m = call_tokenizer("$1-$2");
+               if ($m =~ /\t"[^\n]*"[^?\n]+\n/ && $m !~ /^"<.*?>".*?\n"<.*?>"/s) {
+                  $heur{'Heur/Hyphen'} = 1;
+                  $merge_ncs->($m);
+                  last;
+               }
+            }
+
+            # If input doesn't have lower-case letters, try it as first-upper
+            if ($f =~ /\p{Lu}/ && $f !~ /\p{Ll}/) {
                $heur{'Heur/Case'} = 1;
                $orig = $orig || $f;
                $f = ucfirst(lc($f));
@@ -253,8 +264,8 @@ sub analyze {
                next;
             }
 
-            # If input is mixed-case, try it as lower-case
-            if ($f =~ /\p{Lu}/) {
+            # If input is first-upper, try it as lower-case
+            if ($f =~ /^\p{Lu}\P{Lu}+/) {
                $heur{'Heur/Case'} = 1;
                $orig = $orig || $f;
                $f = lc($f);
