@@ -1,4 +1,4 @@
-# -*- cg-pre-pipe: ~/langtech/kal/tools/shellscripts/kal-tokenise ~/langtech/kal/tools/tokenisers/tokeniser-disamb-gt-desc.pmhfst -*-
+# -*- cg-pre-pipe: ~/langtech/kal/tools/shellscripts/kal-tokenise ~/langtech/kal/tools/tokenisers/tokeniser-disamb-gt-desc.pmhfst | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/syntax/disambiguator.cg3 --no-mappings -*-
 
 # =================================================================== #
 # =================================================================== #
@@ -7,6 +7,7 @@
 # =================================================================== #
 
 # ============================= #
+
 #     Short table of contents   #
 # ============================= #
 
@@ -1166,7 +1167,7 @@ LIST TRMVERB = "iser" ;
 SET MOVE-VERB = LOKVERB | ABLVERB | TRMVERB ;
 
 # 20091106 Foelgende med tak til Tino for at forebygge at "oqar" + USIQ opfattes som inquit
-LIST ORATIOOBLVERBnOQAR = "aalajanger" "aalianger" "eqqaa" "eqqaama" "eqqarsar" "eqqartor" ("ili" SIMA) "ilimagaa" "ilimasup" "ilisimatitsissut" "imaap" ("isuma" LIUR) ("isuma" QAR)
+LIST ORATIOOBLVERBnOQAR = "aalajanger" "aalianger" "eqqaa" "eqqaama" "eqqarsar" "eqqartor" ("ili" SIMA) "ilimagaa" "ilimasup" "ilisimatitsissut" ("iluaqut" GE) "imaap" ("isuma" LIUR) ("isuma" QAR)
 "isummer" "maluge" "malunnarsi" "naatsorsor" "nalu" "nalunaar" "nalunaarut" "nassuiar" "neriup" "qular" "qulare" "qularnar" "qinnuige" "paasi" "pinngitsaali" "puigor" "puior" "sinnattore" "siunnersor" ("taku" Gram/TV) "tusaa" "tusar" "unner" "uppernarsar" ;
 SET ATUARnTAQ = ("atuar") - TAQ ;
 SET OQARnUSIQ = ("oqar") - (USIQ) ;
@@ -1452,7 +1453,7 @@ REMOVE:0020 ("su") + Opt IF (0 ("suli") + ADVERBIEL ) ; #"Måtte han su" er ret 
 REMOVE:0021 ("usi") + Abs IF (0 ("usi") + Interj)(-1 BOS OR KOMMA)(1 KOMMA); #'last' som isoleret ord nærmest utænkelig
 REMOVE:0021A (/__\"ingerla\"\ Gram\/TV__/l) IF (0 Gram/IV)(NEGATE *0 Sem/Unit) ; #ingerla er sjældent transitiv, sandsynligvis kun når obj er unit.
 REMOVE:0022 (/__TUQ\ Der\/vn\ LIR\ Der\/nv__/l) IF (0 ("ilungersor") + LIR) ;
-REMOVE:0022A UTE + Der/nn + NOT-POSSESSUM - SSAQ - PALAAQ - SUAQ IF ( 0 POSSESSUM); #SSAQ og PALAAQ medtaget som mulige +Der/nn
+REMOVE:0022A UTE + Der/nn + NOT-POSSESSUM - SSAQ - PALAAQ - SUAQ IF ( 0 POSSESSUM)(NEGATE 0 Ins LINK *1 QAR OR LIK); #SSAQ og PALAAQ medtaget som mulige +Der/nn
 REMOVE:0039A ("sani") + LIK IF ( 0 ("sanileq"));
 REMOVE:0142 ("anaq") + U IF (0 ("anaana") ) ;
 REMOVE:0143 ("Ana") + U IF (0 ("anaana") ) ;
@@ -3065,7 +3066,7 @@ MAP:M1300 (@CL-<ADVL) TARGET IteCau IF (*-1 VFIN) ; #20091109
 MAP:M1310 (@CL-ADVL>) TARGET IteCau IF (*1 VFIN) ; #20091109
 MAP:M1320 (@CON) TARGET Con ; #ny 110308
 MAP:M1329 (@CAU) TARGET Cau IF (-*1 ORATIOOBLVERB + V BARRIER VFIN)(*1 Par OR CONT) ; #+V for at forebygge hit på fx eqqarsar+UTE som nomen. Specialitet før M1330 til Inquit med oratio obl., der starter med tid eller årsag
-MAP:M1330 (@CAU) TARGET Cau (NEGATE -*1 ORATIOOBLVERB + V CBARRIER VFIN) ; #+V for at forebygge hit på fx eqqarsar+UTE som nomen #BARRIER gjort careful for at undgå hit på nominal ANNERIT.
+MAP:M1330 (@CAU) TARGET Cau (NEGATE -*1 ORATIOOBLVERB + V CBARRIER VFIN)(NEGATE *-1 ("iluaqut" GE)) ; #+V for at forebygge hit på fx eqqarsar+UTE som nomen #BARRIER gjort careful for at undgå hit på nominal ANNERIT.
 
 ADD:M1340 (@PRED) TARGET CONT IF (-1 Ins + LU OR Ins + LUUNNIIT)(*-1 VFIN)(NEGATE 0 @PRED);
 MAP:M1350 (@PRED) TARGET CONT IF (0 LU OR LUUNNIIT)(*1 VFIN);
@@ -3074,10 +3075,11 @@ MAP:M1360 (@PRED) TARGET CONT IF (0 LU OR LUUNNIIT)(*-1 VFIN);
 MAP:M1370 (@CL-CIT>) TARGET Par + TRANSVERB IF (*1 ORATIOOBLVERB);	
 MAP:M1371 (@CL-<CIT) TARGET Par + TRANSVERB IF (*-1 ORATIOOBLVERB);	
 SUBSTITUTE:M1372 @CAU @CL-<CIT TARGET Cau IF (*-1 BOS LINK 1 ORATIOOBLVERB LINK *1 _TARGET_ LINK *1 ORATIOOBLVERB)(NEGATE *-1 Cau LINK *1 _TARGET_); #Er der flere oo-verber, hører den første Cau sandsynligvis til den første.
-MAP:M1380 (@CL-CIT>) TARGET Par + INTRANSVERB + 3Sg OR Cont + INTRANSVERB + 4Sg OR ContNeg + INTRANSVERB + 4Sg OR Cau + INTRANSVERB + 3Sg IF (*1 ORATIOOBLVERB)(-*1 Abs + Sg); #(NEGATE 1 Prop + Abs OR Prop + Sem/FirstName); #forstaar ikke Prop begraensningerne 12.03
+MAP:M1380 (@CL-CIT>) TARGET Par + INTRANSVERB + 3Sg OR Cont + INTRANSVERB + 4Sg OR ContNeg + INTRANSVERB + 4Sg OR Cau + INTRANSVERB + 3Sg OR Cau + 4Sg IF (*1 ORATIOOBLVERB)(-*1 Abs + Sg); #(NEGATE 1 Prop + Abs OR Prop + Sem/FirstName); #forstaar ikke Prop begraensningerne 12.03
 MAP:M1381 (@CL-CIT>) TARGET Par + INTRANSVERB + 3Pl OR Cont + INTRANSVERB + 4Pl OR ContNeg + INTRANSVERB + 4Pl OR Cau + INTRANSVERB + 3Pl IF (*1 ORATIOOBLVERB)(-*1 Abs + Pl)(NEGATE *-1 ORATIOOBLVERB LINK NOT -*1 ("\-") LINK *1 _TARGET_ LINK *1 KOMMA); #(NEGATE 1 Prop + Abs OR Prop + Sem/FirstName); #forstaar ikke Prop begraensningerne 12.03
 MAP:M1382 @CL-<CIT TARGET Cau + 1Sg OR Cau + 2Sg IF (-1 ORATIOOBLVERB - Cau) ; #Puigussanngilarsi inoqajuitsorsuarmiikkama.
-
+#
+MAP:M1383 @CL-<CIT TARGET Cau IF (*-1 ("iluaqut") + GE BARRIER V - Cont OR KOMMA) ;
 MAP:M1389 @ADVL> TARGET CONT + 4Sg IF (*1 CONT + 4Sg BARRIER V) ; #Før 1190 for at forhindre adverbial ledsagemåde tagges som oratio oblique 
 
 MAP:M1390X @ADVL> TARGET CONT + 4Sg IF (1 Par + 3Sg) ; #En ad hoc regel til emfatisk eller inkonsistent brug af Par selv i coref for at undgå at adleddet tagges som @CL-<CIT
@@ -3225,7 +3227,7 @@ MAP:M1961 @SUBJ> TARGET Abs + LU IF (*1 PLURSUBJVERB BARRIER V)(NEGATE -1 Abs) ;
 
 MAP:M1979 @PRED TARGET Par IF (NEGATE *0 @PRED) ; #udbrudsagtige/ spørgende hovedsætninger
 MAP:M1980 @PRED2 TARGET Par IF (1 @PRED) ; #Meget bred men meget sen til type Suna eqqarsaatigigit akornuserpakkit
-MAP:M1981 (VSTR:$1) TARGET (N) (*1 (N LU /\(@.*\)/r) BARRIER (*) - @<N) ;
+#MAP:M1981 (VSTR:$1) TARGET (N) (*1 (N LU /\(@.*\)/r) BARRIER (*) - @<N) ;
 
 #Sen tagging af adverbialled, der endnu ikke er tagget
 #MAP:M1990 @ADVL> TARGET OBLIQUE IF (*1 V);
@@ -4649,7 +4651,7 @@ REMOVE:9965 OBLIQUE + Pl IF (0 OBLIQUE + Sg)(NEGATE 0 HUM LINK 1 HTR);
 REMOVE Gram/Refl + 3Pl IF (0 Gram/IV + 3Pl - Gram/Refl)(NEGATE *-1 ("immi")) ;
 
 #Mapping af resterende verber
-MAP:M0099C @PRED TARGET V (NOT *0 @PRED);
+#MAP:M0099C @PRED TARGET V (NOT *0 @PRED);
 MAP:M0099C @PRED2 TARGET V (*0 @PRED);
 
 #Mapping af restende nominer
