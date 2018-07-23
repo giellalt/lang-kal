@@ -5,11 +5,11 @@
 
 echo << Vi definerer vokalerne... >>
 
-define Vow [ a | e | i | i2 | o | u | u2 ] ;
+define Vow [ a | e | i | i2 | o | u | u2 | í | á | ú | î | â | û | ê | ô | ĩ | ã | ũ ] ;
 ! u2 er u i låneord, der ikke skal ændres til o foran r/q: Puurunen, Turunen
 
 echo << Vi definerer konsonanterne... >>
-define Cns [ c2 | d | f | g | g2 | g3 | g4 | h | j | k | l | m |
+define Cns [ c2 | d | f | g | g2 | g3 | g4 | h | j | ĸ | k | l | m |
              n | p | q | r | s | t | v | v2 ]  ; !v2 er v-er i låneord, der ikke skal slettes
 
 ! These symbols will be turned into real quotes by a separate processing step;
@@ -162,6 +162,12 @@ define gaqTrunkering1 [ e r %> %TRUNC g a -> i %> g a ] ; !Flyttet 11.6.2007 og 
 define gaqTrunkering2 [ o r %> %TRUNC g a -> u %> g a ] ; !NY 12.6.2007
 define gaqTrunkering3 [ a r %> %TRUNC g a -> a %> g a ] ; !NY 12.6.2007
 
+echo << Proprier med gammel retskrivning >>
+define roĸ1 [ r o ĸ %> %VCTRUNC u p -> r ĸ u p ] ; ! Aĸajaroĸ + Rel -> Aĸajarĸup
+define roĸ2 [ r o ĸ %> %VCTRUNC u m -> r ĸ u m ] ; ! Aĸajaroĸ + Trm -> Aĸajarĸumut
+define uaĸ [ u a ĸ %> %VCTRUNC u p -> û p ] ; ! suaĸ+Rel -> sûp og nguaĸ+Rel -> ngûp
+define ssuaĸ1 [ u a ĸ %> m -> u a r m] ; ! suaĸ+Trm -> ssuarmut/ -rmi etc.
+
 echo << Epenteseregler >>
 
 define aGepentese [ a ( %> ) Vow %> i n n a -> a a g i n n a ] ;
@@ -196,6 +202,14 @@ define v2Slet [ v2 -> v ] ;
 echo << Vi sætter ting sammen >>
 
 read regex [
+roĸ1 ![ r o ĸ %> %VCTRUNC u p -> r ĸ u p ] ; ! Aĸajaroĸ + Rel -> Aĸajarĸup
+.o.
+roĸ2 ![ r o ĸ %> %VCTRUNC u m -> r ĸ u m ] ; ! Aĸajaroĸ + Trm -> Aĸajarĸumut
+.o.
+uaĸ ![ u a ĸ %> %VCTRUNC u p -> û p ] ; ! suaĸ+Rel -> sûp og nguaĸ+Rel -> ngûp
+.o.
+ssuaĸ1 ![ u a ĸ %> m -> u a r m] ; ! suaĸ+Trm -> ssuarmut/ -rmi etc.
+.o.
 oLmetatese ![ u l i2 q -> o r l || _ %> Vow ] ;
 .o.
 Lmetatese ![ l i2 q -> r l || _ %> Vow ] ; 03-1
