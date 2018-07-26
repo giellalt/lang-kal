@@ -1434,6 +1434,9 @@ REMOVE:0001F ("ip") IF (NEGATE -1 Aeq OR ("qanoq") OR ("taama") OR ("ima") OR ("
 REMOVE:0002A Gram/Exclm (NEGATE -1 ("tassa"))(1 EOS);
 REMOVE:0002B Guess ;
 
+#Overflødig dobbeltmorfologi
+REMOVE:0003A ("uv") + Interj IF (0 ("uffa") + Interj) ;
+
 
 ### Usandsynlige morfemkombinationer ###
 #======================================#
@@ -2209,12 +2212,13 @@ MAP:M0285 @i-N< TARGET Abs + &&IV_SUBJ& IF (-1 ("tassa") LINK -1 BOS)(NEGATE *1 
 #SECTION#
 ########
 
-ADD:0400 (§noun-comma) Abs + Sg (1 KOMMA)(NEGATE 1 KOMMA LINK 1 Abs + Sg LINK 1 Abs + Sg + LU)(NOT 0 §noun-comma) ;
+#ADD:0400 (§noun-comma) Abs + Sg (1 KOMMA)(NEGATE 1 KOMMA LINK 1 Abs + Sg LINK 1 Abs + Sg + LU)(NOT 0 §noun-comma) ;
 #tag for mulige kandidater til apposition mellem komma, men må ikke tagge opremsninger
 
-ADD:0401 (§PropNexusSg) TARGET Prop + Abs + Sg IF (*1 3Sg OR 4Sg + Cau OR Con)(NOT 0 §PropNexusSg) ; 
-ADD:0402 (§PropNexusPl) TARGET Prop + Abs + Pl IF (*1 3Pl OR 4Pl + Cau OR Con)(NOT 0 §PropNexusPl) ; 
+#ADD:0401 (§PropNexusSg) TARGET Prop + Abs + Sg IF (*1 3Sg OR 4Sg + Cau OR Con)(NOT 0 §PropNexusSg) ; 
+#ADD:0402 (§PropNexusPl) TARGET Prop + Abs + Pl IF (*1 3Pl OR 4Pl + Cau OR Con)(NOT 0 §PropNexusPl) ; 
 #tag for mulige Prop-subjekter i bisætninger mellem @SUBJ> og @PRED NN1-SUBJ1 NN2-SUBJ2 Cau/Con2 PRED1
+#401 og 402 forsøgsmæssigt udkommenteret 20180726. Gør tilsyneladende ikke noget godt og efterlader §-tags i output. Fx bliver RASMUS ikke @SUBJ>, men @PROP> i RAsmus Emiliekkut anilermata torlulaarpoq. Efter udkommentering rigtig igen.
 
 REMOVE:0403 NIQ + PAK IF (0 NIRPAAQ) ;
 REMOVE:0405 ("ip") + LLAR IF (0 ("illar")) ;
@@ -2519,10 +2523,11 @@ MAP:M0225 @ADVL> TARGET ("aamma") + Adv - MI - LU IF (1 NNGIT)(NEGATE -1 BOS) ;
 SELECT:0225A ("aamma") + LU + Adv IF (NEGATE *0 V OR Prefix/AA + ("una")) ; #Udbrudsagtig Adv uden nexus
 MAP:M0225A @INTERJ ("aamma") + LU + Adv IF (NEGATE *0 V OR Prefix/AA + ("una")) ; #Udbrudsagtig Adv uden nexus
 #"aamma" er adverbiel 'også'
-#SELECT:0225B ("aamma") + Adv IF (*0 ("tassa") BARRIER KOMMA) ; #*0 tvivlsom her. En bedre position vil være +/-1 og altså uden BARRIER. Findes den formalisme?
-#SELECT:0225B ("aamma") + Adv IF (1 ("tassa") OR ("taava")) ; 
-#SELECT:0225C ("aamma") + Adv IF (-1 ("tassa") OR ("taava")) ; #erstattes af Tinos smartere formulering
 SELECT:0225B ("aamma") + Adv IF (0* ("tassa") OR ("taava") BARRIER (*)) ;
+SELECT:0225C ("aamma") + Adv IF (*1 TIME BARRIER (*) - ("tassa") )(NEGATE -1 BOS OR KOMMA) ; # ..aamma TID vist altid adverbiel. Dog forbehold for konjunktion
+MAP:M0225C @ADVL> TARGET ("aamma") + Adv IF (*1 TIME BARRIER (*) - ("tassa") )(NEGATE -1 BOS OR KOMMA) ; 
+
+
  
 #Konjunktioner
 #en konjunktion er en konjunktion når den sideordner to nexus eller to kongruente N
@@ -3453,6 +3458,7 @@ SELECT Abs + Prop IF (-3 Prop + Abs)(-2 ("\,"))(-1 Abs)(NEGATE 0 Rel LINK 1 POSS
 
 SELECT:2222 Prop + Lok IF (-1 Lok) ;
 
+SELECT:2223 @NIQ_OBJ> IF (1 NIQ + Abl OR Ins) ; #Vistnok en sikker regel om en ret marginal struktur 
 
 #Nominer - kongruens og paratakse
 SELECT:0610A Prop + Sg + Lok IF (1 N - Prop)(NEGATE *0 V) ; # i-ADVL> i overskrifter og sætningsemner
@@ -4670,6 +4676,8 @@ MAP:M0099E @FOC TARGET UNA ; #20180522. Den skal afgrænses.
 ##################################################
 #Specifikke regler til disambiguering af Gram/IV vs. Gram/TV
 ##################################################
+SELECT:9964A Gram/TV + TIP + TAQ IF (0 Gram/HV) ;
+SELECT:9964B (/\"\ Gram\/TV\ GUMINAR__/l) IF (0 (/\"\ Gram\/IV\ GUMINAR__/l));
 
 REMOVE:9965B Gram/TV + INTRANSVERB IF (0 Gram/IV + INTRANSVERB)(NEGATE *-1 ("immi")) ; #20180402 MEGET bred regel, der sikkert skal revideres
 REMOVE:9965C Gram/TV + TUQ + N IF (0 Gram/IV + TUQ + N)(NEGATE *-1 ("immi"))(NEGATE 0 (/__Gram\/TV.*Gram\/IV.*TUQ__/l)) ; #20180402 MEGET bred regel, der sikkert skal revideres
