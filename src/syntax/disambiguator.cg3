@@ -1169,12 +1169,13 @@ LIST TRMVERB = "iser" ;
 SET MOVE-VERB = LOKVERB | ABLVERB | TRMVERB ;
 
 # 20091106 Foelgende med tak til Tino for at forebygge at "oqar" + USIQ opfattes som inquit
-LIST ORATIOOBLVERBnOQAR = "aalajanger" "aalianger" "eqqaa" "eqqaama" "eqqarsar" "eqqartor" ("ili" SIMA) "ilimagaa" "ilimasup" "ilisimatitsissut" ("iluaqut" GE) "imaap" ("isuma" LIUR) ("isuma" QAR)
-"isummer" "maluge" "malunnarsi" "naatsorsor" "nalu" "nalunaar" "nalunaarut" "nassuiar" "neriup" ("oqaluttuaq" GE) "paasi" "pinngitsaali" "puigor" "puior" "qular" "qulare" "qularnar" "qinnuige" "sinnattore" "siunnersor" ("taku" Gram/TV) "tusaa" "tusar" "unner" "uppernarsar" ;
+LIST ORATIOOBLVERBnOQAR = "aalajanger" "aalianger" "eqqaa" "eqqaama" "eqqarsar" "eqqartor" ("ili" SIMA) "ilimagaa" "ilimasup" "ilisimatitsissut" "imaap" ("isuma" LIUR) ("isuma" QAR)
+"isummer" "maluge" "malunnarsi" "naatsorsor" "nalu" "nalunaar" "nalunaarut" "nassuiar" "neriup" "paasi" "pinngitsaali" "puigor" "puior" "qular" "qulare" "qularnar" "qinnuige" "sinnattore" "siunnersor" ("taku" Gram/TV) "tusaa" "tusar" "unner" "uppernarsar" ;
 SET ATUARnTAQ = ("atuar") - TAQ ;
 SET OQARnUSIQ = ("oqar") - (USIQ) ;
 SET ALLAANNGIT = ("alla") + U + NNGIT ;
-SET ORATIOOBLVERB = ORATIOOBLVERBnOQAR OR OQARnUSIQ OR ALLAANNGIT OR ATUARnTAQ ;
+SET OQALUTTUAQnTAQ = ("oqaluttuaq") - TAQ ; #oqaluttuaraa, men ikke oqaluttuarisaaneq
+SET ORATIOOBLVERB = ORATIOOBLVERBnOQAR OR OQARnUSIQ OR ALLAANNGIT OR ATUARnTAQ OR OQALUTTUAQnTAQ ;
 
 LIST TALE = "oqar" "aki" ;
 SET DIRTALE = TALE - OQARnUSIQ ;
@@ -1566,7 +1567,7 @@ REMOVE:0040D Par + 3Pl IF (1 Par + 3Pl + NIR); #Må være subjektet og ikke Par
 REMOVE:0040E 4PlO + CONT - Dobbelttransitiv ; #Er vist en utænkelig kombination?? 
 
 #Vælg Indikativ verbum, hvis eneste finitte. NIR undtaget, da ofte fejl for NIQ plus noget. BARRIER reduceret fra BARRIER LU OR LI OR KOMMA til kun KOMMA på gr. af mange hit på nominalparatakser med LU og adverbialer med LI
-SELECT:0003 Ind - SUB IF (NEGATE *0 VFIN BARRIER KOMMA)(NEGATE 0 NIR)(NEGATE 0 Int LINK 1 ("?"))(NEGATE 0 Par LINK *-1 KONCESSIV)(NEGATE -1 NIQ + Gram/Comp)(NEGATE 0 Gram/Exclm LINK *1 Par LINK -*1 KONCESSIV)(NEGATE 0 KONCESSIV) ; #SUB undtaget for ikke at gøre Via som matuagut til Ind 1Pl. Må ikke slette Par i koncessiver og efterlade fx GALUAQ + GE + Ind. Må ikke slette NIQ fulgt af Par. Sidste NEGATE fordi 'ilaat' kan læses som IP + LAAR + Exclm. Allersidste NEGATE for at undgå at naak analyseres som naap+Exclm
+SELECT:0003 Ind - SUB IF (NEGATE *0 VFIN BARRIER KOMMA)(NEGATE 0 NIR OR INDERIVERENDE_SUBSTANTIV)(NEGATE 0 Int LINK 1 ("?"))(NEGATE 0 Par LINK *-1 KONCESSIV)(NEGATE -1 NIQ + Gram/Comp)(NEGATE 0 Gram/Exclm LINK *1 Par LINK -*1 KONCESSIV)(NEGATE 0 KONCESSIV) ; #SUB undtaget for ikke at gøre Via som matuagut til Ind 1Pl. Må ikke slette Par i koncessiver og efterlade fx GALUAQ + GE + Ind. Må ikke slette NIQ fulgt af Par. Sidste NEGATE fordi 'ilaat' kan læses som IP + LAAR + Exclm. Allersidste NEGATE for at undgå at naak analyseres som naap+Exclm
 
 
 ### INTERJEKTION, VOKATIV, FOKUS og IMPERATIV ###
@@ -2765,7 +2766,7 @@ MAP:M0523B @SUBJ> TARGET Abs + LU IF (-1 Abs)(*1 PLURSUBJVERB BARRIER V OR KOMMA
 MAP:M0523C @SUBJ> TARGET Abs + LU IF ((-1 BOS) OR (-1 Part LINK -1 BOS))(*1 PLURSUBJVERB) ; #20170408. Smal regel til parataktiske subjekt med implicit førsteled
 #Særtilfælde for at forhindre OBJ-tagging Per i Per tamanna pillugu nalusarpoq
 
-MAP:M0525 (@OBJ>) TARGET N + Abs + Sg OR PRON + Abs + Sg IF (*1 TRANSVERB + 3SgO BARRIER INTRANSVERB + 3Sg OR 4Sg)(NEGATE 1 KOMMA LINK 1 TRANSVERB) ;
+MAP:M0525 (@OBJ>) TARGET N + Abs + Sg OR PRON + Abs + Sg IF (*1 TRANSVERB + 3SgO BARRIER INTRANSVERB + 3Sg OR 4Sg)(NEGATE 1 KOMMA LINK 1 TRANSVERB)(NEGATE *-1 @OBJ> BARRIER TRANSVERB - CONT);
 MAP:M0525a (@OBJ>) TARGET Prop + Abs + Sg IF (*1 TRANSVERB + 3SgO BARRIER INTRANSVERB + 3Sg OR 4Sg)(NEGATE 1 KOMMA LINK 1 TRANSVERB)(NEGATE -1 (/__\"ateq\"\ QAR__/l) OR (/__\"ateq\"\ LIK__/l))(NEGATE *1 ("tassa"))(NEGATE -1 KOMMA OR PUNCT LINK 2 KOMMA) ; #Proprier tagges ikke som N. #Aqqaluartaavagooq ateqarpoq ANGERLARTOQ, kisiannigooq naalisarlugu taasarpaat Angerla. 
 
 
@@ -3245,7 +3246,7 @@ MAP:M1799 @INTERJ TARGET Interj ;
 #Tunge adled efter V
 MAP:M1800 @<N TARGET $$KASUS + $$NUMERUS IF (*-1 KOMMA LINK *-1 N + $$NUMERUS + $$KASUS)(1 EOS)(NEGATE 0 LU LINK *-1 ("tassa") BARRIER V)(NEGATE -1 OBLIQUE + LU LINK *-1 ("tassa") BARRIER V) ; #Forsøgsvist flyttet fra M1800. NEGATE tilføjet 20180205. Må ikke hitte på andet led i parataksen 'SUBJ tassaavoq @SUBJ_COMP1 (Adv + LU) @SUBJ_COMP2 (+LU)'. BARRIER medtaget lidt tilfældigt #Flyttet tilbage fra M0352NY pga. opremsninger.
 
-MAP:M1801 @<N TARGET Abs + Sg + N IF (*-1 §noun-comma BARRIER V)(NEGATE -1 Rel) ; #Adnominale adled adskilt af komma, som ikker appositioner. #Silassorippasigisannik naapitsigaangama titartagara siulleq, taamanili TOQQORTARISIMASARA, atorlugu misilittaasarpunga. #Negate for at undgå at hitte på possessum i Tassa Anna, taassuma ERNERA angusimasoq.
+MAP:M1801 @<N TARGET Abs + Sg + N IF (*-1 §noun-comma BARRIER V - ("pi"))(NEGATE -1 Rel) ; #Adnominale adled adskilt af komma, som ikker appositioner. #Silassorippasigisannik naapitsigaangama titartagara siulleq, taamanili TOQQORTARISIMASARA, atorlugu misilittaasarpunga. #Negate for at undgå at hitte på possessum i Tassa Anna, taassuma ERNERA angusimasoq.
 
 
 #######################
@@ -3632,7 +3633,7 @@ SELECT INTRANSVERB + (Cont) + (4Sg) IF (NEGATE -1 ("immi")) ;
 
 # De overordnede modi
 REMOVE (Int) IF (*1 Ind) ;
-SELECT:1829 Ind IF (NEGATE *-1 Ind)(NEGATE *1 Ind OR ("?"))(NEGATE 0 Par LINK *-1 KONCESSIV); # Et unikt verb men ikke i koncessive sætninger
+SELECT:1829 Ind IF (NEGATE *-1 Ind)(NEGATE *1 Ind OR ("?"))(NEGATE 0 Par LINK *-1 KONCESSIV)(NEGATE 0 INDERIVERENDE_SUBSTANTIV); # Et unikt verb men ikke i koncessive sætninger
 SELECT Ind + INTRANSVERB + 3Pl IF (-*1 Abs + Pl LINK NEGATE -*1 Rel + Pl BARRIER POSSESSUM)(NEGATE 0 3PlO LINK *-1 Abs + Pl BARRIER V); # Piitakkut ikinngutaat QASOQAAT
 SELECT:1830 Imp IF (NEGATE *0 Ind OR Int)(NEGATE 0 ("maap") OR Gram/Dem + Pron OR Gram/Pers + Pron); #Må ikke selecte maap+Imp i stedet for partikel maanna eller taanna. Må heller ikke slette aequalis som uattuut
 
@@ -4053,6 +4054,8 @@ SELECT:8459 Abs + Pl + @SUBJ> - LU IF (*1 INTRANSVERB + 3Pl OR 4Pl BARRIER V )(N
 SELECT:8460 Abs + Sg + @SUBJ> IF (*1 INTRANSVERB + 3Sg BARRIER VERB-NOTCONT OR KOMMA)(NEGATE 0 Ind + 3Pl LINK 1 LU LINK *1 VFIN)(NEGATE 0 Par + 3Sg LINK *1 ORATIOOBLVERB);
 SELECT:8461 1Sg + CON_CAU IF (*0 1Sg + @ALLSUBJ) ;
 SELECT:8462 CON_CAU + 3Sg IF (*-1 Abs + Sg)(*1 VFIN) ; #I "Eva iserpat sinissaaq" skal Eva IKKE være objekt  
+
+SELECT:8463 N + INDERIVERENDE_SUBSTANTIV IF (0* (*) - V)(NEGATE 0 V - Gram/Exclm) ;
 
 #===============
 # Implicitte objekter
