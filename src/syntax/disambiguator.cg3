@@ -1215,7 +1215,7 @@ LIST ANIMAL = "qeerlutooq" "qimmeq" "qitsuk" "puisi"  "pulateriaarsuk" ;
 LIST ABSTRACT = "taaq" ;
 
 LIST PLACE = "illu" "imaq" ("atuar" VIK) ("oqalup" VIK) "nuna" "orpippassuaq" "siku" Sem/Geo;
-LIST ADJEKTIVISK = "akutakujooq" "akutakujuk" "angisooq" "angut" "arnaq" "itisooq" "manissoq" ("portu" JAAR)  "takisooq" "siulleq" ; #angut og arnaq medtaget lidt skummelt, men anvendes ofte adjektivisk
+LIST ADJEKTIVISK = "akutakujooq" "akutakujuk" "angisooq" "angut" "arnaq" "itisooq" "manissoq" ("portu" JAAR)  "takisooq" "siulleq" "tungujortoq" ; #angut og arnaq medtaget lidt skummelt, men anvendes ofte adjektivisk
 LIST COLOUR = "aappaluttoq" "qaqortoq" "qaqqorik" "qernertoq" "qorsuk" "sungaartoq" "tungujortoq" ;
 SET ATTRIBUTIV = ADJEKTIVISK | COLOUR ;
 
@@ -2314,7 +2314,7 @@ SELECT:0413 Par + INTRANSVERB + 3Sg IF (*-1 KOMMA LINK 1 Abs + Sg)(NEGATE 1 Abs 
 #REMOVE ("\\p{Lu}.*i"r) IF (0 ("\\p{Lu}.*[^i]"r)) ;
 
 MAP:M00000 @>N TARGET ("nalunaaqutaq") IF (1 Num + Trm) ;
-MAP:M00001 @>N TARGET ("ukioq") IF (1 Num OR iNum) ;
+MAP:M00001 @>N TARGET ("ukioq") IF (1 Num OR iNum)(NEGATE 0 $$KASUS LINK 1 (*) + $$KASUS - AFFINGERET) ;
 MAP:M0000 (@PRED) TARGET VFIN (NEGATE 0 Gram/Exclm LINK -1* ("una") BARRIER (*) - Abs - Conj) ; #Et finit verbum er altid prædikat
 MAP:M0001 (@PRED2) TARGET Par IF (@1 Interj)(NEGATE *0 VFIN); #Ved emfase og udbrud 
 MAP:M0002X @i->N TARGET ("suna") + Lok IF (1 ("tamaq") + iLok + IP) ; # Sumi tamaaniipput. Tilpasset til ny i-tag 20180607 
@@ -2692,7 +2692,7 @@ MAP:M0341A @<N TARGET Abs + Pl + Der/vn - LU IF (-*1 Abs + Pl - Sem/FirstName - 
 MAP:M0342 @<N TARGET Abs + Sg + Der/vn IF (-*1 Abs + Sg BARRIER VFIN OR KOMMA LINK -*1 Abs + Sg)(*1 3SgO BARRIER KOMMA)(NEGATE *-1 Abs + Sg LINK 1 NIQ + Ins)(NEGATE (*-1 ("pi") + CONT LINK **-1 Abs BARRIER (*) - CONT)); # Men OK hvis TARGET er objektskomplement i sekvensen SUBJ+Abs : OBJ : OBJ_COMP : CONT+3SgO : INTRANSVERB+3Sg. Sidste NEGATE er en ad hoc regel for at undgå hit på @NIQ_OBJ
 
 #Kongruensadled er typisk vn, Num eller ATTRIBUTIV. LU vil ofte være udtryk for en parataktisk kerne, hvorfor parataktiske kongruensadled behandles separat i regel :M0351NY. i-adled til inderivering til højre er ikke kongruensadled
-MAP:M0350NY @<N TARGET Der/vn + $$KASUS + $$NUMERUS - LU - LUUNNIIT OR Num + $$KASUS - LU - LUUNNIIT OR LIK + $$KASUS - LU - LUUNNIIT IF (-*1 N + $$KASUS + $$NUMERUS BARRIER (*) - OBLIQUE - Part - Gram/Dem)(NEGATE 0 Ins LINK *1 QAR OR LIK BARRIER VFIN)(NEGATE 0 Num LINK -1 TIME)(NEGATE 0 Num LINK 1 Num OR iNum); #VFIN som barrier ret tilfældigt valgt #Krævet numeruskongruens 20180621
+MAP:M0350NY @<N TARGET Der/vn + $$KASUS + $$NUMERUS - LU - LUUNNIIT OR Num + $$KASUS - LU - LUUNNIIT OR LIK + $$KASUS - LU - LUUNNIIT IF (-*1 N + $$KASUS + $$NUMERUS BARRIER (*) - OBLIQUE - Part - Gram/Dem)(NEGATE 0 Ins LINK *1 QAR OR LIK BARRIER VFIN)(NEGATE 0 Num LINK 1 Num OR iNum);#(NEGATE 0 Num LINK -1 TIME ); #VFIN som barrier ret tilfældigt valgt #Krævet numeruskongruens 20180621
 
 #Regel til parataktiske adled som i 'puiaasat imaqanngitsut imallillu'
 MAP:M0351NY @<N TARGET Der/vn + $$KASUS + LU OR Num + $$KASUS + LU OR LIK + $$KASUS + LU IF (-*1 N + $$KASUS + @<N BARRIER (*) - OBLIQUE - Part)(NEGATE 0 Ins LINK *1 QAR OR LIK);
@@ -2950,7 +2950,7 @@ MAP:M0768 @HNOUN TARGET Abs + SSUSIQ IF (1 EOS OR KOMMA)(NEGATE *-1 V BARRIER KO
 #Vedr. subjekter se også 0324 ovenfor
 
 #Tid og sted (TIME, PLACE) er typisk adverbale adled.
-MAP:M09900A @i-ADVL> TARGET Lok IF (1 Abs OR Rel)(1 ("illu" QAR VIK) OR TUQ OR NIQ) ; #LANDlok BYabs
+MAP:M09900A @i-ADVL> TARGET Lok IF (*1 Abs OR Rel - @POSS> BARRIER (*) - ADJEKTIVISK)(*1 ("illu" QAR VIK) OR TUQ OR NIQ BARRIER (*) - ADJEKTIVISK) ; #LANDlok BYabs
 MAP:M09900B @ADVL> TARGET Lok IF (0 TIME OR PLACE)(*1 V BARRIER §dir-tale-start)(NEGATE *-1 V BARRIER §dir-tale-slut) ; 
 MAP:M09900C @ADVL> TARGET ("akunneq") IF (-1 ("sapaat"))(*1 V BARRIER §dir-tale-start)(NEGATE *-1 V BARRIER §dir-tale-slut) ;
 
@@ -4816,5 +4816,7 @@ SUBSTITUTE:S0046 @SUBJ> @PROP> TARGET §PropNexusSg + @SUBJ> IF (0 @SUBJ> LINK 1
 #SUBSTITUTE §noun-comma (*) TARGET N ;
 #SUBSTITUTE §dir-tale-start (*) TARGET (*) ;
 SUBSTITUTE:S0049 (/§.*/r) (*) TARGET (*) ;
+SUBSTITUTE:S0050 (@CL-<CIT) (@ADVL>) TARGET @CL-<CIT IF (0 CONT - ORATIOOBLVERB) (1 @CL-<CIT) ;
+SUBSTITUTE:S0050 (@CL-<CIT) (@CL-CIT>) TARGET @CL-<CIT IF (0 CONT - ORATIOOBLVERB) (1 @CL-<CIT LINK *1 ORATIOOBLVERB) ;
 
 REMOVE:S0036 (*) - (/@.*/r) ((-1 (/@.*/r)) OR (1 (/@.*/r))) ; #Fjerner læsninger uden mappings.
