@@ -233,6 +233,9 @@ LIST Der/nv = Der/nv ;
 LIST Der/vn = Der/vn ;
 
 LIST OLang/DAN = OLang/DAN ;
+LIST OLang/ENG = OLang/ENG ;
+LIST OLang/DEU = OLang/DEU ;
+LIST LOAN = (/OLang\/[A-Z][A-Z][A-Z]/r) ;
 
 LIST Err/Sub = Err/Sub ;
 
@@ -1094,7 +1097,7 @@ SET PRON-REFL = Gram/Dem + Pron | Gram/Int + Pron | Gram/Indef + Pron | DivPron 
 
 SET LIK_QAR = LIK | QAR ;
 
-SET NOMEN = N | N* ;
+SET NOMEN = N | iN ;
 
 # Kombinationer af verber og nominer
 
@@ -2327,7 +2330,7 @@ SELECT:0413 Par + INTRANSVERB + 3Sg IF (*-1 KOMMA LINK 1 Abs + Sg)(NEGATE 1 Abs 
 
 MAP:M00000 @>N TARGET ("nalunaaqutaq") IF (1 Num + Trm) ;
 MAP:M00001 @>N TARGET ("ukioq") IF (1 Num OR iNum)(NEGATE 0 $$KASUS LINK 1 (*) + $$KASUS - AFFINGERET)(NEGATE 1 POSSESSUM)(NEGATE 1 INSOBJVERB OR U OR NNGUR)(NEGATE -1 Num)  ;
-MAP:M0000 (@PRED) TARGET VFIN (NEGATE 0 Gram/Exclm LINK -1* ("una") BARRIER (*) - Abs - Conj) ; #Et finit verbum er altid prædikat
+MAP:M0000 (@PRED) TARGET VFIN (NEGATE 0 Gram/Exclm LINK -1* ("una") BARRIER (*) - Abs - Conj)(NEGATE -1 ("\"") LINK 1 _TARGET_ LINK 1 ("\"")) ; #Et finit verbum er altid prædikat #Negate fordi et verbum i anførselstegn fungerer som et nomen.
 MAP:M0001 (@PRED2) TARGET Par IF (@1 Interj)(NEGATE *0 VFIN); #Ved emfase og udbrud 
 MAP:M0002X @i->N TARGET ("suna") + Lok IF (1 ("tamaq") + iLok + IP OR  ("ma") + iLok + IP) ; # Sumi tamaaniipput. Tilpasset til ny i-tag 20180607 
 MAP:M0002 @>N TARGET ("suna") + $$KASUS IF (1 ("tamaq") + $$KASUS OR ("ma") + $$KASUS) ; # Sumi tamaani 
@@ -3355,6 +3358,10 @@ MAP:M1981 (VSTR:$1) TARGET (N) (*1 (N LU /\(@.*\)/r) BARRIER (*) - @<N) ;
 MAP:M1999A $$@FUNC TARGET Abs (*-1 CONJ-C BARRIER (*) - @PRENOM LINK *-1C $$@FUNC BARRIER (*) - @<N) ; #sideordnede objekter skal ikke mappes som postnominaler. #Taavalu pulateriaarsuit ipititsisartut imaluunniit kiattup ORPIPPASSUI ullorissalluunniit pillugit oqaloqatigineq ajorpara.
 MAP:M1999B $$@FUNC TARGET Abs (0 CONJ-C) (*-1C $$@FUNC BARRIER (*) - @<N) ; #sideordnede objekter skal ikke mappes som postnominaler. #Taavalu pulateriaarsuit ipititsisartut imaluunniit kiattup orpippassui ULLORISSALLUUNNIIT pillugit oqaloqatigineq ajorpara.
 
+#Verber der bruges som nominer
+MAP:M1999H @SUBJ> TARGET (*) IF (-1 ("\"") LINK 1 _TARGET_ LINK 1 ("\"") LINK *1 INTRANSVERB + 3Sg OR INTRANSVERB + 3Pl OR TRANSVERB + 3SgO OR TRANSVERB + 3PlO) ; #"Igavaa" qanoq halvtransitiveqassava?
+
+
 # ================== #
 # ================== #
       SECTION        #
@@ -3547,7 +3554,7 @@ SELECT:0550 Part IF (-1 BOS OR (","))(0 ("Tassa") OR ("tassa"))(*1 SSAQ)(NEGATE 
 SELECT ("tassa") + Part IF (-1 BOS)(*1 VFIN); 
 
 #Typen 'Qujanaq ... '
-SELECT:0551 Cau + 2Sg IF (@1 ("qujanaq"))(NEGATE *0 VFIN);
+SELECT:0551 Cau + 2Sg IF (@1 ("qujanaq") OR ("qujanar") + Gram/Exclm)(NEGATE *0 VFIN);
 
 #Sætningsemner og overskrifter. Først fjernes evt. Par fra kongruensadleddet. virker ikke
 #SELECT:0552 Abs + $$NUMERUS - POSSESSUM IF (-1 Abs + $$NUMERUS)(NEGATE *0 V BARRIER KOMMA)(NEGATE -1 Rel + Pl LINK 1 3PlPoss) ;
@@ -4841,8 +4848,7 @@ REMOVE:9972 ("([^<].*)"r) IF
 REMOVE:9972B ("([^<]...*).."r) + (/Der\/.*/r) IF (0 (VSTR:"$1...+"r) - (/Der\/.*/r)) ; #En mere farlig regel end 9972A, men kræver til gengæld derivation. Skrevet til ord som 'aqerluusaq'.
 
 REMOVE:9975 (/__LLUAR\ Der\/vv\ INNAR__/l) IF (0 LLUINNAR) ;
-
-REMOVE:9973 OLang/DAN ; # Slet låneord, hvis ikke eneste læsning
+REMOVE:9973 LOAN ; # Slet låneord, hvis ikke eneste læsning
 
 ##############
 AFTER-SECTIONS
