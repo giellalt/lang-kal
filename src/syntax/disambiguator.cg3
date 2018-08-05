@@ -1170,7 +1170,7 @@ LIST LOKVERB = "najugaq" "najugaqar" "ilinniar" ;
 
 LIST ABLVERB = "ani" ;
 
-LIST TRMVERB = "iser" ;
+LIST TRMVERB = "iser" "pulaar" ;
 
 SET MOVE-VERB = LOKVERB | ABLVERB | TRMVERB ;
 
@@ -1578,8 +1578,8 @@ REMOVE:0040D Par + 3Pl IF (1 Par + 3Pl + NIR); #Må være subjektet og ikke Par
 REMOVE:0040E 4PlO + CONT - Dobbelttransitiv ; #Er vist en utænkelig kombination?? 
 
 #Vælg Indikativ verbum, hvis eneste finitte. NIR undtaget, da ofte fejl for NIQ plus noget. BARRIER reduceret fra BARRIER LU OR LI OR KOMMA til kun KOMMA på gr. af mange hit på nominalparatakser med LU og adverbialer med LI
-REMOVE:0003A Gram/Exclm IF (0 VFIN) ;
-SELECT:0003 Ind - SUB IF (NEGATE *0 VFIN BARRIER KOMMA)(NEGATE 0 NIR OR INDERIVERENDE_SUBSTANTIV)(NEGATE 0 Int LINK 1 ("?"))(NEGATE 0 Par LINK *-1 KONCESSIV)(NEGATE -1 NIQ + Gram/Comp)(NEGATE 0 Gram/Exclm LINK *1 Par LINK -*1 KONCESSIV)(NEGATE 0 KONCESSIV)(NEGATE *-1 ("tassa")) ; #SUB undtaget for ikke at gøre Via som matuagut til Ind 1Pl. Må ikke slette Par i koncessiver og efterlade fx GALUAQ + GE + Ind. Må ikke slette NIQ fulgt af Par. Sidste NEGATE fordi 'ilaat' kan læses som IP + LAAR + Exclm. Allersidste NEGATE for at undgå at naak analyseres som naap+Exclm
+#REMOVE:0003A Gram/Exclm IF (0 VFIN - Gram/Exclm) ; #Virker ikke
+SELECT:0003 Ind - SUB IF (NEGATE *0 VFIN BARRIER KOMMA)(NEGATE 0 NIR OR INDERIVERENDE_SUBSTANTIV)(NEGATE 0 Int LINK 1 ("?"))(NEGATE 0 Par LINK *-1 KONCESSIV)(NEGATE -1 NIQ + Gram/Comp)(NEGATE 0 Gram/Exclm LINK *1 Par LINK -*1 KONCESSIV)(NEGATE 0 KONCESSIV)(NEGATE *-1 ("tassa") LINK -1 BOS) ; #SUB undtaget for ikke at gøre Via som matuagut til Ind 1Pl. Må ikke slette Par i koncessiver og efterlade fx GALUAQ + GE + Ind. Må ikke slette NIQ fulgt af Par. Sidste NEGATE fordi 'ilaat' kan læses som IP + LAAR + Exclm. Allersidste NEGATE for at undgå at naak analyseres som naap+Exclm
 
 
 ### INTERJEKTION, VOKATIV, FOKUS og IMPERATIV ###
@@ -2221,7 +2221,7 @@ SELECT:0260 Abs + Sg + Der/nv IF (-1C Abs + Sg)(1 TRANSVERB + 3SgO)(NEGATE *-1 O
 SELECT:0229 ("tassa") + Adv IF (1 Gram/Exclm LINK 1 EOS);
 
 #tassa i sætninger uden overordnede modi, med eller uden U
-MAP:M0230Atassa @PRED TARGET ("tassa") IF (NEGATE *0 VFIN)(1* N + Abs) ;
+MAP:M0230Atassa @PRED TARGET ("tassa") - MI IF (NEGATE *0 VFIN)(1* N + Abs) ;
 
 #Specialiteten adnominale Pron, der peger mod højre, må ind før @FOC-reglerne
 MAP:M0230NY @Pron>N TARGET Gram/Dem + Pron + Abs + Pl IF (1 N + Abs + Pl)(NEGATE *1 3PlO BARRIER VFIN) ; #Skal i stedet have et unification set PL 20180530
@@ -2235,7 +2235,7 @@ SELECT:0281 ("tassa") + Adv IF (1 VFIN)(*-1 TIME BARRIER V) ; #maannalu tassa un
 MAP:M0281 @ADVL> TARGET ("tassa") + Adv IF (1 VFIN) ; #
 #"tassa" er en slags konjunktion ofte svarende til dansk dvs. når anaforisk først i sætning uden finit V
 SELECT:0282 ("tassa") + Adv IF (-1 BOS)(NEGATE *1 VFIN OR Cau) ;
-MAP:M0249A @FOC TARGET ("tassa") + Adv IF (NEGATE *1 VFIN OR Cau)(-1 BOS);
+MAP:M0249A @PRED TARGET ("tassa") + Adv IF (NEGATE *1 VFIN OR Cau)(-1 BOS);
 
 #Konkluderende på foregående nexus ofte forstærkende eller causalt.
 SELECT:0283 ("tassa") + Adv IF (*-1 VFIN BARRIER (*) - KOMMA)(*1 VFIN OR Cau) ;
@@ -2471,7 +2471,7 @@ MAP:M0031 (@PROP>) TARGET Prop + Abs OR FIRSTNAME + Abs OR TITEL + Abs IF (1 Pro
 #MAP:M0031 (@PROP>) TARGET Prop OR FIRSTNAME OR TITEL IF (1 Prop)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop #+ LU LINK *1 V + 3Pl BARRIER N + Pl )(NEGATE 1 Prop LINK 1 Prop); #fra 1350 for at udelukke overtallig SUBJ-tagging. ##NEGATE for at forebygge typen 'Per NN-ikkut isermata Vb'. Andet NEGATE for parataktiske Karen Perilu anipput. Tredie #NEGATE for at parataktiske Karen Perilu ilagalugit. Fjerde #NEGATE for at forebygge @PROP på subjektet i (SUBJ)(PROP> propriuskærne)
 
 #Forsøg på en mere generel regel for Prop der er @<APPOS til noget ikke-Prop
-MAP:M0032 @<APPOS TARGET PROP + $$KASUS - LU IF (-*1C N + $$KASUS - Prop BARRIER (*) - KOMMA )(NEGATE 1 KOMMA LINK 1 $$KASUS) ; #NEGATE for at undgå at hitte på opremsninger
+MAP:M0032 @<APPOS TARGET PROP + $$KASUS - LU IF (-*1C N + $$KASUS - Prop BARRIER (*) - KOMMA )(NEGATE 1 KOMMA LINK 1 $$KASUS)(NEGATE -1 @PROP>) ; #NEGATE for at undgå at hitte på opremsninger
 MAP:M0032A @<APPOS TARGET PROP + Abs + Sg - LU IF (-1 Prop + Sem/FirstName)(-2 N + Abs + Sg )(NEGATE -2 @PROP>)(NEGATE -2 TITEL) ; # N per langgård
 MAP:M0033 @<APPOS TARGET PROP + Abs + Sg - LU IF (-1 N + Abs + Sg)(NEGATE -1 @PROP> )(NEGATE -1 TITEL) ; # N Per
 #første NEGATE for at forhindre hit på fx (Royal Arctic Line)@SUBJ> VERBUM og -LU for ikke at hitte på Danmark Islandilu og andet NEGATE for at blokere PISORTAQ Per Langgård oqarpoq
@@ -2888,6 +2888,7 @@ MAP:M0510 @<N TARGET ("alla") + N + $$KASUS + $$NUMERUS - LU OR ("arlaaq") + N +
 MAP:M0511 @<N TARGET ATTRIBUTIV + N + $$KASUS + $$NUMERUS OR ("arlaaq") + N + $$KASUS + $$NUMERUS IF (-1 N + $$KASUS + $$NUMERUS) ;
 MAP:M0512 @<N TARGET N + $$KASUS + $$NUMERUS - POSSESSUM IF (*-1 $$KASUS + $$NUMERUS BARRIER (*) - @>N - @<N)(NEGATE -1 ("una"))(NEGATE -1 PLACE - MIU)(NEGATE 0 CONJ-C + Num LINK -1 Num OR iNum)(NEGATE 0 CONJ-C - Num)(NEGATE 0 $$KASUS LINK -1 Num LINK -1 ("nal") LINK *-1 (*) - $$KASUS)(NEGATE 0 Rel LINK 1 POSSESSUM) ;
 MAP:M0513 @<N TARGET N + $$KASUS IF (0 ("tamalaaq") LINK -1 ("nuna") + $$KASUS) ;
+MAP:0514 @<N TARGET Sg + $$KASUS + $$NUMERUS + OBLIQUE - CONJ-C IF (*-1 (*) - VFIN LINK *-1 _TARGET_ LINK *-1 $$KASUS + $$NUMERUS BARRIER VFIN)(NEGATE *1 DOTR BARRIER EOS OR KONCESSIV)(NEGATE *1 LOKVERB OR TRMVERB OR ABLVERB LINK *-1 _TARGET_ LINK *-1 Sg + $$KASUS + $$NUMERUS);
 
 #Ikke-inderiverede og inderiverede nominer med possessor: uanga najukkanneersut paasilluarniassammassuk
 #MAP:M0560 @POSS> TARGET Pron + 1Sg IF (1 1SgPoss)(NEGATE *1 V + 1Sg)(NEGATE *1 1SgPoss + iALL);
@@ -3914,7 +3915,7 @@ REMOVE @SUBJ> IF (0 (Gram/Dem Pron 3Sg))(*1C 12SUBJVERB BARRIER V);
 SELECT (Pl @OBJ>) IF (0 (Abs Pl))(*-1 34PLOBJVERB BARRIER VFIN);
 	## Aviisit atuarpavut.
 
-SELECT (N Abs Sg) + @ALLOBJ> IF (*1 34SGOBJVERB BARRIER Sg +  @ALLOBJ>)(NEGATE *1 ORATIOOBLVERB) (NEGATE 1 Num + Pl) ;
+SELECT (N Abs Sg) + @ALLOBJ> IF (*1 34SGOBJVERB BARRIER Sg +  @ALLOBJ>)(NEGATE *1 ORATIOOBLVERB) (NEGATE 1 Num + Pl)(NEGATE 1 KOMMA LINK 1 LU) ;
 	#Pers aendring 0608
 
 SELECT (Par @PRED) IF (*1 34SGOBJVERB)(*1 ORATIOOBLVERB); #Pers tilfoejelse 2 0608
@@ -4007,7 +4008,7 @@ SELECT ("ilaanneeriar") IF (0 Cont);
 #REMOVE VFIN IF (*-1C VFIN)(NEGATE 0 LU); #Forkert 20120912 
 
 	# Unik VFIN
-REMOVE VFIN IF (*1C VFIN)(NEGATE 1 LU LINK *1 VFIN); 
+REMOVE VFIN IF (*1C VFIN)(NEGATE 1 LU LINK *1 VFIN)(NEGATE 1 KOMMA LINK 1 LU); 
 	## Taamaattumik tamatta nuannaarpugut.
 
 REMOVE (@CL-CIT>) IF (0 @CL->N)(1 N) ; # idiotregel
