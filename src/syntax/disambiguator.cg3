@@ -1072,7 +1072,7 @@ LIST NO_HTR = "allap" ; #20091108 - Verber, der ikke kan kombinere med HTR
 SET SchwaDerivativ = GE | TARE | QE ;
 SET PERSON = 1Sg | 2Sg | 3Sg | 4Sg | 1Pl | 2Pl | 3Pl | 4Pl ;
 SET PROP = Prop | iProp ;
-SET GAANNI = (/\"<.*[g|k|r]aanni.*\>"/r) + Par + 3Sg + 3SgO OR (/\"<.*[g|k|r]aanni.*\>"/r) + Par + 3Sg + 3PlO OR (/\"<.*[g|k|r]aanni.*\>"/r) + Par + 4Sg ;
+SET GAANNI = (/\"<.*[g|k|r]aanni.*\>"/r) + Par + 3Sg + 3SgO OR (/\"<.*[g|k|r]aanni.*\>"/r) + Par + 3Sg + 3PlO OR (/\"<.*[g|k|r]aanni.*\>"/r) + Par + 4Sg OR (/\"<.*[g|k|r]aanni.*\>"/r) + Par + 3Sg ; #20180805: intransitiv GAANNI bliver 3Sg og ikke 4Sg som hidtil.
 
 # Nominer
 # -------
@@ -1196,7 +1196,7 @@ LIST IntransTrans = "neri" "ilassior" Gram/HV ; #Set til disambiguering af Ins, 
 
 SET UGEDAGE = (/__\"arfineq\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"ataaseq\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"marluk\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"pingasut\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | ("sapaat") | (/__\"sisamat\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"tallimat\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) ;
 SET SEASON = ("aasaq") | ("ukiaq") | ("ukioq") | ("upernaaq") ; #årstider
-LIST OTHERTIME = Sem/Time ("aallar" QQAAR UTE) ("aasaq") ("inuk" U NIQ) ("ippassaq") ("kingulleq" Ins) ("kingusip") ("maanna") ("nali") ("piffik") ("qaammat") ("qeqqa") ("sapaat") ("sivisu") ("siulleq") ("taarsi") ("ualeq") ("ukiaq") ("ukiar" TUQ) ("ukiartoq") ("ukioq") ("ullaa") ("ullaaq") ("ulloq") ("unnuaq") ("unnuk") ;
+LIST OTHERTIME = Sem/Time ("aallar" QQAAR UTE) ("aasaq") ("aqagu") ("inuk" U NIQ) ("ippassaq") ("kingulleq" Ins) ("kingusip") ("maanna") ("nali") ("piffik") ("qaammat") ("qeqqa") ("sapaat") ("sivisu") ("siulleq") ("taarsi") ("ualeq") ("ukiaq") ("ukiar" TUQ) ("ukiartoq") ("ukioq") ("ullaa") ("ullaaq") ("ulloq") ("unnuaq") ("unnuk") ;
 SET TEMPUSVERB = UGEDAGE | ("qaanger") | ("qaqutigut" U) | ("taamaali") | ("ukiar") | ("ukioq" U) ;
 SET TIME = TEMPUSVERB | OTHERTIME ;
 LIST VERB_medGE = "ipianngu" "miki" ; #Set til stammer, der kan tage GE+Der/vv
@@ -1921,6 +1921,7 @@ SELECT:0133 Ins + Gram/Indef + Pron IF (1 V)(NEGATE *1 NIQAR) ;
 REMOVE:0134 f-an_SG + Sg + 3PlPoss IF (0 3SgPoss) ; # 'qaneq' mv. altid possessor i sing.
 
 SELECT:0135 Rel + 3SgPoss IF (1 3SgPoss)(NEGATE *-1 Rel + Pl) ; #N-ata pia og N-isa piat
+REMOVE:0135F Rel (-1 BOS LINK 2 ("pi") + CONT - AFFINGERET) ; #Sikkert objekt.
 SELECT:0136 Rel + Pl IF (*1 (*) - Rel - Num)(*1 POSSESSUM + 3PlPoss OR TRANSVERB - 3PlO)(NEGATE *-1 INTRANSVERB + 3Pl OR TRANSVERB + 3PlO)(NEGATE 0 Ins OR ("isuma")) ;
 
 REMOVE:0140 Via + 3PlPoss IF (0 3SgPoss)(NEGATE -1 Pl + Rel) ;
@@ -2211,13 +2212,16 @@ SELECT:0259 Par + 3Sg IF (0 NIQ + U)(-1 NIQ)(1 3Sg + 3SgO)(NEGATE *-1 ORATIOOBLV
 SELECT:0260 Abs + Sg + Der/nv IF (-1C Abs + Sg)(1 TRANSVERB + 3SgO)(NEGATE *-1 ORATIOOBLVERB)(NEGATE 0 NIR) ; #Med NIR vist altid oratio obl.
 
 ############################
-# Særligt afsnit om "tassa"
+# Særligt afsnit om tassa
 ############################
 
 #Efter nye tags forår 18 optræder "tassa" pr. 20180328 i 5 former "tassa" Pali; "tassa" Interj; uv Prefix/TA Gram/Dem Interj; "tassa" Adv samt "tassa" Conj
 
 #tassa Exclm
 SELECT:0229 ("tassa") + Adv IF (1 Gram/Exclm LINK 1 EOS);
+
+#tassa i sætninger uden overordnede modi, med eller uden U
+MAP:M0230Atassa @PRED TARGET ("tassa") IF (NEGATE *0 VFIN)(1* N + Abs) ;
 
 #Specialiteten adnominale Pron, der peger mod højre, må ind før @FOC-reglerne
 MAP:M0230NY @Pron>N TARGET Gram/Dem + Pron + Abs + Pl IF (1 N + Abs + Pl)(NEGATE *1 3PlO BARRIER VFIN) ; #Skal i stedet have et unification set PL 20180530
@@ -2251,6 +2255,9 @@ MAP:M0285 @i-N< TARGET Abs + &&IV_SUBJ& IF (-1 ("tassa") LINK -1 BOS)(NEGATE *1 
 
 #MAP:M0284A @i-N< TARGET Abs IF (-1 @FOC)(1 EOS OR KOMMA); # N tassa N. eller Tassa N.
 
+MAP:M0284B @<CONT_TASSA TARGET CONT IF (*-1 ("tassa") + U BARRIER KOMMA) ;
+
+MAP:M0560 (@CL-ADVL>) TARGET ("tassa") IF (*1 V BARRIER KOMMA)(NEGATE -1 Adv LINK 2 Adv)(NEGATE *1 ("^excl") OR Gram/Exclm)(NEGATE -1 ("soorlu") + MI); # NEGATE til Taava tassa aamma baobabertortarpat? #NEGATE til tassa tamanna naammappoq! #NEGATE til Qullini ikikkaangamiuk soorlumi tassa ullorissamik allamik pinngortitsisartoq, naasumilluunniit nutaamik.
 
 #########
 #SECTION#
@@ -2479,8 +2486,6 @@ MAP:M0035 @SUBJ_COMP TARGET Abs + Sg IF (-1 Abs + Sg + LU)(*-1 U + 3Sg BARRIER V
 MAP:M0036 @i-N< TARGET Abs + Sg - Pl IF (*-1 U + V OR ("tassa") + U + V + 3Sg BARRIER V OR KOMMA)(NEGATE *1 VFIN)(NEGATE *1 Cau + 3Sg OR 4Sg)(NEGATE *1 Con + 3Sg OR 4Sg)(NEGATE *1 3SgO BARRIER INTRANSVERB OR KOMMA)(NEGATE *1 CONT + 3SgO) ; # NEGATE for at forhindre hit på subjektet i (underordnet V med U) SUBJ> V. + V tilføjet i første betingelse for at forebygge hit på Der/vn + U i fx objekter. -Pl i sættet på gr. af *N IP Sg Pl 
 MAP:M0037 @SUBJ_COMP TARGET Abs + Pl IF (*-1 U + 3Pl BARRIER V OR KOMMA)(NEGATE *1 VFIN OR CONT + 3PlO) ; #Må ikke tagge objektet for en følgende CONT
 MAP:M0037B @i-N< TARGET TUQ + Abs IF (-1 V + U)(1 KOMMA OR EOS) ; #Arnaavunga pikkorissoq
-
-MAP:M0038 @<CONT_TASSA TARGET CONT IF (*-1 ("tassa") + U BARRIER KOMMA) ;
 
 MAP:M0038B @SUBJ> TARGET N + Abs + 4SgPoss IF (1 Abs + LU LINK *1 Par + 3Pl LINK *1 ORATIOOBLVERB) ;
 
@@ -2803,7 +2808,7 @@ MAP:M0520 (@POSS>) TARGET ("kalaaleq") + Rel + Pl IF (1 ("oqaaseq") OR ("nuna") 
 MAP:M0521 @<OBJ TARGET LIK + Sg + Abs OR QAR + Sg + Abs IF (*-1 TRANSVERB + 3SgO LINK *-1 Sg + Abs)(NEGATE *1 3SgO BARRIER V) ;
 
 #De mest generelle OBJ-regler
-MAP:M0524 (@SUBJ>) TARGET N + Abs + Sg OR PRON + Abs + Sg IF (*1 INTRANSVERB BARRIER KOMMA LINK *-1 CONT + 3SgO LINK -1 Abs + Sg) ;
+MAP:M0524 (@SUBJ>) TARGET N + Abs + Sg OR PRON + Abs + Sg IF (*1 INTRANSVERB BARRIER KOMMA LINK *-1 CONT + 3SgO LINK -1 Abs + Sg LINK *-1 _TARGET_) ;
 MAP:M0522 @SUBJ> TARGET Abs + LU IF (-1 Abs)(1 Abs + LU OR KOMMA) ; 
 MAP:M0523A @SUBJ> TARGET Abs IF (1 Abs + LU)(*1 PLURSUBJVERB BARRIER V OR KOMMA) ; #Paratakse ved 0523B. 20150710 Meget bred. Skal checkes
 MAP:M0523B @SUBJ> TARGET Abs + LU IF (-1 Abs)(*1 PLURSUBJVERB BARRIER V OR KOMMA) ; #20140523 Meget bred. Skal checkes
@@ -2948,9 +2953,9 @@ MAP:M0652F @<APPOS TARGET Abs IF (-1 ("soorlu") LINK *-1 Abs + @OBJ> LINK *1 TRA
 SUBSTITUTE @ADVL> @>N TARGET ("soorlu") IF (1 @<APPOS + $$KASUS)(*-1 $$KASUS);
 
 #Subjekt for en ledsagemåde skal tagges, men må ikke sammenblandes med objekter
-MAP:M0659 @SUBJ> TARGET Abs + Sg IF (*1 CONT + 4Sg BARRIER V) (NEGATE *1 CONT + 3SgO BARRIER V)(NEGATE 1 Abs + LU LINK *1 3PlO BARRIER V)(NEGATE 0 LU LINK -1 Abs LINK *1 3PlO BARRIER V)(NEGATE *1 3SgO BARRIER 3SgO);
+MAP:M0659 @SUBJ> TARGET Abs + Sg IF (0 (*) - TIME LINK *1 CONT + 4Sg BARRIER V) (NEGATE *1 CONT + 3SgO BARRIER V)(NEGATE 1 Abs + LU LINK *1 3PlO BARRIER V)(NEGATE 0 LU LINK -1 Abs LINK *1 3PlO BARRIER V)(NEGATE *1 3SgO BARRIER 3SgO);
 
-MAP:M0660 (@SUBJ>) TARGET Abs + Sg - ("kinguneq") IF (*1 INTRANSVERB + VERB-NOTCONT + 3Sg OR INTRANSVERB + VERB-NOTCONT + 4Sg BARRIER POSSESSUM3 OR TRANSVERB)(NEGATE -1 ("\("))(NEGATE *1 ("(") LINK *1 INTRANSVERB + VERB-NOTCONT + 3Sg OR INTRANSVERB + VERB-NOTCONT + 4Sg BARRIER POSSESSUM3 OR TRANSVERB LINK 1* (")") LINK 1* INTRANSVERB) ; #TRANSVERB tilføjet for at forhindre tag på obj i: SUBJ OBJ TRANSVERB INTRANSVERB. 20170425 -kinguneq for at forebygge hit på sætningsadverbialer
+MAP:M0660 (@SUBJ>) TARGET Abs + Sg - ("kinguneq") - OTHERTIME IF (*1 INTRANSVERB + VERB-NOTCONT + 3Sg OR INTRANSVERB + VERB-NOTCONT + 4Sg BARRIER POSSESSUM3 OR TRANSVERB)(NEGATE -1 ("\("))(NEGATE *1 ("(") LINK *1 INTRANSVERB + VERB-NOTCONT + 3Sg OR INTRANSVERB + VERB-NOTCONT + 4Sg BARRIER POSSESSUM3 OR TRANSVERB LINK 1* (")") LINK 1* INTRANSVERB) ; #TRANSVERB tilføjet for at forhindre tag på obj i: SUBJ OBJ TRANSVERB INTRANSVERB. 20170425 -kinguneq for at forebygge hit på sætningsadverbialer
 #MAP:M0661 (@SUBJ>) TARGET Gram/Pers + Pron + Abs + 1Sg IF (*1 INTRANSVERB + VERB-NOTCONT + 1Sg OR INTRANSVERB + VERB-NOTCONT + 1Sg BARRIER POSSESSUM3 OR TRANSVERB)(NEGATE -1 ("\(")) ; #TRANSVERB tilføjet for at forhindre tag på obj i: SUBJ OBJ TRANSVERB INTRANSVERB
 MAP:M0661 @SUBJ> TARGET Gram/Pers + Pron + Abs + 1Sg IF (*1 VERB-NOTCONT + 1Sg BARRIER TRANSVERB + 1SgO)(NEGATE -1 ("\(")) ; #Ny formulering testet 20150318
 MAP:M0661A @SUBJ> TARGET Gram/Pers + Pron + Abs + 2Sg IF (*1 VERB-NOTCONT + 2Sg BARRIER TRANSVERB + 2SgO)(NEGATE *1 2SgO)(NEGATE -1 ("\(")) ; #Ny formulering testet 20150318
@@ -3117,7 +3122,7 @@ MAP:M1060 (@POSS>) TARGET MAANED IF (1 Num + 3PlPoss); #NB Possessum skal vaere 
 # ==================
 MAP:M1070 (@PARATAKSE_CONT->N) TARGET Cont + LU IF (1 Abs + Der/vn) ; #misissueqqissaarutaallunilu oqaasiliuut .. Skal elaboreres!!
 MAP:M1080 (@CONT->N) TARGET Cont + 4Sg IF (1 Ins)(2C Der/vn + Abs + Sg)(*1 V + 3Sg); #OBJ pillugu Ins vn+subjekt verbum 
-MAP:M1090 (@CONT->N) TARGET Cont + 4Sg IF (1C Der/vn + Abs + Sg)(*1 V + 3Sg); #OBJ pillugu vn+subjekt verbum
+MAP:M1090 (@i-ADVL>) TARGET Cont + 4Sg IF (1C Der/vn + Abs + Sg)(*1 V + 3Sg); #OBJ pillugu vn+subjekt verbum
 MAP:M1100 (@CONT->N) TARGET Cont + 4Sg + 3SgO IF (-1 @SUBJ> OR ("\)") OR ("\"")) ; #Det blev alt for ad hoc med baade citation og parantes
 MAP:M1110 (@ABSOLUT_PRED) TARGET Par + PASSIV + 3Pl IF (-3 Rel)(-2 Abs + Pl)(-1 Ins)(1 POSSESSUM); #matcher SELECT:ParantetiskParPl
 MAP:M1120 (@i-ADVL>) TARGET ContNeg IF (1 Part)(2 NIQ); #Eqqarsaatigiinnarnagu ingerlaannaq piviusunngortitsineq
