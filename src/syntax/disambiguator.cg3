@@ -76,6 +76,7 @@ LIST N* = N* ; #Præprocessorens tagging af N, der indgår i compounds
 LIST iV = iV ; #Præprocessorens tagging af V, som skifter ordklasse senere i ordet.
 LIST iN = iN ; #Præprocessorens tagging af N, som skifter ordklasse senere i ordet.
 LIST iProp = iProp ; #Præprocessorens tagging af Prop, som skifter ordklasse senere i ordet.
+LIST iPron = iPron ; #Præprocessorens tagging af Pron, som skifter ordklasse senere i ordet.
 SET iALL = iV | iN | iProp ;
 LIST Part = Part Pali Adv ^"ma" ^"av" ^"pav" ^"qav" ^"kan" ^"qam" ^"sam" ^"pik" ^"iv" ^"ik" ^"kig" ^"uv" "aali" "aamma" "imaluunniit" "kisianni" "naak" "qanorli" "soorli" "tassali" "tassa" "taamaattoq" "unnit";
 LIST Pali = Pali ;
@@ -1473,12 +1474,21 @@ REMOVE:0003A ("uv") + Interj IF (0 ("uffa") + Interj) ;
 # Test: Mapping af konjunktioner vs. adverbialer
 #############
 
-MAP:conj1 (@CONJ-LUUNNIIT) TARGET LUUNNIIT + $$MOOD IF (-*1 $$MOOD BARRIER (*) - KOMMA);
-MAP:conj2 (@CONJ-LUUNNIIT) TARGET LUUNNIIT + $$NUMERUS + $$KASUS - (Pron Gram/Indef) - (Pron Gram/Int) IF (-*1 $$NUMERUS + $$KASUS BARRIER (*) - KOMMA) ;
-MAP:adv1 (@ADV-LUUNNIIT) TARGET LUUNNIIT + NNGIT + GALUAR ;
-MAP:adv2 (@ADV2-LUUNNIIT) TARGET LUUNNIIT + Pron ;
-MAP:adv3 (@ADV3-LUUNNIIT) TARGET LUUNNIIT + Num OR LUUNNIIT + ("ataaseq") ;
-
+#SUBSTITUTE:conj1 (LUUNNIIT)(CONJ-LUUNNIITX1) TARGET LUUNNIIT + $$MOOD IF (-*1 $$MOOD BARRIER (*) - KOMMA);
+#SUBSTITUTE:conj2 (LUUNNIIT)(CONJ-LUUNNIITX2) TARGET LUUNNIIT + $$NUMERUS + $$KASUS - (Pron Gram/Indef) - (iPron Gram/Indef) - (Pron Gram/Int) - (iPron Gram/Int) IF (-*1 $$NUMERUS + $$KASUS BARRIER (*) - KOMMA) ;
+#SUBSTITUTE:conj3 (LUUNNIIT)(CONJ-LUUNNIITX3) TARGET LUUNNIIT + PLACE_EXTENDED + $$KASUS OR LUUNNIIT + Prop + $$KASUS + $$NUMERUS (-1 PLACE_EXTENDED + $$KASUS OR Prop + $$KASUS + $$NUMERUS);
+#SUBSTITUTE:adv1 (LUUNNIIT)(ADV-LUUNNIITX1) TARGET LUUNNIIT + NNGIT + GALUAR ;
+#SUBSTITUTE:adv2 (LUUNNIIT)(ADV-LUUNNIITX2) TARGET LUUNNIIT + Pron OR LUUNNIIT + iPron ;
+#SUBSTITUTE:adv3 (LUUNNIIT)(ADV-LUUNNIITX3) TARGET LUUNNIIT + Num OR LUUNNIIT + ("ataaseq") ;
+#SUBSTITUTE:adv4 (LUUNNIIT)(ADV-LUUNNIITX4) TARGET LUUNNIIT IF (-1S ("qanoq") OR ("sussa"));
+#SUBSTITUTE:adv5 (LUUNNIIT)(ADV-LUUNNIITX5) TARGET LUUNNIIT + GALUAR + Con ;
+#SUBSTITUTE:adv6 (LUUNNIIT)(ADV-LUUNNIITX6) TARGET LUUNNIIT + ORATIOOBLVERB (1 EOS);
+#SUBSTITUTE:conj1 (LU)(CONJ-LUX1) TARGET LU + $$MOOD IF (-*1 $$MOOD BARRIER (*) - KOMMA);
+#SUBSTITUTE:conj2 (LU)(CONJ-LUX2) TARGET LU + $$NUMERUS + $$KASUS - (Pron Gram/Indef) - (Pron Gram/Int) IF (-*1 $$NUMERUS + $$KASUS BARRIER (*) - KOMMA) ;
+#SUBSTITUTE:conj1 (LI)(CONJ-LIX1) TARGET LI + $$MOOD IF (-*1 $$MOOD BARRIER (*) - KOMMA);
+#SUBSTITUTE:conj2 (LI)(CONJ-LIX2) TARGET LI + $$NUMERUS + $$KASUS - (Pron Gram/Indef) - (Pron Gram/Int) IF (-*1 $$NUMERUS + $$KASUS BARRIER (*) - KOMMA) ;
+#SUBSTITUTE:adv1 (LI)(ADV-LIX1) TARGET LI + UNA OR LI + MI ;
+#REMOVE LUUNNIIT ;
 
 ### Usandsynlige morfemkombinationer ###
 #======================================#
