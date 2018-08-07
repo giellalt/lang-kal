@@ -1075,6 +1075,8 @@ SET SchwaDerivativ = GE | TARE | QE ;
 SET PERSON = 1Sg | 2Sg | 3Sg | 4Sg | 1Pl | 2Pl | 3Pl | 4Pl ;
 SET PROP = Prop | iProp ;
 SET GAANNI = (/\"<.*[g|k|r]aanni.*\>"/r) + Par + 3Sg + 3SgO OR (/\"<.*[g|k|r]aanni.*\>"/r) + Par + 3Sg + 3PlO OR (/\"<.*[g|k|r]aanni.*\>"/r) + Par + 4Sg OR (/\"<.*[g|k|r]aanni.*\>"/r) + Par + 3Sg ; #20180805: intransitiv GAANNI bliver 3Sg og ikke 4Sg som hidtil.
+SET MOOD = VFIN | CONT | Cau | IteCau | Con | Par ;
+
 
 # Nominer
 # -------
@@ -1199,7 +1201,7 @@ LIST IntransTrans = "neri" "ilassior" Gram/HV ; #Set til disambiguering af Ins, 
 SET UGEDAGE = (/__\"arfineq\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"ataaseq\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"marluk\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"pingasut\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | ("sapaat") | (/__\"sisamat\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"tallimat\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) ;
 SET SEASON = ("aasaq") | ("ukiaq") | ("ukioq") | ("upernaaq") ; #årstider
 LIST OTHERTIME = Sem/Time ("aallar" QQAAR UTE) ("aasaq") ("aqagu") ("inuk" U NIQ) ("ippassaq") ("kingulleq" Ins) ("kingu" NIQ)("kingusip") ("maanna") ("nali") ("piffik") ("qaammat") ("qeqqa") ("sapaat") ("sivisu") ("siulleq") ("taarsi") ("ualeq") ("ukiaq") ("ukiar" TUQ) ("ukiartoq") ("ukioq") ("ullaa") ("ullaaq") ("ulloq") ("unnuaq") ("unnuk") ;
-LIST TIMEVERB = ("ingerla") ("ittoq" U) ; #verber som kan have tidsudtryk som subjekt
+LIST TIMEVERB = ("ingerla") ("ip" TUQ U) ; #verber som kan have tidsudtryk som subjekt
 SET TEMPUSVERB = UGEDAGE | ("qaanger") | ("qaqutigut" U) | ("taamaali") | ("ukiar") | ("ukioq" U) ;
 SET TIME = TEMPUSVERB | OTHERTIME ;
 LIST VERB_medGE = "ipianngu" "miki" ; #Set til stammer, der kan tage GE+Der/vv
@@ -1438,6 +1440,7 @@ SET @FUNC = @ALLSUBJ | @ALLOBJ> | @<ALLOBJ | @ALLMIK-OBJ ; #alle funktionstags f
 
 BEFORE-SECTIONS
 
+
 DELIMIT ("<">") IF (-1W _S_DELIMITERS_) ; #virker tilsyneladende ikke
 
 #####################################
@@ -1464,6 +1467,17 @@ REMOVE:0002B Guess ;
 
 #Overflødig dobbeltmorfologi
 REMOVE:0003A ("uv") + Interj IF (0 ("uffa") + Interj) ;
+
+
+#############
+# Test: Mapping af konjunktioner vs. adverbialer
+#############
+
+MAP:conj0 (@CONJ-LUUNNIIT-ALT) TARGET LUUNNIIT + $$MOOD + $$KASUS + $$NUMERUS IF (-1 $$MOOD + $$KASUS + $$NUMERUS);
+MAP:conj1 (@CONJ-LUUNNIIT) TARGET LUUNNIIT + $$MOOD IF (-1 $$MOOD);
+MAP:conj2 (@CONJ-LUUNNIIT) TARGET LUUNNIIT + $$NUMERUS + $$KASUS - (Pron Gram/Indef) - (Pron Gram/Int) IF (-1 $$NUMERUS + $$KASUS) ;
+MAP:adv1 (@ADV-LUUNNIIT) TARGET LUUNNIIT + NNGIT + GALUAR ;
+
 
 
 ### Usandsynlige morfemkombinationer ###
@@ -2343,6 +2357,7 @@ MAP:M0284C @<CONT_TASSA TARGET CONT IF (*-1 ("tassa") + @PRED BARRIER KOMMA)
 #########
 #SECTION#
 ########
+
 
 ### Direkte tale ###
 #==================#
@@ -3461,7 +3476,6 @@ MAP:M1939 @OBJ> TARGET Abs + Sg IF (1 CONT + 4Sg LINK 1 3SgO)(NEGATE *-1 Abs + S
 #Hvis ikke objekt eller subjekt, så nok tidsadverbium
 MAP:M1940A @ADVL> TARGET Abs + Sg + TIME IF (*1 INTRANSVERB + 3Sg BARRIER VFIN)(0 TIME LINK *1 @SUBJ> LINK *1 INTRANSVERB + 3Sg) ;
 MAP:M1940B @ADVL> TARGET Abs + Sg + TIME IF (*1 INTRANSVERB + 3Sg BARRIER (*) - @<N - @i->N) ;
-
 #Hvis ikke objekt, så nok subjekt
 MAP:M1940B @SUBJ> TARGET Abs + Sg - ("kinguneq") IF (*1 INTRANSVERB + 3Sg OR INTRANSVERB + 4Sg BARRIER TRANSVERB + 3SgO OR VFIN)(NEGATE 0 LU LINK 1 3PlO)(NEGATE 1 LU + Abs + Sg LINK *1 3PlO) #3PlO vedr. #20170425 -kinguneq for at forebygge hit på sætningsadverbial i Abs. 
 (NEGATE 0 TIME LINK NOT *1 TIMEVERB) ;#Det samme for resten af TIME.
@@ -4991,6 +5005,8 @@ REMOVE:9972B ("([^<]...*).."r) + (/Der\/.*/r) IF (0 (VSTR:"$1...+"r) - (/Der\/.*
 
 REMOVE:9975 (/__LLUAR\ Der\/vv\ INNAR__/l) IF (0 LLUINNAR) ;
 REMOVE:9973 LOAN ; # Slet låneord, hvis ikke eneste læsning
+
+
 
 ##############
 AFTER-SECTIONS
