@@ -1185,7 +1185,7 @@ LIST ORATIOOBLVERBnOQAR = "aalajanger" "aalianger" "eqqaa" "eqqaama" "eqqarsar" 
 SET ATUARnTAQ = ("atuar") - TAQ - VIK ;
 SET OQARnUSIQ = ("oqar") - (USIQ) ;
 SET ALLAANNGIT = ("alla") + U + NNGIT ;
-SET OQALUTTUAQnTAQ = ("oqaluttuaq") - TAQ ; #oqaluttuaraa, men ikke oqaluttuarisaaneq
+SET OQALUTTUAQnTAQ = ("oqaluttuaq") + GE - TAQ ; #oqaluttuaraa, men ikke oqaluttuarisaaneq
 SET TUSAAnTAQ = ("tusaa") - TAQ ;
 SET ORATIOOBLVERB = ORATIOOBLVERBnOQAR OR OQARnUSIQ OR ALLAANNGIT OR ATUARnTAQ OR OQALUTTUAQnTAQ OR TUSAAnTAQ ;
 
@@ -1211,7 +1211,7 @@ LIST TRANSINTRANS = "naalap" "nuup" "oqar"; #Set til verber med både transitive
 LIST SEKVENTIELLE_VERBER = "ani" "innar" ; #Sæt til anvendelse sammen med coref tidsbisætning
 LIST NAAR_VERBER = "angi" ("aki" KIP) "amerla" "isorartu" "kingusip" "miki" "oqip" "sivikip" "siusip" ; #stammer, der kan tage NAAR. Alle andre slettes
 LIST EVALUERENDE_VERBER = "kajungeraa" ; #verber med semantik der betinger objekt efter NIQ+Ins/Abl
-LIST INDERIVERENDE_SUBSTANTIV = "atuakkiaq" "filmiliaq" ("film" LIAQ) "inatsit" "isuma" "naapeqatigiinneq" "nalliuttorsiorneq" "oqaluttuaq" "qaatigooq" "sanaaq" ;
+LIST INDERIVERENDE_SUBSTANTIV = "atuakkiaq" "filmiliaq" ("film" LIAQ) "inatsit" "isuma" "naapeqatigiinneq" "nalliuttorsiorneq" "oqaluttuaq" "pineq" "qaatigooq" "sanaaq" ;
 #LIST VERBALNOMEN = "isuma" "oqaluttuaq" "naapeqatigiinneq" ;
 LIST INSOBJVERB = RAAR SI TAAR SIUR (/__LIR\ Der\/nv__/l) ;
 
@@ -1456,7 +1456,7 @@ REMOVE:0001B ("pitsap") + Gram/Exclm ;
 REMOVE:0001C (/__\"ili\"\ Gram\/IV__/l) IF (NEGATE *-1 ("qanoq")) ; #Accepter kun 'qanoq ililluni/ isilluni' etc. Ellers nok ilivaa/iserpoq/isigivaa etc.
 REMOVE:0001D (/__\"isi\"\ Gram\/IV__/l) IF (NEGATE *-1 ("qanoq")) ;
 REMOVE:0001E ("to") + VIK IF (0 ("tui")) ;
-REMOVE:0001F ("ip") IF (NEGATE -1 Aeq OR ("qanoq") OR ("taama") OR ("ima") OR ("immi") + Via );
+REMOVE:0001F ("ip") IF (NEGATE -1 Aeq OR ("qanoq") OR ("taama") OR ("ima") OR ("immi") + Via )(NEGATE 0 ("ittoq") OR ("ittuk"));
 REMOVE:0001G ("illip") + Gram/Exclm IF (0 ("illit")) ;
 
 #REMOVE:0001XX UGEDAGE + Gram/TV IF (0 UGEDAGE + Gram/IV) ; #NNGUR + Gram/TV utænkelig ved ugedages navne #udkommenteret og gjort listen entydig i stedet.
@@ -1647,7 +1647,8 @@ REMOVE:7253 Par IF (-1* ("una") + Prefix/AA BARRIER (*) - Abs - Part) ;
 #Arnaq i første position er et reelt problem
 REMOVE:0001X ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"%l$1"r))(-1 BOS) (NEGATE 1 Prop) ;
 SELECT:0001Y ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"$1"r))(-1 BOS) ;
-REMOVE:0001Z N IF (0 Prop - PROP_VS_APPELLATIV LINK *1 HUMVERB); #Manu iserpoq. Manu er mest sandsynligt et proprium.
+REMOVE:0001Z N IF (0 PROP_VS_APPELLATIV LINK *1 HUMVERB OR humverb); #Manu iserpoq. Manu er mest sandsynligt et proprium.
+REMOVE:0001Z N IF (0 Prop - Sem/Geo LINK *1 HUMVERB OR humverb); #Manu iserpoq. Manu er mest sandsynligt et proprium.
 
 # Appositional proper noun without comma
 REMOVE:0001A Prop + Sem/FirstName IF (0 Prop + Sg)(-1 N + Sg)(*1 VFIN + 3Sg BARRIER KOMMA);
@@ -2272,7 +2273,8 @@ MAP:M0230Atassa @PRED TARGET ("tassa") - MI - UNA IF
 (NEGATE *0 VFIN)
 (NEGATE *1 Par BARRIER (*) - Adv - OBLIQUE LINK 1 CLB LINK *-2 (*) - VFIN) #Tassa ajortoq.
 #(1* N + Abs) 
-(NEGATE 1 ("taama") + IP) ;
+(NEGATE 1 ("taama") + IP)
+(NEGATE *1 NIQ + Abl OR NIQ + Ins) ; #
 
 #nexusadverbial med og uden komma. Forekommer muligvis også uden VFIN.
 MAP:tassa @CL-ADVL> TARGET ("tassa") + GUUQ ;
@@ -2286,10 +2288,15 @@ MAP:M0560 (@CL-ADVL>) TARGET ("tassa") - LI IF (*1 V BARRIER KOMMA)
 (NEGATE -1 ("soorlu") + MI); #Qullini ikikkaangamiuk soorlumi tassa ullorissamik allamik pinngortitsisartoq, naasumilluunniit nutaamik.
 MAP:tassa @CL-ADVL> TARGET ("tassa") + LI (*1 NIQ + Abl OR NIQ + Ins) 
 (NEGATE 1 ("taama") + IP) ;
+MAP:tassa @CL-ADVL> TARGET ("tassa") + LI (*1 Cau OR @CAU BARRIER V LINK 1 CLB) 
+(NEGATE 1 ("taama") + IP)
+(NEGATE *-1 VFIN) ;
 
 #advl
 MAP:tassa @ADVL> TARGET ("tassa") + LI (*1 NGAAR + Cau) ;
 MAP:tassa @ADVL> TARGET ("tassa") (1 ("taama") + IP) ; # - Tassa taamaattorpiarpiaavimmik perusullunga.
+MAP:tassa @ADVL> TARGET ("tassa") + LI (*1 Cau OR @CAU BARRIER V LINK NOT *-1 VFIN) 
+(NEGATE 1 ("taama") + IP) ;
 
 #foc
 MAP:tassa @FOC TARGET ("tassa") + UNA 
@@ -2302,7 +2309,7 @@ MAP:tassa @CL-<CIT TARGET ("tassa")
 MAP:tassa @CL-<CIT TARGET V (1 EOS OR KOMMA)(*-1 ("tassa") BARRIER VFIN LINK -1 KOMMA OR BOS LINK -*1W ORATIOOBLVERB - DIRTALE BARRIER VFIN); #Aamma nuannarivallaanngisaminik paasisaqarpoq. Tassa inuussutigisassatik naammattusaarniassagunikkit imernikillisariaqarluni. 
 
 #adnominalt adled til subjektsprædikativ for "tassa"
-MAP:M0301A1 @i-N< TARGET Abs - Num IF (*-1 ("tassa") BARRIER V)(NEGATE *1 V BARRIER KOMMA) ; 
+MAP:M0301A1 @i-N< TARGET Abs - Num IF (*-1 ("tassa") - @CL-ADVL> BARRIER V)(NEGATE *1 V BARRIER KOMMA) ; 
 MAP:M0301B @i-N< TARGET Abs IF (*-1 ("tassa") LINK *-1 ORATIOOBLVERB BARRIER V OR KOMMA)(NEGATE 1 ("tassa")) ;
 MAP:M0284 @i-N< TARGET Abs + $$NUMERUS IF (-1 ("tassa") LINK -1 Gram/Pers + Pron ) ;
 
@@ -2352,7 +2359,7 @@ MAP:M0284 @i-N< TARGET Abs + $$NUMERUS IF (-1 ("tassa") LINK -1 Abs + $$NUMERUS 
 #Samme som ovenfor men anaforisk. 'Tassa Emilie.'
 SELECT:0285 ("tassa") + Adv IF (-1 EOS)(1 Abs);
  
-MAP:M0285 @i-N< TARGET Abs + &&IV_SUBJ& IF (-1 ("tassa") LINK -1 BOS)(NEGATE *1 &&IV_SUBJ&) ; #Må ikke hitte på subjekter som 'Tassa inuusuttut nuannassuataartut.'
+MAP:M0285 @i-N< TARGET Abs + &&IV_SUBJ& IF (-1 ("tassa") - @CL-ADVL> LINK -1 BOS)(NEGATE *1 &&IV_SUBJ&) ; #Må ikke hitte på subjekter som 'Tassa inuusuttut nuannassuataartut.'
 
 
 #MAP:M0284A @i-N< TARGET Abs IF (-1 @FOC)(1 EOS OR KOMMA); # N tassa N. eller Tassa N.
@@ -3584,7 +3591,7 @@ SELECT:0435A Par + INTRANSVERB IF (*-1 ORATIOOBLVERB LINK *1 Abs)(NEGATE -*1 VFI
 SELECT:0437 Der/vn + Sg IF (-*1 N + Sg)(1 Der/vn + Sg + LU LINK *1C Par) ;
 #Specialfald til foelgende hvor Der/vn vn+LU foelges af Par
 LIST MASK = ("erneq") ;
-SELECT:0439 Par + 3Sg IF (-*1 Abs + Sg)(NEGATE *0 VFIN - ("tassa"))(NEGATE *1C Par) ;
+SELECT:0439 Par + 3Sg IF (-*1 Abs + Sg)(NEGATE *0 VFIN)(NEGATE *1C Par) ;
 #Participium i overskrifter. Anden NEGATE pga. VnIkkePar til venstre for en overskrifts-Par
 
 REMOVE:0441 Par + 3Pl IF (NEGATE *0 VFIN)(NEGATE 0 VFIN)(*1 Par + 3Pl) ; # evt. også (@1 ("tassa")) som IF, hvis for bred
@@ -4799,6 +4806,7 @@ REMOVE:5856 ("inneq") + SUAQ + U IF (0 ("innersuup")) ;
 REMOVE:5857 ("qaap") IF (0 ("qaannivik") or ("qajaq")) ; #kajakstativ mest sandsynlig
 REMOVE:5858 ("ilersaq") + GE + Gram/Refl IF (0 TARE + Ind) ;
 REMOVE:5859A ("tassaar") IF (0 ("tassa") + U) ;
+SELECT:5859B ("ip" TUQ U) IF (0 ("ittoq") OR ("ittuk")) (*-1 TIME BARRIER V); #aasaq 1970 immikkut ittuuvoq.
 
 #Partiklerne
 REMOVE:5860 ("taama") + Interj IF (0 ("taama") + Adv LINK 1 V) ;
