@@ -1647,6 +1647,7 @@ REMOVE:7253 Par IF (-1* ("una") + Prefix/AA BARRIER (*) - Abs - Part) ;
 #Arnaq i første position er et reelt problem
 REMOVE:0001X ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"%l$1"r))(-1 BOS) (NEGATE 1 Prop) ;
 SELECT:0001Y ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"$1"r))(-1 BOS) ;
+REMOVE:0001Z N IF (0 Prop - PROP_VS_APPELLATIV);
 
 # Appositional proper noun without comma
 REMOVE:0001A Prop + Sem/FirstName IF (0 Prop + Sg)(-1 N + Sg)(*1 VFIN + 3Sg BARRIER KOMMA);
@@ -2301,7 +2302,7 @@ MAP:tassa @CL-<CIT TARGET ("tassa")
 MAP:tassa @CL-<CIT TARGET V (1 EOS OR KOMMA)(*-1 ("tassa") BARRIER VFIN LINK -1 KOMMA OR BOS LINK -*1W ORATIOOBLVERB - DIRTALE BARRIER VFIN); #Aamma nuannarivallaanngisaminik paasisaqarpoq. Tassa inuussutigisassatik naammattusaarniassagunikkit imernikillisariaqarluni. 
 
 #adnominalt adled til subjektsprædikativ for "tassa"
-MAP:M0301A1 @i-N< TARGET Abs - Num IF (*-1 ("tassa") BARRIER V)(NEGATE *1 V) ; 
+MAP:M0301A1 @i-N< TARGET Abs - Num IF (*-1 ("tassa") BARRIER V)(NEGATE *1 V BARRIER KOMMA) ; 
 MAP:M0301B @i-N< TARGET Abs IF (*-1 ("tassa") LINK *-1 ORATIOOBLVERB BARRIER V OR KOMMA)(NEGATE 1 ("tassa")) ;
 MAP:M0284 @i-N< TARGET Abs + $$NUMERUS IF (-1 ("tassa") LINK -1 Gram/Pers + Pron ) ;
 
@@ -3582,9 +3583,8 @@ SELECT:0435A Par + INTRANSVERB IF (*-1 ORATIOOBLVERB LINK *1 Abs)(NEGATE -*1 VFI
 
 SELECT:0437 Der/vn + Sg IF (-*1 N + Sg)(1 Der/vn + Sg + LU LINK *1C Par) ;
 #Specialfald til foelgende hvor Der/vn vn+LU foelges af Par
-
-SELECT:0439 Par + 3Sg IF (-*1 Abs + Sg)(NEGATE *0 VFIN)(NEGATE *1C Par)
-#(NEGATE *-1  ;
+LIST MASK = ("erneq") ;
+SELECT:0439 Par + 3Sg IF (-*1 Abs + Sg)(NEGATE *0 VFIN - ("tassa"))(NEGATE *1C Par) ;
 #Participium i overskrifter. Anden NEGATE pga. VnIkkePar til venstre for en overskrifts-Par
 
 REMOVE:0441 Par + 3Pl IF (NEGATE *0 VFIN)(NEGATE 0 VFIN)(*1 Par + 3Pl) ; # evt. også (@1 ("tassa")) som IF, hvis for bred
@@ -4734,7 +4734,7 @@ REMOVE:5717 ("tulloq") + U IF (0 ("tulluup")); #'hvalvorte' sjælden og sandsynl
 REMOVE:5718 ("iver") + Gram/TV + TAQ IF (0 ("ivigaq")) ;
 REMOVE:5719 ("imaq") IF (0 ("ima") + QAR OR ("ima") + LIK) ;
 REMOVE:5720 ("iseq") IF (1 ("tagiartor")) ;
-REMOVE:5721 ("angajoqqaaq") + Sg IF (NOT 1 ("aappaq")) ;
+REMOVE:5721 ("angajoqqaaq") + Sg IF (NOT 1 ("aappaq")) ; #forældre er normalt flertal medmindre andet er specificeret
 
 # Appellativ eller proprium?
 SELECT:5730 Prop IF (-1 BOS)(1 Prop + LU); #Stochastisk overvejelse. Paratakse af appellativ og proprium ikke ret sandsynlig
