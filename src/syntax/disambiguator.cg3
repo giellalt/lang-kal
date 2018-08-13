@@ -2381,12 +2381,13 @@ MAP:M0284C @<CONT_TASSA TARGET CONT IF (*-1 ("tassa") + @PRED BARRIER KOMMA)
 #==================#
 
 #MAP EXCLAMATION som nomen med verbal semantik, hvis udråb.
-MAP @EXCLM TARGET EXCLAMATION IF (1 EXCLMARK)
+MAP:exclm @EXCLM TARGET EXCLAMATION IF (1 EXCLMARK)
 (NEGATE *0S V - GAANNI) ;
-MAP @EXCLM TARGET EXCLAMATION IF (*-1 (*) - V LINK -1 ("-"))
+MAP:exclm @EXCLM TARGET EXCLAMATION IF (*-1 (*) - V LINK -1 ("-"))
 (*1 KOMMA LINK *1 DIRTALE) ;
-MAP @EXCLM TARGET Gram/Exclm IF (1 EXCLMARK) 
+MAP:exclm @EXCLM TARGET Gram/Exclm IF (1 EXCLMARK) 
 (NEGATE *0S V - Gram/Exclm - GAANNI) ;
+MAP:exclm @EXCLM TARGET EXCLAMATION IF (NEGATE *0S V - DIRTALE);
 MAP @ADVL> TARGET Gram/Dem (1 @EXCLM OR Gram/Exclm LINK 1* EXCLMARK) ;
 #Direkte tale markeres fordi det danner selvstændige sætninger.
 
@@ -2428,6 +2429,7 @@ MAP:M0408O @i-ADVL>N TARGET OBLIQUE IF (*1 INDERIVERENDE_SUBSTANTIV BARRIER (*) 
 MAP:M0408P @i-ADVL>N TARGET CONT + TRANSVERB + ("pi") IF (1 INDERIVERENDE_SUBSTANTIV LINK NOT 1 ("ajor")) ; #Kopi af M1147
 MAP:M0408Q @i-ADVL>N TARGET Lok + PLACE IF (1 INDERIVERENDE_SUBSTANTIV) ;
 MAP:M0408R @i-ADVL>N TARGET Adv IF (1C INDERIVERENDE_SUBSTANTIV - QAR LINK NOT *1 V) ;
+
 
 ######################
 # 4SgPoss eller Lok+Pl?
@@ -2862,7 +2864,7 @@ MAP:M0341A @<N TARGET Abs + Pl + Der/vn - LU IF (-*1 Abs + Pl - Sem/FirstName - 
 MAP:M0342 @<N TARGET Abs + Sg + Der/vn IF (-*1 Abs + Sg BARRIER VFIN OR KOMMA LINK -*1 Abs + Sg)(*1 3SgO BARRIER KOMMA)(NEGATE *-1 Abs + Sg LINK 1 NIQ + Ins)(NEGATE *-1 ("pi") + CONT LINK **-1 Abs BARRIER (*) - CONT); # Men OK hvis TARGET er objektskomplement i sekvensen SUBJ+Abs : OBJ : OBJ_COMP : CONT+3SgO : INTRANSVERB+3Sg. Sidste NEGATE er en ad hoc regel for at undgå hit på @NIQ_OBJ
 
 #Kongruensadled er typisk vn, Num eller ATTRIBUTIV. LU vil ofte være udtryk for en parataktisk kerne, hvorfor parataktiske kongruensadled behandles separat i regel :M0351NY. i-adled til inderivering til højre er ikke kongruensadled
-MAP:M0350NY @<N TARGET Der/vn + $$KASUS + $$NUMERUS - LU - LUUNNIIT OR Num + $$KASUS - LU - LUUNNIIT OR LIK + $$KASUS - LU - LUUNNIIT IF (-*1 N + $$KASUS + $$NUMERUS BARRIER (*) - OBLIQUE - Part - Gram/Dem)(NEGATE 0 Ins LINK *1 QAR OR LIK BARRIER VFIN)(NEGATE 0 Num LINK 1 Num OR iNum)(NEGATE 1 NUMHOVED)(NEGATE -1 ("akunneq") OR ("aasaq"));#(NEGATE 0 Num LINK -1 TIME ); #VFIN som barrier ret tilfældigt valgt #Krævet numeruskongruens 20180621
+MAP:M0350NY @<N TARGET Der/vn + $$KASUS + $$NUMERUS - LU - LUUNNIIT OR Num + $$KASUS - LU - LUUNNIIT OR LIK + $$KASUS - LU - LUUNNIIT IF (-*1 N + $$KASUS + $$NUMERUS BARRIER (*) - OBLIQUE - Part - Gram/Dem)(NEGATE 0 Ins LINK *1 QAR OR LIK BARRIER VFIN)(NEGATE 0 Num LINK 1 Num OR iNum)(NEGATE 1 NUMHOVED)(NEGATE -1 ("akunneq") OR ("aasaq")) ;#(NEGATE 0 Num LINK -1 TIME ); #VFIN som barrier ret tilfældigt valgt #Krævet numeruskongruens 20180621
 
 #Regel til parataktiske adled som i 'puiaasat imaqanngitsut imallillu'
 MAP:M0351NY @<N TARGET Der/vn + $$KASUS + LU OR Num + $$KASUS + LU OR LIK + $$KASUS + LU IF (-*1 N + $$KASUS + @<N BARRIER (*) - OBLIQUE - Part)(NEGATE 0 Ins LINK *1 QAR OR LIK);
@@ -3121,7 +3123,8 @@ MAP:M0730 (@<SUBJ) TARGET (Abs Pl) IF (-*1C INTRANSVERB + 3Pl OR 4Pl BARRIER V)(
 
 # Nominer i absolut kasus er oftest subjekt for intransitivt verbum 
 MAP:M0740 @SUBJ> TARGET APPELLATIV + Abs + Sg - ("kingu" NIQ) OR Prop + Abs OR (/__Gram\/Dem\ Pron__/l) + Abs + Sg IF (*1 INTRANSVERB + 3Sg BARRIER KOMMA)(NEGATE *1 TRANSVERB + VFIN)(NEGATE 1 Cont + TRANSVERB)(NEGATE 0 TIME LINK *1 @SUBJ> LINK *1 INTRANSVERB + 3Sg) #20170425 -kinguneq for at forebygge hit på sætningsadverbial i Abs. 
-(NEGATE 0 TIME LINK NOT *1 TIMEVERB) ;#Det samme for resten af TIME.
+(NEGATE 0 TIME LINK NOT *1 TIMEVERB) #Det samme for resten af TIME.
+(NEGATE 0 PLACE LINK 1 VIK + GE + TAQ) ;
 
 MAP:M0761 (@HNOUN) TARGET N + Abs IF (-1 ("\"") LINK -1 (" ") LINK -1 BOS)(1 KOMMA)(*1 Imp) ; #Et isoleret nomen er vokativ også først i anført tale
 MAP:M0762 (@HNOUN) TARGET N + Abs IF (-1 BOS)(1 KOMMA)(*1 Imp) ; #Et isoleret nomen er vokativ
@@ -4807,6 +4810,7 @@ REMOVE:5857 ("qaap") IF (0 ("qaannivik") or ("qajaq")) ; #kajakstativ mest sands
 REMOVE:5858 ("ilersaq") + GE + Gram/Refl IF (0 TARE + Ind) ;
 REMOVE:5859A ("tassaar") IF (0 ("tassa") + U) ;
 SELECT:5859B ("ip" TUQ U) IF (0 ("ittoq") OR ("ittuk")) (*-1 TIME BARRIER V); #aasaq 1970 immikkut ittuuvoq.
+SELECT ("eqqumiip") + SSUSIQ + 3SgPoss IF (0 ("eqqoq"));
 
 #Partiklerne
 REMOVE:5860 ("taama") + Interj IF (0 ("taama") + Adv LINK 1 V) ;
