@@ -1490,6 +1490,8 @@ REMOVE:0003A ("uv") + Interj IF (0 ("uffa") + Interj) ;
 #SUBSTITUTE:adv1 (LI)(ADV-LIX1) TARGET LI + UNA OR LI + MI ;
 #REMOVE LUUNNIIT ;
 
+SELECT:conj ("aamma") + Conj IF (-1* Prop BARRIER (*) - TITEL LINK *1 _TARGET_ LINK *1 Prop BARRIER (*) - TITEL) ; #Aviaq aamma Kunuk
+
 ### Usandsynlige morfemkombinationer ###
 #======================================#
 
@@ -1916,7 +1918,7 @@ REMOVE:0100X 2SgPoss IF (NEGATE @0 (*) LINK -1*W Abs + 2Sg BARRIER BOS) (T:alone
 SELECT:0100Y Pl + $$KASUS IF (1 Num + Pl + $$KASUS) (0C 2SgPoss) ;
 
 SELECT:0100A 2SgPoss IF (*0 ("quja" NAR Gram/Exclm))(NEGATE -1 ("uanga"))(NEGATE *0 VFIN) ; #Kontekst, der maa sikres foer foelgende REMOVE
-SELECT:0100B 2SgPoss - ("massak") - SSA IF (NEGATE *0 V)(*1 ("?"))(NEGATE 0 V + 2Sg)(NEGATE *0 Gram/Int + Pron + Pl) ; #Kontekst, der maa sikres foer foelgende REMOVE. Specialitet at massak+Via opfattes som 2SgPoss og ikke Der/vn med SSA
+SELECT:0100B 2SgPoss - ("massak") - SSA IF (NEGATE *0S V OR INDERIVERENDE_SUBSTANTIV)(*1 ("?"))(NEGATE 0 V + 2Sg)(NEGATE *0 Gram/Int + Pron + Pl) ; #Kontekst, der maa sikres foer foelgende REMOVE. Specialitet at massak+Via opfattes som 2SgPoss og ikke Der/vn med SSA
 #SELECT:0101X Abs + 2SgPoss IF (*1 Ind + 3Sg + INTRANSVERB BARRIER TRANSVERB + 3SgO)(NEGATE 0 Pl + Abs LINK *1 Par + 3Pl) ; #Et sikkert subjekt må ikke læses som plur. BARRIER pga. mulig ledsagemåde med objekt. Der tages højde for en mulig or. obl. før verbet
 #Ny formulering, da tagger forkert fx 'amerlanerit sinippiaratik .. '
 SELECT:0101X Abs + 2SgPoss IF 
@@ -2599,8 +2601,9 @@ MAP:M0031 (@PROP>) TARGET Prop + Abs OR FIRSTNAME + Abs OR TITEL + Abs IF (1 Pro
 #Forsøg på en mere generel regel for Prop der er @<APPOS til noget ikke-Prop
 MAP:M0032 @<APPOS TARGET PROP + $$KASUS - LU IF (-*1C N + $$KASUS - Prop BARRIER (*) - KOMMA )(NEGATE 1 KOMMA LINK 1 $$KASUS)(NEGATE -1 @PROP>) ; #NEGATE for at undgå at hitte på opremsninger
 MAP:M0032A @<APPOS TARGET PROP + Abs + Sg - LU IF (-1 Prop + Sem/FirstName)(-2 N + Abs + Sg )(NEGATE -2 @PROP>)(NEGATE -2 TITEL) ; # N per langgård
-MAP:M0033 @<APPOS TARGET PROP + Abs + Sg - LU IF (-1 N + Abs + Sg)(NEGATE -1 @PROP> )(NEGATE -1 TITEL) ; # N Per
+MAP:M0033C @<APPOS TARGET PROP + Abs + Sg - LU IF (-1 N + Abs + Sg)(NEGATE -1 @PROP> )(NEGATE -1 TITEL) ; # N Per
 #første NEGATE for at forhindre hit på fx (Royal Arctic Line)@SUBJ> VERBUM og -LU for ikke at hitte på Danmark Islandilu og andet NEGATE for at blokere PISORTAQ Per Langgård oqarpoq
+MAP:M0033D @<APPOS TARGET PROP + Abs + Sg - LU IF (*-1 Conj BARRIER (*) - @PROP> - TITEL LINK *-1 PROP + Abs + Sg - LU BARRIER (*) - @PROP> - TITEL LINK -1 N + Abs + Pl) ;
 
 #MAP:M0033A @<N TARGET (/__TUQ\ Der\/vn\ N__/l) + $$KASUS + $$NUMERUS IF (-1 N + $$KASUS + $$NUMERUS) ; #Erstattet med substitute i AFTERSECTIONS
 
@@ -2724,7 +2727,7 @@ MAP:M0220B @ADVL> TARGET Gram/Abbr + Sem/Time IF (*1 V)(NEGATE -*1 V) ;
 #"aamma" er adverbiel sammen med negation også når den står hvor en konjunktion plejer at stå. Fejlhitter på NEXUS komma aammami nalunngilaa .., hvor aamma klart er en konjunktion. Fejlhitter også på "SUBJ paasivaa ikiuuttariaqarluni. Aamma .. paasisaqarpoq." Det formodes, at aamma + MI langt oftest vil være en konjunktion derfor tilføjes - MI ligesom det formodes, at "aamma" i @1 næsten altid vil være konjunktion 
 SELECT:0225 ("aamma") + Adv - MI - LU IF (1 NNGIT)(NEGATE -1 BOS) ;
 MAP:M0225 @ADVL> TARGET ("aamma") + Adv - MI - LU IF (1 NNGIT)(NEGATE -1 BOS) ;
-SELECT:0225A ("aamma") + LU + Adv IF (NEGATE *0 V OR Prefix/AA + ("una")) ; #Udbrudsagtig Adv uden nexus
+SELECT:0225A ("aamma") + LU + Adv IF (NEGATE *0 V OR INDERIVERENDE_SUBSTANTIV OR Prefix/AA + ("una")) ; #Udbrudsagtig Adv uden nexus
 MAP:M0225A @INTERJ ("aamma") + LU + Adv IF (NEGATE *0 V OR Prefix/AA + ("una")) ; #Udbrudsagtig Adv uden nexus
 #"aamma" er adverbiel 'også'
 SELECT:0225B ("aamma") + Adv IF (0* ("tassa") OR ("taava") BARRIER (*)) ;
@@ -3021,9 +3024,11 @@ MAP:M0500 @<N TARGET Trm IF (-1C Trm)(NEGATE *1 V)(NEGATE 0 ("tamaq") LINK -1 ("
 MAP:M1722C @<N TARGET Num + $$NUMERUS IF (-1 Abs + $$NUMERUS)(-1 @HNOUN); #særlig for HNOUN NP 
 MAP:M0510 @<N TARGET ("alla") + N + $$KASUS + $$NUMERUS - LU OR ("arlaaq") + N + $$KASUS + $$NUMERUS IF (-1 N + $$KASUS + $$NUMERUS) ;
 MAP:M0511 @<N TARGET ATTRIBUTIV + N + $$KASUS + $$NUMERUS OR ("arlaaq") + N + $$KASUS + $$NUMERUS IF (-1 N + $$KASUS + $$NUMERUS) ;
-MAP:M0512 @<N TARGET N + $$KASUS + $$NUMERUS - POSSESSUM IF (*-1 $$KASUS + $$NUMERUS BARRIER (*) - @>N - @<N)(NEGATE -1 ("una"))(NEGATE -1 PLACE - MIU)(NEGATE 0 CONJ-C + Num LINK -1 Num OR iNum)(NEGATE 0 CONJ-C - Num)(NEGATE 0 $$KASUS LINK -1 Num LINK -1 ("nal") LINK *-1 (*) - $$KASUS)(NEGATE 0 Rel LINK 1 POSSESSUM) ;
+MAP:M0512 @<N TARGET N + $$KASUS + $$NUMERUS - POSSESSUM IF (*-1 $$KASUS + $$NUMERUS BARRIER (*) - @>N - @<N)(NEGATE -1 ("una"))(NEGATE -1 PLACE - MIU)(NEGATE 0 CONJ-C + Num LINK -1 Num OR iNum)(NEGATE 0 CONJ-C - Num)(NEGATE 0 $$KASUS LINK -1 Num LINK -1 ("nal") LINK *-1 (*) - $$KASUS)(NEGATE 0 Rel LINK 1 POSSESSUM)
+(NEGATE -1 @i-ADVL>N LINK NOT *-1 N + $$KASUS + $$NUMERUS - POSSESSUM); #ukaliatsiap amianik sanaamik tamavimmik poorsimavoq.
 MAP:M0513 @<N TARGET N + $$KASUS IF (0 ("tamalaaq") LINK -1 ("nuna") + $$KASUS) ;
-MAP:M0514 @<N TARGET $$KASUS + $$NUMERUS + OBLIQUE - CONJ-C IF (*-1 $$KASUS + $$NUMERUS - Num - TIME - PLACE_EXTENDED - ("akunneq" Lok) BARRIER V OR CONJ-C OR Abs OR EOS) ;
+MAP:M0514 @<N TARGET $$KASUS + $$NUMERUS + OBLIQUE - CONJ-C IF (*-1 $$KASUS + $$NUMERUS - Num - TIME - PLACE_EXTENDED - ("akunneq" Lok) BARRIER V OR CONJ-C OR Abs OR EOS) 
+(NEGATE -1 @i-ADVL>N LINK NOT *-1 N + $$KASUS + $$NUMERUS - POSSESSUM); #ukaliatsiap amianik sanaamik tamavimmik poorsimavoq.
 #(*-1 (*) - VFIN LINK *-1 $$KASUS + $$NUMERUS BARRIER VFIN)(NEGATE *1 DOTR BARRIER EOS OR KONCESSIV)(NEGATE *1 LOKVERB OR TRMVERB OR ABLVERB LINK *-1 (*) - EOS - KONCESSIV + _TARGET_ LINK *-1 Sg + $$KASUS + $$NUMERUS);
 
 #Ikke-inderiverede og inderiverede nominer med possessor: uanga najukkanneersut paasilluarniassammassuk
