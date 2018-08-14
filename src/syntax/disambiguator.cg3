@@ -1455,11 +1455,12 @@ DELIMIT ("<">") IF (-1W _S_DELIMITERS_) ; #virker tilsyneladende ikke
 #Helt skæve læsninger
 REMOVE:0001A ("ip") + LAAR + Gram/Exclm IF (0 ("ila")) ;
 REMOVE:0001B ("pitsap") + Gram/Exclm ;
-REMOVE:0001C (/__\"ili\"\ Gram\/IV__/l) IF (NEGATE *-1 ("qanoq")) ; #Accepter kun 'qanoq ililluni/ isilluni' etc. Ellers nok ilivaa/iserpoq/isigivaa etc.
+REMOVE:0001C (/__\"ili\"\ Gram\/IV__/l) IF (NEGATE *-1 ("qanoq"))(NEGATE 0 Orth/Arch) ; #Accepter kun 'qanoq ililluni/ isilluni' etc. Ellers nok ilivaa/iserpoq/isigivaa etc.
 REMOVE:0001D (/__\"isi\"\ Gram\/IV__/l) IF (NEGATE *-1 ("qanoq")) ;
 REMOVE:0001E ("to") + VIK IF (0 ("tui")) ;
 REMOVE:0001F ("ip") IF (NEGATE -1 Aeq OR ("qanoq") OR ("taama") OR ("ima") OR ("immi") + Via )(NEGATE 0 ("ittoq") OR ("ittuk"));
 REMOVE:0001G ("illip") + Gram/Exclm IF (0 ("illit")) ;
+REMOVE:0001H ("ata") + USIQ IF (0 ("ataaseq")) ;
 
 #REMOVE:0001XX UGEDAGE + Gram/TV IF (0 UGEDAGE + Gram/IV) ; #NNGUR + Gram/TV utænkelig ved ugedages navne #udkommenteret og gjort listen entydig i stedet.
 
@@ -2892,7 +2893,7 @@ MAP:M0350 @<N TARGET N + $$KASUS + $$NUMERUS - LU - Prop IF (-1 Prop + $$KASUS +
 #Adnominale adled (adjektiver). Bredeste regel for adled til substantiver. -LU for at forhindre hit på parataktiske NP og NEGATE nødvendig for ikke at tagge en possessor efter proprium i relativ. NEGATE for at forhindre hit på possessor fulgt af apposition og NEGATE for at udelukke fornavn fulgt af efternavn. NEGATE fordi HTR TUQ QAR ikker er <N til et Ins, men Ins er @i-MIK-OBJ> til HTR TUQ QAR. 
 MAP:M0350A @<N TARGET N - V + $$KASUS + $$NUMERUS - LU - LUUNNIIT IF (-1 N + $$KASUS + $$NUMERUS OR Pron + $$KASUS + $$NUMERUS OR Adv + $$KASUS)(NEGATE -1 Rel LINK 1 Rel LINK 1 POSSESSUM3 OR POSSESSUM4)(NEGATE -1 Rel LINK 1 Rel + POSSESSUM3 LINK 1 Prop)(NEGATE 0 (/__HTR\ Der\/vv\ Gram\/IV\ TUQ\ Der\/vn\ QAR__/l) LINK -1 Ins LINK -1 BOS)(NEGATE -1 @Pron>N)(NEGATE *-1 (*) - Ins BARRIER V) ; #NB Næstsidste NEGATE for skyld typen 'Taakku meeqqat naalapput' #Sidste NEGATE for at undgå at adverbale Ins bliver adnominale i et helt andet syntagme.
 #Specialitet ved parataktiske adnominaler. NY 20180526
-MAP:M0350AX @<N TARGET N - V + $$KASUS + $$NUMERUS + LU OR LUUNNIIT IF (-1 @<N + $$KASUS + $$NUMERUS OR Pron + $$KASUS + $$NUMERUS OR Adv + $$KASUS)(NEGATE -1 Rel LINK 1 Rel LINK 1 POSSESSUM3 OR POSSESSUM4)(NEGATE -1 Rel LINK 1 Rel + POSSESSUM3 LINK 1 Prop)(NEGATE 0 (/__HTR\ Der\/vv\ Gram\/IV\ TUQ\ Der\/vn\ QAR__/l) LINK -1 Ins LINK -1 BOS) ;
+MAP:M0350AX @<N TARGET N - V + $$KASUS + $$NUMERUS IF (0 LU OR LUUNNIIT )(-1 @<N + $$KASUS + $$NUMERUS OR Pron + $$KASUS + $$NUMERUS OR Adv + $$KASUS)(NEGATE -1 Rel LINK 1 Rel LINK 1 POSSESSUM3 OR POSSESSUM4)(NEGATE -1 Rel LINK 1 Rel + POSSESSUM3 LINK 1 Prop)(NEGATE 0 (/__HTR\ Der\/vv\ Gram\/IV\ TUQ\ Der\/vn\ QAR__/l) LINK -1 Ins LINK -1 BOS) ;
 
 #kongruensadled af typen Der/vn må mappes tidligt for at undgå at kerneleddet tagges som inderiveret adverbial. Possessorer må ikke tagges som kongruensadled. Næstsidste NEGATE for at forebygge at objekt til V til højre tagges som adled sidste for skyld indskudt transitiv ledsagemåde mellem subjekt og V
 MAP:M0351 @<N TARGET Der/vn + $$KASUS + $$NUMERUS - LU - iALL OR Num + $$KASUS + $$NUMERUS - LU IF (-*1 N + $$KASUS + $$NUMERUS BARRIER (*) - Part)(NEGATE 0 Rel + Sg LINK 1 3SgPoss)(NEGATE 0 Rel + Pl LINK 1 3PlPoss OR 4PlPoss) (NEGATE 1 3SgO) ((NOT 0 POSSESSUM) OR (0 $$POSSESSUM LINK -1 $$POSSESSUM))(NEGATE 0 Abs + &&OBJ_CONT LINK 1 CONT + &&OBJ_CONT)(NEGATE 0 Num LINK -1 TIME)(NEGATE 0 Num LINK 1 Num OR iNum) ; #20171121 rettet NEGATE fra ..  OR 3PlO), der vist udelukker de fleste adled ??
@@ -2919,7 +2920,8 @@ MAP:M0408Enum @i->N TARGET TIME IF (1 iNum) ; #AASAQ 1989
 MAP:M0408Fnum @<N TARGET Num + Abs IF (-1 SEASON) ;
 MAP:M0409 (@HNOUN) TARGET N OR Gram/Abbr OR Num IF (NEGATE *0 V)(1 ParagrafSlut); #20100827 Safe headlines
 MAP:M0410 (@HNOUN) TARGET APPELLATIV + Abs OR Prop + Abs OR Gram/Abbr - FIRSTNAME IF (NEGATE *0 VERB-NOTCONT)(NEGATE *1 TRANSVERB + CONT)(NEGATE *-1 ("tassa") LINK *1 CONT + INTRANSVERB BARRIER VFIN) ;
-MAP:M0411 @HNOUN TARGET WORD - V - Interj - Gram/Exclm - Pron IF (NEGATE *0 V BARRIER §dir-tale-slut)(1 EOS) ;
+MAP:M0411 @HNOUN TARGET WORD - V - Interj - Gram/Exclm - Pron IF (NEGATE *0 V BARRIER §dir-tale-slut)(1 EOS)
+;#***(NEGATE 0 Lok + POSSESSUM) ; #Lok + Possessum giver ofte sætningsadverbial: Baobabit aallaqqaammut mikisuusarput - allinnginnerminni.
 #MAP:M0415 (@i-ADVL>) TARGET Trm IF (1 N + (vn))(NEGATE 1 Lok + IP + TUQ + Trm) ; #må ikke tagge på basis af sit eget kongrunsadled
 MAP:M0415 @i-ADVL> TARGET Trm IF (1 N + (vn))(NEGATE 1 @<N); #(NEGATE 1 Lok + IP + TUQ + Trm) ; #må ikke tagge på basis af sit eget kongrunsadled. Formuleringen med @<N overflødiggør måske sidste NEGATE
 
@@ -3041,7 +3043,8 @@ MAP:M1722C @<N TARGET Num + $$NUMERUS IF (-1 Abs + $$NUMERUS)(-1 @HNOUN); #særl
 MAP:M0510 @<N TARGET ("alla") + N + $$KASUS + $$NUMERUS - LU OR ("arlaaq") + N + $$KASUS + $$NUMERUS IF (-1 N + $$KASUS + $$NUMERUS) ;
 MAP:M0511 @<N TARGET ATTRIBUTIV + N + $$KASUS + $$NUMERUS OR ("arlaaq") + N + $$KASUS + $$NUMERUS IF (-1 N + $$KASUS + $$NUMERUS) ;
 MAP:M0512 @<N TARGET N + $$KASUS + $$NUMERUS - POSSESSUM IF (*-1 $$KASUS + $$NUMERUS BARRIER (*) - @>N - @<N)(NEGATE -1 ("una"))(NEGATE -1 PLACE - MIU)(NEGATE 0 CONJ-C + Num LINK -1 Num OR iNum)(NEGATE 0 CONJ-C - Num)(NEGATE 0 $$KASUS LINK -1 Num LINK -1 ("nal") LINK *-1 (*) - $$KASUS)(NEGATE 0 Rel LINK 1 POSSESSUM)
-(NEGATE -1 @i-ADVL>N LINK NOT *-1 N + $$KASUS + $$NUMERUS - POSSESSUM); #ukaliatsiap amianik sanaamik tamavimmik poorsimavoq.
+(NEGATE -1 @i-ADVL>N LINK NOT *-1 N + $$KASUS + $$NUMERUS - POSSESSUM) #ukaliatsiap amianik sanaamik tamavimmik poorsimavoq.
+(NEGATE 0 ("tamaq") LINK -1 ("suna")) ; #sunut tamanut
 MAP:M0513 @<N TARGET N + $$KASUS IF (0 ("tamalaaq") LINK -1 ("nuna") + $$KASUS) ;
 MAP:M0514 @<N TARGET $$KASUS + $$NUMERUS + OBLIQUE - CONJ-C IF (*-1 $$KASUS + $$NUMERUS - Num - TIME - PLACE_EXTENDED - ("akunneq" Lok) BARRIER V OR CONJ-C OR Abs OR EOS) 
 (NEGATE -1 @i-ADVL>N LINK NOT *-1 N + $$KASUS + $$NUMERUS - POSSESSUM); #ukaliatsiap amianik sanaamik tamavimmik poorsimavoq.
@@ -3222,7 +3225,8 @@ MAP:M0930 (@i-ADVL>) TARGET Trm IF (*1 Der/vn BARRIER V)(NEGATE 1 iLok + TUQ + T
 (NEGATE 1 @<N + Trm) #må ikke hitte på sit eget kongruensadled.
 (NEGATE 0 Prop LINK 1 (*) - ("tunnga") + TUQ) 
 #(NEGATE 0 TIME LINK *-1 BOS BARRIER (*) - ("taamaakkaluartoq")) Må ikke hitte på nexusadverbial evt. efter koncessiv virker ikke endnu 20180207
-(NEGATE *1 Trm + @<N BARRIER (*) - @POSS> - @<APPOS - KOMMA LINK *1 V BARRIER Der/nv) ; #Tassa fru Jensen maanna ernermi NAJUGAANUT, aappaata Anettep najugariuarsimasaanut pulaarsimanngisaannarami,
+(NEGATE *1 Trm + @<N BARRIER (*) - @POSS> - @<APPOS - KOMMA LINK *1 V BARRIER Der/nv) #Tassa fru Jensen maanna ernermi NAJUGAANUT, aappaata Anettep najugariuarsimasaanut pulaarsimanngisaannarami,
+(NEGATE 1 U + V) ;
 MAP:M0630B (@i-MIK-OBJ>) TARGET Ins IF (*1 HTR + Der/vn - V BARRIER HTR OR (*) - @i-ADVL> - @<N) ; # dubleret M0630
 MAP:M0935 @i-ADVL> TARGET Num - Abs IF (-1 TIME + N + Abs)(-2 CLB LINK **1 (*) - V) ;
 MAP:M0936 @i-ADVL> TARGET TIME IF (*1 N)(NEGATE *1 V)(NEGATE *-1 V BARRIER KOMMA) ;
@@ -3235,7 +3239,8 @@ MAP:M0945 @ADVL> TARGET Aeq IF (1 V);
 MAP:M0946 @<ADVL TARGET Aeq IF (-1 V)(NEGATE 1* V);
 
 MAP:M0950X @<ADVL TARGET N IF (-1 ("\("))(1 ("\)"))(-2 @<ADVL) ; #Parantetiske indskud samme led som foregående ord
-MAP:M0951 @<ADVL TARGET OBLIQUE - iV IF (-*1C V - ORATIOOBLVERB) (NEGATE *1 VFIN BARRIER KOMMA);#(NEGATE -*1C HTR BARRIER V) ; # -V for at undgå at den rammer verbalierede obliquer. #Justeret 20180707 så det ikke bliver advl til inquit.
+MAP:M0951 @<ADVL TARGET OBLIQUE - iV IF (-*1C V - ORATIOOBLVERB) (NEGATE *1 VFIN BARRIER KOMMA) #(NEGATE -*1C HTR BARRIER V) ; # -V for at undgå at den rammer verbalierede obliquer. #Justeret 20180707 så det ikke bliver advl til inquit.
+;#***(NEGATE 0 Lok + POSSESSUM) ;#Lok + Possessum giver ofte sætningsadverbial: Baobabit aallaqqaammut mikisuusarput - allinnginnerminni.
 #MAP:0750 @<ADVL TARGET OBLIQUE IF (-*1 V BARRIER KOMMA OR LU)(NEGATE -1 ("\("))(NEGATE 1 Der/vn) ; # 20091109 sidste NEGATE #MAP og ikke ADD
 SUBSTITUTE @i-ADVL> @ADVL> TARGET $$KASUS (1 $$KASUS + @ADVL> + CONJ-C - INDERIVERENDE_SUBSTANTIV) ; #Adverbale adled i paratakse er adverbale til samme verbum
 
@@ -3411,6 +3416,7 @@ MAP:M1421 (@CL-<ADVL) TARGET Par + INTRANSVERB IF (*-1 VFIN - ORATIOOBLVERB)(NEG
 
 MAP:M1425 (@CL-ADVL>) TARGET IteCau OR Cau OR Con IF (*1 VFIN) ; 
 MAP:M1426 @CL-ADVL> TARGET Lok + POSSESSUM - SPATIAL IF (*-1 (*) - @POSS> - @i-ADVL> - @ADVL> LINK *1 _TARGET_ LINK *1 V)(NEGATE 0 Num OR PLACE OR TIME); #Nexusadverbial kondition uden verbalt head. Nunatsinnili politikkikkut suliaqartut akornanni QIMERLUUININNI, takusinnaavara taama isumallit amerlavallaanngitsut. 
+#***MAP:M1427 @CL-<ADVL TARGET Lok + POSSESSUM - SPATIAL;
 
 #Parataktisk oratio obliqua kan (sjaeldent??) vaere efterstillet som i 
 #' ... Ilisimatusarfiup pigilissagaa ministerit ... isumaqatigiipput, ... sunniutai maluginiarneqassasut.
