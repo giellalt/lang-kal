@@ -132,6 +132,7 @@ sub parse_cohorts {
    my $last = 0;
    # Parse hfst-tokenize's output to array of cohorts
    foreach (split(/\n+/, $out)) {
+      my $f = $_;
       s/\s+$//g;
 
       if (/^"<.*?>"/) {
@@ -160,6 +161,11 @@ sub parse_cohorts {
             $cs[$last][1] = "\t\"$_\" ?\n";
          }
          ++$last;
+         if ($f =~ /^[.]+([ \t]+)$/) {
+            $cs[$last][0] = $1;
+            $cs[$last][1] = '';
+            ++$last;
+         }
          $in_c = 0;
       }
    }
@@ -189,6 +195,19 @@ sub analyze {
             my $m = call_tokenizer("$f.");
             if ($m =~ /\t"/ && $m !~ / \?/ && $m =~ /^("<[^\n]*>"[^\n]*)\n(.+)$/s) {
                ($cs[$i]->[0], $cs[$i]->[1]) = ($1, $2);
+               splice(@cs, $i+1, 1);
+               $did = 1;
+               last;
+            }
+         }
+
+         # Merge sequential dots
+         if ($cs[$i]->[0] =~ /^"<([.]+)>"/) {
+            my $dots = $1;
+            if (defined $cs[$i+1] && $cs[$i+1]->[0] =~ /^"<([.]+)>"/) {
+               $dots .= $1;
+               $cs[$i]->[0] =~ s/^"<[.]+>"/"<$dots>"/;
+               $cs[$i]->[1] =~ s/(\s)"[.]+"/$1"$dots"/g;
                splice(@cs, $i+1, 1);
                $did = 1;
                last;
