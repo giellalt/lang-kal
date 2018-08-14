@@ -1194,7 +1194,8 @@ LIST TALE = "oqar" "aki" ;
 SET DIRTALE = TALE OR OQARnUSIQ ;
 
 LIST humverb = "iser" "isiginnaar" "nalunaar" "oqqap" "suli" "uppere"; # Verb der vil ha humane subj, og ikke er i andre set
-LIST thingverb = "nalunaap" "ersip";
+LIST thingverb = "nalunaap" "ersip" ;
+LIST thingobjverb = ("qaammaqqut" GE) ("qaammaqqutige") ; #transitive verb with non-human object 
 LIST animalverb = "qilup" "pangalip" ; #forudsætter subjekt ANIMAL
 SET HUMVERB = humverb OR ORATIOOBLVERB ; # alle verb  der vil ha humane subj
 
@@ -1240,8 +1241,8 @@ LIST EDIBLE = "neqi" "iffiaq" "kaagi" ;
 LIST DRINKABLE = "kaffi" "tii" "immuk" "whisky" "immiaaraq" "immiaq" "baaja" ;
 SET FOOD = EDIBLE | DRINKABLE ;
 LIST CLOTHES = "kamik" "annoraaq" "kavaajaq" "alersi" "alerseq" "skuu" ;
-LIST THING = "alussaat" "aqqusineq" ("ati" TAQ) "ilullissiaq" "siu" "timi" "savik" "torsuusaq";
-LIST MATERIAL = "ameq" "ulik" "qipik" ;
+LIST THING = "alussaat" "aqqusineq" ("ati" TAQ) "ilullissiaq" "qulleq" "siu" "timi" "savik" "torsuusaq";
+LIST MATERIAL = "ameq" "ukkusissaq" "ulik" "qipik" ;
 LIST TOOL = "savik" (__/UTE\ Der\/vn__/l);
 LIST f-an_SG = "qaneq" "qingaq" ;
 
@@ -1825,7 +1826,6 @@ REMOVE:0069 Lok + QATE IF (0 Abs + 4SgPoss LINK *0 3SgO) ;
 SELECT:0069A N OR Pron OR Num IF (1 (/__\"pi\"\ Gram\/TV\ V\ Cont__/l)) ; #Før pillugu er det nominalt.
 SELECT:0069B N IF (1 KOMMA LINK 1 ("soorlu") LINK 1 N) ; #Soorlu forbinder to nomialsyntagmer
 
-
 ### Sikre possessorer ###
 #=======================#
  
@@ -1981,7 +1981,8 @@ REMOVE:0134 f-an_SG + Sg + 3PlPoss IF (0 3SgPoss) ; # 'qaneq' mv. altid possesso
 
 SELECT:0135 Rel + 3SgPoss IF (1 3SgPoss)(NEGATE *-1 Rel + Pl) ; #N-ata pia og N-isa piat
 REMOVE:0135F Rel (-1 BOS LINK 2 ("pi") + CONT - AFFINGERET) ; #Sikkert objekt.
-SELECT:0136 Rel + Pl IF (*1 (*) - Rel - Num)(*1 POSSESSUM + 3PlPoss OR TRANSVERB - 3PlO)(NEGATE *-1 INTRANSVERB + 3Pl OR TRANSVERB + 3PlO)(NEGATE 0 Ins OR ("isuma"))(NEGATE *-1 ORATIOOBLVERB) ;
+SELECT:0136 Rel + Pl IF (*1 (*) - Rel - Num)(*1 POSSESSUM + 3PlPoss OR TRANSVERB - 3PlO)(NEGATE *-1 INTRANSVERB + 3Pl OR TRANSVERB + 3PlO)(NEGATE 0 Ins OR ("isuma"))(NEGATE *-1 ORATIOOBLVERB)
+(NEGATE *1 TRANSVERB + 3Pl) ; #qanga qulliit ukkusissat qaammaqqutigaat.
 
 REMOVE:0140 Via + 3PlPoss IF (0 3SgPoss)(NEGATE -1 Pl + Rel) ;
 
@@ -2906,6 +2907,11 @@ MAP:M0351 @<N TARGET Der/vn + $$KASUS + $$NUMERUS - LU - iALL OR Num + $$KASUS +
 
 MAP:M0352 @<N TARGET Der/vn + LU + $$KASUS + $$NUMERUS IF (-1 Der/vn + $$KASUS + $$NUMERUS + LU OR Num + $$KASUS + $$NUMERUS + LU)(-1 N + $$KASUS + $$NUMERUS + Der/vn);#(NEGATE 0 Rel + Sg LINK 1 3SgPoss)(NEGATE 0 Rel + Pl LINK 1 3PlPoss OR 4PlPoss) (NEGATE 1 3SgO) ((NOT 0 POSSESSUM) OR (0 $$POSSESSUM LINK -1 $$POSSESSUM)) ; #20171121 rettet NEGATE fra ..  OR 3PlO), der vist udelukker de fleste adled ??
 
+#Semantiske regler
+REMOVE:0352 Rel IF (0 Abs + THING)(*0 thingobjverb)(NEGATE *1 POSSESSUM) ;
+MAP:M0352 @<N TARGET MATERIAL IF (-1 THING) ;
+MAP:M0352 @OBJ> TARGET THING + Abs IF (*1 thingobjverb) ;
+
 #Subjektskomplementer ved "tassa" med og uden inderiveret OBLIQUE. 396 en specialitet ved komma
 MAP:M0396 @SUBJ_COMP TARGET Abs IF (-1 OBLIQUE + LU LINK -1 KOMMA LINK *-1 ("tassa") LINK *-1 Abs BARRIER V); 
 
@@ -3829,7 +3835,7 @@ REMOVE:1671 2SgPoss IF (0 (Num))(*1 QAR OR LIK BARRIER V) ;
 REMOVE:1678 2SgPoss IF (*1 V + 1Sg BARRIER V)(NEGATE *1 2SgPoss OR 2Sg)(NEGATE *-1 2SgPoss OR 2Sg CBARRIER V); #20180405 REMOVE i stedet for SELECT for at bibeholde pluralislæsning som ikke er poss efter k-stammer. Reglen er sikrere og forkaster ikke de mange korrekte læsninger som SELECT-reglen.
 REMOVE:1679 1SgPoss IF (*1 V + 2Sg BARRIER V) ;
 #SELECT:1680 1SgPoss IF (*1C V + 1Sg BARRIER V ) ;    #disambiguerer 1SgPoss fra 2SgPoss 
-#SELECT:1681 2SgPoss IF (*1 V + 2Sg BARRIER V ) ;       
+#SELECT:1681 2SgPoss IF (*1 V + 2Sg BARRIER V ) ;     
 
 SELECT Abs + Sg IF (1 Cont + 3SgO)(NEGATE 0 Pali OR Conj) ; #reglen sletter fx ilaannilu før Vb-TARlugu
 SELECT Abs + Pl IF (1 Cont + 3PlO) ;
@@ -3847,7 +3853,7 @@ REMOVE Aeq + Pl IF (0 Aeq + Sg)(NEGATE 0 POSSESSUM) ;
 SELECT:1698 Abs + Pl IF (*-1 VFIN + 3Pl)(*1 INTRANSVERB + Cont + 4Pl BARRIER V); #2.4. ' .. alinneqartiterput iluatigut ATISAAT ILULLISSIAT ersiallattarlutik.'
 SELECT Abs + Pl IF (*-1 Cont + 4Pl BARRIER VFIN OR Par)(*1 VFIN + 3PlO); #2.4. Maa vaere objekt da subjekt formodes at komme foer ledsagemaaden. 'OR Par' tilføjet 17.4. pga. ledsagemåder i participiale bisætninger
 
-SELECT:1700A Rel + Pl IF (*1 Abs + Sg BARRIER V LINK *1 3SgO ) (NEGATE 0 Rel + Sg LINK *1 3SgPoss); #1700B må ikke selecte subjekt for transitivt verbum
+SELECT:1700A Rel + Pl IF (*1 Abs + Sg BARRIER V LINK *1 3SgO ) (NEGATE 0 Rel + Sg LINK *1 3SgPoss) ; #1700B må ikke selecte subjekt for transitivt verbum
 SELECT:1700B Abs + Pl IF (-*1C INTRANSVERB + 3Pl OR 4Pl)(NEGATE *1 INTRANSVERB + 3Pl OR 4Pl)(NEGATE *1 TRANSVERB + 3PlO)(NEGATE *1 3PlPoss BARRIER KOMMA)(NEGATE 0 Der/vn LINK *-1 Rel + Pl); #må ikke hitte på adled til Rel+Pl
 
 SELECT:1701 Abl + LU IF (-1 Abl);
