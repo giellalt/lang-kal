@@ -1091,6 +1091,8 @@ SET KASUS = Abs | Rel | Trm | Abl | Lok | Aeq | Ins | Via ;
 SET NOT-REL = KASUS - Rel ;
 SET OBLIQUE =  Trm | Abl | Lok | Aeq | Ins | Via ;
 SET NUMERUS = Sg | Pl ;
+SET KONGRUENSADLED = N + $$KASUS + $$NUMERUS ;
+
 
 SET POSSESSUM3 = (N 3SgPoss) | (N 3PlPoss) | (iN i3SgPoss) | (iN i3PlPoss) | (Num 3SgPoss) | (Num 3PlPoss) | (DivPron 3PlPoss) ;
 SET POSSESSUM4 = (N 4SgPoss) | (N 4PlPoss) | (iN i4SgPoss) | (iN i4PlPoss) ;
@@ -1150,6 +1152,7 @@ LIST SUBJPLV4 = (Rel Pl) 4Pl ;
 SET SUBJTRANSVERB& = SUBJSGV1 | SUBJSGV2 | SUBJSGV3 | SUBJSGV4 | SUBJPLV1 | SUBJPLV2 | SUBJPLV3 | SUBJPLV4 ;
 
 LIST NÆPPE_OBJ = ("nuanner" TUQ);
+
 
 # Partikler
 # ---------
@@ -1364,8 +1367,6 @@ LIST @PRED2 = @PRED2 ; # saettes paa verbet i en bunden ledsaetning
 LIST @ABSOLUT_PRED = @ABSOLUT_PRED ;	#Participier med nexus inde i en NP eller afterthoughts
 #LIST @i->V = @i->V ; 	# NIQ ved ajor, saper, artor, nalu #Udkommenteret 20180522. @V>
 LIST @SUBJ_COMP = @SUBJ_COMP ;	#Prædikat til subjekt/ subjective complement
-#LIST @OBJ_COMP = @OBJ_COMP ; #Prædikat til objekt Udkommenteret til fordel for @<N
-#LIST @<SUBJ_COMP = @<SUBJ_COMP ; #Prædikat til subjekt til venstre fx typen Arnaavunga pikkorissoq. Ændret til @i-N<
 LIST @>V = @>V ;
 LIST @VOK = @VOK ;
 LIST @NIQ_OBJ> = @NIQ_OBJ> ; #Kun til objekter for absolutte konstruktioner med NIQ+Abl (NIQ+Ins)
@@ -1480,6 +1481,13 @@ REMOVE:0002B Guess ;
 #Overflødig dobbeltmorfologi
 REMOVE:0003A ("uv") + Interj IF (0 ("uffa") + Interj) ;
 
+###################################################################################
+# Specialiteter ved @>N (prænominale adled, determinativer og juxtapositioner i MWE
+###################################################################################
+LIST MWEHOVED = "B612" Prop ;
+LIST MWEPRÆNOM = "ulloriaq" ;
+SET PRÆNOM = TITEL OR MWEPRÆNOM ;
+MAP:M0005Juxta @>N TARGET PRÆNOM + $$KASUS + $$NUMERUS IF (*1 MWEHOVED BARRIER (*) - KONGRUENSADLED) ;
 
 #############
 # Test: Mapping af konjunktioner vs. adverbialer
