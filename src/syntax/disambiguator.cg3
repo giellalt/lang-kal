@@ -1205,7 +1205,7 @@ SET ORATIOOBLVERB = ORATIOOBLVERBnOQAR OR OQARnUSIQ OR ALLAANNGIT OR ALLAPnTAQ O
 LIST TALE = "oqar" "aki" ;
 SET DIRTALE = TALE OR OQARnUSIQ ;
 
-LIST humverb = "iser" "isiginnaar" "nalunaar" "oqqap" "suli" "uppere"; # Verb der vil ha humane subj, og ikke er i andre set
+LIST humverb = "iser" "isiginnaar" "nalunaar" "oqqap" ("pisiaq" GE) "sana" ("sinnattoq" GE) "suli" "uppere"; # Verb der vil ha humane subj, og ikke er i andre set
 LIST thingverb = "nalunaap" "ersip" ;
 LIST thingobjverb = ("qaammaqqut" GE) ("qaammaqqutige") ; #transitive verb with non-human object 
 LIST animalverb = "qilup" "pangalip" ; #forudsætter subjekt ANIMAL
@@ -1590,18 +1590,33 @@ REMOVE ("aqagu") + N - AFFINGERET IF (0 ("aqagu") + Adv);
 APPEND ("(\\p{Lu}\\p{Ll}.*)"r Prop Abl Sg) TARGET (VSTR:"%1$1"r-p) ;
 #Virker ikke
 
-SUBSTITUTE (\?) (N Abl Sg) TARGET ("(\\p{Ll}*-?i?mit)"r) ;
-SUBSTITUTE (\?) (N Gram/Acr Abl) TARGET (/\\p{Lu}\\p{Lu}+-?i?mit>/r) ;
-SUBSTITUTE (\?) (Prop Abl Sg) TARGET (/\\p{Lu}\\p{Ll}+-?i?mit>/r) ;
+APPEND ("$1"v N Gram/ACR Rel Sg) TARGET ("<(\\p{Lu}{2,}.*)-?i?u?p>"r) (NOT 0 WORD) ; # HK
+APPEND ("$1"v Prop Gram/ACR Rel Sg) TARGET ("<(\\p{Lu}{2,}.*)-?i?u?p>"r) (NOT 0 WORD) ; # CBS
+APPEND ("$1"v Prop Rel Sg) TARGET ("<(\\p{Lu}.*)-?i?u?p>"r) (NOT 0 WORD) ; # Liv
+APPEND ("$1"v Prop Rel Sg) TARGET ("<(\\p{Lu}.*)-?up>"r) (NOT 0 WORD) ; # Pisiffik
+APPEND ("$1"v N Rel Sg) TARGET ("<(.*)-?i?u?p>"r) (NOT 0 WORD); # fst, bananasplit
 
-SUBSTITUTE (\?) (N Trm Sg) TARGET ("(\\p{Ll}*-?i?mut)"r) ;
-SUBSTITUTE (\?) (N Gram/Acr Trm) TARGET (/\\p{Lu}\\p{Lu}+-?i?mut>/r) ;
-SUBSTITUTE (\?) (Prop Trm Sg) TARGET (/\\p{Lu}\\p{Ll}+-?i?mut>/r) ;
+APPEND ("$1"v N Gram/ACR Trm Sg) TARGET ("<(\\p{Lu}{2,}.*)-?i?mut>"r) (NOT 0 WORD) ; # HK
+APPEND ("$1"v Prop Gram/ACR Trm Sg) TARGET ("<(\\p{Lu}{2,}.*)-?i?mut>"r) (NOT 0 WORD) ; # CBS
+APPEND ("$1"v Prop Trm Sg) TARGET ("<(\\p{Lu}.*)-?i?mut>"r) (NOT 0 WORD) ; # Liv
+APPEND ("$1"v N Trm Sg) TARGET ("<(.*)-?i?mut>"r) (NOT 0 WORD) ; # fst, bananasplit
+
+APPEND ("$1"v N Gram/ACR Abl Sg) TARGET ("<(\\p{Lu}{2,}.*)-?i?mi(nngaanni)?i?t>"r) (NOT 0 WORD) ; # HK
+APPEND ("$1"v Prop Gram/ACR Abl Sg) TARGET ("<(\\p{Lu}{2,}.*)-?i?mi(nngaanni)?i?t>"r) (NOT 0 WORD) ; # CBS
+APPEND ("$1"v Prop Abl Sg) TARGET ("<(\\p{Lu}.*)-?i?mi(nngaanni)?i?t>"r) (NOT 0 WORD) ; # Liv
+APPEND ("$1"v N Abl Sg) TARGET ("<(.*)-?i?mi(nngaannii)?i?t>"r) (NOT 0 WORD) ; # fst, bananasplit
+
+APPEND ("$1"v V Cont 4Pl) TARGET ("<(.*lutik)"r) (NOT 0 WORD) ; # ....lutik
+
+#SUBSTITUTE (\?) (N Trm Sg) TARGET ("(\\p{Ll}*-?i?mut)"r) ;
+#SUBSTITUTE (\?) (N Gram/Acr Trm) TARGET (/\\p{Lu}\\p{Lu}+-?i?mut>/r) ;
+#SUBSTITUTE (\?) (Prop Trm Sg) TARGET (/\\p{Lu}\\p{Ll}+-?i?mut>/r) ;
 
 
-SUBSTITUTE (\?) (N Rel Sg) TARGET ("(\\p{Ll}*-?i?p)"r) ;
-SUBSTITUTE (\?) (N Gram/Acr Rel) TARGET (/\\p{Lu}\\p{Lu}+-?i?p>/r) ;
-SUBSTITUTE (\?) (Prop Rel Sg) TARGET (/\\p{Lu}\\p{Ll}+-?i?p>/r) ;
+#SUBSTITUTE (\?) (N Rel Sg) TARGET ("(\\p{Ll}*-?i?p)"r) ;
+#SUBSTITUTE (\?) (N Gram/Acr Rel) TARGET (/\\p{Lu}\\p{Lu}+-?i?p>/r) ;
+#SUBSTITUTE (\?) (Prop Rel Sg) TARGET (/\\p{Lu}\\p{Ll}+-?i?p>/r) ;
+REMOVE (\?) IF (0 WORD);
 
 ### KKUT vs. Via ###
 #==================#
@@ -2931,7 +2946,7 @@ MAP:0340A @<N TARGET Ins + $$NUMERUS IF (-1** Ins + $$NUMERUS LINK 1* KOMMA LINK
 #Til adverbale adled som står i paratakse.
 MAP:M0340B @<ADVL TARGET Ins IF (0 LUUNNIIT)(-1 Ins)(*-1 V) ;
 
-MAP:M0341 @<N TARGET Abs + Sg + Der/vn - LU IF (-*1 Abs + Sg - Sem/FirstName - TITEL - ("kinguneq") BARRIER V) #kinguneq tilføjet 20170425 for at undgå hit på kingorna.
+MAP:M0341 @<N TARGET Abs + Sg + Der/vn - LU IF (-*1 Abs + Sg - Sem/FirstName - TITEL - ("kinguneq") - @>N BARRIER V) #kinguneq tilføjet 20170425 for at undgå hit på kingorna.
 (*1 3SgO BARRIER KOMMA)
 (NEGATE -1 Abs + Sg LINK *1 CONT + 3SgO LINK *1 INTRANSVERB + 3Sg BARRIER KOMMA OR VFIN) #Sidste NEGATE fordi TARGET er objekt i sekvensen SUBJ+Abs : OBJ : CONT+3SgO : INTRANSVERB+3Sg.
 (NEGATE -1 Part + LU LINK -1 Abs ) # Ikke Sem/FirstName+Abs og ikke TITEL fordi de ikke har syntaktisk funktion i sig selv. 
@@ -3009,7 +3024,7 @@ MAP:M0435 (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (*1 Par + 3
 MAP:M0438 (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (*1 Rel + Sg LINK *1 TRANSVERB + 3SgO OR Par + 3Pl + 4SgO)(NEGATE *1 INTRANSVERB + 3Sg BARRIER TRANSVERB) ; #20101013 til typen S V O-LU S V. NEGATE for skyld typen 'subjekt Abs + or. obl. intr. + subjekt Rel + PRED
 MAP:M0439 (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg OR Gram/Dem + Pron + Abs + Sg IF (1 Part LINK 1 TRANSVERB + 3SgO OR Par + 3Pl + 4SgO) ; #Subj Obj partikel TRANSVERB typen
 
-MAP:M0440 (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg OR Gram/Dem + Pron + Abs + Sg IF (1 TRANSVERB + 3SgO OR Par + 3Pl + 4SgO) ; #20091109 tilfoejet Par med -gaanni
+MAP:M0440 (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg OR Gram/Dem + Pron + Abs + Sg IF (1* TRANSVERB + 3SgO OR Par + 3Pl + 4SgO BARRIER (*) - Gram/Dem) ; #20091109 tilfoejet Par med -gaanni
 MAP:M0441 (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg OR Gram/Dem + Pron + Abs + Sg IF (*1 TRANSVERB + 3SgO BARRIER (*) - (Abs Sg) OR CONJ-C) ; #pisimasoq annilaarnartoq tusarpara.
 MAP:M0450 (@OBJ>) TARGET APPELLATIV + Abs + Pl IF (1 TRANSVERB + 3PlO + GE LINK -1 Rel) ; #foerst OSV ved -givaa
 MAP:M0460 (@OBJ>) TARGET APPELLATIV + Abs + Pl IF (1 TRANSVERB + 3PlO)(-*1 Rel BARRIER POSSESSUM) ; #
@@ -3913,7 +3928,8 @@ SELECT:1650 Abs + 4SgPoss IF (1 Abs + Der/vn)(*1 V + 3SgO) ; #PANINI er ikke lok
 REMOVE:1670 1SgPoss IF (0 (Num))(*1 QAR OR LIK BARRIER V) ;  #Arfinilinnik ukioqarlunga. Kan nok gøres bredere.
 REMOVE:1671 2SgPoss IF (0 (Num))(*1 QAR OR LIK BARRIER V) ;   
 
-REMOVE:1678 2SgPoss IF (*1 V + 1Sg BARRIER V)(NEGATE *1 2SgPoss OR 2Sg)(NEGATE *-1 2SgPoss OR 2Sg CBARRIER V); #20180405 REMOVE i stedet for SELECT for at bibeholde pluralislæsning som ikke er poss efter k-stammer. Reglen er sikrere og forkaster ikke de mange korrekte læsninger som SELECT-reglen.
+REMOVE:1678 2SgPoss IF (*1 V + 1Sg BARRIER V)(NEGATE *1 2SgPoss OR 2Sg)(NEGATE *-1 2SgPoss OR 2Sg CBARRIER V)
+(NEGATE *1 V + 3SgO BARRIER V); #20180405 REMOVE i stedet for SELECT for at bibeholde pluralislæsning som ikke er poss efter k-stammer. Reglen er sikrere og forkaster ikke de mange korrekte læsninger som SELECT-reglen.
 REMOVE:1679 1SgPoss IF (*1 V + 2Sg BARRIER V) ;
 #SELECT:1680 1SgPoss IF (*1C V + 1Sg BARRIER V ) ;    #disambiguerer 1SgPoss fra 2SgPoss 
 #SELECT:1681 2SgPoss IF (*1 V + 2Sg BARRIER V ) ;  
