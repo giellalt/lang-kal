@@ -1606,7 +1606,8 @@ APPEND ("$1"v Prop Gram/ACR Abl Sg) TARGET ("<(\\p{Lu}{2,}.*)-?i?mi(nngaanni)?i?
 APPEND ("$1"v Prop Abl Sg) TARGET ("<(\\p{Lu}.*)-?i?mi(nngaanni)?i?t>"r) (NOT 0 WORD) ; # Liv
 APPEND ("$1"v N Abl Sg) TARGET ("<(.*)-?i?mi(nngaannii)?i?t>"r) (NOT 0 WORD) ; # fst, bananasplit
 
-APPEND ("$1"v V Cont 4Pl) TARGET ("<(.*lutik)"r) (NOT 0 WORD) ; # ....lutik
+APPEND ("$1"v V Cont 4Pl) TARGET ("<(.*)lutik>"r) (NOT 0 WORD) ; # ....lutik
+APPEND ("$1"v V Ind 1Pl) TARGET ("<(.*)pugut>"r) (NOT 0 WORD) ; # ....vugut
 
 #SUBSTITUTE (\?) (N Trm Sg) TARGET ("(\\p{Ll}*-?i?mut)"r) ;
 #SUBSTITUTE (\?) (N Gram/Acr Trm) TARGET (/\\p{Lu}\\p{Lu}+-?i?mut>/r) ;
@@ -2954,7 +2955,9 @@ MAP:M0341 @<N TARGET Abs + Sg + Der/vn - LU IF (-*1 Abs + Sg - Sem/FirstName - T
 
 MAP:M0341A @<N TARGET Abs + Pl + Der/vn - LU IF (-*1 Abs + Pl - Sem/FirstName - TITEL - ("kinguneq") BARRIER V)(*1 3PlO BARRIER KOMMA)(NEGATE -1 Abs + Pl LINK *1 CONT + 3PlO LINK *1 INTRANSVERB + 3Sg BARRIER KOMMA OR VFIN)(NEGATE -1 Part + LU LINK -1 Abs ); # Ikke Sem/FirstName+Abs og ikke TITEL fordi de ikke har syntaktisk funktion i sig selv. Sidste NEGATE fordi TARGET er objekt i sekvensen SUBJ+Abs : OBJ : CONT+3SgO : INTRANSVERB+3Sg. - kinguneq tilføjet 20170425 for at undgå hit på kingorna
 
-MAP:M0342 @<N TARGET Abs + Sg + Der/vn IF (-*1 Abs + Sg BARRIER VFIN OR KOMMA LINK -*1 Abs + Sg)(*1 3SgO BARRIER KOMMA)(NEGATE *-1 Abs + Sg LINK 1 NIQ + Ins)(NEGATE *-1 ("pi") + CONT LINK **-1 Abs BARRIER (*) - CONT); # Men OK hvis TARGET er objektskomplement i sekvensen SUBJ+Abs : OBJ : OBJ_COMP : CONT+3SgO : INTRANSVERB+3Sg. Sidste NEGATE er en ad hoc regel for at undgå hit på @NIQ_OBJ
+MAP:M0342 @<N TARGET Abs + Sg + Der/vn IF (-*1 Abs + Sg BARRIER VFIN OR KOMMA LINK -*1 Abs + Sg)(*1 3SgO BARRIER KOMMA)(NEGATE *-1 Abs + Sg LINK 1 NIQ + Ins)(NEGATE *-1 ("pi") + CONT LINK **-1 Abs BARRIER (*) - CONT)
+(NEGATE -1 Gram/Dem LINK NOT -1 N) ; #Til omvendt ordstilling såsom "una siunnersuutit".
+# Men OK hvis TARGET er objektskomplement i sekvensen SUBJ+Abs : OBJ : OBJ_COMP : CONT+3SgO : INTRANSVERB+3Sg. Sidste NEGATE er en ad hoc regel for at undgå hit på @NIQ_OBJ
 
 #Kongruensadled er typisk vn, Num eller ATTRIBUTIV. LU vil ofte være udtryk for en parataktisk kerne, hvorfor parataktiske kongruensadled behandles separat i regel :M0351NY. i-adled til inderivering til højre er ikke kongruensadled
 MAP:M0350NY @<N TARGET Der/vn + $$KASUS + $$NUMERUS - LU - LUUNNIIT OR Num + $$KASUS - LU - LUUNNIIT  OR LIK + $$KASUS - LU - LUUNNIIT IF (-*1 N + $$KASUS + $$NUMERUS BARRIER (*) - OBLIQUE - Part - Gram/Dem)(NEGATE 0 Ins LINK *1 QAR OR LIK BARRIER VFIN)(NEGATE 0 Num LINK 1 Num OR iNum)(NEGATE 1 NUMHOVED)(NEGATE -1 ("akunneq") OR ("aasaq"))
