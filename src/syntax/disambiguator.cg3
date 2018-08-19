@@ -1162,7 +1162,7 @@ SET CONJ-S = Conj - CONJ-C ; #Underordnende konjunktioner
 LIST NUSUPnAFF = ("nusup") - AFFINGERET + CONT;
 LIST TAMAKKERnAFF = ("tamakker") - AFFINGERET + CONT ;
 LIST ADVERBIUM = "ima" "qanoq" ; #20091109 tilfoejet 'qanoq', der maaske staar lidt malplaceret her
-SET ADVERBIEL = Adv | Pali | NUSUPnAFF | TAMAKKERnAFF | PILLUGU ;
+SET ADVERBIEL = Adv | Pali | ("immikkoor") | NUSUPnAFF | TAMAKKERnAFF | PILLUGU ;
 LIST FOKUSPART = ("uv" Prefix/AA) ("una" Prefix/AA) "tassa" "aali" "sunaaffa" "aajuku" "aajuna" "aaku" "aana" ; #oqaqqarniutit imal. oqaaseqatigiinni oqaluutitaqanngitsut 
 LIST KONCESSIV = "massa" "naak" "uffa" "sunaaffa" ; #oqaaseqatigiinni minnerni oqaluummik pisariaqartitsisut
 LIST SPØRGEPARTIKEL = "naak" "sumi" "suna" "qanoq" ; #
@@ -1556,6 +1556,7 @@ REMOVE:0147C ("ige") IF (NEGATE *-1 ("qanoq") BARRIER V) ;
 REMOVE:0147D ("qilammip") + Gram/Exclm IF (0 ("qilak") + Abl) ;
 REMOVE:0147E ("qaatip") + GUUQ IF (0 ("qaatigooq")) ;
 REMOVE:0147F (/__NIAQ\ Der\/vn\ GE__/l) IF (0 NIAR + Par) ; # aaniaraanga er ikke NIAQ+GE
+REMOVE:0147G ("ullor") IF (0 ("ulloq")) ;
 
 REMOVE:0040I NAAR - NAAR_VERBER ; #Sletter irriterende fejlanalyser med NAAR på verber, der ikke kan indeholde et element af vurdering
 
@@ -1589,14 +1590,11 @@ REMOVE ("aqagu") + N - AFFINGERET IF (0 ("aqagu") + Adv);
 
 ### SIKRE TAGGINGS AF ULÆSELIGE ORD ###
 #=====================================#
-APPEND ("(\\p{Lu}\\p{Ll}.*)"r Prop Abl Sg) TARGET (VSTR:"%1$1"r-p) ;
-#Virker ikke
-
-APPEND ("$1"v N Gram/ACR Rel Sg) TARGET ("<(\\p{Lu}{2,}.*)-?i?u?p>"r) (NOT 0 WORD) ; # HK
-APPEND ("$1"v Prop Gram/ACR Rel Sg) TARGET ("<(\\p{Lu}{2,}.*)-?i?u?p>"r) (NOT 0 WORD) ; # CBS
-APPEND ("$1"v Prop Rel Sg) TARGET ("<(\\p{Lu}.*)-?i?u?p>"r) (NOT 0 WORD) ; # Liv
+APPEND ("$1"v N Gram/ACR Rel Sg) TARGET ("<(\\p{Lu}{2,})-?i?u?p>"r) (NOT 0 WORD) ; # HK
+APPEND ("$1"v Prop Gram/ACR Rel Sg) TARGET ("<(\\p{Lu}{2,}.*)-i?u?p>"r) (NOT 0 WORD - Gram/ACR)(0 (\?)) ; # CBS
+APPEND ("$1"v Prop Rel Sg) TARGET ("<(\\p{Lu}\\p{Ll}*)-?i?u?p>"r) (NOT 0 WORD) ; # Liv
 APPEND ("$1"v Prop Rel Sg) TARGET ("<(\\p{Lu}.*)-?up>"r) (NOT 0 WORD) ; # Pisiffik
-APPEND ("$1"v N Rel Sg) TARGET ("<(.*)-?i?u?p>"r) (NOT 0 WORD); # fst, bananasplit
+APPEND ("$1"v N Rel Sg) TARGET ("<(\\p{Lu}?\\p{Ll}*)-?i?u?p>"r) (NOT 0 WORD); # fst, bananasplit
 
 APPEND ("$1"v N Gram/ACR Trm Sg) TARGET ("<(\\p{Lu}{2,}.*)-?i?mut>"r) (NOT 0 WORD) ; # HK
 APPEND ("$1"v Prop Gram/ACR Trm Sg) TARGET ("<(\\p{Lu}{2,}.*)-?i?mut>"r) (NOT 0 WORD) ; # CBS
@@ -1610,6 +1608,7 @@ APPEND ("$1"v N Abl Sg) TARGET ("<(.*)-?i?mi(nngaannii)?i?t>"r) (NOT 0 WORD) ; #
 
 APPEND ("$1"v V Cont 4Pl) TARGET ("<(.*)lutik>"r) (NOT 0 WORD) ; # ....lutik
 APPEND ("$1"v V Ind 1Pl) TARGET ("<(.*)pugut>"r) (NOT 0 WORD) ; # ....vugut
+APPEND ("$1"v V Ind 1Sg 3SgO) TARGET ("<(.*)[u|v|p]ara>"r) (NOT 0 WORD) ; # ...vara
 
 APPEND ("$1"v N Via) TARGET ("<(.*)tigut>"r) (NOT 0 WORD) ; # ....vugut
 
@@ -1632,6 +1631,8 @@ APPEND ("$1"v N Ins Sg) TARGET ("<(.*)-?i?mik>"r) (NOT 0 WORD) ; # fst, bananasp
 APPEND ("$1"v Prop Gram/ACR Abs Sg) TARGET ("<(\\p{Lu}{2,}.*)-?i?vik>"r) (NOT 0 WORD) ; # CBS
 APPEND ("$1"v Prop Abs Sg) TARGET ("<(\\p{Lu}.*)-?i?vik>"r) (NOT 0 WORD) ; # Liv
 APPEND ("$1"v N Abs Sg) TARGET ("<(.*)-?i?vik>"r) (NOT 0 WORD) ; # fst, bananasplit
+
+
 
 REMOVE (\?) IF (0 WORD);
 
@@ -2851,7 +2852,7 @@ SELECT:0229B KONJUNKTION + Conj IF (-1 N + $$KASUS)(1 N + $$KASUS) ;
 
 #Konjunktioner er konjunktioner, når de indleder en sætning, ellers er de adverbier
 MAP:M0230 (@CONJ) TARGET KONJUNKTION IF (-1 BOS OR KOMMA)
-(NEGATE *-1W ("¶") BARRIER (*) - ("¶")); # Hvis det står lige efter linjeskift er det sandsynligvis adverbielt.
+(NEGATE *-1W ("¶") BARRIER (V)); # Hvis det står lige efter linjeskift er det sandsynligvis adverbielt.
 #Flyttet fra 1168 forebygge konflikt med @ADVL> 
 MAP:M0231 (@CONJ) TARGET ("aamma" LU) OR ("taamatut") + LU; #vistnok undtagelsesløs
 MAP:M0232 (@CONJ) TARGET Conj ; #Konjunktioner skal tagges som konjunktioner
@@ -2913,7 +2914,7 @@ MAP:M0306 @<ADVL TARGET LU + OBLIQUE IF (-*1 KOMMA BARRIER V)(NEGATE *1 V)(NEGAT
 MAP:M0310 @<APPOS TARGET Prop + Lok - LU IF (-1 Lok) ;
 
 # Appositions without comma including parataxis må ikke overskrive i-ADVL
-MAP:M0316 (@ADVL>) TARGET TIME + Abs + Sg IF (NEGATE *1 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO) ; 
+MAP:M0316 (@ADVL>) TARGET TIME + Abs + Sg IF (NEGATE *1 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO)(*1 V) ; 
 MAP:M0318 (@ADVL>) TARGET Lok + TIME IF (*1 V) ;
 MAP:M0319 (@<ADVL) TARGET Lok + TIME IF (-*1 V)(NEGATE 1 Der/vn) ;
 
@@ -2978,7 +2979,7 @@ MAP:M0342 @<N TARGET Abs + Sg + Der/vn IF (-*1 Abs + Sg BARRIER VFIN OR KOMMA LI
 # Men OK hvis TARGET er objektskomplement i sekvensen SUBJ+Abs : OBJ : OBJ_COMP : CONT+3SgO : INTRANSVERB+3Sg. Sidste NEGATE er en ad hoc regel for at undgå hit på @NIQ_OBJ
 
 #Kongruensadled er typisk vn, Num eller ATTRIBUTIV. LU vil ofte være udtryk for en parataktisk kerne, hvorfor parataktiske kongruensadled behandles separat i regel :M0351NY. i-adled til inderivering til højre er ikke kongruensadled
-MAP:M0350NY @<N TARGET Der/vn + $$KASUS + $$NUMERUS - LU - LUUNNIIT OR Num + $$KASUS - LU - LUUNNIIT  OR LIK + $$KASUS - LU - LUUNNIIT IF (-*1 N + $$KASUS + $$NUMERUS BARRIER (*) - OBLIQUE - Part - Gram/Dem)(NEGATE 0 Ins LINK *1 QAR OR LIK BARRIER VFIN)(NEGATE 0 Num LINK 1 Num OR iNum)(NEGATE 1 NUMHOVED)(NEGATE -1 ("akunneq") OR ("aasaq"))
+MAP:M0350NY @<N TARGET Der/vn + $$KASUS + $$NUMERUS - LU - LUUNNIIT OR Num + $$KASUS - LU - LUUNNIIT  OR LIK + $$KASUS - LU - LUUNNIIT IF (-*1 N + $$KASUS + $$NUMERUS BARRIER (*) - OBLIQUE - Part - Gram/Dem )(NEGATE 0 Ins LINK *1 QAR OR LIK BARRIER VFIN)(NEGATE 0 Num LINK 1 Num OR iNum)(NEGATE 1 NUMHOVED)(NEGATE -1 ("akunneq") OR ("aasaq"))
 (NEGATE 1 CONJ-C OR @CONJ LINK NOT 1 KOMMA OR EOS) # 4 gange 3 meterinik #(NEGATE 0 Num LINK -1 TIME ) #VFIN som barrier ret tilfældigt valgt #Krævet numeruskongruens 20180621
 (NEGATE -1 Rel LINK 1 Rel + POSSESSUM LINK 1 POSSESSUM3) #ataatsip iterusulernissaata tungaanut.
 ;
@@ -3284,7 +3285,9 @@ MAP:M0768 @HNOUN TARGET Abs + SSUSIQ IF (1 EOS OR KOMMA)(NEGATE *-1 V BARRIER KO
 #Vedr. subjekter se også 0324 ovenfor
 
 #Tid og sted (TIME, PLACE) er typisk adverbale adled.
-MAP:M09900A @i-ADVL> TARGET Lok IF (*1 Abs OR Rel - @POSS> BARRIER (*) - ADJEKTIVISK)(*1 ("illu" QAR VIK) OR TUQ OR NIQ BARRIER (*) - ADJEKTIVISK) ; #LANDlok BYabs
+MAP:M09900A @i-ADVL> TARGET Lok IF (*1 Abs OR Rel - @POSS> BARRIER (*) - ADJEKTIVISK)(*1 ("illu" QAR VIK) OR TUQ OR NIQ BARRIER (*) - ADJEKTIVISK) #LANDlok BYabs
+(NEGATE 1 ADVERBIEL)
+;
 MAP:M09900B @ADVL> TARGET Lok IF (0 TIME OR PLACE_EXTENDED)(*1 V BARRIER §dir-tale-start)(NEGATE *-1 V BARRIER §dir-tale-slut) ; 
 MAP:M09900C @ADVL> TARGET ("akunneq") IF (-1 ("sapaat"))(*1 V BARRIER §dir-tale-start)(NEGATE *-1 V BARRIER §dir-tale-slut) ;
 
@@ -3324,7 +3327,9 @@ MAP:M0860 (@i-<ADVL) TARGET (Lok) IF (0 LU)(-1 (Lok) + (@i-<ADVL)) ; #20091104
 
 #Særlig regel før M0940 til inderiverede adverbale adled inkl. de særlige substantiver, der inderiverer selv om de ikke er Der/vn (fx inatsit). LU holdes udenfor da oftest paratakse og LINK til Ins fulgt af V til sekvenser af fx type Ins-adled Lok-adled V 
 MAP:M0869 @i-ADVL> TARGET OBLIQUE IF (1 Der/vn + N - (/__\"ati\"\ Gram\/TV\ TAQ__/l) )(NEGATE 0 LU + $$KASUS LINK -1 $$KASUS)(NEGATE 0 $$KASUS LINK 1 $$KASUS + LU)(NEGATE 1 OBLIQUE LINK 1 V)(NEGATE 0 Lok + PLACE LINK 1 HUMAN)(NEGATE 1 PLACE)(NEGATE *1 KOMMA BARRIER V)(NEGATE 0 $$KASUS LINK *-1 $$KASUS BARRIER (*) - Adv - Pali - Interj - @POSS> - (/@i-.*/r))(NEGATE *0 ("isikku") - QAR - V)#(NEGATE 0 Trm - Gram/Pers LINK 1 Trm) #Lok + PLACE for at hindre inderivation ved fx nunaqarfimmi inuusuttoq pikkorippoq.
-(NEGATE 0 Lok LINK *1 (/__QAR\ Der\/nv\ Gram\/IV\ V\ Ind\ 3Sg__/l)) ; #...mi ...qarpoq
+(NEGATE 0 Lok LINK *1 (/__QAR\ Der\/nv\ Gram\/IV\ V\ Ind\ 3Sg__/l)) #...mi ...qarpoq
+(NEGATE 1 ADVERBIEL LINK NOT *1 OBLIQUE) #SEPTEMBARIMI immikkoortut suliffigisinnaasatit silissiumaarpavut er ikke i-ADVL>.
+;
 MAP:M0000AB @i-ADVL> TARGET Lok + PLACE IF (1 Der/vn - HUMAN) ;
 MAP:M0870 (@i-ADVL>) TARGET Lok + Sg IF (1 Der/vn + Sg )(NEGATE 1 NAR)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Lok)(NEGATE 1 LU + (Lok))(NEGATE -1 ("ulloq") LINK -1 BOS)(NEGATE 0 Lok + PLACE LINK 1 HUMAN)(NEGATE 1 @<N + Lok LINK *-1 (*) - Lok); #Kun Trm til Der/vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse. 20170425 sidste negate er nok ullut ilaanni og nexusadverbial
 #Særregel for parataktiske i-ADVL>
