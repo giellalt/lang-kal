@@ -1191,7 +1191,7 @@ LIST TRMVERB = "iser" "pulaar" ;
 SET MOVE-VERB = LOKVERB | ABLVERB | TRMVERB ;
 
 # 20091106 Foelgende med tak til Tino for at forebygge at "oqar" + USIQ opfattes som inquit
-LIST ORATIOOBLVERBnOQAR = "aalajanger" "aalianger" "eqqaa" "eqqaama" "eqqartor" "ilimagaa" "ilimasup" "ilisimatitsissut" "imaap" ("isuma" LIUR) ("isuma" QAR)
+LIST ORATIOOBLVERBnOQAR = "aalajanger" "aalianger" "apere" "eqqaa" "eqqaama" "eqqartor" "ilimagaa" "ilimasup" "ilisimatitsi" "ilisimatitsissut" "imaap" ("isuma" LIUR) ("isuma" QAR)
 "isummer" "maluge" "malunnarsi" "naatsorsor" "nalu" "nalunaar" "nalunaarut" "neriup" "paasi" "pinngitsaali" "puigor" "puior" "qular" "qulare" "qularnar" "qinnuige" "sinnattoq GE" "siunnersor" ("taku" Gram/TV) "tusar" "unner" "uppernarsar" ;
 SET ATUARnTAQ = ("atuar") - TAQ - VIK ;
 SET OQARnUSIQ = ("oqar") - (USIQ) ;
@@ -1736,7 +1736,7 @@ REMOVE:0040J ("tassa") + Interj (NEGATE 1 EOS) ;
 REMOVE:0040K TRANSVERB + TUQ + U + Imp ; #Hyppigt forekommende fejlanalyser. 20160504 Skal måske begrænses hvis for bred 
 SELECT:0019NY ("qanoq") + Adv IF (*1 IP OR ("ip") OR ("ilior") OR ("ili")); 
 MAP:M0019NY @ADVL> TARGET ("qanoq") + Adv IF (*1 IP OR ("ip") OR ("ilior") OR ("ili")); 
-SELECT:0020NY Interj - ("tass") - ("tassa") - ("immaqa") IF (-1 BOS)(NEGATE 0 ("ila") + 4SgPoss + Rel LINK 1 POSSESSUM3)(NEGATE 0 KONCESSIV LINK *1 Par BARRIER V)(NEGATE 0 ("taama") LINK 1 V)
+SELECT:0020NY Interj - ("tass") - ("tassa") - ("immaqa") IF (-1 BOS)(NEGATE 0 ("ila") + 4SgPoss + Rel LINK 1 POSSESSUM3)(NEGATE 0 KONCESSIV LINK *1 Par BARRIER V)(NEGATE 0 ("taama") OR ("qanoq") LINK 1 V)
 (NEGATE 0 Sem/Unit); #TASSA holdes uden for reglen og type 'Ilami illuanut iserpoq' ikke interjektion SKAL RAFFINERES YDERLIGERE 20180427. PL: immaqa tilføjet 20180526. Måske skal i stedet immaqa+Interj helt væk?? immaqa + Part og immaqa + Interj udkommenteret fra fst 20180526
 REMOVE:0020AdHoc ("immaqa") + Pali ; #fjernet fra fst og vil ikke længere optræde efter update
 SELECT:7250 Interj IF (-1 BOS OR ("\,"))(1 EOS); #Ny 20180407 En isoleret partikel er en interjektion
@@ -2593,7 +2593,10 @@ SELECT:0413 Par + INTRANSVERB + 3Sg IF (*-1 KOMMA LINK 1 Abs + Sg)(NEGATE 1 Abs 
 
 MAP:M00000 @>N TARGET ("nalunaaqutaq") IF (1 Num + Trm) ;
 MAP:M00001 @>N TARGET ("ukioq") IF (1 Num OR iNum)(NEGATE 0 $$KASUS LINK 1 (*) + $$KASUS - AFFINGERET)(NEGATE 1 POSSESSUM)(NEGATE 1 INSOBJVERB OR U OR NNGUR)(NEGATE -1 Num)  ;
-MAP:M0000 (@PRED) TARGET VFIN (NEGATE 0 Gram/Exclm LINK -1* ("una") BARRIER (*) - Abs - Conj)(NEGATE -1 ("\"") LINK 1 _TARGET_ LINK 1 ("\"")) ; #Et finit verbum er altid prædikat #Negate fordi et verbum i anførselstegn fungerer som et nomen.
+MAP:M0000 (@PRED) TARGET VFIN (NEGATE 0 Gram/Exclm LINK -1* ("una") BARRIER (*) - Abs - Conj)(NEGATE -1 ("\"") LINK 1 _TARGET_ LINK 1 ("\"")) #Et finit verbum er altid prædikat #Negate fordi et verbum i anførselstegn fungerer som et nomen.
+(NEGATE 0 (*) - CONJ-C - KONJUNKTION LINK *-1 VFIN - CONJ-C BARRIER CONJ-C OR KONJUNKTION OR KOMMA OR CLB OR PUNCT) #Til alternativ (overordnet) modusbrug i fx oratio obliqua. Aamma ugguunaatigut ilisimatitsissutigeriiginnarlara kalaallisut bloggerimik nassaarnikuuvunga # 
+(NEGATE 1 ("\?") LINK *-2 KONJUNKTION BARRIER VFIN OR ORATIOOBLVERB LINK -1 Int) #Til alternativ (overordnet) modusbrug i fx oratio obliqua. #To sideordnede verber skal have samme dependens. Marloqiusamik sulinialeqigatta apereqqaalaarlanga Katersanut ikkussornissaat isumagilerpiuk imaluunniit ikkussuinnassavakka?
+;
 MAP:M0001 (@PRED2) TARGET Par IF (@1 Interj)(NEGATE *0 VFIN); #Ved emfase og udbrud 
 MAP:M0002X @i->N TARGET ("suna") + Lok IF (1 ("tamaq") + iLok + IP OR  ("ma") + iLok + IP) ; # Sumi tamaaniipput. Tilpasset til ny i-tag 20180607 
 MAP:M0002 @>N TARGET ("suna") + $$KASUS IF (1 ("tamaq") + $$KASUS OR ("ma") + $$KASUS) ; # Sumi tamaani 
@@ -2780,6 +2783,10 @@ MAP:M0063 (@CL-<CIT) TARGET CONT + TRANSVERB IF (-*1 ORATIOOBLVERB - N - TAQ BAR
 
 #Simpel co-ref oratio obliqua uden andre ledsagemåder end CL-CIT
 
+#Oratio obliqua der indeholder overordnede modi
+MAP:M0061AX (@CL-<CIT) TARGET Ind OR Int IF (-*1 ORATIOOBLVERB + Opt + 1Sg OR ORATIOOBLVERB + Imp + 1Sg LINK NOT *-1 Par OR CONT)(NEGATE *1 CONT OR Par)(NEGATE 0 LU LINK -1 KOMMA) #Marloqiusamik sulinialeqigatta apereqqaalaarlanga Katersanut ikkussornissaat isumagilerpiuk imaluunniit ikkussuinnassavakka? #Aamma ugguunaatigut ilisimatitsissutigeriiginnarlara kalaallisut bloggerimik nassaarnikuuvunga
+; 
+
 MAP:M0065 @V> TARGET Abs + NIQ - POSSESSUM IF (1 ("ajor") OR ("saper")) ;
 MAP:M0065A @V> TARGET Gram/Comp + NIQ - POSSESSUM IF (1 ("ajor") OR ("saper")) ; #Til de NIQ-led der ikke markerer ordklasse.
 
@@ -2876,6 +2883,7 @@ MAP:M0230 (@CONJ) TARGET KONJUNKTION IF (-1 BOS OR KOMMA)
 #Flyttet fra 1168 forebygge konflikt med @ADVL> 
 MAP:M0231 (@CONJ) TARGET ("aamma" LU) OR ("taamatut") + LU; #vistnok undtagelsesløs
 MAP:M0232 (@CONJ) TARGET Conj ; #Konjunktioner skal tagges som konjunktioner
+MAP:M0233 @CONJ TARGET Adv + CONJ-C IF (NEGATE *0 V OR INDERIVERENDE_SUBSTANTIV OR Der/vn) ; #qanoq taavalu qaqugu
 
 MAP:M0235B @V> TARGET ("allaat") + Adv IF (1 Rel LINK 1 Trm + POSSESSUM); #allaat Nuup imartaanut pipput   
 MAP:M0235C @V> TARGET ("allaat") + Adv IF (1 Trm); #allaat Nuummut pipput   
@@ -2899,8 +2907,9 @@ MAP:M0282 @ADVL> TARGET ("imatut") OR ("ima") + Pali IF (*1 LIK_QAR BARRIER V) ;
 #MAP:0140 (@CONJ) TARGET Part IF (-1 Abs)(*1 Abs BARRIER VFIN) ; #2.4. tilfoejet  MAP:0HvilkenAdverbial foer denne for at forhindre @CONJ på 'Aasaanerani naasut tamalaat alutornartut ILAATIGULLU ruuat ..'
 MAP:M0285 (@CONJ) TARGET Part IF (-1 Rel)(*1 Rel BARRIER V) ;
 MAP:M0286 (@CL-ADVL>) TARGET Part IF (-2 BOS OR ("\,"))(-1 Interj)(NEGATE 0 KONJUNKTION)(*1 V)(NEGATE 1 TIGE) ; #20091109 .., aasiit TAAMATUT, ...
-MAP:M0287 (@CL-ADVL>) TARGET Part IF (-1 BOS)(NEGATE 0 KONJUNKTION)(NEGATE 1 TIGE) ;
-MAP:M0291 (@V>) TARGET ("taama") IF (1 TIGE LINK NEGATE 0 N) ;
+MAP:M0287 (@CL-ADVL>) TARGET Part IF (-1 BOS)(NEGATE 0 KONJUNKTION)(NEGATE 1 TIGE OR Gram/Exclm)
+(*1 V) ;
+MAP:M0291 (@V>) TARGET ("taama") OR ("qanoq") IF (1 TIGE LINK NEGATE 0 N) ;
 MAP:M0292 (@i-ADVL>) TARGET ("siornatigut") + Part IF (1 Der/vn) ;
 
 #MAP-regler ved oratio obliqua
