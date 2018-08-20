@@ -1191,16 +1191,18 @@ LIST TRMVERB = "iser" "pulaar" ;
 SET MOVE-VERB = LOKVERB | ABLVERB | TRMVERB ;
 
 # 20091106 Foelgende med tak til Tino for at forebygge at "oqar" + USIQ opfattes som inquit
-LIST ORATIOOBLVERBnOQAR = "aalajanger" "aalianger" "eqqaa" "eqqaama" "eqqartor" ("ili" SIMA) "ilimagaa" "ilimasup" "ilisimatitsissut" "imaap" ("isuma" LIUR) ("isuma" QAR)
-"isummer" "maluge" "malunnarsi" "naatsorsor" "nalu" "nalunaar" "nalunaarut" "nassuiar" "neriup" "paasi" "pinngitsaali" "puigor" "puior" "qular" "qulare" "qularnar" "qinnuige" "sinnattoq GE" "siunnersor" ("taku" Gram/TV) "tusar" "unner" "uppernarsar" ;
+LIST ORATIOOBLVERBnOQAR = "aalajanger" "aalianger" "eqqaa" "eqqaama" "eqqartor" "ilimagaa" "ilimasup" "ilisimatitsissut" "imaap" ("isuma" LIUR) ("isuma" QAR)
+"isummer" "maluge" "malunnarsi" "naatsorsor" "nalu" "nalunaar" "nalunaarut" "neriup" "paasi" "pinngitsaali" "puigor" "puior" "qular" "qulare" "qularnar" "qinnuige" "sinnattoq GE" "siunnersor" ("taku" Gram/TV) "tusar" "unner" "uppernarsar" ;
 SET ATUARnTAQ = ("atuar") - TAQ - VIK ;
 SET OQARnUSIQ = ("oqar") - (USIQ) ;
 SET ALLAANNGIT = ("alla") + U + NNGIT ;
 SET ALLAPnTAQ = ("allap") - TAQ - VIK ;
 SET EQQARSARnTARIAQAR = ("eqqarsar") - TARIAQAR ;
+SET ILISIMAnTAQ = ("ilisima") - TAQ ;
+SET NASSUIARnUTE = ("nassuiar") - (/__UTE\ Der\/vn/l) ;
 SET OQALUTTUAQnTAQ = ("oqaluttuaq") + GE - TAQ ; #oqaluttuaraa, men ikke oqaluttuarisaaneq
 SET TUSAAnTAQ = ("tusaa") - TAQ ;
-SET ORATIOOBLVERB = ORATIOOBLVERBnOQAR OR OQARnUSIQ OR ALLAANNGIT OR ALLAPnTAQ OR EQQARSARnTARIAQAR OR ATUARnTAQ OR OQALUTTUAQnTAQ OR TUSAAnTAQ ;
+SET ORATIOOBLVERB = ORATIOOBLVERBnOQAR OR OQARnUSIQ OR ALLAANNGIT OR ALLAPnTAQ OR EQQARSARnTARIAQAR OR ILISIMAnTAQ OR NASSUIARnUTE OR ATUARnTAQ OR OQALUTTUAQnTAQ OR TUSAAnTAQ ;
 
 LIST TALE = "oqar" "aki" ;
 SET DIRTALE = TALE OR OQARnUSIQ ;
@@ -1228,6 +1230,7 @@ LIST EVALUERENDE_VERBER = "kajungeraa" ; #verber med semantik der betinger objek
 LIST INDERIVERENDE_SUBSTANTIV = "atuakkiaq" "blogger" "bloggeri" "blog" "filmiliaq" ("film" LIAQ) "inatsit" "isuma" "naapeqatigiinneq" "nalliuttorsiorneq" "oqaluttuaq" "pineq" "qaatigooq" "sanaaq" ;
 #LIST VERBALNOMEN = "isuma" "oqaluttuaq" "naapeqatigiinneq" ;
 LIST INSOBJVERB = RAAR SI TAAR SIUR TUR (/__LIR\ Der\/nv__/l) ;
+LIST FIGHT = "akior" ; #negativt ladede verber; til valg af 3Sg frem for 1Sg.
 
 # Nominernes leksikalske klasser
 # =============================
@@ -1749,7 +1752,9 @@ REMOVE:7253 Par IF (-1* ("una") + Prefix/AA BARRIER (*) - Abs - Part) ;
 REMOVE:0001X ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"%l$1"r))(-1 BOS) (NEGATE 1 Prop) ;
 SELECT:0001Y ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"$1"r))(-1 BOS) ;
 REMOVE:0001Z N IF (0 PROP_VS_APPELLATIV LINK *1 HUMVERB OR humverb); #Manu iserpoq. Manu er mest sandsynligt et proprium.
-REMOVE:0001Z N IF (0 Prop - Sem/Geo LINK *1 HUMVERB OR humverb); #Manu iserpoq. Manu er mest sandsynligt et proprium.
+REMOVE:0001Z N IF (0 Prop - Sem/Geo + Abs LINK *1 HUMVERB + INTRANSVERB OR humverb + INTRANSVERB); #Manu iserpoq. Manu er mest sandsynligt et proprium.
+REMOVE:0001Z N IF (0 Prop - Sem/Geo + Rel LINK *1 HUMVERB + TRANSVERB OR humverb + TRANSVERB ); #Manu iserpoq. Manu er mest sandsynligt et proprium.
+REMOVE:0001Z1 Prop - Sem/Geo + Abs IF (0 N LINK *1 thingobjverb + TRANSVERB BARRIER INTRANSVERB) ;
 
 # Appositional proper noun without comma
 REMOVE:0001A Prop + Sem/FirstName IF (0 Prop + Sg)(-1 N + Sg)(*1 VFIN + 3Sg BARRIER KOMMA);
@@ -1992,7 +1997,7 @@ SELECT:0099A Gram/Cong + Nom + 4Pl IF (1* 34Pl) ;
 SELECT:0099B Gram/Cong + Nom + 4Sg IF (1* 34Sg)(NEGATE -1 Lok) ;
 SELECT:0099C Gram/Cong + Lok + Sg IF (-1 Lok) ;
 
-REMOVE:0099D Gram/Cong IF (*-1 (*) - V)(*1 (*) - V BARRIER KOMMA) ; #Gram/Cong skal have noget at kongruere med.
+REMOVE:0099D Gram/Cong - ("arlaq") IF (*-1 (*) - V)(*1 (*) - V BARRIER KOMMA) ; #Gram/Cong skal have noget at kongruere med.
 
 SELECT:0099G Abs IF (1 Gram/Cong + Akk LINK *1 TRANSVERB BARRIER V) ;
 
@@ -2114,7 +2119,7 @@ SELECT:0153A Prop + Sem/FirstName IF (1 Prop + Pl + KKUT) (NEGATE 1 Prop + IP); 
 
 REMOVE:0154 Prop IF (-1 BOS)(1 (/__Gram\/Dem\ Pron__/l)) ; #Arnaq eller arnaq først i sætningen?
 
-SELECT:0155 (Prop) IF (0 ("<\\p{Lu}.*>"r)) (NEGATE -1 BOS OR (""")) ;
+SELECT:0155 (Prop) IF (0 ("<\\p{Lu}.*>"r)) (NEGATE *-1 BOS BARRIER (*) - PUNCT) ;
 # Select Prop hvis Wordform starter med stort, men ikke hvis første ord i sætning eller i direkte tale
 
 #SELECT:0156 ("Guuti") + Prop + Sg (NEGATE 0 AFFINGERET) ;
@@ -2138,6 +2143,7 @@ MAP:M0175A @CL-<ADVL TARGET GAANNI IF (*-1 VFIN)(NEGATE 0 CONJ-C LINK 1* VFIN BA
 MAP:M0175B @CL-ADVL> TARGET GAANNI IF (-1 BOS OR KOMMA) ; #20091109 participium på -gaanni altid neksusadverbial
 MAP:M0175C @CL-ADVL> TARGET GAANNI IF (*1 VFIN BARRIER V - CONT)(NEGATE 0 Par + 4Sg + 3PlO) ; #20091109 participium på -gaanni altid neksusadverbial. De særlige Par på -gini, som erstatter ledsagemåde holdes udenfor
 MAP:M0175D @CL-ADVL> TARGET GAANNI IF (*1 ("isuma") + QAR LINK *1 Ins) ;
+MAP:M0175E @CL-ADVL> TARGET GAANNI IF (*1 V - CONT)(NEGATE *-1 V - CONT) ;
 
 SELECT:0179 ("ila") - MI + Interj ; #uden endelse næsten sikkert interjektion. ilami dog konflikt 
 SELECT:0180 ("taamaattoq") + LI IF (-1 BOS) ;
@@ -3472,7 +3478,8 @@ MAP:M1148C1 @i-ADVL>N TARGET CONT + TRANSVERB IF (0 PILLUGU OR ("pissut") LINK 1
 
 
 MAP:M1148 @ADVL> TARGET CONT + TRANSVERB IF (*1 V) (NEGATE *-1 ORATIOOBLVERB - TAQ) #20170127 (NEGATE 1 Der/vn + N) #fjernet
-(NEGATE 1 ORATIOOBLVERB LINK 1 KOMMA OR EOS) ; 
+(NEGATE 1 ORATIOOBLVERB LINK 1 KOMMA OR EOS) 
+(NEGATE 1 KOMMA LINK *-2 VFIN BARRIER KOMMA) # Forhindrer tagging af <ADVL til et andet syntagme; 
 
 
 MAP:M1148A1 @CL-<CIT TARGET CONT + TRANSVERB IF (*-1 ORATIOOBLVERB BARRIER Par OR KOMMA)(*1 Rel BARRIER KOMMA LINK *1 Par + TRANSVERB) ; #20171010 oratio obl. fulgt af nok en or. obl.
@@ -4100,7 +4107,7 @@ REMOVE @ARG> IF (*1C @<ARG BARRIER V)(NEGATE 1 V);
 
 # One-cohort disambiguation - cycle 0
 
-SELECT:1851 Prop IF (NEGATE -1 BOS OR ("""))(0 Prop) ; #Lyder som en mærkelig regel. Skal checkes
+SELECT:1851 Prop IF (NEGATE *-1 BOS BARRIER (*) - PUNCT)(0 Prop) ; #Lyder som en mærkelig regel. Skal checkes
 	## Ilalu Nuup eqqaani iliverpassuit. # SNM: det neste anførselstegn resetter syntaksfarger "
 
 #REMOVE @SUBJ> IF (NEGATE 0 ANIMAL)(*1 @PRED animalverb) ; 
@@ -4268,7 +4275,7 @@ SELECT:2559 Abs + 4SgPoss IF (*1 TRANSVERB + 3Sg + 3SgO BARRIER INTRANSVERB ) ;
 SELECT:2560 Rel + Pl IF (-1 Cau + 4Pl)(NEGATE *1 N + Pl)(*1 TRANSVERB + 3Pl) ;
 
 #Disambiguerer pluralisobjekt med implicit subjekt fra pluralissubjekt med implicit objekt. Det er sikkert objekt hvis subjekt i forrige sætning er Pl OG der står et 3PlO til højre OG ??? OG Pl-ordet ikke er possessor, heller ikke for et possessum med inderiveret adverbial OG Pl-ordet ikke er subjekt i oratio oblique. Der tages forbehold for SUB (oftest vai-endelsen) som Pl - PlO i foregående sætning
-SELECT:2561 Abs + Pl IF (@0 (*) LINK -*1W V + 3Pl - SUB BARRIER BOS OR V)(*1 TRANSVERB + 3PlO)(NEGATE *0 Abs + Sg)(NEGATE 1 POSSESSUM + 3PlPoss)(NEGATE 1 CONT + 4Pl LINK 1 POSSESSUM + 3PlPoss)(NEGATE *1 Par + 3Pl BARRIER V ) (NEGATE 0 Rel + Sg LINK *1 Par + 3Sg + 3PlO); #LINK *0 ORATIOOBLVERB ); virkede ikke med LINK
+SELECT:2561 Abs + Pl - Gram/Dem IF (@0 (*) LINK -*1W V + 3Pl - SUB BARRIER BOS OR V)(*1 TRANSVERB + 3PlO)(NEGATE *0 Abs + Sg)(NEGATE 1 POSSESSUM + 3PlPoss)(NEGATE 1 CONT + 4Pl LINK 1 POSSESSUM + 3PlPoss)(NEGATE *1 Par + 3Pl BARRIER V ) (NEGATE 0 Rel + Sg LINK *1 Par + 3Sg + 3PlO); #LINK *0 ORATIOOBLVERB ); virkede ikke med LINK
 #SELECT:2561 Abs + Pl IF (*1 3PlO BARRIER V OR 3PlPoss)(NEGATE *1 3Pl + GE LINK *1 Abs ) ; #objekt for nærmeste transitive hvis ikke possessum. Der tages også forbehold for S V O ved GE. Skal reformuleres. Den sletter mange Rel+Pl subjekter med implicit objekt
 
 #Følgende til sikre transitiver i Con Cau og IteCau. Må ikke hitte på parataktiske objekter heller ikke objekter med possessor. Må ikke hitte på ("assoq") for assut+Part. 2562A en undtagelse ved objektsprædikat til meget tungt OBJ i OSV konstruktion
@@ -5096,7 +5103,11 @@ MAP:M0999B @<ADVL TARGET CONT IF (1 CLB)(-*1 VFIN) ;
 MAP:M0999C @PRED TARGET CONT IF (1 EOS)(NEGATE *0 V) ;
 
 #Sen regel til at disambiguere NIQ+1SgPoss fra NIQ+3SgPoss
-SELECT:9939A NIQ + 1SgPoss IF (0*W 1Sg)(0 NIQ + 3SgPoss) ; #Possessor 1.Sg hvis 1. Sg i omgivende sætninger
+SELECT:9939AA NIQ + 1SgPoss IF (0*W 1Sg)(0 NIQ + 3SgPoss) #Possessor 1.Sg hvis 1. Sg i omgivende sætninger
+(NEGATE 1 FIGHT + 3SgO) ; #tamatumuuna pinaasernera akiorpara.
+
+#Specifikke regler til disambiguering af 1SgPoss og 3SgPoss
+SELECT:9939AB 3SgPoss IF (1 FIGHT + 3SgO) ;
 
 #Sen regel til at disambiguere 3SgPoss+Rel+Pl fra 3PlPoss+Rel+Pl
 REMOVE:9939B 3PlPoss IF (0*W 3Sg)(0 3SgPoss)(NEGATE *-1 3Pl) ; #Possessor 3Sg hvis 3Sg i omgivende sætninger og ingen 3Pl lige til venstre
@@ -5215,7 +5226,9 @@ REMOVE:9967A ("(\"[^<].*\"\sGram\/TV\sTIP)"r) IF (0 ("(\"[^<].*\"\sGram\/IV\sTIP
 SECTION
 SELECT (@CL-<CIT) IF (*-1 ORATIOOBLVERB BARRIER V-NOT-Par) ;
 SELECT:9969 TUQ + Abs IF (-1 V + U)(1 KOMMA OR EOS)(NEGATE -1 TEMPUSVERB + Par) ;
-SELECT:9970 (@CL-CIT>) IF (*1 ORATIOOBLVERB BARRIER V-NOT-Par)(NEGATE 0 Abs + Sg + Der/nv LINK -1 Sg + Abs) ; #Uden NEGATE hit på adled til objekt
+REMOVE @CL-CIT> IF (1 @<N) ; # Hvis det er en CL-CIT, er der ikke et adnominalt adled til højre for det. I så fald er det et objekt, eller det ord der er tagget som @<N er CL-CIT. Naasorli ajortuusoq paasigaanni. 
+SELECT:9970 (@CL-CIT>) IF (*1 ORATIOOBLVERB BARRIER V-NOT-Par)(NEGATE 0 Abs + Sg + Der/nv LINK -1 Sg + Abs) #Uden NEGATE hit på adled til objekt
+; 
 SELECT:9971 @CL-CIT> IF (*-1 @SUBJ> + 4SgPoss)(*1 ORATIOOBLVERB + VFIN) ;
 SELECT:9971A HTR - V IF (*-1 @i-MIK-OBJ> BARRIER (*) - @i-ADVL> - @<N) ;
 
