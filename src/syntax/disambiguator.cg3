@@ -115,6 +115,7 @@ LIST SUB = Orth/Arch Orth/Alt Orth/Young ;
 LIST Orth/Arch = Orth/Arch ;
 LIST Orth/Alt = Orth/Alt ;
 LIST Orth/Young = Orth/Young ;
+LIST Orth/Append = Orth/Append ; #readings added by CG (APPEND)
 LIST Gram/Comp = Gram/Comp ; #20100228 Ny tag udelukkende til neq ajor/saper/artor/nalu (PL)
 LIST Coll = Coll ; #20100406 Ny tag til ikke-godkendte proprier
 LIST TempPart = TempPart ; #De særlige verbumlignende nominer med tempusfunktion
@@ -1048,6 +1049,7 @@ LIST BFORM = ".*"r ;
 # Alle ordklasser
 # ---------------
 LIST WORD = N V Pali Conj Adv Interj Gram/Exclm Pron Prop Num ;
+SET POS = WORD - (<heur> <f:[0-9]+>r) ;
 
 SET NOT-PROP = WORD - Prop ;
 
@@ -1302,7 +1304,7 @@ LIST FAM_UNIK = "ui" "nuliaq" "anaana" "ataata" "aana" "aanaq" "ittoq" "aata" "a
 SET FAM = FAM_UNIK | ("aappaq" GIIT) | ("aja") | ("ajak") | ("angaaq") | ("angajoqqaaq") | ("ilaqutaq") | ("ilaqutaq" GIIT) | ("illoq") | ("panik") ;
 LIST HUM = ("ajor" TUQ) "arnaq" "angut" "ikinngut" "ila" "inuk" ("inuusup" TUQ) "kalaaleq" "meeraq" "niviarsiaraq" "qallunaaq" "tarneq" "tarnik" "utoqqaq" ; #tarneq og tarnik medtaget da ofte objekt for +HUM verber
 
-SET HUMAN = FAM OR NAME OR TITEL OR ORGANISATION OR HUM OR (Prop - Sem/GEO) ;
+SET HUMAN = FAM OR NAME OR TITEL OR ORGANISATION OR HUM OR Prop - Sem/Geo ;
 SET NON_HUMAN = N - HUMAN ;
 
 LIST PROP_VS_APPELLATIV = "anguteq" "anguteeraq" "aqqalu" "aqqaluk" "arnaq" "arnannguaq" "inuk" "malik" "minik" "naja" "najaaraq" "najannguaq" "nuka" "paninnguaq" "Anguteq" "Anguteĸ" "Anguteeraq" "Aqqalu" "Aqqaluk" "Arnaq" "Arnannguaq" "Inuk" "Malik" "Minik" "Naja" "Najaaraq" "Najannguaq" "Nuka" "Paninnguaq" ; #Liste med proprier, der også er sandsynlige som appellativer
@@ -1593,6 +1595,10 @@ REMOVE ("aqagu") + N - AFFINGERET IF (0 ("aqagu") + Adv);
 
 ### SIKRE TAGGINGS AF ULÆSELIGE ORD ###
 #=====================================#
+#TEST
+APPEND ("$1"v N <heur>) TARGET ("<(Saq)-?imut>"r) (NOT 0 WORD) ; # HK
+APPEND ("$1"v N <heur>) TARGET ("<(Saq)-?imut>"r) (0 (*) - WORD - (<heur> <f:[0-9]+>r)) ; # HK
+
 APPEND ("$1"v Orth/Append N Gram/ACR Rel Sg) TARGET ("<(\\p{Lu}{2,})-?i?u?p>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # HK
 APPEND ("$1"v Orth/Append Prop Gram/ACR Rel Sg) TARGET ("<(\\p{Lu}{2,}.*)-i?u?p>"r) (NOT 0 WORD - Gram/ACR - (<heur> <f:[0-9]+>r))(0 (\?)) ; # CBS
 APPEND ("$1k"v Orth/Append Prop Rel Sg) TARGET ("<(\\p{Lu}.*)-?up>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # Pisiffik
@@ -5113,9 +5119,9 @@ MAP:M0999C @PRED TARGET CONT IF (1 EOS)(NEGATE *0 V) ;
 
 #Sen regel til at disambiguere NIQ+3SgPoss fra NIQ+1SgPoss
 REMOVE NIQ + 1SgPoss IF (0 MOVE-VERB LINK *0 ORATIOOBLVERB)(NEGATE *-1 ("uanga")) # (taassuma) takkuteriasaarnera tupinnartoq paasiniassallugu periarfissarseriasaarpunga.
+;
 #Sen regel til at disambiguere NIQ+1SgPoss fra NIQ+3SgPoss
-SELECT:9939AA NIQ + 1SgPoss IF (0*W 1Sg)(0 NIQ + 3SgPoss) #Possessor 1.Sg hvis 1. Sg i omgivende sætninger
-; 
+SELECT:9939AA NIQ + 1SgPoss IF (0*W 1Sg)(0 NIQ + 3SgPoss) ; #Possessor 1.Sg hvis 1. Sg i omgivende sætninger
 #Specifikke regler til disambiguering af 1SgPoss og 3SgPoss
 SELECT:9939AB 3SgPoss IF (1 FIGHT + 3SgO) ;
 
