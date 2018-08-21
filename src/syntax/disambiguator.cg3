@@ -1159,8 +1159,8 @@ LIST NÆPPE_OBJ = ("nuanner" TUQ);
 LIST KONJUNKTION = "aamma" "kisianni" "imaluunniit" ("immaqa" LUUNNIIT ) ;#"taava" ; Taava er normalt adverbiel.
 LIST CONJ-C = LU LUUNNIIT LI KONJUNKTION ; #Sideordnende konjunktioner, alenestående og efterhængte partikler
 SET CONJ-S = Conj - CONJ-C ; #Underordnende konjunktioner
-LIST NUSUPnAFF = ("nusup") - AFFINGERET + CONT;
-LIST TAMAKKERnAFF = ("tamakker") - AFFINGERET + CONT ;
+SET NUSUPnAFF = ("nusup") - AFFINGERET + CONT;
+SET TAMAKKERnAFF = ("tamakker") - AFFINGERET + CONT ;
 LIST ADVERBIUM = "ima" "qanoq" ; #20091109 tilfoejet 'qanoq', der maaske staar lidt malplaceret her
 SET ADVERBIEL = Adv | Pali | ("immikkoor") | NUSUPnAFF | TAMAKKERnAFF | PILLUGU ;
 LIST FOKUSPART = ("uv" Prefix/AA) ("una" Prefix/AA) "tassa" "aali" "sunaaffa" "aajuku" "aajuna" "aaku" "aana" ; #oqaqqarniutit imal. oqaaseqatigiinni oqaluutitaqanngitsut 
@@ -1182,11 +1182,11 @@ LIST TASSA = "tassa" ("tass" Gram/Dem Interj);
 # Verbernes leksikalske klasser
 # =============================
 
-LIST LOKVERB = "najugaq" "najugaqar" "ilinniar" ;
+LIST LOKVERB = "angala" "najugaq" "najugaqar" "ilinniar" ("taku" UTE) ;
 
-LIST ABLVERB = "ani" ;
+LIST ABLVERB = "aallar" "ani" ;
 
-LIST TRMVERB = "iser" "pulaar" ;
+LIST TRMVERB = "aallar" "iser" "pulaar" ;
 
 SET MOVE-VERB = LOKVERB | ABLVERB | TRMVERB ;
 
@@ -1302,7 +1302,7 @@ LIST FAM_UNIK = "ui" "nuliaq" "anaana" "ataata" "aana" "aanaq" "ittoq" "aata" "a
 SET FAM = FAM_UNIK | ("aappaq" GIIT) | ("aja") | ("ajak") | ("angaaq") | ("angajoqqaaq") | ("ilaqutaq") | ("ilaqutaq" GIIT) | ("illoq") | ("panik") ;
 LIST HUM = ("ajor" TUQ) "arnaq" "angut" "ikinngut" "ila" "inuk" ("inuusup" TUQ) "kalaaleq" "meeraq" "niviarsiaraq" "qallunaaq" "tarneq" "tarnik" "utoqqaq" ; #tarneq og tarnik medtaget da ofte objekt for +HUM verber
 
-SET HUMAN = FAM OR NAME OR TITEL OR ORGANISATION OR HUM OR Prop ;
+SET HUMAN = FAM OR NAME OR TITEL OR ORGANISATION OR HUM OR (Prop - Sem/GEO) ;
 SET NON_HUMAN = N - HUMAN ;
 
 LIST PROP_VS_APPELLATIV = "anguteq" "anguteeraq" "aqqalu" "aqqaluk" "arnaq" "arnannguaq" "inuk" "malik" "minik" "naja" "najaaraq" "najannguaq" "nuka" "paninnguaq" "Anguteq" "Anguteĸ" "Anguteeraq" "Aqqalu" "Aqqaluk" "Arnaq" "Arnannguaq" "Inuk" "Malik" "Minik" "Naja" "Najaaraq" "Najannguaq" "Nuka" "Paninnguaq" ; #Liste med proprier, der også er sandsynlige som appellativer
@@ -1699,7 +1699,7 @@ SELECT:0031 ("ila") + 3SgPoss + Abs IF (-1 TIME + Rel)(*1 T:NexusHøjre ) ;
 REMOVE:0040A TIME + KKUT IF (-1 BOS); #Kan vist kun være Via i den position
 SELECT:0040F TIME + Abs IF (1 ("tamaq") + Akk);
 
-REMOVE:0098 TIME + POSSESSUM12 IF (NEGATE 0 SIUR + VIK) ; # Må være en udelukket kombination men må ikke slette fx aasarsiorfik
+REMOVE:0098 TIME + POSSESSUM12 IF (NEGATE 0 SIUR OR U) ; # Må være en udelukket kombination men må ikke slette fx aasarsiorfik eller (uanga) inuunera
 
 
 ### MODUS ###
@@ -2907,7 +2907,7 @@ MAP:M0282 @ADVL> TARGET ("imatut") OR ("ima") + Pali IF (*1 LIK_QAR BARRIER V) ;
 #MAP:0140 (@CONJ) TARGET Part IF (-1 Abs)(*1 Abs BARRIER VFIN) ; #2.4. tilfoejet  MAP:0HvilkenAdverbial foer denne for at forhindre @CONJ på 'Aasaanerani naasut tamalaat alutornartut ILAATIGULLU ruuat ..'
 MAP:M0285 (@CONJ) TARGET Part IF (-1 Rel)(*1 Rel BARRIER V) ;
 MAP:M0286 (@CL-ADVL>) TARGET Part IF (-2 BOS OR ("\,"))(-1 Interj)(NEGATE 0 KONJUNKTION)(*1 V)(NEGATE 1 TIGE) ; #20091109 .., aasiit TAAMATUT, ...
-MAP:M0287 (@CL-ADVL>) TARGET Part IF (-1 BOS)(NEGATE 0 KONJUNKTION)(NEGATE 1 TIGE OR Gram/Exclm)
+MAP:M0287 (@CL-ADVL>) TARGET Part IF (-1 BOS)(NEGATE 0 KONJUNKTION OR ("qanoq"))(NEGATE 1 TIGE OR Gram/Exclm)
 (*1 V) ;
 MAP:M0291 (@V>) TARGET ("taama") OR ("qanoq") IF (1 TIGE LINK NEGATE 0 N) ;
 MAP:M0292 (@i-ADVL>) TARGET ("siornatigut") + Part IF (1 Der/vn) ;
@@ -5111,10 +5111,11 @@ MAP:M0999A @PRED2 TARGET CONT IF (1 CLB)(-*1 VFIN LINK *1 LU BARRIER (*) - KOMMA
 MAP:M0999B @<ADVL TARGET CONT IF (1 CLB)(-*1 VFIN) ;
 MAP:M0999C @PRED TARGET CONT IF (1 EOS)(NEGATE *0 V) ;
 
+#Sen regel til at disambiguere NIQ+3SgPoss fra NIQ+1SgPoss
+REMOVE NIQ + 1SgPoss IF (0 MOVE-VERB LINK *0 ORATIOOBLVERB)(NEGATE *-1 ("uanga")) # (taassuma) takkuteriasaarnera tupinnartoq paasiniassallugu periarfissarseriasaarpunga.
 #Sen regel til at disambiguere NIQ+1SgPoss fra NIQ+3SgPoss
 SELECT:9939AA NIQ + 1SgPoss IF (0*W 1Sg)(0 NIQ + 3SgPoss) #Possessor 1.Sg hvis 1. Sg i omgivende sætninger
-(NEGATE 1 FIGHT + 3SgO) ; #tamatumuuna pinaasernera akiorpara.
-
+; 
 #Specifikke regler til disambiguering af 1SgPoss og 3SgPoss
 SELECT:9939AB 3SgPoss IF (1 FIGHT + 3SgO) ;
 
