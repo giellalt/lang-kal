@@ -1159,7 +1159,7 @@ LIST NÆPPE_OBJ = ("nuanner" TUQ);
 # Partikler
 # ---------
 LIST KONJUNKTION = "aamma" "kisianni" "imaluunniit" ("immaqa" LUUNNIIT ) ;#"taava" ; Taava er normalt adverbiel.
-LIST CONJ-C = LU LUUNNIIT LI KONJUNKTION ; #Sideordnende konjunktioner, alenestående og efterhængte partikler
+SET CONJ-C = LU | LUUNNIIT | LI | KONJUNKTION ; #Sideordnende konjunktioner, alenestående og efterhængte partikler
 SET CONJ-S = Conj - CONJ-C ; #Underordnende konjunktioner
 SET NUSUPnAFF = ("nusup") - AFFINGERET + CONT;
 SET TAMAKKERnAFF = ("tamakker") - AFFINGERET + CONT ;
@@ -3336,8 +3336,6 @@ MAP:M0766 @SUBJ> TARGET Prop + Rel + Sg IF (*1 TRANSVERB + 3Sg OR TRANSVERB + 4S
 MAP:M0767 @HNOUN TARGET (/__Gram\/Dem\ Pron__/l) IF (-1 BOS)(1 EOS);
 MAP:M0768 @HNOUN TARGET Abs + SSUSIQ IF (1 EOS OR KOMMA)(NEGATE *-1 V BARRIER KOMMA) ; #Udbrudsagtige xxssusia, men må ikke tagge subjekt el. objekt
 
-
-
 # Nominer 
 # =======
 #Appellativer i absolut kasus kan være element af syntagmerne subjekt, objekt, tidsangivelse, overskriftsord 
@@ -3580,7 +3578,8 @@ ADD:M1340 (@PRED) TARGET CONT IF (-1 Ins + LU OR Ins + LUUNNIIT)(*-1 VFIN)(NEGAT
 MAP:M1350 (@PRED) TARGET CONT IF (0 LU OR LUUNNIIT)(*1 VFIN);
 MAP:M1360 (@PRED) TARGET CONT IF (0 LU OR LUUNNIIT)(*-1 VFIN);
 	## Trond atuarpoq allallunilu.
-MAP:M1370 (@CL-CIT>) TARGET Par + TRANSVERB IF (*1 ORATIOOBLVERB);	
+MAP:M1370 (@CL-CIT>) TARGET Par + TRANSVERB IF (*1 ORATIOOBLVERB)(NEGATE 1 KOMMA LINK *-2 UNA BARRIER VFIN) #Efterskoleramaana arnarsiama Dorthep, kursusereeruma aaniaraanga, aperigami ...
+;	
 MAP:M1371 (@CL-<CIT) TARGET Par + TRANSVERB IF (*-1 ORATIOOBLVERB);	
 MAP:M1371 @CL-<CIT TARGET ("tassa") + Par IF (*-1 ORATIOOBLVERB);
 SUBSTITUTE:M1372 @CAU @CL-<CIT TARGET Cau IF (*-1 BOS LINK 1 ORATIOOBLVERB LINK *1 _TARGET_ LINK *1 ORATIOOBLVERB)(NEGATE *-1 Cau LINK *1 _TARGET_); #Er der flere oo-verber, hører den første Cau sandsynligvis til den første.
@@ -3647,9 +3646,12 @@ MAP:M1590 (@>N) TARGET ("§") IF (1 Num);
 	## § 5.
 
 MAP:M1600 (@HNOUN) TARGET Vok ; # Sætningsfragment
+MAP:M1601 @HNOUN TARGET N + $$KASUS + $$NUMERUS IF (1 KOMMA)(NEGATE *1 V + 3Sg - @CAU - @CON OR V + 4Sg - @CAU - @CON)(NEGATE *-1 $$KASUS + $$NUMERUS) ; #30 GRADER, sivisulaartumik seqinermiissinnaanngilanga kiangaarmat. 
+MAP:M1602 @HNOUN TARGET N IF (NOT *1 V)(NOT *-1 V LINK -*1 @SUBJ>) ; #Ilaa ullut marluupput, 14. imaluunniit 15.-ta tungaanut KURSUS? 
 
-MAP:M1610 (@>N) TARGET Gram/Ord IF (1 N) ;
+MAP:M1610A (@>N) TARGET Gram/Ord IF (1 N) ;
 	## 1. august.
+MAP:M1610B @POSS> TARGET Gram/Ord IF (1* POSSESSUM3 BARRIER (*) - CONJ-C - Num - Gram/Ord) ;
 
 MAP:M1611 (@OBJ>) TARGET Gram/Pers + Pron + 2Sg IF (*1 @SUBJ> LINK *1 GE + 2SgO) ;
 MAP:M1612 @OBJ> TARGET Akk + 3Pl IF (-1 Abs + Pl)(NEGATE 0 ("tamaq") LINK -1 ("ulloq")) ;
@@ -3680,7 +3682,9 @@ MAP:M1729 (@<OBJ) TARGET TAQ + Abs IF (*-1 @<OBJ LINK *1 KOMMA BARRIER V) ;
 	
 MAP:M1735 (@ADVL>) TARGET CONT IF (1 @SUBJ> LINK *1 @PRED) ; #Usikker mapping ordnet allersidst. Hvis ikke andet, så nok ADVL, men før subjekt
 
-MAP:M1736 @CL-CIT> TARGET Par IF (*1 ORATIOOBLVERB)(NEGATE *-1 ORATIOOBLVERB BARRIER KOMMA) ; #Usikker mapping til sidst for ikke-slettede participier, der ikke er tagget på anden vis. NEGATE for tilfælde af to verber, der begge kan være inquity
+MAP:M1736 @CL-CIT> TARGET Par IF (*1 ORATIOOBLVERB)(NEGATE *-1 ORATIOOBLVERB BARRIER KOMMA) #Usikker mapping til sidst for ikke-slettede participier, der ikke er tagget på anden vis. NEGATE for tilfælde af to verber, der begge kan være inquity
+(NEGATE 1 KOMMA LINK *-2 UNA BARRIER VFIN) #Efterskoleramaana arnarsiama Dorthep, kursusereeruma aaniaraanga, aperigami ...
+;
 
 MAP:M1737 @CL-<CIT TARGET Par IF (*-1 ORATIOOBLVERB BARRIER ("soorlu") OR ("tassa"))(NEGATE *1 ORATIOOBLVERB BARRIER KOMMA) ; #Usikker mapping til sidst for ikke-slettede participier, der ikke er tagget på anden vis. NEGATE for tilfælde af to verber, der begge kan være inquit
 
