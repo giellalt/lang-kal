@@ -1284,9 +1284,9 @@ SET EXCLAMATION = ("tipi" N) | (SSUSIQ 3SgPoss) | WEATHER ;
 # Proprier
 # Desse skal vi hente frå leksikon
 
-LIST Mask = "Aron" "Eri" "Erik" "Eskild" "Hans" "Jens" "Mik" "Miki" "Morten" "Niels" "Ole" "Per" "Piitaq" "Rasmus" "Trond" Sem/Mask ;
+LIST Mask = "Aron" "Egon" "Eri" "Erik" "Eskild" "Hans" "Jens" "Mik" "Miki" "Morten" "Niels" "Ole" "Per" "Piitaq" "Rasmus" "Trond" Sem/Mask ;
 LIST Fem = "Anette" "Anna" "Arnaq" "Dagmar" "Emilie" "Gitte" "Hanne" "Jane" "Karen" "Kirsten" "Margrethe" "Mette" Sem/Fem ;
-LIST Sur = "Jensen" "Jenseni" "Møller" "Rasmussen" "Trosterud" Sem/LastName ;
+LIST Sur = "Jensen" "Jenseni" "Møller" "Olsen" "Rasmussen" "Trosterud" Sem/LastName ;
 LIST TITEL = "borgmester" "fru" "Gammel" "hr" "hotel" "kunngi" "lektor" ("pisoq" TAQ) ("siulittar" TUQ) ;
 LIST GeoProp = Sem/Geo "Danmark" "Finland" "Gladsaxe" "Mose" "Tåstrup" ;
 SET Fornavn = Mask | Fem ;
@@ -1661,7 +1661,6 @@ APPEND ("$1"v OLang/DAN N Ins Sg) TARGET ("<(.*[b|c|d|h|w|x|y|z|æ|ø|å].*)imik
 
 REMOVE (\?) IF (0 WORD);
 
-SECTION
 
 ### KKUT vs. Via ###
 #==================#
@@ -1973,6 +1972,7 @@ SELECT:0082 3PlPoss IF (0 LU)(-1C 3PlPoss); #3. led i opremsning med komma eller
 REMOVE:0083 PAK IF (0 VFIN ) ; #Vælg finit Vb frem for PAK+Pl hvis eneste VFIN. Skal komme før følgende SELECT
 SELECT:0084 3PlPoss IF (-1C Rel + Pl)(NEGATE *1 TRANSVERB + 3Pl)(NEGATE 0 ADJEKTIVISK)(NEGATE 0 N*)(NEGATE 0 ("ila") + GE + Ind)(NEGATE 0 ("siornatigut"))(NEGATE 0 Part); #siulittaasuisa nuannarineqarnersaat. Sidste NEGATE for at forhindre hit på 'allaat'
 
+REMOVE:0088 ("ilaanni") IF (-1 Rel LINK 1 POSSESSUM + OBLIQUE LINK 1 CLB) ;
 SELECT:0089 ("ilaanni") + Adv IF (NEGATE -1 Rel + Pl); #"ila" + POSSESSUM + Lok må være meget sjælden uden eksplicit possessor.
 SELECT:0090 ("ila") + 3PlPoss IF (-1 BOS)(-1**< VFIN + 3Pl)(NEGATE -1**< ("ilaaq"));
 #'Ilaat' først i en sætning er partitiv, hvis subjektet i foregående sætning er 3. plur. Og hvis vi der ikke har været snakket om lapper i sætningen før.
@@ -2726,11 +2726,13 @@ MAP:M0031D @PROP> TARGET Sem/Fem + Abs IF (1 Sem/Fem + Abs) ;
 #MAP:M0031A @PROP> TARGET Prop + Sem/FirstName IF (1 Prop + Sur)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + LU LINK *1 V + 3Pl )(NEGATE 1 Prop LINK 1 Prop)(NEGATE 0 FIRSTNAME LINK 1 FIRSTNAME)(NEGATE 0 FIRSTNAME LINK 1 ("Kalaallit")); #Mange fejlhit på Kalaallit Illuutaat og Kalaallit Nunaat
 #0031A ændret ad hoc med + Sur i mangel af mulighed for at adskille for- og efternavne
 
-MAP:M0031E @PROP> TARGET Sem/Mask IF (1 Sem/Hum - Sem/Mask - Sem/Fem - Abl - CONJ-C) ;
+MAP:M0031E @PROP> TARGET Sem/Mask + Abs OR Sem/Fem + Abs IF (1 Sem/Hum - Sem/Mask - Sem/Fem - Abl - CONJ-C) ;
 
-MAP:M0031F @PROP> TARGET Prop + Sem/Geo IF (1 MIU); #Amerika Kujallermiu
+MAP:M0031F @PROP> TARGET Sem/Hum + Abs IF (1 Sem/Hum - Sem/Mask - Sem/Fem - Abl - CONJ-C) ; #Beregnet til fornavn-efternavn, men usikker pga manglende kønstagging af fornavnet.
 
-MAP:M0031 (@PROP>) TARGET Prop + Abs OR FIRSTNAME + Abs OR TITEL + Abs IF (1 Prop)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + LU LINK *1 V + 3Pl )(NEGATE 1 Prop + LU LINK *1 V + 3PlO)(NEGATE 1 Prop LINK 1 Prop)(NEGATE 0 FIRSTNAME LINK 1 FIRSTNAME)(NEGATE 0 FIRSTNAME LINK 1 ("Kalaallit"))(NEGATE 1 FIRSTNAME + LU)(NEGATE 0 Abs + Sg LINK *1 TRANSVERB + 3SgO BARRIER V); 
+MAP:M0031G @PROP> TARGET Prop + Sem/Geo IF (1 MIU); #Amerika Kujallermiu
+
+MAP:M0031 (@PROP>) TARGET Prop + Abs OR FIRSTNAME + Abs OR TITEL + Abs IF (1 Prop - CONJ-C)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + LU LINK *1 V + 3Pl )(NEGATE 1 Prop + LU LINK *1 V + 3PlO)(NEGATE 1 Prop LINK 1 Prop)(NEGATE 0 FIRSTNAME LINK 1 FIRSTNAME)(NEGATE 0 FIRSTNAME LINK 1 ("Kalaallit"))(NEGATE 1 FIRSTNAME + LU)(NEGATE 0 Abs + Sg LINK *1 TRANSVERB + 3SgO BARRIER V); 
 #MAP:M0031 (@PROP>) TARGET Prop OR FIRSTNAME OR TITEL IF (1 Prop)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop #+ LU LINK *1 V + 3Pl BARRIER N + Pl )(NEGATE 1 Prop LINK 1 Prop); #fra 1350 for at udelukke overtallig SUBJ-tagging. ##NEGATE for at forebygge typen 'Per NN-ikkut isermata Vb'. Andet NEGATE for parataktiske Karen Perilu anipput. Tredie #NEGATE for at parataktiske Karen Perilu ilagalugit. Fjerde #NEGATE for at forebygge @PROP på subjektet i (SUBJ)(PROP> propriuskærne)
 
 #Forsøg på en mere generel regel for Prop der er @<APPOS til noget ikke-Prop
@@ -3077,7 +3079,7 @@ MAP:M0415 @i-ADVL> TARGET Trm IF (1 N + (vn))(NEGATE 1 @<N); #(NEGATE 1 Lok + IP
 
 MAP:M0420 (@<OBJ) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (-1 TRANSVERB + 3SgO)(*1 CLB OR EOS BARRIER 3SgO)(NEGATE *-1 ORATIOOBLVERB LINK *1 V + 3Sg)(NEGATE *1 V + 3Sg); #20100227 Tronds tilfoejelse. 20100322 første NEGATE forebygger forkerte hit paa subjekter (PL), andet NEGATE pga. .. pillugu PER nalorsarpoq,hvor PER ikke må pege på pillugu
 
-MAP:M0430 (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (*1 Rel BARRIER INTRANSVERB LINK *1 TRANSVERB + 3SgO BARRIER VERB-NOTCONT OR KOMMA) ; #Typen O S V-GE udvidet til også at hitte uden GE. Komma tilføjet for at undgå hit på subjekter med possessor-possessum appositioner
+MAP:M0430 (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (*1 Rel BARRIER INTRANSVERB LINK *1 TRANSVERB + 3SgO BARRIER VERB-NOTCONT OR KOMMA) ;  #Typen O S V-GE udvidet til også at hitte uden GE. Komma tilføjet for at undgå hit på subjekter med possessor-possessum appositioner
 #MAP:0220 (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (*1 Rel)(*1 TRANSVERB + GE + 3SgO BARRIER VERB-NOTCONT) ; #Til typen O S V-GE
 MAP:M0431 (@OBJ>) TARGET Gram/Dem + Pron + Abs + Sg IF (-1 Abs + Sg)(*1 Rel)(*1 TRANSVERB + 3SgO BARRIER VERB-NOTCONT) ; #Adled til objekt i sætningstypen O S V-GE udvidet til også at hitte uden GE
 
@@ -3279,10 +3281,15 @@ MAP:M0661 @SUBJ> TARGET Gram/Pers + Pron + Abs + 1Sg IF (*1 VERB-NOTCONT + 1Sg B
 MAP:M0661A @SUBJ> TARGET Gram/Pers + Pron + Abs + 2Sg IF (*1 VERB-NOTCONT + 2Sg BARRIER TRANSVERB + 2SgO)(NEGATE *1 2SgO)(NEGATE -1 ("\(")) ; #Ny formulering testet 20150318
 MAP:M0662 @SUBJ> TARGET Gram/Pers + Pron + Rel + 1Sg IF (*1 VERB-NOTCONT + TRANSVERB + 1Sg BARRIER TRANSVERB + 1SgO)(NEGATE *1 1SgO)(NEGATE -1 ("\("))(NEGATE 1 1SgPoss) ;
 MAP:M0662A @SUBJ> TARGET Gram/Pers + Pron + Rel + 2Sg IF (*1 VERB-NOTCONT + TRANSVERB + 2Sg BARRIER TRANSVERB + 2SgO)(NEGATE -1 ("\("))(NEGATE 1 2SgPoss) ;
-MAP:M0661X @SUBJ> TARGET Gram/Pers + Pron + Abs + 1Pl IF (*1 VERB-NOTCONT + 1Pl BARRIER TRANSVERB + 1PlO)(NEGATE -1 ("\(")) ; #Ny formulering testet 20150318
-MAP:M0661AX @SUBJ> TARGET Gram/Pers + Pron + Abs + 2Pl IF (*1 VERB-NOTCONT + 2Pl BARRIER TRANSVERB + 2PlO)(NEGATE *1 2PlO)(NEGATE -1 ("\(")) ; #Ny formulering testet 20150318
+MAP:M0661X @SUBJ> TARGET Gram/Pers + Pron + Abs + 1Pl IF (*1 VERB-NOTCONT + 1Pl BARRIER TRANSVERB + 1PlO)(NEGATE -1 ("\(")) ; 
+MAP:M0661AX @SUBJ> TARGET Gram/Pers + Pron + Abs + 2Pl IF (*1 VERB-NOTCONT + 2Pl BARRIER TRANSVERB + 2PlO)(NEGATE *1 2PlO)(NEGATE -1 ("\(")) ;
 MAP:M0662X @SUBJ> TARGET Gram/Pers + Pron + Rel + 1Pl IF (*1 VERB-NOTCONT + TRANSVERB + 1Pl BARRIER TRANSVERB + 1PlO)(NEGATE *1 1PlO)(NEGATE -1 ("\("))(NEGATE 1 1PlPoss) ;
 MAP:M0662AX @SUBJ> TARGET Gram/Pers + Pron + Rel + 2Pl IF (*1 VERB-NOTCONT + TRANSVERB + 2Pl BARRIER TRANSVERB + 2PlO)(NEGATE -1 ("\("))(NEGATE 1 2PlPoss) ;
+MAP:M0661Z @SUBJ> TARGET GIIT + Abs + 1Pl IF (*1 VERB-NOTCONT + 1Pl BARRIER TRANSVERB + 1PlO)(NEGATE -1 ("\(")) ; 
+MAP:M0661AZ @SUBJ> TARGET GIIT + Abs + 2Pl IF (*1 VERB-NOTCONT + 2Pl BARRIER TRANSVERB + 2PlO)(NEGATE *1 2PlO)(NEGATE -1 ("\(")) ;
+MAP:M0662Z @SUBJ> TARGET GIIT + Rel + 1Pl IF (*1 VERB-NOTCONT + TRANSVERB + 1Pl BARRIER TRANSVERB + 1PlO)(NEGATE *1 1PlO)(NEGATE -1 ("\("))(NEGATE 1 1PlPoss) ;
+MAP:M0662AZ @SUBJ> TARGET GIIT + Rel + 2Pl IF (*1 VERB-NOTCONT + TRANSVERB + 2Pl BARRIER TRANSVERB + 2PlO)(NEGATE -1 ("\("))(NEGATE 1 2PlPoss) ;
+
 #Særregel ved SUBJ> + Pl ; OBJ> + Pl ; CONT + 3PlO ; 
 MAP:M0669 @SUBJ> TARGET Abs + Pl IF (*1 Abs + Pl LINK *1 CONT + 3PlO LINK *1 INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl BARRIER TRANSVERB + 3PlO)(NEGATE *-1 Rel + Sg LINK *1 3Sg + 3PlO) ; 
 MAP:M0670 (@SUBJ>) TARGET Abs + Pl IF (*1 INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl BARRIER TRANSVERB + 3PlO)(NEGATE *-1 Rel + Sg LINK *1 3Sg + 3PlO)(NEGATE 0 2SgPoss) ; #så er det et objekt for TRANSVERB. NEGATE tilføjet 20171121 for at redde objekter for V til højre. #Sidste NEGATE for at undgå at 2SgPoss bliver valgt i lange sætninger.
@@ -4485,6 +4492,7 @@ REMOVE (Prop Ins) IF (0 N + @OBJ>)(*1 IntransTrans BARRIER V);
 REMOVE:SUBJ8433 (@SUBJ> Adj 1Sg) IF (*1 @PRED + (3Sg)) ;
 REMOVE Sem/Geo IF (0 Sem/Hum - Sem/Mask - Sem/Fem LINK -1 FIRSTNAME) ;
 REMOVE Sem/Mask IF (0 Sem/Hum - Sem/Mask LINK -1 Sem/Mask + Abs) ;
+SELECT Sem/Geo IF (1* KONJUNKTION OR Sem/Geo + CONJ-C BARRIER V) ; #Ilulissat Qaqortorlu # Ilulissat aamma Qaqortoq.
 
 SELECT Abs + Pl + @SUBJ> IF (-1C Abs + Pl + @SUBJ>)(1 INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl) ; #20091107 'ajornartorsiutit SUUGALUARTUT oqaasinngortinneqaraangamik'
 REMOVE Abs + Pl + @SUBJ> IF (NOT *1 3Pl + INTRANSVERB) ;
@@ -5255,7 +5263,6 @@ SELECT:9970 (@CL-CIT>) IF (*1 ORATIOOBLVERB BARRIER V-NOT-Par)(NEGATE 0 Abs + Sg
 ; 
 SELECT:9971 @CL-CIT> IF (*-1 @SUBJ> + 4SgPoss)(*1 ORATIOOBLVERB + VFIN) ;
 SELECT:9971A HTR - V IF (*-1 @i-MIK-OBJ> BARRIER (*) - @i-ADVL> - @<N) ;
-
 #Karlssons lov anden version: Vælg den mest komplette af flere ord, hvoraf ingen er hele stammer
 #Eckhards forslag for at forebygge at konsonantstammer automatisk sletter vokalstammer ("ersip" sletter "ersi")
 REMOVE:9972 ("([^<].*)"r) IF
