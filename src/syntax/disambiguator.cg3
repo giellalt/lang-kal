@@ -1222,7 +1222,7 @@ LIST IntransTrans = "neri" "ilassior" Gram/HV ; #Set til disambiguering af Ins, 
 
 SET UGEDAGE = (/__\"arfineq\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"ataaseq\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"marluk\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"pingasut\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | ("sapaat") | (/__\"sisamat\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"tallimat\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) ;
 SET SEASON = ("aasaq") | ("ukiaq") | ("ukioq") | ("upernaaq") ; #årstider
-LIST OTHERTIME = Sem/Time ("aallar" QQAAR UTE) ("aasaq") ("aqagu") ("inuk" U NIQ) ("ippassaq") ("kingulleq" Ins) ("kingu" NIQ)("kingusip") ("maanna") ("nali") ("piffik") ("qaammat") ("qangali") ("qeqqa") ("sapaat") ("sivisu") ("siulleq") ("taarsi") ("ualeq") ("ukiaq") ("ukiar" TUQ) ("ukiartoq") ("ukioq") ("ullaa") ("ullaaq") ("ulloq") ("unnuaq") ("unnuk") ;
+LIST OTHERTIME = Sem/Time ("aallar" QQAAR UTE) ("aasaq") ("aqagu") ("inuk" U NIQ) ("ippassaq") ("kingulleq" Ins) ("kingu" NIQ)("kingusip") ("maanna") ("nali") ("piffik") ("qaammat") ("qangali") ("qeqqa") ("sapaat") ("sapaatip-akunneq") ("sivisu") ("siulleq") ("siuneq") ("taarsi") ("ualeq") ("ukiaq") ("ukiar" TUQ) ("ukiartoq") ("ukioq") ("ullaa") ("ullaaq") ("ulloq") ("unnuaq") ("unnuk") ;
 LIST TIMEVERB = ("ingerla") ("ip" TUQ U) ; #verber som kan have tidsudtryk som subjekt
 SET TEMPUSVERB = UGEDAGE | ("qaanger") | ("qaqutigut" U) | ("taamaali") | ("ukiar") | ("ukioq" U) ;
 SET TIME = TEMPUSVERB | OTHERTIME ;
@@ -1262,7 +1262,7 @@ SET LANGUAGE = NATIONALITY + Aeq ;
 LIST EDIBLE = "neqi" "iffiaq" "kaagi" ;
 LIST DRINKABLE = "kaffi" "tii" "immuk" "whisky" "immiaaraq" "immiaq" "baaja" ;
 SET FOOD = EDIBLE | DRINKABLE ;
-LIST CLOTHES = "kamik" "annoraaq" "kavaajaq" "alersi" "alerseq" "skuu" ;
+LIST CLOTHES = "aqajaqanngitsoq" "kamik" "annoraaq" "kavaajaq" "alersi" "alerseq" "qarlik" "skuu" ;
 LIST THING = "alussaat" "aqqusineq" ("ati" TAQ) "ilullissiaq" "qulleq" "siu" "timi" "savik" "torsuusaq";
 LIST MATERIAL = "ameq" "ukkusissaq" "ulik" "qipik" ;
 LIST TOOL = "savik" (__/UTE\ Der\/vn__/l);
@@ -2018,7 +2018,7 @@ SELECT:0099A Gram/Cong + Nom + 4Pl IF (1* 34Pl) ;
 SELECT:0099B Gram/Cong + Nom + 4Sg IF (1* 34Sg)(NEGATE -1 Lok) ;
 SELECT:0099C Gram/Cong + Lok + Sg IF (-1 Lok) ;
 
-REMOVE:0099D Gram/Cong - ("arlaq") IF (*-1 (*) - V)(*1 (*) - V BARRIER KOMMA) ; #Gram/Cong skal have noget at kongruere med.
+REMOVE:0099D Gram/Cong - ("arlaq") - ("kisi") IF (*-1 (*) - V)(*1 (*) - V BARRIER KOMMA) ; #Gram/Cong skal have noget at kongruere med.
 
 SELECT:0099G Abs IF (1 Gram/Cong + Akk LINK *1 TRANSVERB BARRIER V) ;
 
@@ -2282,7 +2282,7 @@ REMOVE:0280 ("ajore") IF (0 ("ajor") LINK -1 NIQ + Gram/Comp) ; # ..NIQ ajor + P
 #Par som erstatning for VFIN før tassa
 SELECT:0300 Par + 3SgO IF (*-1 Abs + Sg BARRIER V)(*1 ("tassa") BARRIER V)(NEGATE *0 VFIN);
 
-REMOVE:0320 3PlO IF (0 3SgO)(*-1C Abs + Sg BARRIER INTRANSVERB + 3Sg OR 4Sg)(NEGATE -1 Gram/Comp) ;
+REMOVE:0320 3PlO - GAANNI IF (0 3SgO)(*-1C Abs + Sg BARRIER INTRANSVERB + 3Sg OR 4Sg)(NEGATE -1 Gram/Comp) ;
 REMOVE:0321 3SgO IF (0 3PlO)(*-1C Abs + Pl BARRIER INTRANSVERB + 3Pl OR 4Pl) ;
 
 SELECT:0322A Gram/Refl + TIP IF (-1 Abl)(0 INTRANSVERB - Gram/Refl + TIP);
@@ -2472,7 +2472,9 @@ MAP:tassa @SUBJ> TARGET Gram/Dem + Pron + Sg IF (1 ("tassa") + U + V + 3Sg) ;
 
 #Specialiteten adnominale Pron, der peger mod højre, må ind før @FOC-reglerne
 MAP:M0230NY @Pron>N TARGET Gram/Dem + Pron + Abs + Pl - Prefix/AA IF (1 N + Abs + Pl)(NEGATE *1 3PlO BARRIER VFIN) ; #Skal i stedet have et unification set PL 20180530
-MAP:M0230NY2 @Pron>N TARGET Gram/Dem + Pron + Abs + Sg - Prefix/AA IF (1 N + Abs + Sg)(NEGATE *1 3SgO BARRIER VFIN)(NEGATE 0 ("manna") LINK -1 OTHERTIME) ; #Skal i stedet have et unification set PL 20180530
+MAP:M0230NY2 @Pron>N TARGET Gram/Dem + Pron + Abs + Sg - Prefix/AA IF (1 N + Abs + Sg)#Skal i stedet have et unification set PL 20180530
+(NEGATE *1 3SgO BARRIER VFIN)
+(NEGATE 0 ("manna") + $$KASUS OR Prefix/TA + ("una") + $$KASUS LINK -1 OTHERTIME + $$KASUS) ; #Ulloq taanna sapaatip-akunnera qaangiummat ...
 #M0230NY flyttet fra afsnit om adnominale adled
 
 #"tassa" vikarierer for inquit når først i sætningen og fulgt af Par-nexus uden finit V i sætningen
@@ -2828,7 +2830,6 @@ MAP:M0069C @CL-ADVL> TARGET TIME + Abs IF (*-1 ORATIOOBLVERB BARRIER @PRED)(*1 C
 
 SELECT:0069CX @CL-ADVL> + TIME + Abs IF (*-1 ORATIOOBLVERB)(*1 CONT BARRIER Par LINK 1 EOS) ;
 
-
 MAP:M0070 @CL-ADVL> TARGET U + Par + 3Sg + 3SgO ; #Den særlige transitive Par altid sætningsadverbial
 
 MAP:M0072 @CL-ADVL> TARGET ("ila") + 3SgPoss + Abs IF (-1 TIME + Rel)(*1 T:NexusHøjre ) ; #Absolut tid med possessor
@@ -2844,6 +2845,7 @@ MAP:M0076 @CL-ADVL> TARGET TIME + Par + TRANSVERB (-1 BOS)(*1 VFIN);
 MAP:M0080A @CL-ADVL> TARGET ("kingu" NIQ) + 3SgPoss IF (-2 BOS OR KOMMA)(-1 Rel) ;
 MAP:M0080B @CL-ADVL> TARGET ("nali") + 3SgPoss IF (-2 BOS OR KOMMA)(-1 Rel) ;
 MAP:M0080AX @CL-ADVL> TARGET ("kingu" NIQ) + 3SgPoss + Abs IF (-1 Rel) ; #20170425 skummel regel, der måske skal begrænses
+MAP:M0080AZ @CL-ADVL> TARGET ("taava") + MI IF (*1 VFIN) ;
 
 #HNOUN NP i citationstegn med og uden komma
 MAP:M0081A @HNOUN TARGET Abs IF (1 Abs)(*1 ("”") BARRIER (*) - KOMMA)(*1 ORATIOOBLVERB) ;
@@ -3822,6 +3824,8 @@ SELECT:0429 Par + RUTTUR OR Par + GALUAR IF (NEGATE -*1 VFIN)(NEGATE *1 3SgO) ; 
 SELECT:0431 Par + NIQAR IF (*-1 TRANSVERB + VFIN)(1 EOS);
 #"medens" uden konjunktion og efterstillet
 
+SELECT:0432 Par + TRANSVERB If (-1 Akk) ;
+
 SELECT:0433 Par + INTRANSVERB IF (*-1 VFIN + ORATIOOBLVERB + 3SgO LINK -*1 Abs + Sg )(NEGATE -*1 VFIN + U)(1 EOS)(*-1 Abs BARRIER ("\,")); #Specialfald til følgende regel når mulig inquit men med objekt
 SELECT:0435 Par + INTRANSVERB IF (*-1 VFIN - ORATIOOBLVERB)(NEGATE -*1 VFIN + U)(1 EOS)(*-1 Abs BARRIER ("\,"));
 
@@ -4513,7 +4517,10 @@ REMOVE (Prop Ins) IF (0 N + @OBJ>)(*1 IntransTrans BARRIER V);
 REMOVE:SUBJ8433 (@SUBJ> Adj 1Sg) IF (*1 @PRED + (3Sg)) ;
 REMOVE Sem/Geo IF (0 Sem/Hum - Sem/Mask - Sem/Fem LINK -1 FIRSTNAME) ;
 REMOVE Sem/Mask IF (0 Sem/Hum - Sem/Mask LINK -1 Sem/Mask + Abs) ;
-SELECT Sem/Geo IF (1* KONJUNKTION OR Sem/Geo + CONJ-C BARRIER V) ; #Ilulissat Qaqortorlu # Ilulissat aamma Qaqortoq.
+SELECT Sem/Geo IF (1* Sem/Geo + CONJ-C BARRIER V) ; #Ilulissat Qaqortorlu # Ilulissat aamma Qaqortoq.
+SELECT Sem/Geo IF (1* KONJUNKTION OR KOMMA BARRIER (*) - Prop LINK *1 Sem/Geo BARRIER V) ; #soorlu nunarsuup, Jupiterip, Marsip Venusillu saniatigut...
+REMOVE Sem/Hum IF (-1* KONJUNKTION OR KOMMA BARRIER (*) - Prop LINK *1 Sem/Geo BARRIER V) ; #Ilulissat Qaqortorlu # Ilulissat aamma Qaqortoq.
+REMOVE Sem/Hum IF (-1C* Sem/Geo + CONJ-C BARRIER V OR Sem/Hum) ; #soorlu nunarsuup, Jupiterip, Marsip Venusillu saniatigut...
 
 SELECT Abs + Pl + @SUBJ> IF (-1C Abs + Pl + @SUBJ>)(1 INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl) ; #20091107 'ajornartorsiutit SUUGALUARTUT oqaasinngortinneqaraangamik'
 REMOVE Abs + Pl + @SUBJ> IF (NOT *1 3Pl + INTRANSVERB) ;
@@ -5320,6 +5327,6 @@ SUBSTITUTE:S0049 (/§.*/r) (*) TARGET (*) ;
 SUBSTITUTE:S0050 (@CL-<CIT) (@ADVL>) TARGET @CL-<CIT IF (0 CONT - ORATIOOBLVERB) (1 @CL-<CIT) ;
 SUBSTITUTE:S0050 (@CL-<CIT) (@CL-CIT>) TARGET @CL-<CIT IF (0 CONT - ORATIOOBLVERB) (1 @CL-<CIT LINK *1 ORATIOOBLVERB) ;
 
-SUBSTITUTE:S0080 @PRED2 @PRED TARGET VFIN ;
+SUBSTITUTE:S0080 @PRED2 @PRED TARGET VFIN - Gram/Exclm (NEGATE *0 VFIN) ;
 
 REMOVE:S0036 (*) - (/@.*/r) ((-1 (/@.*/r)) OR (1 (/@.*/r))) ; #Fjerner læsninger uden mappings.
