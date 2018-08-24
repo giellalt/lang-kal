@@ -263,7 +263,7 @@ sub analyze {
             if ($f =~ /^(\p{Lu}+)(\P{Lu}+)$/ && $f !~ /-/) {
                $orig = $orig || $f;
                my $m = call_tokenizer("$1-$2");
-               if ($m =~ /\t"[^\n]*"[^?\n]+\n/ && $m !~ /^"<.*?>".*?\n"<.*?>"/s) {
+               if ($m =~ /\t"[^\n]*"[^?\n]+\n/ && $m !~ /^"<.*?>".*?\n"<.*?>"/s && $m !~ /(?:^|\n)[^\n<>"]+(?:\n|$)/s) {
                   $heur{'Heur/Hyphen'} = 1;
                   $merge_ncs->($m);
                   last;
