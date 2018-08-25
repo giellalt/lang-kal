@@ -52,7 +52,7 @@
 
 DELIMITERS = "<.>" "<!>" "<?>" "<:>" "<...>" "<¶>" "<\;>" ; #tilføjet semikolon den 6.4.
 
-#OPTIONS += ordered ;
+OPTIONS += ordered ;
 
 # ========= #
 # Tags and sets #
@@ -1227,7 +1227,7 @@ LIST IntransTrans = "neri" "ilassior" Gram/HV ; #Set til disambiguering af Ins, 
 SET UGEDAGE = (/__\"arfineq\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"ataaseq\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"marluk\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"pingasut\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | ("sapaat") | (/__\"sisamat\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"tallimat\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) ;
 SET SEASON = ("aasaq") | ("ukiaq") | ("ukioq") | ("upernaaq") ; #årstider
 LIST OTHERTIME = Sem/Time ("aallar" QQAAR UTE) ("aasaq") ("aqagu") ("inuk" U NIQ) ("ippassaq") ("kingulleq" Ins) ("kingu" NIQ)("kingusip") ("maanna") ("nali") ("piffik") ("qaammat") ("qangali") ("qeqqa") ("sapaat") ("sapaatip-akunneq") ("sivisu") ("siulleq") ("siuneq") ("taarsi") ("ualeq") ("ukiaq") ("ukiar" TUQ) ("ukiartoq") ("ukioq") ("ullaa") ("ullaaq") ("ulloq") ("unnuaq") ("unnuk") ;
-LIST TIMEVERB = ("ingerla") ("ip" TUQ U) ; #verber som kan have tidsudtryk som subjekt
+LIST TIMEVERB = ("assi" GIIAAR)("ingerla") ("ip" TUQ U) ("qaama"); #verber som kan have tidsudtryk som subjekt
 SET TEMPUSVERB = UGEDAGE | ("qaanger") | ("qaqutigut" U) | ("taamaali") | ("ukiar") | ("ukioq" U) ;
 SET TIME = TEMPUSVERB | OTHERTIME ;
 LIST VERB_medGE = "ipianngu" "miki" ; #Set til stammer, der kan tage GE+Der/vv
@@ -1505,7 +1505,8 @@ REMOVE:0003A ("uv") + Interj IF (0 ("uffa") + Interj) ;
 ############################################
 # Mappings needed for later disambiguation #
 ############################################
-SUBSTITUTE:A00040 PUNCT (PUNCT DIRTALESTART) TARGET ("-") IF (-1 BOS LINK *1 KOMMA LINK *1 DIRTALE + Ind OR ORATIOOBLVERB + Ind) ;
+SUBSTITUTE:A00040 PUNCT (PUNCT DIRTALESTART) TARGET ("-") IF (-1 BOS) ; #Måske for bred?
+#SUBSTITUTE:A00040 PUNCT (PUNCT DIRTALESTART) TARGET ("-") IF (-1 BOS LINK *1 KOMMA LINK *1 DIRTALE + Ind OR ORATIOOBLVERB + Ind) ;
 SUBSTITUTE:A00041 PUNCT (PUNCT DIRTALESTART) TARGET ("-") IF (*1 KOMMA LINK *1 DIRTALE) ;
 SUBSTITUTE:A00042 CLB (CLB DIRTALESLUT) TARGET KOMMA IF (*-1 ("-") LINK *1 _TARGET_ LINK *1 DIRTALE) ;
 SUBSTITUTE:A00043 PUNCT (PUNCT DIRTALESTART) TARGET PUNCT IF (-1 BOS)(*1 PUNCT) ;
@@ -1514,8 +1515,8 @@ SUBSTITUTE:A00045 PUNCT (PUNCT DIRTALESTART) TARGET PUNCT IF (*1 DIRTALESLUT)(NE
 (NEGATE -1 LIK) ;
 SUBSTITUTE:A00046 PUNCT (PUNCT DIRTALESLUT) TARGET PUNCT - ("-") IF (*-1 DIRTALESTART)(NEGATE *1 DIRTALESLUT)
  ;
-SUBSTITUTE (DIRTALESLUT) (*) TARGET (*) IF (NOT *0 DIRTALESTART) ;
-SUBSTITUTE (DIRTALESTART) (*) TARGET (*) IF (NOT *0 DIRTALESLUT) ;
+SUBSTITUTE:A00047 CLB (CLB DIRTALESLUT) TARGET CLB - ("¶") (*-1 DIRTALESTART) (NEGATE *0 DIRTALESLUT)(NEGATE NOT 1 ("¶"));
+SUBSTITUTE (DIRTALESLUT) (*) TARGET (*) IF (NOT *-1 DIRTALESTART) ;
 
 ###################################################################################
 # Specialiteter ved @>N (prænominale adled, determinativer og juxtapositioner i MWE
@@ -1815,7 +1816,7 @@ REMOVE:0040L ("soorunami") + Interj OR ("sooruna") + MI + Interj (*1 V BARRIER K
 SELECT:0019NY ("qanoq") + Adv IF (*1 IP OR ("ip") OR ("ilior") OR ("ili")); 
 MAP:M0019NY @ADVL> TARGET ("qanoq") + Adv IF (*1 IP + V OR ("ip") + V OR ("ilior") + V OR ("ili") + V) ; 
 MAP:M0019NY @i-ADVL> TARGET ("qanoq") + Adv IF (*1 IP + N OR ("ip") + N OR ("ilior") + N OR ("ili") + N) ; 
-SELECT:0020NY Interj - ("tass") - ("tassa") - ("immaqa") IF (-1 BOS)(NEGATE 0 ("ila") + 4SgPoss + Rel LINK 1 POSSESSUM3)(NEGATE 0 KONCESSIV LINK *1 Par BARRIER V)(NEGATE 0 ("taama") OR ("qanoq") LINK 1 V)
+SELECT:0020NY Interj - ("tass") - ("tassa") - ("immaqa") IF (-1 BOS)(NEGATE 0 ("ila") + 4SgPoss + Rel LINK 1 POSSESSUM3)(NEGATE 0 KONCESSIV LINK *1 Par BARRIER V)(NEGATE 0 ("taama") OR ("qanoq") LINK *1 V BARRIER (*) - Adv - Conj)
 (NEGATE 0 Sem/Unit); #TASSA holdes uden for reglen og type 'Ilami illuanut iserpoq' ikke interjektion SKAL RAFFINERES YDERLIGERE 20180427. PL: immaqa tilføjet 20180526. Måske skal i stedet immaqa+Interj helt væk?? immaqa + Part og immaqa + Interj udkommenteret fra fst 20180526
 REMOVE:0020AdHoc ("immaqa") + Pali ; #fjernet fra fst og vil ikke længere optræde efter update
 SELECT:7250 Interj IF (-1 BOS OR ("\,"))(1 EOS); #Ny 20180407 En isoleret partikel er en interjektion
@@ -2161,9 +2162,11 @@ REMOVE:0113 OBLIQUE + 2SgPoss IF (NEGATE -1 ("illit"))(NEGATE *0 VERB-NOTCONT + 
 #REMOVE:0121 Lok + 2SgPoss IF (NEGATE -1 ("illit"))(NEGATE *0 VERB-NOTCONT + 2Sg) ;
 REMOVE:0122 Rel + 2PlPoss IF (NEGATE -1 ("illit") + 2Pl)(NEGATE *0 VERB-NOTCONT + 2Pl) ;
 REMOVE:0123 NOT-REL + 1SgPoss IF (NEGATE -1 ("uanga"))(NEGATE *0 V + 1Sg)(NEGATE 1* (<<<) LINK 1*W V + 1Sg BARRIER VFIN OR (<<<))(NEGATE 0 FAM + POSSESSUM + Ins LINK *1 HTR) # Sidste NEGATE forebygger sletning af possessum i mik-objekter når der er tale om familiebetegnelser
-(NEGATE -1 DIRTALESTART )
+(NEGATE -1 DIRTALESTART ) #- Inuunera assigiiaaginnarpoq.
+(NEGATE -1 Con + 1SgO) #Nujuillisarsinnaagummali inuunera qaamanerulissagaluarpoq.
 ;
 SELECT:0124 1SgPoss IF (-1 ("uanga") + 1Sg) ;
+SELECT:0125 1SgPoss IF (*-1 Con + 1SgO BARRIER (*) - 1Sg)(*-1W 1Sg) ; # - ... Nujuillisarsinnaagummali inuunera qaamanerulissagaluarpoq. #Burde kræve at der et sted til venstre (x vinduer) er DIRTALESTART.
 
 SELECT:0132 Ins + Gram/Indef + Pron IF (1 NIQ LINK 1 ("ajor"))(NEGATE *1 NIQAR) ; #specialfald til følgende vedr. NIQ ajor..
 SELECT:0133 Ins + Gram/Indef + Pron IF (1 V)(NEGATE *1 NIQAR) ; 
@@ -3002,9 +3005,9 @@ MAP:M0282 @ADVL> TARGET ("imatut") OR ("ima") + Pali IF (*1 LIK_QAR BARRIER V) ;
 #MAP:0140 (@CONJ) TARGET Part IF (-1 Abs)(*1 Abs BARRIER VFIN) ; #2.4. tilfoejet  MAP:0HvilkenAdverbial foer denne for at forhindre @CONJ på 'Aasaanerani naasut tamalaat alutornartut ILAATIGULLU ruuat ..'
 MAP:M0285 (@CONJ) TARGET Part IF (-1 Rel)(*1 Rel BARRIER V) ;
 MAP:M0286 (@CL-ADVL>) TARGET Part IF (-2 BOS OR ("\,"))(-1 Interj)(NEGATE 0 KONJUNKTION)(*1 V)(NEGATE 1 TIGE) ; #20091109 .., aasiit TAAMATUT, ...
-MAP:M0287 (@CL-ADVL>) TARGET Part IF (-1 BOS)(NEGATE 0 KONJUNKTION OR ("qanoq"))(NEGATE 1 TIGE OR Gram/Exclm)
+MAP:M0287 (@CL-ADVL>) TARGET Part IF (-1 BOS)(NEGATE 0 KONJUNKTION OR ("qanoq"))(NEGATE *1 TIGE OR Gram/Exclm BARRIER (*) - Adv - Conj)
 (*1 V) ;
-MAP:M0291 (@V>) TARGET ("taama") OR ("qanoq") IF (1 TIGE LINK NEGATE 0 N) ;
+MAP:M0291 (@V>) TARGET ("taama") OR ("qanoq") IF (*1 TIGE BARRIER (*) - Adv - Conj LINK NEGATE 0 N) ;
 MAP:M0292 (@i-ADVL>) TARGET ("siornatigut") + Part IF (1 Der/vn) ;
 
 #MAP-regler ved oratio obliqua
@@ -5151,6 +5154,7 @@ SELECT:5778 ("Nuna") + Prop + 1PlPoss IF (0 ("nuna") - Prop + 1PlPoss) ;
 SELECT:5779 ("Inatsisartut") + Prop IF (0 ("inap") + HTR + TAR) ;
 REMOVE:5780 ("nanoq") + TAQ + LIK IF (0 ("Nanortalik")) ;
 REMOVE:5781 ("sisi") + MIU IF (0 ("Sisimiut")) ;
+REMOVE:5782 ("Inuk") + U + NIQ IF (0 ("inuk") + U + NIQ + POSSESSUM) ;
 
 
 REMOVE:5840 ("Piita") IF (0 ("Piitaq")) ; #Et rent stochastisk gæt
