@@ -1253,6 +1253,7 @@ LIST ORGANISATION = "Inatsisartut" "parti" "Siumut" "Atassut" "IA" ("Naalakkersu
 LIST ANATOMIC = "arlaaq" "niu" "siulleeq" "taleq" ;
 LIST ANIMAL = "qeerlutooq" "qimmeq" "qitsuk" "puisi"  "pulateriaarsuk" ;
 LIST BIO = "baobab" "orpik" "naasoq" ;
+LIST DISEASE = "gigt" ;
 LIST ABSTRACT = "taaq" ;
 
 LIST PLACE = "illu" "imaq" ("atuar" VIK) ("oqalup" VIK) "nuna" "orpippassuaq" "siku" "silarsuaq" Sem/Geo ^Sem/Hum;
@@ -1518,7 +1519,7 @@ SUBSTITUTE:A00046 PUNCT (PUNCT DIRTALESLUT) TARGET PUNCT - ("-") IF (*-1 DIRTALE
  ;
 SUBSTITUTE:A00047 CLB (CLB DIRTALESLUT) TARGET CLB - ("¶") (*-1 DIRTALESTART) (NEGATE *0 DIRTALESLUT)(NEGATE NOT 1 ("¶"));
 SUBSTITUTE:A00048 PUNCT (PUNCT DIRTALESTART) TARGET PUNCT - ("-")IF (*-1 DIRTALE) (*1W PUNCT - ("-"))(NEGATE *-1 PUNCT) ;
-SUBSTITUTE:A00049 PUNCT (PUNCT DIRTALESLUT) TARGET PUNCT - ("-") IF (*-1W< PUNCT LINK *-1 DIRTALE)(NEGATE *1 DIRTALESLUT)
+SUBSTITUTE:A00049 PUNCT (PUNCT DIRTALESLUT) TARGET PUNCT - ("-") - ("/") IF (*-1W< PUNCT LINK *-1 DIRTALE)(NEGATE *1 DIRTALESLUT)
  ;
 
 #SUBSTITUTE (DIRTALESLUT) (*) TARGET (*) IF (NOT **-1W DIRTALESTART) ; #virker ikke
@@ -1556,6 +1557,7 @@ SELECT:conj ("aamma") + Conj IF (-1* PLACE_EXTENDED BARRIER (*) - PUNCT LINK *1 
 #SELECT:conj ("aamma") + Conj IF (*-1 ("(\"<.....*)"r) + $$KASUS + $$NUMERUS) (*1 (VSTR:"$1"r) + $$KASUS + $$NUMERUS) ; 
 #SELECT:conj ("aamma") + Conj IF (*-1 ("(\"<.....*)"r) + $$MOOD) (*1 (VSTR:"$1"r) + $$MOOD) ; 
 REMOVE:conj ("aamma") + Conj IF (*-1 V - 3Pl - 3Sg BARRIER (*) - V) (*1 V + 3Sg OR V + 3Pl) ; #Konjunktioner skal have noget "ens" på begge sider. #Mikisuullunga aamma juullip orpiliaata akisunnera, unnuaqeqqanut naalagiarnermi pattagiarsuup erinaa asasamalu qungujunnerisa saamanerat juullimi tunissutisiannik qaamaneqalersitsisut ittarput.
+REMOVE:conj ("aamma") + Conj IF (-1 BOS)(1 NIQ) ; #så plejer aamma at være i-ADVL>
 
 
 ### Usandsynlige morfemkombinationer ###
@@ -1881,7 +1883,9 @@ SELECT:0028 ("taama") + Lok + Pl IF (-1 Lok + Pl) ;
 SELECT:0036 Rel + 4SgPoss IF (*1 TRANSVERB + 3Sg + CON_CAU BARRIER V)(NEGATE 0 Interj)(NEGATE 0 V)(NEGATE 1 3SgPoss)(NEGATE 0 VIK + Lok)(NEGATE 0 Rel + Pl LINK 1 POSSESSUM + 3PlPoss); #fx Ikke Ilami! og anillakkami, ikke possessor og ikke ADVL
 
 #4Sg kan ikke være subjekt for et finit verbum.
-REMOVE:0036A Rel + 4SgPoss IF (*1 TRANSVERB + VFIN BARRIER V) ;
+REMOVE:0036A Rel + 4SgPoss IF (*1 TRANSVERB + VFIN BARRIER V)
+(NEGATE 1 POSSESSUM3) #Så er det objekt. #Angunni upperisimagamiuk kingorna anaanagigaluami toqunera eqqaaqqinngilaa.
+;
 REMOVE:0036B Rel + 4SgPoss IF (1 EOS)(*-1 VFIN BARRIER V - CONT) ;
 
 #Parataktiske possessorer
@@ -2051,7 +2055,7 @@ REMOVE:0079 Abs + Pl + 4SgPoss IF (NEGATE *1 3PlO OR Cau + 3Pl OR Con + 3Pl BARR
 
 SELECT:0080 3PlPoss IF (-1 Rel + Pl)(0C POSSESSUM)(NEGATE -1 Rel + Sg); #Hvis 0 kun kan vaere possessum og der er en mulig possessor og muligheden af en singularis possessor kan udelukkes, saa vaelg
 SELECT:0081 3PlPoss IF (-1 ("\,"))(-2C 3PlPoss); #opremsning med komma
-SELECT:0082 3PlPoss IF (0 LU)(-1C 3PlPoss); #3. led i opremsning med komma eller andet uden komma
+SELECT:0082 3PlPoss + $$KASUS IF (0 LU)(-1C 3PlPoss + $$KASUS); #3. led i opremsning med komma eller andet uden komma
 #Sikre possessum
 REMOVE:0083 PAK IF (0 VFIN ) ; #Vælg finit Vb frem for PAK+Pl hvis eneste VFIN. Skal komme før følgende SELECT
 SELECT:0084 3PlPoss IF (-1C Rel + Pl)(NEGATE *1 TRANSVERB + 3Pl)(NEGATE 0 ADJEKTIVISK)(NEGATE 0 N*)(NEGATE 0 ("ila") + GE + Ind)(NEGATE 0 ("siornatigut"))(NEGATE 0 Part); #siulittaasuisa nuannarineqarnersaat. Sidste NEGATE for at forhindre hit på 'allaat'
@@ -3615,7 +3619,7 @@ MAP:M1148C1 @i-ADVL>N TARGET CONT + TRANSVERB IF (0 PILLUGU OR ("pissut") LINK 1
 
 
 MAP:M1148 @ADVL> TARGET CONT + TRANSVERB IF (*1 V) (NEGATE *-1 ORATIOOBLVERB - TAQ) #20170127 (NEGATE 1 Der/vn + N) #fjernet
-(NEGATE 1 ORATIOOBLVERB LINK 1 KOMMA OR EOS) 
+(NEGATE 1 ORATIOOBLVERB LINK 1 KOMMA OR EOS - (":")) 
 (NEGATE 1 KOMMA LINK *-2 VFIN BARRIER KOMMA) ; # Forhindrer tagging af <ADVL til et andet syntagme; 
 
 
@@ -3688,7 +3692,7 @@ MAP:M1381 (@CL-CIT>) TARGET Par + INTRANSVERB + 3Pl OR Cont + INTRANSVERB + 4Pl 
 MAP:M1382 @CL-<CIT TARGET Cau + 1Sg OR Cau + 2Sg IF (-1 ORATIOOBLVERB - Cau) ; #Puigussanngilarsi inoqajuitsorsuarmiikkama.
 #
 MAP:M1383 @CL-<CIT TARGET Cau IF (*-1 ("iluaqut") + GE BARRIER V - Cont OR KOMMA) ;
-MAP:M1384 @CL-CIT> TARGET Cau OR Par OR CONT IF (1 ORATIOOBLVERB LINK 1 EOS)
+MAP:M1384 @CL-CIT> TARGET Cau OR Par OR CONT IF (1 ORATIOOBLVERB LINK 1 EOS - (":"))
 (NEGATE 0 ADVERBIEL) ;
 MAP:M1389 @ADVL> TARGET CONT + 4Sg IF (*1 CONT + 4Sg BARRIER V) ; #Før 1190 for at forhindre adverbial ledsagemåde tagges som oratio oblique 
 
@@ -5198,6 +5202,8 @@ REMOVE:5859A ("tassaar") IF (0 ("tassa") + U) ;
 SELECT:5859B ("ip" TUQ U) IF (0 ("ittoq") OR ("ittuk")) (*-1 TIME BARRIER V); #aasaq 1970 immikkut ittuuvoq.
 SELECT ("eqqumiip") + SSUSIQ + 3SgPoss IF (0 ("eqqoq"));
 REMOVE:5859D ("aqqup") + TAQ IF (0 ("aqqut") - AFFINGERET) ; #aqqutaannut
+REMOVE:5859E ("ippik") IF (0 ("ippige") LINK *0W DISEASE) ;
+REMOVE:5859F ("assigaq") OR ("asser") + TAQ IF (0 ("assi") + GE OR ("assik") + GE)(*0 ("alla")) ;
 
 #Partiklerne
 REMOVE:5860 ("taama") + Interj IF (0 ("taama") + Adv LINK 1 V) ;
