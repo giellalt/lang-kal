@@ -1594,6 +1594,7 @@ REMOVE:0147D ("qilammip") + Gram/Exclm IF (0 ("qilak") + Abl) ;
 REMOVE:0147E ("qaatip") + GUUQ IF (0 ("qaatigooq")) ;
 REMOVE:0147F (/__NIAQ\ Der\/vn\ GE__/l) IF (0 NIAR + Par) ; # aaniaraanga er ikke NIAQ+GE
 REMOVE:0147G ("ullor") IF (0 ("ulloq")) ;
+REMOVE:0147H ("iluaq" GE) IF (0 ("iluar" GE)) ;
 
 REMOVE:0040I NAAR - NAAR_VERBER ; #Sletter irriterende fejlanalyser med NAAR på verber, der ikke kan indeholde et element af vurdering
 
@@ -2003,7 +2004,6 @@ SELECT:0063 Rel + Pl - FAM_UNIK IF (1C 3PlPoss)(NEGATE 1 ("siuneq") + Via)(NEGAT
 SELECT:0063B Rel + Pl - FAM_UNIK - 4PlPoss - 4SgPoss IF (1C Rel + Pl - Prop LINK 1C 3PlPoss - Prop - iALL)(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 1 ("assi") + POSSESSUM + LU)(NEGATE -1 ("ila") LINK 2 ("ila"))(NEGATE 0 ("assut")) ;
 SELECT:0063C Rel + Pl - FAM_UNIK IF (1C Rel + Pl - Prop LINK 1C Rel + Pl LINK 1 3PlPoss - Prop)(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 1 ("assi") + POSSESSUM + LU)(NEGATE -1 ("ila") LINK 2 ("ila")) ;
 SELECT:0064 Rel + Sg IF (1C 3SgPoss)(NEGATE 0 Ins LINK 1 LIK_QAR)(NEGATE 1 LU)(NEGATE 0 ("affaq"))(NEGATE 0 PLACE + 4SgPoss ); #asanninnermik pigisaqarneranut er ikke en possessor-possessum forbindelse
-SELECT:0065 3SgPoss IF (-1C Rel + Sg)(NEGATE *1 VERB-NOTCONT + TRANSVERB + 3Sg BARRIER VFIN);
 
 SELECT:0066 Aeq IF (0 ("inuiak") LINK 1 ("ulloq") OR ("ullorsior")) ;
 
@@ -2173,12 +2173,19 @@ REMOVE:0113 OBLIQUE + 2SgPoss IF (NEGATE -1 ("illit"))(NEGATE *0 VERB-NOTCONT + 
 #REMOVE:0120 Lok + 1SgPoss IF (NEGATE -1 ("uanga"))(NEGATE *0 VERB-NOTCONT + 1Sg) ;
 #REMOVE:0121 Lok + 2SgPoss IF (NEGATE -1 ("illit"))(NEGATE *0 VERB-NOTCONT + 2Sg) ;
 REMOVE:0122 Rel + 2PlPoss IF (NEGATE -1 ("illit") + 2Pl)(NEGATE *0 VERB-NOTCONT + 2Pl) ;
-REMOVE:0123 NOT-REL + 1SgPoss IF (NEGATE -1 ("uanga"))(NEGATE *0 V + 1Sg)(NEGATE 1* (<<<) LINK 1*W V + 1Sg BARRIER VFIN OR (<<<))(NEGATE 0 FAM + POSSESSUM + Ins LINK *1 HTR) # Sidste NEGATE forebygger sletning af possessum i mik-objekter når der er tale om familiebetegnelser
+
+
+
+# 1SgPoss vs. 3SgPoss
+SELECT:0065_3SgPoss 3SgPoss IF (-1C Rel + Sg)(NEGATE *1 VERB-NOTCONT + TRANSVERB + 3Sg BARRIER VFIN);
+REMOVE:0123_1SgPoss NOT-REL + 1SgPoss IF (NEGATE -1 ("uanga"))(NEGATE *0 V + 1Sg)(NEGATE 1* (<<<) LINK 1*W V + 1Sg BARRIER VFIN OR (<<<))(NEGATE 0 FAM + POSSESSUM + Ins LINK *1 HTR) # Sidste NEGATE forebygger sletning af possessum i mik-objekter når der er tale om familiebetegnelser
 (NEGATE -1 DIRTALESTART ) #- Inuunera assigiiaaginnarpoq.
 (NEGATE -1 Con + 1SgO) #Nujuillisarsinnaagummali inuunera qaamanerulissagaluarpoq.
 ;
-SELECT:0124 1SgPoss IF (-1 ("uanga") + 1Sg) ;
-SELECT:0125 1SgPoss IF (*-1 Con + 1SgO BARRIER (*) - 1Sg)(*-1W 1Sg) ; # - ... Nujuillisarsinnaagummali inuunera qaamanerulissagaluarpoq. #Burde kræve at der et sted til venstre (x vinduer) er DIRTALESTART.
+SELECT:0124_1SgPoss 1SgPoss IF (-1 ("uanga") + 1Sg) ;
+SELECT:0125_1SgPoss 1SgPoss IF (*-1 Con + 1SgO BARRIER (*) - 1Sg)(*-1W 1Sg) ; # - ... Nujuillisarsinnaagummali inuunera qaamanerulissagaluarpoq. #Burde kræve at der et sted til venstre (x vinduer) er DIRTALESTART.
+
+
 
 SELECT:0132 Ins + Gram/Indef + Pron IF (1 NIQ LINK 1 ("ajor"))(NEGATE *1 NIQAR) ; #specialfald til følgende vedr. NIQ ajor..
 SELECT:0133 Ins + Gram/Indef + Pron IF (1 V)(NEGATE *1 NIQAR) ; 
@@ -5291,13 +5298,13 @@ MAP:M0999B @<ADVL TARGET CONT IF (1 CLB)(-*1 VFIN) ;
 MAP:M0999C @PRED TARGET CONT IF (1 EOS)(NEGATE *0 V) ;
 
 #Sen regel til at disambiguere NIQ+3SgPoss fra NIQ+1SgPoss
-REMOVE:9939AL NIQ + 1SgPoss IF (0 MOVE-VERB LINK *0 ORATIOOBLVERB)(NEGATE *-1 ("uanga")) # (taassuma) takkuteriasaarnera tupinnartoq paasiniassallugu periarfissarseriasaarpunga.
+REMOVE:9939AL_1SgPoss_late NIQ + 1SgPoss IF (0 MOVE-VERB LINK *0 ORATIOOBLVERB)(NEGATE *-1 ("uanga")) # (taassuma) takkuteriasaarnera tupinnartoq paasiniassallugu periarfissarseriasaarpunga.
 ;
-REMOVE:9939AL NIQ + 3SgPoss IF (-1 DIRTALESTART) ; #1SgPoss er mere sandsynlig end 3SgPoss i direkte tale; - Kanngusunnera puigorumallugu, imerajuttoq nassuerpoq sikillunilu.
-REMOVE:9939AM NIQ + 1SgPoss IF (1* ORATIOOBLVERB BARRIER VFIN) ;
+REMOVE:9939AL_3SgPoss_late NIQ + 3SgPoss IF (-1 DIRTALESTART) ; #1SgPoss er mere sandsynlig end 3SgPoss i direkte tale; - Kanngusunnera puigorumallugu, imerajuttoq nassuerpoq sikillunilu.
+REMOVE:9939AM_1SgPoss_late NIQ + 1SgPoss IF (1* ORATIOOBLVERB BARRIER VFIN) ;
 #Sen regel til at disambiguere NIQ+1SgPoss fra NIQ+3SgPoss
-REMOVE:9939AO NIQ + 1SgPoss IF (*-1 Sg + @OBJ> LINK *1 PILLUGU CBARRIER V LINK *1 ("tassa") LINK *1 Sg + @i-N< BARRIER V) ; #Sigguilu aatsalaarmata qungujunniarlunilusooq kingumut eqqarsalerpunga "Ataqqinartuaraq sinittoq una pillugu killitsissutiga tassaavoq naasunnguamut AALAJAATSUUNERA. Naasup taassuma assinga qullertulli qaamanerivaa sinikkaluarluniluunniit ...” 
-SELECT:9939AN NIQ + 1SgPoss IF (0*WC 1Sg)(0 NIQ + 3SgPoss) #Possessor 1.Sg hvis 1. Sg i omgivende sætninger
+REMOVE:9939AO_1SgPoss_late NIQ + 1SgPoss IF (*-1 Sg + @OBJ> LINK *1 PILLUGU CBARRIER V LINK *1 ("tassa") LINK *1 Sg + @i-N< BARRIER V) ; #Sigguilu aatsalaarmata qungujunniarlunilusooq kingumut eqqarsalerpunga "Ataqqinartuaraq sinittoq una pillugu killitsissutiga tassaavoq naasunnguamut AALAJAATSUUNERA. Naasup taassuma assinga qullertulli qaamanerivaa sinikkaluarluniluunniit ...” 
+SELECT:9939AN_1SgPoss_late NIQ + 1SgPoss IF (0*WC 1Sg)(0 NIQ + 3SgPoss) #Possessor 1.Sg hvis 1. Sg i omgivende sætninger
 (NEGATE *-1W DIRTALESTART BARRIER DIRTALESLUT) 
 ;
 
@@ -5420,8 +5427,8 @@ REMOVE:9967A ("(\"[^<].*\"\sGram\/TV\sTIP)"r) IF (0 ("(\"[^<].*\"\sGram\/IV\sTIP
 
 REMOVE:9967B (/__SIUR\ Der\/nv\ Gram\/TV\ \(Gram\/Pass\ \)?NIQ__/l) IF (0 (/__SIUR\ Der\/nv\ Gram\/IV\ NIQ/l)) ; #ammaanersiornermi
 REMOVE:9967C (/\"ingerla\"\ Gram\/TV\ \(Gram\/Pass\ \)?NIQ__/l) IF (0 (/\"ingerla\"\ Gram\/IV\ NIQ/l)) ; #ammaanersiornermi
-
-
+REMOVE:9967D (/\"ilinniar\"\ (Gram\/TV\ \Gram\/Pass\ \)?(Gram\/IV\ \Gram\/Refl\ \)?TUQ__/l) IF (0 (/\"ilinniar\"\ Gram\/IV\ TUQ/l)) ; #ilinniartoq
+REMOVE:9967E (/NNGUR\ Der\/nv\ Gram\/TV\ QQU__/l) IF (0 (/NNGUR\ Der\/nv\ Gram\/TV\ QQU__/l)) ; #ilinniartunngoqqullugu
 
 SECTION
 SELECT (@CL-<CIT) IF (*-1 ORATIOOBLVERB BARRIER V-NOT-Par) ;
