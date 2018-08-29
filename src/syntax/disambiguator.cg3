@@ -1096,6 +1096,7 @@ SET PILLUGU = ("pi" Cont) - AFFINGERET | ("pi" ContNeg) - AFFINGERET;
 SET KASUS = Abs | Rel | Trm | Abl | Lok | Aeq | Ins | Via ;
 SET NOT-REL = KASUS - Rel ;
 SET OBLIQUE =  Trm | Abl | Lok | Aeq | Ins | Via ;
+SET iOBLIQUE = iTrm | iAbl | iLok | iAeq | iIns | iVia ;
 SET NUMERUS = Sg | Pl ;
 SET KONGRUENSADLED = N + $$KASUS + $$NUMERUS ;
 
@@ -1256,7 +1257,7 @@ LIST BIO = "baobab" "orpik" "naasoq" ;
 LIST DISEASE = "gigt" ;
 LIST ABSTRACT = "taaq" ;
 
-LIST PLACE = "illu" "imaq" ("atuar" VIK) ("oqalup" VIK) "nuna" "orpippassuaq" "siku" "silarsuaq" Sem/Geo ^Sem/Hum;
+LIST PLACE = "illu" "imaq" ("atuar" VIK) ("oqalup" VIK) "nuna" "orpippassuaq" "siku" "silarsuaq" "village" Sem/Geo ^Sem/Hum;
 LIST PLACE_MORE = (/\"<\\p{Lu}.*\>"/r);
 SET PLACE_EXTENDED = PLACE | PLACE_MORE ;
 LIST ADJEKTIVISK = "akutakujooq" "akutakujuk" "angisooq" "angut" "arnaq" "itisooq" "manissoq" ("portu" JAAR)  "takisooq" "siulleq" "tungujortoq" ; #angut og arnaq medtaget lidt skummelt, men anvendes ofte adjektivisk
@@ -1359,6 +1360,7 @@ LIST @i-<ADVL = @i-<ADVL ;	 # adverbial der står til inkorporeret verbal t.v.
 LIST @INTERJ = @INTERJ ;	 # interjektion
 LIST @EXCLM = @EXCLM	;		# Eksklamation som er nominal, men med verbal semantik.
 LIST @PROP> = @PROP> ;		 # proprium til venstre i propriumskede
+LIST @i-PROP> = @i-PROP> ;	#inderiveret proprium til venstre i propriumskæde
 LIST @HNOUN = @HNOUN ;		 # løst nomen uden predikat
 LIST @HEADLINE = @HEADLINE ;	# loes partikel eller verbum i overskrifter
 LIST @>N = @>N ;		     # prenominalt adled (slagter Hansen) og determinativ (UA allaffinni/ 1. maj)
@@ -2846,6 +2848,8 @@ MAP:M0031H @PROP> TARGET Sem/Fem + Abs IF (1 Sem/Fem + Abs - CONJ-C) ;
 MAP:M0031I @PROP> TARGET Sem/Hum + Abs IF (1 Sem/Hum - Sem/Mask - Sem/Fem - Abl - CONJ-C) ; #Beregnet til fornavn-efternavn, men usikker pga manglende kønstagging af fornavnet.
 
 MAP:M0031M @PROP> TARGET Prop + Sem/Geo IF (1 MIU); #Amerika Kujallermiu
+MAP:M0031N @i-PROP> TARGET Prop + Sem/Geo IF (1 PLACE + iOBLIQUE) ;
+MAP:M0031O @PROP> TARGET Prop + Sem/Geo IF (1 PLACE - Prop - CONJ-C) ;
 
 MAP:M0031 (@PROP>) TARGET Prop + Abs OR FIRSTNAME + Abs OR TITEL + Abs IF (1 Prop - CONJ-C)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + LU LINK *1 V + 3Pl )(NEGATE 1 Prop + LU LINK *1 V + 3PlO)(NEGATE 1 Prop LINK 1 Prop)(NEGATE 0 FIRSTNAME LINK 1 FIRSTNAME)(NEGATE 0 FIRSTNAME LINK 1 ("Kalaallit"))(NEGATE 1 FIRSTNAME + LU)(NEGATE 0 Abs + Sg LINK *1 TRANSVERB + 3SgO BARRIER V); 
 #MAP:M0031 (@PROP>) TARGET Prop OR FIRSTNAME OR TITEL IF (1 Prop)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop #+ LU LINK *1 V + 3Pl BARRIER N + Pl )(NEGATE 1 Prop LINK 1 Prop); #fra 1350 for at udelukke overtallig SUBJ-tagging. ##NEGATE for at forebygge typen 'Per NN-ikkut isermata Vb'. Andet NEGATE for parataktiske Karen Perilu anipput. Tredie #NEGATE for at parataktiske Karen Perilu ilagalugit. Fjerde #NEGATE for at forebygge @PROP på subjektet i (SUBJ)(PROP> propriuskærne)
@@ -3725,6 +3729,7 @@ MAP:M1382 @CL-<CIT TARGET Cau + 1Sg OR Cau + 2Sg IF (-1 ORATIOOBLVERB - Cau) ; #
 MAP:M1383 @CL-<CIT TARGET Cau IF (*-1 ("iluaqut") + GE BARRIER V - Cont OR KOMMA) ;
 MAP:M1384 @CL-CIT> TARGET Cau OR Par OR CONT IF (1 ORATIOOBLVERB LINK 1 EOS - (":"))
 (NEGATE 0 ADVERBIEL) ;
+MAP:M1384 @CL-CIT> TARGET Cau OR Par OR CONT IF (1 ORATIOOBLVERB LINK 1 CLB OR EOS) ; #Tassa ualikkut 14.-ni aaniarlunga allakkami,
 MAP:M1389 @ADVL> TARGET CONT + 4Sg IF (*1 CONT + 4Sg BARRIER V) ; #Før 1190 for at forhindre adverbial ledsagemåde tagges som oratio oblique 
 
 MAP:M1390X @ADVL> TARGET CONT + 4Sg IF (1 Par + 3Sg) ; #En ad hoc regel til emfatisk eller inkonsistent brug af Par selv i coref for at undgå at adleddet tagges som @CL-<CIT
@@ -4598,6 +4603,8 @@ SELECT 3SgPoss + @ALLSUBJ IF (*0 @OBJ> + 3SgPoss) (NEGATE -*1 Rel + Sg) ; #Kusan
 
 REMOVE N IF (0 @CAU LINK 1 CLB)
 (NEGATE *-1 VFIN) ;
+
+SELECT @CAU IF (1 CLB) ;
 
 # Numerus
 # -------
