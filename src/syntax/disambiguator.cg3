@@ -136,6 +136,10 @@ LIST Sg = Sg ;
 LIST Du = Du ;
 LIST Pl = Pl ;
 
+LIST iSg = iSg ;
+LIST iDu = iDu ;
+LIST iPl = iPl ;
+
 LIST Abs = Abs ;
 LIST Rel = Rel ;
 LIST Trm = Trm ;
@@ -1275,7 +1279,7 @@ LIST MATERIAL = "ameq" "ukkusissaq" "ulik" "qipik" ;
 LIST TOOL = "savik" (__/UTE\ Der\/vn__/l);
 LIST f-an_SG = "qaneq" "qingaq" ;
 
-LIST NUMHOVED = "dollar" "dollari" "euro" "franc" "gram" "kapitali" "kapitel" "kiilu" "kilo" "klasse" "koruuni" "krone" "milliardi" "milliard" "miliuuni" "million" "oori" "øre" Sem/Unit ;
+LIST NUMHOVED = "dollar" "dollari" "euro" "franc" "grad" "gram" "kapitali" "kapitel" "kiilu" "kilo" "klasse" "koruuni" "krone" "milliardi" "milliard" "miliuuni" "million" "oori" "øre" Sem/Unit ;
 LIST NUMCOMP = "hundrede" "tusind" "million" "milliard" ; #anden del af sammensatte tal, famtan milliuuni
 LIST COMPOUND_N = "Windows" "Linux" "program" ;
 LIST EVENT = "stafet" "marathon" "løb" "stafetløb" ; #DHL stafet, CPH Marathon
@@ -1838,6 +1842,7 @@ SELECT:7250 Interj IF (-1 BOS OR ("\,"))(1 EOS); #Ny 20180407 En isoleret partik
 REMOVE:7251 Interj IF (*1 V BARRIER KOMMA)(0 Adv) ; #Ny 20180409 
 REMOVE:7252 ("taap") + Imp IF (0 ("una")) ;
 REMOVE:7253 Par IF (-1* ("una") + Prefix/AA BARRIER (*) - Abs - Part) ;
+SELECT:7254 Interj IF (-1 KOMMA LINK 2 KOMMA) ; # ..., assaa, ...
 
 
 ### PROPRIUM ###
@@ -3364,7 +3369,9 @@ MAP:M0608 (@POSS>) TARGET Prop + Rel + Sg IF (*1 3SgPoss BARRIER TRANSVERB + 3Sg
 (NEGATE *1C Rel - Prop LINK 1 Aeq OR ("taamatut") LINK *1 POSSESSUM3)
 ;
 
-MAP:M0609 @POSS> TARGET Rel + Sg - Prop IF (*1 3SgPoss OR i3SgPoss BARRIER TRANSVERB + 3Sg) (NEGATE *1 Rel + LU BARRIER TRANSVERB + 3Sg)(NEGATE 1 Rel + Sg LINK 1 3SgPoss LINK *1 3PlO BARRIER V) ; #i NN-ip aappaatalu må aappaatalu ikke opfyldebetingelsen. Næstsidste NEGATE for at blokere NN-ip NN1 ... Sidste for ikke at tagge subjekter som POSS
+MAP:M0609 @i-POSS> TARGET Rel + Sg - Prop OR Abs + Sem/Unit OR Abs + OLang/DAN IF (*1 i3SgPoss BARRIER TRANSVERB + 3Sg OR @i-POSS>) (NEGATE *1 Rel + LU BARRIER TRANSVERB + 3Sg)(NEGATE 1 Rel + Sg LINK 1 3SgPoss LINK *1 3PlO BARRIER V) #i NN-ip aappaatalu må aappaatalu ikke opfyldebetingelsen. Næstsidste NEGATE for at blokere NN-ip NN1 ... Sidste for ikke at tagge subjekter som POSS #Abs tillades fordi det ikke altid units og låneord markeres som Rel. 30 grade missaaniikkaluartoq.
+;
+MAP:M0609 @POSS> TARGET Rel + Sg - Prop IF (*1 3SgPoss BARRIER TRANSVERB + 3Sg) (NEGATE *1 Rel + LU BARRIER TRANSVERB + 3Sg)(NEGATE 1 Rel + Sg LINK 1 3SgPoss LINK *1 3PlO BARRIER V) ; #i NN-ip aappaatalu må aappaatalu ikke opfyldebetingelsen. Næstsidste NEGATE for at blokere NN-ip NN1 ... Sidste for ikke at tagge subjekter som POSS
 MAP:M0610 (@POSS>) TARGET Rel + Pl IF (1 Lok OR Ins OR Aeq OR CONT OR TIDSPARTIKEL)(2 3PlPoss) ; #Særtilfælde med adled til possessum. TIDSPARTIKEL tilføjet 20170407
 MAP:M0611 (@POSS>) TARGET Rel + Pl IF (1 3PlPoss) ;
 #MAP:M0611A @POSS> TARGET Rel + Sg IF (1 3PlPoss)((0 LU) OR (-1 @POSS> + LU)) ;
@@ -3652,7 +3659,7 @@ MAP:M1148B1 @ADVL> TARGET ADVERBIEL OR ("pissut") + GE IF (*1 VFIN BARRIER V)(-1
 MAP:M1148C1 @i-ADVL>N TARGET CONT + TRANSVERB IF (0 PILLUGU OR ("pissut") LINK 1 INDERIVERENDE_SUBSTANTIV LINK 1 EOS) ;
 
 
-MAP:M1148 @ADVL> TARGET CONT + TRANSVERB IF (*1 V - QQU) (NEGATE *-1 ORATIOOBLVERB - TAQ) #20170127 (NEGATE 1 Der/vn + N) #fjernet
+MAP:M1148 @ADVL> TARGET CONT + TRANSVERB IF (*1 V - QQU) (NEGATE *-1 ORATIOOBLVERB - TAQ BARRIER VFIN) #20170127 (NEGATE 1 Der/vn + N) #fjernet
 (NEGATE 1 ORATIOOBLVERB LINK 1 KOMMA OR EOS - (":")) 
 (NEGATE 1 KOMMA LINK *-2 VFIN BARRIER KOMMA) ; # Forhindrer tagging af <ADVL til et andet syntagme; 
 
@@ -3828,7 +3835,7 @@ MAP:M1736 @CL-CIT> TARGET Par IF (*1 ORATIOOBLVERB BARRIER DIRTALESLUT)(NEGATE *
 (NEGATE 1 KOMMA LINK *-2 UNA BARRIER VFIN) #Efterskoleramaana arnarsiama Dorthep, kursusereeruma aaniaraanga, aperigami ...
 ;
 
-MAP:M1737 @CL-<CIT TARGET Par IF (*-1 ORATIOOBLVERB BARRIER ("soorlu") OR ("tassa"))(NEGATE *1 ORATIOOBLVERB BARRIER KOMMA) ; #Usikker mapping til sidst for ikke-slettede participier, der ikke er tagget på anden vis. NEGATE for tilfælde af to verber, der begge kan være inquit
+MAP:M1737 @CL-<CIT TARGET Par IF (*-1 ORATIOOBLVERB - Aeq BARRIER ("soorlu") OR ("tassa"))(NEGATE *1 ORATIOOBLVERB BARRIER KOMMA) ; #Usikker mapping til sidst for ikke-slettede participier, der ikke er tagget på anden vis. NEGATE for tilfælde af to verber, der begge kan være inquit
 
 MAP:M1738 @ADVL> TARGET Part (NEGATE *-1 (*) - @HNOUN - @INTERJ LINK *1 _TARGET_ LINK *1 (*) - @HNOUN - @INTERJ) ; #Sen tagning af partikler, der ikke er tagget med andet
 
@@ -4191,6 +4198,8 @@ REMOVE:1679 1SgPoss IF (*1 V + 2Sg BARRIER V) ;
 REMOVE:1681 i1SgPoss IF (-*1C Pron + 2Sg) ;   
 REMOVE:1681 i2SgPoss IF (-*1C Pron + 1Sg) ;   
 
+REMOVE:1682 2SgPoss IF (0 NUMHOVED) ; #kapitalit pingajuanniippoq.
+
 SELECT Abs + Sg IF (1 Cont + 3SgO)(NEGATE 0 Pali OR Conj OR Adv) ; #reglen sletter fx ilaannilu før Vb-TARlugu
 SELECT Abs + Pl IF (1 Cont + 3PlO) ;
 SELECT:1689 Adv + ("ima") (NEGATE 0 ("imaluunniit")) ;#IF (1 ("isikku")) ; #For ikke at tagge Titartagara siullerpaaq IMA isikkoqarpoq forkert.
@@ -4543,6 +4552,7 @@ REMOVE @POSS> IF (1C POSSESSUM4);
 
 REMOVE (POSSESSUM @HNOUN) IF (NEGATE -1 (@POSS)) ;
 
+REMOVE iLok + iPl IF (-1 Rel + Sg)(0 i3SgPoss)(NEGATE 1 3SgPoss); #'ippiup QAANI narsartami toqqissumiipput' NEGATE for at forebygge hit paa 'Perip Namminersornerusuni sulinera'
 REMOVE Lok + Pl IF (-1 Rel + Sg)(0 3SgPoss)(NEGATE 1 3SgPoss); #'ippiup QAANI narsartami toqqissumiipput' NEGATE for at forebygge hit paa 'Perip Namminersornerusuni sulinera'
 
 SELECT:0820 Aeq + Sg + 4SgPoss IF (*-1 @SUBJ> + Sg)(*1 V + 3Sg) ;
@@ -4739,7 +4749,8 @@ SELECT:8540 3SgO IF (NEGATE *-1 Abs + Pl + @OBJ> BARRIER V )(*-1 Rel + Pl + @SUB
 SELECT:8549 Rel + @SUBJ> + Sg IF (*1 TRANSVERB + @PRED BARRIER INTRANSVERB + 3Sg OR INTRANSVERB + 4Sg)(NEGATE 0 Abs + Pl + Tilhængspartikel LINK 1 Abs + Pl LINK *1 INTRANSVERB + 3Pl OR TRANSVERB + 3PlO) (NEGATE @1 SEMIOTIC + Lok); #første NEGATE forebygger fejlhit på ..tLU vs. ... pLU
 SELECT:8550 Rel + @SUBJ> + Pl IF (*1 TRANSVERB + @PRED BARRIER INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl);
 SELECT:8551 Abs + @SUBJ> IF (*1 INTRANSVERB + @PRED)(NEGATE 0 Lok LINK *-1 @SUBJ>)(NEGATE 0 INTRANSVERB + Par + 3Pl LINK -1 Abs + Pl)(NEGATE 0 Ind + 3Pl LINK 1 LU LINK *1 VFIN)(NEGATE 0 Par + 3Sg LINK *1 ORATIOOBLVERB)
-(NEGATE 0 Lok + Sg LINK 1 Lok + Sg) ; #mange fejlhit på lokalis. Udelades fra denne regel. Sidste NEGATE for ikke at slette tidsparticipier med subjekt
+(NEGATE 0 Lok + Sg LINK 1 Lok + Sg) #mange fejlhit på lokalis. Udelades fra denne regel. Sidste NEGATE for ikke at slette tidsparticipier med subjekt
+;
 
 #To regler der vælger subjekter før hhv. Lok og Ins ved oratio oblique
 SELECT:8552 Rel + @SUBJ> + 4SgPoss IF (*1 TRANSVERB + 4SgO) ;
@@ -4841,6 +4852,7 @@ REMOVE:8520 ("iseq") + POSSESSUM12 - AFFINGERET IF (0 ("isi") OR ("isikkoq")) ; 
 REMOVE:8521 ("siulleeq") IF (0 ("siulleq") + Pl)(NEGATE *0 ANIMAL OR ANATOMIC) ;
 REMOVE:8522 ("inuk") + TAAQ OR ("inuttaaq") IF (0 ("inuk") + TAQ + POSSESSUM) ;
 REMOVE:8522 ("oqalup") OR ("oqaq") IF (0 ("oqaluttuaq")) ;
+REMOVE:8523 ("kapital") IF (0 ("kapitel") LINK 1 Num OR iNum OR Gram/Ord);
 
 #De særlige former af TUQ + Aeq på transitiver fulgt af "ippaa" slettes hvis ikke fulgt af "ippaa"
 REMOVE:8599 TUQ + Aeq - Der/vn IF (0 TUQ + Aeq + Der/vn)(NEGATE 1 ("ip")); 
@@ -4949,7 +4961,7 @@ REMOVE:5487 ("tup") + SAAR IF (0 ("tusaa")) ;
 REMOVE:5488A ("kip") IF (0 (/__"kissar\".*\ UTE__/l))(NOT 0 (/__\"kissar\"\ .*[A-Z][A-Z]+.*\ UTE__/l)) ;
 #REMOVE:0005A (/__SSA\ Der\/vv\ Gram\/IV\ .*TUQ__/l)(NOT 0 (/__SSA\ Der\/vv\ Gram\/IV.*[A-Z][A-Z]+.*\ TUQ__/l)) ; #SSA kan ikke efterfølges af TUQ
 REMOVE:5488B ("iti") IF (0 ("iter"))(*0 ("sinip")) ;
-
+REMOVE:5488C ("nalunaap") IF (0 ("nalunaar"))(0 QQA) ; #det er muligt at mere semantik er nødvendig.
 
 # Der/nv eller Der/vv?
 SELECT:5493 QATE + Der/vn + GE IF (0 QATE + Der/nn + GE)(NEGATE *-1 HUMAN + @OBJ>) ;
@@ -5164,7 +5176,7 @@ REMOVE:5708 ("aa") + TAQ IF (0 ("aasaq") + SIUR) ;
 REMOVE:5709 ("iseq") + Rel IF (1 POSSESSUM3 + humverb) ;
 REMOVE:5710 POSSESSUM IF (0 ("inuk") + INNAQ) ; 
 REMOVE:5711 ("avataq") IF (0 ("avate") LINK -1 Prop + Rel) ;#disambiguerer avataq fra avate 
-REMOVE:5712 ("missaq") IF (0 ("misse") LINK -1 Num ) ; #næppe Num's stormfugl
+REMOVE:5712 ("missaq") IF (0 ("misse") LINK -1 Num OR NUMHOVED) ; #næppe Num's stormfugl
 REMOVE:5713 ("aqqalu") - Abs IF (0 ("aqqaluk") ) ; #mere eller mindre arbitræt
 REMOVE:5714 FAM_UNIK + Pl IF (0 FAM_UNIK + Sg);
 REMOVE:5715 ("aaq") + QAR IF (0 ("aak") + QAR LINK *-1 ("arnaq")) ;
@@ -5457,10 +5469,11 @@ SELECT:9966C (Gram/HV) IF (NOT -*1 ("immi") BARRIER V)(NEGATE 0 (/__Gram\/IV\ VI
 
 REMOVE:9967A ("(\"[^<].*\"\sGram\/TV\sTIP)"r) IF (0 ("(\"[^<].*\"\sGram\/IV\sTIP)"r)); #Virker ikke 20180304
 
-REMOVE:9967B (/__SIUR\ Der\/nv\ Gram\/TV\ \(Gram\/Pass\ \)?NIQ__/l) IF (0 (/__SIUR\ Der\/nv\ Gram\/IV\ NIQ/l)) ; #ammaanersiornermi
+REMOVE:9967B (/__SIUR\ Der\/nv\ Gram\/TV\ \(Gram\/Pass\ \)?/l) IF (0 (/__SIUR\ Der\/nv\ Gram\/IV\ NIQ/l)) ; #ammaanersiornermi, kiassioqaanga
 REMOVE:9967C (/\"ingerla\"\ Gram\/TV\ \(Gram\/Pass\ \)?NIQ__/l) IF (0 (/\"ingerla\"\ Gram\/IV\ NIQ/l)) ; #ammaanersiornermi
 REMOVE:9967D (/\"ilinniar\"\ \(Gram\/TV\ \Gram\/Pass\ \)?(Gram\/IV\ \Gram\/Refl\ \)?TUQ__/l) IF (0 (/\"ilinniar\"\ Gram\/IV\ TUQ/l)) ; #ilinniartoq
 REMOVE:9967E (/NNGUR\ Der\/nv\ Gram\/TV\ QQU__/l) IF (0 (/NNGUR\ Der\/nv\ Gram\/TV\ QQU__/l)) ; #ilinniartunngoqqullugu
+REMOVE:9967E (/Gram\/TV\ QQA__/l) IF (0 (/Gram\/IV\ QQA__/l)) ; #nalunaaqqaneratuut
 
 REMOVE:9968D (/\"paasi\"\ Gram\/IV/l) IF (0 AFFINGERET - TUQ) ;
 
