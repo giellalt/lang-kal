@@ -1014,7 +1014,7 @@ LIST LIGUUQ = LIGUUQ ;
 LIST LIAASIIT = LIAASIIT ;
 LIST LIUNA = LIUNA ;
 
-LIST LU = LU "aamma" ;
+LIST LU = LU ;#"aamma" ;
 LIST LUGUUQ = LUGUUQ ;
 LIST LUMI = LUMI ;
 LIST LUMIAASIIT = LUMIAASIIT ;
@@ -1558,6 +1558,7 @@ SELECT:conj ("aamma") + Conj IF (-1* PLACE_EXTENDED BARRIER (*) - PUNCT LINK *1 
 #SELECT:conj ("aamma") + Conj IF (*-1 ("(\"<.....*)"r) + $$MOOD) (*1 (VSTR:"$1"r) + $$MOOD) ; 
 REMOVE:conj ("aamma") + Conj IF (*-1 V - 3Pl - 3Sg BARRIER (*) - V) (*1 V + 3Sg OR V + 3Pl) ; #Konjunktioner skal have noget "ens" på begge sider. #Mikisuullunga aamma juullip orpiliaata akisunnera, unnuaqeqqanut naalagiarnermi pattagiarsuup erinaa asasamalu qungujunnerisa saamanerat juullimi tunissutisiannik qaamaneqalersitsisut ittarput.
 REMOVE:conj ("aamma") + Conj IF (-1 BOS)(1 NIQ) ; #så plejer aamma at være i-ADVL>
+REMOVE:conj ("aamma") + Conj IF (-1 UNA) ;
 
 
 ### Usandsynlige morfemkombinationer ###
@@ -2945,7 +2946,8 @@ MAP:M0076 @CL-ADVL> TARGET TIME + Par + TRANSVERB (-1 BOS)(*1 VFIN);
 MAP:M0080A @CL-ADVL> TARGET ("kingu" NIQ) + 3SgPoss IF (-2 BOS OR KOMMA)(-1 Rel) ;
 MAP:M0080B @CL-ADVL> TARGET ("nali") + 3SgPoss IF (-2 BOS OR KOMMA)(-1 Rel) ;
 MAP:M0080AX @CL-ADVL> TARGET ("kingu" NIQ) + 3SgPoss + Abs IF (-1 Rel) ; #20170425 skummel regel, der måske skal begrænses
-MAP:M0080AZ @CL-ADVL> TARGET ("taava") + MI IF (*1 VFIN) ;
+MAP:M0080AY @CL-ADVL> TARGET ("taava") + MI IF (*1 VFIN) ;
+MAP:M0080AZ @CL-ADVL> TARGET ("taava") IF (*1 V) ; #Taava(lu) er vist altid sætningsadverbiel.
 
 #HNOUN NP i citationstegn med og uden komma
 MAP:M0081A @HNOUN TARGET Abs IF (1 Abs)(*1 ("”") BARRIER (*) - KOMMA)(*1 ORATIOOBLVERB) ;
@@ -3009,7 +3011,7 @@ MAP:M0230 (@CONJ) TARGET KONJUNKTION - Adv IF (-1 BOS OR KOMMA)
 #Flyttet fra 1168 forebygge konflikt med @ADVL> 
 MAP:M0231 (@CONJ) TARGET ("aamma" LU) OR ("taamatut") + LU; #vistnok undtagelsesløs
 MAP:M0232 (@CONJ) TARGET Conj ; #Konjunktioner skal tagges som konjunktioner
-MAP:M0233 @CONJ TARGET Adv + CONJ-C IF (NEGATE *0 V OR INDERIVERENDE_SUBSTANTIV OR Der/vn) ; #qanoq taavalu qaqugu
+MAP:M0233 @CONJ TARGET Adv + CONJ-C IF (NEGATE *0 V OR INDERIVERENDE_SUBSTANTIV OR Der/vn)(NEGATE 0 Conj) ; #qanoq taavalu qaqugu
 
 MAP:M0235B @V> TARGET ("allaat") + Adv IF (1 Rel LINK 1 Trm + POSSESSUM); #allaat Nuup imartaanut pipput   
 MAP:M0235C @V> TARGET ("allaat") + Adv IF (1 Trm); #allaat Nuummut pipput   
@@ -3673,8 +3675,9 @@ MAP:M1240 (@<ADVL) TARGET Cont + 2Pl OR ContNeg + 2Pl IF (*-1 VFIN + 2Pl)(NEGATE
 MAP:M1249 (@ADVL>) TARGET CONT + 4Pl IF (*1 Par + 3Pl)(NEGATE *0 VFIN); #i sætninger af PRED2-type
 MAP:M1250 (@ADVL>) TARGET CONT + 4Pl IF (*1 VFIN + 3Pl OR CON_CAU + 3Pl OR 4Pl);
 MAP:M1251 @ADVL> TARGET CONT IF (*1 Par BARRIER VERB-NOTCONT ) ;
+MAP:M1255 @PRED TARGET CONT IF (NEGATE *1 @PRED OR VFIN) (NEGATE *-1  @PRED OR VFIN BARRIER @CL-ADVL>) ;
 MAP:M1260 (@<ADVL) TARGET Cont + 4Pl OR ContNeg + 4Pl IF (*-1 VFIN + 3Pl)(NEGATE 0 LU);
-
+MAP:M1261 @PRED TARGET CONT - ADVERBIEL IF (*-1 CONJ-C - VFIN OR Conj BARRIER VFIN OR @PRED LINK *-1S VFIN OR @PRED)(NEGATE NOT 0 ORATIOOBLVERB LINK *1 CONT BARRIER CONJ-C) ;
 MAP:M1266X (@PRED) TARGET CONT IF (-1 CONT LINK -1 LU LINK -1 KOMMA) ; #Flyttet for at forebygge hits på parataktiske hovedsætninger i M1266. Skal nok revideres.
 
 MAP:M1266Y @ADVL> TARGET CONT IF (1* CONT + @PRED BARRIER VFIN) ;
@@ -4354,6 +4357,7 @@ SELECT:7251A KONCESSIV + Conj IF (-1 BOS OR KOMMA)(*1 Par OR CONT BARRIER VFIN) 
 MAP:M7251A @CONJ TARGET KONCESSIV + Conj IF (-1 BOS OR KOMMA)(*1 Par OR CONT BARRIER VFIN) ;
 
 REMOVE:7252 Conj IF (0 ("aamma") LINK 1 VFIN LINK -2 @SUBJ>) ; # den skal nok udvides.
+SELECT:7253 @CONJ - LU - LI - LUUNNIIT IF (*-1 @PRED)(*1 @PRED) ;
 
 SELECT ("tassa") + Part IF (-*1 V OR Der/vn)(*1 V OR Der/vn OR Prop OR ("\:")) ; #"tassa" brugt foer forklarende hovedsaetning eller i consekutiv bisaetning
 
@@ -5481,7 +5485,7 @@ SUBSTITUTE:S0034 @ADVL> @OBJ-DOTR> TARGET Ins OR Trm IF (*1 Gram/Db BARRIER (*) 
 SUBSTITUTE:S0035 @i-ADVL> @i-OBJ-DOTR> TARGET Ins OR Trm IF (*1 Gram/Db BARRIER (*) - @<N - TIME - TOOL) ;
 SUBSTITUTE:S0037A @SUBJ> @<N TARGET Gram/Cong + Nom IF (*-1C @SUBJ>) ;
 SUBSTITUTE:S0037F (/@.*/r) (@<N) TARGET Gram/Cong + OBLIQUE + (/@\(.*\)/r) IF (0 $$KASUS LINK -1 (VSTR:/@$1/r) + OBLIQUE + $$KASUS)(NEGATE 0 1Sg OR 2Sg OR 1Pl OR 2Pl) ;
-SUBSTITUTE:S0038 @HNOUN @<N TARGET Abs IF (*-1 @HNOUN + PROP BARRIER V)(NEGATE 0 LU)(NEGATE *-1 LU)(NEGATE *-1 Interj) ; #Til nominalsyntagmer uden verber, men ikke til opremsninger. #Rasmusinnguaq angut pitsak, maligassaq!
+SUBSTITUTE:S0038 @HNOUN @<N TARGET Abs IF (*-1 @HNOUN + PROP BARRIER V)(NEGATE 0 LU)(NEGATE -1 ("aamma"))(NEGATE *-1 LU)(NEGATE *-1 Interj) ; #Til nominalsyntagmer uden verber, men ikke til opremsninger. #Rasmusinnguaq angut pitsak, maligassaq!
 SUBSTITUTE:S0039A @ADVL> @<N TARGET ATTRIBUTIV + $$KASUS (-1 $$KASUS + N)(NEGATE 0 CONJ-C) ;
 #SUBSTITUTE:S0039B @i-ADVL> @<N TARGET N + $$KASUS + $$NUMERUS (-1 $$KASUS + $$NUMERUS)(NEGATE 0 CONJ-C) ; #unødvendig?
 SUBSTITUTE:S0040 @<OBJ @HNOUN TARGET @<OBJ + N IF (*-1 V BARRIER (*) - @PRENOM LINK *-1C @OBJ> BARRIER (*) - @<N) ;
