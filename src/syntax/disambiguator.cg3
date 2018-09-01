@@ -1233,7 +1233,7 @@ LIST IntransTrans = "neri" "ilassior" Gram/HV ; #Set til disambiguering af Ins, 
 
 SET UGEDAGE = (/__\"arfineq\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"ataaseq\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"marluk\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"pingasut\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | ("sapaat") | (/__\"sisamat\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"tallimat\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) ;
 SET SEASON = ("aasaq") | ("ukiaq") | ("ukioq") | ("upernaaq") ; #årstider
-LIST OTHERTIME = Sem/Time ("aallar" QQAAR UTE) ("aasaq") ("aqagu") ("inuk" U NIQ) ("ippassaq") "juulli" ("kingulleq" Ins) ("kingu" NIQ)("kingusip") ("maanna") ("nali") ("piffik") ("qaammat") ("qangali") ("qeqqa") ("sapaat") ("sapaatip-akunneq") ("sivisu") ("siulleq") ("siuneq") ("taarsi") ("ualeq") ("ukiaq") ("ukiar" TUQ) ("ukiartoq") ("ukioq") ("ullaa") ("ullaaq") ("ulloq") ("unnuaq") "unnuaqeqqa" ("unnuk") ;
+LIST OTHERTIME = Sem/Time ("aallar" QQAAR UTE) ("aasaq") ("aqagu") ("inuk" U NIQ) ("ippassaq") "juulli" ("kingulleq" Ins) ("kingu" NIQ) ("kinguninnguaq") ("kingusip") ("maanna") ("nali") ("piffik") ("qaammat") ("qangali") ("qeqqa") ("sapaat") ("sapaatip-akunneq") ("sivisu") ("siulleq") ("siuneq") ("taarsi") ("ualeq") ("ukiaq") ("ukiar" TUQ) ("ukiartoq") ("ukioq") ("ullaa") ("ullaaq") ("ulloq") ("unnuaq") "unnuaqeqqa" ("unnuk") ;
 LIST TIMEVERB = ("assi" GIIAAR)("ingerla") ("ip" TUQ U) ("qaama"); #verber som kan have tidsudtryk som subjekt
 SET TEMPUSVERB = UGEDAGE | ("qaanger") | ("qaqutigut" U) | ("taamaali") | ("ukiar") | ("ukioq" U) ;
 SET TIME = TEMPUSVERB | OTHERTIME ;
@@ -1818,6 +1818,7 @@ REMOVE:0040E 4PlO + CONT - Dobbelttransitiv ; #Er vist en utænkelig kombination
 #Vælg Indikativ verbum, hvis eneste finitte. NIR undtaget, da ofte fejl for NIQ plus noget. BARRIER reduceret fra BARRIER LU OR LI OR KOMMA til kun KOMMA på gr. af mange hit på nominalparatakser med LU og adverbialer med LI
 REMOVE:0003A Gram/Exclm IF (0 VFIN - Gram/Exclm) ;
 REMOVE:0003B Gram/Exclm IF (*0 VFIN); #Er muligvis for bred!
+REMOVE:0003C Gram/Exclm + ("(.*)r"r) IF (0 ("$1q"v)) ; #Slet en Exclm der ender på r, hvis der er en læsning magen til, der ender på q.
 SELECT:0003 Ind - SUB IF (NEGATE *0 VFIN BARRIER KOMMA)(NEGATE 0 NIR OR INDERIVERENDE_SUBSTANTIV)(NEGATE 0 Int LINK 1 ("?"))(NEGATE 0 Par LINK *-1 KONCESSIV)(NEGATE -1 NIQ + Gram/Comp)(NEGATE 0 Gram/Exclm LINK *1 Par LINK -*1 KONCESSIV)(NEGATE 0 KONCESSIV)(NEGATE *-1 ("tassa") LINK -1 BOS) ; #SUB undtaget for ikke at gøre Via som matuagut til Ind 1Pl. Må ikke slette Par i koncessiver og efterlade fx GALUAQ + GE + Ind. Må ikke slette NIQ fulgt af Par. Sidste NEGATE fordi 'ilaat' kan læses som IP + LAAR + Exclm. Allersidste NEGATE for at undgå at naak analyseres som naap+Exclm
 
 
@@ -3747,6 +3748,7 @@ ADD:M1340 (@PRED) TARGET CONT IF (-1 Ins + LU OR Ins + LUUNNIIT)(*-1 VFIN)(NEGAT
 MAP:M1350 (@PRED) TARGET CONT IF (0 LU OR LUUNNIIT)(*1 VFIN);
 MAP:M1360 (@PRED) TARGET CONT IF (0 LU OR LUUNNIIT)(*-1 VFIN);
 	## Trond atuarpoq allallunilu.
+
 MAP:M1370 (@CL-CIT>) TARGET Par + TRANSVERB IF (*1 ORATIOOBLVERB BARRIER DIRTALESLUT)(NEGATE 1 KOMMA LINK *-2 UNA BARRIER VFIN) #Efterskoleramaana arnarsiama Dorthep, kursusereeruma aaniaraanga, aperigami ...
 ;	
 MAP:M1371 (@CL-<CIT) TARGET Par + TRANSVERB IF (*-1 ORATIOOBLVERB);	
@@ -3934,6 +3936,7 @@ MAP:M1960 @ADVL> TARGET OBLIQUE IF (-1 ("uv") OR ("tassa") OR Prefix/AA)(1 N LIN
   
 MAP:M1961 @SUBJ> TARGET Abs + LU IF (*1 PLURSUBJVERB BARRIER V)(NEGATE -1 Abs) ; #20170419. Skummel regel til parataktiske subjekt med implicit førsteled til underforstået CONT før transitiv 'Erillu (marluullutik) OBJ pulaarpaat'
 
+MAP:M1978 @PRED TARGET Cau IF (*0S (*) - VFIN - CONT LINK 1 EOS) ; #Cau brugt som erstatning for Int.
 MAP:M1979 @PRED TARGET Par IF (NEGATE *0 @PRED) ; #udbrudsagtige/ spørgende hovedsætninger
 MAP:M1980 @PRED2 TARGET Par IF (1 @PRED) ; #Meget bred men meget sen til type Suna eqqarsaatigigit akornuserpakkit
 #MAP:M1981 (VSTR:$1) TARGET (N) (*1 (N LU /\(@.*\)/r) BARRIER (*) - @<N) ; #Genererer fejl 20180811
