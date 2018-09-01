@@ -1044,7 +1044,7 @@ LIST TTAAQ = TTAAQ ;
 LIST TTAARLU = TTAARLU ;
 LIST TTAARMI = TTAARMI ;
 
-LIST UNA = UNA ;
+LIST UNA = UNA "sooruna" ;
 LIST UKU = UKU ;
 
 LIST Tilhængspartikel = LU LI LUUNNIIT ;
@@ -1198,7 +1198,7 @@ LIST TASSA = "tassa" ("tass" Gram/Dem Interj);
 
 LIST LOKVERB = "angala" "najugaq" "najugaqar" "ilinniar" ("taku" UTE) ;
 
-LIST ABLVERB = "aallar" "ani" ;
+LIST ABLVERB = "aallar" "ani" ("titartar" TAQ);
 
 LIST TRMVERB = "aallar" "iser" "pulaar" ;
 
@@ -1384,6 +1384,7 @@ LIST @i-<POSS = @i-<POSS ; #løst efterstillet afterthought-lignende præciserin
 LIST @PRENOM = @POSS> /@i-.*/r ; #listen er ikke sikker og skal derfor kun bruges i barriers.
 LIST @V> = @V> ;                 # adled til verbum # asaneq ajorpara og taama nuannertigivoq
 #LIST @<V = @<V ;                 # adled til verbum # N-tut ippaa #uanvendt 20180817
+LIST @i-V>N = @i-V>N ; # adled til inderiveret verbum # Angut Peritut asanartigisoq
 LIST @FOC = @FOC ;		# Pali mv., der erstatter et verballed
 LIST @X = @X ;                   # dette ord har endnu ikke fået en mapping-regel
 LIST @TEST = @TEST ; 
@@ -1971,7 +1972,7 @@ MAP:M0043H @<N TARGET ("angala") + TUQ IF (-1 ("ulloriaq")) ;
 ###################################
 
 #Til overskrifter uden VFIN
-REMOVE:0044X N IF (0 Par)(NEGATE *0 VFIN OR Cau OR ("tassa"))(NEGATE 0* KOMMA)(NEGATE 0 UNA) ;
+REMOVE:0044X N IF (0 Par)(NEGATE *0 VFIN OR Cau OR ("tassa"))(NEGATE 0* KOMMA)(NEGATE *-1S UNA) ;
 
 #En tidlig regel, der fjerner Par + 3Sg fra kongruensadled i objektsyntagmer forudsat, der ikke findes et inquit
 SELECT:0044 ADJEKTIVISK + Abs + Sg IF (-1 Abs + Sg)(*1 3SgO BARRIER V)(NEGATE *0 ORATIOOBLVERB) ; 
@@ -3060,7 +3061,8 @@ MAP:M0285 (@CONJ) TARGET Part IF (-1 Rel)(*1 Rel BARRIER V) ;
 MAP:M0286 (@CL-ADVL>) TARGET Part IF (-2 BOS OR ("\,"))(-1 Interj)(NEGATE 0 KONJUNKTION)(*1 V)(NEGATE 1 TIGE) ; #20091109 .., aasiit TAAMATUT, ...
 MAP:M0287 (@CL-ADVL>) TARGET Part IF (-1 BOS)(NEGATE 0 KONJUNKTION OR ("qanoq"))(NEGATE *1 TIGE OR Gram/Exclm BARRIER (*) - Adv - Conj)
 (*1 V)(NEGATE *1 GAANNI BARRIER V) ;
-MAP:M0291 (@V>) TARGET ("taama") OR ("qanoq") IF (*1 TIGE BARRIER (*) - Adv - Conj LINK NEGATE 0 N) ;
+MAP:M0291 (@i-V>N) TARGET ("taama") OR ("qanoq") OR Aeq IF (*1 TIGE + N BARRIER (*) - Adv - Conj) ;
+MAP:M0291 (@V>) TARGET ("taama") OR ("qanoq") OR Aeq IF (*1 TIGE BARRIER (*) - Adv - Conj LINK NEGATE 0 N) ;
 MAP:M0292 (@i-ADVL>) TARGET ("siornatigut") + Part IF (1 Der/vn) ;
 MAP:M0293 @i-ADVL> TARGET OTHERTIME + Lok IF (1 UTE + N) ; #Juullimi tunissut
 
@@ -3572,6 +3574,7 @@ MAP:M0936 @i-ADVL> TARGET TIME IF (*1 N)(NEGATE *1 V)(NEGATE *-1 V BARRIER KOMMA
 MAP:M0937 @i-ADVL> TARGET OBLIQUE IF (1* ("pi") + CONT - AFFINGERET CBARRIER V)(NEGATE *1 V - CONT) ;
 
 MAP:M0938 @i-ADVL>N TARGET LANGUAGE IF (*1 SEMIOTIC + N) ;
+MAP:M0938 @i-ADVL> TARGET Abl IF (1 ABLVERB + N) ; #baobabimit titartakkatut.
 
 MAP:M0940 (@ADVL>) TARGET OBLIQUE IF (*1 V BARRIER ("quleriilik") LINK NOT 0 QAR OR LIK)(NEGATE 0 Par LINK *-1 ORATIOOBLVERB)(NEGATE 0 Ins LINK 1 DOTR)(NEGATE 0 Ins LINK 1 Ins LINK 1 DOTR)(NEGATE 0 Gram/Cong + 4Sg LINK *1 V + 4Sg)(NEGATE 0 Gram/Cong + 4Sg LINK 1 POSSESSUM + 3SgPoss)(NEGATE *1 KOMMA BARRIER (*) - @<N - @<ADVL);#(NEGATE 0 $$KASUS LINK -*1 $$KASUS BARRIER (*) - Adv - Pali - Interj - @POSS> - (/@i-.*/r)) ; #Foerst adled til Der/vn og i-ADVL, derefter andre ADVL. Må ikke hitte or. obl. med Lok + IP + Par og må ikke blokere for @i-OBJ-DOTR> #NEGATE tilføjet for afterthoughts. #BARRIER tilføjet for at gøre den sikrere.
 MAP:M0941 @ADVL> TARGET $$KASUS + $$NUMERUS + OBLIQUE (*1 V - Der/nv - ORATIOOBLVERB BARRIER (*) - KOMMA + @POSS> + @<APPOS + (@<N $$KASUS $$NUMERUS))
@@ -3692,7 +3695,8 @@ MAP:M1148D @CL-<CIT TARGET CONT + TRANSVERB IF (*-1 ORATIOOBLVERB - LIK_QAR - CO
 MAP:M1149 @i-ADVL> TARGET CONT + TRANSVERB IF (-1 Gram/Coref + Pron)(1 Der/vn + 4SgPoss); #20170125 nammineq qanitarinngikkaluarlugu nalunngissimasani
 #mapper uagtet subjekt alle transitive ledsagemåder med finit til højre
 MAP:M1150 (@ADVL>) TARGET Cont + 1Sg OR ContNeg + 1Sg IF (*1 VFIN + 1Sg);
-MAP:M1160 (@<ADVL) TARGET Cont + 1Sg OR ContNeg + 1Sg IF (*-1 VFIN + 1Sg)(NEGATE 0 LU);
+MAP:M1160 (@<ADVL) TARGET Cont + 1Sg OR ContNeg + 1Sg IF (*-1 VFIN + 1Sg)(NEGATE 0 CONJ-C);
+MAP:M1161 @PRED TARGET CONT + 1Sg IF (*-1 VFIN + 1Sg LINK *0 _TARGET_ + CONJ-C) ;
 MAP:M1170 (@ADVL>) TARGET Cont + 2Sg OR ContNeg + 2Sg IF (*1 VFIN + 2Sg);
 MAP:M1180 (@<ADVL) TARGET Cont + 2Sg OR ContNeg + 2Sg IF (*-1 VFIN + 2Sg)(NEGATE 0 LU);
 MAP:M1190 (@ADVL>) TARGET Cont + 4Sg OR ContNeg + 4Sg IF (*1 VFIN + 3Sg);
@@ -4639,6 +4643,7 @@ SELECT @CAU IF (1 CLB) ;
 # Numerus
 # -------
 
+REMOVE 1Pl IF (*-1SW 1Sg) ;
 SELECT 3Pl IF (*-1 (LU @SUBJ>) LINK -1 (@SUBJ>))(0 (@PRED));
 	## Nukap Linillu illortik qalipappaat.
 	# Korrekt regel men feil eksempel.
