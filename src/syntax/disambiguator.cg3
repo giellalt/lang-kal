@@ -1264,7 +1264,7 @@ LIST BIO = "baobab" "orpik" "naasoq" ;
 LIST DISEASE = "gigt" ;
 LIST ABSTRACT = "taaq" ;
 
-LIST PLACE = "illu" "imaq" ("atuar" VIK) ("oqalup" VIK) "nuna" "orpippassuaq" "siku" "silarsuaq" "village" Sem/Geo ^Sem/Hum;
+LIST PLACE = "illu" "imaq" ("atuar" VIK) ("oqalup" VIK) "nuna" "orpippassuaq" "siku" "silarsuaq" "village" Sem/Geo ^Sem/Hum "lexicon" ; 
 LIST PLACE_MORE = (/\"<\\p{Lu}.*\>"/r);
 SET PLACE_EXTENDED = PLACE | PLACE_MORE ;
 LIST ADJEKTIVISK = "akutakujooq" "akutakujuk" "angisooq" "angut" "arnaq" "itisooq" "manissoq" ("portu" JAAR)  "takisooq" "siulleq" "tungujortoq" ; #angut og arnaq medtaget lidt skummelt, men anvendes ofte adjektivisk
@@ -1696,7 +1696,10 @@ APPEND ("$1"v V Orth/Append Ind 3Sg) TARGET ("<(.*)[p|v]oq>"r) (NOT 0 WORD - (<h
 APPEND ("$1"v V Orth/Append Ind 1Pl) TARGET ("<(.*)[p|v]ugut>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # ....vugut
 APPEND ("$1"v V Orth/Append Ind 1Sg 3SgO) TARGET ("<(.*)[u|v|p]ara>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # ...vara
 
-APPEND ("$1"v Orth/Append N Via) TARGET ("<(.*)tigut>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # ....vugut
+APPEND ("$1"v Orth/Append N Via) TARGET ("<(.*)tigut>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # ....tigut
+
+APPEND ("$1ssa"v Orth/Append V Int 3Sg) TARGET ("<(.*)ssava>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # ....ssava
+
 
 
 #SUBSTITUTE (\?) (N Trm Sg) TARGET ("(\\p{Ll}*-?i?mut)"r) ;
@@ -1740,6 +1743,8 @@ APPEND ("$1"v Orth/Append V Par 2Sg) TARGET ("<(.*)[s|t]utit>"r) (NOT 0 WORD - (
 APPEND ("$1"v OLang/DAN N Ins Sg) TARGET ("<(.*[b|c|d|h|w|x|y|z|æ|ø|å].*)-i[m|n]ik>"r) (0 (\?)) ; # kamæleonimik
 APPEND ("$1"v OLang/DAN N Ins Sg) TARGET ("<(.*[b|c|d|h|w|x|y|z|æ|ø|å].*)imik>"r) (NOT 0 WORD) ; # kamæleonimik
 
+APPEND ("$1"v OLang/DAN N Abs Sg) TARGET ("<(.*[b|c|d|f|h|j|m|n|w|x|y|z|æ|ø|å].*)imik>"r) (NOT 0 WORD) ; # kamæleonimik
+
 REMOVE (\?) IF (0 WORD) ;
 REMOVE:9974 Orth/Append IF (0 WORD - (<heur> <f:[0-9]+>r)) ; #Slet gættede former, hvis ikke eneste læsning
 
@@ -1747,9 +1752,10 @@ REMOVE:9974 Orth/Append IF (0 WORD - (<heur> <f:[0-9]+>r)) ; #Slet gættede form
 
 ### USIKRE TAGGINGS AF LÆSBARE ORD HVOR MORFOLOGI OG SYNTAKS IKKE HÆNGER SAMMEN ###
 #=================================================================================#
-LIST Gram/Citat = Gram/Citat ;
-APPEND ("$1"v Gram/Citat) TARGET ("<([a-z]*)>"r) IF (-1 ("\""))(1 ("\"")) (NEGATE 0 Gram/Citat OR CONT OR Conj) ; # CBS 
+#LIST Gram/Citat = Gram/Citat ;
+#APPEND ("$1"v Gram/Citat) TARGET ("<([a-z]*)>"r) IF (-1 ("\""))(1 ("\"")) (NEGATE 0 Gram/Citat OR CONT OR Conj) ; # CBS 
 #SUBSTITUTE (V ".*"r) (VN Abs Sg) TARGET ("(.*)"r) IF (-1 ("\""))(1 ("\"")) ;
+#overflødiggjort af MAP:M1999H @SUBJ> TARGET (*) IF (-1 ("\"") LINK 1 _TARGET_ LINK 1 ("\"") LINK *1 INTRANSVERB + 3Sg OR INTRANSVERB + 3Pl OR TRANSVERB + 3SgO OR TRANSVERB + 3PlO) ; #"Igavaa" qanoq halvtransitiveqassava?
 
 
 ### KKUT vs. Via ###
@@ -5238,6 +5244,7 @@ REMOVE:5719 ("imaq") IF (0 ("ima") + QAR OR ("ima") + LIK) ;
 REMOVE:5720 ("iseq") IF (1 ("tagiartor")) ;
 REMOVE:5721 ("angajoqqaaq") + Sg IF (NOT 1 ("aappaq")) ; #forældre er normalt flertal medmindre andet er specificeret
 REMOVE:5722 ("iseq") + TUGAQ IF (0 ("isertugaq")) ; #ikke en spist dis, men en hemmelighed...
+REMOVE:5723 ("aappaq") + LUP OR ("aap") + PALUP IF (0 ("aak" PALUP)) ; #aappaluttoq
 
 # Appellativ eller proprium?
 SELECT:5730 Prop IF (-1 BOS)(1 Prop + LU); #Stochastisk overvejelse. Paratakse af appellativ og proprium ikke ret sandsynlig
