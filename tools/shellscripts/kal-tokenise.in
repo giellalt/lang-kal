@@ -272,19 +272,21 @@ sub analyze {
 
             # If input doesn't have lower-case letters, try it as first-upper
             if ($f =~ /\p{Lu}/ && $f !~ /\p{Ll}/) {
-               $heur{'Heur/Case'} = 1;
                $orig = $orig || $f;
                $f = ucfirst(lc($f));
-               my $m = call_tokenizer($f);
-               if ($m =~ /\t"[^\n]*"[^?\n]+\n/) {
-                  $merge_ncs->($m);
-                  last;
+               if ($f ne $orig) {
+                  $heur{'Heur/Case'} = 1;
+                  my $m = call_tokenizer($f);
+                  if ($m =~ /\t"[^\n]*"[^?\n]+\n/) {
+                     $merge_ncs->($m);
+                     last;
+                  }
+                  next;
                }
-               next;
             }
 
             # If input is first-upper, try it as lower-case
-            if ($f =~ /^\p{Lu}\P{Lu}+/) {
+            if ($f =~ /^\p{Lu}\P{Lu}+/ && $f =~ /\p{Ll}/) {
                $heur{'Heur/Case'} = 1;
                $orig = $orig || $f;
                $f = lc($f);
