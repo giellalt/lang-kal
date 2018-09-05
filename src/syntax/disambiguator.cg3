@@ -1234,8 +1234,10 @@ SET HUMVERB = humverb OR ORATIOOBLVERB ; # alle verb  der vil ha humane subj
 LIST IntransTrans = "neri" "ilassior" Gram/HV ; #Set til disambiguering af Ins, VIP vs. HTR mv.
 
 SET UGEDAGE = (/__\"arfineq\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"ataaseq\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"marluk\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"pingasut\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | ("sapaat") | (/__\"sisamat\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"tallimat\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) ;
+SET OTHERDAY = ("ullortuneq") | ("ullukinneq") ;
 SET SEASON = ("aasaq") | ("ukiaq") | ("ukioq") | ("upernaaq") ; #årstider
 LIST OTHERTIME = Sem/Time ("aallar" QQAAR UTE) ("aasaq") ("aqagu") ("inuk" U NIQ) ("ippassaq") "juulli" ("kingulleq" Ins) ("kingu" NIQ) ("kinguninnguaq") ("kingusip") ("maanna") ("nali") ("piffik") ("qaammat") ("qangali") ("qeqqa") ("sapaat") ("sapaatip-akunneq") ("sivisu") ("siulleq") ("siuneq") ("taarsi") ("ualeq") ("ukiaq") ("ukiar" TUQ) ("ukiartoq") ("ukioq") ("ullaa") ("ullaaq") ("ulloq") ("unnuaq") "unnuaqeqqa" ("unnuk") ;
+SET TIMENOUN = UGEDAGE | OTHERDAY | SEASON | OTHERTIME ;
 LIST TIMEVERB = ("assi" GIIAAR)("ingerla") ("ip" TUQ U) ("qaama"); #verber som kan have tidsudtryk som subjekt
 SET TEMPUSVERB = UGEDAGE | ("qaanger") | ("qaqutigut" U) | ("taamaali") | ("ukiar") | ("ukioq" U) ;
 SET TIME = TEMPUSVERB | OTHERTIME ;
@@ -1330,7 +1332,7 @@ LIST NON-POSSESSUM = "malunnar" "utoqqaq" ; #en klasse af ord, der sjældent ell
 
 # TEMPLATES
 # ==========
-Template NexusHøjre =  (*1 Abs LINK *1 INTRANSVERB) OR (*1 Rel LINK *1 TRANSVERB) OR (*1 Abs + Sg LINK *1 TRANSVERB + 3SgO) OR (*1 Abs + Pl LINK *1 TRANSVERB + 3PlO) ; #3. og 4. OR på grund af transitiv med implicit subjekt
+Template NexusHøjre =  (*1 Abs - Gram/Comp LINK *1 INTRANSVERB) OR (*1 Rel LINK *1 TRANSVERB) OR (*1 Abs + Sg LINK *1 TRANSVERB + 3SgO) OR (*1 Abs + Pl LINK *1 TRANSVERB + 3PlO) ; #3. og 4. OR på grund af transitiv med implicit subjekt
 Template NexusVenstre =  (-*1 Abs LINK *1 INTRANSVERB BARRIER _TARGET_) OR (-*1 Rel LINK *1 TRANSVERB BARRIER _TARGET_) OR (*-1 Abs + Pl LINK *1 TRANSVERB + 3PlO BARRIER _TARGET_); # OR (*-1 VFIN + @PRED); #20170417 tilføjet VFIN + @PRED til nexus med implicit subjekt
 
 
@@ -2389,6 +2391,7 @@ SELECT:0245 Gram/Coref + Pron + Rel + 4Pl IF (1 Part)(2 TRANSVERB + 3Sg OR INTRA
 SELECT:0246 Gram/Coref + Pron + Rel + 4Pl IF (1 TRANSVERB + 3Sg OR TRANSVERB + 4Sg OR POSSESSUM);
 
 SELECT:0250 Gram/Coref + Pron + Abs + 4Sg IF (NEGATE *0 VFIN)(-1**< @PRED + 3Sg); #Elipser med 3Sg i foregående sætning
+SELECT:0251 Gram/Coref + Pron IF (1 Gram/Refl) ; #Immaqaana aamma immisut misigissusilik asagaani?
 
 #SELECT:0212 ("nammineq") + Abs + Sg IF (NEGATE -1 N)(NEGATE *1 TRANSVERB + CONT BARRIER V)(NEGATE *1 TRANSVERB + 3Sg OR 4Sg BARRIER V) ; #et isoleret Gram/Coref + Pron kan være subjekt
 
@@ -2839,7 +2842,9 @@ MAP:M0023B @VOK TARGET N + Abs IF (-2 ("aa") + Interj LINK 1 KOMMA)(1 KOMMA) ; #
 MAP:M0024 @VOK TARGET N + Abs IF (-1 ("aa") + Interj)(1 KOMMA)(NEGATE 0 POSSESSUM3) ; #Typen Aa N, .. men hvis N er possessum er det noget andet end vokativ
 #Specialitet ved interjektioner som "tuavi!"
 MAP:M0025 @VOK TARGET Prop + Abs IF (-1 BOS)(1 KOMMA)(2 Interj)(3 EOS);
-MAP:M0026 @VOK TARGET Prop + Abs IF (-1 BOS)(1 KOMMA)(*0 V); #For uden V sandsynligvis HNOUN
+MAP:M0026 @VOK TARGET Prop + Abs IF (-1 BOS)(1 KOMMA)(*0 V) #For uden V sandsynligvis HNOUN
+(NEGATE 1 KOMMA LINK **1 N OR Prop BARRIER (*) - N - Prop LINK 1 KOMMA LINK *1 V) #Arctic Circle Race, Sisimiuni pisartoq, marsip ulluisa 23-anni aallartissaaq.
+; 
 #Interjektioner med og uden komma. Undgå hit på parataktiske subjekter
 MAP:M0027 @VOK TARGET Prop + Abs IF (-3 BOS)(-2 Interj)(-1 KOMMA)(NEGATE *1 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO BARRIER V)(NEGATE 0 LU LINK *1 V + 1Pl BARRIER V);
 
@@ -3460,6 +3465,10 @@ MAP:M0640C @SUBJ> TARGET Rel + Sg IF (*1 TRANSVERB + 4Sg)(NEGATE 1 POSSESSUM3);
 MAP:M0649 @POSS> TARGET Rel + Pl IF (1 3PlPoss OR 4PlPoss) ;
 MAP:M0650 (@SUBJ>) TARGET Rel + Pl IF (*1 TRANSVERB + 3Pl OR TRANSVERB + 4Pl OR TRANSVERB + CONT) (NEGATE -1 Rel + Pl) ;
 MAP:M0651 @<APPOS TARGET Abs + $$NUMERUS IF (*-1 Prop + Abs + $$NUMERUS BARRIER VERB-NOTCONT)(1 KOMMA)(NEGATE 1 KOMMA LINK *1 Rel + LU LINK 1 Abs)(NEGATE 1 KOMMA LINK 1 Abs + LU) ; #må ikke tagge opremsninger
+MAP:M0651A @<N TARGET Abs + $$NUMERUS IF (*-1 Prop + Abs + $$NUMERUS OR TIMENOUN + Abs + $$NUMERUS BARRIER VERB-NOTCONT)(1 KOMMA)(NEGATE 1 KOMMA LINK *1 Rel + LU LINK 1 Abs)(NEGATE 1 KOMMA LINK 1 Abs + LU) ; #må ikke tagge opremsninger
+MAP:M0651B @<N TARGET Abs + $$NUMERUS - Prop - CONJ-C IF (*-1 NIQ + Abs + $$NUMERUS BARRIER VERB-NOTCONT OR KOMMA)(NEGATE 1 KOMMA LINK *1 Rel + LU LINK 1 Abs)(NEGATE 1 KOMMA LINK 1 Abs + LU) #må ikke tagge opremsninger
+(NEGATE 0 POSSESSUM LINK *-1 Rel + CONJ-C BARRIER V)
+;
 MAP:M0652F @<APPOS TARGET Abs IF (-1 ("soorlu") - LUSUUQ - MI LINK *-1 Abs + @OBJ> LINK *1 TRANSVERB BARRIER V);
 MAP:M0652G @<APPOS TARGET Abs + Sg IF (-1 ("soorlu") - LUSUUQ - MI LINK *-1 Abs + Pl LINK *1 _TARGET_ LINK *1 INTRANSVERB BARRIER V);
 MAP:M0652H @<APPOS TARGET $$KASUS - Gram/Pers IF (-1 ("soorlu") - LUSUUQ - MI LINK *-1 $$KASUS BARRIER (*) - KOMMA) ;
@@ -4027,7 +4036,7 @@ SELECT:0419 Par IF (-*1 ("soorlu") BARRIER ("\,"))(NEGATE *0 VFIN BARRIER KOMMA)
 #Egentlig tidsbisætning med vistnok helt sikker kontekst
 SELECT:0420 Par + 3Sg  IF (0 TEMPUSVERB)(-1 Abs + Sg)(-*1 TIME)(*1 VFIN - 3Sg);
 
-SELECT:0422 Par + 3Sg (-*1 Abs + Sg)(*1 Abs + Sg OR Adj + 4Sg LINK *1 VFIN + 3Sg)(NEGATE 0 $$KASUS + LU LINK -1 $$KASUS)  ; #2009115 ', immaqalu ulloq naanngitsoq qattuneq tamarmi qanganngoreersimassaaq.'
+SELECT:0422 Par + 3Sg (-*1 Abs + Sg)(*1 Abs + Sg - Gram/Comp OR Adj + 4Sg LINK *1 VFIN + 3Sg)(NEGATE 0 $$KASUS + LU LINK -1 $$KASUS)  ; #2009115 ', immaqalu ulloq naanngitsoq qattuneq tamarmi qanganngoreersimassaaq.'
 
 REMOVE:0423 Par IF (0 Abs + Sg)(1 @CON + 3Sg OR @CON + 4Sg) ;
 
