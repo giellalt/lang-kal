@@ -2416,6 +2416,8 @@ REMOVE:0280 ("ajore") IF (0 ("ajor") LINK -1 NIQ + Gram/Comp) ; # ..NIQ ajor + P
 #Par som erstatning for VFIN før tassa
 SELECT:0300 Par + 3SgO IF (*-1 Abs + Sg BARRIER V)(*1 ("tassa") BARRIER V)(NEGATE *0 VFIN);
 
+REMOVE:0300 TUQ + N IF (0 ("tassa") + Par)(NEGATE *0SC VFIN) ;
+
 REMOVE:0320 3PlO - GAANNI IF (0 3SgO)(*-1C Abs + Sg BARRIER INTRANSVERB + 3Sg OR 4Sg)(NEGATE -1 Gram/Comp) ;
 REMOVE:0321 3SgO IF (0 3PlO)(*-1C Abs + Pl BARRIER INTRANSVERB + 3Pl OR 4Pl) ;
 
@@ -2756,6 +2758,8 @@ MAP:M0000 (@PRED) TARGET VFIN (NEGATE 0 Gram/Exclm LINK -1* ("una") BARRIER (*) 
 MAP:M0001 (@PRED2) TARGET Par IF (@1 Interj)(NEGATE *0 VFIN); #Ved emfase og udbrud 
 MAP:M0002X @i->N TARGET ("suna") + Lok IF (1 ("tamaq") + iLok + IP OR  ("ma") + iLok + IP) ; # Sumi tamaaniipput. Tilpasset til ny i-tag 20180607 
 MAP:M0002 @>N TARGET ("suna") + $$KASUS IF (1 ("tamaq") + $$KASUS OR ("ma") + $$KASUS) ; # Sumi tamaani 
+#MAP:M0002 @>N TARGET ("suna") - OBLIQUE IF (1 ("tamaq")) ; # Suut tamarmik 
+
 
 #Ledsagemåde som erstatningsform ved paratakse
 
@@ -2811,7 +2815,9 @@ MAP:M0017 (@PRED2) TARGET INTRANSVERB + Par + 3Sg IF (*-1 Abs + Sg)(NEGATE *0 OR
 ;
 
 #De vanskeligt isolerbare absolutte konstruktioner med objekter til NIQ+Abl (NIQ+Ins). De må i hvert fald ikke være possessum. Hvis der ikke er andre Abs + Sg og intrans til venstre, er der nok tale om et subjekt. Og hvis intet andet Abs + Sg mellem 0 og 3SgO, er det nok et normalt objekt
-MAP:M0018 @NIQ_OBJ> TARGET Abs + Sg IF (1 (/__NIQ\ Der/vn\ N\ Abl__/l) OR (/__NIQ\ Der/vn\ N\ Ins__/l))(NEGATE 1 POSSESSUM)(NEGATE *1 INTRANSVERB + 3Sg BARRIER Abs + Sg)(NEGATE *1 3SgO BARRIER Abs + Sg);
+MAP:M0018 @NIQ_OBJ> TARGET Abs + Sg IF (1 (/__NIQ\ Der/vn\ N\ Abl__/l) OR (/__NIQ\ Der/vn\ N\ Ins__/l))(NEGATE 1 POSSESSUM)(NEGATE *1 INTRANSVERB + 3Sg BARRIER Abs + Sg)(NEGATE *1 3SgO BARRIER Abs + Sg)
+(NEGATE *1 LIK BARRIER (*) - Ins ) #inatsisileritooq aningaasaqarnermik akileraartarnermillu soqutigisalik.
+;
 
 #Transitive ledsagemåder brugt koncessivt. A ved coref Cau før koncessionen B uden. 0019AX og 0019BXfor at tage højde for implicit subjekt i inquit fulgt at or. obl.
 
@@ -3104,7 +3110,7 @@ MAP:M0300 @SUBJ> TARGET Abs + Sg IF (*1 INTRANSVERB + Par + 3Sg BARRIER 3SgO OR 
  ; #NEGATE for ikke at hitte på TAMANNA i Nalunngilat Per TAMANNA pillugu sulisartoq
 
 #MAP:M0302 @<SUBJ TARGET Abs IF (-1 (Prefix/AA) + (/__Gram\/Dem\ Pron__/l)) ; #En tvivlsom analyse! Og i hvert fald ukorrekt når target del af nexus efter @FOC. Følgende mindre forkert, men hele mappingen skal måske genovervejes
-MAP:M0302 @<SUBJ TARGET Abs IF (*-1 (Prefix/AA) + (/__Gram\/Dem\ Pron__/l) BARRIER (*) - N - Conj)(NEGATE *1 Par BARRIER V - Cont) ;
+MAP:M0302 @<SUBJ TARGET Abs IF (*-1 (Prefix/AA) + (/__Gram\/Dem\ Pron__/l) BARRIER (*) - N - Conj)(NEGATE *1 Par CBARRIER V - Cont) ;
 
 # Nominer - De sikre MAP regler
 # =============================
@@ -3332,6 +3338,7 @@ MAP:M0742 @i-MIK-OBJ> TARGET ("inneq") + Ins IF (1 ("anip") + HTR + N) ;
 
 # Ins er tit adled til inkorporet objekt
 MAP:M0750 (@i->N) TARGET Ins - NÆPPE_OBJ OR ("imatut") IF (*1 INSOBJVERB OR LIK_QAR OR ("quleriilik") BARRIER KOMMA OR V OR ("aamma"))(NEGATE -*1 Ins + ATTRIBUTIV BARRIER (*) - VFIN - Adv - Pali - Interj - @POSS> - (/@i-.*/r))(NEGATE 1 (/__HTR\ Der\/vv\ Gram\/IV\ TUQ\ Der\/vn\ QAR__/l))(NEGATE 0 TIME - ("inuk")) ; # "tit" skal præciseres eller reduceres til en ADD-regel #NEGATE tilføjet 20180507 fordi det altid er @i-MIK-OBJ> ved N-mik takunnittoqarpoq. #Nyt sæt NÆPPE_OBJ til forebyggelse af *nuannersumik@i->N persuarsiorfigineqarsimallutik
+MAP:M0755 (@i->N) TARGET (Aeq) IF (1 LIK )(NEGATE 1 Rel LINK 1 POSSESSUM3 + Aeq )(NEGATE 1 LU + Aeq)(NEGATE 0 LU LINK -1 Aeq)(NEGATE *0 ("isikku") + QAR + V); #Kun Trm til Der/vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse #Kopi af M0900 til at håndtere LIK
 SUBSTITUTE (@i->N) (@N<) TARGET Ins + ("alla") IF (-1 Num OR iNum OR ("ataaseq")) ; #untritilinnik ALLANIK
 SUBSTITUTE (@i->N) (@N<) TARGET Num OR iNum OR ("ataaseq") IF (-1 Ins) ; #minutsimik ATAASIINNARMIK
 MAP:M0760 (@i-N<) TARGET Ins IF (*-1 INSOBJVERB OR LIK_QAR BARRIER (*) - @N< - @i-N<) (NEGATE *1 INSOBJVERB OR LIK_QAR BARRIER KOMMA OR @CONJ)(NEGATE 1 Der/vn)(NEGATE 1 V)(NEGATE 0 CONJ-C LINK -*1 @i-N<) ; # Næstsidste NEGATE for at forebygge hit paa 'ilunni QATSORTITASSAANNGIVISSUMIK anorersuartorsuaq,'
@@ -3515,7 +3522,7 @@ MAP:M0698 (@SUBJ>) TARGET Rel IF (-*1 Rel LINK *1 TRANSVERB LINK *1 KOMMA)(*1 Ab
 MAP:M0699 (@OBJ>) TARGET Abs IF (-1 Rel)(1 KOMMA)(NEGATE *1 INTRANSVERB LINK 1 EOS) ; # Opremsning uden transitive verber
 MAP:M0700 (@<SUBJ) TARGET (Rel) IF (-*1 TRANSVERB + VERB-NOTCONT + 34Sg)(0 (Sg)) ;
 MAP:M0710 (@<SUBJ) TARGET (Rel) IF (-*1 TRANSVERB + 34Pl)(0 (Pl))(NEGATE -1 KOMMA LINK 1* POSSESSUM OR TRANSVERB) ;
-MAP:M0720 @<SUBJ TARGET Abs + Sg - ("kinguneq") IF (-*1C INTRANSVERB + 3Sg OR INTRANSVERB + 4Sg BARRIER ("tassa") LINK NOT 0 (TUQ Der/vn QAR Der/nv)) (NEGATE -1 ("\("))(NEGATE 1 Abs + Sg LINK *1 V) (NEGATE 0 LU LINK *1 Rel + Sg LINK *1 TRANSVERB + 3Sg)(NEGATE -*1 TRANSVERB + 3Sg BARRIER INTRANSVERB + 3Sg)(NEGATE -1 Abs + Sg - Der/vn)(NEGATE *-1 KOMMA BARRIER V LINK -1 @PRED LINK *1 _TARGET_ LINK *1 @PRED); #20091109 - trediesidste NEGATE, 20101013 næstsidste NEGATE for at forhindre hit på 'S V O-LU S V', sidste NEGATE for ikke at hitte på kongruensadled. 20170425 -kinguneq for at forebygge hit på sætningsadverbialer
+MAP:M0720 @<SUBJ TARGET Abs + Sg - ("kinguneq") IF (-*1C INTRANSVERB + 3Sg - ("tassa") OR INTRANSVERB + 4Sg - ("tassa") BARRIER ("tassa") LINK NOT 0 (TUQ Der/vn QAR Der/nv)) (NEGATE -1 ("\("))(NEGATE 1 Abs + Sg LINK *1 V) (NEGATE 0 LU LINK *1 Rel + Sg LINK *1 TRANSVERB + 3Sg)(NEGATE -*1 TRANSVERB + 3Sg BARRIER INTRANSVERB + 3Sg)(NEGATE -1 Abs + Sg - Der/vn)(NEGATE *-1 KOMMA BARRIER V LINK -1 @PRED LINK *1 _TARGET_ LINK *1 @PRED); #20091109 - trediesidste NEGATE, 20101013 næstsidste NEGATE for at forhindre hit på 'S V O-LU S V', sidste NEGATE for ikke at hitte på kongruensadled. 20170425 -kinguneq for at forebygge hit på sætningsadverbialer
 
 #MAP:M0730 (@<SUBJ) TARGET (Abs Pl) IF (-*1C INTRANSVERB + 3Pl OR 4Pl)(NEGATE *1 INTRANSVERB + 3Pl OR 4Pl)(NEGATE *1 TRANSVERB + 3PlO); #2.4.
 MAP:M0730 (@<SUBJ) TARGET (Abs Pl) IF (-*1C INTRANSVERB + 3Pl OR 4Pl BARRIER V)(NEGATE 0 Der/vn LINK *-1 Abs + Pl);
@@ -4001,6 +4008,12 @@ MAP:M1999B $$@FUNC TARGET Abs (0 CONJ-C) (*-1C $$@FUNC BARRIER (*) - @N<) ; #sid
 
 #Verber der bruges som nominer
 MAP:M1999H @SUBJ> TARGET (*) IF (-1 ("\"") LINK 1 _TARGET_ LINK 1 ("\"") LINK *1 INTRANSVERB + 3Sg OR INTRANSVERB + 3Pl OR TRANSVERB + 3SgO OR TRANSVERB + 3PlO) ; #"Igavaa" qanoq halvtransitiveqassava?
+
+#####################
+# Semantiske regler #
+#####################
+
+REMOVE:sem100 KKUT IF (0 Via) (1 ("oqallip")) ;
 
 
 # ================== #
@@ -4660,6 +4673,7 @@ SELECT humverb + Ind IF (-*1 @SUBJ> + HUMAN); #nalunaarpoq
 SELECT thingverb + Ind IF (-*1 @SUBJ> + THING); #nalunaappoq
 SELECT thingverb + Cont IF (-*1 @SUBJ> + THING BARRIER VFIN);
 REMOVE ("ip") + TRANSVERB (NEGATE -1 Aeq); #Ntut ippara er vel eneste mulige transitiv af ippoq
+REMOVE Gram/Pass + Aeq IF (1 ("ip") + TRANSVERB) ;
 SELECT ("ilaanneeriar") IF (0 Cont);
 
 #Contemporativer, der vikarierer for VFIN
