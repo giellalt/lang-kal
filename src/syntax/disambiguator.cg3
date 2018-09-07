@@ -1578,6 +1578,7 @@ REMOVE:7254 Adv + ("kisianni") IF (-1 BOS) ; #Kisianni aramaannarniarit piffissa
 ### Usandsynlige morfemkombinationer ###
 #======================================#
 REMOVE:0005A (/__SSA\ Der\/vv\ Gram\/IV\ .*TUQ__/l)(NOT 0 (/__SSA\ Der\/vv\ Gram\/IV.*[A-Z][A-Z]+.*\ TUQ__/l)) ; #SSA kan ikke efterfølges af TUQ
+REMOVE:0005B (/__NIAQ\ Der\/vn.*\ IR__/l) OR (/__NIAQ\ Der\/vn.*\ U__/l)(NOT 0 (/__NIAQ\ Der\/vn.*[A-Z][A-Z]+.*\ IR__/l)) (0 NIAR + HTR) ; # NIAQ og IR skal være NIAR og HTR.
 REMOVE:0005H (/\"eqqaa\"\ Gram\/IV/l) IF (NOT -1 Ins) ;
 SELECT:0005 ("ingip") + A + 3Pl IF (0 ("issaq") OR IP + SAR) ; #Totalt forvirrede ambiguiteter ved issaapput
 REMOVE:0006 ("qaap") IF (0 ("qaammat"));
@@ -2939,6 +2940,7 @@ MAP:M0044 @CL-ADVL> TARGET N - POSSESSUM + NIQ + Abl IF (*1 VFIN) ; #-nermit vis
 MAP:M0048 @i-ADVL> TARGET CONT (1 DOTR)(NEGATE (0 4Sg LINK 1 3Sg OR 4Sg) OR (0 4Pl LINK 1 3Pl OR 4Pl))(NEGATE 0 4Sg LINK -*1 VFIN + 3Sg BARRIER CLB OR VFIN)(NEGATE 1 ("pilluar") + QQU OR ("ingerla") + TIP) ; #Til trivalente verber hvor det inderiverede subjekt har et underordnet verbum i Cont lige foran sig. #NEGATE fordi trivalent pilluaqqu- og ingerlatip- er usandsynlige. Inersimasut siunnersorpaannga pulateriaarsunnik ipititsisartunik titartaasarnera unitsissagiga, ammasunik matoqqasunilluunniit, TAARSIULLUGULI aalluteqquaat nunalerutit, oqaluttuarisaaneq, kisitsisilerineq oqaasilerinerlu. 
 
 MAP:M0050 (@PRED2) TARGET Par IF (*-1 ADVERBIUM OR UNA BARRIER V)(NEGATE *0 ORATIOOBLVERB) ; #20091109 #Overvej om den skal omdøbes til PRED i stedet for PRED2.
+MAP:M0050 (@PRED2) TARGET CONT IF (*-1 UNA BARRIER V)(NEGATE *0 ORATIOOBLVERB)(NEGATE *1 V) ; #20091109 #Overvej om den skal omdøbes til PRED i stedet for PRED2. #Kopi af M0050 til ledsagemåder som erstatning for Par efter UNA. #iggavilli inoqanngeriarmat nerisarfimmut alakkarpoq taavaana Jaakubiini nerriviliorluni inilersoq unaluuna qungujulaarluni.
 MAP:M0051 (@PRED2) TARGET Par OR CONT IF (*-1 ("soorlu") BARRIER V)(NEGATE *0 VFIN) ;
 MAP:M0052 (@PRED2) TARGET Par + 3Pl IF (NEGATE *0 VFIN OR Cau)(NEGATE 0 VFIN)(NEGATE *-1 ORATIOOBLVERB) ; #Må ikke MAP-e or. obl. Jf. SELECT:100
 # De følgende 4 om non-coreferente ledsagemåder, der er koncessive
@@ -3171,7 +3173,7 @@ MAP:M0410X @N< TARGET HTR + TUQ + Pl IF (@1 Pl LINK 1 Ins LINK *1 V + 3Pl);
 MAP:M0081B @N< TARGET Abs IF (-1 Abs)(1 KOMMA)(2 ("”"))(*1 ORATIOOBLVERB) ;
 MAP:M0081D @N< TARGET Abs IF (-1 Abs)(1 ("”"))(*1 ORATIOOBLVERB) ;
 
-MAP:M0069CX12 @N< TARGET (/__Gram\/Dem\ Pron__/l) + $$KASUS IF (-1 N + $$KASUS);
+MAP:M0069CX12 @N< TARGET (/__Gram\/Dem\ Pron__/l) + $$KASUS IF (-1 N + $$KASUS LINK NOT 0 @PRED OR @PRED2); #Skal ikke gælde hvis -1 er Par
 MAP:M0069CY @>N TARGET (/__Gram\/Dem\ Pron__/l) + $$KASUS IF (1 N + $$KASUS)(NEGATE -1 N + $$KASUS)(NEGATE 1 4PlPoss OR 4SgPoss); #Alternativ ordstilling: taassuma karsip
 
 MAP:M0069X2 @N< TARGET Gram/Cong + Akk IF (-1 Abs) ; #PL 20171205 lidt skummelt, at der ikke er numerus-overensstemmelse??
@@ -3310,7 +3312,7 @@ MAP:M0523C @SUBJ> TARGET Abs + LU IF ((-1 BOS) OR (-1 Part LINK -1 BOS))(*1 PLUR
 
 MAP:M1449 (@i-OBJ-DOTR>) TARGET Ins - Gram/Cong IF (-*1 Abs)(1 Ins + Der/vn OR Ins + ADJEKTIVISK)(2 DOTR);
 MAP:M1450 (@i-OBJ-DOTR>) TARGET Ins - Gram/Cong IF (-*1 Abs)(*1 DOTR - HTR BARRIER (*) - @N<) ;
-MAP:M1451 @i-OBJ-DOTR> TARGET Abs If (*1 QQU BARRIER VFIN OR Trm OR Ins) ; #Tamaanimiut ilaannut suliffissarsiorami taassuma narsaataanut aallartitaavoq puulukit paareqqullugit.
+MAP:M1451 @i-OBJ-DOTR> TARGET Abs If (*1 (/Gram\/Db\ QQU/l) BARRIER VFIN OR Trm OR Ins) ; #Tamaanimiut ilaannut suliffissarsiorami taassuma narsaataanut aallartitaavoq puulukit paareqqullugit.
 
 
 
@@ -3756,7 +3758,8 @@ MAP:M1160 (@<ADVL) TARGET Cont + 1Sg OR ContNeg + 1Sg IF (*-1 VFIN + 1Sg)(NEGATE
 MAP:M1161 @PRED TARGET CONT + 1Sg IF (*-1 VFIN + 1Sg LINK *0 _TARGET_ + CONJ-C) ;
 MAP:M1170 (@ADVL>) TARGET Cont + 2Sg OR ContNeg + 2Sg IF (*1 VFIN + 2Sg);
 MAP:M1180 (@<ADVL) TARGET Cont + 2Sg OR ContNeg + 2Sg IF (*-1 VFIN + 2Sg)(NEGATE 0 LU);
-MAP:M1190 (@ADVL>) TARGET Cont + 4Sg OR ContNeg + 4Sg IF (*1 VFIN + 3Sg);
+MAP:M1190 (@ADVL>) TARGET Cont + 4Sg OR ContNeg + 4Sg IF (*1 VFIN + 3Sg)(NEGATE *1 CONJ-C LINK *1S V BARRIER VFIN LINK *-1 _TARGET_ LINK *-1 CONJ-C BARRIER VFIN LINK *-1 @PRED OR VFIN);
+MAP:M1199 (@ADVL>) TARGET CONT + 4Sg IF (*1 Par + 3Sg)(NEGATE *0 VFIN BARRIER UNA); #i sætninger af PRED2-type
 MAP:M1200 (@<ADVL) TARGET CONT + 4Sg IF (*-1 VFIN + 3Sg BARRIER KOMMA)(NEGATE 0 LU)(NEGATE *-1 LU - V BARRIER V LINK -1 VFIN); #BARRIER for at forebygge, at ledsagemåden peger baglæns i stedet for forlæns ved komma
 MAP:M1210 (@ADVL>) TARGET Cont + 1Pl OR ContNeg + 1Pl IF (*1 VFIN + 1Pl);
 MAP:M1220 (@<ADVL) TARGET Cont + 1Pl OR ContNeg + 1Pl IF (*-1 VFIN + 1Pl)(NEGATE 0 LU);
@@ -4143,7 +4146,10 @@ REMOVE:0473 INTRANSVERB + Par + 3Pl IF (-1 Con OR Cau LINK *-1 Abs) ;
 
 REMOVE:0475 INTRANSVERB + Par + 3Pl IF (NEGATE *0 ORATIOOBLVERB)(NEGATE -1 Abs + Pl + TIME); #Sidste NEGATE for at hitte på tidsparticipier
 
-REMOVE:0477 INTRANSVERB + Par + 3Sg - TIME - GAANNI IF (NEGATE *0 ORATIOOBLVERB)(NEGATE *-1 TIME + Sg + Abs)(NEGATE *-1 Interj OR ("sunaaffa") BARRIER V )(NEGATE -2 BOS OR KOMMA OR ("-") LINK 1 Abs + Sg)(NEGATE -1 ("tassa") LINK -1 BOS)
+REMOVE:0477 INTRANSVERB + Par + 3Sg - TIME - GAANNI IF (NEGATE *0 ORATIOOBLVERB)(NEGATE *-1 TIME + Sg + Abs)
+(NEGATE *-1 Interj OR ("sunaaffa") BARRIER V)
+(NEGATE *-1 KONCESSIV OR UNA OR UKU BARRIER VFIN OR Par LINK *1 _TARGET_ LINK NOT *1 Par)
+(NEGATE -2 BOS OR KOMMA OR ("-") LINK 1 Abs + Sg)(NEGATE -1 ("tassa") LINK -1 BOS)
 #komma forekommer også mellem oratio recte og obliqua. NEGATE for ikke at slette absolut tempus. Næsstsidste NEGATE for ikke at slette emfase, concession. Sidste for at håndtere tidsbisætning efter fx komma
 ;
 
@@ -4156,7 +4162,9 @@ REMOVE:0483 INTRANSVERB + Par + 3Pl - GAANNI IF (1 Con)(2 TRANSVERB + 3Pl) ;
 #Det er subjektet
 #Specialitet: Tidsbisætning med Par fulgt af anden tidsangivelse i Par
 SELECT:0484 INTRANSVERB + Par + 3Sg - GAANNI IF (-1 Par)(T:NexusHøjre);
-REMOVE:0485 INTRANSVERB + Par + 3Sg - GAANNI IF (NEGATE *-1 Abs + Sg BARRIER V)(NEGATE *0 ORATIOOBLVERB)(NEGATE 1 VFIN)(NEGATE *-1 Interj OR ("sunaaffa") BARRIER V)(NEGATE -1 ("tassa") LINK -1 BOS) ;
+REMOVE:0485 INTRANSVERB + Par + 3Sg - GAANNI IF (NEGATE *-1 Abs + Sg BARRIER V)(NEGATE *0 ORATIOOBLVERB)(NEGATE 1 VFIN)(NEGATE *-1 Interj OR ("sunaaffa") BARRIER V)
+(NEGATE *-1 KONCESSIV OR UNA OR UKU BARRIER VFIN OR Par LINK *1 _TARGET_ LINK NOT *1 Par)
+(NEGATE -1 ("tassa") LINK -1 BOS) ;
 
 REMOVE:0487 INTRANSVERB + Par + 3Sg - GAANNI IF (0 Abs + Sg)(1 Cont + 3SgO)(NEGATE 1 ORATIOOBLVERB); # fjerner ' .. ujarak eqqaminnut TUTTOQ takullugu .. ' 20170404 må være forkert for taku er ORATIOOBLVERB
 
@@ -4208,7 +4216,9 @@ SELECT:0515 Par + 3Sg + TRANSVERB IF (*-1 ORATIOOBLVERB BARRIER VFIN LINK *1 N +
 SELECT:0517 Par + 3Sg IF (*-1 ORATIOOBLVERB BARRIER V) ;
 
 #Fjern Par hvis intet inquit og sikkert objekt for TRANSVERB til højre
-REMOVE:0519 Par IF (NEGATE *0 ORATIOOBLVERB BARRIER TRANSVERB)(*1 TRANSVERB BARRIER TRANSVERB)(NEGATE -2 BOS OR KOMMA OR ("-") LINK 1 Abs + Sg)  ; #Sidste NEGATE aht. tidsbisætninger efter komma mv.
+REMOVE:0519 Par IF (NEGATE *0 ORATIOOBLVERB BARRIER TRANSVERB)(*1 TRANSVERB BARRIER TRANSVERB)(NEGATE -2 BOS OR KOMMA OR ("-") LINK 1 Abs + Sg) #Sidste NEGATE aht. tidsbisætninger efter komma mv.
+(NEGATE *-1 KONCESSIV OR UNA OR UKU BARRIER VFIN OR Par LINK *1 _TARGET_ LINK NOT *1 Par) #taavaana Jaakubiini nerriviliorluni inilersoq unaluuna qungujulaarluni.
+;
 
 SECTION #Skal kun bruges til at isolere Par - reglerne
 
@@ -5021,7 +5031,7 @@ REMOVE ("kivi") IF (NEGATE *0 ("imaq")); #
 REMOVE ("allar") IF (NEGATE *0 ("qilak")) ; #20091103 allar- eller allap-
 REMOVE ("ili") IF (0 ("ilisima"))(NEGATE *0 THING + @ALLOBJ> OR THING + @<ALLOBJ) ; #20091109
 REMOVE ("isigip") IF (-1 Trm) ; #20091112 sandsynligvis "isigaa" i den stilling
-REMOVE ("aak") + LISAR IF (0 ("aalisar")) ;
+REMOVE ("aak") + LISAR OR ("aaq") + LISAR IF (0 ("aalisar")) ;
 REMOVE ("paap") IF (0 ("paa"))(NEGATE *0 MATERIAL) ;
 REMOVE ("alliar") IF ( NEGATE *0 ("illeq") OR ("nateq")) ; # kun om nedstigning fra traditionel briks
 REMOVE ("allip") IF ( 0 NGAAR ) ;
@@ -5306,6 +5316,7 @@ REMOVE:5722 ("iseq") + TUGAQ IF (0 ("isertugaq")) ; #ikke en spist dis, men en h
 REMOVE:5723 ("aappaq") + LUP OR ("aap") + PALUP IF (0 ("aak" PALUP)) ; #aappaluttoq
 REMOVE:5724 ("kaak") + TAQ OR ("kaap") + TAQ IF (0 ("kaataq")) ;
 REMOVE:5725 ("naaq") IF (0 ("naasoq")) ;
+REMOVE:5726 ("avip") + HTR IF (0 ("aviisi")) ;
 
 # Appellativ eller proprium?
 SELECT:5730 Prop IF (-1 BOS)(1 Prop + LU); #Stochastisk overvejelse. Paratakse af appellativ og proprium ikke ret sandsynlig
