@@ -1242,8 +1242,9 @@ LIST IntransTrans = "neri" "ilassior" Gram/HV ; #Set til disambiguering af Ins, 
 SET UGEDAGE = (/__\"arfineq\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"ataaseq\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"marluk\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"pingasut\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | ("sapaat") | (/__\"sisamat\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"tallimat\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) ;
 SET OTHERDAY = ("ullortuneq") | ("ullukinneq") ;
 SET SEASON = ("aasaq") | ("ukiaq") | ("ukioq") | ("upernaaq") ; #årstider
+LIST MONTH = "januar" "januaari" "februar" "februaari" "marts" "marsi" "april" "apriili" "maj" "maaji" "juni" "juuni" "juli" "juuli" "august" "aggusti" "september" "septembari" "oktober" "oktobari" "november" "novembari" "december" "decembari" ;
 LIST OTHERTIME = Sem/Time ("aallar" QQAAR UTE) ("aasaq") ("aqagu") ("inuk" U NIQ) ("ippassaq") "juulli" ("kingulleq" Ins) ("kingu" NIQ) ("kinguninnguaq") ("kingusip") ("maanna") ("nali") ("piffik") ("qaammat") ("qangali") ("qeqqa") ("sapaat") ("sapaatip-akunneq") ("sivisu") ("siulleq") ("siuneq") ("taarsi") ("ualeq") ("ukiaq") ("ukiar" TUQ) ("ukiartoq") ("ukioq") ("ullaa") ("ullaaq") ("ulloq") ("unnuaq") "unnuaqeqqa" ("unnuk") ;
-SET TIMENOUN = UGEDAGE | OTHERDAY | SEASON | OTHERTIME ;
+SET TIMENOUN = UGEDAGE | OTHERDAY | SEASON | MONTH | OTHERTIME ;
 LIST TIMEVERB = ("assi" GIIAAR)("ingerla") ("ip" TUQ U) ("qaama"); #verber som kan have tidsudtryk som subjekt
 SET TEMPUSVERB = UGEDAGE | ("qaanger") | ("qaqutigut" U) | ("taamaali") | ("ukiar") | ("ukioq" U) ;
 SET TIME = TEMPUSVERB | OTHERTIME ;
@@ -1817,6 +1818,7 @@ SELECT:0040F TIME + Abs IF (1 ("tamaq") + Akk);
 
 REMOVE:0098 TIME + POSSESSUM12 IF (NEGATE 0 SIUR OR U) ; # Må være en udelukket kombination men må ikke slette fx aasarsiorfik eller (uanga) inuunera
 
+SELECT:0099 Con OR Cau IF (0 UGEDAGE) ;
 
 ### MODUS ###
 #===========#
@@ -3002,6 +3004,8 @@ MAP:M0069B @CL-ADVL> TARGET ("tamaq") + Akk IF (-1 TIME + Abs)(NEGATE -1 OTHERTI
 #Specialitet ved sætningsadverbial forrest i coref oratio obliqua. Det er forventet, at or. obl. afslutter sætningen.
 MAP:M0069C @CL-ADVL> TARGET TIME + Abs IF (*-1 ORATIOOBLVERB BARRIER @PRED)(*1 CONT BARRIER Par LINK 1 EOS) ;
 
+MAP:M0069D @CL-ADVL> TARGET Con OR Cau IF (0 UGEDAGE LINK *1 V) ;
+
 SELECT:0069CX @CL-ADVL> + TIME + Abs IF (*-1 ORATIOOBLVERB)(*1 CONT BARRIER Par LINK 1 EOS) ;
 
 MAP:M0070 @CL-ADVL> TARGET U + Par + 3Sg + 3SgO ; #Den særlige transitive Par altid sætningsadverbial
@@ -3218,12 +3222,13 @@ MAP:M0342 @N< TARGET Abs + Sg + Der/vn IF (-*1 Abs + Sg BARRIER VFIN OR KOMMA LI
 # Men OK hvis TARGET er objektskomplement i sekvensen SUBJ+Abs : OBJ : OBJ_COMP : CONT+3SgO : INTRANSVERB+3Sg. Sidste NEGATE er en ad hoc regel for at undgå hit på @NIQ_OBJ
 
 #Kongruensadled er typisk vn, Num eller ATTRIBUTIV. LU vil ofte være udtryk for en parataktisk kerne, hvorfor parataktiske kongruensadled behandles separat i regel :M0351NY. i-adled til inderivering til højre er ikke kongruensadled
-MAP:M0350NY @N< TARGET Der/vn + $$KASUS + $$NUMERUS - LU - LUUNNIIT OR Num + $$KASUS - LU - LUUNNIIT  OR LIK + $$KASUS - LU - LUUNNIIT IF (-*1 N + $$KASUS + $$NUMERUS BARRIER (*) - OBLIQUE - Part - Gram/Dem )(NEGATE 0 Ins LINK *1 QAR OR LIK BARRIER VFIN)(NEGATE 0 Num LINK 1 Num OR iNum)(NEGATE 1 NUMHOVED)(NEGATE -1 ("akunneq") OR ("aasaq"))
+MAP:M0350NY @N< TARGET Der/vn + $$KASUS + $$NUMERUS - LU - LUUNNIIT OR Num + $$KASUS - LU - LUUNNIIT OR LIK + $$KASUS - LU - LUUNNIIT IF (-*1 N + $$KASUS + $$NUMERUS BARRIER (*) - OBLIQUE - Part - Gram/Dem )(NEGATE 0 Ins LINK *1 QAR OR LIK BARRIER VFIN)(NEGATE 0 Num LINK 1 Num OR iNum)(NEGATE 1 NUMHOVED)(NEGATE -1 ("akunneq") OR ("aasaq"))
 (NEGATE 1 CONJ-C OR @CONJ LINK NOT 1 KOMMA OR EOS) # 4 gange 3 meterinik #(NEGATE 0 Num LINK -1 TIME ) #VFIN som barrier ret tilfældigt valgt #Krævet numeruskongruens 20180621
 (NEGATE -1 Rel LINK 1 Rel + POSSESSUM LINK 1 POSSESSUM3) #ataatsip iterusulernissaata tungaanut.
 (NEGATE 1 EOS LINK -1 LIK_QAR LINK -1 N + $$KASUS + $$NUMERUS + OBLIQUE) #- Inoqajuitsup kusanarnera peqquteqarpoq tamaani arlaanni puilasumik toqqortaqarneranik ... ataqqinartuaraq oqarpoq.
+(NEGATE 0 iNum + LIK LINK -1 Num OR iNum OR Sem/Unit)
 ;
-MAP:M0350NZ @N< TARGET (LIK N) + $$KASUS IF (-1 N + $$KASUS) ;
+MAP:M0350NZ @N< TARGET (LIK N) - iNum + $$KASUS IF (-1 N + $$KASUS) ;
 
 
 #Regel til parataktiske adled som i 'puiaasat imaqanngitsut imallillu'
@@ -3413,10 +3418,12 @@ MAP:M1722C @N< TARGET Num + $$NUMERUS IF (-1 Abs + $$NUMERUS)(-1 @HNOUN); #særl
 MAP:M0510 @N< TARGET ("alla") + N + $$KASUS + $$NUMERUS - LU OR ("arlaaq") + N + $$KASUS + $$NUMERUS IF (-1 N + $$KASUS + $$NUMERUS) ;
 MAP:M0511 @N< TARGET ATTRIBUTIV + N + $$KASUS + $$NUMERUS OR ("arlaaq") + N + $$KASUS + $$NUMERUS IF (-1 N + $$KASUS + $$NUMERUS) ;
 MAP:M0512 @N< TARGET N + $$KASUS + $$NUMERUS - POSSESSUM IF (*-1 $$KASUS + $$NUMERUS BARRIER (*) - @>N - @N<)(NEGATE -1 ("una"))(NEGATE -1 PLACE - MIU)(NEGATE 0 CONJ-C + Num LINK -1 Num OR iNum)(NEGATE 0 CONJ-C - Num)(NEGATE 0 $$KASUS LINK -1 Num LINK -1 ("nal") LINK *-1 (*) - $$KASUS)(NEGATE 0 Rel LINK 1 POSSESSUM)
+(NEGATE 0 iNum + LIK LINK *-1 Sem/Unit + Ins)
 (NEGATE -1 @i-ADVL>N LINK NOT *-1 N + $$KASUS + $$NUMERUS - POSSESSUM) #ukaliatsiap amianik sanaamik tamavimmik poorsimavoq.
 (NEGATE 0 ("tamaq") LINK -1 ("suna")) ; #sunut tamanut
 MAP:M0513 @N< TARGET N + $$KASUS IF (0 ("tamalaaq") LINK -1 ("nuna") + $$KASUS) ;
 MAP:M0514 @N< TARGET $$KASUS + $$NUMERUS + OBLIQUE - CONJ-C IF (*-1 $$KASUS + $$NUMERUS - Num - TIME - PLACE_EXTENDED - ("akunneq" Lok) BARRIER V OR CONJ-C OR Abs OR EOS) 
+(NEGATE 0 iNum + LIK LINK *-1 Ins BARRIER V)
 (NEGATE -1 @i-ADVL>N LINK NOT *-1 N + $$KASUS + $$NUMERUS - POSSESSUM); #ukaliatsiap amianik sanaamik tamavimmik poorsimavoq.
 #(*-1 (*) - VFIN LINK *-1 $$KASUS + $$NUMERUS BARRIER VFIN)(NEGATE *1 DOTR BARRIER EOS OR KONCESSIV)(NEGATE *1 LOKVERB OR TRMVERB OR ABLVERB LINK *-1 (*) - EOS - KONCESSIV + _TARGET_ LINK *-1 Sg + $$KASUS + $$NUMERUS);
 MAP (@A<) TARGET $$KASUS IF (*-1 Adv + $$KASUS - @CL-ADVL> BARRIER CONJ-C OR V) ;
@@ -3647,7 +3654,9 @@ MAP:M0937 @i-ADVL> TARGET OBLIQUE IF (1* ("pi") + CONT - AFFINGERET CBARRIER V)(
 MAP:M0938 @i-ADVL>N TARGET LANGUAGE IF (*1 SEMIOTIC + N) ;
 MAP:M0938 @i-ADVL> TARGET Abl IF (1 ABLVERB + N) ; #baobabimit titartakkatut.
 
-MAP:M0940 (@ADVL>) TARGET OBLIQUE IF (*1 V BARRIER ("quleriilik") LINK NOT 0 QAR OR LIK)(NEGATE 0 Par LINK *-1 ORATIOOBLVERB)(NEGATE 0 Ins LINK 1 DOTR)(NEGATE 0 Ins LINK 1 Ins LINK 1 DOTR)(NEGATE 0 Gram/Cong + 4Sg LINK *1 V + 4Sg)(NEGATE 0 Gram/Cong + 4Sg LINK 1 POSSESSUM + 3SgPoss)(NEGATE *1 KOMMA BARRIER (*) - @N< - @<ADVL);#(NEGATE 0 $$KASUS LINK -*1 $$KASUS BARRIER (*) - Adv - Pali - Interj - @POSS> - (/@i-.*/r)) ; #Foerst adled til Der/vn og i-ADVL, derefter andre ADVL. Må ikke hitte or. obl. med Lok + IP + Par og må ikke blokere for @i-OBJ-DOTR> #NEGATE tilføjet for afterthoughts. #BARRIER tilføjet for at gøre den sikrere.
+MAP:M0939 @ADVL> TARGET ("missaa") OR ("misse") IF (*1 V) ;
+MAP:M0939B @i-ADVL> TARGET $$KASUS + OBLIQUE - POSSESSUM - TIME IF (*1 Der/vn + N - $$KASUS - ("immikkoor") BARRIER V OR $$KASUS )(NEGATE 0 Ins + Sg) (NEGATE *1 V BARRIER CONJ-C LINK 1 EOS);
+MAP:M0940 (@ADVL>) TARGET OBLIQUE IF (*1C V BARRIER ("quleriilik") LINK NOT 0 QAR OR LIK)(NEGATE 0 Par LINK *-1 ORATIOOBLVERB)(NEGATE 0 Ins LINK 1 DOTR)(NEGATE 0 Ins LINK 1 Ins LINK 1 DOTR)(NEGATE 0 Gram/Cong + 4Sg LINK *1 V + 4Sg)(NEGATE 0 Gram/Cong + 4Sg LINK 1 POSSESSUM + 3SgPoss)(NEGATE *1 KOMMA BARRIER (*) - @N< - @<ADVL);#(NEGATE 0 $$KASUS LINK -*1 $$KASUS BARRIER (*) - Adv - Pali - Interj - @POSS> - (/@i-.*/r)) ; #Foerst adled til Der/vn og i-ADVL, derefter andre ADVL. Må ikke hitte or. obl. med Lok + IP + Par og må ikke blokere for @i-OBJ-DOTR> #NEGATE tilføjet for afterthoughts. #BARRIER tilføjet for at gøre den sikrere.
 MAP:M0941 @ADVL> TARGET $$KASUS + $$NUMERUS + OBLIQUE (*1 V - Der/nv - ORATIOOBLVERB BARRIER (*) - KOMMA + @POSS> + @<APPOS + (@N< $$KASUS $$NUMERUS))
 (NEGATE 0 POSSESSUM + Lok LINK *-1 (*) - V - CONT);
 MAP:M0945 @ADVL> TARGET Aeq IF (1 V);
@@ -4313,6 +4322,8 @@ SELECT:1650 Abs + 4SgPoss IF (1 Abs + Der/vn)(*1 V + 3SgO) ; #PANINI er ikke lok
 
 REMOVE:1670 1SgPoss IF (0 (Num))(*1 QAR OR LIK BARRIER V) ;  #Arfinilinnik ukioqarlunga. Kan nok gøres bredere.
 REMOVE:1671 2SgPoss IF (0 (Num))(*1 QAR OR LIK BARRIER V) ;   
+
+REMOVE:1671A POSSESSUM IF (0 iNum + LIK) ;
 
 REMOVE:1678 2SgPoss IF (*1 V + 1Sg BARRIER V)(NEGATE *1 2SgPoss OR 2Sg)(NEGATE *-1 2SgPoss OR 2Sg CBARRIER V)
 (NEGATE *1 V + 3SgO BARRIER V); #20180405 REMOVE i stedet for SELECT for at bibeholde pluralislæsning som ikke er poss efter k-stammer. Reglen er sikrere og forkaster ikke de mange korrekte læsninger som SELECT-reglen.
@@ -5311,6 +5322,7 @@ REMOVE:5623 (/__\"pisaq\"\ GIP__/l) IF (0 (/__\"pisaq\"\ GE__/l)) ; #*pisarip- n
 REMOVE:5624 TARE IF (0 (/aq\"\ GE__/l)) ; #TARE overgenererer meget
 REMOVE:5625 ("at") + OLang/DAN IF (0 AFFINGERET) ;
 REMOVE:5626 (QQU TAQ U LLAQQIP) OR (QQU SAAR LLAQQIP) (0 (QQUSAAR LLAQQIP)) ;
+REMOVE:5627 ("tup") OR ("tuttoq") IF (0 ("tuttu")) ;
 
 # Enkelte substantiver
 REMOVE ("pineq") IF (NEGATE *0 ("kamik")) ; #20091103 pineq+QAR vs. pineqar-
@@ -5339,6 +5351,7 @@ REMOVE:5723 ("aappaq") + LUP OR ("aap") + PALUP IF (0 ("aak" PALUP)) ; #aappalut
 REMOVE:5724 ("kaak") + TAQ OR ("kaap") + TAQ IF (0 ("kaataq")) ;
 REMOVE:5725 ("naaq") IF (0 ("naasoq")) ;
 REMOVE:5726 ("avip") + HTR IF (0 ("aviisi")) ;
+REMOVE:5727 ("qerneq") + TU IF (0 ("qernertoq")) ;
 
 # Appellativ eller proprium?
 SELECT:5730 Prop IF (-1 BOS)(1 Prop + LU); #Stochastisk overvejelse. Paratakse af appellativ og proprium ikke ret sandsynlig
