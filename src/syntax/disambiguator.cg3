@@ -70,7 +70,7 @@ LIST PUNCT = PUNCT ; # Fra Trond
 LIST LEFT = LEFT ; # Fra Trond
 LIST RIGHT = RIGHT ; # Fra Trond
 LIST COMMONAFFSTRING = \= ;
-LIST EXCLMARK = ("^excl") ;
+LIST EXCLMARK = ("^excl") ("!") ;
 
 
 # Parts of speech with tags declared as single-membered LISTs #
@@ -1387,6 +1387,7 @@ LIST @FOC>N = @FOC>N ; #meeqqat soorlu Piitaq, i betydningen 'fx'
 LIST @i->N = @i->N ;		 # adled der står til inkorporeret nominal t.h.
 LIST @i-N< = @i-N< ;		 # adled der står til inkorporeret nominal t.v.
 LIST @i-ADVL>N = @i-ADVL>N ; # adled der står til verbalt nomen: isuma, oqaluttuaq
+LIST @i-MWE>N = @i-MWE>N ; #juxtaposition eller del af MWE, som peger på en viderederiveret del af MWE'en
 #LIST @POSS = @POSS> @<POSS ;		 # sæt af de to possessorer
 LIST @POSS> = @POSS> ;		 # possessor
 LIST @<POSS = @<POSS ; #løst efterstillet afterthought-lignende præcisering af tidligere nævnt possessor
@@ -3282,13 +3283,13 @@ MAP:M0402 @SUBJ_COMP TARGET Abs + Prop + LU IF (-2 Abs + Pl)(-1 Abs + Prop);
 MAP:M0407Anum (@>N) TARGET Num IF (1 NUMHOVED + N); # ' .. 2 oorimoorlutik ..' specialfald før 189-190
 MAP:M0407Bnum @>N TARGET NUMHOVED IF (-1 Num)(1 NUMHOVED) ; # 7 miliuunit koruuneqarput. NB bør heller ikke ved QAR etc. analyseres som @i->N
 MAP:M0408num (@>N) TARGET NUMHOVED - Trm IF (1 Num + Abs - @N<); # ' .. kapitel 2 ..' specialfald før de følgende
-#MAP:M0408Anum @i->N TARGET Num IF (1 NUMHOVED + Der/nv); #20180912 skal ikke være i->N
+MAP:M0408Anum (@i-MWE>N) TARGET Num IF (1 NUMHOVED + Der/nv); #20180912 skal ikke være i->N #tal i Abs før enhed er MWE.
 MAP:M0408Bnum @>N TARGET Num IF (1 Num) ;
 MAP:M0408Cnum @i->N TARGET Num IF (1 iNum + NUMCOMP) ;
 MAP:M0408Dnum @>N TARGET TIME IF (1 Num)(NEGATE *1 ("siuneq"))(NEGATE 0 (*) - Abs)(NEGATE 0 SEASON) ; #NEGATE for at undgå at hitte på AASAQ 1989.
 MAP:M0408Enum @i->N TARGET TIME IF (1 iNum)
 (NEGATE 1 POSSESSUM - NNGUR) ; #AASAQ 1989; Folketingimi arnat qinersisinnaatitaalerneranniit ukiut 100-nngornerat nalliuttorsiutigineqarpoq.
-#MAP:M0408Fnum @i->N TARGET NUMHOVED + Abs IF (1 iNum + Der/nv) ; #20180912 skal ikke være i->N
+#MAP:M0408Fnum (@i-MWE>N) TARGET NUMHOVED + Abs IF (1 iNum + Der/nv) ; #20180912 skal ikke være i->N #enhed i Abs før tal er SUBJ eller OBJ
 MAP:M0408Hnum @N< TARGET Num + Abs IF (-1 SEASON) ;
 MAP:M0408R @>N TARGET Gram/ACR OR Prop IF (1 EVENT + N OR Gram/ACR - Der/nv) ;
 MAP:M0408S @>N TARGET PLACE - Prop - CONJ-C IF (1 Prop - PLACE) ; #Atuarfik Gammeqarfiup pisortaa.
