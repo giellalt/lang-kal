@@ -1242,12 +1242,9 @@ LIST IntransTrans = "neri" "ilassior" Gram/HV ; #Set til disambiguering af Ins, 
 SET UGEDAGE = (/__\"arfineq\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"ataaseq\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"marluk\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"pingasut\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | ("sapaat") | (/__\"sisamat\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"tallimat\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) ;
 SET OTHERDAY = ("ullortuneq") | ("ullukinneq") ;
 SET SEASON = ("aasaq") | ("ukiaq") | ("ukioq") | ("upernaaq") ; #årstider
-LIST MONTH = "januar" "januaari" "februar" "februaari" "marts" "marsi" "april" "apriili" "maj" "maaji" "juni" "juuni" "juli" "juuli" "august" "aggusti" "september" "septembari" "oktober" "oktobari" "november" "novembari" "december" "decembari" ;
-LIST OTHERTIME = Sem/Time ("aallar" QQAAR UTE) ("aasaq") ("aqagu") ("inuk" U NIQ) ("ippassaq") "juulli" ("kingulleq") ("kingu" NIQ) ("kinguninnguaq") ("kingusip") ("maanna") ("nali") ("piffik") ("qaammat") ("qangali") ("qeqqa") ("sapaat") ("sapaatip-akunneq") ("sivisu") ("siulleq") ("siuneq") ("taarsi") ("ualeq") ("ukiaq") ("ukiar" TUQ) ("ukiartoq") ("ukioq") ("ullaa") ("ullaaq") ("ulloq") ("unnuaq") "unnuaqeqqa" ("unnuk") ;
-SET TIMENOUN = UGEDAGE | OTHERDAY | SEASON | MONTH | OTHERTIME ;
+#LIST MONTH = "januar" "januaari" "februar" "februaari" "marts" "marsi" "april" "apriili" "maj" "maaji" "juni" "juuni" "juli" "juuli" "august" "aggusti" "september" "septembari" "oktober" "oktobari" "november" "novembari" "december" "decembari" ;
 LIST TIMEVERB = ("assi" GIIAAR)("ingerla") ("ip" TUQ U) ("qaama"); #verber som kan have tidsudtryk som subjekt
 SET TEMPUSVERB = UGEDAGE | ("qaanger") | ("qaqutigut" U) | ("taamaali") | ("ukiar") | ("ukioq" U) ;
-SET TIME = TEMPUSVERB | OTHERTIME ;
 LIST VERB_medGE = "ipianngu" "miki" ; #Set til stammer, der kan tage GE+Der/vv
 LIST VERB_udenUTE = "inor" ; #Set til de enormt mange verber, der ikke kan tage UTE+vn
 LIST TRANSINTRANS = "naalap" "nuup" "oqar"; #Set til verber med både transitive og intransitive stammer
@@ -1264,6 +1261,10 @@ LIST INSOBJVERB = RAAR SI TAAR SIUR TUR (/__LIR\ Der\/nv__/l) ;
 #partit (@POSS) siulittar+HTR+TUQ vs. siu+LIK=TAQ+U+TUQ: ORGANISATION og TITEL listes og begge tilføjes SET HUMAN. Så kan man selecte HUMAN hvis @POSS er HUMAN
 
 LIST MAANED = "januar" "januaari" "februar" "februaari" "marts" "marsi" "april" "apriili" "maj" "maaji" "juni" "juuni" "juli" "juuli" "august" "aggusti" "augusti" "september" "septembari" "oktober" "oktobari" "november" "novembari" "december" "decembari" ;
+LIST OTHERTIME = Sem/Time ("aallar" QQAAR UTE) ("aasaq") "akunneq" ("aqagu") ("inuk" U NIQ) ("ippassaq") "juulli" ("kingulleq") ("kingu" NIQ) ("kinguninnguaq") ("kingusip") ("maanna") "minut" ("nali") ("piffik") ("qaammat") ("qangali") ("qeqqa") ("sapaat") ("sapaatip-akunneq") ("sivisu") ("siulleq") ("siuneq") ("taarsi") ("ualeq") ("ukiaq") ("ukiar" TUQ) ("ukiartoq") ("ukioq") ("ullaa") ("ullaaq") ("ulloq") ("unnuaq") "unnuaqeqqa" ("unnuk") ;
+SET TIMENOUN = UGEDAGE | OTHERDAY | SEASON | MAANED | OTHERTIME ;
+SET TIME = TEMPUSVERB | OTHERTIME ;
+
 LIST SPATIAL = "aki" "ate" "illuatunge" "ilu" "eqqaq" "killik" "kujate" "qaaq" "qule" "saaq" "sani" "silate" "siu" "tunge" "tunu" "ungate" ; #PL 20180522 slettet "arlaq". Næppe spatialt indhold og fejlhitter fx på 'Arlaqanngitsut qitipput'
 LIST USPATIAL = "sanik" "ateq";
 
@@ -1821,6 +1822,19 @@ SELECT:0040F TIME + Abs IF (1 ("tamaq") + Akk);
 REMOVE:0098 TIME + POSSESSUM12 IF (NEGATE 0 SIUR OR U) ; # Må være en udelukket kombination men må ikke slette fx aasarsiorfik eller (uanga) inuunera
 
 SELECT:0099 Con OR Cau IF (0 UGEDAGE) ;
+
+APPEND ("misse" Orth/Append N Lok Sg 3SgPoss) TARGET ("<miss.>"r) (*-1 Num)(NEGATE 0 Orth/Append + N + Lok + Sg); #missaani
+APPEND ("misse" Orth/Append N Lok Sg 3PlPoss) TARGET ("<miss.>"r) (*-1 Num + Pl)(NEGATE 0 Orth/Append + N + Lok + Pl); #missaanni
+SELECT Num IF (*1 ("misse")) ;
+
+APPEND ("$1"v Orth/Append Num Rel Sg) TARGET ("(0?[0-1]*)"r) (NOT 0 Rel + Sg) (*1 ("misse") BARRIER NUMHOVED)(NEGATE 0 Pl) ; #nal. 01 miss.
+APPEND ("$1"v Orth/Append Num Rel Sg) TARGET ("([a-z]*)"r) + Num (NOT 0 Rel + Sg OR Num + Rel + Pl) (*1 ("misse") BARRIER NUMHOVED) ; #nal. ataaseq miss.
+APPEND ("$1"v Orth/Append Num Rel Pl) TARGET ("([0-9]*)"r) + Num (NOT 0 Rel + Sg OR Rel + Pl + Orth/Append) (*1 ("misse") BARRIER NUMHOVED) ; #nal 2 miss.
+APPEND ("$1"v Orth/Append Num Rel Pl) TARGET ("([a-z]*)"r) + Num (NOT 0 Rel + Sg OR Num + Rel + Pl) (*1 ("misse") BARRIER NUMHOVED) ; #nal. marluk miss.
+REMOVE Num + Abs IF (*1 ("misse") BARRIER NUMHOVED) ;
+
+APPEND ("$1"v Orth/Append Sem/Unit N Rel Sg) TARGET ("(.*)"r NUMHOVED) (NOT 0 Rel + Sg) (*-1 Num + Rel)(*1 ("misse")) ;
+
 
 ### MODUS ###
 #===========#
@@ -3167,7 +3181,7 @@ MAP:M0310 @<APPOS TARGET Prop + Lok - LU IF (-1 Lok) ;
 
 # Appositions without comma including parataxis må ikke overskrive i-ADVL
 MAP:M0316 (@ADVL>) TARGET TIME + Abs + Sg IF (NEGATE *1 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO)(*1 V) ; 
-MAP:M0318 (@ADVL>) TARGET Lok + TIME IF (*1 V) ;
+MAP:M0318 (@ADVL>) TARGET Lok + TIME - ("akunneq") IF (*1 V BARRIER NIQ + POSSESSUM + OBLIQUE) ;
 MAP:M0319 (@<ADVL) TARGET Lok + TIME IF (-*1 V)(NEGATE 1 Der/vn) ;
 
 MAP:M0325 @ADVL> TARGET TIME + Via IF (*1 IteCau BARRIER V) ;
@@ -3286,15 +3300,15 @@ MAP:M0408num (@>N) TARGET NUMHOVED - Trm IF (1 Num + Abs - @N<); # ' .. kapitel 
 MAP:M0408Anum (@i-MWE>N) TARGET Num IF (1 NUMHOVED + Der/nv); #20180912 skal ikke være i->N #tal i Abs før enhed er MWE.
 MAP:M0408Bnum @>N TARGET Num IF (1 Num) ;
 MAP:M0408Cnum @i->N TARGET Num IF (1 iNum + NUMCOMP) ;
-MAP:M0408Dnum @>N TARGET TIME IF (1 Num)(NEGATE *1 ("siuneq"))(NEGATE 0 (*) - Abs)(NEGATE 0 SEASON) ; #NEGATE for at undgå at hitte på AASAQ 1989.
-MAP:M0408Enum @i->N TARGET TIME IF (1 iNum)
-(NEGATE 1 POSSESSUM - NNGUR) ; #AASAQ 1989; Folketingimi arnat qinersisinnaatitaalerneranniit ukiut 100-nngornerat nalliuttorsiutigineqarpoq.
+MAP:M0408Dnum @>N TARGET TIME IF (1 Num + OBLIQUE)(NEGATE *1 ("siuneq"))(NEGATE 0 (*) - Abs)(NEGATE 0 SEASON) ; #NEGATE for at undgå at hitte på AASAQ 1989.
+#MAP:M0408Enum @i->N TARGET TIME IF (1 iNum)
+#(NEGATE 1 POSSESSUM - NNGUR) ; #AASAQ 1989; Folketingimi arnat qinersisinnaatitaalerneranniit ukiut 100-nngornerat nalliuttorsiutigineqarpoq.
 #MAP:M0408Fnum (@i-MWE>N) TARGET NUMHOVED + Abs IF (1 iNum + Der/nv) ; #20180912 skal ikke være i->N #enhed i Abs før tal er SUBJ eller OBJ
 MAP:M0408Hnum @N< TARGET Num + Abs IF (-1 SEASON) ;
 MAP:M0408R @>N TARGET Gram/ACR OR Prop IF (1 EVENT + N OR Gram/ACR - Der/nv) ;
 MAP:M0408S @>N TARGET PLACE - Prop - CONJ-C IF (1 Prop - PLACE) ; #Atuarfik Gammeqarfiup pisortaa.
 MAP:M0409 (@HNOUN) TARGET N OR Gram/Abbr OR Num IF (NEGATE *0 V)(1 ParagrafSlut); #20100827 Safe headlines
-MAP:M0410 (@HNOUN) TARGET APPELLATIV + Abs OR Prop + Abs OR Gram/Abbr - FIRSTNAME IF (NEGATE *0 VERB-NOTCONT)(NEGATE *1 TRANSVERB + CONT)(NEGATE *-1 ("tassa") LINK *1 CONT + INTRANSVERB BARRIER VFIN) ;
+MAP:M0410 (@HNOUN) TARGET APPELLATIV + Abs OR Prop + Abs OR Gram/Abbr - FIRSTNAME IF (NEGATE *0 VERB-NOTCONT)(NEGATE *1 TRANSVERB + CONT)(NEGATE *-1 ("tassa") LINK *1 CONT + INTRANSVERB BARRIER VFIN)(NEGATE 0 Gram/Abbr OR ("nalunaaqutaq") LINK 1 Num) ;
 MAP:M0411 @HNOUN TARGET WORD - V - Interj - Gram/Exclm - Pron IF (NEGATE *0 V BARRIER DIRTALESLUT)(1 EOS)
 ;#***(NEGATE 0 Lok + POSSESSUM) ; #Lok + Possessum giver ofte sætningsadverbial: Baobabit aallaqqaammut mikisuusarput - allinnginnerminni.
 #MAP:M0415 (@i-ADVL>) TARGET Trm IF (1 N + (vn))(NEGATE 1 Lok + IP + TUQ + Trm) ; #må ikke tagge på basis af sit eget kongrunsadled
@@ -3441,6 +3455,7 @@ MAP:M0514 @N< TARGET $$KASUS + $$NUMERUS + OBLIQUE - CONJ-C IF (*-1 $$KASUS + $$
 (NEGATE -1 @i-ADVL>N LINK NOT *-1 N + $$KASUS + $$NUMERUS - POSSESSUM); #ukaliatsiap amianik sanaamik tamavimmik poorsimavoq.
 #(*-1 (*) - VFIN LINK *-1 $$KASUS + $$NUMERUS BARRIER VFIN)(NEGATE *1 DOTR BARRIER EOS OR KONCESSIV)(NEGATE *1 LOKVERB OR TRMVERB OR ABLVERB LINK *-1 (*) - EOS - KONCESSIV + _TARGET_ LINK *-1 Sg + $$KASUS + $$NUMERUS);
 MAP:M0515 @N< TARGET OTHERTIME + $$KASUS + $$NUMERUS IF (-1 OTHERTIME + $$KASUS + $$NUMERUS);
+MAP:M0516 @N< TARGET Num IF (-1 OTHERTIME - Via) ; #ualikkut 16:45
 MAP (@A<) TARGET $$KASUS IF (*-1 Adv + $$KASUS - @CL-ADVL> BARRIER CONJ-C OR V) ;
 
 #Ikke-inderiverede og inderiverede nominer med possessor: uanga najukkanneersut paasilluarniassammassuk
@@ -3594,7 +3609,7 @@ MAP:M09900A @i-ADVL> TARGET Lok IF (*1 Abs OR Rel - @POSS> BARRIER (*) - ADJEKTI
 (NEGATE 1 ADVERBIEL)
 ;
 MAP:M09900AX @i-ADVL> TARGET Lok IF (1 QATE + N OR QATIGIIP + N) ; #Uagut TELE-POST-imi suleqatigiit katilluta 460-iuvugut. #Nunatsinni timersoqatigiiffiit...
-MAP:M09900B @ADVL> TARGET Lok IF (0 TIME OR PLACE_EXTENDED)(*1 V BARRIER DIRTALESTART)(NEGATE *-1 V BARRIER DIRTALESLUT) ; 
+MAP:M09900B @ADVL> TARGET Lok IF (0 TIME OR PLACE_EXTENDED)(*1 V BARRIER DIRTALESTART OR NIQ + N + POSSESSUM)(NEGATE *-1 V BARRIER DIRTALESLUT) ; 
 MAP:M09900C @ADVL> TARGET ("akunneq") IF (-1 ("sapaat"))(*1 V BARRIER DIRTALESTART)(NEGATE *-1 V BARRIER DIRTALESLUT) ;
 
 
