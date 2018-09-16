@@ -1576,6 +1576,8 @@ MAP:M0005Juxta @i->N TARGET PRÆNOM + $$KASUS + $$NUMERUS IF (*1 MWEHOVED + Der/
 #SUBSTITUTE:adv1 (LI)(ADV-LIX1) TARGET LI + UNA OR LI + MI ;
 #REMOVE LUUNNIIT ;
 
+SELECT:conj Conj IF (*1 ("(.*)"r) - CLB)(*-1 ("$1"v)) ; #Vælg Conj hvis samme stamme findes på begge sider af den. #tassa nukappiaqqat marluk angisuut, aamma nukappiaraq ataaseq mikisoq.
+
 SELECT:conj ("aamma") + Conj IF (-1* Prop BARRIER (*) - TITEL - PUNCT LINK *1 _TARGET_ LINK *1 Prop BARRIER (*) - TITEL - PUNCT) ; #Aviaq aamma Kunuk
 SELECT:conj ("aamma") + Conj IF (-1* PLACE_EXTENDED BARRIER (*) - PUNCT LINK *1 _TARGET_ LINK *1 PLACE_EXTENDED BARRIER (*) - PUNCT) ; #Ilulissat aamma Qaqortoq.
 #SELECT:conj ("aamma") + Conj IF (*-1 ("(\"<.....*)"r) + $$KASUS + $$NUMERUS) (*1 (VSTR:"$1"r) + $$KASUS + $$NUMERUS) ; 
@@ -3114,6 +3116,12 @@ SELECT:0225D Adv IF (0 ("aamma") + TTAAQ) ;
 SELECT:0225E Adv IF (0 ("aamma") LINK 1 CLB)(-1 CONJ-C OR Cau) ; #... qilalerneq toqulu aamma.
 MAP:M0225E @<ADVL ("aamma") IF (*-1 V)(1 CLB) ;
 
+REMOVE:0225F ("aamma") + Conj IF (*-1C V BARRIER N)(NEGATE *1C V) ;
+REMOVE:0225G ("aamma") + Conj IF (1 V)(NEGATE -*1 V BARRIER (*) - KOMMA) ;
+#SELECT:0225F ("aamma") + Conj IF (NEGATE *-1 V BARRIER ("tassa")) ;
+#SELECT:0225F ("aamma") + Conj IF (NEGATE *-1 V BARRIER ("tassa") LINK *1 _TARGET_ LINK NEGATE *1 V) ;
+#SELECT:0225F ("aamma") + Adv IF (NEGATE *-1C V BARRIER N)(*1C V) ;
+SELECT ("aamma") + Conj IF (*1 ("(.*)"r))(*-1 ("$1"v)) ; #Vælg Conj hvis samme stamme findes på begge sider af den. #tassa nukappiaqqat marluk angisuut, aamma nukappiaraq ataaseq mikisoq.
 
  
 #Konjunktioner
@@ -3131,7 +3139,7 @@ MAP:M0230 (@CONJ) TARGET KONJUNKTION - Adv IF (-1 BOS OR KOMMA)
 #Flyttet fra 1168 forebygge konflikt med @ADVL> 
 MAP:M0231 (@CONJ) TARGET ("aamma" LU) OR ("taamatut") + LU; #vistnok undtagelsesløs
 MAP:M0232 (@CONJ) TARGET Conj ; #Konjunktioner skal tagges som konjunktioner
-MAP:M0233 @CONJ TARGET Adv + CONJ-C IF (NEGATE *0 V OR INDERIVERENDE_SUBSTANTIV OR Der/vn)(NEGATE 0 Conj)(NEGATE -1 UNA) ; #qanoq taavalu qaqugu
+MAP:M0233 @CONJ TARGET Adv + CONJ-C IF (NEGATE *0 V OR INDERIVERENDE_SUBSTANTIV OR Der/vn OR LIK_QAR)(NEGATE 0 Conj)(NEGATE -1 UNA) ; #qanoq taavalu qaqugu
 
 MAP:M0235B @>V TARGET ("allaat") + Adv IF (1 Rel LINK 1 Trm + POSSESSUM); #allaat Nuup imartaanut pipput   
 MAP:M0235C @>V TARGET ("allaat") + Adv IF (1 Trm); #allaat Nuummut pipput   
@@ -3269,6 +3277,7 @@ MAP:M0350NY @N< TARGET Der/vn + $$KASUS + $$NUMERUS - LU - LUUNNIIT OR Num + $$K
 (NEGATE -1 Rel LINK 1 Rel + POSSESSUM LINK 1 POSSESSUM3) #ataatsip iterusulernissaata tungaanut.
 (NEGATE 1 EOS LINK -1 LIK_QAR LINK -1 N + $$KASUS + $$NUMERUS + OBLIQUE) #- Inoqajuitsup kusanarnera peqquteqarpoq tamaani arlaanni puilasumik toqqortaqarneranik ... ataqqinartuaraq oqarpoq.
 (NEGATE 0 iNum + LIK LINK -1 Num OR iNum OR Sem/Unit)
+(NEGATE *-1 CONJ-C + Adv CBARRIER (*) - Adv)
 ;
 MAP:M0350NZ @N< TARGET (LIK N) - iNum + $$KASUS IF (-1 N + $$KASUS) ;
 
@@ -4211,6 +4220,7 @@ SELECT:0437 Der/vn + Sg IF (-*1 N + Sg)(1 Der/vn + Sg + LU LINK *1C Par) ;
 #Specialfald til foelgende hvor Der/vn vn+LU foelges af Par
 LIST MASK = ("erneq") ;
 SELECT:0439 Par + 3Sg IF (-*1 Abs + Sg)(NEGATE *0 VFIN)(NEGATE *1C Par)
+(NEGATE *-1 ("tassa") LINK *1 KOMMA LINK 1 ("aamma") LINK *1 _TARGET_)
 (NEGATE 0 QAR + (TUQ N) OR U + (TUQ N) LINK -1 N + Abs) ;
 #Participium i overskrifter. Anden NEGATE pga. VnIkkePar til venstre for en overskrifts-Par
 
@@ -4824,7 +4834,7 @@ SELECT ("ilaanneeriar") IF (0 Cont);
 #REMOVE VFIN IF (*-1C VFIN)(NEGATE 0 LU); #Forkert 20120912 
 
 	# Unik VFIN
-REMOVE VFIN IF (*1C VFIN)(NEGATE 1 LU LINK *1 VFIN)(NEGATE 1 KOMMA LINK 1 LU); 
+REMOVE VFIN IF (*1C VFIN BARRIER PUNCT)(NEGATE 1 LU LINK *1 VFIN)(NEGATE 1 KOMMA LINK 1 LU); 
 	## Taamaattumik tamatta nuannaarpugut.
 
 REMOVE (@CL-CIT>) IF (0 @CL->N)(1 N) ; # idiotregel
@@ -5745,6 +5755,8 @@ SELECT:9964B (/\"\ Gram\/TV\ GUMINAR__/l) IF (0 (/\"\ Gram\/IV\ GUMINAR__/l));
 REMOVE:9965B (/Gram\/TV\ V/l) + INTRANSVERB IF (0 (/Gram\/IV\ V/l) + INTRANSVERB)(NEGATE *-1 ("immi")) ; #20180402 MEGET bred regel, der sikkert skal revideres
 REMOVE:9965C Gram/TV + TUQ + N IF (0 Gram/IV + TUQ + N)(NEGATE *-1 ("immi"))(NEGATE 0 (/__Gram\/TV.*Gram\/IV.*TUQ__/l)) ; #20180402 MEGET bred regel, der sikkert skal revideres
 
+SELECT:9965G TRANSVERB IF (*-1 Rel BARRIER POSSESSUM OR iPOSSESSUM)(NEGATE *0 TRANSVERB) ; #Hvis der er et relativt subjekt, må verbet være transitivt.
+
 SELECT:9966X (/__Gram\/TV\ TIP__/l) + TRANSVERB IF (-1C Trm OR Ins LINK -1C Abs - TIME LINK NOT 0 HUMAN)(NEGATE -1 Trm + SPATIAL) ; #heuristisk valg af transitiv sent i kaskaden ved dobbelttransitiver. HUMAN og TIME og SPATIAL tilføjet for at gøre den sikrere. Suliara inersimasunut TAKUTILLUGU aperaakka taanna ersigineraat.
 
 SELECT:9966 (/__Gram\/IV\ NIQ__/l) IF (0 (/__Gram\/TV\ NIQ__/l)) ; #heuristisk valg af intransitiv sent i kaskaden 
@@ -5767,6 +5779,8 @@ REMOVE:9967E (/NNGUR\ Der\/nv\ Gram\/TV\ QQU__/l) IF (0 (/NNGUR\ Der\/nv\ Gram\/
 REMOVE:9967E (/Gram\/TV\ QQA__/l) IF (0 (/Gram\/IV\ QQA__/l)) ; #nalunaaqqaneratuut
 
 REMOVE:9968D (/\"paasi\"\ Gram\/IV/l) IF (0 AFFINGERET - TUQ) ;
+REMOVE:9968E (/\"misige\"\ Gram\/TV/l) + TRANSVERB IF (0 (/\"misige\"\ Gram\/IV/l) LINK NOT *-1 @OBJ> OR Rel) ; #ammaanersiornermi
+
 
 SECTION
 SELECT (@CL-<CIT) IF (*-1 ORATIOOBLVERB BARRIER V-NOT-Par) ;
