@@ -1507,7 +1507,7 @@ REMOVE:00000 (URL) IF (0 Sem/Url) ; #dobbeltgenerering fra FST'ens url.lexc
 #Helt skæve læsninger
 REMOVE:0001A ("ip") + LAAR + Gram/Exclm IF (0 ("ila")) ;
 REMOVE:0001B ("pitsap") + Gram/Exclm ;
-REMOVE:0001C (/__\"ili\"\ Gram\/IV__/l) IF (NEGATE *-1 ("qanoq"))(NEGATE 0 Orth/Arch) ; #Accepter kun 'qanoq ililluni/ isilluni' etc. Ellers nok ilivaa/iserpoq/isigivaa etc.
+REMOVE:0001C (/__\"ili\"\ Gram\/IV__/l) - SAR IF (NEGATE *-1 ("qanoq"))(NEGATE 0 Orth/Arch) ; #Accepter kun 'qanoq ililluni/ isilluni' etc. Ellers nok ilivaa/iserpoq/isigivaa etc.
 REMOVE:0001D (/__\"isi\"\ Gram\/IV__/l) IF (NEGATE *-1 ("qanoq")) ;
 REMOVE:0001E ("to") + VIK IF (0 ("tui")) ;
 REMOVE:0001F ("ip") IF (NEGATE -1 Aeq OR ("qanoq") OR ("taama") OR ("ima") OR ("immi") + Via )(NEGATE 0 ("ittoq") OR ("ittuk"));
@@ -1877,6 +1877,7 @@ REMOVE:0019 AA IF (NEGATE 0 Prop);
 REMOVE:0040J ("tassa") + Interj (NEGATE 1 EOS) ;
 REMOVE:0040K TRANSVERB + TUQ + U + Imp ; #Hyppigt forekommende fejlanalyser. 20160504 Skal måske begrænses hvis for bred 
 REMOVE:0040L ("soorunami") + Interj OR ("sooruna") + MI + Interj (*1 V BARRIER KOMMA)(NEGATE *1 EXCLMARK) ;
+SELECT ("taamaattoq") + LI + Adv ; #taamaattoq er Adv, LI er Conj
 
 SELECT:0019NY ("qanoq") + Adv IF (*1 IP OR ("ip") OR ("ilior") OR ("ili")); 
 MAP:M0019NY @ADVL> TARGET ("qanoq") + Adv IF (*1 IP + V OR ("ip") + V OR ("ilior") + V OR ("ili") + V BARRIER TIGE) ; 
@@ -2207,6 +2208,7 @@ SELECT:0100B 2SgPoss - ("massak") - SSA IF (NEGATE *0S V OR INDERIVERENDE_SUBSTA
 #Ny formulering, da tagger forkert fx 'amerlanerit sinippiaratik .. '
 SELECT:0101X Abs + 2SgPoss IF 
 (*1 Ind + 3Sg + INTRANSVERB BARRIER V)
+(NEGATE 0 Pron + 2Sg) #illit må ikke fravælges
 (NEGATE *1 TRANSVERB + 3SgO)
 (NEGATE 0 Pl + Abs LINK *1 Par + 3Pl)
 (NEGATE *1 POSSESSUM3 BARRIER V);#LINK *1 Ind + 3Sg + INTRANSVERB BARRIER V) #Et subjekt er ikke sikkert hvis det kan være possessor #Attu Aasiaat eqqaanniippoq.
@@ -2792,7 +2794,7 @@ REMOVE:0420 Par + INTRANSVERB + 3Sg IF (0 QAR + (TUQ N) OR U + (TUQ N) LINK -1 N
 #REMOVE ("\\p{Lu}.*i"r) IF (0 ("\\p{Lu}.*[^i]"r)) ;
 
 MAP:M00000 @>N TARGET ("nalunaaqutaq") IF (1 Num + Trm) ;
-MAP:M00001 @>N TARGET ("ukioq") IF (1 Num OR iNum)(NEGATE 0 $$KASUS LINK 1 (*) + $$KASUS - AFFINGERET)(NEGATE 1 POSSESSUM)(NEGATE 1 INSOBJVERB OR U OR NNGUR)(NEGATE -1 Num)  ;
+MAP:M00001 @>N TARGET ("ukioq") IF (1 Num OR iNum)(NEGATE 0 $$KASUS LINK 1 (*) + $$KASUS - AFFINGERET)(NEGATE 1 POSSESSUM)(NEGATE 1 INSOBJVERB OR U OR NNGUR)(NEGATE -1 Num)(NEGATE NOT 0 Ins LINK 1 LIK)  ;
 MAP:M0000 (@PRED) TARGET VFIN (NEGATE 0 Gram/Exclm LINK -1* ("una") BARRIER (*) - Abs - Conj)(NEGATE -1 ("\"") LINK 1 _TARGET_ LINK 1 ("\"")) #Et finit verbum er altid prædikat #Negate fordi et verbum i anførselstegn fungerer som et nomen.
 (NEGATE 0 (*) - CONJ-C - KONJUNKTION LINK *-1 VFIN - CONJ-C BARRIER CONJ-C OR KONJUNKTION OR KOMMA OR CLB OR PUNCT) #Til alternativ (overordnet) modusbrug i fx oratio obliqua. Aamma ugguunaatigut ilisimatitsissutigeriiginnarlara kalaallisut bloggerimik nassaarnikuuvunga # 
 (NEGATE 1 ("\?") LINK *-2 KONJUNKTION BARRIER VFIN OR ORATIOOBLVERB LINK -1 Int) #Til alternativ (overordnet) modusbrug i fx oratio obliqua. #To sideordnede verber skal have samme dependens. Marloqiusamik sulinialeqigatta apereqqaalaarlanga Katersanut ikkussornissaat isumagilerpiuk imaluunniit ikkussuinnassavakka?
@@ -3404,7 +3406,7 @@ MAP:M0750 (@i->N) TARGET Ins - NÆPPE_OBJ OR ("imatut") IF (*1 INSOBJVERB OR LIK
 MAP:M0755 (@i->N) TARGET (Aeq) IF (1 LIK )(NEGATE 1 Rel LINK 1 POSSESSUM3 + Aeq )(NEGATE 1 LU + Aeq)(NEGATE 0 LU LINK -1 Aeq)(NEGATE *0 ("isikku") + QAR + V); #Kun Trm til Der/vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse #Kopi af M0900 til at håndtere LIK
 SUBSTITUTE (@i->N) (@N<) TARGET Ins + ("alla") IF (-1 Num OR iNum OR ("ataaseq")) ; #untritilinnik ALLANIK
 SUBSTITUTE (@i->N) (@N<) TARGET Num OR iNum OR ("ataaseq") IF (-1 Ins) ; #minutsimik ATAASIINNARMIK
-MAP:M0760 (@i-N<) TARGET Ins IF (*-1 INSOBJVERB OR LIK_QAR BARRIER (*) - @N< - @i-N<) (NEGATE *1 INSOBJVERB OR LIK_QAR BARRIER KOMMA OR @CONJ)(NEGATE 1 Der/vn)(NEGATE 1 V)(NEGATE 0 CONJ-C LINK -*1 @i-N<) ; # Næstsidste NEGATE for at forebygge hit paa 'ilunni QATSORTITASSAANNGIVISSUMIK anorersuartorsuaq,'
+MAP:M0760 (@i-N<) TARGET Ins IF (*-1 INSOBJVERB OR LIK_QAR BARRIER (*) - @N< - @i-N< - @i-ADVL>) (NEGATE *1 INSOBJVERB OR LIK_QAR BARRIER KOMMA OR @CONJ)(NEGATE 1 Der/vn)(NEGATE 1 V)(NEGATE 0 CONJ-C LINK -*1 @i-N<) ; # Næstsidste NEGATE for at forebygge hit paa 'ilunni QATSORTITASSAANNGIVISSUMIK anorersuartorsuaq,'
 MAP:M0761 (@i-N<) TARGET Ins IF (*-1 INSOBJVERB OR LIK_QAR BARRIER (*) - @N< - @i-N< - @i->N - Gram/Dem - Gram/Cong) (NEGATE *1 INSOBJVERB OR LIK_QAR BARRIER KOMMA OR @CONJ)(NEGATE 1 Der/vn)(NEGATE 1 V)(NEGATE 0 CONJ-C LINK -*1 @i-N<) # Næstsidste NEGATE for at forebygge hit paa 'ilunni QATSORTITASSAANNGIVISSUMIK anorersuartorsuaq,'
 (NEGATE *-2 Ins) #Så kan det være @N<
 ; #M0761 skal evt. erstatte M0760
@@ -3816,8 +3818,9 @@ MAP:M1148C1 @i-ADVL>N TARGET CONT + TRANSVERB IF (0 PILLUGU OR ("pissut") LINK 1
 
 MAP:M1148 @ADVL> TARGET CONT + TRANSVERB IF (*1 V - QQU) (NEGATE *-1 ORATIOOBLVERB - TAQ BARRIER VFIN) #20170127 (NEGATE 1 Der/vn + N) #fjernet
 (NEGATE 1 ORATIOOBLVERB LINK 1 KOMMA OR EOS - (":")) 
-(NEGATE 1 KOMMA LINK *-2 VFIN BARRIER KOMMA) ; # Forhindrer tagging af <ADVL til et andet syntagme; 
-
+(NEGATE 1 KOMMA LINK *-2 VFIN BARRIER KOMMA) # Forhindrer tagging af <ADVL til et andet syntagme
+(NEGATE 0 ORATIOOBLVERB LINK -1 VFIN) #Er -1 VFIN, er TARGET sandsynligvis @<ADVL
+;
 
 MAP:M1148A1 @CL-<CIT TARGET CONT + TRANSVERB - ADVERBIEL IF (*-1 ORATIOOBLVERB BARRIER Par OR KOMMA)(*1 Rel BARRIER KOMMA LINK *1 Par + TRANSVERB) ; #20171010 oratio obl. fulgt af nok en or. obl.
 
@@ -3851,7 +3854,7 @@ MAP:M1230 (@ADVL>) TARGET Cont + 2Pl OR ContNeg + 2Pl IF (*1 VFIN + 2Pl);
 MAP:M1240 (@<ADVL) TARGET Cont + 2Pl OR ContNeg + 2Pl IF (*-1 VFIN + 2Pl)(NEGATE 0 LU);
 MAP:M1249 (@ADVL>) TARGET CONT + 4Pl IF (*1 Par + 3Pl)(NEGATE *0 VFIN); #i sætninger af PRED2-type
 MAP:M1250 (@ADVL>) TARGET CONT + 4Pl IF (*1 VFIN + 3Pl OR CON_CAU + 3Pl OR 4Pl);
-MAP:M1251 @ADVL> TARGET CONT IF (*1 Par BARRIER VERB-NOTCONT ) ;
+MAP:M1251 @ADVL> TARGET CONT IF (*1 Par BARRIER VERB-NOTCONT )(NEGATE 0 ORATIOOBLVERB LINK -1 VFIN) ;
 MAP:M1255 @PRED TARGET CONT IF (NEGATE *1 @PRED OR VFIN) (NEGATE *-1  @PRED OR VFIN BARRIER @CL-ADVL>) ;
 MAP:M1260 (@<ADVL) TARGET Cont + 4Pl OR ContNeg + 4Pl IF (*-1 VFIN + 3Pl)(NEGATE 0 LU);
 MAP:M1261 @PRED TARGET CONT - ADVERBIEL IF (*-1 CONJ-C - VFIN OR Conj BARRIER VFIN OR @PRED LINK *-1S VFIN OR @PRED)(NEGATE NOT 0 ORATIOOBLVERB LINK *1 CONT BARRIER CONJ-C) ;
@@ -3955,6 +3958,7 @@ MAP:M1520 (@ADVL>) TARGET Pali OR Adv (NOT 0 KONJUNKTION)(*1 V); #Rettet til ikk
 MAP:M1530 (@INTERJ) TARGET Interj (NEGATE *0 V) ;
 MAP:M1540 (@INTERJ) TARGET Interj IF (-1 BOS OR ("\,") OR ("\-")) ; #20091109
 MAP:M1541 @INTERJ TARGET Interj IF (1 NNGIT);
+MAP:M1542 @INTERJ TARGET Gram/Int - UNA IF (NEGATE *0 V) ;
 
 MAP:M1580 (@>N) TARGET Gram/Abbr IF (1 Num);
 MAP:M1590 (@>N) TARGET ("§") IF (1 Num);
@@ -5188,6 +5192,7 @@ SELECT:5493 QATE + Der/vn + GE IF (0 QATE + Der/nn + GE)(NEGATE *-1 HUMAN + @OBJ
 REMOVE:5494 ("pi") + Der/nv IF (0 ("pi") + Der/vv)(NEGATE 0 NIQAR); # vaelger pi+LIR=TIP frem for pi+LIR+TIP
 SELECT:5495 ("pi") + Der/nn ; # ad hoc for at disambiguere pi+Der/nn fra pi+vn
 REMOVE:5496 ("pup") + LAAR IF (0 ("pulaar")) ; 
+REMOVE:5496B ("pup") + LLAP IF (0 ("pullap")) ;
 REMOVE:5497 ("pulaa") IF (0 ("pulaar")) ; #ad hoc. Hvad betyder 'pulaavoq'??
 REMOVE:5498 ("nalup") + TRANSVERB IF (0 ("nalu") + NNGIT)(NEGATE *-1 ("ajaappiaq")) ;
 REMOVE:5499 ("nalup") IF (0 ("nalu"))(NEGATE *-1 @ALLMIK-OBJ) ;
@@ -5540,6 +5545,7 @@ SELECT:5853 2SgPoss OR 2PlPoss IF (0 Trm LINK *-1 ("quja") + Gram/Exclm);
 #20091112 Regler for disambiguering af SAR og TAR. Skal maaske laves om til sets??
 SELECT ("eqqissisar") IF (0 ("eqqissi") + TAR);
 SELECT ("neri" TAR) IF (0 ("neri" SAR)) ;
+SELECT ("ili" SAR) IF (0 ("ili" TAR)) ;
 
 #20091031 NIAR Der/nv eller NIAR Der/vv??
 REMOVE NIAR + Der/nv IF ( NEGATE 0 ANIMAL)(NEGATE 0 NIQAR)(NEGATE 0 VIK + GE) ; #Næstsidste NEGATE forebygger hit på akiniaaffigineqartarlutillu og sidste sekvenser med niaaffige..
