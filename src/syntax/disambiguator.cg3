@@ -1185,7 +1185,7 @@ SET CONJ-S = Conj - CONJ-C ; #Underordnende konjunktioner
 SET NUSUPnAFF = ("nusup") - AFFINGERET + CONT;
 SET TAMAKKERnAFF = ("tamakker") - AFFINGERET + CONT ;
 LIST ADVERBIUM = "ima" "qanoq" ; #20091109 tilfoejet 'qanoq', der maaske staar lidt malplaceret her
-SET ADVERBIEL = Adv | Pali | ("immikkoor") | NUSUPnAFF | TAMAKKERnAFF | ("piffik") + SSAQ + TIP + CONT | PILLUGU | ADVERBIAL_DERIVATIVES;
+SET ADVERBIEL = Adv | Pali | ("ataaseer") + CONT | ("immikkoor") | NUSUPnAFF | TAMAKKERnAFF | ("piffik") + SSAQ + TIP + CONT | PILLUGU | ADVERBIAL_DERIVATIVES;
 LIST FOKUSPART = ("uv" Prefix/AA) ("una" Prefix/AA) "tassa" "aali" "sunaaffa" "aajuku" "aajuna" "aaku" "aana" ; #oqaqqarniutit imal. oqaaseqatigiinni oqaluutitaqanngitsut 
 LIST KONCESSIV = "massa" "naak" "uffa" "sunaaffa" ; #oqaaseqatigiinni minnerni oqaluummik pisariaqartitsisut
 LIST SPØRGEPARTIKEL = "naak" "sumi" "suna" "qanoq" ; #
@@ -2085,6 +2085,8 @@ REMOVE:0069 Lok + QATE IF (0 Abs + 4SgPoss LINK *0 3SgO) ;
 SELECT:0069A N OR Pron OR Num IF (1 (/__\"pi\"\ Gram\/TV\ V\ Cont__/l)) ; #Før pillugu er det nominalt.
 SELECT:0069B N IF (1 KOMMA LINK 1 ("soorlu") LINK 1 N) ; #Soorlu forbinder to nomialsyntagmer
 
+REMOVE:0069C Par IF (0 N LINK 1 ADVERBIEL + TRANSVERB) ; #N pillugu/ataaseerlugu ...
+
 ### Sikre possessorer ###
 #=======================#
  
@@ -2119,7 +2121,8 @@ SELECT:0077A 3PlPoss IF (-2 Rel + Pl)(-1 CONT + 4Pl) ;
 SELECT:0077 3PlPoss IF (-1 Rel + Pl)(NEGATE *1 TRANSVERB + 3Pl)(0 ADJEKTIVISK + TAQ);
 #særregel før 0078 for objekt ved TRANSVERB + NIQ + Ins/Abl i sætninger uden hovedverbum
 SELECT:0078A Abs IF (1 EVALUERENDE_VERBER + NIQ + Ins OR Abl)(NEGATE *0 VFIN)(NEGATE 0 ("ila")) ;
-REMOVE:0078 Abs + Sg + 4SgPoss IF (NEGATE *1 TRANSVERB + 3SgO OR Cau + 3Sg OR Con + 3Sg OR Par + 3Sg BARRIER VFIN)(NEGATE 0 LU)(NEGATE *-1 ("tassa") LINK *-1 ORATIOOBLVERB BARRIER V OR KOMMA)(NEGATE 0 Sg + Pl)(NEGATE 1 EVALUERENDE_VERBER + NIQ + Abl OR Ins); #Næstsidste NEGATE forhindrer hit på N* Sg, men N Pl)
+REMOVE:0078 Abs + Sg + 4SgPoss IF (NEGATE *1 TRANSVERB + 3SgO OR Cau + 3Sg OR Con + 3Sg OR Par + 3Sg BARRIER VFIN)(NEGATE 0 LU)(NEGATE *-1 ("tassa") LINK *-1 ORATIOOBLVERB BARRIER V OR KOMMA)(NEGATE 0 Sg + Pl)(NEGATE 1 EVALUERENDE_VERBER + NIQ + Abl OR Ins) #Næstsidste NEGATE forhindrer hit på N* Sg, men N Pl)
+(NEGATE -1 TRANSVERB + 3SgO LINK 2 CLB);
 REMOVE:0079 Abs + Pl + 4SgPoss IF (NEGATE *1 3PlO OR Cau + 3Pl OR Con + 3Pl BARRIER VFIN)(NEGATE 0 LU);
 #Fjern de helt sikkert overflødige possessumformer, der kan interferere med Par-reglerne. Den foerste vedroerer siulittaasuisa nuannarineqarnersaat, der skal hitte foer de foelgende regler. 20100408 Tilføjet NEGATE LU på grund af subjektsparatakser
 
@@ -3330,7 +3333,7 @@ MAP:M0411 @HNOUN TARGET WORD - V - Interj - Gram/Exclm - Pron IF (NEGATE *0 V BA
 #MAP:M0415 (@i-ADVL>) TARGET Trm IF (1 N + (vn))(NEGATE 1 Lok + IP + TUQ + Trm) ; #må ikke tagge på basis af sit eget kongrunsadled
 MAP:M0415 @i-ADVL> TARGET Trm IF (1 N + (vn))(NEGATE 1 @N<); #(NEGATE 1 Lok + IP + TUQ + Trm) ; #må ikke tagge på basis af sit eget kongrunsadled. Formuleringen med @N< overflødiggør måske sidste NEGATE
 
-MAP:M0420 (@<OBJ) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (-1 TRANSVERB + 3SgO)(*1 CLB OR EOS BARRIER 3SgO)(NEGATE *-1 ORATIOOBLVERB LINK *1 V + 3Sg)(NEGATE *1 V + 3Sg); #20100227 Tronds tilfoejelse. 20100322 første NEGATE forebygger forkerte hit paa subjekter (PL), andet NEGATE pga. .. pillugu PER nalorsarpoq,hvor PER ikke må pege på pillugu
+MAP:M0420 (@<OBJ) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (-1 TRANSVERB + 3SgO)(*1 CLB OR EOS BARRIER 3SgO)(NEGATE *-1 ORATIOOBLVERB LINK *1 V + 3Sg LINK *1 _TARGET_)(NEGATE *1 V + 3Sg BARRIER KOMMA); #20100227 Tronds tilfoejelse. 20100322 første NEGATE forebygger forkerte hit paa subjekter (PL), andet NEGATE pga. .. pillugu PER nalorsarpoq,hvor PER ikke må pege på pillugu
 
 MAP:M0430 (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (*1 Rel BARRIER INTRANSVERB LINK *1 TRANSVERB + 3SgO BARRIER VERB-NOTCONT OR KOMMA) ;  #Typen O S V-GE udvidet til også at hitte uden GE. Komma tilføjet for at undgå hit på subjekter med possessor-possessum appositioner
 #MAP:0220 (@OBJ>) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (*1 Rel)(*1 TRANSVERB + GE + 3SgO BARRIER VERB-NOTCONT) ; #Til typen O S V-GE
@@ -3402,11 +3405,12 @@ MAP:M0741 @i->N TARGET Num + Ins IF (1 ("ukioq") + LIK_QAR) ;
 MAP:M0742 @i-MIK-OBJ> TARGET ("inneq") + Ins IF (1 ("anip") + HTR + N) ;
 
 # Ins er tit adled til inkorporet objekt
+MAP @i-N< TARGET Ins - CONJ-C (-1 LIK_QAR - PLACE - iNum LINK NOT -1 Ins)(NEGATE 1 HTR)(NEGATE -1 Aeq LINK 1 ("ip")) ; #Uangalu nalunngisaqaruma naasumik nunarsuarmi asseqanngitsumik 
 MAP:M0750 (@i->N) TARGET Ins - NÆPPE_OBJ OR ("imatut") IF (*1 INSOBJVERB OR LIK_QAR OR ("quleriilik") BARRIER KOMMA OR V OR ("aamma"))(NEGATE -*1 Ins + ATTRIBUTIV BARRIER (*) - VFIN - Adv - Pali - Interj - @POSS> - (/@i-.*/r))(NEGATE 1 (/__HTR\ Der\/vv\ Gram\/IV\ TUQ\ Der\/vn\ QAR__/l))(NEGATE 0 TIME - ("inuk")) ; # "tit" skal præciseres eller reduceres til en ADD-regel #NEGATE tilføjet 20180507 fordi det altid er @i-MIK-OBJ> ved N-mik takunnittoqarpoq. #Nyt sæt NÆPPE_OBJ til forebyggelse af *nuannersumik@i->N persuarsiorfigineqarsimallutik
 MAP:M0755 (@i->N) TARGET (Aeq) IF (1 LIK )(NEGATE 1 Rel LINK 1 POSSESSUM3 + Aeq )(NEGATE 1 LU + Aeq)(NEGATE 0 LU LINK -1 Aeq)(NEGATE *0 ("isikku") + QAR + V); #Kun Trm til Der/vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse #Kopi af M0900 til at håndtere LIK
 SUBSTITUTE (@i->N) (@N<) TARGET Ins + ("alla") IF (-1 Num OR iNum OR ("ataaseq")) ; #untritilinnik ALLANIK
 SUBSTITUTE (@i->N) (@N<) TARGET Num OR iNum OR ("ataaseq") IF (-1 Ins) ; #minutsimik ATAASIINNARMIK
-MAP:M0760 (@i-N<) TARGET Ins IF (*-1 INSOBJVERB OR LIK_QAR BARRIER (*) - @N< - @i-N< - @i-ADVL>) (NEGATE *1 INSOBJVERB OR LIK_QAR BARRIER KOMMA OR @CONJ)(NEGATE 1 Der/vn)(NEGATE 1 V)(NEGATE 0 CONJ-C LINK -*1 @i-N<) ; # Næstsidste NEGATE for at forebygge hit paa 'ilunni QATSORTITASSAANNGIVISSUMIK anorersuartorsuaq,'
+MAP:M0760 (@i-N<) TARGET Ins IF (*-1 INSOBJVERB OR LIK_QAR BARRIER (*) - @N< - @i-N<) (NEGATE *1 INSOBJVERB OR LIK_QAR BARRIER KOMMA OR @CONJ)(NEGATE 1 Der/vn)(NEGATE 1 V)(NEGATE 0 CONJ-C LINK -*1 @i-N<) ; # Næstsidste NEGATE for at forebygge hit paa 'ilunni QATSORTITASSAANNGIVISSUMIK anorersuartorsuaq,'
 MAP:M0761 (@i-N<) TARGET Ins IF (*-1 INSOBJVERB OR LIK_QAR BARRIER (*) - @N< - @i-N< - @i->N - Gram/Dem - Gram/Cong) (NEGATE *1 INSOBJVERB OR LIK_QAR BARRIER KOMMA OR @CONJ)(NEGATE 1 Der/vn)(NEGATE 1 V)(NEGATE 0 CONJ-C LINK -*1 @i-N<) # Næstsidste NEGATE for at forebygge hit paa 'ilunni QATSORTITASSAANNGIVISSUMIK anorersuartorsuaq,'
 (NEGATE *-2 Ins) #Så kan det være @N<
 ; #M0761 skal evt. erstatte M0760
@@ -3791,7 +3795,7 @@ MAP:M1095 @i-ADVL> TARGET Adv IF (*1 Der/vn BARRIER (*) - @ADVL> - @i-ADVL> - @S
 MAP:M1100 (@CONT->N) TARGET Cont + 4Sg + 3SgO IF (-1 @SUBJ> OR ("\)") OR ("\"")) ; #Det blev alt for ad hoc med baade citation og parantes
 MAP:M1110 (@ABSOLUT_PRED) TARGET Par + PASSIV + 3Pl IF (-3 Rel)(-2 Abs + Pl)(-1 Ins)(1 POSSESSUM); #matcher SELECT:ParantetiskParPl
 MAP:M1120 (@i-ADVL>) TARGET CONT IF (1 Part)(2 NIQ); #Eqqarsaatigiinnarnagu ingerlaannaq piviusunngortitsineq
-MAP:M1130 (@i-ADVL>) TARGET Cont IF (*1 NIQ + Abs BARRIER (*) - Adv - ADVERBIEL); #Uangalu anorip karrit aqqusaarlugit siorsunnera nuannaringaalissagaluarpara...
+MAP:M1130 (@i-ADVL>) TARGET Cont IF (*1 NIQ + Abs BARRIER (*) - Adv - ADVERBIEL LINK NOT 1 KOMMA); #Uangalu anorip karrit aqqusaarlugit siorsunnera nuannaringaalissagaluarpara...
 # Mapping af ledsagemåde til inderiveret verbum
 MAP:M1131 @i-ADVL> TARGET CONT IF (*1 N)(NEGATE *0 V);
 MAP:M1140 @i-ADVL> TARGET CONT - TRANSVERB + &&Cont& IF (1 Der/vn LINK NOT 1 HTR) #naamik kingornagut AJORANI panertunik atisereermat illarnarnera assissaqanngilaq.
@@ -5422,6 +5426,7 @@ REMOVE:5724 ("kaak") + TAQ OR ("kaap") + TAQ IF (0 ("kaataq")) ;
 REMOVE:5725 ("naaq") IF (0 ("naasoq")) ;
 REMOVE:5726 ("avip") + HTR IF (0 ("aviisi")) ;
 REMOVE:5727 ("qerneq") + TU IF (0 ("qernertoq")) ;
+REMOVE:5728 ("inuk") IF (0 ("inoqajuitsoq")) ;
 
 # Appellativ eller proprium?
 SELECT:5730 Prop IF (-1 BOS)(1 Prop + LU); #Stochastisk overvejelse. Paratakse af appellativ og proprium ikke ret sandsynlig
