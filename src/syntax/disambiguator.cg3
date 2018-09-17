@@ -1233,7 +1233,7 @@ SET DIRTALE = TALE OR OQARnUSIQ ;
 
 LIST humverb = ("eqqarsar" UTE GE) "iser" "isiginnaar" "nalunaar" "oqqap" ("pisiaq" GE) "sana" ("sinnattoq" GE) "suli" "uppere"; # Verb der vil ha humane subj, og ikke er i andre set
 LIST thingverb = "nalunaap" "ersip" ;
-LIST thingobjverb = ("qaammaqqut" GE) ("qaammaqqutige") ; #transitive verb with non-human object 
+LIST thingobjverb = ("qaammaqqut" GE) ("qaammaqqutige") ("qamip" Gram/TV) ; #transitive verb with non-human object 
 LIST animalverb = "qilup" "pangalip" ; #forudsætter subjekt ANIMAL
 SET HUMVERB = humverb OR ORATIOOBLVERB ; # alle verb  der vil ha humane subj
 
@@ -1901,11 +1901,13 @@ SELECT:7254 Interj IF (-1 KOMMA LINK 2 KOMMA) ; # ..., assaa, ...
 #==============#
 
 #Arnaq i første position er et reelt problem
+REMOVE:0001L ("\\p{Lu}.*"r) + Prop IF (0 ("([a-z].*)"r))(**0CW (VSTR:"$1"r)) ; #vælg den med lille begyndelsesbogstav hvis den samme findes med lille begyndelsesbogstav i nærheden.
+
 REMOVE:0001X ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"%l$1"r))(-1 BOS) (NEGATE 1 Prop) ;
 SELECT:0001Y ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"$1"r))(-1 BOS) ;
 REMOVE:0001Z N IF (0 PROP_VS_APPELLATIV LINK *1 HUMVERB OR humverb); #Manu iserpoq. Manu er mest sandsynligt et proprium.
 REMOVE:0001Z N IF (0 Prop - Sem/Geo + Abs LINK *1 HUMVERB + INTRANSVERB OR humverb + INTRANSVERB); #Manu iserpoq. Manu er mest sandsynligt et proprium.
-REMOVE:0001Z N IF (0 Prop - Sem/Geo + Rel LINK *1 HUMVERB + TRANSVERB OR humverb + TRANSVERB ); #Manu iserpoq. Manu er mest sandsynligt et proprium.
+REMOVE:0001Z N IF (0 Prop - Sem/Geo + Rel LINK *1 HUMVERB + TRANSVERB OR humverb + TRANSVERB )(NEGATE 1 POSSESSUM); #Manu iserpoq. Manu er mest sandsynligt et proprium. #Ulloriaatima amerlassusii pappiliamut allariarlugit taanna pappiliaq amusartumut ileriarlugu parnaarutissara. Ulloriaatima er ikke Prop.
 REMOVE:0001Z1 Prop - Sem/Geo + Abs IF (0 N LINK *1 thingobjverb + TRANSVERB BARRIER INTRANSVERB) ;
 REMOVE:0001Z2 iProp IF (0 U) ; #Mikisuullunga ...
 
@@ -3390,6 +3392,9 @@ MAP:M0523A @SUBJ> TARGET Abs IF (1 Abs + LU)(*1 PLURSUBJVERB BARRIER V OR KOMMA)
 MAP:M0523B @SUBJ> TARGET Abs + LU IF (-1 Abs)(*1 PLURSUBJVERB BARRIER V OR KOMMA) ; #20140523 Meget bred. Skal checkes
 MAP:M0523C @SUBJ> TARGET Abs + LU IF ((-1 BOS) OR (-1 Part LINK -1 BOS))(*1 PLURSUBJVERB) ; #20170408. Smal regel til parataktiske subjekt med implicit førsteled
 #Særtilfælde for at forhindre OBJ-tagging Per i Per tamanna pillugu nalusarpoq
+
+MAP:M0523A @SUBJ> TARGET Abs IF (*-1 Rel + LU CBARRIER (*) - Rel LINK -1 Abs)(*1 PLURSUBJVERB OR TRANSVERB + CONT BARRIER V OR KOMMA)(NEGATE 1 Akk) ; #Paratakse ved subjekter i Abs som er possessum. 20180917 Meget bred. Skal checkes
+MAP:M @SUBJ> TARGET Abs IF (*1 Rel + LU BARRIER (*) - Rel)(*1 PLURSUBJVERB OR TRANSVERB + CONT BARRIER V OR KOMMA) ; #Paratakse ved subjekter i Abs som er possessum. 20180917 Meget bred. Skal checkes
 
 MAP:M1449 (@i-OBJ-DOTR>) TARGET Ins - Gram/Cong IF (-*1 Abs)(1 Ins + Der/vn OR Ins + ADJEKTIVISK)(2 DOTR);
 MAP:M1450 (@i-OBJ-DOTR>) TARGET Ins - Gram/Cong IF (-*1 Abs)(*1 DOTR - HTR BARRIER (*) - @N<) ;
@@ -5430,7 +5435,7 @@ REMOVE:5613 RIAQ + NIAR IF (0 RIAR + NIAR) ;
 REMOVE:5614 RIAQ + IRUTE IF (0 TARIAARUTE) ;
 REMOVE:5615 ("ikor") + ALLAP OR ("ikup") + ALLAP IF (0 ("ikuallap"));
 REMOVE:5616 (/__LIR\ nv\(\ [it]v\)?\ NIQ__/l) ;
-REMOVE:5617 (/__UTE\ Der\/nn__/l) ;
+REMOVE:5617 (/__UTE\ Der\/nn__/l)(NEGATE 0 Sem/Hum) ; #UTE markeres ikke på proprier 20180917
 REMOVE:5618 (/__\"quja\"\ Gram\/TV\ NAR__/l) ; #en formodning om at qujanar- har en intransitiv stamme
 REMOVE:5619 (/__\"pi\"\(\ [a-z][a-zA-Z]+\)*\ Gram\/TV__/l) ; #en formodning om at pi oftest har en intransitiv stamme. Mulighed for læsning selvom der er sekundære tags (med lille startbogstav) mellem stamme og affiks.
 REMOVE:5620 (/__NNGUR\ nv\(\ [it]v\)?\ UTE__/l) IF (0 (/__NNGUAQ\ Der/nn\(\ [it]v\)?\ U__/l)) ; # Det er dog muligt at der hos Ole Brandt forekommer ægte ambiguiteter: nuannattunnguupput
@@ -5702,7 +5707,7 @@ REMOVE:9947B ("paasi") + TARIAQAR + Gram/Refl IF (NEGATE -1 ("immi")); #
 SELECT:9947D INTRANSVERB + GAANNI IF (-1 BOS LINK 2 @PRED OR @EXCLM) ;
 
 REMOVE:9948 NIQSSAQ IF (0 NIQ + SSAQ) ; #Disambiguerer transitive passiviserede fra intransitive
-SELECT:9949A HUMAN + Abs + @OBJ> + Sg IF (1 3SgO); #HUMAN medtaget lidt arbitrært for at forebygge hit på Lok som fx aviisini
+SELECT:9949A HUMAN + Abs + @OBJ> + Sg IF (1 3SgO - thingobjverb); #HUMAN medtaget lidt arbitrært for at forebygge hit på Lok som fx aviisini
 #SELECT:9949 @ADVL> IF (1 V)(NEGATE 0 @OBJ> LINK -1 @OBJ>); #Disambiguerer @ADVL> og @<ADVL men må ikke hitte på kongruensadled
 SELECT:9949B TIME + Par IF (-1 BOS)(*1 VFIN); #Disambiguerer absolut concessiv og tempus fra Der/vn før 9949
 MAP:M9949B @CL-ADVL> TARGET TIME + Par IF (-1 BOS LINK *1 VFIN) ;
