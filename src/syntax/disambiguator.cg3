@@ -1255,7 +1255,7 @@ LIST TRANSINTRANS = "naalap" "nuup" "oqar"; #Set til verber med både transitive
 LIST SEKVENTIELLE_VERBER = "ani" "innar" ; #Sæt til anvendelse sammen med coref tidsbisætning
 LIST NAAR_VERBER = "angi" ("aki" KIP) "amerla" "isorartu" "kingusip" "miki" "oqip" "sivikip" "siusip" ; #stammer, der kan tage NAAR. Alle andre slettes
 LIST EVALUERENDE_VERBER = "kajungeraa" ; #verber med semantik der betinger objekt efter NIQ+Ins/Abl
-LIST INDERIVERENDE_SUBSTANTIV = ("aki" SSAQ) "atuakkiaq" "blogger" "bloggeri" "blog" "filmiliaq" ("film" LIAQ) "inatsit" "isertugaq" "isuma" "naapeqatigiinneq" "nalliuttorsiorneq" "nassaaq" "oqaluttuaq" "peqataasoq" "pineq" "qaatigooq" "sanaaq" "sungiusaasoq";
+LIST INDERIVERENDE_SUBSTANTIV = ("aki" SSAQ) "atuakkiaq" "blogger" "bloggeri" "blog" "filmiliaq" ("film" LIAQ) "inatsit" "isertugaq" "isuma" "minister" "naapeqatigiinneq" "nalliuttorsiorneq" "nassaaq" "oqaluttuaq" "peqataasoq" "pineq" "qaatigooq" "sanaaq" "sungiusaasoq";
 #LIST VERBALNOMEN = "isuma" "oqaluttuaq" "naapeqatigiinneq" ;
 LIST INSOBJVERB = RAAR SI TAAR SIUR TUR (/__LIR\ Der\/nv__/l) ;
 
@@ -1322,7 +1322,8 @@ SET EXCLAMATION = ("tipi" N) | (SSUSIQ 3SgPoss) | WEATHER ;
 LIST Mask = "Aron" "Egon" "Eri" "Erik" "Eskild" "Hans" "Jens" "Mik" "Miki" "Morten" "Niels" "Ole" "Per" "Piitaq" "Rasmus" "Trond" Sem/Mask ;
 LIST Fem = "Anette" "Anna" "Arnaq" "Dagmar" "Emilie" "Gitte" "Hanne" "Jane" "Karen" "Kirsten" "Margrethe" "Mette" Sem/Fem ;
 LIST Sur = "Jensen" "Jenseni" "Møller" "Olsen" "Rasmussen" "Trosterud" Sem/LastName ;
-LIST TITEL = "borgmester" "fru" "Gammel" "hr" "hotel" "kunngi" "lektor" "nakorsaq" ("pisoq" TAQ) ("siulittar" TUQ) ("ulloriarsior" TUQ) "ulloriarsiortoq";
+LIST TITEL = "borgmester" "fru" "Gammel" "hr" "hotel" "kunngi" "lektor" "minister" "nakorsaq" ("pisoq" TAQ) "præsident" "senator" ("siulittar" TUQ) ("ulloriarsior" TUQ) "ulloriarsiortoq";
+LIST COUNTRY = "Danmark" "Finland" "Grønland" "Kalaallit Nunaat" "Tyskland" "USA" ; 
 LIST GeoProp = Sem/Geo "Danmark" "Finland" "Gladsaxe" "Mose" "Tåstrup" ;
 SET Fornavn = Mask | Fem ;
 SET Efternavn = Sem/Hum - Fornavn ;
@@ -3002,7 +3003,7 @@ MAP:M0030 @PROP> TARGET FIRSTNAME OR TITEL IF (1 Prop - GeoProp)(NEGATE 1 (§Pro
 
 #MAP:M0031X @PROP> TARGET Prop + Sem/FirstName IF (1 Prop + Sem/FirstName)(2 humProp) ; #Til tagning af dobbeltnavne
 
-MAP:M0031A @PROP> TARGET Prop + Abs IF (1 Prop)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + LU LINK *1 V + 3Pl )(NEGATE 1 Prop LINK 1 Prop)(NEGATE 0 FIRSTNAME LINK 1 FIRSTNAME)(NEGATE 0 FIRSTNAME LINK 1 ("Kalaallit"))(NEGATE 0 Abs + Sg LINK *1 TRANSVERB + 3SgO BARRIER V) #Mange fejlhit på Kalaallit Illuutaat og Kalaallit Nunaat
+MAP:M0031A @PROP> TARGET Prop + Abs IF (1 Prop)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + LU LINK *1 V + 3Pl )(NEGATE 1 Prop LINK 1 Prop)(NEGATE 0 FIRSTNAME LINK 1 FIRSTNAME)(NEGATE 1 ("Kalaallit") OR COUNTRY)(NEGATE 0 Abs + Sg LINK NOT 1 PROP LINK *1 TRANSVERB + 3SgO BARRIER V) #Mange fejlhit på Kalaallit Illuutaat og Kalaallit Nunaat
 (NEGATE 1 CONJ-C) ;
 
 #Tilføjet M0031C-E ad hoc 20180621 efter restrukturering af propernouns med køns-tags for at få regression test til at fungere.
@@ -3029,21 +3030,23 @@ MAP:M0031O @PROP> TARGET Prop + Sem/Geo IF (1 PLACE - Prop - CONJ-C)(NEGATE 1 PO
 
 MAP:M0031P @PROP> TARGET ORGANISATION IF (1 Prop) ;
 
-MAP:M0031 (@PROP>) TARGET Prop + Abs OR FIRSTNAME + Abs OR TITEL + Abs IF (1 Prop - CONJ-C)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + LU LINK *1 V + 3Pl )(NEGATE 1 Prop + LU LINK *1 V + 3PlO)(NEGATE 1 Prop LINK 1 Prop)(NEGATE 0 FIRSTNAME LINK 1 FIRSTNAME)(NEGATE 0 FIRSTNAME LINK 1 ("Kalaallit"))(NEGATE 1 FIRSTNAME + LU)(NEGATE 0 Abs + Sg LINK *1 TRANSVERB + 3SgO BARRIER V); 
+MAP:M0031 (@PROP>) TARGET Prop + Abs OR FIRSTNAME + Abs OR TITEL + Abs IF (1 Prop - CONJ-C)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + LU LINK *1 V + 3Pl )(NEGATE 1 Prop + LU LINK *1 V + 3PlO)(NEGATE 0 FIRSTNAME LINK 1 FIRSTNAME)(NEGATE 0 FIRSTNAME LINK 1 ("Kalaallit"))(NEGATE 1 FIRSTNAME + LU)(NEGATE 0 Abs + Sg LINK *1 TRANSVERB + 3SgO BARRIER V)(NEGATE 1 Prop LINK 1 Prop - Abs)(NEGATE 1 Prop LINK -2 OBLIQUE);
 #MAP:M0031 (@PROP>) TARGET Prop OR FIRSTNAME OR TITEL IF (1 Prop)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop #+ LU LINK *1 V + 3Pl BARRIER N + Pl )(NEGATE 1 Prop LINK 1 Prop); #fra 1350 for at udelukke overtallig SUBJ-tagging. ##NEGATE for at forebygge typen 'Per NN-ikkut isermata Vb'. Andet NEGATE for parataktiske Karen Perilu anipput. Tredie #NEGATE for at parataktiske Karen Perilu ilagalugit. Fjerde #NEGATE for at forebygge @PROP på subjektet i (SUBJ)(PROP> propriuskærne)
 
 #Forsøg på en mere generel regel for Prop der er @<APPOS til noget ikke-Prop
-MAP:M0032 @<APPOS TARGET PROP + $$KASUS - LU OR PLACE_MORE - PLACE + $$KASUS - LU IF (-*1C N + $$KASUS - Prop BARRIER (*) - KOMMA - PUNCT)(NEGATE 1 KOMMA LINK 1 $$KASUS)(NEGATE -1 @PROP>) #NEGATE for at undgå at hitte på opremsninger
+MAP:M0032 @<APPOS TARGET PROP + $$KASUS - LU OR PLACE_MORE - PLACE + $$KASUS - LU IF (-*1C N + $$KASUS - Prop BARRIER (*) - KOMMA - PUNCT - (Abs Prop))(NEGATE 1 KOMMA LINK 1 $$KASUS)(NEGATE -1 @PROP>) #NEGATE for at undgå at hitte på opremsninger
 (NEGATE 0 Rel + POSSESSUM LINK 1 POSSESSUM) 
 (NEGATE 0 iProp + IP) #illut Noorlerniittut ersipput.
 (NEGATE -1 Num)  
 (NEGATE 0 Sem/Hum LINK -1 MASK) ;
 
 MAP:M0032A @<APPOS TARGET PROP + Abs + Sg - LU IF (-1 Prop + Sem/FirstName)(-2 N + Abs + Sg )(NEGATE -2 @PROP>)(NEGATE -2 TITEL) ; # N per langgård
-MAP:M0033C @<APPOS TARGET PROP + Abs + Sg - LU - iOBLIQUE IF (-1 N + Abs + Sg)(NEGATE -1 @PROP> )(NEGATE -1 TITEL) ; # N Per
+MAP:M0033C @<APPOS TARGET PROP + Abs + Sg - LU - iOBLIQUE IF (-1 N + Abs + Sg)(NEGATE -1C @PROP> )(NEGATE -1 TITEL) ; # N Per
 #første NEGATE for at forhindre hit på fx (Royal Arctic Line)@SUBJ> VERBUM og -LU for ikke at hitte på Danmark Islandilu og andet NEGATE for at blokere PISORTAQ Per Langgård oqarpoq
 MAP:M0033D @<APPOS TARGET PROP + Abs + Sg - LU IF (*-1 Conj BARRIER (*) - @PROP> - TITEL - PUNCT LINK *-1 PROP + Abs + Sg - LU BARRIER (*) - @PROP> - TITEL - PUNCT LINK *-1 N + Abs + Pl BARRIER (*) - PUNCT) ;
 MAP:M0033E @<APPOS TARGET PLACE_MORE + Abs + Sg - LU IF (*-1 Conj BARRIER (*) - @PROP> - TITEL - PUNCT LINK *-1 PROP + Abs + Sg - LU OR PLACE_MORE + Abs + Sg - LU BARRIER (*) - @PROP> - TITEL - PUNCT LINK *-1 N + Abs + Pl BARRIER (*) - PUNCT) ;
+
+MAP:M0033F @<APPOS TARGET PROP + $$KASUS IF (*-1 TITEL + POSSESSUM BARRIER (*) - PROP) ;
 
 #MAP:M0033A @N< TARGET (/__TUQ\ Der\/vn\ N__/l) + $$KASUS + $$NUMERUS IF (-1 N + $$KASUS + $$NUMERUS) ; #Erstattet med substitute i AFTERSECTIONS
 
@@ -3538,6 +3541,8 @@ MAP:M0760A @i-N< TARGET Abs + $$KASUS + $$NUMERUS IF (*-1 LIK_QAR BARRIER VFIN L
 
 MAP:M0760B @i-N< TARGET Abs + $$KASUS + Orth/Copy (*-1 LIK_QAR BARRIER VFIN LINK NOT -1 $$KASUS + Sg) (*1 CLB BARRIER (*) - Abs - PUNCT)(NEGATE 0 _TARGET_ LINK *-1 TRANSVERB - VFIN BARRIER (*) - Abs - KOMMA LINK *-1 VFIN BARRIER (*) - Abs - KOMMA) ; #Propprier kan være flertalsnominer.
 
+MAP:M0760C @i-N< TARGET Abs + Prop IF (*-1 ("ateq") + LIK_QAR BARRIER VFIN)(NEGATE 1 Prop - CONJ-C) ; #ateqar... Prop. Skal muligvis have en BARRIER.
+
 MAP:M0760F @i-N< TARGET Ins IF (-*1 HTR + V + LIK_QAR BARRIER V)(NEGATE *1 V OR Der/vn OR INDERIVERENDE_SUBSTANTIV) ; #Hvis der både er LIK/QAR og HTR i ordet, går det nok på LIK/QAR. Se også M0617A
 
 ###################
@@ -3690,7 +3695,7 @@ MAP:M0651C @N< TARGET Abs + $$NUMERUS - Prop - CONJ-C IF (*-1 NIQ + Abs + $$NUME
 MAP:M0652F @<APPOS TARGET Abs IF (-1 ("soorlu") - LUSUUQ - MI LINK *-1 Abs + @OBJ> LINK *1 TRANSVERB BARRIER V);
 MAP:M0652G @<APPOS TARGET Abs + Sg IF (-1 ("soorlu") - LUSUUQ - MI LINK *-1 Abs + Pl LINK *1 _TARGET_ LINK *1 INTRANSVERB BARRIER V);
 MAP:M0652H @<APPOS TARGET $$KASUS - Gram/Pers IF (-1 ("soorlu") - LUSUUQ - MI LINK *-1 $$KASUS BARRIER (*) - KOMMA) ;
-MAP:M0652 @<APPOS TARGET $$KASUS + $$NUMERUS IF (*-1 $$KASUS + $$NUMERUS CBARRIER (*) - $$KASUS - CONJ-C - KOMMA LINK *-1 ("soorlu") - LUSUUQ - MI CBARRIER (*) - $$KASUS - KOMMA LINK *-1 $$KASUS) ;
+MAP:M0652I @<APPOS TARGET $$KASUS + $$NUMERUS IF (*-1 $$KASUS + $$NUMERUS CBARRIER (*) - $$KASUS - CONJ-C - KOMMA LINK *-1 ("soorlu") - LUSUUQ - MI CBARRIER (*) - $$KASUS - KOMMA LINK *-1 $$KASUS) ;
 SUBSTITUTE @ADVL> @FOC>N TARGET ("soorlu") - LUSUUQ - MI IF (1 @<APPOS + $$KASUS)(*-1 $$KASUS);
 
 #Subjekt for en ledsagemåde skal tagges, men må ikke sammenblandes med objekter
@@ -5623,6 +5628,7 @@ REMOVE:5728A ("inuk") IF (0 ("inoqajuitsoq")) ;
 REMOVE:5728B ("nunataq") IF (0 ("nuna") + TAQ) ; #Norgep nunataa
 REMOVE:5728C ("akoq") IF (0 ("aku") LINK 0 LIK OR QAR) ;
 REMOVE:5728D ("aallar") + USIQ IF (0 ("aallaat")) ;
+REMOVE:5728E ("ministerium") IF (0 ("minister") LINK 1 Prop) ; #Sem/Hum eller køn kan evt. kræves
 
 # Appellativ eller proprium?
 SELECT:5729 N - Prop IF (0 ("angut") OR ("arnaq")) (0 POSSESSUM - AFFINGERET) ;
