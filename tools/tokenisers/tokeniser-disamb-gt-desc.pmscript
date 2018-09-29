@@ -38,11 +38,28 @@ Define morphology @bin"analyser_relabelled-disamb-gt-desc.hfst" ;
 
 Define url @bin"analyser-url-gt-desc.hfst" ;
 
+Define flags [          ! explicit list since `?` does not match flags
+      "@C.NeedNoun@"
+    | "@C.Num@"
+    | "@D.CmpLast.TRUE@"
+    | "@D.CmpNone.TRUE@"
+    | "@D.CmpOnly.FALSE@"
+    | "@D.CmpPref.TRUE@"
+    | "@D.NeedNoun.ON@"
+    | "@P.LEXNAME.#@"
+    | "@P.LEXNAME.ab-dot-noun@"
+    | "@P.LEXNAME.Root@"
+];
+Define inputmark    [ 0:"@PMATCH_INPUT_MARK@" ];
+
 Define incondform      Punct|{“}|{”}|{…}|{‚}|{‘}|{’}|{–}|{—}|{­}|{_}|{<}|{>}|{■}|{«}|{»}|{�} ;
 
 Define blank           Whitespace | incondform ;
 
-Define incondword       morphology & [ incondform:?* 0:?* ] ;
+Define nonprintable [ 0:? | inputmark | flags ];
+Define any          [ ? | nonprintable ];
+
+Define incondword       morphology & [ any* incondform:[?*] nonprintable* ] ; ! Ends in punctuation – no context condition
 Define morphoword       morphology                   LC([blank | #]) RC([blank | # ]);
 Define urlword          url                          LC([blank | #]) RC([blank | # ]);
 
@@ -50,11 +67,12 @@ Define urlword          url                          LC([blank | #]) RC([blank |
 !! 1) unknown word-like forms, and
 !! 2) unmatched strings
 !! We want to give 1) a match, but let 2) be treated specially by hfst-tokenise -a
-Define alphabet "a-z"|{á}|{š}|{ž}|{č}|{đ}|{í}|{ŋ}|{ň}|{ŧ}|{æ}|{ä}|{ø}|{ö}|{å}|{ü}| "0-9" |{-}|{'}
-               |"A-Z"|{Á}|{Š}|{Ž}|{Č}|{Đ}|{Í}|{Ŋ}|{Ň}|{Ŧ}|{Æ}|{Ä}|{Ø}|{Ö}|{Å}|{Ü}|{_}|{§}|{–}|{°}
+Define alphabet "a-z"|{á}|{š}|{ž}|{č}|{đ}|{í}|{ŋ}|{ň}|{ŧ}|{æ}|{ä}|{ø}|{ö}|{å}|{ü}| "0-9"
+               |"A-Z"|{Á}|{Š}|{Ž}|{Č}|{Đ}|{Í}|{Ŋ}|{Ň}|{Ŧ}|{Æ}|{Ä}|{Ø}|{Ö}|{Å}|{Ü}|{_}|{§}|{°}
                |{ě}|{ň}
                |{Ě}|{Ň} ;
-Define alphaword alphabet+;
+Define alphamiddle {'}|{-} ; ! Treat foo-bar as one big unknown, but -foo (or bar-) as two tokens
+Define alphaword alphabet+ ( alphamiddle alphabet+ );
 !! TODO: Could use something like this, but built-in's don't include šžđčŋ:
 ! Define MixCase(X) [OptCap(X) | UpCase(X)];
 ! Define alphaword MixCase(alphabet+);
