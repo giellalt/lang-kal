@@ -1107,6 +1107,7 @@ SET AQQUSAARLUGU = ("aqqusaar" Cont) | ("aqqusaar" ContNeg) ;
 SET ATORLUGU = ("ator" Cont) - AFFINGERET | ("ator" ContNeg) - AFFINGERET ;
 SET TIKILLUGU = ("tikip" Cont) - AFFINGERET | ("tikip" ContNeg) - AFFINGERET ;
 SET OBJVERB = PILLUGU | AQQUSAARLUGU | ATORLUGU | TIKILLUGU ;
+LIST NONOBJVERB = ("agguar" QATE GIIP TIP Cont) ;
 
 # Nominer
 # -------
@@ -1238,7 +1239,7 @@ SET TUSAAnTAQ = ("tusaa") - TAQ ;
 SET UPPERNARSARnUTE = ("uppernarsar") - UTE ;
 SET ORATIOOBLVERB = ORATIOOBLVERBnOQAR OR OQARnUSIQ OR ALLAANNGIT OR ALLAPnTAQ OR EQQARSARnTARIAQAR OR ILISIMAnTAQ OR NASSUIARnUTE OR ATUARnTAQ OR OQALUTTUAQnTAQ OR TUSAAnTAQ OR UPPERNARSARnUTE ;
 
-LIST TALE = "eqqarsar" "naggasii" "nassuer" "aki" "apere" ;
+LIST TALE = "eqqarsar" "naggasii" "nassuer" "aki" "apere" "oqaluttuar" ;
 SET DIRTALE = TALE OR OQARnUSIQ ;
 
 LIST humverb = ("eqqarsar" UTE GE) "iser" "isiginnaar" "nalunaar" "oqqap" ("pisiaq" GE) "sana" ("sinnattoq" GE) "suli" "uppere"; # Verb der vil ha humane subj, og ikke er i andre set
@@ -1534,6 +1535,9 @@ REMOVE:0001G ("illip") + Gram/Exclm IF (0 ("illit")) ;
 REMOVE:0001H ("ata") + USIQ IF (0 ("ataaseq")) ;
 REMOVE:0001I ("tulleq") + GIIP + JAAR IF (0 ("tulleriiaar")) ;
 REMOVE:0001J ("taaq") IF (0 ("taama"));
+
+REMOVE:0001M (/Gram\/TV\ Gram\/Refl\ V\ Opt/l) ;
+REMOVE:0001N (/Gram\/TV\ Gram\/Refl\ V\ Imp/l) ;
 
 
 #REMOVE:0001XX UGEDAGE + Gram/TV IF (0 UGEDAGE + Gram/IV) ; #NNGUR + Gram/TV utænkelig ved ugedages navne #udkommenteret og gjort listen entydig i stedet.
@@ -1899,6 +1903,21 @@ APPEND ("$1"v Orth/Append Num Rel Pl) TARGET ("([a-z]*)"r) + Num (NOT 0 Rel + Sg
 REMOVE Num + Abs IF (*1 ("misse") BARRIER NUMHOVED) ;
 
 APPEND ("$1"v Orth/Append Sem/Unit N Rel Sg) TARGET ("([a-z].*)"r) (0 NUMHOVED) (NOT 0 Rel + Sg) (*-1 Num )(*1 ("misse")) ;
+
+
+### TAL ###
+#=========#
+
+#Num eller ej
+REMOVE:0099K Num OR iNum IF (0 ("ataaseq" iLok IP)) ;
+
+#aappaq Gram/Ord
+SELECT:0099R Gram/Ord IF (-1 MAANED OR TIME) ;
+SELECT:0099S iNum OR Num IF (-1 MAANED OR TIME) ;
+REMOVE:0099T Gram/Ord IF (NEGATE *0 MAANED OR TIME) ;
+REMOVE:0099U Gram/Ord IF (*-1 FAM OR MASK OR FEM LINK 0 Rel BARRIER POSSESSUM) ;
+REMOVE:0099V Gram/Ord IF (-1 Prop + Rel) ;
+
 
 
 ### MODUS ###
@@ -2556,6 +2575,7 @@ REMOVE:0300 TUQ + N IF (0 ("tassa") + Par)(NEGATE *0SC VFIN) ;
 REMOVE:0320 3PlO - GAANNI IF (0 3SgO)(*-1C Abs + Sg BARRIER INTRANSVERB + 3Sg OR 4Sg)(NEGATE -1 Gram/Comp) ;
 REMOVE:0321 3SgO IF (0 3PlO)(*-1C Abs + Pl BARRIER INTRANSVERB + 3Pl OR 4Pl) ;
 
+REMOVE:0321A CONT + TRANSVERB IF (0 (/TIP\ Der\/vv\ \(Gram\/TV\ \)?(Gram\/Refl\ \)?V\ /l)) ;
 SELECT:0322A Gram/Refl + TIP IF (-1 Abl)(0 INTRANSVERB - Gram/Refl + TIP)(NEGATE 0 NIQAR);
 SELECT:0322B ("taku") + SSA + Gram/Refl + 1Pl ; #Vistnok undtagelsesløs
 REMOVE:0322 Gram/Refl IF (NEGATE *-1 ("immi") BARRIER KOMMA)
@@ -2611,7 +2631,6 @@ REMOVE:0363 Cont + 2Pl OR ContNeg + 2Pl IF (NEGATE *0 VERB-NOTCONT + 2Pl) ;
 #SET xSgPl = 1Sg OR 1Pl OR 2Sg OR 2Pl ;
 #REMOVE Cont + &&xSgPl OR ContNeg + &&xSgPl IF (NEGATE *0 VERB-NOTCONT + &&xSgPl) ;
 #Eksempel på unification lavet af Tino den 20100503. Erstatter de 4 foregående.
-
 
 REMOVE:0370 Cont + Gram/Refl IF (NEGATE -1 ("immi") OR ("nammineq")) ; #20091104 - refleksive Cont (skal sikkert udvides med TIP)
 #Disambiguerer TRANSVERB + Gram/Refl fra INTRANSVERB
@@ -3744,7 +3763,8 @@ MAP:M0662Z @SUBJ> TARGET GIIT + Rel IF (*1 VERB-NOTCONT + TRANSVERB + 1Pl BARRIE
 MAP:M0662AZ @SUBJ> TARGET GIIT + Rel IF (*1 VERB-NOTCONT + TRANSVERB + 2Pl BARRIER TRANSVERB + 2PlO)(NEGATE -1 ("\("))(NEGATE 1 2PlPoss)(NEGATE *-1 2Pl) ;
 
 #Særregel ved SUBJ> + Pl ; OBJ> + Pl ; CONT + 3PlO ; 
-MAP:M0669 @SUBJ> TARGET Abs + Pl IF (*1 Abs + Pl LINK *1 CONT + 3PlO LINK *1 INTRANSVERB + 3Pl - CONJ-C OR INTRANSVERB + 4Pl - CONJ-C BARRIER TRANSVERB + 3PlO)(NEGATE *-1 Rel + Sg LINK *1 3Sg + 3PlO) ; 
+MAP:M0669 @SUBJ> TARGET Abs + Pl IF (*1 Abs + Pl LINK *1 CONT + 3PlO LINK *1 INTRANSVERB + 3Pl - CONJ-C OR INTRANSVERB + 4Pl - CONJ-C BARRIER TRANSVERB + 3PlO)(NEGATE *-1 Rel + Sg LINK *1 3Sg + 3PlO)
+(NEGATE 1 Abs + Pl + @N< LINK *1 CONT + 3PlO BARRIER Abs + Pl - @N<) ; 
 MAP:M0670 (@SUBJ>) TARGET Abs + Pl IF (*1 INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl BARRIER TRANSVERB + 3PlO)(NEGATE *-1 Rel + Sg - @POSS> LINK *1 3Sg + 3PlO)(NEGATE 0 2SgPoss) ; #så er det et objekt for TRANSVERB. NEGATE tilføjet 20171121 for at redde objekter for V til højre. #Sidste NEGATE for at undgå at 2SgPoss bliver valgt i lange sætninger.
 MAP:M0680 (@SUBJ>) TARGET (Rel) - 12IV IF (*1 TRANSVERB + 34IV BARRIER POSSESSUM3 OR INTRANSVERB + 34IV LINK NEGATE 0 VFIN LINK *-1 _TARGET_ LINK 0 4SgPoss OR 4PlPoss)
 (NEGATE 0 Pl LINK *1 TRANSVERB + 3Sg OR 4Sg); #Krævet numeruskongruens
@@ -3757,6 +3777,8 @@ MAP:M0696 (@OBJ>) TARGET Abs IF (-*1 Rel BARRIER KOMMA OR V)(-1 Abs)(0 LU)(NEGAT
 #MAP:M0697 (@OBJ>) TARGET Abs IF (-1 Rel)(1 KOMMA OR LU OR LUUNNIIT OR EOS)(NEGATE *-1 TRANSVERB BARRIER (*) - @POSS> - @i->N)(NEGATE *1 INTRANSVERB LINK 1 EOS) ; # Opremsning uden transitive verber
 MAP:M0698 (@SUBJ>) TARGET Rel IF (-*1 Rel LINK *1 TRANSVERB LINK *1 KOMMA)(*1 Abs LINK *1 KOMMA) ; # Opremsning uden transitive verber
 #MAP:M0699 (@OBJ>) TARGET Abs IF (-1 Rel)(1 KOMMA)(NEGATE *1 INTRANSVERB LINK 1 EOS) ; # Opremsning uden transitive verber #udkommenteret 20180927
+MAP:M0099 @SUBJ> TARGET Abs IF (*1 V + INTRANSVERB - NAR - QAR BARRIER OBJVERB LINK 1 EOS)(NEGATE *0 Abs - TIME - Num - iNum - Sem/Unit)(NEGATE -1 PUNCT OR BOS LINK 2 KOMMA) ; #Hvis eneste Abs, må det næsten være subjekt.
+MAP:M0699 @OBJ> TARGET Abs - TIME - Num IF (*1 CONT + TRANSVERB BARRIER Abs - @N< OR VFIN) ;
 MAP:M0700 (@<SUBJ) TARGET (Rel) IF (-*1 TRANSVERB + VERB-NOTCONT + 34Sg)(0 (Sg)) ;
 MAP:M0710 (@<SUBJ) TARGET (Rel) IF (-*1 TRANSVERB + 34Pl)(0 (Pl))(NEGATE -1 KOMMA LINK 1* POSSESSUM OR TRANSVERB) ;
 MAP:M0720 @<SUBJ TARGET Abs + Sg - ("kinguneq") IF (-*1C INTRANSVERB + 3Sg - ("tassa") OR INTRANSVERB + 4Sg - ("tassa") BARRIER ("tassa") LINK NOT 0 (TUQ Der/vn QAR Der/nv)) (NEGATE -1 ("\("))(NEGATE 1 Abs + Sg LINK *1 V) (NEGATE 0 LU LINK *1 Rel + Sg LINK *1 TRANSVERB + 3Sg)(NEGATE -*1 TRANSVERB + 3Sg BARRIER INTRANSVERB + 3Sg)(NEGATE -1 Abs + Sg - Der/vn)(NEGATE *-1 KOMMA BARRIER V LINK -1 @PRED LINK *1 _TARGET_ LINK *1 @PRED)(NEGATE 0 ATTRIBUTIV); #20091109 - trediesidste NEGATE, 20101013 næstsidste NEGATE for at forhindre hit på 'S V O-LU S V', sidste NEGATE for ikke at hitte på kongruensadled. 20170425 -kinguneq for at forebygge hit på sætningsadverbialer
@@ -4096,7 +4118,7 @@ MAP:M1371 (@CL-<CIT) TARGET Par + TRANSVERB IF (*-1 ORATIOOBLVERB)(NEGATE 0 ("ip
 MAP:M1371 @CL-<CIT TARGET ("tassa") + Par IF (*-1 ORATIOOBLVERB);
 SUBSTITUTE:M1372 @CAU @CL-<CIT TARGET Cau IF (*-1 BOS LINK 1 ORATIOOBLVERB LINK *1 _TARGET_ LINK *1 ORATIOOBLVERB)(NEGATE *-1 Cau LINK *1 _TARGET_) #Er der flere oo-verber, hører den første Cau sandsynligvis til den første.
 (NEGATE *1 @<OBJ BARRIER TRANSVERB LINK NOT *1 TRANSVERB); #Hvis det ikke er en oo, men blot et objekt, er det en cau.
-MAP:M1380 (@CL-CIT>) TARGET Par + INTRANSVERB + 3Sg OR Cont + INTRANSVERB + 4Sg OR ContNeg + INTRANSVERB + 4Sg OR Cau + INTRANSVERB + 3Sg OR Cau + INTRANSVERB + 4Sg IF (*1 ORATIOOBLVERB BARRIER PUNCT)(-*1 Abs + Sg)(NEGATE -1 @CL-CIT> - ORATIOOBLVERB); #(NEGATE 1 Prop + Abs OR Prop + Sem/FirstName); #forstaar ikke Prop begraensningerne 12.03
+MAP:M1380 (@CL-CIT>) TARGET Par + INTRANSVERB + 3Sg OR Cont + INTRANSVERB + 4Sg OR ContNeg + INTRANSVERB + 4Sg OR Cau + INTRANSVERB + 3Sg OR Cau + INTRANSVERB + 4Sg IF (*1 ORATIOOBLVERB BARRIER PUNCT OR DIRTALESLUT)(-*1 Abs + Sg)(NEGATE -1 @CL-CIT> - ORATIOOBLVERB); #(NEGATE 1 Prop + Abs OR Prop + Sem/FirstName); #forstaar ikke Prop begraensningerne 12.03
 MAP:M1381 (@CL-CIT>) TARGET Par + INTRANSVERB + 3Pl OR Cont + INTRANSVERB + 4Pl OR ContNeg + INTRANSVERB + 4Pl OR Cau + INTRANSVERB + 3Pl IF (*1 ORATIOOBLVERB)(-*1 Abs + Pl)(NEGATE *-1 ORATIOOBLVERB LINK NOT -*1 ("\-") LINK *1 _TARGET_ LINK *1 KOMMA)
 #(NEGATE 0 ("qaangiup")) #ikke sandsynligt som hoved i oo.
 ; #(NEGATE 1 Prop + Abs OR Prop + Sem/FirstName); #forstaar ikke Prop begraensningerne 12.03
@@ -4898,10 +4920,14 @@ REMOVE @SUBJ> IF (0 (Gram/Dem Pron 3Sg))(*1C 12SUBJVERB BARRIER V);
 SELECT (Pl @OBJ>) IF (0 (Abs Pl))(*-1 34PLOBJVERB BARRIER VFIN);
 	## Aviisit atuarpavut.
 
-SELECT (N Abs Sg) + @ALLOBJ> IF (*1 34SGOBJVERB BARRIER Sg +  @ALLOBJ>)(NEGATE *1 ORATIOOBLVERB) (NEGATE 1 Num + Pl)(NEGATE 1 KOMMA LINK 1 LU)
+SELECT (N Abs Sg) + @ALLOBJ> IF (*1 34SGOBJVERB - NONOBJVERB BARRIER Sg +  @ALLOBJ>)(NEGATE *1 ORATIOOBLVERB) (NEGATE 1 Num + Pl)(NEGATE 1 KOMMA LINK 1 LU)
 (NEGATE 0 Prop + Abs + Sg + @ALLOBJ>) #må ikke fravælge potentielle proprier som Nuuk og Atassut i position 1.
 ;
 	#Pers aendring 0608
+
+SELECT:2555 (Abs Sg) + @ALLSUBJ> IF (*1 INTRANSVERB BARRIER 34SGOBJVERB - NONOBJVERB)(NEGATE *1 ORATIOOBLVERB)(NEGATE 1 KOMMA LINK 1 LU)(NEGATE 0 V OR @<APPOS)
+ #må ikke fravælge potentielle proprier som Nuuk og Atassut i position 1.
+;
 
 SELECT (Par @PRED) IF (*1 34SGOBJVERB)(*1 ORATIOOBLVERB); #Pers tilfoejelse 2 0608
 
@@ -5969,7 +5995,7 @@ REMOVE:9965B (/Gram\/TV\ V/l) + INTRANSVERB IF (0 (/Gram\/IV\ V/l) + INTRANSVERB
 REMOVE:9965C Gram/TV + TUQ + N - Aeq IF (0 Gram/IV + TUQ + N)(NEGATE *-1 ("immi"))(NEGATE 0 (/__Gram\/TV.*Gram\/IV.*TUQ__/l)) ; #20180402 MEGET bred regel, der sikkert skal revideres
 SELECT:9965D (/Gram\/TV\ TUQ\ Der\/vn\ N/l) + Aeq IF (1 TRANSVERB); #isiginngitsutut illugit
 
-REMOVE:9965E (/Gram\/TV\ .*VIK\ /l) IF (0 Gram/IV + VIK) ; #20180402 MEGET bred regel, der sikkert skal revideres
+REMOVE:9965E (/Gram\/TV\ \(Gram/Refl\ \)?VIK\ /l) IF (0 Gram/IV + VIK) ; #20180402 MEGET bred regel, der sikkert skal revideres
 
 SELECT:9965G TRANSVERB IF (*-1 Rel BARRIER POSSESSUM OR iPOSSESSUM)(NEGATE *0 TRANSVERB) ; #Hvis der er et relativt subjekt, må verbet være transitivt.
 
