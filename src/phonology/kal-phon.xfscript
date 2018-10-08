@@ -23,8 +23,8 @@ define Vow [ a | e | i | i2 | o | u | u2 | í | á | ú | î | â | û | ê | ô
 ! u2 er u i låneord, der ikke skal ændres til o foran r/q: Puurunen, Turunen
 
 echo << Vi definerer konsonanterne... >>
-define Cns [ c2 | ch | d | f | g | g2 | g3 | g4 | h | j | ĸ | k | l | m |
-             n | p | q | r | s | t | v | v2 ]  ; !v2 er v-er i låneord, der ikke skal slettes. ch specielt til k-lyden i proprier som Heinrich
+define Cns [ c2 | c | d | f | g | g2 | g3 | g4 | h | j | ĸ | k | l | m |
+             n | p | q | r | s | t | v | v2 ]  ; !v2 er v-er i låneord, der ikke skal slettes. 
 
 ! These symbols will be turned into real quotes by a separate processing step;
 ! the quasi-rule here is just to silence a warning in (hfst-)xfst.
@@ -82,6 +82,7 @@ define Tmetatese [ t i2 q -> %> q q || _ %> Vow ] ; !den mærkelige morfemgræns
 define schwavaek [ i2 -> e ] ;
 
 define LIKtrunkering [ l i k -> 0 || _ %> %likTRUNC ] ;
+define CHtrunkering [ i c h %> %TRUNC u p -> i u p ] ; !En snæver regel til at håndtere Heinrich/ Heinriup
 define VCtrunkering [ [ e | a | o ] ( [ q | k | n | t ] ) -> 0 || _ %> %VCTRUNC ] ; !n og t 20180309 aht. Algeriet, Kroatien m.fl.
 define SEQtrunkering [ [ s | n | m ] [ e | a ] q -> 0 || _ %> %CVqTRUNC ] ;
 !define CVqTRUNC_vaek [ %CVqTRUNC -> 0 ] ;
@@ -268,6 +269,8 @@ gaqTrunkering1 ![ e r %> %TRUNC g a -> i %> g a ] ; !flyttet den 11.6. fra linie
 gaqTrunkering2 ! [ o r %> %TRUNC g a -> u %> g a ]
 .o.
 gaqTrunkering3 ![ a r %> %TRUNC g a -> a %> g a ] ;
+.o.
+CHtrunkering ![ i c h %> %TRUNC u p -> i u p ] ;
 .o.
 VCtrunkering ![ [ e | a | o ] ( [ q | k | n | t ] ) -> 0 || _ %> %VCTRUNC ] 12
 .o.
