@@ -297,6 +297,22 @@ sub analyze {
                }
                next;
             }
+
+            # If input doesn't have upper-case letters, try it as first-upper
+            if ($f =~ /^[\pL\pN]/ && $f =~ /\p{Ll}/ && $f !~ /\p{Lu}/) {
+               $orig = $orig || $f;
+               $f = ucfirst(lc($f));
+               if ($f ne $orig) {
+                  $heur{'Heur/Case'} = 1;
+                  my $m = call_tokenizer($f);
+                  if ($m =~ /\t"[^\n]*"[^?\n]+\n/) {
+                     $merge_ncs->($m);
+                     last;
+                  }
+                  # This one should not recurse
+               }
+            }
+
             last;
          }
       }
