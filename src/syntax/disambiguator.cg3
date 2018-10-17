@@ -1119,6 +1119,7 @@ SET OBLIQUE =  Trm | Abl | Lok | Aeq | Ins | Via ;
 SET iOBLIQUE = iTrm | iAbl | iLok | iAeq | iIns | iVia ;
 SET NUMERUS = Sg | Pl ;
 SET KONGRUENSADLED = N + $$KASUS + $$NUMERUS ;
+SET NÆPPE-POSS = (/__TUQ\ Der\/vn\ N\ Rel\ Sg\ 4PlPoss__/l) | (/__TUQ\ Der\/vn\ N\ Rel\ Pl\ 4PlPoss__/l) ; #SET til forebyggelse af uheldige sletninger af Ins. PL 20181017
 
 
 SET POSSESSUM3 = (N 3SgPoss) | (N 3PlPoss) | (iN i3SgPoss) | (iN i3PlPoss) | (Num 3SgPoss) | (Num 3PlPoss) | (DivPron 3PlPoss) ;
@@ -1147,6 +1148,8 @@ SET LIK_QAR = LIK | QAR ;
 SET NOMEN = N | iN ;
 
 LIST ADVERBIAL_DERIVATIVES = (/VALLAAQ\ Der\/vn\ N/l) ;
+
+LIST VERBALNOMEN = NIQ TUQ SSUSIQ ;
 
 # Kombinationer af verber og nominer
 
@@ -2169,7 +2172,7 @@ SELECT:0063 Rel + Pl - FAM_UNIK IF (1C 3PlPoss)(NEGATE 1 ("siuneq") + Via)(NEGAT
 (NEGATE 0 (TUQ Der/vn N Ins)) ; #iluaqutaasumik
 SELECT:0063B Rel + Pl - FAM_UNIK - 4PlPoss - 4SgPoss IF (1C Rel + Pl - Prop LINK 1C 3PlPoss - Prop - iALL)(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 1 ("assi") + POSSESSUM + LU)(NEGATE -1 ("ila") LINK 2 ("ila"))(NEGATE 0 ("assut") OR ("taama")) ;
 SELECT:0063C Rel + Pl - FAM_UNIK IF (1C Rel + Pl - Prop LINK 1C Rel + Pl LINK 1 3PlPoss - Prop)(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 1 ("assi") + POSSESSUM + LU)(NEGATE -1 ("ila") LINK 2 ("ila")) ;
-SELECT:0064 Rel + Sg IF (1C 3SgPoss)(NEGATE 0 Ins LINK 1 LIK_QAR)(NEGATE 1 LU)(NEGATE 0 ("affaq"))(NEGATE 0 PLACE + Lok); #asanninnermik pigisaqarneranut er ikke en possessor-possessum forbindelse
+SELECT:0064 Rel + Sg - NÆPPE-POSS IF (1C 3SgPoss)(NEGATE 0 Ins LINK 1 LIK_QAR)(NEGATE 1 LU)(NEGATE 0 ("affaq"))(NEGATE 0 PLACE + Lok); #asanninnermik pigisaqarneranut er ikke en possessor-possessum forbindelse
 
 SELECT:0066 Aeq IF (0 ("inuiak") LINK 1 ("ulloq") OR ("ullorsior")) ;
 
@@ -3746,7 +3749,7 @@ MAP:M0612F @POSS> TARGET Rel IF (-1 KOMMA LINK -1 Rel LINK *1 _TARGET_ LINK *1 3
 MAP:M0612G @POSS> TARGET Rel IF (1 KOMMA LINK 1 Rel LINK *1 POSSESSUM LINK NOT *1 TRANSVERB)(NEGATE *-1 ("soorlu") - LUSUUQ - MI CBARRIER (*) - Rel - KOMMA) ;
 
 #MIK-OBJEKTER til HTR og HV
-MAP:M0615A @MIK-OBJ> TARGET Ins IF (*1 Gram/HV + V BARRIER V) (NEGATE -1 @MIK-OBJ>) ; #Ikke MAP fordi ogsaa ADVL> mulig
+MAP:M0615A @MIK-OBJ> TARGET Ins IF (*1 Gram/HV + V BARRIER V OR VERBALNOMEN) (NEGATE -1 @MIK-OBJ>) ; #Ikke MAP fordi ogsaa ADVL> mulig. PL 20181017 tilføjet VERBALNOMEN for at forebygge hit på 'qanoq sukkatigisumik ingerlaarsinnaaneranut TAKUSSUTISSAALLUARPOQ'
 MAP:M0617A @<MIK-OBJ TARGET Ins IF (-*1 HTR + V + ORATIOOBLVERB - LIK_QAR BARRIER V)(NEGATE *1 V OR Der/vn OR INDERIVERENDE_SUBSTANTIV) ;
 MAP:M0617B @<MIK-OBJ TARGET Ins - POSSESSUM IF (-*1 HTR + V - LIK_QAR BARRIER V)(NEGATE *1 INDERIVERENDE_SUBSTANTIV OR HTR BARRIER V) ;
 MAP:M0619 (@i-MIK-OBJ>) TARGET Ins - TIME - ADJEKTIVISK IF (*1 HTR + Der/vn + N BARRIER V );
