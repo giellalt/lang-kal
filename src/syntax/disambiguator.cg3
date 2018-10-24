@@ -1348,7 +1348,7 @@ SET NOT-FIRST = WORD - FIRSTNAME ;
 
 LIST INSTITUTION = "Inatsisartut" "Naalakkersuisut" "Oqaasiliortut" ;
 
-LIST FAM_UNIK = "ui" "nuliaq" ("angut" 3SgPoss) ("angut" 4SgPoss) "anaana" "ataata" "aana" "aanaq" "ittoq" "aata" "aataq" ;
+LIST FAM_UNIK = "ui" "nuliaq" ("angut" 3SgPoss) ("angut" 3PlPoss) ("angut" 4SgPoss) "anaana" "ataata" "aana" "aanaq" "aanarsiaq" "ittoq" "aata" "aataq" ;
 # betegnelser som sjældent optræder uden for sing.
 
 SET FAM = FAM_UNIK | ("aappaq" GIIT) | ("aja") | ("ajak") | ("angaaq") | ("angajoqqaaq") | ("ilaqutaq") | ("ilaqutaq" GIIT) | ("illoq") | ("panik") ;
@@ -1667,6 +1667,7 @@ REMOVE:0147E ("qaatip") + GUUQ IF (0 ("qaatigooq")) ;
 REMOVE:0147F (/__NIAQ\ Der\/vn\ GE__/l) IF (0 NIAR + Par) ; # aaniaraanga er ikke NIAQ+GE
 REMOVE:0147G ("ullor") IF (0 ("ulloq")) ;
 REMOVE:0147H ("iluaq" GE) IF (0 ("iluar" GE)) ;
+REMOVE:0147I ("aa") IF (0 ("aana") OR ("aanaq")) ;
 
 REMOVE:0040I NAAR - NAAR_VERBER ; #Sletter irriterende fejlanalyser med NAAR på verber, der ikke kan indeholde et element af vurdering
 
@@ -2172,6 +2173,7 @@ SELECT:0063 Rel + Pl - FAM_UNIK IF (1C 3PlPoss)(NEGATE 1 ("siuneq") + Via)(NEGAT
 SELECT:0063B Rel + Pl - FAM_UNIK - 4PlPoss - 4SgPoss IF (1C Rel + Pl - Prop LINK 1C 3PlPoss - Prop - iALL)(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 1 ("assi") + POSSESSUM + LU)(NEGATE -1 ("ila") LINK 2 ("ila"))(NEGATE 0 ("assut") OR ("taama")) ;
 SELECT:0063C Rel + Pl - FAM_UNIK IF (1C Rel + Pl - Prop LINK 1C Rel + Pl LINK 1 3PlPoss - Prop)(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 1 ("assi") + POSSESSUM + LU)(NEGATE -1 ("ila") LINK 2 ("ila")) ;
 SELECT:0064 Rel + Sg - NÆPPE-POSS IF (1C 3SgPoss)(NEGATE 0 Ins LINK 1 LIK_QAR)(NEGATE 1 LU)(NEGATE 0 ("affaq"))(NEGATE 0 PLACE + Lok); #asanninnermik pigisaqarneranut er ikke en possessor-possessum forbindelse
+REMOVE:0065 N IF (1 FAM_UNIK + POSSESSUM)(NEGATE *-1 V) ;
 
 SELECT:0066 Aeq IF (0 ("inuiak") LINK 1 ("ulloq") OR ("ullorsior")) ;
 
@@ -2331,7 +2333,8 @@ REMOVE:0104 Abs + 2SgPoss IF (NEGATE *1 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO BA
 
 REMOVE:0104B Abs + 2SgPoss IF (0 Rel)(*1 TRANSVERB - OBJVERB BARRIER V) ;
 
-REMOVE:0105 Abs + 3PlPoss + Pl IF (NEGATE -*1 Rel + Pl)(NEGATE 0 ("ila"))(NEGATE -*1 VFIN + 3Pl LINK *1 V + 3Pl OR 4Pl)(NEGATE 1 INTRANSVERB + VFIN + 3Pl OR 3PlO)(NEGATE 1 Abs + Pl);
+REMOVE:0105 Abs + 3PlPoss + Pl IF (NEGATE -*1 Rel + Pl)(NEGATE 0 ("ila"))(NEGATE -*1 VFIN + 3Pl LINK *1 V + 3Pl OR 4Pl)(NEGATE 1 INTRANSVERB + VFIN + 3Pl OR 3PlO)(NEGATE 1 Abs + Pl)
+(NEGATE 0 FAM_UNIK LINK NOT *-2 V);
 REMOVE:0106 Abs + 3PlPoss + Sg IF (NEGATE -1 Rel + Pl)(NEGATE 0 ("ila"))(NEGATE 0 ("arlaq"))(NEGATE -*1 VFIN + 3Pl LINK *1 V + 3Pl OR 4Pl)(NEGATE *1 VFIN + INTRANSVERB + 3Sg OR TRANSVERB + 3SgO);
 #20100410 "arlaq" for ikke at slette possessorløse former som <arlaammi>
 
@@ -3321,7 +3324,7 @@ MAP:M0282 @ADVL> TARGET ("imatut") OR ("ima") + Pali IF (*1 LIK_QAR BARRIER V) ;
 #MAP:0140 (@CONJ) TARGET Part IF (-1 Abs)(*1 Abs BARRIER VFIN) ; #2.4. tilfoejet  MAP:0HvilkenAdverbial foer denne for at forhindre @CONJ på 'Aasaanerani naasut tamalaat alutornartut ILAATIGULLU ruuat ..'
 MAP:M0285 (@CONJ) TARGET Part + Conj IF (-1 Rel)(*1 Rel BARRIER V) ;
 MAP:M0286 (@CL-ADVL>) TARGET Part IF (-2 BOS OR ("\,"))(-1 Interj)(NEGATE 0 KONJUNKTION)(*1 V)(NEGATE 1 TIGE) ; #20091109 .., aasiit TAAMATUT, ...
-MAP:M0287 (@CL-ADVL>) TARGET Part IF (-1 BOS)(NEGATE 0 KONJUNKTION OR ("qanoq") OR ("taamatut"))(NEGATE *1 TIGE OR Gram/Exclm BARRIER (*) - Adv - Conj)
+MAP:M0287 (@CL-ADVL>) TARGET Part IF (-1 BOS)(NEGATE 0 KONJUNKTION OR ("qanoq") OR ("taamatut") OR ("suli"))(NEGATE *1 TIGE OR Gram/Exclm BARRIER (*) - Adv - Conj)
 (*1 V)(NEGATE *1 GAANNI BARRIER V) ;
 MAP:M0291 (@i->V) TARGET ("taama") OR ("qanoq") OR Aeq IF (*1 TIGE + N BARRIER (*) - Adv - Conj) ;
 MAP:M0291 (@>V) TARGET ("taama") OR ("qanoq") OR Aeq IF (*1 TIGE BARRIER (*) - Adv - Conj LINK NEGATE 0 N) ;
