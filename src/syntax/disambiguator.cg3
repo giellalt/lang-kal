@@ -1231,8 +1231,8 @@ SET MOVE-VERB = LOKVERB | ABLVERB | TRMVERB ;
 
 # 20091106 Foelgende med tak til Tino for at forebygge at "oqar" + USIQ opfattes som inquit
 LIST ORATIOOBLVERBnOQAR = "aalajanger" "aalianger" "apere" "eqqaa" "eqqaama" "eqqartor" "ilimage" "ilimasup" "ilisimatitsi" "ilisimatitsissut" "imaap" ("isuma" LIUR) ("isuma" QAR)
-"isummer" "kaammattor" "maluge" "malunnarsi" "naatsorsor" "nalu" "nalunaar" "nalunaarut" "neriorsor" "neriup" "oqaluttuar" "paasi" "pinngitsaali" "puigor" "puior" "qular" "qulare" "qularnar" "qinnuige" "sinnattoq GE" "siunnersor" ("taku" Gram/TV) "tusar" "unner" "uppernarsar" ;
-SET ATUARnTAQ = ("atuar") - TAQ - VIK ;
+"isummer" "kaammattor" "maluge" "malunnarsi" "naatsorsor" "nalu" "nalunaar" "nalunaarut" "neriorsor" "neriup" "oqaluttuar" "paasi" "pinngitsaali" "puigor" "puior" "qular" "qulare" "qularnar" "qinnuige" "sinnattoq GE" "siunnersor" ("taku" Gram/TV) "tusar" "unner" "uppernarsar" (/SSAQ\ Der\/nn\ GE\ Der\/nv/l); #GE tilføjet til objektssætninger som ikke er indirekte tale
+SET ATUARnTAQ = ("atuar") - TAQ - VIK - QATE;
 SET OQARnUSIQ = ("oqar") - (USIQ) ;
 SET ALLAANNGIT = ("alla") + U + NNGIT ;
 SET ALLAPnTAQ = ("allap") - TAQ - VIK ;
@@ -1296,7 +1296,7 @@ LIST ABSTRACT = "taaq" ;
 LIST PLACE = "illu" "imaq" ("atuar" VIK) ("oqalup" VIK) "nuna" "orpippassuaq" "siku" "silarsuaq" "ungaloq" "village" Sem/Geo ^Sem/Hum "lexicon" ; 
 LIST PLACE_MORE = (/\"<\\p{Lu}.*\>"/r);
 SET PLACE_EXTENDED = PLACE | PLACE_MORE ;
-LIST ADJEKTIVISK = "akutakujooq" "akutakujuk" "angisooq" "angut" "arnaq" "ataavartoq" "ilivitsoq" "itisooq" "manissoq" ("portu" JAAR) "takisooq" "siulleq" "tulleq" "tungujortoq" (NAR TUQ) ; #angut og arnaq medtaget lidt skummelt, men anvendes ofte adjektivisk
+LIST ADJEKTIVISK = "akutakujooq" "akutakujuk" "angisooq" "angut" "arnaq" "ataavartoq" "ilivitsoq" "itisooq" "manissoq" ("portu" JAAR) "takisooq" "siulleq" "tulleq" "tulliup" "tungujortoq" (NAR TUQ) ; #angut og arnaq medtaget lidt skummelt, men anvendes ofte adjektivisk
 LIST COLOUR = "aappaluttoq" ("aak" PALUP TUQ) "qaqortoq" "qaqqorik" "qernertoq" "qorsuk" "sungaartoq" "tungujortoq" ;
 SET ATTRIBUTIV = ADJEKTIVISK | COLOUR | (/QAR\ Der\/nv\ \(Gram\/IV\ \)?TUQ\ /l) ;
 LIST NATIONALITY = "dansk" "grønlænder" "kalaaleq" "qallunaaq" ;
@@ -4121,6 +4121,14 @@ MAP:M1148D @CL-<CIT TARGET CONT + TRANSVERB IF (*-1 ORATIOOBLVERB - LIK_QAR - CO
 (NEGATE 1 (":")) 
 ;
 
+MAP:M1148E @CL-<CIT TARGET CONT OR Cau IF (*-1 ("pissut") + U OR ORATIOOBLVERB + V  - Cau - CONJ-C BARRIER CONJ-C OR PUNCT OR @CL-<CIT OR Par OR VFIN - ORATIOOBLVERB)
+(NEGATE *1 Par OR CONT OR Cau)
+(NEGATE *1 QQU)
+(NEGATE 0 SINNAA)
+(NEGATE *1 ("\?"))
+(NEGATE *1 VFIN BARRIER CONJ-C)
+(NEGATE -1 ORATIOOBLVERB + NIQ) ;
+
 MAP:M1149 @i-ADVL> TARGET CONT + TRANSVERB IF (-1 Gram/Coref + Pron)(1 Der/vn + 4SgPoss); #20170125 nammineq qanitarinngikkaluarlugu nalunngissimasani
 #mapper uagtet subjekt alle transitive ledsagemåder med finit til højre
 MAP:M1150 (@ADVL>) TARGET Cont + 1Sg OR ContNeg + 1Sg IF (*1 VFIN + 1Sg);
@@ -4572,7 +4580,7 @@ REMOVE:0495 Par + 3Pl IF (-1 N + Pl)(1 VFIN + ORATIOOBLVERB)(*1 Par) ;
 REMOVE:0496A Par + ("pi") IF (-1 ("pi") + CONT + TRANSVERB) ; #Taamaalillunga aamma ullut pingajussaanni orpik baobab pillugu pisimasoq annilaarnartoq tusarpara.
 REMOVE:0496B Par IF (-1 N + TUQ + ("pi") LINK -1 ("pi") + CONT + TRANSVERB) ; #Taamaalillunga aamma ullut pingajussaanni orpik baobab pillugu pisimasoq annilaarnartoq tusarpara.
 
-SELECT:0497 Par + INTRANSVERB + 3Sg IF (*1 ORATIOOBLVERB + V BARRIER ("\,") OR VFIN)(*-1 Abs + Sg)(NEGATE 0 LU LINK -1 Abs + Sg)(NEGATE 0 Der/nv + TUQ LINK -1 Abs + Sg) (NEGATE -1 NIQ LINK 1 TUQ); #næstsidste NEGATE forebygger hit på kongruensadled til objekter. Sidste NEGATE for at undgå hit på objektssætninger hvor TUQ er adnominalt adled.
+SELECT:0497 Par + INTRANSVERB + 3Sg IF (*1 ORATIOOBLVERB + V BARRIER ("\,") OR VFIN)(*-1 Abs + Sg)(NEGATE 0 LU LINK -1 Abs + Sg)(NEGATE 0 Der/nv + TUQ LINK -1 Abs + Sg) (NEGATE -1 NIQ LINK 1 TUQ)(NEGATE 0 ADJEKTIVISK); #næstsidste NEGATE forebygger hit på kongruensadled til objekter. Sidste NEGATE for at undgå hit på objektssætninger hvor TUQ er adnominalt adled.
 #koncession og temporal uden konjunktion fulgt af subjekt#Ny 3.4.
 
 REMOVE:0498 Par + INTRANSVERB + 3Sg IF (*-1 ("tassa") BARRIER V LINK -1 N) ;
@@ -5856,6 +5864,7 @@ REMOVE:5859E ("ippik") IF (0 ("ippige") LINK *0W DISEASE) ;
 REMOVE:5859F ("assigaq") OR ("asser") + TAQ IF (0 ("assi") + GE OR ("assik") + GE)(*0 ("alla")) ;
 REMOVE:5859G ("asseq") IF (0 ("assi") + QAR + NNGIT) ; #illarnarnera assissaqanngilaq.
 REMOVE:5859H ("attoq") IF (0 ("attuup")) ;
+REMOVE:5859I ("anar") + HTR IF (0 ("anaana")) ; #anaanani
 
 #Partiklerne
 REMOVE:5860 ("taama") + Interj IF (0 ("taama") + Adv LINK 1 V) ;
@@ -6028,6 +6037,7 @@ SELECT:9949A HUMAN + Abs + @OBJ> + Sg IF (1 3SgO - thingobjverb); #HUMAN medtage
 #SELECT:9949 @ADVL> IF (1 V)(NEGATE 0 @OBJ> LINK -1 @OBJ>); #Disambiguerer @ADVL> og @<ADVL men må ikke hitte på kongruensadled
 SELECT:9949B TIME + Par IF (-1 BOS)(*1 VFIN); #Disambiguerer absolut concessiv og tempus fra Der/vn før 9949
 MAP:M9949B @CL-ADVL> TARGET TIME + Par IF (-1 BOS LINK *1 VFIN) ;
+REMOVE:9949C Par IF (0 TUQ + ADJEKTIVISK);
 
 SELECT:9949 @ADVL> IF (1 V)(NEGATE 0 DivPron + Nom)(NEGATE 0 Abs + Pl LINK *1 3PlO)(NEGATE 0 TIME + Par LINK -1 BOS)(NEGATE 0 Abs + Sg LINK 1 INTRANSVERB + 3Sg); #Disambiguerer @ADVL> og @<ADVL, men må ikke hitte på DivPron som subjekt og må ikke tagge objekt med 4SgPoss til TRANSVERB til højre. Må ikke hitte på absolut tempus og concessiv først i sætningen
 REMOVE:9949C Part IF (0 DivPron + 4Pl LINK *1 3Pl OR 4Pl) ;
