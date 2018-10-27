@@ -828,7 +828,7 @@ LIST SUNNI = SUNNI ;
 LIST SUR = SUR ;
 LIST SUR_UTE = SUR\=UTE ;
 LIST SUR_UTE_LIR = SUR\=UTE\=LIR ;
-LIST SURE = SURE ;
+LIST SURE = SURE NASUGE GASUGE NASURE GASURE ;
 LIST SSA = SSA ;
 LIST SSA_GALUAR = SSA\=GALUAR ;
 LIST SSA_NIR = SSA\=NIR ;
@@ -1200,14 +1200,16 @@ LIST KONJUNKTION = "aamma" "kisianni" "imaluunniit" ("immaqa" LUUNNIIT ) ;#"taav
 SET CONJ-C = LU | LUUNNIIT | LI | KONJUNKTION ; #Sideordnende konjunktioner, alenestående og efterhængte partikler
 SET CONJ-S = Conj - CONJ-C ; #Underordnende konjunktioner
 SET NUSUPnAFF = ("nusup") - AFFINGERET + CONT;
+SET QULAREnAFF = ("qulare") - AFFINGERET + CONT ;
 SET TAMAKKERnAFF = ("tamakker") - AFFINGERET + CONT ;
+SET TIKILLUGUnAFF = ("tikip") - AFFINGERET + CONT ;
 LIST ADVERBIUM = "ima" "qanoq" ; #20091109 tilfoejet 'qanoq', der maaske staar lidt malplaceret her
-SET ADVERBIEL = Adv | Pali | ("ataaseer") + CONT | ("immikkoor") | NUSUPnAFF | TAMAKKERnAFF | ("piffik") + SSAQ + TIP + CONT | PILLUGU | ADVERBIAL_DERIVATIVES | ("sapinngisaq" Ins) | ("unner") ;
+SET ADVERBIEL = Adv | Pali | ("ataaseer") + CONT | ("immikkoor") | NUSUPnAFF | TAMAKKERnAFF | ("piffik") + SSAQ + TIP + CONT | PILLUGU | QULAREnAFF | TIKILLUGU | ADVERBIAL_DERIVATIVES | ("sapinngisaq" Ins) | ("unner") ;
 LIST FOKUSPART = ("uv" Prefix/AA) ("una" Prefix/AA) "tassa" "aali" "sunaaffa" "aajuku" "aajuna" "aaku" "aana" ; #oqaqqarniutit imal. oqaaseqatigiinni oqaluutitaqanngitsut 
 LIST KONCESSIV = "massa" "naak" "uffa" "sunaaffa" ; #oqaaseqatigiinni minnerni oqaluummik pisariaqartitsisut
 LIST SPØRGEPARTIKEL = "naak" "sumi" "suna" "qanoq" ; #
 LIST TIDSPARTIKEL = "ilaanni" ("qaammat" Trm) ("ulloq" Trm) ;
-LIST CLOSE-ADV = "iluamik" ; #adverbier som står tæt på dets verbum
+LIST CLOSE-ADV = "iluamik" ; #adverbier som står tæt på deres verbum
 
 # Syntaktiske sets
 # ============
@@ -1982,7 +1984,7 @@ MAP:M0019NY @i-ADVL> TARGET ("qanoq") + Adv IF (*1 IP + N OR ("ip") + N OR ("ili
 SELECT:0020NY Interj - ("tass") - ("tassa") - ("immaqa") IF (-1 BOS)(NEGATE 0 ("ila") + 4SgPoss + Rel LINK 1 POSSESSUM3)(NEGATE 0 KONCESSIV LINK *1 Par BARRIER V)(NEGATE 0 ("taama") OR ("qanoq") LINK *1 V BARRIER (*) - Adv - Conj)
 (NEGATE 0 Sem/Unit); #TASSA holdes uden for reglen og type 'Ilami illuanut iserpoq' ikke interjektion SKAL RAFFINERES YDERLIGERE 20180427. PL: immaqa tilføjet 20180526. Måske skal i stedet immaqa+Interj helt væk?? immaqa + Part og immaqa + Interj udkommenteret fra fst 20180526
 REMOVE:0020AdHoc ("immaqa") + Pali ; #fjernet fra fst og vil ikke længere optræde efter update
-SELECT:7250 Interj IF (-1 BOS OR ("\,"))(1 EOS); #Ny 20180407 En isoleret partikel er en interjektion
+SELECT:7250 Interj IF (-1 BOS OR ("\,"))(1 EOS)(NEGATE 1 ("...")); #Ny 20180407 En isoleret partikel er en interjektion
 REMOVE:7251 Interj IF (*1 V BARRIER KOMMA)(0 Adv) ; #Ny 20180409 
 REMOVE:7252 ("taap") + Imp IF (0 ("una")) ;
 REMOVE:7253 Par IF (-1* ("una") + Prefix/AA BARRIER (*) - Abs - Part) ;
@@ -3529,7 +3531,7 @@ MAP:M0408Knum @>N TARGET PRENUM (1 Num);
 MAP:M0408R @>N TARGET Gram/ACR OR Prop IF (1 EVENT + N OR Gram/ACR - Der/nv) ;
 MAP:M0408S @>N TARGET PLACE - Prop - CONJ-C IF (1 Prop - PLACE) ; #Atuarfik Gammeqarfiup pisortaa.
 MAP:M0409 (@HNOUN) TARGET N OR Gram/Abbr OR Num IF (NEGATE *0 V)(1 ParagrafSlut)(NEGATE 0 $$KASUS LINK -1 $$KASUS LINK NOT 0 Ins + Sg - POSSESSUM); #20100827 Safe headlines
-MAP:M0410 (@HNOUN) TARGET APPELLATIV + Abs OR Prop + Abs OR Gram/Abbr - FIRSTNAME IF (NEGATE *0 VERB-NOTCONT)(NEGATE *1 TRANSVERB + CONT)(NEGATE *-1 ("tassa") LINK *1 CONT + INTRANSVERB BARRIER VFIN)(NEGATE 0 Gram/Abbr OR ("nalunaaqutaq") LINK 1 Num)(NEGATE 0 $$KASUS LINK -1 $$KASUS)
+MAP:M0410 (@HNOUN) TARGET APPELLATIV + Abs OR Prop + Abs OR Gram/Abbr - FIRSTNAME IF (NEGATE *0 VERB-NOTCONT)(NEGATE *1 TRANSVERB + CONT)(NEGATE *-1 ("tassa") LINK *1 CONT + INTRANSVERB OR Cau + INTRANSVERB BARRIER VFIN)(NEGATE 0 Gram/Abbr OR ("nalunaaqutaq") LINK 1 Num)(NEGATE 0 $$KASUS LINK -1 $$KASUS)
 (NEGATE 0 HUMAN LINK 1 MIU - Der/nv) ;
 MAP:M0411 @HNOUN TARGET WORD - V - Interj - Gram/Exclm - Pron IF (NEGATE *0 V BARRIER DIRTALESLUT)(1 EOS)(NEGATE NOT -1 ("suna") LINK 1 $$KASUS LINK -1 $$KASUS) #su tamaq undtaget
 (NEGATE 0 Conj)
@@ -4111,13 +4113,20 @@ MAP:M1148B1 @ADVL> TARGET ADVERBIEL OR ("pissut") + GE IF (*1 VFIN BARRIER V)(-1
 #pillugu er adverbiel til et verbum til højre, selvom det verbale indhold ikke vises i analysen
 MAP:M1148C1 @i-ADVL>N TARGET CONT + TRANSVERB IF (0 PILLUGU OR ("pissut") LINK 1 INDERIVERENDE_SUBSTANTIV LINK 1 EOS) ;
 
+MAP:M1148J @ADVL> TARGET ADVERBIEL (*1 V BARRIER KOMMA);
 
 MAP:M1148K @ADVL> TARGET CONT + TRANSVERB IF (*-1 ORATIOOBLVERB + TRANSVERB + 3SgO)(*1 V)(*1 @<OBJ BARRIER TRANSVERB + 3SgO); #Hvis et oo-verbum har et objekt til højre for sig, som ikke er objekt for noget andet, kan der ikke også være en cl-cit.
-MAP:M1148L @ADVL> TARGET CONT + TRANSVERB IF (*1 V - QQU) (NEGATE *-1 ORATIOOBLVERB - TAQ - Aeq BARRIER VFIN) #20170127 (NEGATE 1 Der/vn + N) #fjernet
+MAP:M1148L @ADVL> TARGET CONT + TRANSVERB IF (*1 V) (NEGATE *-1 ORATIOOBLVERB - TAQ - Aeq BARRIER VFIN) #20170127 (NEGATE 1 Der/vn + N) #fjernet
 (NEGATE 1 ORATIOOBLVERB LINK 1 KOMMA OR EOS - (":")) 
 (NEGATE 1 KOMMA LINK *-2 VFIN BARRIER KOMMA) # Forhindrer tagging af <ADVL til et andet syntagme
 (NEGATE 0 ORATIOOBLVERB LINK -1 VFIN) #Er -1 VFIN, er TARGET sandsynligvis @<ADVL
 (NEGATE 0 CONJ-C LINK 1 CONJ-C) #Kamaanniaqalugulu asaniaqalugulu. 
+(NEGATE 0 LU OR LUUNNIIT LINK *1 VFIN)
+(NEGATE 1 KOMMA)
+#(*0 ("tassa") OR ("\?") OR @PRED BARRIER KOMMA )
+#(NEGATE NOT 0 CONJ-C LINK *1S VFIN BARRIER KOMMA)
+(*0 @PRED OR ("tassa") OR ("\?"))
+(NEGATE -1S CONJ-C LINK NEGATE *1 @PRED OR ("\?"))
 ;
 
 MAP:M1148A1 @CL-<CIT TARGET CONT + TRANSVERB - ADVERBIEL IF (*-1 ORATIOOBLVERB BARRIER Par OR KOMMA)(*1 Rel BARRIER KOMMA LINK *1 Par + TRANSVERB) ; #20171010 oratio obl. fulgt af nok en or. obl.
@@ -4163,9 +4172,9 @@ MAP:M1240 (@<ADVL) TARGET Cont + 2Pl OR ContNeg + 2Pl IF (*-1 VFIN + 2Pl)(NEGATE
 MAP:M1249 (@ADVL>) TARGET CONT + 4Pl IF (*1 Par + 3Pl)(NEGATE *0 VFIN); #i sætninger af PRED2-type
 MAP:M1250 (@ADVL>) TARGET CONT + 4Pl IF (*1 VFIN + 3Pl OR CON_CAU + 3Pl OR 4Pl);
 MAP:M1251 @ADVL> TARGET CONT IF (*1 Par BARRIER VERB-NOTCONT )(NEGATE 0 ORATIOOBLVERB LINK -1 VFIN) ;
-MAP:M1255 @PRED TARGET CONT IF (NEGATE *1 @PRED OR VFIN) (NEGATE *-1  @PRED OR VFIN BARRIER @CL-ADVL> - TIME) ;
+MAP:M1255 @PRED TARGET CONT IF (NEGATE *1 @PRED OR VFIN) (NEGATE *-1  @PRED OR VFIN  OR ("tassa") BARRIER @CL-ADVL> - TIME)(NEGATE *1 Cau);# LINK 1 ("\?")) ;
 MAP:M1260 (@<ADVL) TARGET Cont + 4Pl OR ContNeg + 4Pl IF (*-1 VFIN + 3Pl)(NEGATE 0 LU);
-MAP:M1261 @PRED TARGET CONT - ADVERBIEL IF (*-1 CONJ-C - VFIN OR Conj BARRIER VFIN OR @PRED LINK *-1S VFIN OR @PRED)(NEGATE NOT 0 ORATIOOBLVERB LINK *1 CONT BARRIER CONJ-C) ;
+MAP:M1261 @PRED TARGET CONT - ADVERBIEL IF (*-1 CONJ-C - VFIN OR Conj BARRIER VFIN OR @PRED LINK *-1S VFIN OR @PRED)(NEGATE NOT 0 ORATIOOBLVERB LINK *1 CONT BARRIER CONJ-C)(NEGATE *1 @PRED BARRIER KOMMA OR CONJ-C)  ;
 MAP:M1266X (@PRED) TARGET CONT IF (-1 CONT LINK -1 LU LINK -1 KOMMA) ; #Flyttet for at forebygge hits på parataktiske hovedsætninger i M1266. Skal nok revideres.
 
 MAP:M1266Y @ADVL> TARGET CONT IF (1* CONT + @PRED BARRIER VFIN) ;
@@ -5554,6 +5563,7 @@ REMOVE:5488F ("aar") OR ("aap") IF (0 ("aallaa")) ;
 REMOVE:5488G ("tup") IF (0 ("toqqartor")) ;
 REMOVE:5488H ("tapar") IF (0 KUJUP) ;
 SELECT:5488I ("ittoor") IF (0 ("ip") OR ("ittuk")) ;
+REMOVE:5488J ("tupap") OR ("tupaq") OR ("tupaar") IF (0 ("tupaallap")) ;
 
 # Der/nv eller Der/vv?
 SELECT:5493 QATE + Der/vn + GE IF (0 QATE + Der/nn + GE)(NEGATE *-1 HUMAN + @OBJ>) ;
