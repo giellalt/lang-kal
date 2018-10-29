@@ -1265,7 +1265,7 @@ SET UGEDAGE = (/__\"arfineq\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"ataaseq\"\ 
 SET OTHERDAY = ("ullortuneq") | ("ullukinneq") ;
 SET SEASON = ("aasaq") | ("ukiaq") | ("ukioq") | ("upernaaq") ; #årstider
 #LIST MONTH = "januar" "januaari" "februar" "februaari" "marts" "marsi" "april" "apriili" "maj" "maaji" "juni" "juuni" "juli" "juuli" "august" "aggusti" "september" "septembari" "oktober" "oktobari" "november" "novembari" "december" "decembari" ;
-LIST TIMEVERB = ("assi" GIIAAR)("ingerla") ("naammassi") ("ip" TUQ U) ("qaama") ("qiteqqup"); #verber som kan have tidsudtryk som subjekt
+LIST TIMEVERB = ("assi" GIIAAR) ("ili" NIQ)("ingerla") ("naammassi") ("ip" TUQ U) ("qaama") ("qiteqqup"); #verber som kan have tidsudtryk som subjekt
 SET TEMPUSVERB = UGEDAGE | ("qaanger") | ("qaqutigut" U) | ("qiteqqup") | ("taamaali") | ("ukiar") | ("ukioq" U) ;
 LIST VERB_medGE = "ipianngu" "miki" ; #Set til stammer, der kan tage GE+Der/vv
 LIST VERB_udenUTE = "inor" ; #Set til de enormt mange verber, der ikke kan tage UTE+vn
@@ -1366,7 +1366,7 @@ SET NON_HUMAN = N - HUMAN ;
 LIST MASK = "aata" "angut" "ani" "aqqaluk" "aqqalu" "ataata" "erneq" ;
 LIST FEM = "aana" "aleqa" "anaana" "arnaq" "naja" "ningiu" "panik" ;
 
-LIST PROP_VS_APPELLATIV = "anguteq" "anguteeraq" "aqqalu" "aqqaluk" "arnaq" "arnannguaq" "inuk" "malik" "minik" "naja" "najaaraq" "najannguaq" "nuka" "paninnguaq" "Angut" "Anguteq" "Anguteĸ" "Anguteeraq" "Aqqalu" "Aqqaluk" "Arnaq" "Arnannguaq" "Inuk" "Malik" "Minik" "Naja" "Najaaraq" "Najannguaq" "Nuka" "Paninnguaq" ; #Liste med proprier, der også er sandsynlige som appellativer
+LIST PROP_VS_APPELLATIV = "anguteq" "anguteeraq" "aqqalu" "aqqaluk" "arnaq" "arnannguaq" "inuk" "malik" "minik" "naja" "najaaraq" "najannguaq" "nuka" "paninnguaq" "Angut" "Anguti" "Anguteq" "Anguteĸ" "Anguteeraq" "Aqqalu" "Aqqaluk" "Arnaq" "Arnannguaq" "Inuk" "Malik" "Minik" "Naja" "Najaaraq" "Najannguaq" "Nuka" "Paninnguaq" ; #Liste med proprier, der også er sandsynlige som appellativer
 
 LIST NON-PROP = ("eqqar" TAQ) ;
 
@@ -2015,6 +2015,8 @@ REMOVE:0001B Prop + Sem/FirstName IF (0 Prop + Sg)(-1 N + Sg)(1 N + Sg + LU)(*1 
 
 SELECT:0001Z Sem/FirstName + Abs IF (1 Prop + Sur) ; #DAGMAR Jensenip piumasaa. PL 20180613  har kun været testet på en roman. Kræver yderligere tests
 REMOVE:0001Y Sem/Hum - Sem/Mask - Sem/Fem IF (0 Sem/Hum + Sem/Mask OR Sem/Hum + Sem/Fem) ;
+
+#REMOVE:0001L ("\\p{Lu}.*"r) + Prop + PROP_VS_APPELLATIV IF (-1 BOS) (0 ("([a-z].*)"r))(NEGATE **0CW (VSTR:"$1"r))(NEGATE 0 Abs LINK *1 U OR NNGUR) ; #vælg den med lille begyndelsesbogstav hvis den samme ikke findes med stort begyndelsesbogstav i nærheden. ***
 
 #Proprium med MI er næsten altid lokativ
 REMOVE:0042 Prop + MI IF (0 Prop + Lok);
@@ -4556,7 +4558,7 @@ SELECT:0451 Par + 3Pl + TEMPUSVERB IF (-1 BOS)(*1 Abs LINK *1 VFIN + INTRANSVERB
 SELECT:0453 INTRANSVERB + Par + 3Pl IF (@1 Abs + Pl)(NEGATE *0 ORATIOOBLVERB)(*1 Abs + Pl OR (/__Gram\/Dem\ Pron__/l) + Pl LINK *1 VFIN + INTRANSVERB + 3Pl)(NEGATE 1 LU OR LIK OR QAR)(NEGATE -1 BOS OR Con OR Cau)(NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER N + Rel + Pl) ;
 #6.4. tilføjes LIK og QAR i betingelsen, fordi hit på 'Angutit SIMAARTUT arlallit .. *
 
-SELECT:0455 INTRANSVERB + Par + 3Pl IF (@1 Abs + Pl)(NEGATE *0 ORATIOOBLVERB)(*1 Abs + Sg OR (/__Gram\/Dem\ Pron__/l) + Sg LINK *1 VFIN + INTRANSVERB + 3Sg)(NEGATE 1 LU)(NEGATE -1 BOS OR Con OR Cau)(NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER N + Rel + Pl) ;
+SELECT:0455 INTRANSVERB + Par + 3Pl IF (*-1 BOS LINK 0 Abs + Pl)(NEGATE *0 ORATIOOBLVERB)(*1 Abs + Sg OR (/__Gram\/Dem\ Pron__/l) + Sg LINK *1 VFIN + INTRANSVERB + 3Sg)(NEGATE 1 LU)(NEGATE -1 BOS OR Con OR Cau)(NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER N + Rel + Pl)(NEGATE NOT **1 V + 3Pl OR 4Pl BARRIER VFIN) ;
 
 SELECT:0457 Par + NIR + 3Sg IF (*0 ORATIOOBLVERB)(NEGATE 0 ("nuap"));
 #En tidlig regel for ledsætninger med NIR. Kontekst 3 person for at forebygge hit på NIR + 4Sg (=NIQ+3.Poss+Lok)
@@ -6015,10 +6017,14 @@ MAP:M0999A @PRED2 TARGET CONT IF (1 CLB)(-*1 VFIN LINK *1 LU BARRIER (*) - KOMMA
 MAP:M0999B @<ADVL TARGET CONT IF (1 CLB)(-*1 VFIN) ;
 MAP:M0999C @PRED TARGET CONT IF (1 EOS)(NEGATE *0 V) ;
 
-#Sen regel til at disambiguere NIQ+3SgPoss fra NIQ+1SgPoss
+#REMOVE:9939AI_1SgPoss_late 1SgPoss IF (0 TIMEVERB) ; ***
+
+#Sen regel til at disambiguere NIQ+3SgPoss fra NIQ+1SgPoss ***
 REMOVE:9939AJ_1SgPoss_late NIQ + 1SgPoss IF (0 MOVE-VERB LINK *0 ORATIOOBLVERB)(NEGATE *-1 ("uanga")) # (taassuma) takkuteriasaarnera tupinnartoq paasiniassallugu periarfissarseriasaarpunga.
+ ;
+REMOVE:9939AK_1SgPoss_late NIQ + 1SgPoss IF (0 3SgPoss LINK *-1 Rel + Sg BARRIER (*) - Adv) #- Piuminaatsuuniarama, Emiliep taamatut oqarnera aappaata quiagaa.
+(NEGATE *0 1Sg BARRIER Rel - TIME) #1Sg som subjekt eller possessor # ... pulagumalu ukiut ingerlanerini ataatsimoorluta misigisarsimasavut nuannersut uterfigissagikka, qimaqqinngisaannassallugillu ukiup qanoq ilinera sumilu najugaqarnera akornutiginagit.
 ;
-REMOVE:9939AK_1SgPoss_late NIQ + 1SgPoss IF (0 3SgPoss LINK *-1 Rel + Sg BARRIER (*) - Adv); #- Piuminaatsuuniarama, Emiliep taamatut oqarnera aappaata quiagaa.
 REMOVE:9939AL_3SgPoss_late NIQ + 3SgPoss IF (-1 DIRTALESTART) ; #1SgPoss er mere sandsynlig end 3SgPoss i direkte tale; - Kanngusunnera puigorumallugu, imerajuttoq nassuerpoq sikillunilu.
 REMOVE:9939AM_1SgPoss_late NIQ + 1SgPoss IF (1* ORATIOOBLVERB BARRIER VFIN LINK NOT *1 1Sg) ; #LINK til "Sumiuunera puigorlugu uangaaginnarlanga."
 #Sen regel til at disambiguere NIQ+1SgPoss fra NIQ+3SgPoss
