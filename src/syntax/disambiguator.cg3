@@ -2002,9 +2002,9 @@ REMOVE:0001L ("\\p{Lu}.*"r) + Prop IF (0 ("([a-z].*)"r))(**0CW (VSTR:"$1"r)) ; #
 
 REMOVE:0001X ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"%l$1"r))(-1 BOS) (NEGATE 1 Prop) ;
 SELECT:0001Y ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"$1"r))(-1 BOS) ;
-REMOVE:0001Z N IF (0 PROP_VS_APPELLATIV LINK *1 HUMVERB OR humverb); #Manu iserpoq. Manu er mest sandsynligt et proprium.
+REMOVE:0001Z N IF (0 PROP_VS_APPELLATIV LINK *1 HUMVERB OR humverb)(NEGATE 0 $$KASUS LINK 1 $$KASUS); #Manu iserpoq. Manu er mest sandsynligt et proprium.
 REMOVE:0001Z N IF (0 Prop - Sem/Geo + Abs LINK *1 HUMVERB + INTRANSVERB OR humverb + INTRANSVERB); #Manu iserpoq. Manu er mest sandsynligt et proprium.
-REMOVE:0001Z N IF (0 Prop - Sem/Geo + Rel LINK *1 HUMVERB + TRANSVERB OR humverb + TRANSVERB BARRIER CONJ-C)(NEGATE 1 POSSESSUM); #Manu iserpoq. Manu er mest sandsynligt et proprium. #Ulloriaatima amerlassusii pappiliamut allariarlugit taanna pappiliaq amusartumut ileriarlugu parnaarutissara. Ulloriaatima er ikke Prop.
+REMOVE:0001Z N IF (0 Prop - Sem/Geo + Rel LINK *1 HUMVERB + TRANSVERB OR humverb + TRANSVERB BARRIER CONJ-C)(NEGATE 1 POSSESSUM)(NEGATE 0 $$KASUS LINK 1 $$KASUS); #Manu iserpoq. Manu er mest sandsynligt et proprium. #Ulloriaatima amerlassusii pappiliamut allariarlugit taanna pappiliaq amusartumut ileriarlugu parnaarutissara. Ulloriaatima er ikke Prop.
 REMOVE:0001Z1 Prop - Sem/Geo + Abs IF (0 N LINK *1 thingobjverb + TRANSVERB BARRIER INTRANSVERB) ;
 REMOVE:0001Z2 iProp IF (0 U) ; #Mikisuullunga ...
 
@@ -2016,7 +2016,7 @@ REMOVE:0001B Prop + Sem/FirstName IF (0 Prop + Sg)(-1 N + Sg)(1 N + Sg + LU)(*1 
 SELECT:0001Z Sem/FirstName + Abs IF (1 Prop + Sur) ; #DAGMAR Jensenip piumasaa. PL 20180613  har kun været testet på en roman. Kræver yderligere tests
 REMOVE:0001Y Sem/Hum - Sem/Mask - Sem/Fem IF (0 Sem/Hum + Sem/Mask OR Sem/Hum + Sem/Fem) ;
 
-#REMOVE:0001L ("\\p{Lu}.*"r) + Prop + PROP_VS_APPELLATIV IF (-1 BOS) (0 ("([a-z].*)"r))(NEGATE **0CW (VSTR:"$1"r))(NEGATE 0 Abs LINK *1 U OR NNGUR) ; #vælg den med lille begyndelsesbogstav hvis den samme ikke findes med stort begyndelsesbogstav i nærheden. ***
+REMOVE:0001V ("\\p{Lu}.*"r) + Prop + PROP_VS_APPELLATIV IF (-1 BOS)(0 ("([a-z].*)"r))(NEGATE **0CW (VSTR:"$1"r))(NEGATE 0 Abs LINK *1 U OR NNGUR)(NEGATE 0 ("Nuka") OR NNGUAQ) ; #vælg den med lille begyndelsesbogstav hvis den samme ikke findes med stort begyndelsesbogstav i nærheden.
 
 #Proprium med MI er næsten altid lokativ
 REMOVE:0042 Prop + MI IF (0 Prop + Lok);
@@ -3773,6 +3773,7 @@ MAP:M0602 @i-POSS> TARGET Prop + Rel IF (1 ("[n|N]una.*"r) + iOBLIQUE) ;
 
 MAP:M0609 @POSS> TARGET Rel + Sg - Prop IF (*1 3SgPoss BARRIER TRANSVERB + 3Sg) (NEGATE *1 Rel + LU BARRIER TRANSVERB + 3Sg)(NEGATE 1 Rel + Sg LINK 1 3SgPoss LINK *1 3PlO BARRIER V)(NEGATE 1 Adv - ("qanoq") - ("taamatut") - ("taama") - TIME) #i NN-ip aappaatalu må aappaatalu ikke opfyldebetingelsen. Næstsidste NEGATE for at blokere NN-ip NN1 ... Sidste for ikke at tagge subjekter som POSS
 (NEGATE 1 ("una") + Rel) #ataqqinartuaqqallu taassuma naaqqaataa allatulli isikkoqanngitsoq nakkutigeqqissaarsimavaa. Her lægger taassuma sig ikke til ataqqinartuaraq.
+(NEGATE 1 Rel - POSSESSUM - @N< - @<APPOS - TIME) #Angutilli Emiliep taliata aappaa imminut tulleq assammi illuanik nukersorluni tigummivaa
 ;
 MAP:M0610 (@POSS>) TARGET Rel + Pl IF (1 Lok OR Ins OR Aeq OR CONT OR TIDSPARTIKEL)(2 3PlPoss) ; #Særtilfælde med adled til possessum. TIDSPARTIKEL tilføjet 20170407
 MAP:M0611 (@POSS>) TARGET Rel + Pl IF (1 3PlPoss) ;
@@ -4176,7 +4177,7 @@ MAP:M1148E @CL-<CIT TARGET CONT OR Cau IF (*-1 ("pissut") + U OR ORATIOOBLVERB +
 
 MAP:M1149 @i-ADVL> TARGET CONT + TRANSVERB IF (-1 Gram/Coref + Pron)(1 Der/vn + 4SgPoss); #20170125 nammineq qanitarinngikkaluarlugu nalunngissimasani
 #mapper uagtet subjekt alle transitive ledsagemåder med finit til højre
-MAP:M1150 (@ADVL>) TARGET Cont + 1Sg OR ContNeg + 1Sg IF (*1 VFIN + 1Sg);
+MAP:M1150 (@ADVL>) TARGET Cont + 1Sg OR ContNeg + 1Sg IF (*1 VFIN + 1Sg)(NEGATE *1 ORATIOOBLVERB + TIP + NIQAR ) ; #Evt BARRIER CONJ-C
 MAP:M1160 (@<ADVL) TARGET Cont + 1Sg OR ContNeg + 1Sg IF (*-1 VFIN + 1Sg)(NEGATE 0 CONJ-C);
 MAP:M1161 @PRED TARGET CONT + 1Sg IF (*-1 VFIN + 1Sg LINK *0 _TARGET_ + CONJ-C) ;
 MAP:M1170 (@ADVL>) TARGET Cont + 2Sg OR ContNeg + 2Sg IF (*1 VFIN + 2Sg);
@@ -4420,6 +4421,8 @@ MAP:M1942B @PRED TARGET CONT + 4Pl IF (NEGATE *0 VFIN)(*-1 ("tassa"))(NEGATE *1 
 
 #Ungt sprog
 MAP:M1950A @SUBJ>+SUB TARGET Rel + Sg IF (*1 3Sg + HTR + @PRED BARRIER @ALLSUBJ>);
+MAP:M1950A @SUBJ>+SUB TARGET Abs + Sg IF (*1 TRANSVERB + 3Sg + TIP + @PRED BARRIER @ALLSUBJ>); #Paasissutissiisarsimanerit kukkusut pissutigalugit, Joannes Eidesgaard nunat tamalaat paasitikkusuppai Savalimmiormiut allanik eqqarsaatersortuusut.
+
 
 #@FOC + OBLIQUE + N
 MAP:M1960 @ADVL> TARGET OBLIQUE IF (-1 ("uv") OR ("tassa") OR Prefix/AA)(1 N LINK 1 EOS);
@@ -4556,9 +4559,9 @@ SELECT:0451 Par + 3Pl + TEMPUSVERB IF (-1 BOS)(*1 Abs LINK *1 VFIN + INTRANSVERB
 #En tidsbisætning som kun er participiet. Næsten som ParPred01, men uden krav om at at hovednexus ikke må være pluralis. Til gengæld med en leksikal begrænsning i 0.
 
 SELECT:0453 INTRANSVERB + Par + 3Pl IF (@1 Abs + Pl)(NEGATE *0 ORATIOOBLVERB)(*1 Abs + Pl OR (/__Gram\/Dem\ Pron__/l) + Pl LINK *1 VFIN + INTRANSVERB + 3Pl)(NEGATE 1 LU OR LIK OR QAR)(NEGATE -1 BOS OR Con OR Cau)(NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER N + Rel + Pl) ;
-#6.4. tilføjes LIK og QAR i betingelsen, fordi hit på 'Angutit SIMAARTUT arlallit .. *
+#6.4. tilføjes LIK og QAR i betingelsen, fordi hit på 'Angutit SIMAARTUT arlallit .. 
 
-SELECT:0455 INTRANSVERB + Par + 3Pl IF (*-1 BOS LINK 0 Abs + Pl)(NEGATE *0 ORATIOOBLVERB)(*1 Abs + Sg OR (/__Gram\/Dem\ Pron__/l) + Sg LINK *1 VFIN + INTRANSVERB + 3Sg)(NEGATE 1 LU)(NEGATE -1 BOS OR Con OR Cau)(NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER N + Rel + Pl)(NEGATE NOT **1 V + 3Pl OR 4Pl BARRIER VFIN) ;
+SELECT:0455 INTRANSVERB + Par + 3Pl IF (*-1 BOS LINK 0 Abs + Pl)(NEGATE *0 ORATIOOBLVERB)(*1 Abs + Sg OR (/__Gram\/Dem\ Pron__/l) + Sg LINK *1 VFIN + INTRANSVERB + 3Sg)(NEGATE 1 LU)(NEGATE -1 BOS OR Con OR Cau)(NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER N + Rel + Pl)( **1 V + 3Pl OR 4Pl BARRIER VFIN) ;
 
 SELECT:0457 Par + NIR + 3Sg IF (*0 ORATIOOBLVERB)(NEGATE 0 ("nuap"));
 #En tidlig regel for ledsætninger med NIR. Kontekst 3 person for at forebygge hit på NIR + 4Sg (=NIQ+3.Poss+Lok)
@@ -5584,6 +5587,7 @@ REMOVE:5488G ("tup") IF (0 ("toqqartor")) ;
 REMOVE:5488H ("tapar") IF (0 KUJUP) ;
 SELECT:5488I ("ittoor") IF (0 ("ip") OR ("ittuk")) ;
 REMOVE:5488J ("tupap") OR ("tupaq") OR ("tupaar") IF (0 ("tupaallap")) ;
+REMOVE:5488K (/\"taar\"\ Gram\/TV/l) IF (0 (/\"taa\"\ Gram\/TV/l)) ; #taassanngikkiga
 
 # Der/nv eller Der/vv?
 SELECT:5493 QATE + Der/vn + GE IF (0 QATE + Der/nn + GE)(NEGATE *-1 HUMAN + @OBJ>) ;
@@ -5710,7 +5714,7 @@ REMOVE:5550 PAK + LUP IF (0 PALUP) ;
 REMOVE:5551 ("qiteq") + QATE IF (0 ("qitip")) ;
 REMOVE:5552 ("niviaq") + SIAQ IF (0 ("niviarsiaq"));
 REMOVE:0553A NIQAR IF (0 NIQ + QAR LINK -1 Ins + Pl OR Ins + Num) ;
-REMOVE:5553B NIQ + QAR IF (0 NIQAR); #Sen regel udelukkende ud fra sandsynlighed
+REMOVE:5553B NIQ + QAR IF (0 NIQAR)(NEGATE -1 Ins + POSSESSUM); #Sen regel udelukkende ud fra sandsynlighed
 REMOVE:5554 ("oqaq") + LUP IF (0 ("oqalup"));
 SELECT:5554A ("oqar") + LIR IF (0 ("oqaq") + LIR) ;
 REMOVE:5555 ("oqalup") + TUQ IF (0 ("oqaluttuup"));
@@ -5954,7 +5958,7 @@ SELECT:9491A Pl + POSSESSUM IF (0 HUM + @MIK-OBJ> OR HUM + @i-MIK-OBJ>) ; #Sing 
 SELECT:9491C ("ila") + Pl + POSSESSUM IF (*1 3Pl OR 4Pl BARRIER N + Abs) ; #9491B må ikke slette subjektet i 'Ilaat qitipput'
 REMOVE:9492D Sg + PERCEPTIVE + POSSESSUM IF (*-1 Rel + Pl);
 REMOVE:9492A Sg IF (0 QATE)(NEGATE *1 Sg + N BARRIER (*) - N - Pron - Prop) ; #Una oqaluttuarisara illit kisivit piginagu inoqatinnut oqaluttuariniariuk - immaqa silattuallaataasinnaajumaarpoq.
-REMOVE:9492B Pl + POSSESSUM IF (0 Sg + POSSESSUM)(NEGATE 0 Sg + Pl)(NEGATE 1 N + Pl)(NEGATE 0 Abs LINK *1 3PlO )(NEGATE 0 HUM LINK 1 HTR)(NEGATE NOT *1 V BARRIER ("tassa") LINK *-1 _TARGET_ + Abs LINK *-1 INTRANSVERB + 3Pl BARRIER V) ; #Første NEGATE på gr. af N*+Sg+N+Pl. Andet NEGATE for skyld kongruens. Usikker probabilistisk begrundet
+REMOVE:9492B Pl + POSSESSUM IF (0 Sg + POSSESSUM)(NEGATE 0 Sg + Pl)(NEGATE 1 N + Pl)(NEGATE 0 Abs LINK *1 3PlO )(NEGATE 0 HUM LINK 1 HTR)(NEGATE NOT *1 V BARRIER ("tassa") LINK *-1 _TARGET_ + Abs LINK *-1 INTRANSVERB + 3Pl BARRIER V)(NEGATE 0 ("malip") LINK *-1 ("malip") LINK *-1 Pl - TIME - SEMIOTIC) ; #Første NEGATE på gr. af N*+Sg+N+Pl. Andet NEGATE for skyld kongruens. Usikker probabilistisk begrundet
 REMOVE:9492C Pl + 3PlPoss + $$KASUS IF (0 Sg + 3PlPoss)(NEGATE 1 Sg + $$KASUS)(NEGATE 1 Pl + $$KASUS)(NEGATE NOT *1 V BARRIER ("tassa") LINK *-1 _TARGET_ + Abs LINK *-1 INTRANSVERB + 3Pl BARRIER V)(NEGATE -1 Rel + Pl) ; #Statistisk begrundet, men forbehold for kongruensadled
 REMOVE:9500 Pl + Lok IF (0 Abs + Pl + 4SgPoss)(1 Abs + Pl LINK *1 3PlO) ;
 
@@ -5963,6 +5967,7 @@ REMOVE:5850 3PlPoss IF (-*1 @POSS> + 3SgPoss OR 4SgPoss BARRIER 3PlPoss)(0 3SgPo
 REMOVE:5851 3PlPoss IF (-*1 @POSS> + Sg )(0 3SgPoss); #vælg sing. possessor hvis sing til venstre
 REMOVE:5851B Abs + Pl IF (0 Abs + Sg)(1C Abs + Sg - POSSESSUM3) ; #Ambigiøse possessum ud fra adled eller apposition
 REMOVE:5851B Abs + Pl IF (0 Rel + Pl)(1C 3PlPoss)(NEGATE *1 TRANSVERB + 3PlO BARRIER V) ; #Ambigiøse possessum ud fra adled eller apposition
+REMOVE:5851C ("(.*)"r) + TAQ + Sg IF (0 ("$1"v) + TAQ + Pl)(**0 ("$1"v) ); #Meeqqat qaqqamut majuartut malillugit ingerlalerpoq, qaqqakkoornerli sungiusimannginnamiuk malitaminit kingullinnguukkaluttuinnarpoq. #malitaq er Pl.
 
 #Possessum sing eller plur? Hvis NIQ sandsynligvis sing
 SELECT:5852 NIQ + Sg IF (0 NIQ + Pl);
@@ -6188,6 +6193,7 @@ REMOVE:9967E (/Gram\/TV\ QQA__/l) IF (0 (/Gram\/IV\ QQA__/l)) ; #nalunaaqqanerat
 
 REMOVE:9968D (/\"paasi\"\ Gram\/IV/l) IF (0 AFFINGERET - TUQ) ;
 REMOVE:9968E (/\"misige\"\ Gram\/TV/l) + TRANSVERB IF (0 (/\"misige\"\ Gram\/IV/l) LINK NOT *-1 @OBJ> OR Rel) ; #ammaanersiornermi
+
 
 
 SECTION
