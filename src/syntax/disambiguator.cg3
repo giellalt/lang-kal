@@ -2229,7 +2229,7 @@ REMOVE:0072 Rel + Pl  IF (NEGATE *1 3PlPoss OR i3PlPoss BARRIER KOMMA)(NEGATE *0
 (NEGATE 0 Rel LINK *1 ("soorlu") LINK *1 Rel BARRIER V)
  #Nalunngereerpara ullorissat annerit atserneqarsimasut, soorlu nunarsuup ...
 (NEGATE 0 Imp + 1Pl) #sorlaasa og nuliaasa og aasami er ikke Imp...
-(NEGATE *1 ("ateq") LINK 0 LIK OR TAAQ OR QAR BARRIER V)
+(NEGATE *1 ("ateq")  BARRIER V LINK 0 LIK OR TAAQ OR QAR)
 ;
 REMOVE:0072E Abs + TIME IF (1 POSSESSUM3) ;
 REMOVE:0072E Rel + Sg + TIME IF (1 POSSESSUM3 + ("ila")) ;
@@ -2275,7 +2275,7 @@ REMOVE:0091 (Orth/Arch) IF (0 ("ila") + N + Lok + 3PlPoss) ;
 #Sidste NEGATE forebygger a (navn) b-lu fulgt af verbum i plur
 
 SELECT:0092 TAQ + Abs + Pl + 3PlPoss IF (-1 BOS)(1-**< VFIN + 3Pl)(*1 VFIN + INTRANSVERB + 3Pl);
-REMOVE:0093 3PlPoss + Abs + Pl IF (*1 VFIN + INTRANSVERB + 3Pl)(NEGATE 1 Num + Abs)(NEGATE -1 Rel + Pl LINK -1 Abs + Pl)(NEGATE 0 ("ila"))(NEGATE 1 INTRANSVERB + VFIN + 3Pl OR 3PlO)(NEGATE 1 Abs + Pl); #Fjern possessumlaesning trods mulig possessor, hvis der ikke staar et adnominalt adled og der tidligere staar et subjekt
+#REMOVE:0093 3PlPoss + Abs + Pl IF (*1 VFIN + INTRANSVERB + 3Pl)(NEGATE 1 Num + Abs)(NEGATE -1 Rel + Pl LINK -1 Abs + Pl)(NEGATE 0 ("ila"))(NEGATE 1 INTRANSVERB + VFIN + 3Pl OR 3PlO)(NEGATE 1 Abs + Pl); #Fjern possessumlaesning trods mulig possessor, hvis der ikke staar et adnominalt adled og der tidligere staar et subjekt #Mangler for mange barriers til at den kan gøre noget rigtigt...
 
 REMOVE:0146 Rel + 3PlPoss IF ( 0 Rel + 3SgPoss)(*-1 CONT + 4Sg BARRIER V) ; # Sikker singularis possessor
 
@@ -3064,6 +3064,11 @@ MAP:M0022A @PRED2 TARGET CONT + TRANSVERB + RIAR IF (-3 BOS LINK 1 Abs LINK 1 Ab
 #Tidsverber som er adverbielle og optræder som indskud
 MAP:M0022F @ADVL> TARGET iLok + U + GUNAR OR U + NNGUATSIAR IF (*1 VFIN) ; #Minimmut apriilimiugunarpoq aamma nassiutereernikuuara, paasinialaassavara misissorsimaneraa. #Tassa ukiut sisamaannguatsiarput qaangiuttut aalajangerpaat ....
 
+#Adverbielle led
+REMOVE Abs IF (1 ADVERBIEL + POSSESSUM OR SPATIAL + POSSESSUM) ;
+REMOVE Abs IF (1 CONJ-C + Rel LINK 1 ADVERBIEL + POSSESSUM OR SPATIAL + POSSESSUM - AFFINGERET);
+
+MAP:M00222A @POSS> TARGET Rel IF (1* ADVERBIEL + POSSESSUM + OBLIQUE OR SPATIAL + POSSESSUM + OBLIQUE - AFFINGERET)(NEGATE *-1 Rel BARRIER V)  ; #saniatigut
 
 #Vokativer
 MAP:M0023A @VOK TARGET Prop + Abs IF (-1 KOMMA)(1 EOS)(NEGATE *-1 §noun-comma BARRIER (*) - KOMMA) ;
@@ -3455,7 +3460,7 @@ MAP:0340A @N< TARGET Ins + $$NUMERUS IF (-1** Ins + $$NUMERUS LINK 1* KOMMA LINK
 #Til adverbale adled som står i paratakse.
 MAP:M0340B @<ADVL TARGET Ins IF (0 LUUNNIIT)(-1 Ins)(*-1 V) ;
 
-MAP:M0341 @N< TARGET Abs + Sg + Der/vn - LU IF (-*1 Abs + Sg - Sem/FirstName - TITEL - ("kinguneq") - @>N - @Pron>N - TIME BARRIER V )(NEGATE *-1 Gram/Dem LINK -1 TIME) #kinguneq tilføjet 20170425 for at undgå hit på kingorna.
+MAP:M0341 @N< TARGET Abs + Sg + Der/vn - LU IF (-*1 Abs + Sg - Sem/FirstName - TITEL - ("kinguneq") - @>N - @Pron>N - TIME BARRIER V OR ("soorlu") )(NEGATE *-1 Gram/Dem LINK -1 TIME) #kinguneq tilføjet 20170425 for at undgå hit på kingorna.
 (*1 3SgO BARRIER KOMMA)
 (NEGATE -1 Abs + Sg LINK *1 CONT + 3SgO LINK *1 INTRANSVERB + 3Sg BARRIER KOMMA OR VFIN) #Sidste NEGATE fordi TARGET er objekt i sekvensen SUBJ+Abs : OBJ : CONT+3SgO : INTRANSVERB+3Sg.
 (NEGATE -1 Part + LU LINK -1 Abs ) # Ikke Sem/FirstName+Abs og ikke TITEL fordi de ikke har syntaktisk funktion i sig selv. 
