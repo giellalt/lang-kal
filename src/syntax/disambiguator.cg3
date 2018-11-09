@@ -3355,6 +3355,7 @@ MAP:M0225E @<ADVL ("aamma") IF (*-1 V)(1 CLB) ;
 
 REMOVE:0225F ("aamma") + Conj IF (*-1C V BARRIER N)(NEGATE *1C V) ;
 REMOVE:0225G ("aamma") + Conj IF (1 V)(NEGATE -*1 V BARRIER (*) - KOMMA) ;
+REMOVE:0225F ("aamma") + Conj IF (1 NIQ + Abs - POSSESSUM LINK 1 ("saper") OR ("ajor"))(NEGATE -*1 V BARRIER (*) - KOMMA) ;
 #SELECT:0225F ("aamma") + Conj IF (NEGATE *-1 V BARRIER ("tassa")) ;
 #SELECT:0225F ("aamma") + Conj IF (NEGATE *-1 V BARRIER ("tassa") LINK *1 _TARGET_ LINK NEGATE *1 V) ;
 #SELECT:0225F ("aamma") + Adv IF (NEGATE *-1C V BARRIER N)(*1C V) ;
@@ -3366,7 +3367,7 @@ SELECT ("aamma") + Conj IF (*1 ("(.*)"r))(*-1 ("$1"v)) ; #Vælg Conj hvis samme 
 REMOVE:0229 KONJUNKTION + Adv IF (0 KONJUNKTION + Conj)(T:NexusVenstre LINK NOT 0 ORATIOOBLVERB)(T:NexusHøjre) ;
 #Variant til 2 nexuser uden eksplicit subjekt men med komma
 REMOVE:0229A KONJUNKTION + Adv IF (0 KONJUNKTION + Conj)(-1 KOMMA LINK -1 VFIN)(*1 VFIN) ;
-SELECT:0229B KONJUNKTION + Conj IF (-1 N + $$KASUS)(1 N + $$KASUS) ;
+SELECT:0229B KONJUNKTION + Conj IF (-1 N + $$KASUS)(1 N + $$KASUS);#*** LINK NOT 0 NIQ + Abs LINK 1 ("ajor") OR ("saper")) ;
 SELECT:0229C Conj IF (*1 GALUAR BARRIER VFIN)(-1 KOMMA OR CLB) ; #Anigaluarlungaluunniit qiianngilanga, aali minus 5 gradiugaluartoq.
 
 
@@ -4885,6 +4886,7 @@ REMOVE:1681A 1SgPoss IF (0 Aeq)(NEGATE *1 1Sg) ;
 REMOVE:1681B 2SgPoss IF (0 Prop LINK 1 iProp) ;
 
 REMOVE:1682 2SgPoss IF (0 NUMHOVED) ; #kapitalit pingajuanniippoq.
+REMOVE:1683 POSSESSUM12 IF (0 Pl - POSSESSUM)(*1 NIQAR) ;
 
 SELECT Abs + Sg IF (1 Cont + 3SgO)(NEGATE 0 Pali OR Conj OR Adv) ; #reglen sletter fx ilaannilu før Vb-TARlugu
 SELECT Abs + Pl IF (1 Cont + 3PlO)(NEGATE 0 Adv) ;
@@ -4988,7 +4990,10 @@ REMOVE:1802 Rel + 4SgPoss IF (0 PLACE + Lok) ;
 #SELECT:1802 PLACE + Lok IF (0 Rel + 4SgPoss) ; # mange fejlhit på fx atuarfimmi og oqaluffimmi
 
 SELECT:1803 (Ins @i->N) IF (-1 (Ins @i->N))(0 LU)(*1 QAR OR LIK) ;
-SELECT:1804 (Ins @i->N) IF (*1 QAR OR LIK BARRIER V )(NEGATE 0 Adv)(NEGATE 0 ("alla"))(NEGATE 0 LUUNNIIT) ;
+SELECT:1804 (Ins @i->N) IF (*1 QAR OR LIK BARRIER V )(NEGATE 0 Adv)(NEGATE 0 ("alla"))(NEGATE 0 LUUNNIIT) 
+;
+SELECT:1805 LIK IF (*-1 @i->N) ; #- Tiigerimmi ipittunik kukilissuit takkuteriaannaapput.
+
 #Numeruskongruent subjekt til højre er sikker, hvis intet finit verbum til venstre
 SELECT (@<SUBJ Pl Abs) IF (-*1 INTRANSVERB + 3Pl BARRIER ("\,"))(NEGATE *1 VFIN) ;
 SELECT (@<SUBJ Sg Abs) IF (-*1 INTRANSVERB + 3Sg)(NEGATE *1 VFIN)(NEGATE 0 LU LINK -1 KOMMA) ;
@@ -5087,12 +5092,12 @@ SELECT 4Pl IF (0C (@CL->N))(1 (N Pl)); # eksperimentell
 REMOVE (Rel @N<) IF (NEGATE -1 (N Rel));
 	## Atuagaq Trosterudip tiguaa.
 
-REMOVE:KasusKongruens $$NOT-REL + @N< IF (NEGATE -1 $$NOT-REL OR Rel);
+#REMOVE:KasusKongruens $$NOT-REL + @N< IF (NEGATE *-1 $$NOT-REL OR Rel);
 
-REMOVE (Abs @N<) IF (NEGATE -1 Abs OR Rel);
+REMOVE (Abs @N<) IF (NEGATE -*1 Abs BARRIER VFIN)(NEGATE 0 V);
 REMOVE (Lok @N<) IF (NEGATE -1 Lok OR Rel);
 REMOVE (Trm @N<) IF (NEGATE -1 Trm OR Rel);
-REMOVE (Abs @N<) IF (NEGATE -1 Abs OR Rel);
+#REMOVE (Abs @N<) IF (NEGATE -1 Abs OR Rel);
 REMOVE (Ins @N<) IF (NEGATE -1 Ins OR Rel);
 REMOVE (Aeq @N<) IF (NEGATE -1 Aeq OR Rel);
 REMOVE (Via @N<) IF (NEGATE -1 Via OR Rel);
@@ -5436,9 +5441,10 @@ SELECT:8457 @POSS> IF (1 Ins)(2 POSSESSUM) ;
 SELECT:8458 @POSS> IF (1 POSSESSUM)(NEGATE 0 Lok + PLACE) ;
 REMOVE:8458A @POSS> IF (NEGATE *1 POSSESSUM CBARRIER (*) - @N< - @>N - @i->N - @POSS> - @i-ADVL>) ;
 
+SELECT:8458B @A< IF (-1 OBLIQUE) ; #Maani najukkanni nillernermik.
 
 SELECT:8459X Abs + Pl + @SUBJ> IF (*-1 ORATIOOBLVERB)(*1 Par + 3Pl); #Subjekt for Par th må ikke læses som Par selv 
-SELECT:8459 Abs + Pl + @SUBJ> - LU IF (*1 INTRANSVERB + 3Pl OR 4Pl BARRIER V )(NEGATE 0 Lok LINK *-1 @SUBJ>)(NEGATE 0 Par LINK *-1 ORATIOOBLVERB); #mange fejlhit på lokalis. Udelades fra denne regel. Skal ikke SELECTe indirekte tale. LU udeladt
+SELECT:8459 Abs + Pl + @SUBJ> - LU IF (*1 INTRANSVERB + 3Pl OR 4Pl BARRIER V )(NEGATE 0 Lok LINK *-1 @SUBJ>)(NEGATE 0 Par LINK *-1 ORATIOOBLVERB)(NEGATE NOT 0 CONJ-C LINK *-1 @SUBJ> BARRIER CONJ-C OR VFIN OR KOMMA); #mange fejlhit på lokalis. Udelades fra denne regel. Skal ikke SELECTe indirekte tale. LU udeladt
 REMOVE:8460X Abs + @SUBJ> + 4SgPoss - LU #må ikke hitte på parataktiske subjekt-NP
  IF (NEGATE *-1 3Sg)
 (NEGATE *1 CON_CAU + 3Sg LINK *1 VFIN + 3Sg)#Må ikke slette 4SgPoss subjekt for CON_CAU 
@@ -6376,7 +6382,8 @@ SUBSTITUTE:S0041 @OBJ> @N< TARGET Gram/Cong + Akk IF (-1 N + Rel LINK *2 TRANSVE
 
 SUBSTITUTE:S0042 @INTERJ @ADVL> TARGET ("qam") + Interj IF (-1 BOS)(*1 VFIN + PALLAP OR VFIN + PALUP); #Talesprogsnær brug af interjektion adverbielt: Taqqama angerpallappoq er helt identisk med Taqqamani el. Taqqamannga
 SUBSTITUTE:S0043 @i-N< @N< TARGET N + $$KASUS IF (*-1 @i-N< + $$KASUS BARRIER KOMMA OR CONJ-C OR @CONJ)(NEGATE 0 CONJ-C)(NEGATE 0 POSSESSUM LINK NOT *-1 @POSS> LINK *-1 N + $$KASUS + $$NUMERUS) ;
-SUBSTITUTE:S0044 (/@.*/r) (@N<) TARGET (/__TUQ\ Der\/vn\ N__/l) + $$KASUS + Pl + (/@\(<?SUBJ>?|<?OBJ>?|SUBJ_COMP|<?MIK-OBJ>?\)/r) (**-1 N + $$KASUS BARRIER (*) - @i-ADVL> - @i-MIK-OBJ> - @N< LINK 0 (VSTR:/@$1/r) LINK **-1 N + $$KASUS LINK 0 (VSTR:/@$1/r))(NEGATE 0 CONJ-C) ; #aajuku nukappiaraq aamma niviarsiaraq nikorfasut.
+#SUBSTITUTE:S0044 (/@.*/r) (@N<) TARGET (/__TUQ\ Der\/vn\ N__/l) + $$KASUS + Pl + (/@\(<?SUBJ>?|<?OBJ>?|SUBJ_COMP|<?MIK-OBJ>?\)/r) (**-1 N + $$KASUS BARRIER (*) - @i-ADVL> - @i-MIK-OBJ> - @N< LINK 0 (VSTR:/@$1/r) LINK **-1 N + $$KASUS LINK 0 (VSTR:/@$1/r))(NEGATE 0 CONJ-C) ; #aajuku nukappiaraq aamma niviarsiaraq nikorfasut.
+SUBSTITUTE:S0044 (/@.*/r) (@N<) TARGET (/__TUQ\ Der\/vn\ N__/l) + $$KASUS + (/@\(<?SUBJ>?|<?OBJ>?|SUBJ_COMP|<?MIK-OBJ>?\)/r) - CONJ-C (**-1 N + $$KASUS BARRIER (*) - @i-ADVL> - @i-MIK-OBJ> - @i-POSS> - @N< - KOMMA LINK 0 (VSTR:/@$1/r))(NEGATE 0 @OBJ> LINK *-1 OBJVERB LINK *-1 @OBJ>);
 SUBSTITUTE:S0045 @OBJ> @PROP> TARGET §PropNexusSg  + @OBJ> IF (0 @OBJ> LINK 1 @OBJ>) ;
 SUBSTITUTE:S0046 @SUBJ> @PROP> TARGET §PropNexusSg + @SUBJ> IF (0 @SUBJ> LINK 1 @SUBJ>) ;
 #SUBSTITUTE §noun-comma (*) TARGET N ;
