@@ -2498,7 +2498,7 @@ REMOVE:0155B Prop + (".*ĸ.*"r) IF (0 Prop) (0 (".*q.*"r) - OLang/DAN OR (".*gp.
 SELECT:0156 ("Guuti") + Prop + Sg IF ( 0 ("<\\p{Lu}.*>"r)) ;
 REMOVE:0157 Par + 3Pl IF (0 INSTITUTION) ;
 
-REMOVE:0160 Via IF (0 NAME + KKUT LINK *1 3Pl OR 3PlO ) ;
+REMOVE:0160 Via IF (0 NAME + KKUT LINK *1 3Pl OR 3PlO )(NEGATE 0 ("alla") LINK -1 BOS) ;
 # Filtrerer Via fra NAME + KKUT som subjekt eller objekt
 
 REMOVE:0170 ("\\p{Lu}.*i"r) IF (0 ("\\p{Lu}.*[^i]"r)) ;
@@ -4707,7 +4707,7 @@ SELECT:0419 Par IF (-*1 ("soorlu") BARRIER ("\,"))(NEGATE *0 VFIN BARRIER KOMMA)
 #Egentlig tidsbisætning med vistnok helt sikker kontekst
 SELECT:0420 Par + 3Sg  IF (0 TEMPUSVERB)(-1 Abs + Sg)(-*1 TIME)(*1 VFIN - 3Sg);
 
-SELECT:0422 Par + 3Sg (-*1 Abs + Sg + TIME OR WEATHER)(*1 Abs + Sg - Gram/Comp OR Adj + 4Sg LINK *1 VFIN + 3Sg)(NEGATE 0 $$KASUS + LU LINK -1 $$KASUS)  ; #2009115 ', immaqalu ulloq naanngitsoq qattuneq tamarmi qanganngoreersimassaaq.'
+SELECT:0422 Par + 3Sg (-*1 Abs + Sg + TIME OR WEATHER LINK NOT 0 V)(*1 Abs + Sg - Gram/Comp OR Adj + 4Sg LINK *1 VFIN + 3Sg)(NEGATE 0 $$KASUS + LU LINK -1 $$KASUS)  ; #2009115 ', immaqalu ulloq naanngitsoq qattuneq tamarmi qanganngoreersimassaaq.'
 
 REMOVE:0423 Par IF (0 Abs + Sg)(1 @CON + 3Sg OR @CON + 4Sg) ;
 
@@ -5830,6 +5830,7 @@ SELECT:5488N animalverb IF (*0 ANIMAL) ; #puivoq - tikaagullik
 REMOVE:5488O ("usinger") + JA IF (0 ("usingiar")) ;
 REMOVE:5488P ("imaar") OR ("imar") IF (0 ("imaap") OR ("imaali")) ;
 REMOVE:5488Q ("imaap") + LIR IF (0 ("imaali")) ;
+REMOVE:5488R ("eqqumiip") IF (0 ("eqqumiige")) ;
 
 # Der/nv eller Der/vv?
 SELECT:5493 QATE + Der/vn + GE IF (0 QATE + Der/nn + GE)(NEGATE *-1 HUMAN + @OBJ>) ;
@@ -6144,7 +6145,7 @@ REMOVE:5783 ("Nalunaarsuutit") IF (0 ("nalunaaqutaq") OR ("nal")) (NEGATE 1 Num 
 REMOVE:5884 Prop IF (0 ("naasoq") LINK *0 ("naa")) ;
 REMOVE:5885 Prop IF (0 ("alla") - AFFINGERET + OBLIQUE) ;
 REMOVE:5886 Prop IF (0 TOOL)(*0 TOOLTHING) ;
-REMOVE:5887 Prop + ("Una") IF (-1 BOS)(NEGATE *0W ("ateq")) ;
+REMOVE:5887A Prop + ("Una") IF (-1 BOS)(NEGATE *0W ("ateq")) ;
 
 REMOVE:5840 ("Piita") IF (0 ("Piitaq")) ; #Et rent stochastisk gæt
 REMOVE:5841 ("Greenland") + geoProp IF (0 humProp LINK -1 ("Air")) ; #Særregel til Air Greenland
@@ -6463,6 +6464,7 @@ REMOVE:9967E (/Gram\/TV\ QQA__/l) IF (0 (/Gram\/IV\ QQA__/l)) ; #nalunaaqqanerat
 
 REMOVE:9968D (/\"paasi\"\ Gram\/IV/l) IF (0 AFFINGERET - TUQ) ;
 REMOVE:9968E (/\"misige\"\ Gram\/TV/l) + TRANSVERB IF (0 (/\"misige\"\ Gram\/IV/l) LINK NOT *-1 @OBJ> OR Rel) ; #ammaanersiornermi
+REMOVE:9968F (/\"qui\"\ Gram\/TV\/l) IF (NEGATE *-1 Abs BARRIER V) ; #skal have objekt
 
 
 
@@ -6498,6 +6500,8 @@ SUBSTITUTE:S0033B (/@.*/r) (@N<) TARGET $$@FUNC + $$KASUS + $$NUMERUS - Sem/Unit
 SUBSTITUTE:S0034 @ADVL> @OBJ-DOTR> TARGET Ins OR Trm IF (*1C Gram/Db BARRIER (*) - @N< - TIME - TOOL) ;
 SUBSTITUTE:S0035 @i-ADVL> @i-OBJ-DOTR> TARGET Ins OR Trm IF (*1C Gram/Db BARRIER (*) - @N< - TIME - TOOL) ;
 SUBSTITUTE:S0037A @SUBJ> @N< TARGET Gram/Cong + Nom IF (*-1C @SUBJ>) ;
+SUBSTITUTE:S0037A @SUBJ> @N< TARGET Abs IF (*-1C Abs + @SUBJ> BARRIER V OR CLB LINK *1 _TARGET_ LINK *1 INTRANSVERB + (/.Sg/r) BARRIER V)(*1 VFIN BARRIER V) ; #Taamaalisorlu suialaarneq nillertoq alanngup suialaarnera aqqusinermi suialaalerpoq,
+SUBSTITUTE:S0037A @SUBJ> @N< TARGET Rel IF (*-1C Rel + @SUBJ> BARRIER V OR CLB OR POSSESSUM OR iPOSSESSUM LINK *1 _TARGET_ LINK *1 VFIN + TRANSVERB + (/.Sg\ /l) BARRIER V OR POSSESSUM OR iPOSSESSUM) ; #, Nukissiorfinni ingerlatsinermut siunnersortip Niels Christian Nielsenip qularinngilaa.
 SUBSTITUTE:S0037F (/@.*/r) (@N<) TARGET Gram/Cong + OBLIQUE + (/@\(.*\)/r) IF (0 $$KASUS LINK -1 (VSTR:/@$1/r) + OBLIQUE + $$KASUS)(NEGATE 0 1Sg OR 2Sg OR 1Pl OR 2Pl) ;
 SUBSTITUTE:S0038 @HNOUN @N< TARGET Abs IF (*-1 @HNOUN + PROP BARRIER V)(NEGATE 0 LU)(NEGATE -1 ("aamma"))(NEGATE *-1 LU)(NEGATE *-1 Interj) ; #Til nominalsyntagmer uden verber, men ikke til opremsninger. #Rasmusinnguaq angut pitsak, maligassaq!
 SUBSTITUTE:S0039A @ADVL> @N< TARGET ATTRIBUTIV + $$KASUS (-1 $$KASUS + N)(NEGATE 0 CONJ-C) ;
