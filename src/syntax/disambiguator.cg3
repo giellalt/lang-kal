@@ -1125,7 +1125,8 @@ SET KONGRUENSADLED = N + $$KASUS + $$NUMERUS ;
 SET NÆPPE-POSS = (/__TUQ\ Der\/vn\ N\ Rel\ Sg\ 4PlPoss__/l) | (/__TUQ\ Der\/vn\ N\ Rel\ Pl\ 4PlPoss__/l) ; #SET til forebyggelse af uheldige sletninger af Ins. PL 20181017
 SET ALL_OBLIQUE = OBLIQUE | iOBLIQUE ;
 
-
+SET POSSESSUM1 = (N 1SgPoss) | (iN i1SgPoss) | (N 1PlPoss) | (iN i1PlPoss) ;
+SET POSSESSUM2 = (N 2SgPoss) | (iN i2SgPoss) | (N 2PlPoss) | (iN i2PlPoss) ;
 SET POSSESSUM3 = (N 3SgPoss) | (N 3PlPoss) | (iN i3SgPoss) | (iN i3PlPoss) | (Num 3SgPoss) | (Num 3PlPoss) | (Prop 3SgPoss) | (Prop 3PlPoss) | (iProp i3SgPoss) | (iProp i3PlPoss) | (DivPron 3PlPoss) ;
 SET POSSESSUM4 = (N 4SgPoss) | (N 4PlPoss) | (iN i4SgPoss) | (iN i4PlPoss) ;
 SET POSSESSUM12 = (N 1SgPoss) | (N 2SgPoss) | (iN i1SgPoss) | (iN i2SgPoss)| (N 1PlPoss) | (N 2PlPoss) | (iN i1PlPoss) | (iN i2PlPoss) ;
@@ -1134,6 +1135,8 @@ SET POSSESSUM = POSSESSUM12 OR POSSESSUM3 OR POSSESSUM4 ;
 
 SET NOT-POSSESSUM = N - POSSESSUM ;
 
+SET iPOSSESSUM1 = (iN i1SgPoss) | (iN i1PlPoss) ;
+SET iPOSSESSUM2 = (iN i2SgPoss) | (iN i2PlPoss) ;
 SET iPOSSESSUM3 = (iN i3SgPoss) | (iN i3PlPoss) | (iNum i3SgPoss) | (iNum i3PlPoss) ;
 SET iPOSSESSUM4 = (iN i4SgPoss) | (iN i4PlPoss) ;
 SET iPOSSESSUM12 = (iN i1SgPoss) | (iN i2SgPoss) | (iN i1PlPoss) | (iN i2PlPoss) ;
@@ -1341,7 +1344,7 @@ SET sinerOBJ = GEOOBJ | Prop ;
 LIST SEMIOTIC = ("titartar" TAQ) "aviisi" ("atuar" TAQ) "bloggeri" "blog" "blogger" "Ekstra Bladet" ; #blogger er egentlig ikke semiotic
 LIST PERCEPTIVE = "nipi" ;
 LIST WEATHER = "alanngoq" "anori" "naqitsiniisaffik" "nuiaq" "seqineq" "sialuk" "sila" ;
-LIST WEATHERVERB = "siorsup" ;
+LIST WEATHERVERB = "aappiller" "qaama" "qinngor" "siorsup" "suialaar" "tarrip" ;
 SET EXCLAMATION = ("tipi" N) | (SSUSIQ 3SgPoss) | (SSUSIQ Pl 3PlPoss) | WEATHER ;
 
 # Proprier
@@ -1692,6 +1695,7 @@ REMOVE:0147F (/__NIAQ\ Der\/vn\ GE__/l) IF (0 NIAR + Par) ; # aaniaraanga er ikk
 REMOVE:0147G ("ullor") IF (0 ("ulloq")) ;
 REMOVE:0147H ("iluaq" GE) IF (0 ("iluar" GE)) ;
 REMOVE:0147I ("aa") IF (0 ("aana") OR ("aanaq")) ;
+REMOVE:0157J ("silat") + CONJ-C ; #silallu
 
 REMOVE:0040I NAAR - NAAR_VERBER ; #Sletter irriterende fejlanalyser med NAAR på verber, der ikke kan indeholde et element af vurdering
 
@@ -2435,15 +2439,26 @@ REMOVE:0123 Via + POSSESSUM12 IF (1 ("illu")) ; #Kulturikkut Illorsua
 REMOVE:0123 Aeq + POSSESSUM - AFFINGERET IF (0 Aeq LINK NEGATE 0 Ins OR Lok OR Trm OR Abl OR Via)(*1 TIGE BARRIER (*) - Aeq) ; #Inuppassuit *uniaaluttut ulapitsigalutik ingerlarsortut tunuanni takulerpara ikittaartumik allaqqasorsuaq: “Welcome to New York!”. #Piitaq aleqamisut angitigivoq.
 
 # 1SgPoss vs. 3SgPoss - semantic rules
-SELECT:0065_3SgPoss_semanticA POSSESSUM3 IF (0 WEATHERVERB + N)(*-1 WEATHER + Rel) ;
+SELECT:0065_3SgPoss_semanticA POSSESSUM3 OR iPOSSESSUM3 IF (0 WEATHERVERB + N)(*-1 WEATHER + Rel BARRIER KOMMA OR VERB-NOTCONT) ;
+SELECT:0065_3SgPoss_semanticB POSSESSUM3 OR iPOSSESSUM3 IF (0 TIMEVERB + N)(*-1 TIME + Rel BARRIER KOMMA OR VERB-NOTCONT) ;
+SELECT:0065_3SgPoss_semanticC POSSESSUM3 OR iPOSSESSUM3 IF (*-1 WEATHER + Rel BARRIER (*) - Adv) ; #Nappaatit, silap qanoq innera naalakkersuisullu pillugit tusagaqarusunngilanga.
+SELECT:0065_3SgPoss_semanticD POSSESSUM3 OR iPOSSESSUM3 IF (*-1 TIME + Rel BARRIER (*) - Adv) ; #Nappaatit, silap qanoq innera naalakkersuisullu pillugit tusagaqarusunngilanga.
+
+# POSSESSUM safe rules
+SELECT:0124_1SgPoss 1SgPoss OR i1SgPoss IF (*-1 Gram/Pers + 1Sg + Rel BARRIER VERB-NOTCONT OR Pron - 1Sg) ; #Uanga terianniamik kammaqarsimanera nuannaarutigeqaara...
+SELECT:0124_2SgPoss 2SgPoss OR i2SgPoss IF (*-1 Gram/Pers + 2Sg + Rel BARRIER VERB-NOTCONT OR Pron - 2Sg) ; #Illilli ulloriamineeqqanni issiavik nikisilaaginnarlugu seqernup unnukkut aappillernera takusinnaasarpat...
+SELECT:0124_1PlPoss 1PlPoss OR i1PlPoss IF (*-1 Gram/Pers + 1Sg + Rel + CONJ-C OR Gram/Pers + 1Pl + Rel BARRIER VERB-NOTCONT OR Pron - 1Sg) ; 
+SELECT:0124_2PlPoss 2PlPoss OR i2PlPoss IF (*-1 Gram/Pers + 2Sg + Rel + CONJ-C OR Gram/Pers + 2Pl + Rel BARRIER VERB-NOTCONT OR Pron - 2Sg - 2Pl) ; 
+
+SELECT:0125_1SgPossx 1SgPoss IF (*-1 VERB-NOTCONT + 1SgO BARRIER (*) - 1Sg) ; # - ... Nujuillisarsinnaagummali inuunera qaamanerulissagaluarpoq. #Burde kræve at der et sted til venstre (x vinduer) er DIRTALESTART.
+
 
 # 1SgPoss vs. 3SgPoss
-SELECT:0065_3SgPoss 3SgPoss IF (-*1C Rel + Sg BARRIER (*) - (Cont 4Sg) - (ContNeg 4Sg))(NEGATE *1 VERB-NOTCONT + TRANSVERB + 3Sg BARRIER VFIN);
+SELECT:0065_3SgPoss_possessor 3SgPoss IF (-*1C Rel + Sg BARRIER (*) - CONT)(NEGATE *1 VERB-NOTCONT + TRANSVERB + 3Sg BARRIER VFIN);
 REMOVE:0123_1SgPoss NOT-REL + 1SgPoss IF (NEGATE -1 ("uanga"))(NEGATE *0 V + 1Sg)(NEGATE 1* (<<<) LINK 1*W V + 1Sg BARRIER VFIN OR (<<<))(NEGATE 0 FAM + POSSESSUM + Ins LINK *1 HTR) # Sidste NEGATE forebygger sletning af possessum i mik-objekter når der er tale om familiebetegnelser
 (NEGATE -1 DIRTALESTART ) #- Inuunera assigiiaaginnarpoq.
 (NEGATE -1 Con + 1SgO) #Nujuillisarsinnaagummali inuunera qaamanerulissagaluarpoq.
 ;
-SELECT:0124_1SgPoss 1SgPoss IF (-1 ("uanga") + 1Sg) ;
 SELECT:0125_1SgPoss 1SgPoss IF (*-1 Con + 1SgO BARRIER (*) - 1Sg)(*-1W 1Sg) ; # - ... Nujuillisarsinnaagummali inuunera qaamanerulissagaluarpoq. #Burde kræve at der et sted til venstre (x vinduer) er DIRTALESTART.
 
 
