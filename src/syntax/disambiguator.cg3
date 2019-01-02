@@ -2039,10 +2039,8 @@ SELECT:7254 Interj IF (-1 KOMMA LINK 2 KOMMA) ; # ..., assaa, ...
 SELECT:7254 3PlPoss + Pl + EXCLAMATION IF (0 3SgPoss + Pl + EXCLAMATION) ; #ilalu ersisuittarsimassusii
 REMOVE:7255A Interj IF (0 Adv) (*-1 Rel BARRIER (*) - Adv - CONT) (*1 POSSESSUM BARRIER (*) - Adv - CONT) ;
 
-
 ### PROPRIUM ###
 #==============#
-
 #Arnaq i første position er et reelt problem
 REMOVE:0001L ("\\p{Lu}.*"r) + Prop IF (0 ("([a-z].*)"r))(**0CW (VSTR:"$1"r)) ; #vælg den med lille begyndelsesbogstav hvis den samme findes med lille begyndelsesbogstav i nærheden.
 
@@ -3065,7 +3063,6 @@ MAP:M0409BX @OBJ> TARGET Abs + Pl + 4SgPoss - Orth/Arch IF (*1 Abs + Pl LINK *1 
 
 
 
-
 #Temporale og koncessive sætninger efter punktum eller komma. Må ikke hitte på nominale paratakser og paratakser med possessor på andet led og ikke på opremsninger med komma. Heller ikke subjekter for CON_CAU eller objekter for transverb umiddelbart til højre
 #Regel 0410X forebygger hit på adnominaler i specifikke kontekster
 SELECT:0410X HTR + TUQ + Pl IF (@1 Pl LINK 1 Ins LINK *1 V + 3Pl);
@@ -3617,7 +3614,7 @@ MAP:0340A @N< TARGET Ins + $$NUMERUS IF (-1** Ins + $$NUMERUS LINK 1* KOMMA LINK
 #Til adverbale adled som står i paratakse.
 MAP:M0340B @<ADVL TARGET Ins IF (0 LUUNNIIT)(-1 Ins)(*-1 V) ;
 
-MAP:M0341 @N< TARGET Abs + Sg + Der/vn - LU IF (-*1 Abs + Sg - Sem/FirstName - TITEL - ("kinguneq") - @>N - @Pron>N - TIME BARRIER V OR ("soorlu") OR CONJ-C )(NEGATE *-1 Gram/Dem LINK -1 TIME) #kinguneq tilføjet 20170425 for at undgå hit på kingorna.
+MAP:M0341 @N< TARGET Abs + Sg + Der/vn - LU IF (-*1 Abs + Sg - Sem/FirstName - TITEL - ("kinguneq") - @>N - @Pron>N - TIME BARRIER V OR ("soorlu") OR CONJ-C OR Gram/Pers)(NEGATE *-1 Gram/Dem LINK -1 TIME) #kinguneq tilføjet 20170425 for at undgå hit på kingorna.
 (*1 3SgO BARRIER KOMMA)
 (NEGATE -1 Abs + Sg LINK *1 CONT + 3SgO LINK *1 INTRANSVERB + 3Sg BARRIER KOMMA OR VFIN) #Sidste NEGATE fordi TARGET er objekt i sekvensen SUBJ+Abs : OBJ : CONT+3SgO : INTRANSVERB+3Sg.
 (NEGATE -1 Part + LU LINK -1 Abs ) # Ikke Sem/FirstName+Abs og ikke TITEL fordi de ikke har syntaktisk funktion i sig selv. 
@@ -3718,7 +3715,8 @@ MAP:M0408R @>N TARGET Gram/ACR OR Prop IF (1 EVENT + N OR Gram/ACR - Der/nv) ;
 MAP:M0408S @>N TARGET PLACE - Prop - iProp - CONJ-C IF (1 Prop - PLACE) ; #Atuarfik Gammeqarfiup pisortaa.
 MAP:M0409 (@HNOUN) TARGET N OR Gram/Abbr OR Num IF (NEGATE *0 V)(1 ParagrafSlut)(NEGATE 0 $$KASUS LINK -1 $$KASUS LINK NOT 0 Ins + Sg - POSSESSUM); #20100827 Safe headlines
 MAP:M0410 (@HNOUN) TARGET APPELLATIV + Abs OR Prop + Abs OR Gram/Abbr - FIRSTNAME IF (NEGATE *0 VERB-NOTCONT)(NEGATE *1 TRANSVERB + CONT)(NEGATE *-1 ("tassa") LINK *1 CONT + INTRANSVERB OR Cau + INTRANSVERB BARRIER VFIN)(NEGATE 0 Gram/Abbr OR ("nalunaaqutaq") LINK 1 Num)(NEGATE 0 $$KASUS LINK -1 $$KASUS)
-(NEGATE 0 HUMAN LINK 1 MIU - Der/nv) ;
+(NEGATE 0 HUMAN LINK 1 MIU - Der/nv)
+(NEGATE 0 Sg LINK *1 CONT + 4Sg) ;
 MAP:M0411A @HNOUN TARGET WORD - V - Interj - Gram/Exclm - Pron IF (NEGATE *0 V BARRIER DIRTALESLUT)(1 EOS)(NEGATE NOT -1 ("suna") LINK 1 $$KASUS LINK -1 $$KASUS) #su tamaq undtaget
 (NEGATE 0 Conj)
 ;
@@ -6413,7 +6411,7 @@ SELECT:9939_1SgPoss_obj_clcitB POSSESSUM1 IF (0 @<OBJ) (*1 @CL-CIT> + 1Sg + TRAN
 SELECT:9939_1SgPoss_obj_clcitC POSSESSUM1 IF (0 (/@SUBJ>/r)) (*1 @CL-<CIT BARRIER V LINK *-1 _TARGET_ LINK *-1 ORATIOOBLVERB) ;
 SELECT:9939_1SgPoss_obj_clcitD POSSESSUM1 IF (0 (/@<.*/r)) (*1 @CL-CIT> BARRIER V LINK *1 _TARGET_ LINK *1 ORATIOOBLVERB) ;
 
-SELECT:9939_1SgPoss_objA POSSESSUM1 IF (0 @OBJ>)(*1 1Sg - Cau - Con BARRIER VFIN OR NIAR OR QQU OR Cau OR V + CONJ-C) ;
+SELECT:9939_1SgPoss_objA POSSESSUM1 IF (0 @OBJ>)(*1 1Sg - Cau - Con - @N< BARRIER VFIN OR NIAR OR QQU OR Cau OR V + CONJ-C) ;
 
 
 #rules accepting a low rate of failure
@@ -6645,7 +6643,7 @@ SUBSTITUTE:S0033B (/@.*/r) (@N<) TARGET $$@FUNC + $$KASUS + $$NUMERUS - Sem/Unit
 SUBSTITUTE:S0034 @ADVL> @OBJ-DOTR> TARGET Ins OR Trm IF (*1C Gram/Db BARRIER (*) - @N< - TIME - TOOL) ;
 SUBSTITUTE:S0035 @i-ADVL> @i-OBJ-DOTR> TARGET Ins OR Trm IF (*1C Gram/Db BARRIER (*) - @N< - TIME - TOOL) ;
 SUBSTITUTE:S0037A @SUBJ> @N< TARGET Gram/Cong + Nom IF (*-1C @SUBJ>) ;
-SUBSTITUTE:S0037A @SUBJ> @N< TARGET Abs + $$NUMERUS IF (*-1C Abs + $$NUMERUS + @SUBJ> BARRIER V OR CLB LINK *1 _TARGET_ LINK *1 INTRANSVERB + (/.Sg/r) BARRIER V)(*1 VFIN BARRIER V) ; #Taamaalisorlu suialaarneq nillertoq alanngup suialaarnera aqqusinermi suialaalerpoq,
+SUBSTITUTE:S0037A @SUBJ> @N< TARGET Abs + $$NUMERUS - CONJ-C IF (*-1C Abs + $$NUMERUS + @SUBJ> - CONJ-C BARRIER V OR CLB LINK *1 _TARGET_ LINK *1 INTRANSVERB + (/.Sg/r) BARRIER V)(*1 VFIN BARRIER V) ; #Taamaalisorlu suialaarneq nillertoq alanngup suialaarnera aqqusinermi suialaalerpoq,
 SUBSTITUTE:S0037A @SUBJ> @N< TARGET Rel + $$NUMERUS IF (*-1C Rel + $$NUMERUS + @SUBJ> BARRIER V OR CLB OR POSSESSUM OR iPOSSESSUM LINK *1 _TARGET_ LINK *1 VFIN + TRANSVERB + (/.Sg\ /l) BARRIER V OR POSSESSUM OR iPOSSESSUM) ; #, Nukissiorfinni ingerlatsinermut siunnersortip Niels Christian Nielsenip qularinngilaa.
 SUBSTITUTE:S0037F (/@.*/r) (@N<) TARGET Gram/Cong + OBLIQUE + (/@\(.*\)/r) IF (0 $$KASUS LINK -1 (VSTR:/@$1/r) + OBLIQUE + $$KASUS)(NEGATE 0 1Sg OR 2Sg OR 1Pl OR 2Pl) ;
 SUBSTITUTE:S0038 @HNOUN @N< TARGET Abs IF (*-1 @HNOUN + PROP BARRIER V)(NEGATE 0 LU)(NEGATE -1 ("aamma"))(NEGATE *-1 LU)(NEGATE *-1 Interj) ; #Til nominalsyntagmer uden verber, men ikke til opremsninger. #Rasmusinnguaq angut pitsak, maligassaq!
