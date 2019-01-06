@@ -9,12 +9,12 @@
 GT_ORTHOGRAPHIC_REGEX_SRCS=\
 		inituppercase.regex \
 		spellrelax.regex    \
-		oldorthography2norm.xfscript \
 		spellrelax-mobile-keyboard.regex \
 		spellrelax-tags.regex
 
 GT_ORTHOGRAPHIC_XFSCRIPT_SRCS=\
 		allcaps.xfscript      \
+		oldorthography2norm.xfscript \
 		downcase-derived_proper-strings.xfscript \
 		spellrelax-with-tags.xfscript
 
