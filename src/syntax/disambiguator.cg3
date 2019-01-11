@@ -1282,7 +1282,7 @@ LIST TRANSINTRANS = "naalap" "nuup" "oqar"; #Set til verber med både transitive
 LIST SEKVENTIELLE_VERBER = "ani" "innar" ; #Sæt til anvendelse sammen med coref tidsbisætning
 LIST NAAR_VERBER = "angi" ("aki" KIP) "amerla" "isorartu" "kingusip" "miki" "oqip" "sivikip" "siusip" ; #stammer, der kan tage NAAR. Alle andre slettes
 LIST EVALUERENDE_VERBER = "kajungeraa" ; #verber med semantik der betinger objekt efter NIQ+Ins/Abl
-LIST INDERIVERENDE_SUBSTANTIV = (/\"aki\"\ [^\(Gram\/IV\)]/l SSAQ) "angajoqqaaq" "atuakkiaq" "blogger" "bloggeri" "blog" "filmiliaq" ("film" LIAQ) "igalaasartooq" "ilaqutaq" "inatsit" "isertugaq" "isi" "isuma" "minister" "naapeqatigiinneq" "nalliuttorsiorneq" "nassaaq" "oqaluttuaq" "peqataasoq" "pineq" "piniartoq" "qaatigooq" "sanaaq" "sinniisoq" "sungiusaasoq";
+LIST INDERIVERENDE_SUBSTANTIV = (/\"aki\"\ [^\(Gram\/IV\)]/l SSAQ) "angajoqqaaq" "atuakkiaq" "blogger" "bloggeri" "blog" "filmiliaq" ("film" LIAQ) "igalaasartooq" "ilaqutaq" "inatsit" "isertugaq" "isi" "isuma" "minister" "naapeqatigiinneq" "nalliuttorsiorneq" "nalunaarusiaq" "nassaaq" "oqaluttuaq" "peqataasoq" "pineq" "piniartoq" "qaatigooq" "sanaaq" "sinniisoq" "siunnersorti" "sungiusaasoq" "tigummiaq";
 #LIST VERBALNOMEN = "isuma" "oqaluttuaq" "naapeqatigiinneq" ;
 LIST INSOBJVERB = LIUR RAAR (/\ SI\ Der\/nv/l) SSIP TAAR SIUR (/\ TUR\ Der\/nv/l) (/__LIR\ Der\/nv__/l) ;
 LIST NOTSPLIT = ("neri" TAQ SSAQ) ; # cannot take i- -arguments.
@@ -1569,6 +1569,8 @@ REMOVE:0001L ("isi") + GE IF (0 ("isige")) ;
 
 REMOVE:0001M (/Gram\/TV\ Gram\/Refl\ V\ Opt/l) ;
 REMOVE:0001N (/Gram\/TV\ Gram\/Refl\ V\ Imp/l) ;
+
+REMOVE:0001O ("akisup") IF (0 ("aki" TUQ SSAQ U VIK)) ;
 
 
 #REMOVE:0001XX UGEDAGE + Gram/TV IF (0 UGEDAGE + Gram/IV) ; #NNGUR + Gram/TV utænkelig ved ugedages navne #udkommenteret og gjort listen entydig i stedet.
@@ -2266,6 +2268,8 @@ SELECT:0069B N - AAT IF (1 KOMMA LINK 1 ("soorlu") LINK 1 N) ; #Soorlu forbinder
 REMOVE:0069C Par IF (0 N LINK 1 ADVERBIEL + TRANSVERB - ("unner")) ; #N pillugu/ataaseerlugu ...
 
 REMOVE:0069D 3PlPoss + Pl IF (0 Num OR iNum)(NEGATE 1 Num + Pl) ; #pingajussaat
+
+SELECT $$OBLIQUE IF (*-1C $$OBLIQUE BARRIER (*) - CONJ-C LINK NOT 0 KASUS - OBLIQUE)(NEGATE 0 KASUS - OBLIQUE) ;
 
 ### Sikre possessorer ###
 #=======================#
@@ -3314,7 +3318,7 @@ MAP:M0040 (@SUBJ>) TARGET N + Abs + LU IF (-1 VFIN + 3Sg)(1 Cont + 4Pl)(2 N + Sg
 #Uggoraa Pitarlu qiteqatigiillualeruttorlutik
 MAP:M0041 (@SUBJ>) TARGET N + Abs + LU OR Prop + Abs + LU IF (-1 VFIN + 3Sg)(1 Cont + 4Pl)(2 N + Pl LINK *1 V + 3Pl) ;
 MAP:M0044 @CL-ADVL> TARGET N - POSSESSUM + (/NIQ\ Der\/vn\ N\ Abl/l) IF (*1 VFIN) ; #-nermit vist altid sætningsadverbial
-MAP:M0044 @CL-<ADVL TARGET N - POSSESSUM + (/NIQ\ Der\/vn\ N\ Abl/l) OR N - POSSESSUM + (/NIQ\ Der\/vn\ N\ Ins/l) IF (-*1 VFIN) 
+MAP:M0044 @CL-<ADVL TARGET N - POSSESSUM + (/NIQ\ Der\/vn\ N\ Abl/l) OR N - POSSESSUM + (/NIQ\ Der\/vn\ N\ Ins/l) IF (-*1 VFIN) (NEGATE *1S V - CONJ-C BARRIER KOMMA OR CONJ-C) 
 (NEGATE 0 Ins LINK 1 (TIP HTR)); #-nermit vist altid sætningsadverbial
 
 #Nedenstående to bliver for upræcise. Skal måske forsøges længere nede.
@@ -4218,6 +4222,9 @@ MAP:M0793 @OBJ> TARGET N + Abs IF (*1 KOMMA BARRIER (*) - @N< LINK *1C N + Abs +
 #ADD:M0811 (@SUBJ>) TARGET APPELLATIV + Rel + Pl OR Prop + Rel + Pl IF (*1 TRANSVERB BARRIER 3PlPoss ) ;
 #ADD:M0820 (@<SUBJ) TARGET APPELLATIV + (Rel) OR Prop + (Rel) OR (PRON) IF (-*1 TRANSVERB + VERB-NOTCONT BARRIER ("\,")) ;
 
+MAP:M0868 @AGENS TARGET Abl IF (*1 (/TIP\ Der\/vv\ Gram\/TV\ TAQ\ /l) BARRIER V - CONT) ;
+
+
 #Adled hen over verber
 MAP:M0512A @N< TARGET N + $$KASUS + $$NUMERUS - POSSESSUM - Num - iNum - Lok - NUMHOVED - TIMENOUN IF (*-1 $$KASUS + $$NUMERUS - PLACE - @i-ADVL>N BARRIER (*) - @>N - @N< - @i-ADVL>N - VFIN - @ADVL> - @<ADVL - CONT - OBLIQUE LINK NEGATE 1 CONJ-C)(NEGATE -1 ("una"))(NEGATE 0 CONJ-C + Num LINK -1 Num OR iNum)(NEGATE 0 CONJ-C - Num)(NEGATE 0 $$KASUS LINK -1 Num LINK -1 ("nal") LINK *-1 (*) - $$KASUS)(NEGATE 0 Rel LINK 1 POSSESSUM)
 (NEGATE 0 (/\ TUQ\ Der\/vn\ N\ /l)) #arriitsumik
@@ -5053,7 +5060,7 @@ SELECT FIRSTNAME IF (1 Prop + Sg)(NEGATE 0 Sem/Mask LINK 1 Sem/Fem) ; #vælger s
 SELECT Abs + Prop IF (-2 Prop + Abs)(-1 ("\,"))(NEGATE 0 Rel LINK 1 POSSESSUM3); #'Enoksen, SIUMUT' 'Kleist, INUIT Ataqatigiit'
 SELECT Abs + Prop IF (-3 Prop + Abs)(-2 ("\,"))(-1 Abs)(NEGATE 0 Rel LINK 1 POSSESSUM3); #'Enoksen, SIUMUT' 'Kleist, Inuit ATAQATIGIIT'
 
-REMOVE:2221 N - Prop - iProp IF (0 ("<\\p{Lu}.*>"r))(*0C ("<\\p{Lu}.*>"r))(NEGATE 0 FAM_UNIK OR TITEL OR HUM OR WEATHER OR NON-PROP)(NEGATE 0 Rel)(NEGATE 0 V) ;
+REMOVE:2221 N - Prop - iProp - Der/vv IF (0 ("<\\p{Lu}.*>"r))(*0C ("<\\p{Lu}.*>"r))(NEGATE 0 FAM_UNIK OR TITEL OR HUM OR WEATHER OR NON-PROP)(NEGATE 0 Rel)(NEGATE 0 V) ;
 # Select Prop hvis Wordform starter med stort, og der også er et andet Prop i sætningen.
 
 SELECT:2222 Prop + Lok IF (-1 Lok) ;
