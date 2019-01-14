@@ -1274,7 +1274,7 @@ SET UGEDAGE = (/__\"arfineq\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"ataaseq\"\ 
 SET OTHERDAY = ("ullortuneq") | ("ullukinneq") ;
 SET SEASON = ("aasaq") | ("ukiaq") | ("ukioq") | ("upernaaq") ; #årstider
 #LIST MONTH = "januar" "januaari" "februar" "februaari" "marts" "marsi" "april" "apriili" "maj" "maaji" "juni" "juuni" "juli" "juuli" "august" "aggusti" "september" "septembari" "oktober" "oktobari" "november" "novembari" "december" "decembari" ;
-LIST TIMEVERB = ("assi" GIIAAR) ("ili" NIQ)("ingerla") ("naammassi") ("ip" TUQ U) ("qaama") ("qiteqqup") ("imaali"); #verber som kan have tidsudtryk som subjekt
+LIST TIMEVERB = ("assi" GIIAAR) ("ili" NIQ)("ingerla") ("naammassi") ("ip" TUQ U) "pula" ("qaama") ("qiteqqup") ("imaali"); #verber som kan have tidsudtryk som subjekt
 SET TEMPUSVERB = UGEDAGE | ("qaanger") | ("qaqutigut" U) | ("qiteqqup") | ("taamaali") | ("ukiar") | ("ukioq" U) ;
 LIST VERB_medGE = "ipianngu" "miki" ; #Set til stammer, der kan tage GE+Der/vv
 LIST VERB_udenUTE = "inor" ; #Set til de enormt mange verber, der ikke kan tage UTE+vn
@@ -2029,6 +2029,7 @@ SELECT ("taamaattoq") + LI + Adv ; #taamaattoq er Adv, LI er Conj
 SELECT:0019NY ("qanoq") + Adv IF (*1 IP OR ("ip") OR ("ilior") OR ("ili")); 
 MAP:M0019NY @ADVL> TARGET ("qanoq") + Adv IF (*1 IP + V OR ("ip") + V OR ("ilior") + V OR ("ili") + V BARRIER TIGE) ; 
 MAP:M0019NY @i-ADVL> TARGET ("qanoq") + Adv IF (*1 IP + N OR ("ip") + N OR ("ilior") + N OR ("ili") + N BARRIER VFIN) ; 
+REMOVE:0020NX Interj IF (0 Prop)(1 Prop) ; #Jaaku Lyberth
 SELECT:0020NY Interj - ("tass") - ("tassa") - ("immaqa") IF (-1 BOS)(NEGATE 0 ("ila") + 4SgPoss + Rel LINK 1 POSSESSUM3)(NEGATE 0 KONCESSIV LINK *1 Par BARRIER V)(NEGATE 0 ("taama") OR ("qanoq") LINK *1 V BARRIER (*) - Adv - Conj)
 (NEGATE 0 Sem/Unit)
 (NEGATE 0 Adv - AA - UNA - UKU); #TASSA holdes uden for reglen og type 'Ilami illuanut iserpoq' ikke interjektion SKAL RAFFINERES YDERLIGERE 20180427. PL: immaqa tilføjet 20180526. Måske skal i stedet immaqa+Interj helt væk?? immaqa + Part og immaqa + Interj udkommenteret fra fst 20180526
@@ -2720,6 +2721,16 @@ MAP:M0230NY2 @Pron>N TARGET Gram/Dem + Pron + Abs + Sg - Prefix/AA IF (1 N + Abs
 ####################
 
 REMOVE:0260 Rel IF (1 Gram/Cong + Akk) ;
+
+
+##################
+# Gram/Dem + Adv #
+##################
+
+
+SELECT:0255 Gram/Dem + Adv IF (0 V) ; #uannga
+
+
 
 ######################
 # Frequent and safe rules - verbs #
@@ -3913,6 +3924,7 @@ MAP:M0560A (@ADVL>) TARGET Part - OTHERTIME OR Adv - OTHERTIME IF (*1 V BARRIER 
 (NEGATE 0 OBLIQUE LINK 1 Gram/Cong + iOBLIQUE OR ("ma") + iOBLIQUE);
 MAP:M0560B (@ADVL>) TARGET ("ila") IF (-1 TIME)(*1 V BARRIER KOMMA OR @i-ADVL>) #(NEGATE *-1 V BARRIER ("\,")) #20091112 tilfoejet komma som BARRIER andet NEGATE er vist overflødig
 (NEGATE 0 OBLIQUE LINK 1 Gram/Cong + iOBLIQUE OR ("ma") + iOBLIQUE);
+MAP:M0560C (@ADVL>) TARGET TIME - LIK_QAR - Ins IF (*1 4Pl OR 4Sg BARRIER V OR POSSESSUM3 OR TIMEVERB OR TEMPUSVERB LINK *1 V)(NEGATE 0 OBLIQUE LINK 1 Gram/Cong + iOBLIQUE OR ("ma") + iOBLIQUE);
 MAP:M0557 @i-ADVL> TARGET OTHERTIME IF (1 @i-ADVL> LINK *1C Der/vn + N + Abs + Sg + @SUBJ> BARRIER (*) - CONT - Adv LINK *1 V + 3Sg) ;
 MAP:M0561 @i-ADVL> TARGET Part - OTHERTIME IF (*1C Der/vn - TRANSVERB + $$KASUS + $$NUMERUS OR LIK_QAR + $$KASUS + $$NUMERUS BARRIER VFIN LINK *1 (*) - V LINK 1 (*) - $$KASUS - $$NUMERUS)(NEGATE 0 ("soorlu")); #må ikke hitte på transitiver med fx VIK+GE
 MAP:M0562 @i-ADVL>N TARGET Part - UNA IF (*1C LIK - INDERIVERENDE_SUBSTANTIV BARRIER V)(NEGATE 0 ("soorlu"))
@@ -4577,7 +4589,7 @@ MAP:M1400 (@CL-<CIT) TARGET CONT + TRANSVERB + 1Pl IF (-*1 ORATIOOBLVERB BARRIER
 #20100322 Nexusadverbialer efter oratio oblique. Erstatter Skrot 01-04
 MAP:M1410 (@CL-<ADVL) TARGET IteCau OR Cau OR Con IF (*-1 VFIN)(NEGATE *1 Par OR CONT)(NEGATE *-1 (")") LINK *-1 VFIN LINK *-1 ("(")) ; #NEGATE undgår at ramme indskud i parentes. Kan eventuelt erstattes af NEGATE *1 VFIN BARRIER CLB.
 MAP:M1420 (@CL-<ADVL) TARGET Par + INTRANSVERB IF (*-1 ORATIOOBLVERB + 3SgO LINK -*1 Abs + Sg)(NEGATE -*1 VFIN + U)(1 EOS); #non-coref tidsbisætning - ikke oratio oblique - hvis der er et objekt
-MAP:M1421 (@CL-<ADVL) TARGET Par + INTRANSVERB IF (*-1 VFIN - ORATIOOBLVERB BARRIER LUSUUQ)(NEGATE -*1 VFIN + U)(1 EOS)(NEGATE *-1 ORATIOOBLVERB BARRIER VFIN OR KOMMA); #non-coref tidsbisætning - ikke oratio oblique.  SELECT-reglen ConTempPost har også følgende begrænsning (*-1 Abs BARRIER ("\,")), som måske skal med også i MAP-sætningen??
+MAP:M1421 (@CL-<ADVL) TARGET Par + INTRANSVERB IF (*-1 VFIN - ORATIOOBLVERB BARRIER LUSUUQ OR @SUBJ> - TIME)(NEGATE -*1 VFIN + U)(1 EOS)(NEGATE *-1 ORATIOOBLVERB BARRIER VFIN OR KOMMA); #non-coref tidsbisætning - ikke oratio oblique.  SELECT-reglen ConTempPost har også følgende begrænsning (*-1 Abs BARRIER ("\,")), som måske skal med også i MAP-sætningen??
 
 MAP:M1425 (@CL-ADVL>) TARGET IteCau OR Cau OR Con IF (*1 VFIN)(NEGATE *-1 Cau BARRIER V OR PUNCT) ; 
 MAP:M1426 @CL-ADVL> TARGET Lok + POSSESSUM - SPATIAL IF (*-1 (*) - @POSS> - @i-ADVL> - @ADVL> LINK *1 _TARGET_ LINK *1 V)(NEGATE 0 Num OR PLACE OR TIME)
