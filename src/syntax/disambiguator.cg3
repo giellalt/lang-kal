@@ -1330,7 +1330,7 @@ LIST TOOLTHING = "kikiak" "kikiassuaq" "qinnilik" ;
 
 LIST f-an_SG = "qaneq" "qingaq" ;
 
-LIST NUMHOVED = "dollar" "dollari" "euro" "franc" "grad" "gram" "kapitali" "kapitel" "kiilu" "kilo" "klasse" "koruuni" "krone" "milliardi" "milliard" "miliuuni" "million" "oori" "procent" ("qupper" NIQ) "side" "øre" Sem/Unit ;
+LIST NUMHOVED = "dollar" "dollari" "euro" "franc" "grad" "gram" "kapitali" "kapitel" "kiilu" "kilo" "klasse" "koruuni" "krone" "milliardi" "milliard" "miliuuni" "million" "niveau" "oori" "procent" ("qupper" NIQ) "side" "øre" Sem/Unit ;
 LIST NUMCOMP = "hundrede" "tusind" "million" "milliard" ; #anden del af sammensatte tal, famtan milliuuni
 LIST COMPOUND_N = "Windows" "Linux" "program" ;
 LIST PRENUM = "plus" "minus" ;
@@ -2286,7 +2286,7 @@ SELECT:0070 Rel + Pl IF (1C 3PlPoss)(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUM
 (NEGATE 0 (TUQ Der/vn N Ins)) ; #iluaqutaasumik
 REMOVE:0071 Rel + Sg IF (NEGATE *1 3SgPoss OR i3SgPoss)(NEGATE *0 TRANSVERB + 3Sg OR TRANSVERB + 4Sg)(NEGATE 0 Gram/Coref + Pron); #Gram/Coref + Pron må vist håndteres separat
 #Før 0072 for at holde på den før andet gennemløb sletter possessum med regel 0105
-SELECT:0072A Rel + Pl IF (1 CONT + 4Pl)(2 3PlPoss) ;
+SELECT:0072A Rel + Pl IF (1 CONT + 4Pl)(2 3PlPoss)(NEGATE 0 (/\ TUQ\ Der\/vn\ N\ Ins\ /l)) ;
 SELECT:0072B Rel + Pl IF (1 Num + Rel)(2 CONT + 4Pl)(3 Der/vn + Rel + Pl)(4 KOMMA LINK *1 TRANSVERB + 3Pl) ; #ad hoc regel på gr. af forkert komma hos Maaliaaraq
 #Ad hoc regel før 0072 på gr. af forkert komma hos Maaliaaraq
 SELECT:0072C Rel + Pl IF (*1 Abs LINK 1 CONT + 3SgO LINK *1 TRANSVERB + 3Pl BARRIER VFIN OR INTRANSVERB) ; 
@@ -3233,7 +3233,7 @@ MAP:M00222A @POSS> TARGET Rel IF (1* ADVERBIEL + POSSESSUM + OBLIQUE BARRIER V L
 MAP:M00222B @POSS> TARGET Rel IF (*1 SPATIAL + POSSESSUM + OBLIQUE - AFFINGERET BARRIER V LINK NEGATE 0 POSSESSUM4)(NEGATE *-1 Rel BARRIER V)  ; #saniatigut
 
 #Vokativer
-MAP:M0023A @VOK TARGET Prop + Abs IF (-1 KOMMA)(1 EOS)(NEGATE *-1 §noun-comma BARRIER (*) - KOMMA) ;
+MAP:M0023A @VOK TARGET Prop + Abs IF (-1 KOMMA)(1 EOS)(NEGATE *-1 §noun-comma BARRIER (*) - KOMMA)(NEGATE -2 Prop) ;
 MAP:M0023B @VOK TARGET N + Abs IF (-2 ("aa") + Interj LINK 1 KOMMA)(1 KOMMA) ; #Typen Aa, N, ..
 MAP:M0024 @VOK TARGET N + Abs IF (-1 ("aa") + Interj)(1 KOMMA)(NEGATE 0 POSSESSUM3) ; #Typen Aa N, .. men hvis N er possessum er det noget andet end vokativ
 #Specialitet ved interjektioner som "tuavi!"
@@ -3712,8 +3712,8 @@ MAP:M0397 @SUBJ_COMP TARGET Abs IF (-1 OBLIQUE + LU LINK -1 Abs LINK *-1 ("tassa
 MAP:M0398 @SUBJ_COMP TARGET Abs + LU IF (-1 Abs LINK *-1 ("tassa") LINK *-1 Abs BARRIER V); 
 MAP:M0399 @SUBJ_COMP TARGET Abs IF (-2 @FOC)(-1 OBLIQUE)(NEGATE *0 VERB-NOTCONT); # tassa OBL N eller Una OBL N.
 
-MAP:M0401 @SUBJ_COMP TARGET Abs + Prop IF (-1 Abs + Pl)(1 Abs + Prop + LU);
-MAP:M0402 @SUBJ_COMP TARGET Abs + Prop + LU IF (-2 Abs + Pl)(-1 Abs + Prop);
+MAP:M0401 @<APPOS TARGET Abs + Prop OR Orth/Append + Prop IF (-1 Abs + Pl)(*1 Abs + Prop + LU BARRIER (*) - KOMMA);
+MAP:M0402 @<APPOS TARGET Abs + Prop + LU OR Orth/Append + Prop + LU IF (*-2 Abs + Pl BARRIER (*) - Prop - KOMMA)(*-1 Abs + Prop OR Orth/Append + Prop BARRIER (*) - KOMMA);
 MAP:M0407Anum (@>N) TARGET Num IF (1 NUMHOVED + N); # ' .. 2 oorimoorlutik ..' specialfald før 189-190
 MAP:M0407Bnum @i-MWE>N TARGET NUMHOVED IF (-1 Num)(1 NUMHOVED + Der/nv) ; # 7 miliuunit koruuneqarput. NB bør heller ikke ved QAR etc. analyseres som @i->N
 MAP:M0407Bnum @>N TARGET NUMHOVED IF (-1 Num)(1 NUMHOVED) ; # 7 miliuunit koruuneqarput. NB bør heller ikke ved QAR etc. analyseres som @i->N
@@ -4267,7 +4267,7 @@ MAP:M0512C @N< TARGET N + $$KASUS + $$NUMERUS + CONJ-C - POSSESSUM - Num - iNum 
 #Nomen i oblik kasus kan være adverbalt adled
 MAP:M0830 @ADVL> TARGET Lok IF (-1* BOS BARRIER (*) - @POSS> - @i->N)(NEGATE 1 Lok + LU LINK 1 Der/vn)(*1 V)(NEGATE 0 GAANNI) ; #NEGATE for ikke at fejltagge parataktiske i-ADVL
 MAP:M0835 @ADVL> TARGET Abl IF (*1 NIRU - N - iOBLIQUE BARRIER (*) - Abl) ;
-MAP:M0840 @ADVL> TARGET Ins IF (*1 V - DOTR BARRIER Der/vn OR INDERIVERENDE_SUBSTANTIV)(NEGATE *1 ("quleriilik") OR V + QAR OR V + LIK ) ; #OR Der/vn fjernet og BARRIER tilfoejet 20091109. OR i første constraint tilføjet for ikke at tagge fx amermik qaatigooq
+MAP:M0840 @ADVL> TARGET Ins IF (*1 V - DOTR BARRIER Der/vn OR INDERIVERENDE_SUBSTANTIV)(NEGATE *1 ("quleriilik") OR V + QAR OR V + LIK )(NEGATE 1 KOMMA) ; #OR Der/vn fjernet og BARRIER tilfoejet 20091109. OR i første constraint tilføjet for ikke at tagge fx amermik qaatigooq
 MAP:M0841 @ADVL> TARGET Aeq IF (*1 V - ("ip") - QQU BARRIER (*) - Aeq) ;
 
 MAP:M0850 (@i-<ADVL) TARGET (Lok) + POSSESSUM3 IF (-2 Der/vn - NAR)(-1 Rel)(NEGATE *1 V OR Der/vn - LU) ; #20091104
