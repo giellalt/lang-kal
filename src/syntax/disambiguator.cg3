@@ -2169,7 +2169,7 @@ SELECT:0040N Rel IF (NEGATE *1 V)(*-1 KOMMA BARRIER V LINK *-1 Rel LINK 1 POSSES
 #=============#
 REMOVE:0113 SPATIAL + LIR IF (0 ("ungasip")); #20120422 ("ungate")+LIR vist altid bare forkert analyse af 'ungasip'
 
-REMOVE:0114A SPATIAL - ("aki") - ("ilumoor") (NEGATE 0 ("ilu" iTrm))(NEGATE 0 POSSESSUM OR KANNIQ) ;
+REMOVE:0114A SPATIAL - ("aki") - ("ilumoor") (NEGATE 0 ("ilu" iTrm))(NEGATE 0 POSSESSUM OR KANNIQ OR INNAQ) ;
 REMOVE:0114 Abs + 4SgPoss IF (0 SPATIAL + POSSESSUM + Lok LINK -1 Rel)(NEGATE 0 ("ate") + TAQ)(NEGATE 0 ("aki") + TUQ + SSAQ ) ; # Olep saani næppe subjekt og objekt men possessor possessum. Må dog ikke hitte på atisat og ikke på "aki" i fx "akisussaassuseq"
 SELECT:0115 SPATIAL - ("ate") - LIK + (Sg) IF (0 POSSESSUM - 2SgPoss)(NEGATE 0 $$KASUS + $$NUMERUS LINK -1 POSSESSUM + $$KASUS + $$NUMERUS);
 SELECT:0116 SPATIAL - LIK + (Sg) IF (0C POSSESSUM)(NEGATE 0 (/__\"ate\"\ Gram\/TV\ TAQ__/l) OR ("ateq"))(NEGATE 0 (/__\"ate\"\ Gram\/TV\ LIK__/l))(NEGATE 0 ("ataata")) ; #2.4. hitter paa ati + TAQ og på "ataata"
@@ -2532,7 +2532,7 @@ REMOVE:0067_1SgPoss_CombiA POSSESSUM12 IF (0 (/TUQ\ Der\/vn\ QAR\ Der\/nv(\ Gram
 #REMOVE:0067_1SgPoss_CombiB 1SgPoss IF (0 (/\"su\"\ U\ Der\/nv\ Gram\/IV\ \([A-Z]*\ \Der\/vn\)\ /l)) ; #probably not 1SgPoss with suunera.
 
 
-REMOVE:0068_1SgPoss 1SgPoss IF (NEGATE *0W 1Sg OR 1SgO OR DIRTALE OR DIRTALESTART) ; #Will be too unsure with the standard of 5 windows if not looking to both sides.
+REMOVE:0068_1SgPoss 1SgPoss IF (NEGATE *0W 1Sg OR 1SgO OR 1SgPoss OR DIRTALE OR DIRTALESTART) ; #Will be too unsafe with the standard of 5 windows if not looking to both sides.
 
 REMOVE:0069_3SgPoss 3SgPoss IF (*-1 BOS BARRIER (*) - Adv)(0 1SgPoss)(*-1< DIRTALESTART OR DIRTALEMIDDLE BARRIER DIRTALESLUT OR ("\?") OR ("\!"))(NEGATE *1 DIRTALESTART) ;
 REMOVE:0070_3SgPoss 3SgPoss IF (*-1 BOS BARRIER (*) - Adv)(0 1SgPoss)(*1> DIRTALESLUT OR ("\?") OR ("\!") BARRIER DIRTALESTART) ; #R12
@@ -5357,6 +5357,7 @@ SELECT:7253 @CONJ - (CONJ-C Tilhængspartikel) IF (*-1 @PRED LINK *1 KOMMA LINK 
 SELECT:7253 @CONJ - (CONJ-C Tilhængspartikel) IF (*-1 @PRED LINK *1 _TARGET_ BARRIER KOMMA LINK *1 @PRED) ; #... pred ... pred er conj
 REMOVE:7254 Conj IF (-1 BOS)(*1 V) ; #stochastisk regel. #Aamma nuannarivallaanngisaminik paasisaqarpoq. #Aamma ugguunaatigut #Taamaattoq neriuppunga ilisimatitsissutigeriiginnarlara
 SELECT @CONJ IF (*-1 @SUBJ> BARRIER V)(*1 @SUBJ> BARRIER V) ;
+SELECT @CONJ - MI IF (-1 KOMMA)(*-1 $$VFIN BARRIER VFIN)(*1 $$VFIN BARRIER VFIN) ;
 
 SELECT ("tassa") + Part IF (-*1 V OR Der/vn)(*1 V OR Der/vn OR Prop OR ("\:")) ; #"tassa" brugt foer forklarende hovedsaetning eller i consekutiv bisaetning
 
@@ -6482,8 +6483,10 @@ SELECT:9939_1SgPoss_objA POSSESSUM1 IF (0 @OBJ>)(*1 1Sg - Cau - Con - @N< BARRIE
 
 #rules accepting a low rate of failure
 
-REMOVE:9940_1SgPoss_func 1SgPoss IF (0 3SgPoss + @FUNC)(NEGATE *0 1Sg  OR 1SgPoss OR 2Sg)(NEGATE *-1< 1Sg BARRIER VFIN) ;
+REMOVE:9940_1SgPoss_func 1SgPoss IF (0 3SgPoss + @FUNC)(NEGATE *0 1Sg  OR 1SgPoss OR 2Sg)(NEGATE *-1< 1Sg BARRIER VFIN);# (NEGATE -1*W< POSSESSUM1 BARRIER POSSESSUM - POSSESSUM1) 
 SELECT:9940_1SgPoss_obj 1SgPoss IF (0 @SUBJ> LINK *1 V + 1Sg BARRIER V - CONT) ; 
+
+#REMOVE:9941_3SgPoss_func 3SgPoss IF (0 1SgPoss)(0 @FUNC)(-1*<WC 1SgPoss BARRIER POSSESSUM - POSSESSUM1 OR @FUNC - POSSESSUM) ; 
 
 REMOVE:9941_1SgPoss_func 1SgPoss IF (0 3SgPoss)(0 @FUNC)(NEGATE *0 VFIN + 1Sg OR VFIN + 1SgO)(NEGATE *-1 1Sg OR 1SgO BARRIER V) ; #R20
 
@@ -6616,7 +6619,7 @@ REMOVE:9961B PALUK + Der/nv IF (0 PALUK + Der/vv);
 #REMOVE:9962C humProp IF (0 geoProp) ; #Forstår iøvrigt ikke hvilken kontekst denne regel skal ramme
 
 #Oblique kasus med 3PlPoss slører numerus. Alt andet lige vælg sing dog ikke ved HUM + MIK-OBJ jf.  9491A
-REMOVE:9965 OBLIQUE + $$KASUS + Pl IF (0 OBLIQUE + Sg)(NEGATE 0 HUM LINK 1 HTR)(NEGATE 1 $$KASUS + Pl);
+REMOVE:9965 OBLIQUE + $$KASUS + Pl IF (0 OBLIQUE + Sg)(NEGATE 0 HUM LINK 1 HTR)(NEGATE 1 $$KASUS + Pl); #laver fejl, fx ved Qallunaavinnik.
 
 #Disambiguering af overflødige refleksiver
 REMOVE Gram/Refl + 3Pl IF (0 Gram/IV + 3Pl - Gram/Refl)(NEGATE *-1 ("immi")) 
