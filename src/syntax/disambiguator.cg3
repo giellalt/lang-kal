@@ -7,7 +7,6 @@
 # =================================================================== #
 
 # ============================= #
-
 #     Short table of contents   #
 # ============================= #
 
@@ -2182,6 +2181,10 @@ REMOVE N - SPATIAL OR iN - SPATIAL IF (0 SPATIAL + POSSESSUM3 - Rel - AFFINGERET
 #MAP:POSS0040Q @i-POSS> TARGET Rel IF (1 POSSESSUM + IP + TUQ) ;
 MAP:POSS0040Q @i-POSS> TARGET Rel IF (1 POSSESSUM + IP + SPATIAL) ;
 
+### PARTIKLER FØRSTE DISAMBIGUERING ###
+#=====================================#
+SELECT:Adv_allaat Adv + ("allaat") IF (-1 N + &&IV_SUBJ&)(1 V + &&IV_SUBJ&); #iviangii allaat nuisalaarlutik
+
 
 ### ULØSELIGHEDER ###
 #===================#
@@ -2208,6 +2211,11 @@ MAP:M0041AX @SUBJ> TARGET Prop + Abs IF (1 Prop + Rel + Sg LINK 1 3SgPoss LINK *
 MAP:M0041BX @OBJ> TARGET Abs + 3SgPoss IF (-1 Prop + Rel + Sg)(*1 CONT + 3SgO BARRIER KOMMA OR VFIN LINK *1 INTRANSVERB + 3Sg BARRIER KOMMA OR VFIN) ;
 
 #nv adled til proprium subjekt for et ytringsverbum er næsten umulig at adskille fra oratio obliqua. Specialregler:
+#0043AZ forebygger fejlhit på typen BOS (evt. dem.pron) SUBJ U+@<N @PRED, hvor PRED er et ORATIOOBLVERB: Unalu angut PITSAASOQ oqarpoq Oleulluni. Reglen forkaster muligheden af or.obl. (*han sagde at manden var fin) stochastisk, idet or.obl. til venstre sjældenere en or.obl. til højre
+#SELECT:0043AZ Abs + $$NUMERUS + &&IV_SUBJ& IF (-1 Abs + $$NUMERUS LINK *-1 BOS OR KOMMA)(*1 V + &&IV_SUBJ&) ; #Virker ikke med BARRIER (*) - Gram/Dem. Problemer med SUBJ + Pl + Rel, der slettes før TRANSVERB til højre. Reglen begrænses derfortil følgende
+#REMOVE:0043AZ U + Par + &&IV_SUBJ& IF (-1 Abs + Sg LINK *-1 BOS OR KOMMA)(*1 V + &&IV_SUBJ&) ; #Virker ikke med BARRIER (*) - Gram/Dem. Problemer med SUBJ + Pl + Rel, der slettes før TRANSVERB til højre. Reglen begrænses derfortil følgende
+REMOVE:0043AZ U + Par IF (-1 Abs + Sg LINK -1 Gram/Dem LINK -1 BOS OR KOMMA)(*1 ORATIOOBLVERB LINK *1 Par OR Cont ) ;
+REMOVE:0043AZ U + Par IF (-1 Abs + Sg LINK -1 BOS OR KOMMA)(*1 ORATIOOBLVERB LINK *1 Par OR Cont ) ;
 
 #0043AX og 0043AXX forebygger at 0043A sletter Par i copula-konstruktioner som 'inquit NN ARNAASOQ pikkorissoq' og giver @PRED_@SUBJ>_@SUBJ>_@CL-<CIT i stedet for ønsket @PRED_@SUBJ>_@CL-<CIT_@i-N<
 SELECT:0043AX U + Par + &&IV_SUBJ& IF (*0 ORATIOOBLVERB)(*-1 &&IV_SUBJ& LINK 1 _TARGET_ LINK 1 &&IV_SUBJ&)(NEGATE *-1 BOS OR KOMMA LINK 1 &&IV_SUBJ& + $$NUMERUS LINK 1 _TARGET_ + $$NUMERUS LINK 1 &&IV_SUBJ&) ;
@@ -2216,6 +2224,7 @@ SELECT:0043AX U + Par + &&IV_SUBJ& IF (*0 ORATIOOBLVERB)(*-1 &&IV_SUBJ& LINK 1 _
 SELECT:0043AXX Abs + $$NUMERUS + &&IV_SUBJ& IF (*0 ORATIOOBLVERB)(-*1 U + Par + &&IV_SUBJ& LINK -*1 Abs + $$NUMERUS )
 (NEGATE 0 LU LINK -*1 Par BARRIER (*) - Par - KOMMA LINK 1 Par) #ikke opremsede Par inquit SUBJ Par+3Pl, Par+3Pl IMMINORAJUTTUUSULLU.
 (NEGATE *-1 BOS OR KOMMA LINK 1 Par + TEMPUSVERB) #ikke adled til tidsbisætning 'Tusaramili  ukiuugaluartoq SULIASSAQARTOQ
+(NEGATE 1 EOS LINK -1 _TARGET_ LINK -1 KOMMA LINK -1 Par) #meget smalt: Ikke hitte på afterthought-lignende Par efter Par Aanavit kalaallit nalugamigit isumaqarsimavoq tamarmik ajortuusut, NALUSUUSUT.
 ; 
 
 SELECT:0043A Abs + Sg + Der/nv - NIQ IF (-1 Prop + Abs)(*1 INTRANSVERB + 3Sg LINK NOT T:NexusHøjre)((NOT 0 MI) OR (NOT 0 Lok)) ;
@@ -5043,6 +5052,9 @@ SELECT:0507 INTRANSVERB + Par + 3Pl IF (*-1 ORATIOOBLVERB)(-*1 Abs + Pl BARRIER 
 #SELECT INTRANSVERB + Par + 3Pl IF (*1 ORATIOOBLVERB)(-*1 Abs + Pl BARRIER VFIN);
 SELECT:0509 INTRANSVERB + Par + 3Pl IF (*1C ORATIOOBLVERB - QAR BARRIER KOMMA)(-*1 Abs + Pl LINK NEGATE *1 TRANSVERB + 3PlO BARRIER VFIN)(NEGATE 1 Par OR CONT OR Cau OR Con);
 #20091105 LINK tilfoejet for at forbygge hit på '.. atuartup misigissutsini SUUGALUARTUT oqaasinngortinniartarumaarai, ..'
+
+#Objekter, ikke or.obl. efter transitivt ORATIOOBLVERB ved opremsning hvor potentiel Par i paratakse med nominer, der ikke kan være Par som i Takuaalu arnaq INUUSUTTUARAANNGITSOQ, pinnivissuunngitsoq tanissimasorujussuaq ammaneqqortoorujussuarmillu bluselik, iviangii allaat nuisalaarlutik.
+REMOVE:0510 Par + 3Sg IF (0 TUQ + Abs + Sg LINK 1 KOMMA LINK 1 N + Abs + Sg LINK NOT *1 V + 3SgO)(*-1 ORATIOOBLVERB + TRANSVERB) ; #Skal nok reformuleres. Efter test og check rammes kun een sætning i testromanen
 
 SELECT:0511 Par + INTRANSVERB + 3Sg OR Cont + INTRANSVERB + 4Sg OR ContNeg + INTRANSVERB + 4Sg OR Cau + INTRANSVERB + 3Sg IF (-*1 ORATIOOBLVERB - TAQ + V BARRIER ("tassa") OR VFIN)(-*1 Abs + Sg BARRIER ORATIOOBLVERB)(NEGATE *1 Prop + Abs OR Prop + Sem/FirstName BARRIER V)(NEGATE 0 Der/nv LINK *1 Par + Sg) #20100322 Sidste NEGATE for skyld oo, hvor et verbalnomen er subjekt
 (NEGATE 0 ATTRIBUTIV);
