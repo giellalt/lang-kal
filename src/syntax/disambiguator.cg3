@@ -1281,7 +1281,7 @@ SET OTHERDAY = ("ullortuneq") | ("ullukinneq") ;
 SET SEASON = ("aasaq") | ("ukiaq") | ("ukioq") | ("upernaaq") ; #årstider
 #LIST MONTH = "januar" "januaari" "februar" "februaari" "marts" "marsi" "april" "apriili" "maj" "maaji" "juni" "juuni" "juli" "juuli" "august" "aggusti" "september" "septembari" "oktober" "oktobari" "november" "novembari" "december" "decembari" ;
 LIST TIMEVERB = ("assi" GIIAAR) ("ili" NIQ)("ingerla") ("naammassi") ("ip" TUQ U) "pula" ("qaama") ("qiteqqup") ("imaali"); #verber som kan have tidsudtryk som subjekt
-SET TEMPUSVERB = UGEDAGE | ("qaanger") | ("qaqutigut" U) | ("qiteqqup") | ("taamaali") | ("ukiar") | ("ukioq" U) ;
+SET TEMPUSVERB = UGEDAGE | ("ilaanneeriar") | ("qaanger") | ("qaqutigut" U) | ("qiteqqup") | ("taamaali") | ("ukiar") | ("ukioq" U) ;
 LIST VERB_medGE = "ipianngu" "miki" ; #Set til stammer, der kan tage GE+Der/vv
 LIST VERB_udenUTE = "inor" ; #Set til de enormt mange verber, der ikke kan tage UTE+vn
 LIST TRANSINTRANS = "naalap" "nuup" "oqar"; #Set til verber med både transitive og intransitive stammer
@@ -1303,7 +1303,7 @@ LIST MAANED = "januar" "januaari" "februar" "februaari" "marts" "marsi" "april" 
 SET CLOCK = (Num Trm) - AFFINGERET ;
 LIST OTHERTIME = Sem/Time ("aallar" QQAAR UTE) ("aasaq") "akunneq" ("aqagu") (/\"inuk\"\ U\ .*\ NIQ/l) ("ippassaq") "juulli" ("kingulleq") ("kingu" NIQ) ("kinguneq") ("kinguninnguaq") ("kingusip") ("maanna") "minut" "naggat" ("nali") ("piffik") ("qaammat") ("qangali") "qangangaatsiaq" ("qeqqa") ("sapaat") ("sapaatip-akunneq") ("sivisu") "sivitsunngitsoq" ("siulleq") ("siuneq") ("taarsi") ("ualeq") ("ukiaq") ("ukiar" TUQ) ("ukiartoq") ("ukioq") ("ullaa") ("ullaaq") ("ulloq") ("unnuaq") "unnuaqeqqa" ("unnuk") ;
 SET TIMENOUN = UGEDAGE | OTHERDAY | SEASON | MAANED | CLOCK | OTHERTIME ;
-SET TIME = TEMPUSVERB | OTHERTIME ;
+SET TIME = TEMPUSVERB | OTHERTIME | TIDSPARTIKEL ;
 
 LIST SPATIAL = "aki" "ate" "illuatunge" "ilu" "eqqaq" "killik" "kujate" "qaaq" "qule" "saaq" "sani" "silate" "siu" "tunge" "tunu" "ungate" ; #PL 20180522 slettet "arlaq". Næppe spatialt indhold og fejlhitter fx på 'Arlaqanngitsut qitipput'
 LIST USPATIAL = "sanik" "ateq";
@@ -1584,6 +1584,8 @@ REMOVE:0001S ("kimik") IF (0 ("kina") + LUUNNIIT) ;
 REMOVE:0001T GALUAQ + Aeq ;
 REMOVE:0001U ("taaq") (0 ("taava") + LU)(-1 CLB OR BOS OR PUNCT) ;
 REMOVE:0001V ("pillup") - AFFINGERET + Imp ; #pillugit
+REMOVE:0001X ("taap") + Imp IF (0 ("una")) ; #taanna
+REMOVE:0001Y ("tamap") + Imp IF (0 ("manna")) ; #tamanna
 
 #REMOVE:0001XX UGEDAGE + Gram/TV IF (0 UGEDAGE + Gram/IV) ; #NNGUR + Gram/TV utænkelig ved ugedages navne #udkommenteret og gjort listen entydig i stedet.
 
@@ -1654,7 +1656,6 @@ MAP:M0005Juxta @i->N TARGET PRÆNOM + $$KASUS + $$NUMERUS IF (*1 MWEHOVED + Der/
 SUBSTITUTE:conj1luun (LUUNNIIT)(CONJ-LUUNNIIT) TARGET LUUNNIIT + $$MOOD IF (-*1 $$MOOD - Gram/Exclm BARRIER (*) - KOMMA);
 SUBSTITUTE:conj2luun (LUUNNIIT)(CONJ-LUUNNIIT) TARGET LUUNNIIT + ("immaqa") ;
 SUBSTITUTE:conj3luun (LUUNNIIT)(CONJ-LUUNNIIT) TARGET LUUNNIIT + $$MOOD OR LUUNNIIT + CONT (1 LUUNNIIT + $$MOOD OR CONJ-LUUNNIIT + $$MOOD) ;
-SUBSTITUTE:conj4luun (LUUNNIIT)(CONJ-LUUNNIIT) TARGET LUUNNIIT + $$KASUS (1 LUUNNIIT + $$KASUS OR CONJ-LUUNNIIT + $$KASUS) ;
 SUBSTITUTE:conj5luun (LUUNNIIT)(CONJ-LUUNNIIT) TARGET LUUNNIIT (0 (/\"sinner\"\ Gram\/TV\ V\ /l) + CONT) ; #sinnerlugit er Pali
 SUBSTITUTE:conj6luun (LUUNNIIT)(CONJ-LUUNNIIT) TARGET LUUNNIIT (0 TIME)(-1 TIME) ;
 
@@ -1717,6 +1718,9 @@ SUBSTITUTE:conj6lux (LU)(CONJ-LU) TARGET LU (0 TIME)(-1 TIME) ;
 SUBSTITUTE:conj7lux (LU)(CONJ-LU) TARGET LU (-1 Adv)(1 Adv) ;
 SUBSTITUTE:conj8lux (LU)(CONJ-LU) TARGET LU (-1 LU OR CONJ-LU) ;
 SUBSTITUTE:conj9lux (LU)(CONJ-LU) TARGET LU (-1 V - VFIN)(0 CONT) ;
+SUBSTITUTE:conj10lux (LU)(CONJ-LU) TARGET LU + VFIN OR LU + CONT (*-1 CONT BARRIER (*) - Adv - Ins - KOMMA) ;
+SUBSTITUTE:con11lux (LU)(CONJ-LU) TARGET LU + TIME (*-1 TIME OR Num + Lok OR Num + iLok) ;
+
 
 
 SUBSTITUTE:adv0lux (LU)(ADV-LU) TARGET LU + MI ;
@@ -1757,7 +1761,7 @@ SUBSTITUTE:adv30lux (LU)(ADV-LU) TARGET LU (-1 CONT)(NEGATE 0 $$OBLIQUE) ; #unsa
 SUBSTITUTE:adv31lux (LU)(ADV-LU) TARGET LU (-1 BOS)(NEGATE 0 V - Con - Cau) ; #unsafe rule
 SUBSTITUTE:adv32lux (LU)(ADV-LU) TARGET LU (0 ("alla") OR (/su\"\ U\ /l)) ; #unsafe rule
 SUBSTITUTE:adv33lux (LU)(ADV-LU) TARGET LU + $$KASUS - Rel (NEGATE *-1 $$KASUS OR iOBLIQUE) ; #unsafe rule #Aalariassanani nikorfavoq, nujaaLU suialaami erfalanngillat, ungasissumummi isigisut utimut isigisarmata.
-SUBSTITUTE:adv34lux (LU)(ADV-LU) TARGET LU + Adv - ("allaat") OR LU + Pali;
+SUBSTITUTE:adv34lux (LU)(ADV-LU) TARGET LU + Adv - ("allaat") - ("taamaallaat") - ("imaallaat") OR LU + Pali;
 SUBSTITUTE:adv35lux (LU)(ADV-LU) TARGET Gram/Comp + LU ;
 SUBSTITUTE:adv36lux (LU)(ADV-LU) TARGET LU + CONT (NEGATE -1 CLB OR CONT OR BOS); #unsafe rule
 SUBSTITUTE:adv37lux (LU)(ADV-LU) TARGET LU + CONT IF (NEGATE -1 BOS)(NEGATE *-1 V)(NEGATE *1 CONT BARRIER VFIN) ;
@@ -3515,7 +3519,7 @@ MAP:M0061C (@CL-<CIT) TARGET Cont + 1Pl IF (-*1 ORATIOOBLVERB + 1Pl)(NEGATE *1 C
 MAP:M0061D (@CL-<CIT) TARGET Cont + 2Pl IF (-*1 ORATIOOBLVERB + 2Pl)(NEGATE *1 Cont) (NEGATE *1 Par);
 MAP:M0062 (@CL-<CIT) TARGET Cont + 4Pl IF (-*1 ORATIOOBLVERB + 3Pl)(NEGATE *1 Cont)(NEGATE *1 Par)(NEGATE *1 ORATIOOBLVERB + 3Pl) ;
 MAP:M0062A (@CL-<CIT) TARGET CONT + 4Pl IF (-*1 ORATIOOBLVERB + 3Sg)(NEGATE *1 Cont)(NEGATE *1 Par)(-1*W 3Pl) ;
-MAP:M0063 (@CL-<CIT) TARGET CONT + TRANSVERB IF (-*1 ORATIOOBLVERB - N - TAQ BARRIER @PRED)(NEGATE *1 Cont BARRIER KOMMA)(NEGATE -1 CONJ-LU LINK -1 KOMMA)(NEGATE *1 Par)(NEGATE -1 KOMMA LINK 2 VFIN)(NEGATE -1 CONJ-C - TIME)(NEGATE 0 ADVERBIEL OR ("pissut") - AFFINGERET) #Eqqaamavaa inuppassuullutik kongruerer ikke.
+MAP:M0063 (@CL-<CIT) TARGET CONT + TRANSVERB IF (-*1 ORATIOOBLVERB - N - TAQ BARRIER @PRED OR CONJ-C)(NEGATE *1 Cont BARRIER KOMMA)(NEGATE -1 CONJ-LU LINK -1 KOMMA)(NEGATE *1 Par)(NEGATE -1 KOMMA LINK 2 VFIN)(NEGATE -1 CONJ-C - TIME)(NEGATE 0 ADVERBIEL OR ("pissut") - AFFINGERET) #Eqqaamavaa inuppassuullutik kongruerer ikke.
 (NEGATE *-1 ORATIOOBLVERB LINK *1 Par LINK *1 KOMMA LINK *1 _TARGET_)
 (NEGATE 1 (":"))
 (NEGATE *-1 @CL-<CIT BARRIER CONJ-C)
