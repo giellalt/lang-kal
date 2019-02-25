@@ -2243,6 +2243,8 @@ SELECT:0028 ("taama") + Lok + Pl IF (-1 Lok + Pl) ;
 SELECT:0028B Rel IF (0 ANATOMIC)(*1C POSSESSUM BARRIER (*) - Adv - Pali) ; #niumi napinera
 SELECT:0028C Rel IF (0 HUMAN)(*1C POSSESSUM BARRIER (*) - Adv - Pali LINK 0 POSSESSUM3 OR POSSESSUM4)(NEGATE 0 Ins OR Adv) ; #arnami qanoq toqusimanera
 
+REMOVE:0028D MI IF (0 Rel OR Lok) (NEGATE -1 BOS OR CLB OR CONJ-C OR PUNCT)(NEGATE 0 CONJ-C) ;
+
 REMOVE:0029 4SgPoss + Pl + ("aanaq") OR 4SgPoss + Pl + ("aana") IF (0 ("aanaq") + 4SgPoss + Sg OR ("aana") + 4SgPoss + Sg) ;
 REMOVE:0030 4SgPoss + Pl + ("aataq") OR 4SgPoss + Pl + ("aata")IF (0 ("aataq") + 4SgPoss + Sg OR ("aata") + 4SgPoss + Sg) ;
 
@@ -2397,7 +2399,7 @@ SELECT:0055 ("nuna") + Sg + 3PlPoss IF (-1 ("kalaaleq") + Rel + Pl);
 REMOVE:0059 ("nuna") + 1PlPoss + Pl IF (0 ("nuna") + 1PlPoss + Sg); #Nunatsinni altid Sg
 REMOVE:0059 ("nuna") + i1PlPoss + iPl IF (0 ("nuna") + i1PlPoss + iSg); #Nunatsinni altid Sg
 REMOVE:0060 Abs + Sg + MI - Pron IF (*0 Abs + Sg)(NEGATE 0 Cau) ; #20101013 Lokalis tagget som subjekt med MI er en stor fejlkilde
-REMOVE:0060A Abs + Sg + MI IF (0 Lok LINK 1 Lok) ;
+REMOVE:0060A Abs + Sg + MI IF (0 Lok LINK *1 Lok BARRIER (*) - CONT) ;
 
 SELECT:0061 Rel + Pl IF (1 (/__Gram\/Dem\ Pron__/l) + Rel LINK 1C 3PlPoss);
 SELECT:0062 Rel + Sg IF (1 (/__Gram\/Dem\ Pron__/l) + Rel LINK 1 3SgPoss);
@@ -4581,7 +4583,7 @@ MAP:M1095 @i-ADVL> TARGET Adv IF (*1 Der/vn BARRIER (*) - @ADVL> - @i-ADVL> - @S
 MAP:M1100 (@CONT->N) TARGET Cont + 4Sg + 3SgO IF (-1 @SUBJ> OR ("\)") OR ("\"")) ; #Det blev alt for ad hoc med baade citation og parantes
 MAP:M1110 (@ABSOLUT_PRED) TARGET Par + PASSIV + 3Pl IF (-3 Rel)(-2 Abs + Pl)(-1 Ins)(1 POSSESSUM); #matcher SELECT:ParantetiskParPl
 MAP:M1120 (@i-ADVL>) TARGET CONT IF (1 Part)(2 NIQ); #Eqqarsaatigiinnarnagu ingerlaannaq piviusunngortitsineq
-MAP:M1130 (@i-ADVL>) TARGET Cont IF (*1 NIQ + Abs - ("inuk" U NIQ) - Gram/Int BARRIER (*) - Adv - ADVERBIEL LINK NOT 1 KOMMA); #Uangalu anorip karrit aqqusaarlugit siorsunnera nuannaringaalissagaluarpara... #Panini namminermisut inuunermik taamaattumik atugaqaqqunagu silattunnginnerani toqoqatigalugu inuunera kipiniaraluarpaa ...! 
+MAP:M1130 (@i-ADVL>) TARGET Cont IF (*1 NIQ + Abs - ("inuk" U NIQ) - Gram/Int - Gram/Comp BARRIER (*) - Adv - ADVERBIEL LINK NOT 1 KOMMA); #Uangalu anorip karrit aqqusaarlugit siorsunnera nuannaringaalissagaluarpara... #Panini namminermisut inuunermik taamaattumik atugaqaqqunagu silattunnginnerani toqoqatigalugu inuunera kipiniaraluarpaa ...! 
 # Mapping af ledsagemåde til inderiveret verbum
 MAP:M1131 @i-ADVL> TARGET CONT IF (*1 N)(NEGATE *0 V);
 MAP:M1140 @i-ADVL> TARGET CONT - TRANSVERB IF (*1C Der/vn BARRIER (*) - CONT LINK NOT 0 CONJ-C LINK NOT 1 HTR) #naamik kingornagut AJORANI panertunik atisereermat illarnarnera assissaqanngilaq.
@@ -4608,7 +4610,7 @@ MAP:M0898 @i-ADVL> TARGET CONT - OBJVERB IF (1C (/\ TAQ\ Der\/vn\ N\ /l) - CONJ-
 # Pillugu og pissutigalugu
 
 #Tagning af 'pillugu' til inderiveret verbalstamme Der/vn umiddelbart efter
-MAP:M1147A @i-ADVL> TARGET PILLUGU IF ((1 Der/vn + N) OR (1 INDERIVERENDE_SUBSTANTIV LINK NOT 1 ("ajor"))) ;
+MAP:M1147A @i-ADVL> TARGET PILLUGU IF ((1 Der/vn + N - Gram/Comp) OR (1 INDERIVERENDE_SUBSTANTIV LINK NOT 1 ("ajor"))) ;
 MAP:M1147B @i-ADVL> TARGET PILLUGU IF (*1 @i-ADVL> BARRIER (*) - Adv LINK 1* Der/vn + N BARRIER (*) - @i-ADVL>)(NEGATE *1C V - ("tassa") - PILLUGU - (Cont @i-ADVL>) - (ContNeg @i-ADVL>)) ;
 
 #Tagging af ikke inderiveret 'pillugu' eller 'pissutigalugu'.
@@ -4669,7 +4671,7 @@ MAP:M1170 (@ADVL>) TARGET Cont + 2Sg OR ContNeg + 2Sg IF (*1 VFIN + 2Sg);
 MAP:M1180 (@<ADVL) TARGET Cont + 2Sg OR ContNeg + 2Sg IF (*-1 VFIN + 2Sg)(NEGATE 0 CONJ-LU);
 MAP:M1190 (@ADVL>) TARGET CONT + 4Sg IF (*1 VFIN + 3Sg LINK NEGATE *-1 KOMMA LINK *-1 _TARGET_ )(NEGATE *1 CONJ-C LINK *1S V BARRIER VFIN LINK *-1 _TARGET_ BARRIER VFIN LINK *-1 CONJ-C BARRIER VFIN LINK *-1 @PRED OR VFIN);
 MAP:M1199 (@ADVL>) TARGET CONT + 4Sg IF (*1 Par + 3Sg)(NEGATE *0 VFIN BARRIER UNA); #i sætninger af PRED2-type
-MAP:M1200 (@<ADVL) TARGET CONT + 4Sg IF (*-1 VFIN + 3Sg - ("imaap") BARRIER KOMMA)(NEGATE 0 LU)(NEGATE 1 CONT + 4Sg - CONJ-C)(NEGATE *-1 LU - V BARRIER V LINK -1 VFIN)(NEGATE 1 @ADVL>); #BARRIER for at forebygge, at ledsagemåden peger baglæns i stedet for forlæns ved komma #undtaget imaap fordi en 4Sg Cont sandsynligvis ikke peger på den.
+MAP:M1200 (@<ADVL) TARGET CONT + 4Sg IF (*-1 VFIN - ORATIOOBLVERB + 3Sg - ("imaap") BARRIER KOMMA)(NEGATE 0 CONJ-LU)(NEGATE 1 CONT + 4Sg - CONJ-LU)(NEGATE *-1 CONJ-C - V BARRIER V LINK -1 VFIN)(NEGATE 1 @ADVL>); #BARRIER for at forebygge, at ledsagemåden peger baglæns i stedet for forlæns ved komma #undtaget imaap fordi en 4Sg Cont sandsynligvis ikke peger på den.
 #MAP:M1200 (@<ADVL) TARGET CONT + 4Sg IF (*-1 VFIN + 3Sg - ("imaap") BARRIER KOMMA)(NEGATE 0 CONJ-C)(NEGATE 1 CONT + 4Sg - CONJ-C)(NEGATE *-1 CONJ-C - V BARRIER V LINK -1 VFIN)(NEGATE 1 @ADVL>); #BARRIER for at forebygge, at ledsagemåden peger baglæns i stedet for forlæns ved komma #undtaget imaap fordi en 4Sg Cont sandsynligvis ikke peger på den.
 MAP:M1210 (@ADVL>) TARGET Cont + 1Pl OR ContNeg + 1Pl IF (*1 VFIN + 1Pl);
 MAP:M1220 (@<ADVL) TARGET Cont + 1Pl OR ContNeg + 1Pl IF (*-1 VFIN + 1Pl)(NEGATE 0 CONJ-LU)(NEGATE *1 Par BARRIER KOMMA);
@@ -4690,7 +4692,7 @@ MAP:M1266Z @ADVL> TARGET CONT IF (*1 Cau LINK 1 EOS) (NEGATE *-1 VFIN BARRIER KO
 
 MAP:M1266H @i-<ADVL TARGET CONT + QQU + Gram/Db - CONJ-C IF (*-1 (TIP TAQ) + V) ;
 MAP:M1266H @i-ADVL> TARGET CONT - ORATIOOBLVERB IF (1 CONT + QQU - CONJ-C OR Par + QQU - CONJ-C);
-MAP:M1266 @<ADVL TARGET CONT - CONJ-LU - LI IF (*-1 VFIN) (NEGATE *1 VFIN)(NEGATE -1* CONJ-C + N BARRIER V)(NEGATE -1 Cau)(NEGATE 1* CONT + @PRED BARRIER VFIN); #Sen mapping til lugu/git efter overordnet verbum. #LU for at forebygge hit på paratakser. #Regler tilføjet for at hindre hit på inussiarnisaarluni i 'oqaluunniaraanganilu inussiarnisaarluni akisarlugu.' og på alle i 'baajeeriarlunilu sikkilerluni aallarluni.'
+MAP:M1266 @<ADVL TARGET CONT - CONJ-LU - LI IF (*-1 VFIN - ORATIOOBLVERB ) (NEGATE *1 VFIN)(NEGATE -1* CONJ-C + N BARRIER V)(NEGATE -1 Cau)(NEGATE 1* CONT + @PRED BARRIER VFIN); #Sen mapping til lugu/git efter overordnet verbum. #LU for at forebygge hit på paratakser. #Regler tilføjet for at hindre hit på inussiarnisaarluni i 'oqaluunniaraanganilu inussiarnisaarluni akisarlugu.' og på alle i 'baajeeriarlunilu sikkilerluni aallarluni.'
 MAP:M1267 @ADVL> TARGET CONT + QQU OR CONT + NIAR IF (*1 QQU);
 
 # Neksusadverbialerne
