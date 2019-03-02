@@ -2144,6 +2144,7 @@ REMOVE:0040E 4PlO + CONT - Dobbelttransitiv ; #Er vist en utænkelig kombination
 REMOVE:0003A Gram/Exclm IF (0 VFIN - Gram/Exclm) ;
 REMOVE:0003B Gram/Exclm IF (*0 VFIN); #Er muligvis for bred!
 REMOVE:0003C Gram/Exclm + ("(.*)r"r) IF (0 ("$1q"v)) ; #Slet en Exclm der ender på r, hvis der er en læsning magen til, der ender på q.
+REMOVE:0003D Gram/Exclm IF (0 Abs LINK *-1 Gram/Dem LINK 1 SPATIAL LINK 1 _TARGET_) ; #PL 20190302 0003 vælger Gram/Exclm i 'Unami atinniittoq ITERSALIARSUAQ suugami?'
 SELECT:0003 Ind - SUB IF (NEGATE *0 VFIN BARRIER KOMMA)(NEGATE 0 NIR OR INDERIVERENDE_SUBSTANTIV)(NEGATE 0 Int LINK 1 ("?"))(NEGATE 0 Par LINK *-1 KONCESSIV)(NEGATE -1 NIQ + Gram/Comp)(NEGATE 0 Gram/Exclm LINK *1 Par LINK -*1 KONCESSIV)(NEGATE 0 KONCESSIV)(NEGATE *-1 ("tassa") LINK -1 BOS) #SUB undtaget for ikke at gøre Via som matuagut til Ind 1Pl. Må ikke slette Par i koncessiver og efterlade fx GALUAQ + GE + Ind. Må ikke slette NIQ fulgt af Par. Sidste NEGATE fordi 'ilaat' kan læses som IP + LAAR + Exclm. Allersidste NEGATE for at undgå at naak analyseres som naap+Exclm
 (NEGATE 0 Rel LINK 1 POSSESSUM)
 (NEGATE 0 ("aappaq"));
@@ -3399,7 +3400,8 @@ MAP:M0022A @PRED2 TARGET CONT + TRANSVERB + RIAR IF (-3 BOS LINK 1 Abs LINK 1 Ab
 MAP:M0022F @ADVL> TARGET iLok + U + GUNAR OR U + NNGUATSIAR IF (*1 VFIN) ; #Minimmut apriilimiugunarpoq aamma nassiutereernikuuara, paasinialaassavara misissorsimaneraa. #Tassa ukiut sisamaannguatsiarput qaangiuttut aalajangerpaat ....
 
 #Adverbielle led
-REMOVE Abs IF (1 ADVERBIEL + POSSESSUM OR SPATIAL + POSSESSUM) ;
+#REMOVE Abs IF (1 ADVERBIEL + POSSESSUM OR SPATIAL + POSSESSUM) ; #PL 20190302 sletter UNAMI atinniittoq itersaliarsuaq suugami?
+REMOVE Abs - Pron IF (1 ADVERBIEL + POSSESSUM + Abs OR SPATIAL + POSSESSUM + Abs) ;
 REMOVE Abs IF (1 CONJ-C + Rel LINK 1 ADVERBIEL + POSSESSUM OR SPATIAL + POSSESSUM - AFFINGERET);
 
 MAP:M00222A @POSS> TARGET Rel IF (1* ADVERBIEL + POSSESSUM + OBLIQUE BARRIER V LINK NEGATE 0 POSSESSUM4)(NEGATE *-1 Rel BARRIER V)  ; #saniatigut
@@ -6858,6 +6860,7 @@ REMOVE:9972 ("([^<].*)"r) IF
 #	(NEGATE 0 Orth/Append OR Interj)
 	(NEGATE 0 VFIN LINK 0 V - VFIN) #eqqartoraat er par og ikke ind
 	(0 Prop + AFFINGERET OR (*) - Prop) #skal ikke fravælge Eric
+	(NEGATE 0 SPATIAL + TUQ LINK -1 Gram/Dem LINK 2 N) #PL 20190302 sletter ate fra Unami ATINNIITTOQ itersaliarsuaq suugami?
 ; 
 REMOVE:9972B ("([^<]...*).."r) + (/Der\/.*/r) IF (0 (VSTR:"$1...+"r) - (/Der\/.*/r)) ; #En mere farlig regel end 9972A, men kræver til gengæld derivation. Skrevet til ord som 'aqerluusaq'.
 
