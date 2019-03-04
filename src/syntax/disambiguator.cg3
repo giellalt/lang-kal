@@ -1133,7 +1133,7 @@ SET KONGRUENSADLED = N + $$KASUS + $$NUMERUS ;
 SET NÆPPE-POSS = (/__TUQ\ Der\/vn\ N\ Rel\ Sg\ 4PlPoss__/l) | (/__TUQ\ Der\/vn\ N\ Rel\ Pl\ 4PlPoss__/l) ; #SET til forebyggelse af uheldige sletninger af Ins. PL 20181017
 SET ALL_OBLIQUE = OBLIQUE | iOBLIQUE ;
 
-SET POSSESSUM1 = (N 1SgPoss) | (iN i1SgPoss) | (N 1PlPoss) | (iN i1PlPoss) ;
+SET POSSESSUM1 = (N 1SgPoss) | (iN i1SgPoss) | (N 1PlPoss) | (iN i1PlPoss) | (Num 1SgPoss) | (Num 1PlPoss) | (Prop 1SgPoss) | (Prop 1PlPoss) | (iProp i1SgPoss) | (iProp i1PlPoss) | (DivPron 1PlPoss) ;
 SET POSSESSUM2 = (N 2SgPoss) | (iN i2SgPoss) | (N 2PlPoss) | (iN i2PlPoss) ;
 SET POSSESSUM3 = (N 3SgPoss) | (N 3PlPoss) | (iN i3SgPoss) | (iN i3PlPoss) | (Num 3SgPoss) | (Num 3PlPoss) | (Prop 3SgPoss) | (Prop 3PlPoss) | (iProp i3SgPoss) | (iProp i3PlPoss) | (DivPron 3PlPoss) ;
 SET POSSESSUM4 = (N 4SgPoss) | (N 4PlPoss) | (iN i4SgPoss) | (iN i4PlPoss) ;
@@ -1707,7 +1707,7 @@ SUBSTITUTE:conj17luun (LUUNNIIT)(CONJ-LUUNNIIT) TARGET LUUNNIIT + $$NUMERUS + $$
 
 
 #SUBSTITUTE:adv30luun (LUUNNIIT)(ADV-LUUNNIIT) TARGET LUUNNIIT (-1 CONT)(NEGATE 0 $$OBLIQUE) ; #unsafe rule
-SUBSTITUTE:adv31luun (LUUNNIIT)(ADV-LUUNNIIT) TARGET LUUNNIIT (-1 BOS)(NEGATE 0 V - Con - Cau) ; #unsafe rule
+SUBSTITUTE:adv31luun (LUUNNIIT)(ADV-LUUNNIIT) TARGET LUUNNIIT + V (-1 BOS)(NEGATE 0 V - Con - Cau - IteCau) ; #unsafe rule
 SUBSTITUTE:adv32luun (LUUNNIIT)(ADV-LUUNNIIT) TARGET LUUNNIIT (0 ("alla") OR (/su\"\ U\ /l)) ; #unsafe rule
 SUBSTITUTE:adv33luun (LUUNNIIT)(ADV-LUUNNIIT) TARGET LUUNNIIT + $$KASUS - Rel (NEGATE *-1 $$KASUS OR iOBLIQUE) ; #unsafe rule #Aalariassanani nikorfavoq, nujaaluunniit suialaami erfalanngillat, ungasissumummi isigisut utimut isigisarmata.
 SUBSTITUTE:adv34luun (LUUNNIIT)(ADV-LUUNNIIT) TARGET LUUNNIIT + Adv - ("allaat") OR LUUNNIIT + Pali (NEGATE 0 ("soorlu")); #NEGATE løser midlertidigt ordklasseproblem med soorlu/soorluluunniit, som ikke skal være pali.
@@ -2036,8 +2036,8 @@ REMOVE (Orth/Copy) IF (-*1 BOS BARRIER (*) - PUNCT)(NEGATE 1 Prop OR iProp) ;
 REMOVE (Orth/Copy Prop Pl) IF (-*1 BOS BARRIER (*) - PUNCT - ("nuna"))(1 Prop + Sg - 2SgPoss) ;
 REMOVE (Orth/Copy Prop Sg) IF (-*1 BOS BARRIER (*) - PUNCT)(1C Prop + Pl) ;
 REMOVE (Orth/Copy Prop) IF (0 OBLIQUE) (-*1 BOS BARRIER (*) - PUNCT)(1 Prop) ;
-REMOVE (Orth/Copy Prop) IF (0 SSAQ)(1 Prop); #Præsidentissaq Obama
-REMOVE (Orth/Copy Prop) IF (0 VIK)(1 Sem/Hum);
+REMOVE (Orth/Copy Prop) IF (0 SSAQ)(1 Prop)(-1 BOS OR CLB); #Præsidentissaq Obama
+REMOVE (Orth/Copy Prop) IF (0 VIK)(1 Sem/Hum)(-1 BOS OR CLB);
 #SUBSTITUTE (Orth/Copy) (*) TARGET (Orth/Copy) ;
 
 
@@ -4158,7 +4158,7 @@ MAP:M0514B @N< TARGET Ins + Pl - CONJ-C IF (*-1 Ins + Pl - Num - TIME  BARRIER V
 (NEGATE 1 Ins LINK 1 HTR)
 ;
 
-MAP:M0514C @N< TARGET Rel - TIME - Num - POSSESSUM3 - FAM - HUM IF (0 $$NUMERUS)(*-1 Rel + $$NUMERUS - Num - TIME BARRIER CONJ-C OR V OR KOMMA OR DIRTALESTART OR Rel OR TIME)
+MAP:M0514C @N< TARGET Rel - TIME - Num - POSSESSUM3 - FAM - HUM IF (0 $$NUMERUS)(*-1 Rel + $$NUMERUS - Num - TIME BARRIER CONJ-C OR V OR KOMMA OR DIRTALESTART OR Rel OR TIME OR SEASON)
 (NEGATE -1 Prop)
 (NEGATE *1 POSSESSUM - Rel BARRIER CONJ-C LINK *1 POSSESSUM OR TRANSVERB BARRIER CONJ-C) #Atuakkiortup *Ullorissap sorsuttariaqarneranik oqaluttuarisaa misigissutsinik eqqarsaatersuutinillu itisilerinermigut kalaallit atuakkiaannit allanit immikkooruteqarpoq.
 (NEGATE *1 TRANSVERB OR ORATIOOBLVERB)
@@ -5318,6 +5318,9 @@ REMOVE:1681 i2SgPoss IF (-*1C Pron + 1Sg) ;
 REMOVE:1681A 1SgPoss IF (0 Aeq)(NEGATE *1 1Sg) ;  
 
 REMOVE:1681B 2SgPoss IF (0 Prop LINK 1 iProp) ;
+REMOVE:1681C Prop + POSSESSUM1 - AFFINGERET IF (0 PROP - POSSESSUM) ;
+REMOVE:1681D N IF (0 Prop - POSSESSUM)(NEGATE *-1 BOS BARRIER WORD) ;
+REMOVE:1681E Prop + AFFINGERET IF (0 Prop - AFFINGERET) ;
 
 REMOVE:1682 2SgPoss IF (0 NUMHOVED) ; #kapitalit pingajuanniippoq.
 REMOVE:1683 POSSESSUM12 IF (0 Pl - POSSESSUM)(*1 NIQAR) ;
