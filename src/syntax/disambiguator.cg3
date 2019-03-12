@@ -1251,7 +1251,7 @@ SET MOVE-VERB = LOKVERB | ABLVERB | TRMVERB ;
 
 # 20091106 Foelgende med tak til Tino for at forebygge at "oqar" + USIQ opfattes som inquit
 LIST ORATIOOBLVERBnOQAR = "aalajanger" "aalianger" ("apeqqut" GE) "apere" ("assuarliut" GE) "eqqaa" "eqqaama" "eqqartor" "ilimage" "ilimasup" "ilisimatitsi" "ilisimatitsissut" "imaap" ("isuma" LIUR) ("isuma" QAR)
-"isummer" "kaammattor" "maluge" "malunnar" "malunnarsi" "naatsorsor" "nalu" "nalunaar" "nalunaarut" "neriorsor" "neriup" "nipangiup" "oqaluttuar" "paasi" "pinngitsaali" "puigor" "puior" "qular" "qulare" "qularnar" "qinnuige" "sinnattoq GE" "siunnersor" ("taku" Gram/TV) "tusar" "unner" "uppernarsar" (/SSAQ\ Der\/nn\ GE\ Der\/nv/l); #GE tilføjet til objektssætninger som ikke er indirekte tale
+"isummer" "kaammattor" "maluge" "malunnar" "malunnarsi" "naatsorsor" "nalu" "nalunaar" "nalunaarut" "neriorsor" "neriup" "nipangiup" "oqaluttuar" "paasi" "pinngitsaali" "puigor" "puior" "qular" "qulare" "qularnar" "qinnuige" "sinnattoq GE" "siunnersor" "takorloor" ("taku" Gram/TV) "tusar" "unner" "uppernarsar" (/SSAQ\ Der\/nn\ GE\ Der\/nv/l); #GE tilføjet til objektssætninger som ikke er indirekte tale
 SET ATUARnTAQ = ("atuar") - TAQ - VIK - QATE;
 SET OQARnUSIQ = ("oqar") - (USIQ) ;
 SET ALLAANNGIT = ("alla") + U + NNGIT ;
@@ -1668,6 +1668,7 @@ SUBSTITUTE:conj5luun (LUUNNIIT)(CONJ-LUUNNIIT) TARGET LUUNNIIT (0 (/\"sinner\"\ 
 SUBSTITUTE:conj6luun (LUUNNIIT)(CONJ-LUUNNIIT) TARGET LUUNNIIT (0 TIME)(-1 TIME) ;
 SUBSTITUTE:conj7luun (LUUNNIIT)(CONJ-LUUNNIIT) TARGET LUUNNIIT + ContNeg (NEGATE -1 CONT)(1 ContNeg OR NNGIT) ; #hverken eller
 SUBSTITUTE:conj8luun (LUUNNIIT)(CONJ-LUUNNIIT) TARGET LUUNNIIT + Cont (NEGATE -1 CONT)(1 NNGIT) ; #hverken eller
+SUBSTITUTE:conj9luun (LUUNNIIT)(CONJ-LUUNNIIT) TARGET LUUNNIIT + ("immikkut") ;
 
 SUBSTITUTE:adv00luun (LUUNNIIT)(ADV-LUUNNIIT) TARGET LUUNNIIT + Ind (NEGATE -1*< VFIN BARRIER WORD - VFIN) ;
 SUBSTITUTE:adv0luun (LUUNNIIT)(ADV-LUUNNIIT) TARGET LUUNNIIT + MI ;
@@ -2359,6 +2360,9 @@ SELECT:0043AXX Abs + $$NUMERUS + &&IV_SUBJ& - 2SgPoss IF (*0 ORATIOOBLVERB BARRI
 ; 
 
 SELECT:0043A Abs + Sg + Der/nv - NIQ IF (-1 Prop + Abs)(*1 INTRANSVERB + 3Sg LINK NOT T:NexusHøjre)((NOT 0 MI) OR (NOT 0 Lok)) ;
+
+SELECT:0043H Abs + Pron + 1Sg - Gram/Coref OR Abs + Pron + 1Pl - Gram/Coref IF (NEGATE *1 1Sg OR 1Pl OR 1SgO OR 1PlO OR CONT + 3SgO OR CONT + 3PlO OR POSSESSUM1)(NEGATE 0 CONJ-C);
+MAP:0043H @ADVL> TARGET Abs + Pron + 1Sg OR Abs + Pron + 1Pl IF (NEGATE *1 1Sg OR 1Pl OR 1SgO OR 1PlO OR CONT + 3SgO OR CONT + 3PlO OR POSSESSUM1)(*1 V); #Uangattaaq artorsartorsuupput ippassaani pigaarnikuunertik suli malugigaat. #Uangattaaq markerer placering og ikke subjekt.
 
 #######
 # MWE #
@@ -4746,10 +4750,11 @@ MAP:M1300 @CL-ADVL> TARGET IteCau IF (*1 TAR)(NEGATE *-1C V BARRIER @CONJ OR CLB
 MAP:M1300 (@CL-<ADVL) TARGET IteCau IF (*-1 VFIN) ; #20091109
 MAP:M1310 (@CL-ADVL>) TARGET IteCau IF (*1 VFIN) ; #20091109
 MAP:M1320 (@CON) TARGET Con ; #ny 110308
-MAP:M1329 (@CAU) TARGET Cau IF (-*1 ORATIOOBLVERB + V BARRIER VFIN)(*1 Par OR CONT) ; #+V for at forebygge hit på fx eqqarsar+UTE som nomen. Specialitet før M1330 til Inquit med oratio obl., der starter med tid eller årsag
+MAP:M1329 (@CAU) TARGET Cau IF (-*1 ORATIOOBLVERB + V BARRIER VFIN)(*1 Par OR CONT OR VFIN) ; #+V for at forebygge hit på fx eqqarsar+UTE som nomen. Specialitet før M1330 til Inquit med oratio obl., der starter med tid eller årsag
 MAP:M1330 (@CAU) TARGET Cau (NEGATE -*1 ORATIOOBLVERB - Cau + V CBARRIER VFIN)(NEGATE *-1 ("iluaqut" GE))(NEGATE 1 ("\?")) ; #+V for at forebygge hit på fx eqqarsar+UTE som nomen #BARRIER gjort careful for at undgå hit på nominal ANNERIT.
 MAP:M1330 @CAU TARGET Cau IF (*-1 CONJ-C BARRIER V - CONT LINK *-1S Cau BARRIER V) ; #Sideordnede causativer
 MAP:M1331 @CAU TARGET Cau IF (1 DIRTALESLUT) ;
+MAP:M1332 @CAU TARGET Cau IF (1 CLB)(*-1 ORATIOOBLVERB BARRIER VFIN LINK *1 NIR + V - VFIN BARRIER VFIN LINK *1 _TARGET_ BARRIER VFIN) ;
 
 MAP:M1335 @ADVL> TARGET CONT - CONJ-C IF (*1 @CON OR @CAU LINK NOT 0 ORATIOOBLVERB)(NOT *-1 KONCESSIV) ;
 
