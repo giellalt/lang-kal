@@ -1279,7 +1279,7 @@ LIST PLAY = "arsar" ; #often plural and reciprocal
 SET HVVERB = (Gram/HV) | ("naammattoorsi") ;
 LIST IntransTrans = "neri" "ilassior" Gram/HV ; #Set til disambiguering af Ins, VIP vs. HTR mv.
 
-SET UGEDAGE = (/__\"arfineq\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"ataaseq\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"marluk\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"pingasut\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | ("sapaat") | (/__\"sisamat\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"tallimat\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) ;
+SET UGEDAGE = (/__\"arfineq\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"ataaseq\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"marluk\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"pingasut\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | ("sapaat") | (/__\"sisamat\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"tallimat\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | ("ataasinngorpat") | ("ataasinngormat") | ("marlunngorpat") | ("marlunngormat") | ("pingasunngorpat") | ("pingasunngormat") | ("sisamanngorpat") | ("sisamanngormat") | ("tallimanngorpat") | ("tallimanngormat") | ("arfininngorpat") | ("arfininngormat") ;
 SET OTHERDAY = ("ullortuneq") | ("ullukinneq") ;
 SET SEASON = ("aasaq") | ("ukiaq") | ("ukioq") | ("upernaaq") ; #årstider
 #LIST MONTH = "januar" "januaari" "februar" "februaari" "marts" "marsi" "april" "apriili" "maj" "maaji" "juni" "juuni" "juli" "juuli" "august" "aggusti" "september" "septembari" "oktober" "oktobari" "november" "novembari" "december" "decembari" ;
@@ -1593,6 +1593,7 @@ REMOVE:0001Y ("tamap") + Imp IF (0 ("manna")) ; #tamanna
 REMOVE:0001Z ("taa") + Int IF (0 ("taava")) ; #taava
 REMOVE:0001AA (GIP\ Der\/nv/l) ; #ullorissami
 REMOVE:0001AB ("kii") IF (0 ("kiisa") OR ("kiisami")) ;
+REMOVE:0001AC ("suli") + Gram/Exclm IF (0 Adv) ;
 
 #REMOVE:0001XX UGEDAGE + Gram/TV IF (0 UGEDAGE + Gram/IV) ; #NNGUR + Gram/TV utænkelig ved ugedages navne #udkommenteret og gjort listen entydig i stedet.
 
@@ -1831,6 +1832,7 @@ REMOVE:0005A (/__SSA\ Der\/vv\ Gram\/IV\ .*TUQ__/l)(NOT 0 (/__SSA\ Der\/vv\ Gram
 REMOVE:0005B (/__NIAQ\ Der\/vn.*\ IR__/l) OR (/__NIAQ\ Der\/vn.*\ U__/l)(NOT 0 (/__NIAQ\ Der\/vn.*[A-Z][A-Z]+.*\ IR__/l)) (0 NIAR + HTR) ; # NIAQ og IR skal være NIAR og HTR.
 REMOVE:0005C (/__SINNAAQ\ Der\/vn.*[A-Z][A-Z]+\ Der\/..__/l) (0 SINNAA); # SINNAAQ skal ikke viderederiveres #immikkoortissinnaaleraanni
 REMOVE:0005D (/TARIAQ\ Der\/vn\ QAR\ /l) IF (0 TARIAQAR) ;
+REMOVE:0005E (/TAQ\ Der\/vn\ IR\ /l) IF (0 TAQ + U OR TAAR) ; #savaatitaarusunnermi
 REMOVE:0005H (/\"eqqaa\"\ Gram\/IV/l) IF (NOT -1 Ins) ;
 SELECT:0005 ("ingip") + A + 3Pl IF (0 ("issaq") OR IP + SAR) ; #Totalt forvirrede ambiguiteter ved issaapput
 REMOVE:0006 ("qaap") IF (0 ("qaammat"));
@@ -2102,6 +2104,7 @@ SELECT:0040F TIME + Abs IF (1 ("tamaq") + Akk);
 
 REMOVE:0098 TIME + POSSESSUM12 IF (NEGATE 0 Der/nv) ; # Må være en udelukket kombination men må ikke slette fx aasarsiorfik eller (uanga) inuunera
 
+SELECT:0099 UGEDAGE + Pali IF (0 Con OR Cau) ;
 SELECT:0099 Con OR Cau IF (0 UGEDAGE) ;
 
 APPEND ("misse" Orth/Append N Lok Sg 3SgPoss) TARGET ("<miss.>"r) (*-1 Num)(NEGATE 0 Orth/Append + N + Lok + Sg); #missaani
@@ -3918,6 +3921,7 @@ MAP:M0399 @SUBJ_COMP TARGET Abs IF (-2 @FOC)(-1 OBLIQUE)(NEGATE *0 VERB-NOTCONT)
 
 MAP:M0401 @<APPOS TARGET Abs + Prop OR Orth/Append + Prop IF (-1 Abs + Pl)(*1 Abs + Prop + CONJ-LU BARRIER (*) - KOMMA);
 MAP:M0402 @<APPOS TARGET Abs + Prop + CONJ-LU OR Orth/Append + Prop + CONJ-LU IF (*-2 Abs + Pl BARRIER (*) - Prop - KOMMA)(*-1 Abs + Prop OR Orth/Append + Prop BARRIER (*) - KOMMA);
+MAP:M0407Bnum @i-MWE>N TARGET Num IF (1 NUMHOVED + LIK) ; # 7 miliuunit koruunilik. NB bør heller ikke ved QAR etc. analyseres som @i->N
 MAP:M0407Anum (@>N) TARGET Num IF (1 NUMHOVED + N); # ' .. 2 oorimoorlutik ..' specialfald før 189-190
 MAP:M0407Bnum @i-MWE>N TARGET NUMHOVED IF (-1 Num)(1 NUMHOVED + Der/nv) ; # 7 miliuunit koruuneqarput. NB bør heller ikke ved QAR etc. analyseres som @i->N
 MAP:M0407Bnum @>N TARGET NUMHOVED IF (-1 Num)(1 NUMHOVED) ; # 7 miliuunit koruuneqarput. NB bør heller ikke ved QAR etc. analyseres som @i->N
@@ -4519,7 +4523,7 @@ MAP:M0630B (@i-MIK-OBJ>) TARGET Ins IF (*1 HTR + Der/vn - V BARRIER HTR OR (*) -
 MAP:M0935 @i-ADVL> TARGET OBLIQUE IF (*1 TUQ + Aeq BARRIER (*) - @N< LINK 1 ("pi") OR ("ip")) ;
 MAP:M0934 @i-ADVL> TARGET OBLIQUE IF (*1 QQU + CONT + TRANSVERB BARRIER VFIN OR PUNCT) ; #... naammassimmallu siunnersorlugu AASIANNI juumuussatut ilinniartunngoqqullugu.
 MAP:M0935 @i-ADVL> TARGET Num - Abs IF (-1 TIME + N + Abs)(-2 CLB LINK **1 (*) - V) ;
-MAP:M0936 @i-ADVL> TARGET TIME IF (*1 N)(NEGATE *1 V)(NEGATE *-1 V BARRIER KOMMA) ;
+MAP:M0936 @i-ADVL> TARGET TIME IF (*1 N)(NEGATE *1 V)(NEGATE *-1 V BARRIER KOMMA)(*1 AFFINGERET) ;
 MAP:M0937 @i-ADVL> TARGET OBLIQUE IF (1* ("pi") + CONT - AFFINGERET CBARRIER V)(NEGATE *1 V - CONT) ;
 MAP:M0947A @i-ADVL> TARGET OBLIQUE + Ins IF (*1C TIGE + N)(NEGATE *-1 Ins LINK *-1S _TARGET_) ;
 
@@ -6192,7 +6196,7 @@ REMOVE:5488G ("tup") IF (0 ("toqqartor") OR ("toqqar")) ;
 REMOVE:5488H ("tapar") IF (0 KUJUP) ;
 SELECT:5488I ("ittoor") IF (0 ("ip") OR ("ittuk")) ;
 REMOVE:5488J ("tupap") OR ("tupaq") OR ("tupaar") IF (0 ("tupaallap")) ;
-REMOVE:5488K (/\"taar\"\ Gram\/TV/l) IF (0 (/\"taa\"\ Gram\/TV/l)) ; #taassanngikkiga
+REMOVE:5488K ("taar") IF (0 (/\"taa\"\ Gram\/TV/l))(*-1 Ins BARRIER CONJ-C) ; #taassanngikkiga
 SELECT:5488L ("erseqqaarip") IF (0 ("erser") OR ("ersip")) ;
 REMOVE:5488M ("kip") OR ("kissa") IF (0 (kissap") OR ("kissar"))(*1 ("ikuma") OR ("pujoq") OR ("pujor")) ;
 SELECT:5488N animalverb IF (*0 ANIMAL) ; #puivoq - tikaagullik
