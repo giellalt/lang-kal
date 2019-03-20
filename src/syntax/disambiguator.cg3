@@ -1116,6 +1116,7 @@ SET PISSUTIGALUGU = ("pissut" GE Cont) | ("pissut" GE ContNeg) ;
 SET AQQUSAARLUGU = ("aqqusaar" Cont) | ("aqqusaar" ContNeg) ;
 SET ATORLUGU = ("ator" Cont) - AFFINGERET | ("ator" ContNeg) - AFFINGERET ;
 SET ILAGALUGU = ("ila" GE Cont) | ("ila" GE ContNeg) ;
+SET KILLEQQULLUGU = ("killeqqup" Cont) - AFFINGERET | ("killeqqup" ContNeg) - AFFINGERET ;
 SET MALILLUGU = ("malip" Cont) - AFFINGERET | ("malip" ContNeg) - AFFINGERET ;
 SET TIKILLUGU = ("tikip" Cont) - AFFINGERET | ("tikip" ContNeg) - AFFINGERET ;
 SET TUNNGAVIGALUGU = ("tunnga" VIK GE Cont) | ("tunnga" VIK GE ContNeg) ;
@@ -2315,6 +2316,8 @@ MAP:POSS0040Q @i-POSS> TARGET Rel IF (1 POSSESSUM + IP + SPATIAL) ;
 ### PARTIKLER FØRSTE DISAMBIGUERING ###
 #=====================================#
 SELECT:Adv_allaat Adv + ("allaat") IF (-1 N + &&IV_SUBJ&)(1 V + &&IV_SUBJ&); #iviangii allaat nuisalaarlutik
+SELECT:Adv_plus Adv + PRENUM IF (1 Num + $$KASUS OR iNum)(NEGATE *-1 Num + $$KASUS BARRIER VFIN) ;
+SELECT:Conj_plus Conj + PRENUM IF (1 Num + $$KASUS)(*-1 Num + $$KASUS BARRIER VFIN) ;
 
 
 ### ULØSELIGHEDER ###
@@ -3868,6 +3871,7 @@ MAP:M0350NY @N< TARGET Der/vn + $$KASUS + $$NUMERUS - CONJ-LU - CONJ-LUUNNIIT OR
 (NEGATE 0 POSSESSUM3 LINK -1 Rel)
 (NEGATE 0 LIK_QAR + Ins LINK -1 Ins LINK NOT *-1 Ins)
 (NEGATE 0 Rel + POSSESSUM4 LINK 1 POSSESSUM)
+(NEGATE -1 Gram/Abbr)
 ;
 MAP:M0350NZ @N< TARGET (/LIK\ Der\/nn\ N/l) - iNum + $$KASUS IF (-1 N + $$KASUS)
 (NEGATE 0 LIK_QAR + Ins LINK -1 Ins LINK NOT *-1 Ins)
@@ -3935,7 +3939,7 @@ MAP:M0408Dnum @>N TARGET TIME IF (1 Num + OBLIQUE - CLOCK)(NEGATE *1 ("siuneq"))
 MAP:M0408Fnum (@i-MWE>N) TARGET NUMHOVED + Abs + Pl IF (1 iNum + 3Sg) ; #20180912 skal ikke være i->N #enhed i Abs før tal er SUBJ eller OBJ
 MAP:M0408Gnum @POSS> TARGET OTHERTIME IF (1 iNum + POSSESSUM) ;
 MAP:M0408Hnum @N< TARGET Num + Abs IF (-1 SEASON) ;
-MAP:M0408Jnum @i->N TARGET PRENUM (1 iNum);
+MAP:M0408Jnum @i-MWE>N TARGET PRENUM (1 iNum); #rettet fra i->N. #Taamaattoq SAK isertitsinikkut inissisimalluarnersaagallarpoq plus 3-qarami
 MAP:M0408Knum @>N TARGET PRENUM (1 Num);
 MAP:M0408Lnum @>N TARGET NUMHOVED + Abs IF (1 Num - AFFINGERET - Abs - @N<);
 MAP:M0408R @>N TARGET Gram/ACR OR Prop IF (1 EVENT + N OR Gram/ACR - Der/nv) ;
@@ -4048,7 +4052,7 @@ MAP:M0528 @OBJ> TARGET Abs + Sg + CONJ-LU IF (-1 Abs + Sg)(*1 3PlO BARRIER INTRA
 MAP:M0528A @OBJ> TARGET Abs + Pl + CONJ-LU IF (-1 Abs + Sg)(*1 3PlO BARRIER INTRANSVERB + 3Pl);
 MAP:M0529 @OBJ> TARGET N + Abs + Sg OR PRON + Abs + Sg IF (*1 ("(") LINK *1 INTRANSVERB + 3Sg LINK *1 (")") LINK 1* TRANSVERB + 3SgO) ; #Til sætninger med parenteser der ligger mellem objekt og verbum.
 
-SUBSTITUTE:S0529 @OBJ> @N< TARGET $$KASUS + $$NUMERUS - CONJ-C IF (*-1C @OBJ> + $$KASUS + $$NUMERUS BARRIER (*) - @ADVL> - Pron OR CONJ-C); #Emiliep taliata aappaa imminut tulleq assammi illuanik nukersorluni tigummivaa #ville kunne rammes på ADJEKTIVISK i stedet.
+SUBSTITUTE:S0529 @OBJ> @N< TARGET $$KASUS + $$NUMERUS - CONJ-C IF (*-1C @OBJ> + $$KASUS + $$NUMERUS BARRIER (*) - @ADVL> - Pron OR CONJ-C)(NEGATE *1 INTRANSVERB BARRIER CONJ-C); #Emiliep taliata aappaa imminut tulleq assammi illuanik nukersorluni tigummivaa #ville kunne rammes på ADJEKTIVISK i stedet.
 
 ###########################
 # Inderiverede adverbaler #
@@ -4842,7 +4846,7 @@ MAP:M1540 (@INTERJ) TARGET Interj IF (-1 BOS OR ("\,") OR ("\-")) ; #20091109
 MAP:M1541 @INTERJ TARGET Interj IF (1 NNGIT);
 MAP:M1542 @INTERJ TARGET Gram/Int - UNA IF (NEGATE *0 V) ;
 
-MAP:M1580 (@>N) TARGET Gram/Abbr IF (1 Num);
+MAP:M1580 (@>N) TARGET Gram/Abbr IF (1 Num)(NEGATE *1 TRANSVERB + 3SgO - CONT BARRIER V - CONT);
 MAP:M1590 (@>N) TARGET ("§") IF (1 Num);
 	## § 5.
 
@@ -5451,6 +5455,8 @@ SELECT:1829B Ind + INTRANSVERB + 3Pl IF (-*1 Abs + Pl BARRIER VFIN LINK NEGATE -
 SELECT:1830 Imp IF (NEGATE *0 Ind OR Int)(NEGATE 0 ("maap") OR ("illup") - AFFINGERET OR Gram/Dem + Pron OR Gram/Pers + Pron OR Par + INTRANSVERB); #Må ikke selecte maap+Imp i stedet for partikel maanna eller taanna. Må heller ikke slette aequalis som uattuut
 
 #Nominernes SELECT og REMOVE
+
+SELECT:1801 (Gram/Abbr @>N) IF (1 Num) ;
 
 #SELECT Sem/FirstName IF (0 Prop)(1 (Prop Rel) OR (Prop Abs));
 
