@@ -3942,6 +3942,7 @@ MAP:M0408Hnum @N< TARGET Num + Abs IF (-1 SEASON) ;
 MAP:M0408Jnum @i-MWE>N TARGET PRENUM (1 iNum); #rettet fra i->N. #Taamaattoq SAK isertitsinikkut inissisimalluarnersaagallarpoq plus 3-qarami
 MAP:M0408Knum @>N TARGET PRENUM (1 Num);
 MAP:M0408Lnum @>N TARGET NUMHOVED + Abs IF (1 Num - AFFINGERET - Abs - @N<);
+MAP:M0408Mnum @i->N TARGET NUMHOVED + Abs (1 QAR) ;
 MAP:M0408R @>N TARGET Gram/ACR OR Prop IF (1 EVENT + N OR Gram/ACR - Der/nv) ;
 MAP:M0408S @>N TARGET PLACE - Prop - iProp - CONJ-C IF (1 Prop - PLACE) ; #Atuarfik Gammeqarfiup pisortaa.
 MAP:M0409 (@HNOUN) TARGET N OR Gram/Abbr OR Num IF (NEGATE *0 V)(1 ParagrafSlut)(NEGATE 0 $$KASUS LINK -1 $$KASUS LINK NOT 0 Ins + Sg - POSSESSUM); #20100827 Safe headlines
@@ -4174,7 +4175,8 @@ MAP:M0512 @N< TARGET N + $$KASUS + $$NUMERUS - POSSESSUM IF (*-1 $$KASUS + $$NUM
 (NEGATE 0 iNum + LIK LINK *-1 NUMHOVED + Ins)
 (NEGATE -1 @i-ADVL>N LINK NOT *-1 N + $$KASUS + $$NUMERUS - POSSESSUM) #ukaliatsiap amianik sanaamik tamavimmik poorsimavoq.
 (NEGATE 0 ("tamaq") LINK -1 ("suna")) #sunut tamanut
-(NEGATE 0 Ins LINK 1 HTR);
+(NEGATE 0 Ins LINK 1 HTR)
+;
 MAP:M0513 @N< TARGET N + $$KASUS IF (0 ("tamalaaq") LINK -1 ("nuna") + $$KASUS) ;
 MAP:M0514 @N< TARGET $$KASUS + $$NUMERUS + OBLIQUE - CONJ-C IF (0 ("(.*)"r))(*-1 $$KASUS + $$NUMERUS - (VSTR:$1) - @N< - Num - TIME - SEASON - PLACE_EXTENDED - ("akunneq" Lok) - @>N BARRIER V OR CONJ-C OR Abs OR EOS OR ("soorlu")) 
 (NEGATE 0 iNum + LIK LINK *-1 Ins BARRIER V)
@@ -4436,6 +4438,7 @@ MAP:M0780 (@SUBJ>) TARGET APPELLATIV + Abs - ("kinguneq") OR Prop + Abs OR Num +
 (NEGATE 0 NÆPPE_SUBJ)
 ;#Det samme for resten af TIME.
 MAP:M0781 @SUBJ> TARGET Pl + Abs - TIME IF (0 Gram/Dem + Pron OR N LINK *1 VFIN + INTRANSVERB + 3Pl BARRIER KOMMA)(NEGATE -1 Abs + Pl);
+MAP:M0782 @SUBJ> TARGET Num + Abs IF (*1 INTRANSVERB + 3Sg - DIRTALE BARRIER V - CONT) ; #IV_SUBJ kan ikke bruges pga. manglende numerusmarkering på Num
 MAP:M0790 (@<OBJ) TARGET APPELLATIV + Abs OR Prop + Abs OR PRON-REFL + Abs IF (-*1 TRANSVERB - Cont BARRIER VFIN OR Cont + @ADVL> OR Cont + @<ADVL OR ("\,"))
 (NEGATE *-1 TRANSVERB + ORATIOOBLVERB LINK *1 _TARGET_ LINK *1 Par) #Skal ikke tagge objekt for et inquit, hvis det er en oo. #Taamaalillunga pingaarutilimmik paasisaqaqqippunga, paasivaralu ulloriaaraq ataqqinartuaqqap najugaqarfigisaa illumit anginerungaarunanngitsoq.
 (NEGATE *1 TRANSVERB); #20091111 af Beatrine. (linie 1243)
@@ -5503,6 +5506,7 @@ SELECT:1850 @N< + $$KASUS + $$NUMERUS - FAM - HUM IF (*-1C $$KASUS + $$NUMERUS -
 
 SELECT:1851 Prop IF (NEGATE *-1 BOS BARRIER (*) - PUNCT - ROMANNUMBER)(0 Prop) ; #Lyder som en mærkelig regel. Skal checkes
 	## Ilalu Nuup eqqaani iliverpassuit. # SNM: det neste anførselstegn resetter syntaksfarger "
+REMOVE:1852 N IF (0 Prop + Sem/Geo + @SUBJ>) ;
 
 #REMOVE @SUBJ> IF (NEGATE 0 ANIMAL)(*1 @PRED animalverb) ; 
 REMOVE @SUBJ> IF (NEGATE 0 ANIMAL)(*1 animalverb) ; 
@@ -6920,7 +6924,6 @@ REMOVE:9972B ("([^<]...*).."r) + (/Der\/.*/r) IF (0 (VSTR:"$1...+"r) - (/Der\/.*
 
 REMOVE:9975 (/__LLUAR\ Der\/vv\ INNAR__/l) IF (0 LLUINNAR) ;
 REMOVE:9973 LOAN ; # Slet låneord, hvis ikke eneste læsning
-
 
 ##############
 AFTER-SECTIONS
