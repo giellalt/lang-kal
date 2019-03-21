@@ -1838,6 +1838,15 @@ REMOVE:0005E (/TAQ\ Der\/vn\ IR\ /l) IF (0 TAQ + U OR TAAR) ; #savaatitaarusunne
 REMOVE:0005F (/TIP\ Der\/vv\ Gram\/TV\ TIP\ /l) ; 
 REMOVE:0005G TIP + NAR IF (0 SINNAR) ; 
 REMOVE:0005H (/\"eqqaa\"\ Gram\/IV/l) IF (NOT -1 Ins) ;
+REMOVE:0005I (/U\ Der\/nv\ Gram\/IV\ V\ Ind\ Gram\/Exclm/l) ; #Tyrkiamioq er ikke Exclm
+REMOVE:0005I (/TU\ Der\/nv\ Gram\/IV\ V\ Ind\ Gram\/Exclm/l) ; #aalakuunngikkaluartoq er ikke Exclm
+REMOVE:0005I (/TUR\ Der\/nv\ Gram\/IV\ V\ Ind\ Gram\/Exclm/l) ; #aalakuunngikkaluartoq er ikke Exclm
+REMOVE:0005J (/TIP\ Der\/vv\ Gram\/TV\ VIP/l) IF (0 VIP - TIP) ;
+REMOVE:0005J (/TIP\ Der\/vv\ VIP/l) IF (0 VIP - TIP) ;
+REMOVE:0005J (/TIP\ Der\/vv\ Gram\/TV\ QQAAR/l) IF (0 TIP - QQAAR) ;
+REMOVE:0005J (/IRUTE\ Der\/vv\ Gram\/.V\ TIP/l) IF (0 IRUTE - TIP) ;
+REMOVE:0005I (/QATE\ Der\/vn\ IR\ \/l) ;
+REMOVE:0005I (/TAQ\ Der\/vn\ IR\ \/l) ;
 SELECT:0005 ("ingip") + A + 3Pl IF (0 ("issaq") OR IP + SAR) ; #Totalt forvirrede ambiguiteter ved issaapput
 REMOVE:0006 ("qaap") IF (0 ("qaammat"));
 REMOVE:0011	("ih") IF (0 ("illu")) ;
@@ -2956,6 +2965,7 @@ REMOVE:0321A CONT + TRANSVERB IF (0 (/TIP\ Der\/vv\ \(Gram\/TV\ \)?(Gram\/Refl\ 
 SELECT:0322A Gram/Refl + TIP IF (-1 Abl)(0 INTRANSVERB - Gram/Refl + TIP)(NEGATE 0 NIQAR);
 SELECT:0322B ("taku") + SSA + Gram/Refl + 1Pl ; #Vistnok undtagelsesløs
 REMOVE:0322 Gram/Refl IF (NEGATE *-1 ("immi") BARRIER KOMMA)
+(NEGATE 0 QQU)
 (NEGATE 0 ("paasi"))(NEGATE 0 ("paa") + SI)
 (NEGATE 0 Orth/Arch)
 (NEGATE 0 (NIQ QAR) LINK -1 Ins); #I mangel af en CG-formalisme til at kontrollere når alle andre læsninger end en selv er Arch. En helt specifik regel, der skal forhindre at en Arch-læsning overlever som den sidste mens vi venter på nye faciliteter i CG-formalismen. 
@@ -3460,7 +3470,9 @@ MAP:M0028 @<APPOS TARGET Abs + Sg + Prop + TUQ IF ( *-1 §noun-comma BARRIER V )
 #Specialtilfælde før M0031 - (Prop Prop=subjekt) (Prop=possessor possessum) samt (Prop Prop=subjekt) (Prop=objekt)
 MAP:M0029 @PROP> TARGET FIRSTNAME + Abs OR TITEL + Abs IF (1 Prop)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + CONJ-C LINK *1 V + 3Pl BARRIER N + Pl )(2 Prop + Rel LINK 1 POSSESSUM);
 
-MAP:M0030 @PROP> TARGET FIRSTNAME OR TITEL IF (1 Prop - GeoProp)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + CONJ-LU LINK *1 V + 3Pl BARRIER N + Pl )(2 Prop + Sg LINK *1 TRANSVERB + 3SgO BARRIER V)(NEGATE -1 Abs + Sg + FAM); # Har indføjet - GeoProp for at hindre hit på fx NAVN fulgt af toleddet prop som Høje Tåstrup. Nok en NEGATE 20150512 for at forhindre hit på apposition
+MAP:M0030 @PROP> TARGET FIRSTNAME OR TITEL IF (1 Prop - GeoProp)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + CONJ-LU LINK *1 V + 3Pl BARRIER N + Pl )(2 Prop + Sg LINK *1 TRANSVERB + 3SgO BARRIER V)(NEGATE -1 Abs + Sg + FAM)
+(NEGATE 1 Trm LINK NEGATE *-2 Abs OR Rel) #det er usandsynligt, at sætningen starter med et navn i Trm
+; # Har indføjet - GeoProp for at hindre hit på fx NAVN fulgt af toleddet prop som Høje Tåstrup. Nok en NEGATE 20150512 for at forhindre hit på apposition
 
 #MAP:M0031X @PROP> TARGET Prop + Sem/FirstName IF (1 Prop + Sem/FirstName)(2 humProp) ; #Til tagning af dobbeltnavne
 
@@ -4032,7 +4044,7 @@ MAP:M0742 @SUBJ> TARGET N + Abs + $$NUMERUS + &&IV_SUBJ& IF (*1 INTRANSVERB + &&
 MAP:M1449 (@i-OBJ-DOTR>) TARGET Ins - Gram/Cong IF (-*1 Abs)(1 Ins + Der/vn OR Ins + ADJEKTIVISK)(*2 DOTR BARRIER (*) - Ins);
 MAP:M1450 (@i-OBJ-DOTR>) TARGET Ins - Gram/Cong IF (-*1 Abs)(*1 DOTR - HTR BARRIER (*) - @N<) ;
 #MAP:M1451 @i-OBJ-DOTR> TARGET Abs IF (*1 (/Gram\/TV\ QQU/l) - (VIK GE) BARRIER VFIN OR Trm OR Ins) ; #Tamaanimiut ilaannut suliffissarsiorami taassuma narsaataanut aallartitaavoq puulukit paareqqullugit.
-
+MAP:M1452 @OBJ-DOTR> TARGET Trm - Gram/Coref - Num IF (*1 QQU + DOTR BARRIER V OR Trm) ; #Piitap Andamut Kaali savimmik tuneqquaa.
 
 
 MAP:M0525 (@OBJ>) TARGET N + Abs + Sg OR PRON + Abs + Sg IF (*1 TRANSVERB + 3SgO BARRIER INTRANSVERB + 3Sg OR INTRANSVERB + 4Sg OR ("soorlu"))(NEGATE 1 KOMMA LINK 1 TRANSVERB)(NEGATE *-1 @OBJ> BARRIER TRANSVERB - CONT OR CONJ-C)
@@ -4426,7 +4438,7 @@ MAP:M09900B @ADVL> TARGET Lok IF (0 TIME OR PLACE_EXTENDED)(*1 V BARRIER DIRTALE
 MAP:M09900C @ADVL> TARGET ("akunneq") IF (-1 ("sapaat"))(*1 V BARRIER DIRTALESTART)(NEGATE *-1 V BARRIER DIRTALESLUT) ;
 
 MAP:M09900D @ADVL> TARGET TIME IF (1 Num)(*1 V) ; #ukiut marluk
-MAP:M09900E @ADVL> TARGET Num IF (-1 ("nalunaaqutaq"))(*1 V) ; #Aqagu maani Oqaasileriffimmi nal.13 katersalerisut tamakkerluta, studentermedhjælperillu, naapilerpugut.
+MAP:M09900E @ADVL> TARGET Num IF (-1 ("nalunaaqutaq"))(*1 V BARRIER (/NIQ\ Der\/vn\ N\ Lok\ Sg\ 3SgPoss/l)) ; #Aqagu@ADVL> maani Oqaasileriffimmi nal.13 katersalerisut tamakkerluta, studentermedhjælperillu, naapilerpugut. #Nalunaaqutaq arfineq-pingasunut@i-ADVL> Danmarkip ukiortaalernerani qilak qummoroortaatinik kusanarluinnartunik qaammaqattaarpoq, Nunattali ukiortaarsiulernerani suli kusanarnerullutik.
 
 
 #DivPron-regler. Flyttet før M0780 for ikke at blokere for M0991D
@@ -5619,7 +5631,8 @@ SELECT:7490 Abs + Pl IF (*1C INTRANSVERB + 3Pl OR 4Pl BARRIER 3PlPoss OR KOMMA)(
 
 REMOVE HTR IF (0 Der/vn + QAR); #en skummel regel, der skal lukke op for @i->N og blokere @MIK-OBJ
 SELECT @i-MIK-OBJ> IF (1 HTR + Der/vn - V) ; #20091106
-SELECT @MIK-OBJ> IF (*1 HTR BARRIER TAQ) ; #HIV-mik tunillanneqarsimasut; Aningaasanik paggatsitassaminik
+SELECT @ADVL> IF (0 CLOCK)(*1 V) ;
+SELECT @MIK-OBJ> IF (*1 HTR BARRIER TAQ); #HIV-mik tunillanneqarsimasut; Aningaasanik paggatsitassaminik
 REMOVE @MIK-OBJ> IF (0 @i-ADVL>)(1 @MIK-OBJ> - CONJ-C) ;
 
 REMOVE:7495 @ALLOBJ> IF (0 Abs)(*1C VERB-NOTCONT - Par + INTRANSVERB BARRIER ("\,") OR TRANSVERB ) ; #20091105 udelukket Par og tilfoejet BARRIER
@@ -6221,6 +6234,7 @@ REMOVE:5488Q ("imaap") + LIR IF (0 ("imaali")) ;
 REMOVE:5488R ("eqqumiip") IF (0 ("eqqumiige")) ;
 REMOVE:5488S ("upper") + JA IF (0 ("uppia")) ;
 REMOVE:5488T ("inniar") IF (0 ("ip") + NIAR)(NEGATE *-1 ("palasi") + @SUBJ>) ; #disambiguerer [palasi] inuliarpoq fra ip+NIAR
+REMOVE:5488U ("pui") + TIP IF (0 ("puisip") OR ("puisinniar")) ;
 
 
 # Der/nv eller Der/vv?
@@ -6580,6 +6594,8 @@ REMOVE:5959P ("ersik") IF (0 ("ersi")) ; #Ersigamilu
 REMOVE:5959Q ("eqqoq") + IP IF (0 ("eqqumiip")) ;
 REMOVE:5959R ("sueq") IF (0 ("su") + Int)(*1 ("\?")) ; #suit?
 REMOVE:5959S ("iser") OR ("isaap") IF (0 ("isaaffik")) ;
+REMOVE:5959T ("inneq") IF (0 ("ip")) (-1 ("qanoq")) ;
+REMOVE:5959U ("inneq") + IP IF (0 ("inniminner")) ;
 
 #Partiklerne
 REMOVE:5860 ("taama") + Interj IF (0 ("taama") + Adv LINK 1 V) ;
@@ -6902,6 +6918,11 @@ REMOVE:9967E (/Gram\/TV\ QQA__/l) IF (0 (/Gram\/IV\ QQA__/l)) ; #nalunaaqqanerat
 REMOVE:9968D (/\"paasi\"\ Gram\/IV/l) IF (0 AFFINGERET - TUQ) ;
 REMOVE:9968E (/\"misige\"\ Gram\/TV/l) + TRANSVERB IF (0 (/\"misige\"\ Gram\/IV/l) LINK NOT *-1 @OBJ> OR Rel) ; #ammaanersiornermi
 REMOVE:9968F (/\"qui\"\ Gram\/TV\/l) IF (NEGATE *-1 Abs BARRIER V) ; #skal have objekt
+
+##################################################
+#Specifikke regler til disambiguering af Gram/TV vs. Gram/Db
+##################################################
+SELECT:99690A Gram/Db IF (*-1 Trm BARRIER CONJ-C) ;
 
 
 
