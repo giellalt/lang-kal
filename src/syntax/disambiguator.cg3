@@ -2045,7 +2045,7 @@ REMOVE:9974 Orth/Append IF (0 WORD - (<heur> <f:[0-9]+>r)) ; #Slet gættede form
 
 LIST ROMANNUMBER = "I" "II" "III" "IV" "V" "VI" "VII" "VIII" "IX" "X" "XI" "XII" "XIII" "XIV" "XV" "XVI" XVII" "XVIII" "XIX" "XX" "XXI" "XXII" "XXIII" "XXIV" "XXV" "XXVI" "XXVII" "XXVIII";
 
-COPY (Orth/Copy) TARGET ("<([A-Z][a-z].*)>"r) IF (0 N)(NEGATE 0 Prop OR iProp OR Pali OR Adv)(NEGATE 0 Gram/Abbr - Orth/Append) (NEGATE -1 ROMANNUMBER)(NEGATE 0 MIU OR TITEL);
+COPY ("%u$1"v Orth/Copy) EXCEPT (".*"r) TARGET ("<[A-Z][a-z].*>"r "([^<].*)"r) IF (0 N)(NEGATE 0 Prop OR iProp OR Pali OR Adv)(NEGATE 0 Gram/Abbr - Orth/Append) (NEGATE -1 ROMANNUMBER)(NEGATE 0 MIU OR TITEL);
 SUBSTITUTE iN (Orth/Copy iN iProp) TARGET (Orth/Copy)(NEGATE 0 iProp) ;
 SUBSTITUTE N (Orth/Copy N Prop) TARGET (Orth/Copy)(NEGATE 0 Prop OR iProp OR MIU) ;
 SUBSTITUTE MIU (Orth/Copy iProp MIU) TARGET (Orth/Copy)(NEGATE 0 iProp) ;
@@ -2218,7 +2218,7 @@ REMOVE:7255A Interj IF (0 Adv) (*-1 Rel BARRIER (*) - Adv - CONT) (*1 POSSESSUM 
 ### PROPRIUM ###
 #==============#
 #Arnaq i første position er et reelt problem
-REMOVE:0001L ("\\p{Lu}.*"r) + Prop IF (0 ("([a-z].*)"r))(**0CW (VSTR:"$1"r)) ; #vælg den med lille begyndelsesbogstav hvis den samme findes med lille begyndelsesbogstav i nærheden.
+REMOVE:0001L ("\\p{Lu}.*"r) + Prop IF (0 ("([a-z].*)"r))(**0CW (VSTR:"$1"r))(-1 BOS) ; #vælg den med lille begyndelsesbogstav hvis den samme findes med lille begyndelsesbogstav i nærheden.
 
 REMOVE:0001X ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"%l$1"r))(-1 BOS) (NEGATE 1 Prop) ;
 SELECT:0001Y ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"$1"r))(-1 BOS) ;
@@ -2973,8 +2973,10 @@ REMOVE:0322 Gram/Refl IF (NEGATE *-1 ("immi") BARRIER KOMMA)
 (NEGATE 0 QQU)
 (NEGATE 0 ("paasi"))(NEGATE 0 ("paa") + SI)
 (NEGATE 0 Orth/Arch)
-(NEGATE 0 (NIQ QAR) LINK -1 Ins); #I mangel af en CG-formalisme til at kontrollere når alle andre læsninger end en selv er Arch. En helt specifik regel, der skal forhindre at en Arch-læsning overlever som den sidste mens vi venter på nye faciliteter i CG-formalismen. 
+(NEGATE 0 (NIQ QAR) LINK -1 Ins) #I mangel af en CG-formalisme til at kontrollere når alle andre læsninger end en selv er Arch. En helt specifik regel, der skal forhindre at en Arch-læsning overlever som den sidste mens vi venter på nye faciliteter i CG-formalismen. 
 #20100822 disambiguerer refleksiv fra monovalente former men må ikke overskrive regel 5556
+(NEGATE 0 (/NIQ\ Der\/vn\ N\ Abl/l) OR (/NIQ\ Der\/vn\ N\ Ins/l))
+;
 
 REMOVE:0322C TUQ + GE IF (0 SURE + INTRANSVERB)(NEGATE -1 ("immi")) ;
 
@@ -3414,7 +3416,7 @@ MAP:M0017 (@PRED2) TARGET INTRANSVERB + Par + 3Sg IF (*-1 Abs + Sg)(NEGATE *0 OR
 ;
 
 #De vanskeligt isolerbare absolutte konstruktioner med objekter til NIQ+Abl (NIQ+Ins). De må i hvert fald ikke være possessum. Hvis der ikke er andre Abs + Sg og intrans til venstre, er der nok tale om et subjekt. Og hvis intet andet Abs + Sg mellem 0 og 3SgO, er det nok et normalt objekt
-MAP:M0018 @NIQ_OBJ> TARGET Abs + Sg IF (1 (/__NIQ\ Der/vn\ N\ Abl__/l) OR (/__NIQ\ Der/vn\ N\ Ins__/l) LINK NEGATE *1 HTR BARRIER (*) - Ins)(NEGATE 1 POSSESSUM)(NEGATE *1 INTRANSVERB + 3Sg BARRIER Abs + Sg)(NEGATE *1 3SgO BARRIER Abs + Sg)
+MAP:M0018 @NIQ_OBJ> TARGET Abs IF (1 (/Gram\/TV\ \(Gram\/Pass\ \)?NIQ\ Der/vn\ N\ Abl__/l) OR (/Gram\/TV\ \(Gram\/Pass\ \)?NIQ\ Der/vn\ N\ Ins__/l) LINK NEGATE *1 HTR BARRIER (*) - Ins)(NEGATE 1 POSSESSUM)(NEGATE *1 INTRANSVERB + 3Sg BARRIER Abs + Sg)(NEGATE *1 3SgO BARRIER Abs + Sg) #nunap piniagassarsui tusaamanermit nuussimavugut.
 (NEGATE *1 LIK BARRIER (*) - Ins ) #inatsisileritooq aningaasaqarnermik akileraartarnermillu soqutigisalik.
 ;
 
@@ -6055,14 +6057,14 @@ REMOVE:8498 ("illoq") + QAR + VIK IF ( 0 ("illu") + QAR + VIK) ;
 SELECT:8499 ("ip") + TUQ IF (-1 ("qanoq"))(NEGATE 0 ("ili") + USIQ ) ; # fjerner ittuk og ittoq, men bevarer iliuseq
 SELECT:Se_illuHnoun ("illu") IF (0 (@HNOUN)); # "illoq" er usandsynlig i absolut form
 SELECT:SeHumHum HUMAN - V IF (-*1 HUMVERB)(NEGATE 0 ("ilaanni") + Adv )(Negate 0 ("illu") + 3PlPoss LINK -1 ("kalaaleq") + Rel + Pl OR ("utoqqaq") + Rel + Pl)(NEGATE 0 ("illu") + SUAQ) ; # ikke "illu" før HUMVERB. NEGATE kun statistisk begrundet idet ilaanni oftest betyder Part. -V for at udelukke verber med incorporeret HUMAN
-SELECT:Se_illuNot_illoq ("illu") ; # "illu" mere sandsynlig end "illoq"
+SELECT:Se_illuNot_illoq ("illu") OR ("Illu") ; # "illu" mere sandsynlig end "illoq"
 SELECT:Se_ataata ("ataata") ; # mere sandsynlig end "ataataq"
 SELECT:Se_qaliaq ("qaliaq") ; # ad hoc for at forebygge 'hårbåndet' qaleq
 SELECT:8580 ("ilaanni") IF (1C V + TAR) ; # 
 #SELECT:Se_ila ("ila") + Pl IF (NEGATE -1**< ("ilaaq"))(NEGATE 0 ("ilaanni") + Adv); # 'toejlapper' sjaeldne medens partitiv hyppig. Slettet 20180612. Remover fx ila+Sg i 'ullut ilaanni'
 REMOVE:8581 ("ilaaq") IF (0 ("ila"))(NEGATE -1**< ("ilaaq")); # 'toejlapper' sjaeldne medens partitiv hyppig.
 SELECT:Se_alla ("alla") IF (0 NNGUR); #ringe sandsynlighed for 'allak' og 'allaq'
-REMOVE ("allaq") IF (0 ("alla"))(NEGATE *0 animalverb); #
+REMOVE ("allaq") OR ("Allaq") IF (0 ("alla") OR ("Alla"))(NEGATE *0 animalverb); #
 REMOVE ("allak") + U + NNGIT OR ("Allaq") + U + NNGIT IF (*1 (@CL-<CIT)) ; #så er det allaanngilaq ... der er på spil
 #REMOVE ("nalik") IF ( 0 ("nali") + AFFINGERET ) ; #nali+LIR sandsynlig, nalik+LIR usandsynlig
 REMOVE ("nalik") IF ( 0 ("nali") ) ; #Forsøgsvist udkommenteret. 
@@ -6081,7 +6083,7 @@ REMOVE:8500 ("ilaq") IF (0 ("ila"));
 REMOVE:8501 ("ila") + UTE + Der/nn ;
 SELECT:8502 ("aki") + NIAR + HTR + VIK ;
 SELECT:8503 ("aki") + GE IF (0 ("akik") + GE) ;
-REMOVE:8504 ("allak") IF (0 ("alla"))(NEGATE *0 CLOTHES);
+REMOVE:8504 ("allak") OR ("Allak") IF (0 ("alla") OR ("Alla"))(NEGATE *0 CLOTHES);
 REMOVE:8505 ("taaq") + SI IF (0 ("taarsi"));
 REMOVE:8506 ("aanaq") IF ( 0 ("aana")) ;
 REMOVE:8507 ("Ana") + UNA IF (0 ("anaana")); #
@@ -6845,7 +6847,7 @@ SELECT:9956A ("taku") + SAR IF (-1 Trm)(0 ("taku") + TAR) ; #Hvis terminalis san
 REMOVE:9956B ("taku") + SAR IF (0 ("taku") + TAR) ; # Skummel regel 20151025
 REMOVE:9957 ("akik") IF (0 ("akiler")) ;
 REMOVE:9958 ("akip") IF (0 ("akiler") ) ;
-REMOVE:9959 ("najak") IF (0 ("naja")) ;
+REMOVE:9959 ("najak") OR ("Najak") IF (0 ("naja") OR ("Naja")) ;
 REMOVE:9960 TAQ + UTE + Der/nn IF (0 TAQ + POSSESSUM);
 REMOVE:9961 ("Anguteq") OR ("Anguteĸ") IF (0 ("angut")) ;
 
