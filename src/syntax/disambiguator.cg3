@@ -2433,7 +2433,7 @@ REMOVE:0049 Num + MI IF (0 Num + Lok);
 SELECT:0049A ("ataaseq") + Num + Trm IF (1* V) ;
 SELECT:0049B Num OR iNum IF (*1 ("ukioq") BARRIER (*) - Num - iNum - Adv) ;
 
-SELECT:0049K NUMHOVED IF (*0 Num OR iNum);
+SELECT:0049K NUMHOVED IF (*0 Num OR iNum BARRIER @PRED OR VFIN);
 
 SELECT:0050 ("inngili") IF (-1 ("nuiaq") + Rel OR ("naalap") + TAQ + Rel OR ("naalagaq") + Rel) ; #Skal måske udvides til et set??
 SELECT:0051 ("kalaaleq") + Rel + Pl IF (1 ("oqaaseq") OR ("nuna") OR ("Nuna") OR ("oqar") + USIQ);
@@ -3424,7 +3424,15 @@ MAP:M0017 (@PRED2) TARGET INTRANSVERB + Par + 3Sg IF (*-1 Abs + Sg)(NEGATE *0 OR
 MAP:M0018A @NIQ_OBJ> TARGET Abs IF (*1 (/Gram\/TV\ \(Gram\/Pass\ \)?NIQ\ Der/vn\ N\ Abl__/l) OR (/Gram\/TV\ \(Gram\/Pass\ \)?NIQ\ Der/vn\ N\ Ins__/l) BARRIER (*) - @N< LINK NEGATE *1 HTR BARRIER (*) - Ins)(NEGATE 1 POSSESSUM)(NEGATE *1 INTRANSVERB + 3Sg BARRIER Abs + Sg)(NEGATE *1 3SgO BARRIER Abs + Sg) #nunap piniagassarsui tusaamanermit nuussimavugut.
 (NEGATE *1 LIK BARRIER (*) - Ins ) #inatsisileritooq aningaasaqarnermik akileraartarnermillu soqutigisalik.
 ;
-MAP:M0018B @NIQ_OBJ> TARGET Abs - CONJ-C IF (1* (/NIQ\ Der/vn\ N\ Abl__/l) OR (/NIQ\ Der/vn\ N\ Ins__/l) BARRIER (*) - @N<)(1 Gram/TV)(NEGATE 1 Gram/IV OR POSSESSUM) ; #Samme som M0018A. Midlertidigt nødvendig fordi TV-taggen ikke er propageret til sidste plads før NIQ.
+MAP:M0018B @NIQ_OBJ> TARGET Abs - CONJ-C IF (1* (/NIQ\ Der/vn\ N\ Abl__/l) + Gram/TV - Gram/IV - POSSESSUM - @N< BARRIER (/@.*/r) - @N< OR V) ;
+MAP:M0018B @NIQ_OBJ> TARGET Abs - CONJ-C IF (1* (/NIQ\ Der/vn\ N\ Ins__/l) + Gram/TV - Gram/IV - POSSESSUM - @N< BARRIER (/@.*/r) - @N< OR V) ; #Samme som M0018A. Midlertidigt nødvendig fordi TV-taggen ikke er propageret til sidste plads før NIQ.
+SUBSTITUTE @NIQ_OBJ> @N< TARGET Abs IF (NEGATE 0 CONJ-C) (-1 @NIQ_OBJ> + Abs) ;
+
+MAP:M0018A (@NIQ_SUBJ>) TARGET Abs IF (*1 (/Gram\/IV\ NIQ\ Der/vn\ N\ Abl__/l) OR (/Gram\/IV\ NIQ\ Der/vn\ N\ Ins__/l) BARRIER (*) - @N< LINK NEGATE *1 HTR BARRIER (*) - Ins)(NEGATE 1 POSSESSUM)(NEGATE *1 INTRANSVERB + 3Sg BARRIER Abs + Sg)(NEGATE *1 3SgO BARRIER Abs + Sg) #nunap piniagassarsui tusaamanermit nuussimavugut.
+(NEGATE *1 LIK BARRIER (*) - Ins ) #inatsisileritooq aningaasaqarnermik akileraartarnermillu soqutigisalik.
+(NEGATE -1 Abs)
+;
+#MAP:M0018B (@NIQ_SUBJ>) TARGET Abs - CONJ-C IF (1* (/NIQ\ Der/vn\ N\ Abl__/l) - @N< OR (/NIQ\ Der/vn\ N\ Ins__/l) - @N< BARRIER (/@.*/r) - @N<)(**1 Gram/IV - Gram/TV BARRIER (/@.*/r) - @N< - Gram/TV - POSSESSUM)(NEGATE -1 Abs) ; #Samme som M0018A. Midlertidigt nødvendig fordi TV-taggen ikke er propageret til sidste plads før NIQ.
 
 #Transitive ledsagemåder brugt koncessivt. A ved coref Cau før koncessionen B uden. 0019AX og 0019BXfor at tage højde for implicit subjekt i inquit fulgt at or. obl.
 
@@ -5337,7 +5345,7 @@ REMOVE:2221 N - Prop - iProp - Der/vv IF (0 ("<\\p{Lu}.*>"r))(*0C ("<\\p{Lu}.*>"
 
 SELECT:2222 Prop + Lok IF (-1 Lok) ;
 
-SELECT:2223 @NIQ_OBJ> IF (1 NIQ + Abl OR Ins) ; #Vistnok en sikker regel om en ret marginal struktur 
+SELECT:2223 @NIQ_OBJ> IF (1 NIQ + Abl OR NIQ + Ins) ; #Vistnok en sikker regel om en ret marginal struktur 
 
 SELECT:2224 $$KASUS IF (*1 @FOC>N CBARRIER (*) - KASUS - KOMMA LINK *1 $$KASUS BARRIER (*) - KASUS - KOMMA)(NEGATE 0 V) ;
 
@@ -6248,7 +6256,7 @@ REMOVE:5488R ("eqqumiip") IF (0 ("eqqumiige")) ;
 REMOVE:5488S ("upper") + JA IF (0 ("uppia")) ;
 REMOVE:5488T ("inniar") IF (0 ("ip") + NIAR)(NEGATE *-1 ("palasi") + @SUBJ>) ; #disambiguerer [palasi] inuliarpoq fra ip+NIAR
 REMOVE:5488U ("pui") + TIP IF (0 ("puisip") OR ("puisinniar")) ;
-
+REMOVE:5488V ("titar") + TAR IF (0 ("titartar")) ;
 
 # Der/nv eller Der/vv?
 SELECT:5493 QATE + Der/vn + GE IF (0 QATE + Der/nn + GE)(NEGATE *-1 HUMAN + @OBJ>) ;
