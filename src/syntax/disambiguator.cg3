@@ -1249,7 +1249,7 @@ LIST LOKVERB = "angala" "najugaq" "najugaqar" "ilinniar" ("taku" UTE) ;
 
 LIST ABLVERB = "aallar" "ani" ("titartar" TAQ);
 
-LIST TRMVERB = "aallar" "iser" ("peqat" U) "pulaar" ("quja" Gram/Exclm) ;
+LIST TRMVERB = "aallar" "iser" "nuup" ("peqat" U) "pulaar" ("quja" Gram/Exclm) ;
 
 SET MOVE-VERB = LOKVERB | ABLVERB | TRMVERB ;
 
@@ -1850,7 +1850,8 @@ REMOVE:0005J (/TIP\ Der\/vv\ Gram\/TV\ VIP/l) IF (0 VIP - TIP) ;
 REMOVE:0005J (/TIP\ Der\/vv\ VIP/l) IF (0 VIP - TIP) ;
 REMOVE:0005J (/TIP\ Der\/vv\ Gram\/TV\ QQAAR/l) IF (0 TIP - QQAAR) ;
 REMOVE:0005J (/TIP\ Der\/vv\ Gram\/TV\ QQAAR\ Der\/vv\ TIP/l) ;
-REMOVE:0005J (/TIP\ Der\/vv\ Gram\/TV\ NNGIT/l) IF (0 (*) - TIP) ;
+REMOVE:0005J (/TIP\ Der\/vv\ Gram\/..\ [A-Z]*\ /l) IF (0 (*) - TIP - TIR - SI - (/OLang\/.../r) - Gram/Refl - Gram/Exclm) ;
+REMOVE:0005J (/tip\"\ Gram\/..\ TIP\ /l) IF (0 (*) - TIP) ;
 REMOVE:0005J (/UTE\ Der\/vv\ Gram\/IV\ TIP/l) IF (0 (*) - TIP);
 REMOVE:0005J (/IRUTE\ Der\/nv\ Gram\/.V\ TIP/l) IF (0 IRUTE - TIP) ;
 REMOVE:0005K (/QATE\ Der\/vn\ IR\ \/l) ;
@@ -2156,6 +2157,7 @@ REMOVE:0099T Gram/Ord IF (NEGATE *0 MAANED OR TIME) ;
 REMOVE:0099U Gram/Ord IF (*-1 FAM OR MASK OR FEM BARRIER POSSESSUM LINK 0 Rel) ;
 REMOVE:0099V Gram/Ord IF (-1 Prop + Rel) ;
 REMOVE:0099X Gram/Ord IF (NEGATE *-1 Rel) ;
+REMOVE:0099Y Num + POSSESSUM IF (*-1C Rel + Sg BARRIER (*) - CONT) ;
 
 REMOVE:0099AA Gram/Ord IF (NEGATE *0C Gram/Ord) ;
 SELECT:0099AA Gram/Ord IF (*0C Gram/Ord) ; 
@@ -2458,7 +2460,7 @@ SELECT:0063Z Rel + Pl IF (1 Part - ("tassa") LINK 1 Rel + Pl LINK 1C 3PlPoss)(NE
 SELECT:0063A Rel + Pl IF (1 TIDSPARTIKEL LINK 1C 3PlPoss)(NEGATE 2 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 2 ("assi") + POSSESSUM + CONJ-LU)(NEGATE -1 ("ila") LINK 3 ("ila")) ; #må ikke hitte på siornatigut og ikke på opremsede participier med assigisaallu og heller ikke på opremsninger med ilaat .. ilaat. Tilføjet 20170407
 
 REMOVE:0063B Rel + Pl + FAM_UNIK OR Rel + Pl + PLACE_EXTENDED IF (1C 3PlPoss - VIK - Prop)(0 CONJ-C LINK -1 Prop + Rel + Sg) ; #Nyvejip Qingartallu paarlaffianni inigisaqarpoq. 
-SELECT:0063 Rel + Pl - FAM_UNIK IF (1C 3PlPoss)(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 1 ("assi") + POSSESSUM + CONJ-LU)(NEGATE -1 ("ila") LINK 2 ("ila")) #må ikke hitte på siornatigut og ikke på opremsede participier med assigisaallu og heller ikke på opremsninger med ilaat .. ilaat. Må ikke hitte på fx nuliami pii
+SELECT:0063 Rel + Pl - FAM_UNIK IF (1C 3PlPoss)(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 1 ("assi") + POSSESSUM + CONJ-LU)(NEGATE -1 ("ila") LINK 2 ("ila"))(NEGATE 0 Par LINK *-1 Adv BARRIER V OR @PRED) #må ikke hitte på siornatigut og ikke på opremsede participier med assigisaallu og heller ikke på opremsninger med ilaat .. ilaat. Må ikke hitte på fx nuliami pii
 (NEGATE 0 (TUQ Der/vn N Ins)) ; #iluaqutaasumik
 SELECT:0063B Rel + Pl - FAM_UNIK - 4PlPoss - 4SgPoss IF (1C Rel + Pl - Prop LINK 1C 3PlPoss - Prop - iALL)(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 1 ("assi") + POSSESSUM + CONJ-LU)(NEGATE -1 ("ila") LINK 2 ("ila"))(NEGATE 0 ("assut") OR ("taama")) ;
 SELECT:0063C Rel + Pl - FAM_UNIK IF (1C Rel + Pl - Prop LINK 1C Rel + Pl LINK 1 3PlPoss - Prop)(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 1 ("assi") + POSSESSUM + CONJ-LU)(NEGATE -1 ("ila") LINK 2 ("ila"))(NEGATE *1 INTRANSVERB + 3Pl + VFIN BARRIER VFIN) ;
@@ -3428,7 +3430,7 @@ MAP:M0018B @NIQ_OBJ> TARGET Abs - CONJ-C IF (1* (/NIQ\ Der/vn\ N\ Abl__/l) + Gra
 MAP:M0018B @NIQ_OBJ> TARGET Abs - CONJ-C IF (1* (/NIQ\ Der/vn\ N\ Ins__/l) + Gram/TV - Gram/IV - POSSESSUM - @N< BARRIER (/@.*/r) - @N< OR V) ; #Samme som M0018A. Midlertidigt nødvendig fordi TV-taggen ikke er propageret til sidste plads før NIQ.
 SUBSTITUTE @NIQ_OBJ> @N< TARGET Abs IF (NEGATE 0 CONJ-C) (-1 @NIQ_OBJ> + Abs) ;
 
-MAP:M0018A (@NIQ_SUBJ>) TARGET Abs IF (*1 (/Gram\/IV\ NIQ\ Der/vn\ N\ Abl__/l) - POSSESSUM OR (/Gram\/IV\ NIQ\ Der/vn\ N\ Ins__/l) - POSSESSUM BARRIER V OR (/@.*/r) - @N< LINK NEGATE *1 HTR BARRIER (*) - Ins)(NEGATE 1 POSSESSUM)(NEGATE *1 INTRANSVERB + 3Sg BARRIER Abs + Sg)(NEGATE *1 3SgO BARRIER Abs + Sg) #nunap piniagassarsui tusaamanermit nuussimavugut.
+MAP:M0018A (@NIQ_SUBJ>) TARGET Abs - Gram/Pers IF (*1 (/Gram\/IV\ NIQ\ Der/vn\ N\ Abl__/l) - POSSESSUM OR (/Gram\/IV\ NIQ\ Der/vn\ N\ Ins__/l) - POSSESSUM BARRIER V OR (/@.*/r) - @N< LINK NEGATE *1 HTR BARRIER (*) - Ins)(NEGATE 1 POSSESSUM)(NEGATE *1 INTRANSVERB + 3Sg BARRIER Abs + Sg)(NEGATE *1 3SgO BARRIER Abs + Sg) #nunap piniagassarsui tusaamanermit nuussimavugut.
 (NEGATE *1 LIK BARRIER (*) - Ins ) #inatsisileritooq aningaasaqarnermik akileraartarnermillu soqutigisalik.
 (NEGATE -1 Abs)
 ;
@@ -3909,6 +3911,7 @@ MAP:M0350NY @N< TARGET Der/vn + $$KASUS + $$NUMERUS - CONJ-LU - CONJ-LUUNNIIT OR
 (NEGATE 0 Rel + POSSESSUM4 LINK 1 POSSESSUM)
 (NEGATE -1 Gram/Abbr)
 (NEGATE -1 NUMHOVED - TIME + Abs)
+(NEGATE 0 Num LINK -1 MAANED)
 ;
 MAP:M0350NZ @N< TARGET (/LIK\ Der\/nn\ N/l) - iNum + $$KASUS IF (-1 N + $$KASUS)
 (NEGATE 0 LIK_QAR + Ins LINK -1 Ins LINK NOT *-1 Ins)
@@ -3983,6 +3986,8 @@ MAP:M0408Lnum @>N TARGET NUMHOVED + Abs IF (1 Num - AFFINGERET - Abs - @N<);
 MAP:M0408Mnum @i->N TARGET NUMHOVED + Abs (1 QAR) ;
 MAP:M0408R @>N TARGET Gram/ACR OR Prop IF (1 EVENT + N OR Gram/ACR - Der/nv) ;
 MAP:M0408S @>N TARGET PLACE - Prop - iProp - CONJ-C IF (1 Prop - PLACE) ; #Atuarfik Gammeqarfiup pisortaa.
+MAP:M0408T @>N TARGET MAANED + Abs - MI IF (1 Num - POSSESSUM) ; #November 1962
+
 MAP:M0409 (@HNOUN) TARGET N OR Gram/Abbr OR Num IF (NEGATE *0 V)(1 ParagrafSlut)(NEGATE 0 $$KASUS LINK -1 $$KASUS LINK NOT 0 Ins + Sg - POSSESSUM); #20100827 Safe headlines
 MAP:M0410 (@HNOUN) TARGET APPELLATIV + Abs OR Prop + Abs OR Gram/Abbr - FIRSTNAME IF (NEGATE *0 VERB-NOTCONT)(NEGATE *1 TRANSVERB + CONT)(NEGATE *-1 ("tassa") LINK *1 CONT + INTRANSVERB OR Cau + INTRANSVERB BARRIER VFIN)(NEGATE 0 Gram/Abbr OR ("nalunaaqutaq") LINK 1 Num)(NEGATE 0 $$KASUS LINK -1 $$KASUS)
 (NEGATE 0 HUMAN LINK 1 MIU - Der/nv)
@@ -4455,7 +4460,7 @@ MAP:M09900A @i-ADVL> TARGET Lok IF (*1C Abs OR Rel - @POSS> - ADJEKTIVISK BARRIE
 MAP:M09900AB @i-ADVL> TARGET VIK OR PLACE IF (0 (/Der\/../l))(*1C NIUTE BARRIER VFIN) ; #Atuakkat atuarfinni ilinniarfinnilu ilinniutit
 MAP:M09900AV @i-ADVL> TARGET ("nuna") IF (0 Abl OR Lok)(1 ("tamaq") + iOBLIQUE) ;
 MAP:M09900AX @i-ADVL> TARGET Lok IF (1 QATE + N OR QATIGIIP + N) ; #Uagut TELE-POST-imi suleqatigiit katilluta 460-iuvugut. #Nunatsinni timersoqatigiiffiit...
-MAP:M09900B @ADVL> TARGET Lok IF (0 TIME OR PLACE_EXTENDED)(*1 V BARRIER DIRTALESTART OR NIQ + N + POSSESSUM OR NIRSAQ + N + POSSESSUM)(NEGATE *-1 V BARRIER DIRTALESLUT) ; 
+MAP:M09900B @ADVL> TARGET Lok IF (0 TIME OR PLACE_EXTENDED)(*1 V - OBJVERB BARRIER DIRTALESTART OR NIQ + N + POSSESSUM OR NIRSAQ + N + POSSESSUM)(NEGATE *-1 V BARRIER DIRTALESLUT) ; 
 MAP:M09900C @ADVL> TARGET ("akunneq") IF (-1 ("sapaat"))(*1 V BARRIER DIRTALESTART)(NEGATE *-1 V BARRIER DIRTALESLUT) ;
 
 MAP:M09900D @ADVL> TARGET TIME IF (1 Num)(*1 V) ; #ukiut marluk
@@ -4551,7 +4556,7 @@ MAP:M0899 @i-ADVL>N TARGET LANGUAGE IF (*1 SEMIOTIC + N) ;
 MAP:M0910 (@i-ADVL>) TARGET (Ins) IF (1 Der/vn - NAR)(NEGATE 1 TAR + RIAQ + IRUP)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Ins )(NEGATE 1 CONJ-LUUNNIIT + Ins)(NEGATE 1 CONJ-LU + Ins)(NEGATE 0 $$KASUS LINK -*1 $$KASUS BARRIER (*) - Adv - Pali - Interj - @POSS> - (/@i-.*/r))(NEGATE 1 (/__\"ati\"\ Gram\/TV\ TAQ__/l))(NEGATE 1 @N< + Ins + $$NUMERUS - POSSESSUM LINK NEGATE *1 Der/vn - NAR BARRIER V) ; #20091109 
 MAP:M1911 @i-ADVL> TARGET Abl IF (1 TIME LINK 1 Num OR iNum) ;
 #Specialitet ved opremsninger med og uden adled. Skal komme før M0930
-MAP:M0920 (@AGENS) TARGET Abl - iV IF (*1 PASSIV BARRIER VFIN)(NEGATE 0 TIME)(NEGATE 0 WEATHER LINK NOT *0 WEATHERVERB); #Tidsadverbaler må ikke blive agens. -V for at forhindre hit på verber med IR og IP
+MAP:M0920 (@AGENS) TARGET Abl - iV IF (*1 PASSIV BARRIER VFIN)(NEGATE 0 TIME)(NEGATE 0 WEATHER LINK NOT *0 WEATHERVERB)(NEGATE *-1 Trm + Sem/Geo BARRIER V OR @PRED)(NEGATE 1 Trm - TUQ OR Lok - TUQ); #Tidsadverbaler må ikke blive agens. -V for at forhindre hit på verber med IR og IP
 MAP:M0900 (@i-ADVL>) TARGET (Aeq) IF (*1 Der/vn - NAR - NIQAR - @AGENS BARRIER (*) - @N<)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Aeq )(NEGATE 1 CONJ-LU + Aeq)(NEGATE 0 CONJ-LU LINK -1 Aeq)(NEGATE *0 ("isikku") + QAR + V OR ("oqar") + UTE + GE); #Kun Trm til Der/vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse
 MAP:M0929A @ADVL> TARGET Trm IF (1 KOMMA)(2 Trm )(3 KOMMA);
 MAP:M0929B @ADVL> TARGET Trm IF (1 KOMMA)(2 Trm OR Ins)(3 Trm)(4 KOMMA);
@@ -5341,7 +5346,7 @@ SELECT FIRSTNAME IF (1 Prop + Sg)(NEGATE 0 Sem/Mask LINK 1 Sem/Fem) ; #vælger s
 SELECT Abs + Prop IF (-2 Prop + Abs)(-1 ("\,"))(NEGATE 0 Rel LINK 1 POSSESSUM3); #'Enoksen, SIUMUT' 'Kleist, INUIT Ataqatigiit'
 SELECT Abs + Prop IF (-3 Prop + Abs)(-2 ("\,"))(-1 Abs)(NEGATE 0 Rel LINK 1 POSSESSUM3); #'Enoksen, SIUMUT' 'Kleist, Inuit ATAQATIGIIT'
 
-REMOVE:2221 N - Prop - iProp - Der/vv IF (0 ("<\\p{Lu}.*>"r))(*0C ("<\\p{Lu}.*>"r))(NEGATE 0 FAM_UNIK OR TITEL OR HUM OR WEATHER OR NON-PROP)(NEGATE 0 Rel)(NEGATE 0 V) ;
+REMOVE:2221 N - Prop - iProp - Der/vv IF (0 ("<\\p{Lu}.*>"r))(*0C ("<\\p{Lu}.*>"r))(NEGATE 0 FAM_UNIK OR TITEL OR HUM OR WEATHER OR NON-PROP)(NEGATE 0 Rel)(NEGATE 0 V)(NEGATE 0 ("ateq") LINK 1 Prop) ;
 # Select Prop hvis Wordform starter med stort, og der også er et andet Prop i sætningen.
 
 SELECT:2222 Prop + Lok IF (-1 Lok) ;
@@ -6986,7 +6991,7 @@ REMOVE:9973 LOAN ; # Slet låneord, hvis ikke eneste læsning
 AFTER-SECTIONS
 SUBSTITUTE:S0033A (/@.*/r) (@N<) TARGET (/__TUQ\ Der\/vn\ N__/l) + $$KASUS + $$NUMERUS + (/@\(<?SUBJ>?|<?OBJ>?|SUBJ_COMP|<?MIK-OBJ>?\)/r) (**-1 N + $$KASUS + $$NUMERUS BARRIER (*) - @i-ADVL> - @i-MIK-OBJ> - @N< OR PILLUGU LINK 0 (VSTR:/@$1/r))(NEGATE 0 CONJ-C) ;
 SUBSTITUTE:S0033B (/@.*/r) (@N<) TARGET $$@FUNC + $$KASUS + $$NUMERUS - Sem/Unit (-1 $$@FUNC + $$KASUS + $$NUMERUS + N)(NEGATE 0 CONJ-C) ; #Reglen kan gøres mere sikker ved at tilføje  + ATTRIBUTIV til target.
-SUBSTITUTE:S0034 @ADVL> @OBJ-DOTR> TARGET Ins OR Trm IF (*1C Gram/Db - @N< BARRIER (*) - @N< - TIME - TOOL) ;
+SUBSTITUTE:S0034 @ADVL> @OBJ-DOTR> TARGET Ins OR Trm IF (*1C Gram/Db - @N< - TRMVERB BARRIER (*) - @N< - TIME - TOOL) ;
 SUBSTITUTE:S0035 @i-ADVL> @i-OBJ-DOTR> TARGET Ins OR Trm IF (*1C Gram/Db BARRIER (*) - @N< - TIME - TOOL) ;
 SUBSTITUTE:S0037A @SUBJ> @N< TARGET Gram/Cong + Nom IF (*-1C @SUBJ>) ;
 SUBSTITUTE:S0037A @SUBJ> @N< TARGET Abs + $$NUMERUS - CONJ-C - Prop IF (*-1C Abs + $$NUMERUS + @SUBJ> - CONJ-C CBARRIER V OR CLB OR @CONJ LINK *1 _TARGET_ LINK *1 INTRANSVERB + (/.Sg/r) BARRIER V)(*1 VFIN BARRIER V) ; #Taamaalisorlu suialaarneq nillertoq alanngup suialaarnera aqqusinermi suialaalerpoq,
