@@ -1278,7 +1278,7 @@ LIST thingobjverb = ("qaammaqqut" GE) ("qaammaqqutige") ("qamip" Gram/TV) ; #tra
 LIST animalverb = "qilup" "pangalip" "pui" ; #forudsætter subjekt ANIMAL
 SET HUMVERB = humverb OR ORATIOOBLVERB ; # alle verb  der vil ha humane subj
 
-LIST PLAY = "arsar" ; #often plural and reciprocal
+LIST PLAY = "arsar" ("arsar" UTE); #often plural and reciprocal
 
 SET HVVERB = (Gram/HV) | ("naammattoorsi") ;
 LIST IntransTrans = "neri" "ilassior" Gram/HV ; #Set til disambiguering af Ins, VIP vs. HTR mv.
@@ -2940,6 +2940,7 @@ MAP:M0230NY2 @Pron>N TARGET Gram/Dem + Pron + Abs + Sg - Prefix/AA IF (1 N + Abs
 ####################
 
 REMOVE:0260 Rel IF (1 Gram/Cong + Akk) ;
+REMOVE:0260 Sg IF (0 Pl)(1 Gram/Cong + 3Pl OR Gram/Cong + 4Pl) ;
 
 
 ##################
@@ -2981,6 +2982,7 @@ REMOVE:0322 Gram/Refl IF (NEGATE *-1 ("immi") BARRIER KOMMA)
 (NEGATE 0 QQU)
 (NEGATE 0 ("paasi"))(NEGATE 0 ("paa") + SI)
 (NEGATE 0 Orth/Arch)
+(NEGATE 0 PLAY)
 (NEGATE 0 (NIQ QAR) LINK -1 Ins) #I mangel af en CG-formalisme til at kontrollere når alle andre læsninger end en selv er Arch. En helt specifik regel, der skal forhindre at en Arch-læsning overlever som den sidste mens vi venter på nye faciliteter i CG-formalismen. 
 #20100822 disambiguerer refleksiv fra monovalente former men må ikke overskrive regel 5556
 (NEGATE 0 (/NIQ\ Der\/vn\ N\ Abl/l) OR (/NIQ\ Der\/vn\ N\ Ins/l))
@@ -3865,7 +3867,7 @@ MAP:M0081D @N< TARGET Abs IF (-1 Abs)(1 ("”"))(*1 ORATIOOBLVERB) ;
 
 MAP:M0981E @N< TARGET N + $$KASUS + LIK IF (*-1 iProp OR PROP BARRIER (*) - iNum - Num - Adv - Prop - iProp LINK 0 $$KASUS) ; #eqqartuussisut Britney Spears Sean-imut marlunnik *ukiulimmut Jayden-imullu ataatsimik *ukiulimmut akisussaaffianik arsaarmassuk.
 
-MAP:M0981F @N< TARGET N + $$KASUS + $$NUMERUS + (/SIMA\ Der\/vv\ \([A-Z]+[a-z]*/[A-Z]+[a-z]*[A-Z]*[a-z]*\ \)?TAQ\ Der\/vn/l) IF (*-1 $$KASUS + $$NUMERUS BARRIER KOMMA OR VFIN) ; #Manu aananilu illuaqqami aataap qangangaatsiarli sanaarisimasaani nerriviusannguaq nerriviliullugu issiapput, mannalu isikkivik.
+MAP:M0981F @N< TARGET N + $$OBLIQUE + $$NUMERUS + (/SIMA\ Der\/vv\ \([A-Z]+[a-z]*/[A-Z]+[a-z]*[A-Z]*[a-z]*\ \)?TAQ\ Der\/vn/l) IF (*-1 $$OBLIQUE + $$NUMERUS BARRIER KOMMA OR VFIN) ; #Manu aananilu illuaqqami aataap qangangaatsiarli sanaarisimasaani nerriviusannguaq nerriviliullugu issiapput, mannalu isikkivik.
 
 
 MAP:M0069CX12 @N< TARGET (/__Gram\/Dem\ Pron__/l) + $$KASUS IF (-1 N + $$KASUS LINK NOT 0 @PRED OR @PRED2) #Skal ikke gælde hvis -1 er Par
@@ -4572,7 +4574,7 @@ MAP:M0920 (@AGENS) TARGET Abl - iV IF (*1 PASSIV BARRIER VFIN)(NEGATE 0 TIME)(NE
 MAP:M0900 (@i-ADVL>) TARGET (Aeq) IF (*1 Der/vn - NAR - NIQAR - @AGENS BARRIER (*) - @N<)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Aeq )(NEGATE 1 CONJ-LU + Aeq)(NEGATE 0 CONJ-LU LINK -1 Aeq)(NEGATE *0 ("isikku") + QAR + V OR ("oqar") + UTE + GE); #Kun Trm til Der/vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse
 MAP:M0929A @ADVL> TARGET Trm IF (1 KOMMA)(2 Trm )(3 KOMMA);
 MAP:M0929B @ADVL> TARGET Trm IF (1 KOMMA)(2 Trm OR Ins)(3 Trm)(4 KOMMA);
-MAP:M0930 (@i-ADVL>) TARGET Trm - @N< IF (*1 Der/vn - iOBLIQUE - (/TUQ\ Der\/vn\ QAR/l) BARRIER V)(NEGATE 1 iLok + TUQ + Trm)
+MAP:M0930 (@i-ADVL>) TARGET Trm - @N< IF (*1 Der/vn - iOBLIQUE BARRIER V)(NEGATE 1 iLok + TUQ + Trm)
 (NEGATE 1 @N< + Trm LINK NEGATE *1 N - Trm) #må ikke hitte på sit eget kongruensadled.
 (NEGATE 0 Prop LINK 1 (*) - ("tunnga") + TUQ) 
 #(NEGATE 0 TIME LINK *-1 BOS BARRIER (*) - ("taamaakkaluartoq")) Må ikke hitte på nexusadverbial evt. efter koncessiv virker ikke endnu 20180207
@@ -5412,7 +5414,7 @@ REMOVE:1681 i2SgPoss IF (-*1C Pron + 1Sg) ;
 REMOVE:1681A 1SgPoss IF (0 Aeq)(NEGATE *1 1Sg) ;  
 
 REMOVE:1681B 2SgPoss IF (0 Prop LINK 1 iProp) ;
-REMOVE:1681C Prop + POSSESSUM1 - AFFINGERET IF (0 PROP - POSSESSUM) ;
+REMOVE:1681C Prop + POSSESSUM1 - AFFINGERET - ("Nuna") IF (0 PROP - POSSESSUM) ;
 REMOVE:1681D N IF (0 Prop - POSSESSUM)(NEGATE *-1 BOS BARRIER WORD) ;
 REMOVE:1681E Prop + AFFINGERET IF (0 Prop - AFFINGERET) ;
 
@@ -6694,7 +6696,7 @@ REMOVE:5851B Abs + Pl IF (0 Rel + Pl)(1C 3PlPoss)(NEGATE *1 TRANSVERB + 3PlO BAR
 REMOVE:5851C ("(.*)"r) + TAQ + Sg IF (0 ("$1"v) + TAQ + Pl)(**0 ("$1"v) ); #Meeqqat qaqqamut majuartut malillugit ingerlalerpoq, qaqqakkoornerli sungiusimannginnamiuk malitaminit kingullinnguukkaluttuinnarpoq. #malitaq er Pl.
 
 #Possessum sing eller plur? Hvis NIQ sandsynligvis sing
-SELECT:5852 NIQ + Sg IF (0 NIQ + Pl);
+SELECT:5852 NIQ + Sg - 2SgPoss IF (0 NIQ + Pl);
 
 #Hvilken possessor?
 SELECT:5853 2SgPoss OR 2PlPoss IF (0 Trm LINK *-1 ("quja") + Gram/Exclm);
