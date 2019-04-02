@@ -1564,6 +1564,7 @@ DELIMIT ("<">") IF (-1W _S_DELIMITERS_) ; #virker tilsyneladende ikke
 #####################################
 # Cleaning special constructions that complicate the rest #
 #####################################
+SUBSTITUTE (\(/Gram\/TV\ Gram\/TV/l\)) (\(Gram\/TV/l\)) TARGET Gram/TV ;
 REMOVE:00000 (URL) IF (0 Sem/Url) ; #dobbeltgenerering fra FST'ens url.lexc
 #Arnaq i første position er et reelt problem
 #REMOVE:0001X ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"%l$1"r)) (-1 BOS) (NEGATE 1 Prop) ;
@@ -1901,6 +1902,7 @@ REMOVE:0039B ("aak") OR ("aaq") IF (0 ("aamma")) ;
 SELECT:0039C Adv IF (-1 ("sooq") LINK 1 ("aamma")) ;
 REMOVE:0039D ("naa") IF (0 ("naamik")) ;
 REMOVE:0039E ("aap") IF (0 ("aappaq")) ;
+REMOVE:0039F ("allak") IF (0 ("alla"))(NEGATE *0W SEMIOTIC) ; #den er måske for tidlig
 SELECT:0023 ("illuttut") + ADVERBIEL IF (*1 LIK OR QAR BARRIER V); #Næppe sneblinde, men tosidet N
 
 #TAQ vs. GE skaber problemer. Vælg altid GE, hvis mulig sammenblanding med TAQ og hvis ikke andre finitte verber i sætningen
@@ -3534,7 +3536,7 @@ MAP:M0031I @PROP> TARGET Sem/Hum + Abs IF (1 Sem/Hum - Sem/Mask - Sem/Fem - Abl 
 MAP:M0031M @i-PROP> TARGET Prop + Sem/Geo IF (1 (MIU)); #Amerika Kujallermiu
 MAP:M0031N @i-PROP> TARGET Prop + Sem/Geo IF (1 PLACE + iProp + iOBLIQUE) ;
 MAP:M0031N @i-PROP> TARGET Prop + Sem/Geo IF (1 PLACE + iN + iOBLIQUE) ;
-MAP:M0031O @PROP> TARGET Prop + Sem/Geo + $$KASUS IF (1 PLACE - Prop - CONJ-C)(NEGATE 1 POSSESSUM + Rel)(NEGATE -1 N + $$KASUS) ;
+MAP:M0031O @PROP> TARGET Prop + Sem/Geo + Abs IF (1 PLACE - Prop - CONJ-C)(NEGATE 1 POSSESSUM + Rel)(NEGATE -1 N + Abs) ;
 
 MAP:M0031P @PROP> TARGET ORGANISATION IF (1 Prop) (NEGATE 1 ORGANISATION + CONJ-C) ;
 MAP:M0031Q @PROP> TARGET Gram/ACR + Abs IF (1 Prop) ;
@@ -4117,7 +4119,7 @@ SUBSTITUTE:S0529 @OBJ> @N< TARGET $$KASUS + $$NUMERUS - CONJ-C IF (*-1C @OBJ> + 
 ###########################
 
 # Sikre adled som ikke skal mappes som inderiverede adverbaler 
-MAP:M0740 @i-MIK-OBJ> TARGET Ins IF (1 (/__HTR\ Der\/vv\ Gram\/IV\ TUQ\ Der\/vn\ QAR__/l)) ;
+MAP:M0740 @i-MIK-OBJ> TARGET Ins IF (1 (/__HTR\ Der\/vv\ \(Gram\/IV\ \)?TUQ\ Der\/vn\ QAR__/l)) ;
 MAP:M0741 @i->N TARGET Num + Ins IF (1 ("ukioq") + LIK_QAR) ;
 MAP:M0742 @i-MIK-OBJ> TARGET ("inneq") + Ins IF (1 ("anip") + HTR + N) ;
 
