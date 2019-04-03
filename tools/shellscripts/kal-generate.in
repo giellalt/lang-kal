@@ -42,20 +42,20 @@ if ($opt_verbose) {
 my $t = "hfst-optimized-lookup -p -u ${fst}";
 
 # Prefixes from root.lexc ca. lines 14-15
-my @p = ('AA', 'TA');
+my @p = qw(AA TA);
 
 # Main POS tags from root.lexc ca. lines 19-29
-my @m = ('N', 'V', 'Pali', 'Conj', 'Adv', 'Interj', 'Pron', 'Prop', 'Num');
+my @m = qw(N V Pali Conj Adv Interj Pron Prop Num);
 
 # Other POS tags from root.lexc ca. lines 114-180
-my @a = (
-   'Sg', 'Du', 'Pl',
-   'Abs', 'Rel', 'Trm', 'Abl', 'Lok', 'Aeq', 'Ins', 'Via',
-   'Nom', 'Akk',
-   'Ind', 'Int', 'Imp', 'Opt', 'Cau', 'Con', 'Par', 'Cont', 'ContNeg', 'IteCau',
-   '1Sg', '2Sg', '3Sg', '4Sg', '1Pl', '2Pl', '3Pl', '4Pl', '1Du', '2Du', '3Du', '4Du',
-   '1SgO', '2SgO', '3SgO', '4SgO', '1PlO', '2PlO', '3PlO', '4PlO', '1DuO', '2DuO', '3DuO', '4DuO',
-   '1SgPoss', '2SgPoss', '3SgPoss', '4SgPoss', '1PlPoss', '2PlPoss', '3PlPoss', '4PlPoss',
+my @a = qw(
+   Sg Du Pl
+   Abs Rel Trm Abl Lok Aeq Ins Via
+   Nom Akk
+   Ind Int Imp Opt Cau Con Par Cont ContNeg IteCau
+   1Sg 2Sg 3Sg 4Sg 1Pl 2Pl 3Pl 4Pl 1Du 2Du 3Du 4Du
+   1SgO 2SgO 3SgO 4SgO 1PlO 2PlO 3PlO 4PlO 1DuO 2DuO 3DuO 4DuO
+   1SgPoss 2SgPoss 3SgPoss 4SgPoss 1PlPoss 2PlPoss 3PlPoss 4PlPoss
    );
 
 my $pp = join('|', @p);
@@ -80,7 +80,7 @@ while (<STDIN>) {
    }
 
    # Turn CG readings into FST lines, minding that baseforms can have spaces in them
-   if (/^\s*"([^"]+)"/) {
+   if (m@^\s+"([^\n]+?"?[^"]*)"@) {
       my $b = $1;
       # Protect baseform and outdent
       s/^\s*"\Q$b\E"/XBASEFORMX/;
@@ -100,7 +100,7 @@ while (<STDIN>) {
    while (s/\+$i($mp|$ap)(\+|$)/+$1$2/g) {}
 
    # Remove all secondary tags
-   #while (s@\+[^+]+/[^+]+\+@+@g) {}
+   while (s@\+[^+/]+/[^+/]+\+@+@g) {}
 
    print $fh "$_\n";
 }
