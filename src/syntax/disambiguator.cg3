@@ -1249,7 +1249,7 @@ LIST LOKVERB = "angala" "najugaq" "najugaqar" "ilinniar" ("taku" UTE) ;
 
 LIST ABLVERB = "aallar" "ani" ("titartar" TAQ);
 
-LIST TRMVERB = "aallar" "iser" "nuup" ("peqat" U) "pulaar" ("quja" Gram/Exclm) ;
+LIST TRMVERB = "aallar" "iser" "nuup" ("peqat" U) "pulaar" ("quja" Gram/Exclm);
 
 SET MOVE-VERB = LOKVERB | ABLVERB | TRMVERB ;
 
@@ -1295,7 +1295,7 @@ LIST TRANSINTRANS = "naalap" "nuup" "oqar"; #Set til verber med både transitive
 LIST SEKVENTIELLE_VERBER = "ani" "innar" ; #Sæt til anvendelse sammen med coref tidsbisætning
 LIST NAAR_VERBER = "angi" ("aki" KIP) "amerla" "isorartu" "kingusip" "miki" "oqip" "sivikip" "siusip" ; #stammer, der kan tage NAAR. Alle andre slettes
 LIST EVALUERENDE_VERBER = "kajungeraa" ; #verber med semantik der betinger objekt efter NIQ+Ins/Abl
-LIST INDERIVERENDE_SUBSTANTIV = (/\"aki\"\ [^\(Gram\/IV\)]/l SSAQ) "angajoqqaaq" "atuakkiaq" "blogger" "bloggeri" "blog" "filmiliaq" ("film" LIAQ) "igalaasartooq" "ilaqutaq" "ilassinnissut" "inatsit" "inerteqqut" "isertugaq" "isi" "isuma" "minister" "naapeqatigiinneq" "nalliuttorsiorneq" "nalunaarusiaq" "nassaaq" "nioqqut" "nuuttoq" "oqallissaarut" "oqaluttuaq" "oqimaassusilik" "peqataasoq" "pineq" "piniartoq" "qaatigooq" "sanaaq" "sinniisoq" "siunnersorti" "sungiusaasoq" "tigummiaq" FAM ;
+LIST INDERIVERENDE_SUBSTANTIV = (/\"aki\"\ [^\(Gram\/IV\)]/l SSAQ) "angajoqqaaq" "atuakkiaq" "blogger" "bloggeri" "blog" "filmiliaq" ("film" LIAQ) "igalaasartooq" "ilaqutaq" "ilassinnissut" "inatsit" "inerteqqut" "isertugaq" "isi" "isuma" "minister" "naapeqatigiinneq" "nalliuttorsiorneq" "nalunaarusiaq" "nassaaq" "nioqqut" "nuuttoq" "oqallissaarut" "oqaluttuaq" "oqimaassusilik" "peqataasoq" "pineq" "piniartoq" "qaatigooq" "sanaaq" "sinniisoq" "siunnersuisoq" "siunnersorti" "sungiusaasoq" "tigummiaq" FAM ;
 #LIST VERBALNOMEN = "isuma" "oqaluttuaq" "naapeqatigiinneq" ;
 LIST INSOBJVERB = LIUR RAAR (/\ SI\ Der\/nv/l) SSIP TAAR SIUR (/\ TUR\ Der\/nv/l) (/__LIR\ Der\/nv__/l) ;
 LIST NOTSPLIT = ("neri" TAQ SSAQ) ; # cannot take i- -arguments.
@@ -1367,7 +1367,7 @@ SET EXCLAMATION = ("tipi" N) | (SSUSIQ 3SgPoss) | (SSUSIQ Pl 3PlPoss) | WEATHER 
 LIST Mask = "Aron" "Egon" "Eri" "Erik" "Eskild" "Hans" "Jens" "Mik" "Miki" "Morten" "Niels" "Ole" "Per" "Piitaq" "Rasmus" "Sean" "Trond" Sem/Mask ;
 LIST Fem = "Anette" "Anna" "Arnaq" "Dagmar" "Emilie" "Gitte" "Hanne" "Jane" "Karen" "Kirsten" "Margrethe" "Mette" Sem/Fem ;
 LIST Sur = "Jensen" "Jenseni" "Møller" "Olsen" "Rasmussen" "Trosterud" Sem/LastName ;
-LIST TITEL = "borgmester" "fru" "Gammel" "hr" "hotel" "kunngi" "lektor" "minister" "nakorsaq" ("pisoq" TAQ) "præsident" "senator" ("siulittar" TUQ) ("ulloriarsior" TUQ) "ulloriarsiortoq";
+LIST TITEL = "borgmester" "fru" "Gammel" "hr" "hotel" "kunngi" "lektor" "minister" "nakorsaq" ("pisoq" TAQ) "præsident" "senator" ("siulittar" TUQ) ("siunnersor" HTR) ("ulloriarsior" TUQ) "ulloriarsiortoq";
 LIST COUNTRY = "Canada" "Danmark" "Finland" "Grønland" "Island" "Kalaallit Nunaat" "Norge" "Rusland" "Sverige" "Tyskland" "USA" ; 
 LIST GeoProp = Sem/Geo "Danmark" "Finland" "Gladsaxe" "Mose" "Tåstrup" ;
 SET Fornavn = Mask | Fem ;
@@ -3523,6 +3523,7 @@ MAP:M0031A @PROP> TARGET Prop + Abs + $$NUMERUS - Sem/Geo IF (1 Prop + $$NUMERUS
 
 #Tilføjet M0031C-E ad hoc 20180621 efter restrukturering af propernouns med køns-tags for at få regression test til at fungere.
 
+MAP:M0031B @PROP> TARGET Orth/Append + Abs - Num OR Orth/Copy + Abs IF (1 Orth/Append OR Orth/Copy)(NEGATE 1 iOBLIQUE) ;
 
 MAP:M0031C @PROP> TARGET FIRSTNAME + Abs IF (1 NAME - Sem/Fem - CONJ-C)(NEGATE *1 INTRANSVERB + 3Sg) ; #Fornavne er @PROP til efternavne eller efterfølgende fornavne. Et mandligt navn kan bruges som efternavn.
 
@@ -3564,10 +3565,12 @@ MAP:M0033C1 @<APPOS TARGET PROP + Abs + Sg - CONJ-LU - iOBLIQUE IF (-1 N + Abs +
 #første NEGATE for at forhindre hit på fx (Royal Arctic Line)@SUBJ> VERBUM og -LU for ikke at hitte på Danmark Islandilu og andet NEGATE for at blokere PISORTAQ Per Langgård oqarpoq
 MAP:M0033C2 @<APPOS TARGET PROP + Abs - CONJ-LU - iOBLIQUE IF (-1 N + Abs LINK NOT 0 V)(NEGATE -1C @PROP>)(NEGATE 1 Prop - Sem/Fem)(NEGATE -1 TITEL) ; # N Per (Men ikke N Per Lennert)
 #første NEGATE for at forhindre hit på fx (Royal Arctic Line)@SUBJ> VERBUM og -LU for ikke at hitte på Danmark Islandilu og andet NEGATE for at blokere PISORTAQ Per Langgård oqarpoq
+MAP:M0033C3 @<APPOS TARGET PROP + $$OBLIQUE - CONJ-LU - iOBLIQUE IF (-*1 N + $$OBLIQUE BARRIER V - CONT OR Abs OR Rel LINK NOT 0 V)(NEGATE -1 TITEL) ; # N Per (Men ikke N Per Lennert)
+
 MAP:M0033D @<APPOS TARGET PROP + Abs + Sg - CONJ-LU IF (*-1 Conj BARRIER (*) - @PROP> - TITEL - PUNCT LINK *-1 PROP + Abs + Sg - CONJ-LU BARRIER (*) - @PROP> - TITEL - PUNCT LINK *-1 N + Abs + Pl BARRIER (*) - PUNCT) ;
 MAP:M0033E @<APPOS TARGET PLACE_MORE + Abs + Sg - CONJ-LU IF (*-1 Conj BARRIER (*) - @PROP> - TITEL - PUNCT LINK *-1 PROP + Abs + Sg - CONJ-LU OR PLACE_MORE + Abs + Sg - CONJ-LU BARRIER (*) - @PROP> - TITEL - PUNCT LINK *-1 N + Abs + Pl BARRIER (*) - PUNCT) ;
 
-MAP:M0033F @<APPOS TARGET PROP + $$KASUS IF (*-1 TITEL + POSSESSUM - @PROP> BARRIER (*) - PROP) ;
+MAP:M0033F @<APPOS TARGET PROP + $$KASUS IF (*-1 TITEL + POSSESSUM - @PROP> BARRIER (*) - KOMMA - PROP) ;
 
 #MAP:M0033A @N< TARGET (/__TUQ\ Der\/vn\ N__/l) + $$KASUS + $$NUMERUS IF (-1 N + $$KASUS + $$NUMERUS) ; #Erstattet med substitute i AFTERSECTIONS
 
@@ -3589,7 +3592,7 @@ MAP:M0038B @SUBJ> TARGET N + Abs + 4SgPoss IF (1 Abs + CONJ-LU LINK *1 Par + 3Pl
 MAP:M0040 (@SUBJ>) TARGET N + Abs + CONJ-LU IF (-1 VFIN + 3Sg)(1 Cont + 4Pl)(2 N + Sg LINK *1 V + 3Sg) ;
 #Uggoraa Pitarlu qiteqatigiillualeruttorlutik
 MAP:M0041 (@SUBJ>) TARGET N + Abs + CONJ-LU OR Prop + Abs + CONJ-LU IF (-1 VFIN + 3Sg)(1 Cont + 4Pl)(2 N + Pl LINK *1 V + 3Pl) ;
-MAP:M0044 @CL-ADVL> TARGET N - POSSESSUM + (/NIQ\ Der\/vn\ N\ Abl/l) IF (*1 VFIN) ; #-nermit vist altid sætningsadverbial
+MAP:M0044 @CL-ADVL> TARGET N - POSSESSUM + (/NIQ\ Der\/vn\ N\ Abl/l) IF (*1 VFIN)(NEGATE 0 Abl LINK 1 NIRU) ; #-nermit vist altid sætningsadverbial
 MAP:M0044 @CL-<ADVL TARGET N - POSSESSUM + (/NIQ\ Der\/vn\ N\ Abl/l) OR N - POSSESSUM + (/NIQ\ Der\/vn\ N\ Ins/l) IF (-*1 VFIN) (NEGATE *1S V - CONJ-C BARRIER KOMMA OR CONJ-C) 
 (NEGATE 0 Ins LINK *1 HTR BARRIER VFIN OR KOMMA)(NEGATE 0C Ins LINK *1 QAR); #-nermit vist altid sætningsadverbial
 
@@ -3933,6 +3936,7 @@ MAP:M0350NY @N< TARGET Der/vn + $$KASUS + $$NUMERUS - CONJ-LU - CONJ-LUUNNIIT OR
 (NEGATE -1 NUMHOVED - TIME + Abs)
 (NEGATE 0 Num LINK -1 MAANED)
 (NEGATE 1 @<APPOS)
+(NEGATE 0 (HTR TUQ) LINK -1 Trm)
 ;
 MAP:M0350NZ @N< TARGET (/LIK\ Der\/nn\ N/l) - iNum + $$KASUS IF (-1 N + $$KASUS)
 (NEGATE 0 LIK_QAR + Ins LINK -1 Ins LINK NOT *-1 Ins)
@@ -4248,7 +4252,8 @@ MAP:M0514 @N< TARGET $$KASUS + $$NUMERUS + OBLIQUE - CONJ-C IF (0 ("(.*)"r))(*-1
 (NEGATE 0 iNum + LIK LINK *-1 Ins BARRIER V)
 (NEGATE -1 @i-ADVL>N LINK NOT *-1 N + $$KASUS + $$NUMERUS - POSSESSUM) #ukaliatsiap amianik sanaamik tamavimmik poorsimavoq.
 (NEGATE 1 @<APPOS) #så er det mere sandsynligt et @ADVL>
-(NEGATE 0 Ins LINK 1 HTR);
+(NEGATE 0 Ins LINK 1 HTR)
+(NEGATE 0 HTR + TUQ LINK -1 Trm);
 #(*-1 (*) - VFIN LINK *-1 $$KASUS + $$NUMERUS BARRIER VFIN)(NEGATE *1 DOTR BARRIER EOS OR KONCESSIV)(NEGATE *1 LOKVERB OR TRMVERB OR ABLVERB LINK *-1 (*) - EOS - KONCESSIV + _TARGET_ LINK *-1 Sg + $$KASUS + $$NUMERUS);
 MAP:M0514B @N< TARGET Ins + Pl - CONJ-C IF (*-1 Ins + Pl - Num - TIME  BARRIER V - OBJVERB OR CONJ-C OR EOS)#(NEGATE *-1 OBJVERB LINK *-1 Abs LINK NEGATE *-1 Ins + Pl) 
 (NEGATE *-1S LIK LINK *-1 Ins + Pl BARRIER V)
@@ -4588,6 +4593,7 @@ MAP:M0880 (@i-ADVL>) TARGET (Abl) IF (1 Der/vn - NAR - TAQ)(NEGATE 1 Rel LINK 1 
 MAP:M0890 (@i-ADVL>) TARGET (Via) IF (1 Der/vn - NAR - NNGUR - GE )(NEGATE 1 TAR + RIAQ + IRUTE)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Via )(NEGATE 1 CONJ-LU + (Via)); #Kun Trm til Der/vn med NAR. RIAQ i TARIAARUP kvalificerer ikke som vn. Rettet 2.4. NEGATE nr. 3 20091104 for at haandtere paratakse
 MAP:M0899 @i-ADVL>N TARGET LANGUAGE IF (*1 SEMIOTIC + N) ;
 MAP:M0899 @i-ADVL>N TARGET COUNTRY IF (1 HUMAN + N - AFFINGERET) ; #meeqqat Kalaallit Nunaanni
+MAP:M0899 @i-ADVL> TARGET Trm IF (1 HTR + TUQ + N) ; #sumut siunnersuisoq
 
 MAP:M0910 (@i-ADVL>) TARGET (Ins) IF (1 Der/vn - NAR)(NEGATE 1 TAR + RIAQ + IRUP)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Ins )(NEGATE 1 CONJ-LUUNNIIT + Ins)(NEGATE 1 CONJ-LU + Ins)(NEGATE 0 $$KASUS LINK -*1 $$KASUS BARRIER (*) - Adv - Pali - Interj - @POSS> - (/@i-.*/r))(NEGATE 1 (/__\"ati\"\ Gram\/TV\ TAQ__/l))(NEGATE 1 @N< + Ins + $$NUMERUS - POSSESSUM LINK NEGATE *1 Der/vn - NAR BARRIER V) ; #20091109 
 MAP:M1911 @i-ADVL> TARGET Abl IF (1 TIME LINK 1 Num OR iNum) ;
