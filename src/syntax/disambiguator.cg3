@@ -1564,7 +1564,8 @@ DELIMIT ("<">") IF (-1W _S_DELIMITERS_) ; #virker tilsyneladende ikke
 #####################################
 # Cleaning special constructions that complicate the rest #
 #####################################
-SUBSTITUTE (\(/Gram\/TV\ Gram\/TV/l\)) (\(Gram\/TV/l\)) TARGET Gram/TV ;
+COPY ("$1"v) EXCEPT Gram/Pass TARGET ("(.*)"r) + (/Gram\/Pass\ NIQ\ Der\/vn\ N\ Abl/l); # transitiv -nermit #nunap piniagassarsui tusaamanermit nuussimavugut.
+
 REMOVE:00000 (URL) IF (0 Sem/Url) ; #dobbeltgenerering fra FST'ens url.lexc
 #Arnaq i første position er et reelt problem
 #REMOVE:0001X ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"%l$1"r)) (-1 BOS) (NEGATE 1 Prop) ;
@@ -3445,6 +3446,7 @@ MAP:M0018A @NIQ_OBJ> TARGET Abs IF (*1 (/Gram\/TV\ \(Gram\/Pass\ \)?NIQ\ Der/vn\
 MAP:M0018B @NIQ_OBJ> TARGET Abs - CONJ-C IF (1* (/Gram\/TV\ NIQ\ Der/vn\ N\ Abl__/l) + Gram/TV - Gram/IV - POSSESSUM - @N< BARRIER (/@.*/r) - @N< OR V) ;
 MAP:M0018B @NIQ_OBJ> TARGET Abs - CONJ-C IF (1* (/NIQ\ Der/vn\ N\ Ins__/l) + Gram/TV - Gram/IV - POSSESSUM - @N< BARRIER (/@.*/r) - @N< OR V) ; #Samme som M0018A. Midlertidigt nødvendig fordi TV-taggen ikke er propageret til sidste plads før NIQ.
 SUBSTITUTE @NIQ_OBJ> @N< TARGET Abs IF (NEGATE 0 CONJ-C) (-1 @NIQ_OBJ> + Abs) ;
+SUBSTITUTE @NIQ_OBJ> @N< TARGET Abs IF (NEGATE 0 CONJ-C) (-1 @N< LINK -1 @NIQ_OBJ> + Abs) ; #sideordnede adled
 
 MAP:M0018A (@NIQ_SUBJ>) TARGET Abs - Gram/Pers IF (*1 (/Gram\/IV\ NIQ\ Der/vn\ N\ Abl__/l) - POSSESSUM OR (/Gram\/IV\ NIQ\ Der/vn\ N\ Ins__/l) - POSSESSUM BARRIER V OR (/@.*/r) - @N< OR KOMMA LINK NEGATE *1 HTR BARRIER (*) - Ins)(NEGATE 1 POSSESSUM)(NEGATE *1 INTRANSVERB + 3Sg BARRIER Abs + Sg)(NEGATE *1 3SgO BARRIER Abs + Sg) #nunap piniagassarsui tusaamanermit nuussimavugut.
 (NEGATE *1 LIK BARRIER (*) - Ins ) #inatsisileritooq aningaasaqarnermik akileraartarnermillu soqutigisalik.
@@ -6969,6 +6971,12 @@ MAP:M0099E @FOC TARGET UNA ; #20180522. Den skal afgrænses.
 #specifikkere regler
 REMOVE:9962A (/\"\ Gram\/TV/l) IF (0 ("angalaar") + TIP) ;
 REMOVE:9962B TRANSVERB IF (0 $$PN + CONT + INTRANSVERB LINK 1 $$PN) ; #Sooq taama kingusinaartigalusi tikippisi?
+
+SELECT:9962I (/Gram\/TV\ NIQ\ Der\/vn\ N\ /l) IF (0 Abl OR Ins)(*-1 @NIQ_OBJ>) ;
+REMOVE:9962H (/Gram\/Refl\ \(Gram\/IV\ \)?NIQ\ /l) OR (/Gram\/Pass\ \(Gram\/IV\ \)?NIQ\ /l) IF (0 Abl OR Ins)(*-1 (@NIQ_SUBJ>) OR @NIQ_OBJ>) ;
+
+
+REMOVE:9962H (/Gram\/TV\ Gram\/Pass\ NIQ\ Der\/vn\ N\ Abl/l) OR (/Gram\/TV\ Gram\/Pass\ \(Gram\/IV\ \)?NIQ\ Der\/vn\ N\ Ins/l) IF (*-1 (@NIQ_SUBJ>) OR @NIQ_OBJ>) ;
 
 
 REMOVE:9963 $$BFORM + (/\"\ Gram\/TV/l) + INTRANSVERB - NIQAR - Gram/Db IF (0 $$BFORM + (/\"\ Gram\/IV/l) + INTRANSVERB) ; #supplerer 9965C for verberne. Regressionstestet men meget bred, så bør observeres 
