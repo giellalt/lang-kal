@@ -1325,7 +1325,7 @@ LIST ABSTRACT = "taaq" ;
 LIST PLACE = "illu" "imaq" ("atuar" VIK) ("oqalup" VIK) "nuna" "orpippassuaq" "siku" "silarsuaq" "ungaloq" "village" Sem/Geo ^Sem/Hum "lexicon" ; 
 LIST PLACE_MORE = (/\"<\\p{Lu}.*\>"/r);
 SET PLACE_EXTENDED = PLACE | PLACE_MORE ;
-LIST ADJEKTIVISK = "akisooq" "akutakujooq" "akutakujuk" "angisooq" "angut" "arnaq" "ataavartoq" "ilivitsoq" "itisooq" "manissoq" ("perler" TUQ) ("portu" JAAR) "takisooq" "siulleq" "tulleq" "tulliup" "tungujortoq" (NAR TUQ) (/.*tooq/r); #angut og arnaq medtaget lidt skummelt, men anvendes ofte adjektivisk
+LIST ADJEKTIVISK = "akisooq" "akutakujooq" "akutakujuk" "angisooq" "angut" "arnaq" "ataavartoq" "ilivitsoq" "itisooq" "manissoq" ("perler" TUQ) ("portu" JAAR) "takisooq" "siulleq" "tulleq" "tulliup" "tungujortoq" (NAR TUQ) (/.*tooq\"/r); #angut og arnaq medtaget lidt skummelt, men anvendes ofte adjektivisk
 LIST COLOUR = "aappaluttoq" ("aak" PALUP TUQ) "qaqortoq" "qaqqorik" "qernertoq" "qorsuk" "sungaartoq" "tungujortoq" ;
 SET ATTRIBUTIV = ADJEKTIVISK | COLOUR | (/QAR\ Der\/nv\ \(Gram\/IV\ \)?TUQ\ /l) ;
 LIST NATIONALITY = "dansk" "grønlænder" "kalaaleq" "qallunaaq" ;
@@ -1428,6 +1428,7 @@ LIST @CL-CIT> = @CL-CIT> ;	 # predikat i oo der står til et matriseverb t.h. CL
 LIST @CL-<CIT = @CL-<CIT ;	 # predikat i oo der står til et matriseverb t.v. (CIT=sitat)
 LIST @CL-CIT = @CL-CIT> @CL-<CIT ;	 # predikat i oo der står til et matriseverb t.h. CL-OBJ (oo oratobl)
 LIST @i-<CL-CIT = @i-<CL-CIT ; # kernen i oo som refererer til et inderiveret inquit
+LIST @i-CL-CIT> = @i-CL-CIT> ; # kernen i oo som refererer til et inderiveret inquit
 LIST @i-SUBJ> = @i-SUBJ> ;   # "dativ-objektet" ved dotr verbal t.h. 'Beatrinep PERIMUT allagaq aaqquaa'
 LIST @i-<SUBJ = @i-<SUBJ ;   # "dativ-objektet" ved dotr verbal t.v. 
 LIST @MIK-OBJ> = @MIK-OBJ> ; # indef objekt ved HTR til hoejre
@@ -3623,7 +3624,7 @@ MAP:M0055 (@PRED2) TARGET CONT + 4Pl IF (*-1 Abs + Pl)(NEGATE *1 V + 3Pl)(1* Abs
 MAP:M0058 @ADVL> TARGET TIP + GALUAR + CONT + TRANSVERB (1 V); #...tikkaluarlugu er ADVL og ikke CL-CIT.
 MAP:M0059 @ADVL> TARGET CONT + 4Sg IF (*1 KASIK + @PRED2 BARRIER V LINK 1 EOS) ; #adverbal til KASIK brugt som participium
 MAP:M0060 (@PRED2) TARGET Cont + 1Sg OR ContNeg + 1Sg IF (*-1 ADVERBIUM OR UNA LINK *-1 VFIN + 1Sg)(NEGATE *0 ORATIOOBLVERB) ; #20091109
-MAP:M0061A @CL-<CIT TARGET Par + NIR OR CONT + NIR IF (*-1 ORATIOOBLVERB - Cau LINK 0 V OR NIQ) ; #NIQ til NIQAJOR
+MAP:M0061A @CL-<CIT TARGET Par + NIR OR CONT + NIR IF (*-1 ORATIOOBLVERB - Cau LINK 0 V OR NIQ)(NEGATE *1 ORATIOOBLVERB BARRIER KOMMA) ; #NIQ til NIQAJOR
 MAP:M0061 (@CL-<CIT) TARGET CONT + 4Sg IF (-*1 ORATIOOBLVERB - N + 3Sg BARRIER ("soorlu"))(NEGATE *1 Cont - (/@.*>/r) BARRIER CONT + CONJ-C) (NEGATE *1 Par)(NEGATE *1 N + Abs BARRIER (*) - Adv LINK 0 INDERIVERENDE_SUBSTANTIV OR LIK_QAR OR NIQ );
 MAP:M0061A (@CL-<CIT) TARGET Cont + 1Sg IF (-*1 ORATIOOBLVERB + 1Sg)(NEGATE *1 Cont) (NEGATE *1 Par)(NEGATE 0 CONJ-LU LINK -1 KOMMA);
 MAP:M0061B (@CL-<CIT) TARGET Cont + 2Sg IF (-*1 ORATIOOBLVERB + 2Sg)(NEGATE *1 Cont) (NEGATE *1 Par);
@@ -3938,6 +3939,7 @@ MAP:M0350NY @N< TARGET Der/vn + $$KASUS + $$NUMERUS - CONJ-LU - CONJ-LUUNNIIT OR
 (NEGATE 0 Num LINK -1 MAANED)
 (NEGATE 1 @<APPOS)
 (NEGATE 0 (HTR TUQ) LINK -1 Trm)
+(NEGATE -1 ("nuna") OR ("Nuna"))
 ;
 MAP:M0350NZ @N< TARGET (/LIK\ Der\/nn\ N/l) - iNum + $$KASUS IF (-1 N + $$KASUS)
 (NEGATE 0 LIK_QAR + Ins LINK -1 Ins LINK NOT *-1 Ins)
@@ -4236,11 +4238,11 @@ MAP:M0471 @N< TARGET N + Abs + Pl - CONJ-LU IF (-*1 N + Abs + Pl + @OBJ> BARRIER
 
 MAP:M0500 @N< TARGET Trm IF (-1C Trm)(NEGATE *1 V)(NEGATE 0 ("tamaq") LINK -1 ("suna")) ;
 #At adskille Cont's objekt fra V's subjekt
-MAP:M0501 @N< TARGET N + Lok - POSSESSUM - CONJ-C IF (NOT 0 Adv OR Pali)(-1C Lok - Adv - SPATIAL - Num - iNum)(NEGATE 1 Prop)(NEGATE -1 (/@i-.*/r) LINK NOT *-1 Lok) ;
+MAP:M0501 @N< TARGET N + Lok - POSSESSUM - CONJ-C IF (NOT 0 Adv OR Pali)(-1C Lok - Adv - SPATIAL - Num - iNum)(NEGATE 1 Prop)(NEGATE -1 (/@i-.*/r) LINK NOT *-1 Lok)(NEGATE -1 ("nuna") OR ("Nuna")) ;
 
 MAP:M1722C @N< TARGET Num + $$NUMERUS IF (-1 Abs + $$NUMERUS)(-1 @HNOUN); #særlig for HNOUN NP 
 MAP:M0510 @N< TARGET ("alla") + N + $$KASUS + $$NUMERUS - CONJ-LU OR ("arlaaq") + N + $$KASUS + $$NUMERUS IF (-1 N + $$KASUS + $$NUMERUS)(NEGATE -1 ("ajor") + NAR + TUQ + Ins + Sg);
-MAP:M0511 @N< TARGET ATTRIBUTIV + N + $$KASUS + $$NUMERUS OR ("arlaaq") + N + $$KASUS + $$NUMERUS IF (-1 N + $$KASUS + $$NUMERUS) ;
+MAP:M0511 @N< TARGET ATTRIBUTIV + N + $$KASUS + $$NUMERUS OR ("arlaaq") + N + $$KASUS + $$NUMERUS IF (-1 N + $$KASUS + $$NUMERUS)(NEGATE 0 (/\ NIQ\ Der\/vn\ N\ /l) + Lok) ;
 MAP:M0512 @N< TARGET N + $$KASUS + $$NUMERUS - POSSESSUM IF (*-1 $$KASUS + $$NUMERUS BARRIER (*) - @>N - @N< - @i-ADVL>N)(NEGATE -1 ("una"))(NEGATE -1 PLACE - MIU)(NEGATE 0 CONJ-C + Num LINK -1 Num OR iNum)(NEGATE 0 CONJ-C - Num)(NEGATE 0 $$KASUS LINK -1 Num LINK -1 ("nal") LINK *-1 (*) - $$KASUS)(NEGATE 0 Rel LINK 1 POSSESSUM)
 (NEGATE 0 iNum + LIK LINK *-1 NUMHOVED + Ins)
 (NEGATE -1 @i-ADVL>N LINK NOT *-1 N + $$KASUS + $$NUMERUS - POSSESSUM) #ukaliatsiap amianik sanaamik tamavimmik poorsimavoq.
@@ -4647,6 +4649,7 @@ MAP:M0947 @ADVL> TARGET OBLIQUE IF (*1 V)(NEGATE *-1 V BARRIER @CONJ OR @CL-ADVL
 MAP:M0948 @i-ADVL> TARGET OBLIQUE + $$KASUS + $$NUMERUS - Gram/Cong (NEGATE *1C V BARRIER KOMMA)(**1C N - $$KASUS BARRIER KOMMA LINK 0 Der/vn)(NEGATE *-1 $$KASUS + $$NUMERUS BARRIER V);
 MAP:M0948 @i-ADVL> TARGET OBLIQUE + $$KASUS - Gram/Cong (NEGATE *1C V BARRIER KOMMA)(**1C N - $$KASUS BARRIER KOMMA LINK 0 Der/vn)(NEGATE *-1 $$KASUS BARRIER V OR ("imaluunniit")); #Ikke krævet numeruskongruens, men til gængæld indsat barrier. #Unami eqqaamaniagassaq tassaavoq matumani pineqartut tassaaginnaanngimmata pisortat allaffissuini imaluunniit ingerlatseqatigiiffinni pisortat pigisaanni sulisut.
 MAP:M0948 @ADVL> TARGET OBLIQUE + $$KASUS + $$NUMERUS - Gram/Cong (*1 V BARRIER KOMMA)(NEGATE *-1 $$KASUS + $$NUMERUS BARRIER V);
+MAP:M0949 @ADVL> TARGET OBLIQUE IF (*1 V BARRIER KOMMA) ;
 MAP:M0950V @<ADVL TARGET OBLIQUE (*-1 V - ORATIOOBLVERB - ("tassa") OR V + ("imaap") BARRIER ("tassa"))(NEGATE *1 V BARRIER ("soorlu") OR ("tassa"));
 MAP:M0950X @<ADVL TARGET N IF (-1 ("\("))(1 ("\)"))(-2 @<ADVL) ; #Parantetiske indskud samme led som foregående ord
 MAP:M0951 @<ADVL TARGET OBLIQUE - iV IF (-*1C V - ORATIOOBLVERB BARRIER @CL-ADVL>) (NEGATE *1 VFIN BARRIER KOMMA)(NEGATE 0 Abs + $$NUMERUS LINK 1 Abs + $$NUMERUS) ; #(NEGATE -*1C HTR BARRIER V) # -V for at undgå at den rammer verbalierede obliquer. #Justeret 20180707 så det ikke bliver advl til inquit.
@@ -4982,7 +4985,7 @@ MAP:M1729 (@<OBJ) TARGET TAQ + Abs IF (*-1 @<OBJ LINK *1 KOMMA BARRIER V) ;
 	
 MAP:M1735 (@ADVL>) TARGET CONT IF (1 @SUBJ> LINK *1 @PRED) ; #Usikker mapping ordnet allersidst. Hvis ikke andet, så nok ADVL, men før subjekt
 
-MAP:M1736 @CL-CIT> TARGET Par IF (*1 ORATIOOBLVERB BARRIER DIRTALESLUT LINK NOT 1 ("\:"))(NEGATE *-1 ORATIOOBLVERB BARRIER KOMMA) #Usikker mapping til sidst for ikke-slettede participier, der ikke er tagget på anden vis. NEGATE for tilfælde af to verber, der begge kan være inquity
+MAP:M1736 @CL-CIT> TARGET Par IF (*1 ORATIOOBLVERB + V BARRIER DIRTALESLUT LINK NOT 1 ("\:"))(NEGATE *-1 ORATIOOBLVERB BARRIER KOMMA) #Usikker mapping til sidst for ikke-slettede participier, der ikke er tagget på anden vis. NEGATE for tilfælde af to verber, der begge kan være inquit
 (NEGATE 1 KOMMA LINK *-2 UNA BARRIER VFIN) #Efterskoleramaana arnarsiama Dorthep, kursusereeruma aaniaraanga, aperigami ...
 (NEGATE 1 KOMMA LINK 1 CONJ-C)
 ;
@@ -5105,6 +5108,8 @@ MAP:M1999H @SUBJ> TARGET (*) IF (-1 ("\"") LINK 1 _TARGET_ LINK 1 ("\"") LINK *1
 
 #inquit der er nominale
 MAP:M1799F (@i-<CL-CIT) TARGET Par IF (*-1 ORATIOOBLVERB + N)(NEGATE *1 ORATIOOBLVERB) ; # ... inunnik ataasiakkaanik suliniuteqartoqalerpoq, soorlu arpattartoq tamatta nalunngisarput, Kim Godtfredsen, ikiuiniarluni tusarnaartitsisoqarnissaanik isumassarsisoq oqaluttuartorlu misigissutsit suut immini *eqeersinneqarsimanersut.
+MAP:M1799G @i-CL-CIT> TARGET Par IF (*1 ORATIOOBLVERB + N) ; #- Nunatsinni qanoq pisoqarnera pillugu ilisimatinneqartarnissarput Nunatta Qitornaanit pingaartitaraarput, nunallu allat nunatsinni sakkutooqarfeqarnermi siunissami qanoq *pilersaaruteqarnersut  ilisimatinneqartarnissarput pingaaruteqarluni, Aleqa Hammond oqallissaarummi oqarpoq.
+
 
 
 #####################
