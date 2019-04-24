@@ -1361,6 +1361,7 @@ LIST NUMCOMP = "hundrede" "tusind" "million" "milliard" ; #anden del af sammensa
 LIST COMPOUND_N = "Windows" "Linux" "program" ;
 LIST PRENUM = "plus" "minus" ;
 LIST EVENT = "stafet" "marathon" "løb" "stafetløb" ; #DHL stafet, CPH Marathon
+LIST OCCATION = ("ataatsimiip" NIQ) ;
 LIST LANDTRANSPORT = "bussi" "biili" "bil" ;
 LIST AIRTRANSPORT = "qajaq" "timmi" "helikopter" "helikopteri" "qulimiguulik" "timmisartoq" "zeppeliner" ;
 LIST BIRDS = "appa" "appaliarsuk" "aqisseq" "kukkukooq" "kussak" "miteq" "naaja" "nattoralik" "oqaatsoq" "orpimmiutaq" "qupaloraarsuk" "serfaq" "taateraaq" "timmiaq" "tulugaq" "tuullik" "uppik" ;
@@ -1396,7 +1397,7 @@ LIST FAM_UNIK = "ui" "nuliaq" ("angut" 3SgPoss) ("angut" 3PlPoss) ("angut" 4SgPo
 # betegnelser som sjældent optræder uden for sing.
 
 SET FAM = FAM_UNIK | ("aappaq" GIIT) | ("aja") | ("ajak") | ("angaaq") | ("angajoqqaaq") | ("ilaqutaq") | ("ilaqutaq" GIIT) | ("illoq") | ("panik") ;
-LIST HUM = ("ajor" TUQ) "arnaq" "angut" "ikinngut" "ila" "inuk" ("inuusup" TUQ) "kalaaleq" "meeraq" "niviarsiaraq" "qallunaaq" "sanileq" ("siuaa" TAQ) "tarneq" "tarnik" "utoqqaq" ; #tarneq og tarnik medtaget da ofte objekt for +HUM verber
+LIST HUM = ("ajor" TUQ) "arnaq" "angut" "ikinngut" "ila" "inuk" ("inuusup" TUQ) "kalaaleq" "meeraq" "niviarsiaraq" "peqataasoq" "qallunaaq" "sanileq" ("siuaa" TAQ) "tarneq" "tarnik" "utoqqaq" ; #tarneq og tarnik medtaget da ofte objekt for +HUM verber
 
 SET HUMAN = FAM OR NAME OR TITEL OR ORGANISATION OR HUM OR Prop - Sem/Geo ;
 SET NON_HUMAN = N - HUMAN ;
@@ -2435,7 +2436,7 @@ MAP:MMWE01 @N< TARGET ("ilaasortaat") + $$KASUS IF (-1 ("umiarsuaq") + $$KASUS O
 SUBSTITUTE (Lok Sg 3PlPoss) (Lok Sg) TARGET ("akunneq") IF (-1 NUM)(1 NUM) ; ##PL 20190413 BEMÆRK: Reglen  akornanni i pali-betydningen '(antal) HVORAF (antal)' gør subjektet til POSS og sletter Abs læsninger allerede tidligt. Derfor må possessum slettes tidligt. Se endvidere 0136X
 
 #Til overskrifter uden VFIN
-REMOVE:0044X N - ATTRIBUTIV IF (0 Par)(NEGATE *0 VFIN OR Cau OR ("tassa"))(NEGATE 0* KOMMA)(NEGATE *-1S UNA OR UKU)(NEGATE 1 (LIK N)) 
+REMOVE:0044X N - ATTRIBUTIV - HUM IF (0 Par)(NEGATE *0 VFIN OR Cau OR ("tassa"))(NEGATE 0* KOMMA)(NEGATE *-1S UNA OR UKU)(NEGATE 1 (LIK N)) 
 (NEGATE 1 ("..."))
 (NEGATE 1 MIU) #Vil typisk være apposition til et nomen og ikke til Par
 (NEGATE 1 V LINK NOT 0 ORATIOOBLVERB)
@@ -3751,6 +3752,7 @@ MAP:M0210 (@>N) TARGET (Prop Gram/Abbr) IF (1 Num);
 #Sætningsemner og overskrifter. Først fjernes evt. Par fra kongruensadleddet
 #MAP:M0211A @HNOUN TARGET Abs + $$NUMERUS IF (-1 Abs + $$NUMERUS)(NEGATE *0 V BARRIER KOMMA) ;
 #MAP:M0211B @HNOUN TARGET Abs + $$NUMERUS IF (1 Abs + $$NUMERUS)(NEGATE *0 V BARRIER KOMMA) ;
+MAP:M0211C @HNOUN TARGET Prop + Abs IF (NEGATE *0 V OR INDERIVERENDE_SUBSTANTIV OR AFFINGERET) ;
 
 
 # Forkortelser - MAP-regler
@@ -4071,11 +4073,11 @@ MAP:M0408S @>N TARGET PLACE - Prop - iProp - CONJ-C - MIU - OBLIQUE IF (1 Prop -
 MAP:M0408T @>N TARGET MAANED + Abs - MI IF (1 Num - POSSESSUM OR iNum) ; #November 1962 #nalunaarutaat nr.15, 20. oktober 2009-meersoq
 MAP:M0408U @>N TARGET Num + Lok IF (-*1 MAANED + Rel BARRIER (*) - ("ulloq")) (1 Num - POSSESSUM) ; #marsip ulluisa 30-anni 2019
 
-MAP:M0409 (@HNOUN) TARGET N OR Gram/Abbr OR Num IF (NEGATE *0 V)(1 ParagrafSlut)(NEGATE 0 $$KASUS LINK -1 $$KASUS LINK NOT 0 Ins + Sg - POSSESSUM); #20100827 Safe headlines
+MAP:M0409 (@HNOUN) TARGET N OR Gram/Abbr OR Num IF (NEGATE *0 V OR OCCATION)(1 ParagrafSlut)(NEGATE 0 $$KASUS LINK -1 $$KASUS LINK NOT 0 Ins + Sg - POSSESSUM); #20100827 Safe headlines
 MAP:M0410 (@HNOUN) TARGET APPELLATIV + Abs OR Prop + Abs OR Gram/Abbr - FIRSTNAME IF (NEGATE *0 VERB-NOTCONT)(NEGATE *1 TRANSVERB + CONT)(NEGATE *-1 ("tassa") LINK *1 CONT + INTRANSVERB OR Cau + INTRANSVERB BARRIER VFIN)(NEGATE 0 Gram/Abbr OR ("nalunaaqutaq") LINK 1 Num)(NEGATE 0 $$KASUS LINK -1 $$KASUS)
 (NEGATE 0 HUMAN LINK 1 MIU - Der/nv)
 (NEGATE 0 Sg LINK *1 CONT + 4Sg) ;
-MAP:M0411A @HNOUN TARGET WORD - V - Interj - Gram/Exclm - Pron IF (NEGATE *0 V BARRIER DIRTALESLUT)(1 EOS)(NEGATE NOT -1 ("suna") LINK 1 $$KASUS LINK -1 $$KASUS) #su tamaq undtaget
+MAP:M0411A @HNOUN TARGET WORD - V - Interj - Gram/Exclm - Pron IF (NEGATE *0 V OR OCCATION OR INDERIVERENDE_SUBSTANTIV BARRIER DIRTALESLUT)(1 EOS)(NEGATE NOT -1 ("suna") LINK 1 $$KASUS LINK -1 $$KASUS) #su tamaq undtaget
 (NEGATE 0 Conj)
 ;
 
@@ -4334,6 +4336,8 @@ MAP:M0514C @N< TARGET Rel - TIME - Num - POSSESSUM3 - FAM - HUM IF (0 $$NUMERUS)
 
 MAP:M0515 @N< TARGET OTHERTIME + $$KASUS + $$NUMERUS IF (-*1 OTHERTIME + $$KASUS + $$NUMERUS BARRIER (*) - @N<);
 MAP:M0516 @N< TARGET Num - Trm IF (NEGATE 0 iNum) (-1 OTHERTIME - Via - Trm)(NEGATE 0 $$OBLIQUE LINK NEGATE -1 $$OBLIQUE) ; #ualikkut 16:45
+MAP:M0517 @N< TARGET Num - NUMERUS IF (*-1 OCCATION) ; #Oqaasiliortut ataatsimiinnerat 09.11.2018, nal. *9.00-12.00,
+MAP:M0517 @N< TARGET PLACE + Lok OR PLACE + Abs IF (*-1 OCCATION)(NEGATE *1 V) ; #Oqaasiliortut ataatsimiinnerat 09.11.2018, nal. *9.00-12.00,
 MAP:M0002X @i->N TARGET ("suna") + Lok OR Gram/Dem + Adv + Lok IF (1 ("tamaq") + iLok + IP OR  ("ma") + iLok + IP OR ("arlaq") + iLok + IP) ; # Sumi tamaaniipput. Tilpasset til ny i-tag 20180607 
 MAP:M0002 @>N TARGET ("suna") + $$KASUS OR Gram/Dem + Adv + $$KASUS IF (1 ("tamaq") + $$KASUS OR ("ma") + $$KASUS) ; # Sumi tamaani 
 #MAP:M0002 @>N TARGET ("suna") - OBLIQUE IF (1 ("tamaq")) ; # Suut tamarmik 
@@ -4448,7 +4452,7 @@ MAP:M0650 (@SUBJ>) TARGET Rel + Pl IF (*1 TRANSVERB + 3Pl OR TRANSVERB + 4Pl OR 
 MAP:M0650 @SUBJ> TARGET Rel IF (1 Rel + @SUBJ> + CONJ-C) ;
 MAP:M0651A (@N<PRED) TARGET NOMEN IF (0 $$KASUS OR Abs)(-1 ("soorlu") - @ADVL> - CONJ-C - LUSUUQ - MI LINK *-1 VFIN BARRIER (*) - KOMMA LINK -1 $$KASUS) ; #Aamma suliffeqarfiit kommunelluunniit tunuliaqutarinagit inunnik ataasiakkaanik suliniuteqartoqalerpoq, soorlu *arpattartoq tamatta nalunngisarput, Kim Godtfredsen, ikiuiniarluni tusarnaartitsisoqarnissaanik isumassarsisoq oqaluttuartorlu misigissutsit suut immini eqeersinneqarsimanersut.
 
-MAP:M0651 @<APPOS TARGET Abs + $$NUMERUS IF (*-1 Prop - @PROP> + Abs + $$NUMERUS BARRIER VERB-NOTCONT)(1 KOMMA)(NEGATE 1 KOMMA LINK *1 Rel + CONJ-LU LINK 1 Abs)(NEGATE 1 KOMMA LINK 1 Abs + CONJ-LU) ; #må ikke tagge opremsninger
+MAP:M0651 @<APPOS TARGET Abs + $$NUMERUS IF (*-1 Prop - @PROP> + Abs + $$NUMERUS BARRIER VERB-NOTCONT)(1 KOMMA)(NEGATE 1 KOMMA LINK *1 Rel + CONJ-LU LINK 1 Abs)(NEGATE 1 KOMMA LINK 1 Abs + CONJ-LU)(NEGATE 1 KOMMA LINK *1 ("aamma") + CONJ-C BARRIER (*) - Prop) ; #må ikke tagge opremsninger
 MAP:M0651A @<APPOS TARGET LIK + Abs + $$NUMERUS IF (*-1 Prop + Abs + $$NUMERUS BARRIER VERB-NOTCONT)(NEGATE 1 KOMMA LINK *1 Rel + CONJ-LU LINK 1 Abs)(NEGATE 1 KOMMA LINK 1 Abs + CONJ-LU) ; #må ikke tagge opremsninger #angut Hans Lennertimik atlik nerivoq.
 MAP:M0651B @N< TARGET Abs + $$NUMERUS IF (*-1 Prop - @PROP> + Abs + $$NUMERUS OR TIMENOUN + Abs + $$NUMERUS BARRIER VERB-NOTCONT)(1 KOMMA)(NEGATE 1 KOMMA LINK *1 Rel + CONJ-LU LINK 1 Abs)(NEGATE 1 KOMMA LINK 1 Abs + CONJ-LU) ; #må ikke tagge opremsninger # Ullortuneq, juunip 21-iani pisartoq, nunatsinniinnaq nalliuttorsiutigineqarneq ajorpoq.
 MAP:M0651C @N< TARGET Abs + $$NUMERUS - Prop - CONJ-C IF (*-1 NIQ + Abs + $$NUMERUS - POSSESSUM BARRIER VERB-NOTCONT OR KOMMA)(NEGATE 1 KOMMA LINK *1 Rel + CONJ-LU LINK 1 Abs)(NEGATE 1 KOMMA LINK 1 Abs + CONJ-LU) #må ikke tagge opremsninger # Canadamiut puisiinik piniarsinnaaneq ukiumut ataasiarluni pisartoq ullualunnguit qaangiuppata nalliuteqqittussaavoq.
@@ -4639,7 +4643,8 @@ MAP:M0840 @ADVL> TARGET Ins IF (*1 V - DOTR BARRIER Der/vn OR INDERIVERENDE_SUBS
 MAP:M0841 @ADVL> TARGET Aeq IF (*1 V - ("ip") - QQU BARRIER (*) - Aeq) ;
 
 MAP:M0850 (@i-<ADVL) TARGET (Lok) + POSSESSUM3 IF (-2 Der/vn - NAR)(-1 Rel)(NEGATE *1 V OR Der/vn - CONJ-LU) ; #20091104
-MAP:M0860 (@i-<ADVL) TARGET (Lok) IF (0 CONJ-LU)(-1 (Lok) + (@i-<ADVL)) ; #20091104
+MAP:M0860 (@i-<ADVL) TARGET (Lok) IF (0 CONJ-LU)(-1 (Lok) + (@i-<ADVL)) ; #20091104 #Byrådimut ilaasoq.
+MAP:M0860 @i-<ADVL TARGET Abl OR Trm IF (*-1 INDERIVERENDE_SUBSTANTIV)(NEGATE *1 V OR Der/vn) ; #Peqataasut Oqaasiliortunit
 
 #Særlig regel før M0940 til inderiverede adverbale adled inkl. de særlige substantiver, der inderiverer selv om de ikke er Der/vn (fx inatsit). LU holdes udenfor da oftest paratakse og LINK til Ins fulgt af V til sekvenser af fx type Ins-adled Lok-adled V 
 MAP:M0869 @i-ADVL> TARGET OBLIQUE - Aeq IF (1 Der/vn + N - (/__\"ati\"\ Gram\/TV\ TAQ__/l) )(NEGATE 0 CONJ-LU + $$KASUS LINK -1 $$KASUS)(NEGATE 0 $$KASUS LINK 1 $$KASUS + CONJ-LU)(NEGATE 1 OBLIQUE LINK 1 V)(NEGATE 0 Lok + PLACE LINK 1 HUMAN)(NEGATE 1 PLACE)(NEGATE *1 KOMMA BARRIER V)(NEGATE 0 $$KASUS LINK *-1 $$KASUS BARRIER (*) - Adv - Pali - Interj - @POSS> - (/@i-.*/r))(NEGATE *0 ("isikku") - QAR - V)#(NEGATE 0 Trm - Gram/Pers LINK 1 Trm) #Lok + PLACE for at hindre inderivation ved fx nunaqarfimmi inuusuttoq pikkorippoq.
