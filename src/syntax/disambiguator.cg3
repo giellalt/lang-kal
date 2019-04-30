@@ -1379,14 +1379,15 @@ SET EXCLAMATION = ("tipi" N) | (SSUSIQ 3SgPoss) | (SSUSIQ Pl 3PlPoss) | WEATHER 
 # Proprier
 # Desse skal vi hente frå leksikon
 
-LIST Mask = "Aron" "Egon" "Eri" "Erik" "Eskild" "Hans" "Jens" "Mik" "Miki" "Morten" "Niels" "Ole" "Per" "Piitaq" "Rasmus" "Sean" "Trond" Sem/Mask ;
-LIST Fem = "Anette" "Anna" "Arnaq" "Dagmar" "Emilie" "Gitte" "Hanne" "Jane" "Karen" "Kirsten" "Margrethe" "Mette" Sem/Fem ;
+LIST Mask = "Aron" "Egon" "Eri" "Erik" "Eskild" "Hans" "Jens" "Manu" "Mik" "Mikkel" "Miki" "Morten" "Niels" "Ole" "Per" "Piitaq" "Rasmus" "Sean" "Trond" Sem/Mask ;
+LIST Fem = "Anette" "Anna" "Arnaq" "Dagmar" "Emilie" "Gitte" "Hanne" "Jane" "Karen" "Kirsten" "Maliina" "Margrethe" "Meeraq" "Mette" Sem/Fem ;
 LIST Sur = "Jensen" "Jenseni" "Møller" "Olsen" "Rasmussen" "Trosterud" Sem/LastName ;
 LIST TITEL = "borgmester" "fru" "Gammel" "hr" "hotel" "kunngi" "lektor" "minister" "nakorsaq" ("pisoq" TAQ) "præsident" "senator" ("siulittar" TUQ) ("siunnersor" HTR) ("ulloriarsior" TUQ) "ulloriarsiortoq";
 LIST COUNTRY = "Canada" "Danmark" "Finland" "Grønland" "Island" "Kalaallit Nunaat" "Norge" "Rusland" "Sverige" "Tyskland" "USA" ; 
 LIST GeoProp = Sem/Geo "Danmark" "Finland" "Gladsaxe" "Mose" "Tåstrup" ;
 SET Fornavn = Mask | Fem ;
 SET Efternavn = Sem/Hum - Fornavn ;
+LIST Hmyth = "Aningaaq" "Aqissiaq" "Guuti" "Maliina" ; #Proprier, der anvendes som/med vokativ
  
 SET FIRSTNAME = (Sem/Mask Prop) | (Sem/Fem Prop) | Mask | Fem | ("Frederik") | ("Nuka") | ("A") | ("B") | ("C") | ("Chr") | ("D") | ("E") | ("F") | ("G") | ("H") | ("I") | ("J") | ("K") | ("Kr") | ("L") | ("M") | ("N") | ("O") | ("P") | ("Q") | ("R") | ("S") | ("T") | ("U") | ("V") | ("W") | ("X") | ("Y") | ("Z") | ("Æ") | ("Ø") | ("Å") ;
 SET NAME = FIRSTNAME | Sur ;
@@ -1583,8 +1584,13 @@ DELIMIT ("<">") IF (-1W _S_DELIMITERS_) ; #virker tilsyneladende ikke
 COPY ("$1"v) EXCEPT Gram/Pass TARGET ("(.*)"r) + (/Gram\/Pass\ NIQ\ Der\/vn\ N\ Abl/l); # transitiv -nermit #nunap piniagassarsui tusaamanermit nuussimavugut.
 
 REMOVE:00000 (URL) IF (0 Sem/Url) ; #dobbeltgenerering fra FST'ens url.lexc
-#Arnaq i første position er et reelt problem
+#Arnaq Meeraq m.fl. i første position er et reelt problem
 #REMOVE:0001X ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"%l$1"r)) (-1 BOS) (NEGATE 1 Prop) ;
+#PL genaktiveret 20190430. Har været testet på minicorpus
+SELECT:0001PropX ("Aqissiaq") + Ins IF (1 ("oqaluttuaq")) ; #MWE-lignende særtilfælde
+REMOVE:0001Prop ("(\\p{Lu}.*)"r) + Fornavn IF (NEGATE *0CW (VSTR:"%l$1"r)) (-1 BOS) (NEGATE 1 Prop)(NEGATE 0 Hmyth LINK *1 2Sg) #Kun personnavne, ikke institutioner som Pinngortitaleriffik. Forbehold for vokativer
+(NEGATE 0 ("Mikkel") OR ("Anna") OR ("Manu") OR ("Minik") OR ("Nuka") OR ("Najannguaq") ) #Ad hoc for ikke at slette Mikkel til fordel for bynavnet Mikkeli eller Anna for pron anna samt et par meget frekvente
+ ; 
 #SELECT:0001Y ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"$1"r)) ;
 #Helt skæve læsninger
 REMOVE:0001A ("ip") + LAAR + Gram/Exclm IF (0 ("ila")) ;
@@ -2212,8 +2218,7 @@ REMOVE:0003C Gram/Exclm + ("(.*)r"r) IF (0 ("$1q"v)) ; #Slet en Exclm der ender 
 REMOVE:0003D Gram/Exclm IF (0 Abs LINK *-1 Gram/Dem LINK 1 SPATIAL LINK 1 _TARGET_) ; #PL 20190302 0003 vælger Gram/Exclm i 'Unami atinniittoq ITERSALIARSUAQ suugami?'
 SELECT:0003 Ind - SUB IF (NEGATE *0 VFIN BARRIER KOMMA)(NEGATE 0 NIR OR INDERIVERENDE_SUBSTANTIV)(NEGATE 0 Int LINK 1 ("?"))(NEGATE 0 Par LINK *-1 KONCESSIV)(NEGATE -1 NIQ + Gram/Comp)(NEGATE 0 Gram/Exclm LINK *1 Par LINK -*1 KONCESSIV)(NEGATE 0 KONCESSIV)(NEGATE *-1 ("tassa") LINK -1 BOS) #SUB undtaget for ikke at gøre Via som matuagut til Ind 1Pl. Må ikke slette Par i koncessiver og efterlade fx GALUAQ + GE + Ind. Må ikke slette NIQ fulgt af Par. Sidste NEGATE fordi 'ilaat' kan læses som IP + LAAR + Exclm. Allersidste NEGATE for at undgå at naak analyseres som naap+Exclm
 (NEGATE 0 Rel LINK 1 POSSESSUM)
-(NEGATE 0 ("aappaq") OR GIIP)
-(NEGATE 0 TAAR + NIQ + Abs + Pl LINK 1 ("tamaq")) ; # Virker hverken uden ordering eller således: (NEGATE 0 (/TAAR\ Der\/nv\ Gram\/IV\ NIQ\ /l) + Pl LINK 1 ("tamaq")) #Ikinngutitaarnerit tamaasa .. oqaluttuarisariaqassallugu
+(NEGATE 0 ("aappaq") OR GIIP) ;
 
 
 
@@ -4148,11 +4153,13 @@ MAP:M0523B @SUBJ> TARGET Abs + CONJ-LU IF (-1 Abs)(*1 PLURSUBJVERB BARRIER V OR 
 MAP:M0523C @SUBJ> TARGET Abs + CONJ-LU IF ((-1 BOS) OR (-1 Part LINK -1 BOS))(*1 PLURSUBJVERB) ; #20170408. Smal regel til parataktiske subjekt med implicit førsteled
 #Særtilfælde for at forhindre OBJ-tagging Per i Per tamanna pillugu nalusarpoq
 MAP:M0523D @SUBJ> TARGET Abs + Prop OR Abs + iProp IF (*1 VFIN - Imp + INTRANSVERB BARRIER PUNCT OR ("taava") OR VFIN OR DIRTALESLUT OR KONCESSIV)(NEGATE -1 Rel LINK *2 TRANSVERB)(NEGATE *-1 Pron OR Prop + Sg OR ("soorlu"))(NEGATE 1 TRANSVERB LINK *1 Abs LINK *1 VFIN + INTRANSVERB)(NEGATE 1 Akk)
-(NEGATE 0 Pron LINK 1 KOMMA LINK 1 Sg) ; #Illit, ataqqinartorsuaq
+(NEGATE 0 Pron LINK 1 KOMMA LINK 1 Sg) #Illit, ataqqinartorsuaq
+(NEGATE 0 Sem/Geo + AA) #Ikke TIM+AA, men timi+3SgPoss i Timaa assoruuppalulerpoq
+; 
 MAP:M0523E @SUBJ> TARGET Abs + &&IV_SUBJ& - TIME - Num - iNum - Gram/Ord - Sem/Unit - TUQ - ADJEKTIVISK IF (*1 VFIN - Imp + INTRANSVERB + &&IV_SUBJ& BARRIER PUNCT OR ("taava") OR VFIN OR DIRTALESLUT OR OBJVERB OR KONCESSIV)(NEGATE -1 Rel LINK *2 TRANSVERB)(NEGATE *-1 Pron OR Prop + Sg OR ("soorlu"))(NEGATE 1 TRANSVERB LINK *1 Abs LINK *1 VFIN + INTRANSVERB)(NEGATE 1 Akk)
 (NEGATE *1 TRANSVERB + CONT BARRIER VFIN OR N + Abs - @N< OR N + OBLIQUE)
-(NEGATE 0 Pron LINK 1 KOMMA LINK 1 Sg) ; #Illit, ataqqinartorsuaq
-
+(NEGATE 0 Pron LINK 1 KOMMA LINK 1 Sg) #Illit, ataqqinartorsuaq
+(NEGATE 0 Sem/Geo + AA) ; #Ikke TIM+AA, men timi+3SgPoss i Timaa assoruuppalulerpoq
 MAP:M0523A @SUBJ> TARGET Abs IF (*-1 Rel + CONJ-LU CBARRIER (*) - Rel LINK -1 Abs)(*1 PLURSUBJVERB OR TRANSVERB + CONT BARRIER V OR KOMMA)(NEGATE 1 Akk) ; #Paratakse ved subjekter i Abs som er possessum. 20180917 Meget bred. Skal checkes
 MAP:M0523B @SUBJ> TARGET Abs IF (*1 Rel + CONJ-LU BARRIER (*) - Rel)(*1 PLURSUBJVERB OR TRANSVERB + CONT BARRIER V OR KOMMA) ; #Paratakse ved subjekter i Abs som er possessum. 20180917 Meget bred. Skal checkes
 MAP:M0741 @SUBJ> TARGET N + Abs + $$NUMERUS IF (*1 INTRANSVERB BARRIER V OR KOMMA LINK 0 Cau OR Con)(NEGATE *0 Abs BARRIER V OR CONJ-C);
@@ -4492,6 +4499,7 @@ MAP:M0659 @SUBJ> TARGET Abs + Sg IF (0 (*) - TIME LINK *1 CONT + 4Sg BARRIER V) 
 MAP:M0660 (@SUBJ>) TARGET Abs + Sg - ("kinguneq") - OTHERTIME IF (*1C INTRANSVERB + VERB-NOTCONT + 3Sg OR INTRANSVERB + VERB-NOTCONT + 4Sg BARRIER POSSESSUM3 OR TRANSVERB OR VFIN)(NEGATE -1 ("\("))(NEGATE *1 ("(") LINK *1 INTRANSVERB + VERB-NOTCONT + 3Sg OR INTRANSVERB + VERB-NOTCONT + 4Sg BARRIER POSSESSUM3 OR TRANSVERB LINK 1* (")") LINK 1* INTRANSVERB) 
 (NEGATE 0 POSSESSUM + Der/vn LINK -1 Rel LINK -1 Abs) #må ikke hitte på possessumadnominal til SUBJ> til venstre
 (NEGATE 1 Num + POSSESSUM)(NEGATE 1 iNum + POSSESSUM) #ukiut sisamassaat
+(NEGATE 0 Sem/Geo + AA) #Ikke TIM+AA, men timi+3SgPoss i Timaa assoruuppalulerpoq
 ; #TRANSVERB tilføjet for at forhindre tag på obj i: SUBJ OBJ TRANSVERB INTRANSVERB. 20170425 -kinguneq for at forebygge hit på sætningsadverbialer
 #MAP:M0661 (@SUBJ>) TARGET Gram/Pers + Pron + Abs + 1Sg IF (*1 INTRANSVERB + VERB-NOTCONT + 1Sg OR INTRANSVERB + VERB-NOTCONT + 1Sg BARRIER POSSESSUM3 OR TRANSVERB)(NEGATE -1 ("\(")) ; #TRANSVERB tilføjet for at forhindre tag på obj i: SUBJ OBJ TRANSVERB INTRANSVERB
 MAP:M0661 @SUBJ> TARGET Gram/Pers + Pron + Abs + 1Sg IF (*1 VERB-NOTCONT + 1Sg BARRIER TRANSVERB + 1SgO)(NEGATE -1 ("\(")) ; #Ny formulering testet 20150318
@@ -4549,6 +4557,7 @@ MAP:M0740 @SUBJ> TARGET APPELLATIV + Abs + Sg - ("kingu" NIQ) - ("kinguneq") OR 
 (NEGATE 0 PLACE LINK 1 VIK + GE + TAQ)
 (NEGATE 0 POSSESSUM + Der/vn LINK -1 Rel LINK -1 Abs) #må ikke hitte på possessumadnominal til SUBJ> til venstre
 (NEGATE *-1 @SUBJ> + Abs + Sg BARRIER KOMMA OR CONJ-C)
+(NEGATE 0 Sem/Geo + AA) #Ikke TIM+AA, men timi+3SgPoss i Timaa assoruuppalulerpoq
  ;
 
 MAP:M0761 (@HNOUN) TARGET N + Abs IF (-1 ("\"") LINK -1 (" ") LINK -1 BOS)(1 KOMMA)(*1 Imp) ; #Et isoleret nomen er vokativ også først i anført tale
@@ -4596,6 +4605,7 @@ MAP:M0780 (@SUBJ>) TARGET APPELLATIV + Abs - ("kinguneq") OR Prop + Abs OR Num +
 (NEGATE -1 @SUBJ>) # ini 4 gange 3 meterinik uuttuuteqarpoq.
 (NEGATE *-1 @SUBJ> + Abs + Sg BARRIER INTRANSVERB)
 (NEGATE 0 NÆPPE_SUBJ)
+(NEGATE 0 Sem/Geo + AA) #Ikke TIM+AA, men timi+3SgPoss i Timaa assoruuppalulerpoq
 ;#Det samme for resten af TIME.
 MAP:M0781 @SUBJ> TARGET Pl + Abs - TIME IF (0 Gram/Dem + Pron OR N LINK *1 VFIN + INTRANSVERB + 3Pl BARRIER KOMMA)(NEGATE -1 Abs + Pl);
 MAP:M0782 @SUBJ> TARGET Num + Abs IF (*1 INTRANSVERB + 3Sg - DIRTALE BARRIER V - CONT OR Sem/Unit OR N + Abs)(NEGATE *1 Num) ; #IV_SUBJ kan ikke bruges pga. manglende numerusmarkering på Num
@@ -5026,7 +5036,8 @@ ADD:M1460 (@OBJ>) TARGET Ins IF (*1 IntransTrans);
 MAP:M1470 (@ADVL> @<ADVL) TARGET Ins ;
 REMOVE @ADVL> (NEGATE *1 V) ; 
 
-MAP:M1480 (@SUBJ>) TARGET (Abs Sg) IF (*-1 BOS BARRIER N)(NEGATE 0 TIME)(1 INTRANSVERB + Ind + 3Sg);
+MAP:M1480 (@SUBJ>) TARGET (Abs Sg) IF (*-1 BOS BARRIER N)(NEGATE 0 TIME)(1 INTRANSVERB + Ind + 3Sg)
+(NEGATE 0 Sem/Geo + AA) ; #Ikke TIM+AA, men timi+3SgPoss i Timaa assoruuppalulerpoq
 MAP:M1490 (@SUBJ>) TARGET (Abs Pl) IF (*-1 BOS BARRIER N)(NEGATE 0 TIME)(1 INTRANSVERB + Ind + 3Pl);
 MAP:M1500 (@SUBJ) TARGET Rel + Pl IF (*1 TRANSVERB + 3Pl + 3PlO)(-1 Par + 3Pl); #Subjektet, når bisætningens subjekt er implicit objekt 'Pinngussanik ilaatigut qaqutiguuissunik pinngualersorlutik pinnguartut SIMAARTUAQQAT silataaniit isiginnaarrappaat ... '
 MAP:M1510 (@SUBJ>) TARGET Rel + Pl IF (*1 TRANSVERB + 3Pl + 3PlO)(*1 Abs + Pl BARRIER TRANSVERB); #Den normale SOV
@@ -5152,12 +5163,16 @@ MAP:M1939 @OBJ> TARGET Abs + Sg IF (*1 CONT + 4Sg BARRIER (*) - (CONT 4Sg) LINK 
 
 #Hvis ikke objekt eller subjekt, så nok tidsadverbium
 MAP:M1940A @ADVL> TARGET Abs + Sg + TIME IF (*1 INTRANSVERB + 3Sg BARRIER VFIN)(0 TIME LINK *1 @SUBJ> LINK *1 INTRANSVERB + 3Sg) ;
-MAP:M1940B @ADVL> TARGET Abs + Sg + TIME IF (*1 INTRANSVERB + 3Sg BARRIER (*) - @N< - @i->N) ;
+MAP:M1940BB @ADVL> TARGET Abs + Sg + TIME IF (*1 INTRANSVERB + 3Sg BARRIER (*) - @N< - @i->N) ;
 MAP:M1940C @ADVL> TARGET TIME - UTE - V IF (*1 VFIN - TIMEVERB BARRIER V) ;
 #Hvis ikke objekt, så nok subjekt
 MAP:M1940B @SUBJ> TARGET Abs + Sg - ("kinguneq") IF (*1 INTRANSVERB + 3Sg OR INTRANSVERB + 4Sg BARRIER TRANSVERB + 3SgO OR VFIN)(NEGATE 0 CONJ-LU LINK 1 3PlO)(NEGATE 1 CONJ-LU + Abs + Sg LINK *1 3PlO) #3PlO vedr. #20170425 -kinguneq for at forebygge hit på sætningsadverbial i Abs. 
-(NEGATE 0 TIME LINK NOT *1 TIMEVERB) ;#Det samme for resten af TIME.
-MAP:M1940C @ADVL> TARGET Abs + Sg + TIME IF (*1 INTRANSVERB + 3Sg BARRIER VFIN)(0 TIME LINK *1 @SUBJ> LINK *1 INTRANSVERB + 3Sg) ;
+(NEGATE 0 TIME LINK NOT *1 TIMEVERB) 
+(NEGATE 0 Sem/Geo + AA) #Ikke TIM+AA, men timi+3SgPoss i Timaa assoruuppalulerpoq
+;#Det samme for resten af TIME.
+MAP:M1940C @ADVL> TARGET Abs + Sg + TIME IF (*1 INTRANSVERB + 3Sg BARRIER VFIN)(0 TIME LINK *1 @SUBJ> LINK *1 INTRANSVERB + 3Sg) 
+(NEGATE 0 Sem/Geo + AA) #Ikke TIM+AA, men timi+3SgPoss i Timaa assoruuppalulerpoq
+;
 
 MAP:M1940C @i-ADVL> TARGET Adv IF (*1 INDERIVERENDE_SUBSTANTIV OR Der/vn OR LIK_QAR)(NEGATE -1 KOMMA)(NEGATE *1 V);
 
@@ -5506,7 +5521,8 @@ REMOVE:SemFam Prop IF (0 FAM + N LINK 1 Sem/Hum) ;
 SELECT FIRSTNAME IF (1 Prop + Sg)(NEGATE 0 Sem/Mask LINK 1 Sem/Fem) ; #vælger stort bogstav qua forkortelse frem for lille bogstav
 SELECT Abs + Prop IF (-2 Prop + Abs)(-1 ("\,"))(NEGATE 0 Rel LINK 1 POSSESSUM3); #'Enoksen, SIUMUT' 'Kleist, INUIT Ataqatigiit'
 SELECT Abs + Prop IF (-3 Prop + Abs)(-2 ("\,"))(-1 Abs)(NEGATE 0 Rel LINK 1 POSSESSUM3); #'Enoksen, SIUMUT' 'Kleist, Inuit ATAQATIGIIT'
-REMOVE N IF (0 Prop + Sem/Geo) ;
+#REMOVE N IF (0 Prop + Sem/Geo) ; #sletter TIMAA til fordel for Tim+AA i Timaa assoruuppalulerpoq. PL 20190430
+REMOVE N IF (0 Prop + Sem/Geo - AA) ;
 
 REMOVE:2221 N - Prop - iProp - Der/vv IF (0 ("<\\p{Lu}.*>"r))(*0C ("<\\p{Lu}.*>"r))(NEGATE 0 FAM_UNIK OR TITEL OR HUM OR WEATHER OR NON-PROP)(NEGATE 0 Rel)(NEGATE 0 V)(NEGATE 0 ("ateq") LINK 1 Prop) ;
 # Select Prop hvis Wordform starter med stort, og der også er et andet Prop i sætningen.
@@ -5572,7 +5588,9 @@ REMOVE N IF (0 Adv)(NEGATE 0 ("imma") OR ("taamaattoq")) ;
 SELECT Abs + Sg IF (1 Cont + 3SgO)(NEGATE 0 Pali OR Conj OR Adv) ; #reglen sletter fx ilaannilu før Vb-TARlugu
 SELECT Abs + Pl IF (1 Cont + 3PlO)(NEGATE 0 Adv) ;
 SELECT:1689 Adv + ("ima") (NEGATE 0 ("imaluunniit")) ;#IF (1 ("isikku")) ; #For ikke at tagge Titartagara siullerpaaq IMA isikkoqarpoq forkert.
-SELECT:1690 Abs + Sg - Sem/Unit - SUB IF (*1C INTRANSVERB + 3Sg BARRIER Cont + 3SgO OR KOMMA)(NEGATE 0 Abs + Pl LINK *1 3Pl OR 4Pl)(NEGATE 0 Lok)(NEGATE 0 Rel + Sg LINK 1 POSSESSUM + 3SgPoss)(NEGATE 0 Prop + Rel LINK 1 iPOSSESSUM)(NEGATE 0 ("imaaliallaannaq"))(NEGATE 0 Ind + 3Pl LINK 1 CONJ-LU LINK *1 VFIN)(NEGATE 0 Par + 3Sg LINK *1 ORATIOOBLVERB) ; #novembarimi skal ikke vaere Abs+MI. NEGATE Part, der kan fejllæses som Abs
+SELECT:1690 Abs + Sg - Sem/Unit - SUB IF (*1C INTRANSVERB + 3Sg BARRIER Cont + 3SgO OR KOMMA)(NEGATE 0 Abs + Pl LINK *1 3Pl OR 4Pl)(NEGATE 0 Lok)(NEGATE 0 Rel + Sg LINK 1 POSSESSUM + 3SgPoss)(NEGATE 0 Prop + Rel LINK 1 iPOSSESSUM)(NEGATE 0 ("imaaliallaannaq"))(NEGATE 0 Ind + 3Pl LINK 1 CONJ-LU LINK *1 VFIN)(NEGATE 0 Par + 3Sg LINK *1 ORATIOOBLVERB) 
+(NEGATE 0 Sem/Geo + AA) #ikke selecte TIM+AA frem for timi+3SgPoss i TIMAA assoruuppalulerpoq
+; #novembarimi skal ikke vaere Abs+MI. NEGATE Part, der kan fejllæses som Abs
 REMOVE N + NIQAR + NIQ + Pl ;
 #SELECT N + NIQAR + NIQ + Sg; #Passivt verbalnomen i pluralis er sjaeldent
 #REMOVE N + NIQAR + TUQ + Sg; #Uforståelig regel, der genererer masser af fejl
@@ -5714,7 +5732,7 @@ SELECT:1850 @N< + $$KASUS + $$NUMERUS - FAM - HUM IF (*-1C $$KASUS + $$NUMERUS -
 
 SELECT:1851 Prop IF (NEGATE *-1 BOS BARRIER (*) - PUNCT - ROMANNUMBER)(0 Prop) ; #Lyder som en mærkelig regel. Skal checkes
 	## Ilalu Nuup eqqaani iliverpassuit. # SNM: det neste anførselstegn resetter syntaksfarger "
-REMOVE:1852 N IF (0 Prop + Sem/Geo + @SUBJ>) ;
+REMOVE:1852 N IF (0 Prop + Sem/Geo + @SUBJ> - AA) ; #Uden -AA slettes TIMAA assoruuppalulerpoq
 
 #REMOVE @SUBJ> IF (NEGATE 0 ANIMAL)(*1 @PRED animalverb) ; 
 REMOVE @SUBJ> IF (NEGATE 0 ANIMAL)(*1 animalverb) ; 
