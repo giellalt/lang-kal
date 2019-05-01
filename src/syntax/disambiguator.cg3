@@ -1588,9 +1588,9 @@ REMOVE:00000 (URL) IF (0 Sem/Url) ; #dobbeltgenerering fra FST'ens url.lexc
 REMOVE:0001X ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"%l$1"r)) ;
 #PL genaktiveret 20190430. Har været testet på minicorpus
 SELECT:0001PropX ("Aqissiaq") + Ins IF (1 ("oqaluttuaq")) ; #MWE-lignende særtilfælde
-REMOVE:0001Prop ("(\\p{Lu}.*)"r) + Fornavn IF (NEGATE *0CW (VSTR:"%l$1"r)) (-1 BOS) (NEGATE 1 Prop)(NEGATE 0 Hmyth LINK *1 2Sg) #Kun personnavne, ikke institutioner som Pinngortitaleriffik. Forbehold for vokativer
-(NEGATE 0 ("Mikkel") OR ("Anna") OR ("Manu") OR ("Minik") OR ("Nuka") OR ("Najannguaq") ) #Ad hoc for ikke at slette Mikkel til fordel for bynavnet Mikkeli eller Anna for pron anna samt et par meget frekvente
- ; 
+#REMOVE:0001Prop ("(\\p{Lu}.*)"r) + Fornavn IF (NEGATE *0CW (VSTR:"%l$1"r)) (-1 BOS) (NEGATE 1 Prop)(NEGATE 0 Hmyth LINK *1 2Sg) #Kun personnavne, ikke institutioner som Pinngortitaleriffik. Forbehold for vokativer
+#(NEGATE 0 ("Mikkel") OR ("Anna") OR ("Manu") OR ("Minik") OR ("Nuka") OR ("Najannguaq") ) #Ad hoc for ikke at slette Mikkel til fordel for bynavnet Mikkeli eller Anna for pron anna samt et par meget frekvente
+# ; #Laver alt for mange fejl, fx Flemming<Geo> illumik piareersaavoq. Der mangler nok en betingelse? Proprier disambigueres senere.
 #SELECT:0001Y ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"$1"r)) ;
 #Helt skæve læsninger
 REMOVE:0001A ("ip") + LAAR + Gram/Exclm IF (0 ("ila")) ;
@@ -2277,6 +2277,11 @@ SELECT:0001Z Sem/FirstName + Abs IF (1 Prop + Sur) ; #DAGMAR Jensenip piumasaa. 
 REMOVE:0001Y Sem/Hum - Sem/Mask - Sem/Fem IF (0 Sem/Hum + Sem/Mask OR Sem/Hum + Sem/Fem) ;
 
 REMOVE:0001V ("\\p{Lu}.*"r) + Prop + PROP_VS_APPELLATIV IF (-1 BOS)(0 ("([a-z].*)"r))(NEGATE **0CW (VSTR:"$1"r))(NEGATE 0 Abs LINK *1 U OR NNGUR)(NEGATE 0 ("Nuka") OR NNGUAQ) ; #vælg den med lille begyndelsesbogstav hvis den samme ikke findes med stort begyndelsesbogstav i nærheden.
+
+REMOVE:0001Prop ("(\\p{Lu}.*)"r) + Fornavn IF (0 N)#(NEGATE *0CW (VSTR:"%l$1"r)) 
+(-1 BOS) (NEGATE 1 Prop)(NEGATE 0 Hmyth LINK *1 2Sg) #Kun personnavne, ikke institutioner som Pinngortitaleriffik. Forbehold for vokativer
+(NEGATE 0 ("Mikkel") OR ("Anna") OR ("Manu") OR ("Minik") OR ("Nuka") OR ("Najannguaq") ) #Ad hoc for ikke at slette Mikkel til fordel for bynavnet Mikkeli eller Anna for pron anna samt et par meget frekvente
+; #Laver alt for mange fejl, fx Flemming<Geo> illumik piareersaavoq. Der mangler nok en betingelse? Proprier disambigueres senere.
 
 #Proprium med MI er næsten altid lokativ
 REMOVE:0042 Prop + MI IF (0 Prop + Lok);
@@ -4136,6 +4141,7 @@ MAP:M0510 (@OBJ>) TARGET Abs + Sg IF (*1 Abs + Sg BARRIER V LINK 1 Cont + 3SgO O
 
 MAP:M0510 @OBJ> TARGET Abs - TIME IF (1 Abs + CONJ-C + @OBJ>) ; #Paratakse #Aamma suliffeqarfiit kommunelluunniit tunuliaqutarinagit inunnik ataasiakkaanik suliniuteqartoqalerpoq,
 
+MAP:M0511 @OBJ> TARGET Prop - OBLIQUE - Rel OR N - OBLIQUE - Rel IF (1C OBJVERB + TRANSVERB) (NEGATE 0 $$KASUS LINK *-1 $$KASUS BARRIER V - CONT); #Appendede proprier er ikke markeret for kasus eller numerus.
 
 # Hoejfrekvente fraser
 MAP:M0520 (@POSS>) TARGET ("kalaaleq") + Rel + Pl IF (1 ("oqaaseq") OR ("nuna") OR ("Nuna")); #20091103 Kalaallit Nunaat
@@ -4693,7 +4699,7 @@ MAP:M0899 @i-ADVL> TARGET Trm IF (1 HTR + TUQ + N) ; #sumut siunnersuisoq
 MAP:M0910 (@i-ADVL>) TARGET (Ins) IF (1 Der/vn - NAR)(NEGATE 1 TAR + RIAQ + IRUP)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Ins )(NEGATE 1 CONJ-LUUNNIIT + Ins)(NEGATE 1 CONJ-LU + Ins)(NEGATE 0 $$KASUS LINK -*1 $$KASUS BARRIER (*) - Adv - Pali - Interj - @POSS> - (/@i-.*/r))(NEGATE 1 (/__\"ati\"\ Gram\/TV\ TAQ__/l))(NEGATE 1 @N< + Ins + $$NUMERUS - POSSESSUM LINK NEGATE *1 Der/vn - NAR BARRIER V) ; #20091109 
 MAP:M1911 @i-ADVL> TARGET Abl IF (1 TIME LINK 1 Num OR iNum) ;
 #Specialitet ved opremsninger med og uden adled. Skal komme før M0930
-MAP:M0920 (@AGENS) TARGET Abl - iV - OCCATION IF (*1 PASSIV BARRIER VFIN)(NEGATE 0 TIME)(NEGATE 0 WEATHER LINK NOT *0 WEATHERVERB)(NEGATE *-1 Trm + Sem/Geo BARRIER V OR @PRED)(NEGATE 1 Trm - TUQ OR Lok - TUQ); #Tidsadverbaler må ikke blive agens. -V for at forhindre hit på verber med IR og IP
+MAP:M0920 (@AGENS) TARGET Abl - iV - OCCATION IF (*1 PASSIV BARRIER VFIN OR Trm)(NEGATE 0 TIME)(NEGATE 0 WEATHER LINK NOT *0 WEATHERVERB)(NEGATE *-1 Trm + Sem/Geo BARRIER V OR @PRED)(NEGATE 1 Trm - TUQ OR Lok - TUQ); #Tidsadverbaler må ikke blive agens. -V for at forhindre hit på verber med IR og IP
 MAP:M0900 (@i-ADVL>) TARGET (Aeq) IF (*1 Der/vn - NAR - NIQAR - @AGENS BARRIER (*) - @N<)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Aeq )(NEGATE 1 CONJ-LU + Aeq)(NEGATE 0 CONJ-LU LINK -1 Aeq)(NEGATE *0 ("isikku") + QAR + V OR ("oqar") + UTE + GE); #Kun Trm til Der/vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse
 MAP:M0929A @ADVL> TARGET Trm IF (1 KOMMA)(2 Trm )(3 KOMMA);
 MAP:M0929B @ADVL> TARGET Trm IF (1 KOMMA)(2 Trm OR Ins)(3 Trm)(4 KOMMA);
@@ -7206,7 +7212,7 @@ REMOVE:9968K (/\"nalu\"\ Gram\/IV\ NIRAR__/l) IF (0 (/\"nalu\"\ Gram\/TV\ NIRAR_
 ##################################################
 SELECT:99690A Gram/Db IF (*-1 Trm - Num BARRIER CONJ-C OR Trm) ;
 REMOVE:99690B Gram/Db IF (NEGATE *-1 Trm - Num BARRIER Num)(0 (*) - Gram/Db - Gram/Refl - Orth/Arch)(NEGATE *-1 ORATIOOBLVERB + TRANSVERB);
-REMOVE:00690C (/".*"\ Gram\/IV__/l) IF (*-1 ORATIOOBLVERB + TRANSVERB BARRIER V - Cont); #Kaalip Aani oqarfigaa Piitaq pulaaqqullugu. pulaar skal være Gram/TV
+REMOVE:00690C (/".*"\ Gram\/IV__/l) IF (0 (/".*"\ Gram\/TV__/l)) (*-1 ORATIOOBLVERB + TRANSVERB BARRIER V - Cont); #Kaalip Aani oqarfigaa Piitaq pulaaqqullugu. pulaar skal være Gram/TV
 
 SECTION
 REMOVE Par + @CL-CIT> IF (0 N LINK *1 ORATIOOBLVERB + QAR LINK *-1 @i->N LINK *-1 _TARGET_ ) ; #Ilaqutaasut ikiorneqarumasut sumut saaffiginnissinnaanerannik paasitinneqareerput, arlallillu saaffiginnereerlutik.
