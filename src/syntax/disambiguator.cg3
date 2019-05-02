@@ -1286,6 +1286,8 @@ SET ORATIOOBLVERB = ORATIOOBLVERBnOQAR OR OQARnUSIQ OR ALLAANNGIT OR ALLAPnTAQ O
 LIST TALE = "eqqarsar" "naggasii" "nassuer" ("naggaser" HTR) "aki" "apere" "oqaluttuar" ;
 SET DIRTALE = TALE OR OQARnUSIQ ;
 
+LIST CALL = "atser" "atsiup" "naalap" ; #sandsynlighed for ateq ved disambiguering mellem ateq og ate.
+
 LIST humverb = ("eqqarsar" UTE GE) "eqqartor" (/\"inuk\"\ U\ /l) "iser" "isiginnaar" "nalunaar" "oqqap" ("pisiaq" GE) "sana" ("sinnattoq" GE) "suli" "uppere"; # Verb der vil ha humane subj, og ikke er i andre set
 LIST thingverb = "nalunaap" "ersip" ;
 LIST thingobjverb = ("qaammaqqut" GE) ("qaammaqqutige") ("qamip" Gram/TV) ; #transitive verb with non-human object 
@@ -3885,6 +3887,7 @@ MAP:M303C @ADVL> TARGET ("ajor") + NAR + TUQ + Ins + Sg IF (-1 ("alla") + Aeq)(*
 MAP:M303D @POSS> TARGET ("ukioq") + Rel IF (*1 ("ili") + NIQ + POSSESSUM3 BARRIER (*) - Adv) ;
 MAP:M303E @POSS> TARGET WEATHER + Rel IF (1 POSSESSUM3) ;
 MAP:M303F @POSS> TARGET TIME + Rel IF (1 POSSESSUM3)(NEGATE *-1 Rel BARRIER VFIN OR CONJ-C OR POSSESSUM3) ;
+MAP:M303G @POSS> TARGET NATIONALITY + Rel OR COUNTRY + Rel (1 ("[n|N]una"r) + POSSESSUM - AFFINGERET) ;
 
 MAP:M303J (@A<) TARGET $$KASUS - iOBLIQUE IF (*-1 Adv + $$KASUS - @CL-ADVL> BARRIER CONJ-C OR V OR KOMMA OR $$KASUS)(NEGATE 0 Abs + $$NUMERUS LINK 1 Abs + $$NUMERUS) ;
 
@@ -4697,9 +4700,10 @@ MAP:M0871A @i-ADVL> TARGET Lok IF (1 Lok + CONJ-LU)(2 Der/vn + Pl )(NEGATE 2 NAR
 MAP:M0871 (@i-ADVL>) TARGET Lok + Pl IF (1 Der/vn + Pl - @N<)(NEGATE 1 NAR)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Lok)(NEGATE 1 CONJ-LU + (Lok)); #Kun Trm til Der/vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse
 MAP:M0880 (@i-ADVL>) TARGET (Abl) IF (1 Der/vn - NAR - TAQ)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Abl)(NEGATE 1 CONJ-LU + (Abl))(NEGATE *1 PASSIV); #Kun Trm til Der/vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse. Hvis PASSIV muligvis Agens
 MAP:M0890 (@i-ADVL>) TARGET (Via) IF (1 Der/vn - NAR - NNGUR - GE )(NEGATE 1 TAR + RIAQ + IRUTE)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Via )(NEGATE 1 CONJ-LU + (Via)); #Kun Trm til Der/vn med NAR. RIAQ i TARIAARUP kvalificerer ikke som vn. Rettet 2.4. NEGATE nr. 3 20091104 for at haandtere paratakse
-MAP:M0899 @i-ADVL>N TARGET LANGUAGE IF (*1 SEMIOTIC + N) ;
-MAP:M0899 @i-ADVL>N TARGET COUNTRY IF (1 HUMAN + N - AFFINGERET) ; #meeqqat Kalaallit Nunaanni
-MAP:M0899 @i-ADVL> TARGET Trm IF (1 HTR + TUQ + N) ; #sumut siunnersuisoq
+MAP:M0899A @i-ADVL>N TARGET LANGUAGE IF (*1 SEMIOTIC + N) ;
+MAP:M0899B @i-ADVL>N TARGET COUNTRY IF (1 HUMAN + N - AFFINGERET) ; #meeqqat Kalaallit Nunaanni
+MAP:M0899C @i-ADVL>N TARGET Abl OR Trm IF (1 ("pisoq") - AFFINGERET) ; #pisoq bliver ikke analyseret, derfor denne særregel.
+MAP:M0899D @i-ADVL> TARGET Trm IF (1 HTR + TUQ + N) ; #sumut siunnersuisoq
 
 MAP:M0910 (@i-ADVL>) TARGET (Ins) IF (1 Der/vn - NAR)(NEGATE 1 TAR + RIAQ + IRUP)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Ins )(NEGATE 1 CONJ-LUUNNIIT + Ins)(NEGATE 1 CONJ-LU + Ins)(NEGATE 0 $$KASUS LINK -*1 $$KASUS BARRIER (*) - Adv - Pali - Interj - @POSS> - (/@i-.*/r))(NEGATE 1 (/__\"ati\"\ Gram\/TV\ TAQ__/l))(NEGATE 1 @N< + Ins + $$NUMERUS - POSSESSUM LINK NEGATE *1 Der/vn - NAR BARRIER V) ; #20091109 
 MAP:M1911 @i-ADVL> TARGET Abl IF (1 TIME LINK 1 Num OR iNum) ;
@@ -6759,6 +6763,7 @@ REMOVE:5859P ("inuiak") IF (0 ("inuiaqat")) ;
 REMOVE:5859Q ("umik") + ARSUK IF (0 ("umiarsuaq")) ; #PL 20190412 Usandsynlighed
 REMOVE:5859R ("teeq") IF (0 ("tii")) ; #teeqassaaq
 REMOVE:5859S ("tuilik") IF (0 ("tui") + LIK LINK *-1 LIK) ; #igalaavini naasulik qalianilu tuilik ...”
+REMOVE:5859T ("ate") IF (0 ("ateq") LINK *0 CALL) ;
 
 # Appellativ eller proprium?
 SELECT:5729 N - Prop IF (0 ("angut") OR ("arnaq")) (0 POSSESSUM - AFFINGERET) ;
@@ -6892,7 +6897,7 @@ REMOVE:9480 i3SgPoss + iPOSSESSUM IF (-1 Pl + Rel);
 REMOVE:9481 iPOSSESSUM - iPOSSESSUM3 IF (0 iOBLIQUE - iPOSSESSUM) ; #qaqqakkoornerli
 
 # Possessum singularis eller pluralis?
-SELECT:9490 Sg IF (0 POSSESSUM + SPATIAL)(NEGATE 0 ("ati") + TAQ) ; #NEGATE for ikke at blande atisassat ind i stedet for ataa 
+SELECT:9490 Sg + POSSESSUM + SPATIAL (NEGATE 0 ("ati") + TAQ) ; #NEGATE for ikke at blande atisassat ind i stedet for ataa 
 SELECT:9491D ("ila") + Sg + 3PlPoss IF (-1 ("ulloq") + Rel + Pl) ; #Ullut ilaat næsten garanteret Sg
 SELECT:9491A Pl + POSSESSUM IF (0 HUM + @MIK-OBJ> OR HUM + @i-MIK-OBJ>) ; #Sing obj oftest direkte objekt. Specialitet før 9491B
 SELECT:9491C ("ila") + Pl + POSSESSUM IF (*1 3Pl OR 4Pl BARRIER N + Abs) ; #9491B må ikke slette subjektet i 'Ilaat qitipput'
