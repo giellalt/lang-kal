@@ -1393,7 +1393,7 @@ SET FIRSTNAME = (Sem/Mask Prop) | (Sem/Fem Prop) | Mask | Fem | ("Frederik") | (
 SET NAME = FIRSTNAME | Sur ;
 SET NOT-FIRST = WORD - FIRSTNAME ;
 
-LIST INSTITUTION = "Inatsisartut" "Naalakkersuisut" "Oqaasiliortut" ;
+LIST INSTITUTION = "Inatsisartut" "Naalakkersuisut" "Oqaasileriffik" "Oqaasiliortut" ;
 
 LIST FAM_UNIK = "ui" "nuliaq" ("angut" 3SgPoss) ("angut" 3PlPoss) ("angut" 4SgPoss) "anaana" "arnarsiaq" "ataata" "aana" "aanaq" "aanarsiaq" "ittoq" "aata" "aataq" "aataa" ;
 # betegnelser som sjældent optræder uden for sing.
@@ -3576,7 +3576,8 @@ MAP:M0030 @PROP> TARGET FIRSTNAME OR TITEL IF (1 Prop - GeoProp)(NEGATE 1 (§Pro
 MAP:M0031A @PROP> TARGET Prop + Abs + $$NUMERUS - Sem/Geo IF (1 Prop + $$NUMERUS)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + CONJ-LU LINK *1 V + 3Pl )(NEGATE 1 Prop LINK 1 Prop)(NEGATE 0 FIRSTNAME LINK 1 FIRSTNAME)(NEGATE 1 ("Kalaallit") OR COUNTRY)(NEGATE 0 Abs + Sg LINK NOT 1 PROP LINK *1 TRANSVERB + 3SgO BARRIER V) #Mange fejlhit på Kalaallit Illuutaat og Kalaallit Nunaat
 (NEGATE 1 Sem/Geo + Lok) #Jakob Sivertsen Kangerlussuarmi politiinit arfininngormat tigusaavoq.
 (NEGATE 1 CONJ-C)(NEGATE 1 SEMIOTIC)
-(NEGATE 1 POSSESSUM) ;
+(NEGATE 1 POSSESSUM)
+(NEGATE 0 Fornavn LINK 1 INSTITUTION) ;
 
 #Tilføjet M0031C-E ad hoc 20180621 efter restrukturering af propernouns med køns-tags for at få regression test til at fungere.
 
@@ -3606,6 +3607,7 @@ MAP:M0031Q @PROP> TARGET Gram/ACR + Abs IF (1 Prop) ;
 
 MAP:M0031 (@PROP>) TARGET Prop + Abs OR FIRSTNAME + Abs OR TITEL + Abs IF (0 $$NUMERUS)(1 Prop + $$NUMERUS - CONJ-C)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + CONJ-LU LINK *1 V + 3Pl )(NEGATE 1 Prop + CONJ-LU LINK *1 V + 3PlO)(NEGATE 0 FIRSTNAME LINK 1 FIRSTNAME)(NEGATE 0 FIRSTNAME LINK 1 ("Kalaallit"))(NEGATE 1 FIRSTNAME + CONJ-LU)(NEGATE 0 Abs + Sg LINK *1 TRANSVERB + 3SgO BARRIER V)(NEGATE 1 Prop LINK 1 Prop - Abs)(NEGATE 1 Prop LINK -2 OBLIQUE)(NEGATE 1 SEMIOTIC)(NEGATE 1 POSSESSUM)
 (NEGATE 1 Sem/Geo LINK NOT 1 Prop) #Geografiske navne bruges også som efternavne, men negate er bedre end ingenting...
+(NEGATE 1 INSTITUTION)
 ;
 #MAP:M0031 (@PROP>) TARGET Prop OR FIRSTNAME OR TITEL IF (1 Prop)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop #+ CONJ-LU LINK *1 V + 3Pl BARRIER N + Pl )(NEGATE 1 Prop LINK 1 Prop); #fra 1350 for at udelukke overtallig SUBJ-tagging. ##NEGATE for at forebygge typen 'Per NN-ikkut isermata Vb'. Andet NEGATE for parataktiske Karen Perilu anipput. Tredie #NEGATE for at parataktiske Karen Perilu ilagalugit. Fjerde #NEGATE for at forebygge @PROP på subjektet i (SUBJ)(PROP> propriuskærne)
 
@@ -4593,7 +4595,7 @@ MAP:M09900AV @i-ADVL> TARGET ("nuna") IF (0 Abl OR Lok)(1 ("tamaq") + iOBLIQUE) 
 MAP:M09900AX @i-ADVL> TARGET Lok IF (1 QATE + N OR QATIGIIP + N) ; #Uagut TELE-POST-imi suleqatigiit katilluta 460-iuvugut. #Nunatsinni timersoqatigiiffiit...
 MAP:M09900AY @i-ADVL> TARGET OBLIQUE - POSSESSUM3 IF (*1 POSSESSUM3 BARRIER V)(*-1C @POSS> BARRIER POSSESSUM3) ;
 MAP:M09900AH @i-ADVL> TARGET OBLIQUE - POSSESSUM IF (1 TITEL + Der/vn) ;
-MAP:M09900AI @i-ADVL>N TARGET OBLIQUE - POSSESSUM IF (1 TITEL - Der/vn) ;
+MAP:M09900AI @i-ADVL>N TARGET OBLIQUE - POSSESSUM IF (1 TITEL - Der/vn)(NEGATE 0 Abl LINK *1 PASSIV) ;
 
 MAP:M09900B @ADVL> TARGET Lok IF (0 TIME OR PLACE_EXTENDED)(*1 V - OBJVERB - ADVERBIEL BARRIER DIRTALESTART OR NIQ + N + POSSESSUM OR NIRSAQ + N + POSSESSUM)(NEGATE *-1 V BARRIER DIRTALESLUT) ; 
 MAP:M09900C @ADVL> TARGET ("akunneq") IF (-1 ("sapaat"))(*1 V BARRIER DIRTALESTART)(NEGATE *-1 V BARRIER DIRTALESLUT) ;
@@ -5482,7 +5484,7 @@ REMOVE:0529A N + TUQ IF (*1 ORATIOOBLVERB + INTRANSVERB + V - NIQAR - TAQ BARRIE
 REMOVE:0520 N + U + TUQ IF (0 Par)(*1 ORATIOOBLVERB - NIQAR - TAQ - Gram/Pass - Gram/Refl BARRIER CONJ-C)(NEGATE 1 Gram/Cong) ;
 
 REMOVE:0521 Par IF (0 N + $$KASUS + $$NUMERUS LINK *-1 VFIN LINK -1 $$KASUS + $$NUMERUS) ;
-REMOVE:0522 Par - TIME IF (*1 V BARRIER KOMMA)(NEGATE *-1 UNA OR UKU)(NEGATE *1 ORATIOOBLVERB + TRANSVERB)(NEGATE *1 ORATIOOBLVERB LINK NOT *1 Par)(NEGATE 0 QQU LINK *-1 ORATIOOBLVERB)(NEGATE 0 CONJ-LU LINK NOT -1 KOMMA OR BOS) ;
+REMOVE:0522 Par - TIME IF (*1 V - PASSIV BARRIER KOMMA OR V)(NEGATE *-1 UNA OR UKU)(NEGATE *1 ORATIOOBLVERB + TRANSVERB)(NEGATE *1 ORATIOOBLVERB LINK NOT *1 Par)(NEGATE 0 QQU LINK *-1 ORATIOOBLVERB)(NEGATE 0 CONJ-LU LINK NOT -1 KOMMA OR BOS) ;
 
 REMOVE:0523 Par IF (0 N + @<APPOS)(1 KOMMA) ;
 
