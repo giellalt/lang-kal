@@ -1310,6 +1310,7 @@ SET SEASON = ("aasaq") | ("ukiaq") | ("ukioq") | ("upernaaq") ; #årstider
 #LIST MONTH = "januar" "januaari" "februar" "februaari" "marts" "marsi" "april" "apriili" "maj" "maaji" "juni" "juuni" "juli" "juuli" "august" "aggusti" "september" "septembari" "oktober" "oktobari" "november" "novembari" "december" "decembari" ;
 LIST TIMEVERB = ("assi" GIIAAR) ("ili" NIQ)("ingerla") ("naammassi") ("ip" TUQ U) "pula" ("qaama") "qaangiup" ("qiteqqup") ("imaali"); #verber som kan have tidsudtryk som subjekt
 SET TEMPUSVERB = UGEDAGE | ("ilaanneeriar") | ("qaanger") | ("qaqutigut" U) | ("qiteqqup") | ("taamaali") | ("ukiar") | ("ukioq" U) ;
+LIST TIMEAFFIX = (/__RIIR\ Der\/vv\ \(Gram\/..\ \)*V__/l) (/__LIR\ Der\/vv\ \(Gram\/..\ \)*V__/l) ;
 LIST VERB_medGE = "ipianngu" "miki" ; #Set til stammer, der kan tage GE+Der/vv
 LIST VERB_udenUTE = "inor" ; #Set til de enormt mange verber, der ikke kan tage UTE+vn
 LIST TRANSINTRANS = "naalap" "nuup" "oqar"; #Set til verber med både transitive og intransitive stammer
@@ -3721,6 +3722,8 @@ MAP:M0063 (@CL-<CIT) TARGET CONT + TRANSVERB IF (-*1 ORATIOOBLVERB - N - TAQ BAR
 (NEGATE *-1 @CL-<CIT BARRIER CONJ-C)
 #MAP:M0063A (@CL-<CIT) TARGET CONT + TRANSVERB IF (-*1 ORATIOOBLVERB BARRIER @PRED)(NEGATE *1 Cont)(NEGATE *1 Par)(NEGATE *-1C Par LINK *1 (<<<) BARRIER ORATIOOBLVERB ) ; #Eqqaamavaa inuppassuullutik kongruerer ikke.
 ;
+MAP:M0063B @CL-<CIT TARGET Par IF (*-1 ("tassa") + V BARRIER V - CONT) ;
+
 #Simpel co-ref oratio obliqua uden andre ledsagemåder end CL-CIT
 
 #Oratio obliqua der indeholder overordnede modi
@@ -4891,8 +4894,9 @@ MAP:M0898 @i-ADVL> TARGET CONT - OBJVERB IF (1C (/\ TAQ\ Der\/vn\ N\ /l) - CONJ-
 
 # PARTICIPIALMÅDER, som danner baggrund for sætningen
 #Tidssætninger
-MAP @PRED2 TARGET Par - NIR (NEGATE *-1S ("tassa"))(NEGATE *-1 ORATIOOBLVERB)(NEGATE *1 ORATIOOBLVERB LINK *-1 Par LINK *-1 _TARGET_)(NEGATE *1 ORATIOOBLVERB BARRIER VFIN LINK *-1 _TARGET_ BARRIER Par)(NEGATE 1 CLB OR EOS)(NEGATE *-1 V - CONT) ;
+MAP:baggrund @PRED2 TARGET Par - NIR (NEGATE *-1S ("tassa"))(NEGATE *-1 ORATIOOBLVERB)(NEGATE *1 ORATIOOBLVERB LINK *-1 Par LINK *-1 _TARGET_)(NEGATE *1 ORATIOOBLVERB BARRIER VFIN LINK *-1 _TARGET_ BARRIER Par)(NEGATE 1 CLB OR EOS)(NEGATE *-1 V - CONT) ;
 #MAP:M1645 (@PRED2) TARGET Par IF (NEGATE *0 ORATIOOBLVERB LINK NEGATE *-1 CONJ-C LINK -1 KOMMA) (NEGATE *1 KOMMA BARRIER ORATIOOBLVERB LINK 1 CONJ-C LINK *1 ORATIOOBLVERB)(NEGATE *-1 ORATIOOBLVERB)(NEGATE *0S UNA OR UKU)(NEGATE 1 CLB) ; #rykket op
+MAP:baggrund @PRED2 TARGET Par + TIMEAFFIX - NIR (*0 V)(NEGATE *1 ORATIOOBLVERB + V LINK NOT *1 Par BARRIER VFIN)(NEGATE *-1 V - CONT) ;
 
 
 # Mapping af ledsagemåde til hovedverbal
@@ -5062,7 +5066,10 @@ MAP:M1389 @ADVL> TARGET CONT + 4Sg IF (*1 CONT + 4Sg BARRIER V)
 MAP:M1390X @ADVL> TARGET CONT + 4Sg IF (1 Par + 3Sg) ; #En ad hoc regel til emfatisk eller inkonsistent brug af Par selv i coref for at undgå at adleddet tagges som @CL-<CIT
 
 MAP:M1390 (@CL-<CIT) TARGET Par + INTRANSVERB + 3Sg OR CONT + INTRANSVERB + 4Sg OR Cau + INTRANSVERB + 3Sg IF (-*1 ORATIOOBLVERB + V BARRIER ("soorlu") OR ("tassa") OR VFIN LINK NOT -1 @OBJ> )(-*1 Abs + Sg BARRIER ORATIOOBLVERB)(NEGATE 1 Prop + Abs OR Prop + Sem/FirstName)(NEGATE 0 Der/nv LINK *1 Par + Sg)(NEGATE 0 Cau LINK *1 CONT OR Par); #20100322 Næstsidste NEGATE for skyld oo, hvor et verbalnomen er subjekt. Sidste NEGATE for tid og causalitet inde i oratio obl.
-MAP:M1391 @CL-<CIT TARGET Par + INTRANSVERB + 3Pl OR CONT + INTRANSVERB + 4Pl OR Cau + INTRANSVERB + 3Pl IF (-*1 ORATIOOBLVERB + V OR ("tassa") BARRIER VFIN)(-*1 Abs + Pl BARRIER ORATIOOBLVERB)(NEGATE 1 Prop + Abs OR Prop + Sem/FirstName)(NEGATE 0 Der/nv LINK *1 Par + Sg); #20100322 Sidste NEGATE for skyld oo, hvor et verbalnomen er subjekt
+MAP:M1391 @CL-<CIT TARGET Par + INTRANSVERB + 3Pl OR CONT + INTRANSVERB + 4Pl OR Cau + INTRANSVERB + 3Pl IF (-*1 ORATIOOBLVERB + V OR ("tassa") BARRIER VFIN)(NEGATE 1 Prop + Abs OR Prop + Sem/FirstName)(NEGATE 0 Der/nv LINK *1 Par + Sg) #20100322 Sidste NEGATE for skyld oo, hvor et verbalnomen er subjekt
+#(-*1 Abs + Pl BARRIER ORATIOOBLVERB) 
+(NEGATE *1C Par + INTRANSVERB + 3Pl OR CONT + INTRANSVERB + 4Pl OR Cau + INTRANSVERB + 3Pl BARRIER CONJ-C)
+;
 MAP:M1392 (@CL-<CIT) TARGET CONT + INTRANSVERB + 1Sg OR Cau + INTRANSVERB + 1Sg IF (-*1 ORATIOOBLVERB + 1Sg BARRIER ORATIOOBLVERB OR VFIN)(NEGATE 1 Prop + Abs OR Prop + Sem/FirstName)(NEGATE 0 Der/nv LINK *1 Par + Sg); #20100322 Sidste NEGATE for skyld oo, hvor et verbalnomen er subjekt
 SELECT Par IF (NEGATE 0 iOBLIQUE + TUQ) (-*1 ORATIOOBLVERB BARRIER ("tassa") LINK *1 _TARGET_ LINK *1 (*) - CONJ-C LINK 1 Par)(NEGATE *1 Par BARRIER ORATIOOBLVERB + V) ; #Af to Par efter et inquit er den sidste af dem verbal, men ikke nødvendigvis den første.
 MAP:M1393 @CL-<CIT TARGET Par IF (0 INTRANSVERB LINK -*1 CONJ-C LINK -*1 Par LINK -*1 ORATIOOBLVERB) ;
@@ -5350,7 +5357,7 @@ SELECT:0426 TEMPUSVERB + Par + 3Sg IF (-1 BOS) ;
 
 REMOVE:0427 Par + RUTTUR + 3Sg (-*1 Rel LINK NOT 1 POSSESSUM + Sg)(*1 3SgO); #20091115
 SELECT:0429 Par + RUTTUR OR Par + GALUAR IF (NEGATE -*1 VFIN)(NEGATE *1 3SgO) ; #20091115 Tilfoejet reglen foer, men skal alligevel nok opstrammes
-SELECT:0431 Par + NIQAR IF (*-1 TRANSVERB + VFIN)(1 EOS);
+SELECT:0431 Par + NIQAR IF (*-1 TRANSVERB + VFIN BARRIER ("tassa"))(1 EOS);
 #"medens" uden konjunktion og efterstillet
 
 SELECT:0432 Par + TRANSVERB If (-1 Akk) ;
@@ -5530,6 +5537,8 @@ REMOVE:0521 Par IF (0 N + $$KASUS + $$NUMERUS LINK *-1 VFIN BARRIER KOMMA LINK -
 REMOVE:0522 Par - TIME IF (*1 V - PASSIV BARRIER KOMMA OR V)(NEGATE *-1 UNA OR UKU)(NEGATE *1 ORATIOOBLVERB + TRANSVERB)(NEGATE *1 ORATIOOBLVERB LINK NOT *1 Par)(NEGATE 0 QQU LINK *-1 ORATIOOBLVERB)(NEGATE 0 CONJ-LU LINK NOT -1 KOMMA OR BOS) ;
 
 REMOVE:0523 Par IF (0 N + @<APPOS)(1 KOMMA) ;
+
+REMOVE:0523 Par IF (0 N)(*1 @<APPOS BARRIER (*) - @PROP> - KOMMA - @i-ADVL> - @i-ADVL>N) ; 
 
 REMOVE:0549 Abs IF (0 Par + ADV-LU LINK NOT -1 Abs)(NEGATE 0 Rel)(NEGATE -1 BOS OR KOMMA) ; #Taannarsuaq imminut naalliutsinnermik kajungerisalik suli pangalilluni tatsip illua'tungaani orpiit akornannut *pulasorlu tatsip tasertaa patsisaasimanerluni nunap sajukulanera malunnarunnaarpoq. # taget højde for paratakse med LINK NOT -1 Abs
 
