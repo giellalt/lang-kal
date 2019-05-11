@@ -1237,6 +1237,7 @@ SET NUSUPnAFF = ("nusup") - AFFINGERET + CONT;
 SET QULAREnAFF = ("qulare") - AFFINGERET + CONT ;
 SET TAMAKKERnAFF = ("tamakker") - AFFINGERET + CONT ;
 SET TIKILLUGUnAFF = ("tikip") - AFFINGERET + CONT ;
+SET SIULLIULLUNI = ("siulleq") + U + CONT ;
 LIST ADVERBIUM = "ima" "qanoq" ; #20091109 tilfoejet 'qanoq', der maaske staar lidt malplaceret her
 SET ADVERBIEL = Adv | Pali | ("ataaseer") + CONT | ("ataaseq") + Ins - Num - AFFINGERET | ASSERSUUTIGALUGU | ILANNGUPnAFF | ("immikkoor") | ("isertor") + TUQ + Ins | NUSUPnAFF | TAMAKKERnAFF | ("piffik") + SSAQ + TIP + CONT | PILLUGU | ("pinngitsaali") + HTR + UTE | QULAREnAFF | TIKILLUGU | ADVERBIAL_DERIVATIVES | ("sapinngisaq" Ins) | ("unner") | ("siulleq") + U + CONT ;
 LIST FOKUSPART = ("uv" Prefix/AA) ("una" Prefix/AA) "tassa" "aali" "sunaaffa" "aajuku" "aajuna" "aaku" "aana" ; #oqaqqarniutit imal. oqaaseqatigiinni oqaluutitaqanngitsut 
@@ -1263,7 +1264,7 @@ LIST LOKVERB = "angala" "najugaq" "najugaqar" "ilinniar" ("taku" UTE) ;
 
 LIST ABLVERB = "aallar" "ani" ("titartar" TAQ);
 
-LIST TRMVERB = "aallar" "iser" "nuup" ("peqat" U) "pulaar" ("quja" Gram/Exclm);
+LIST TRMVERB = "aallar" "iser" "nunnip" "nuup" ("peqat" U) "pulaar" ("quja" Gram/Exclm);
 
 LIST INSVERB = "taa" ;
 
@@ -2274,9 +2275,9 @@ REMOVE:0001L ("\\p{Lu}.*"r) + Prop IF (0 ("([a-z].*)"r))(**0CW (VSTR:"$1"r))(-1 
 
 REMOVE:0001X ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"%l$1"r))(-1 BOS) (NEGATE 1 Prop) ;
 SELECT:0001Y ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"$1"r))(-1 BOS)(NEGATE 0 Lok) ;
-REMOVE:0001Z N IF (0 PROP_VS_APPELLATIV LINK *1 HUMVERB OR humverb)(NEGATE 0 $$KASUS LINK 1 $$KASUS); #Manu iserpoq. Manu er mest sandsynligt et proprium.
+REMOVE:0001Z N IF (0 PROP_VS_APPELLATIV LINK *1 HUMVERB OR humverb BARRIER Pron + Rel)(NEGATE 0 $$KASUS LINK 1 $$KASUS); #Manu iserpoq. Manu er mest sandsynligt et proprium.
 REMOVE:0001Z N - FAM IF (0 Prop - Sem/Geo + Abs LINK *1 HUMVERB + INTRANSVERB OR humverb + INTRANSVERB BARRIER V)(@1 _TARGET_); #Manu iserpoq. Manu er mest sandsynligt et proprium.
-REMOVE:0001Z N IF (0 Prop - Sem/Geo + Rel - TUQ LINK *1 HUMVERB + TRANSVERB OR humverb + TRANSVERB BARRIER CONJ-C)(NEGATE 1 POSSESSUM)(NEGATE 0 $$KASUS LINK 1 $$KASUS); #Manu iserpoq. Manu er mest sandsynligt et proprium. #Ulloriaatima amerlassusii pappiliamut allariarlugit taanna pappiliaq amusartumut ileriarlugu parnaarutissara. Ulloriaatima er ikke Prop.
+REMOVE:0001Z N IF (0 Prop - Sem/Geo + Rel - TUQ LINK *1 HUMVERB + TRANSVERB BARRIER CONJ-C OR Prop + Rel)(NEGATE 1 POSSESSUM)(NEGATE 0 $$KASUS LINK 1 $$KASUS); #Manu iserpoq. Manu er mest sandsynligt et proprium. #Ulloriaatima amerlassusii pappiliamut allariarlugit taanna pappiliaq amusartumut ileriarlugu parnaarutissara. Ulloriaatima er ikke Prop.
 REMOVE:0001Z1 Prop - Sem/Geo + Abs IF (0 N LINK *1 thingobjverb + TRANSVERB BARRIER INTRANSVERB) ;
 REMOVE:0001Z2 iProp IF (0 U) ; #Mikisuullunga ...
 # Appositional proper noun without comma
@@ -2447,6 +2448,7 @@ MAP:0043H @ADVL> TARGET Abs + Pron + 1Sg OR Abs + Pron + 1Pl IF (NEGATE *1 1Sg O
 #######
 
 MAP:M0043H @N< TARGET ("angala") + TUQ IF (-1 ("ulloriaq")) ;
+MAP:M0043I @>N TARGET ("mingutsitsisoq") (1 ("gas")) ; #silaannarmik mingutsitsisoq gassi = drivhusgas
 
 #PL 20190413 Adled med karakter af altid at være andet led af MWE
 SELECT:MWE01 ("ilaasortaat") IF (-1 ("umiarsuaq") OR ("umiaq") + SUAQ ) ;
@@ -3998,7 +4000,7 @@ MAP:M0341 @N< TARGET Abs + Sg + Der/vn - CONJ-LU IF (-*1 Abs + Sg - FIRSTNAME - 
 (NEGATE -1 Part + CONJ-LU LINK -1 Abs ) # Ikke Sem/FirstName+Abs og ikke TITEL fordi de ikke har syntaktisk funktion i sig selv. 
 (NEGATE -1 KOMMA LINK -1 @EXCLM OR Gram/Exclm)
 (NEGATE 0 ("(..*)t.*p"r) LINK *-1 ("$1"v)) ; # toqu... toqutsip... er ikke @N< Den skal gøres generel.
-MAP:M0341X @N< TARGET Rel + $$NUMERUS - Sem/Fem - Sem/Mask - TIME - CONJ-LU - Pron - Prop IF (*-1 &&POSS34_POSS& + $$NUMERUS + Rel - Prop BARRIER (*) - Adv - OBLIQUE LINK *1 &&POSS34_POSS& BARRIER V) (NEGATE 0 POSSESSUM)(NEGATE -1 Gram/Dem + Rel)(NEGATE 1 Abs LINK *1 TRANSVERB BARRIER (*) - OBLIQUE); #Må ikke tagge naatsiiviup MATUATA tungaanut og ikke N med foranstillet @Pron>N. Fornavne og deres særlige hensyn (fx type Perip Najannguup N-a .. holdt uden for denne regel. Må heller ikke tagge, når -1 subjekt for transverb og 0 POSS for objekt som i .. anernerata ELEVATORIP ilua silaannalussitippaa. TIME ikke medtaget pga. type Perip SAPAATIP akunneranut pulaartagaa ..
+MAP:M0341X @N< TARGET Rel + $$NUMERUS - Sem/Fem - Sem/Mask - TIME - CONJ-LU - Pron - Prop IF (*-1 &&POSS34_POSS& + $$NUMERUS + Rel - Prop - @>N BARRIER (*) - Adv - OBLIQUE LINK *1 &&POSS34_POSS& BARRIER V) (NEGATE 0 POSSESSUM)(NEGATE -1 Gram/Dem + Rel)(NEGATE 1 Abs LINK *1 TRANSVERB BARRIER (*) - OBLIQUE); #Må ikke tagge naatsiiviup MATUATA tungaanut og ikke N med foranstillet @Pron>N. Fornavne og deres særlige hensyn (fx type Perip Najannguup N-a .. holdt uden for denne regel. Må heller ikke tagge, når -1 subjekt for transverb og 0 POSS for objekt som i .. anernerata ELEVATORIP ilua silaannalussitippaa. TIME ikke medtaget pga. type Perip SAPAATIP akunneranut pulaartagaa ..
 
 #PL 20190414 Forsøgt gjort mere generel for også at tagge .. inersuup AMMASUP tungaanut tikkuarluni .. korrekt men skal revurderes, da mange overraskelser. Forsøger i stedet med M0341X ovenfor
 #MAP:M0341 @N< TARGET $$KASUS + Der/vn - CONJ-LU IF (-*1 $$KASUS - Sem/FirstName - Sem/Fem - TITEL - ("kinguneq") - @>N - @Pron>N - TIME BARRIER V OR ("soorlu") OR CONJ-C OR Gram/Pers)(NEGATE *-1 Gram/Dem LINK -1 TIME) #kinguneq tilføjet 20170425 for at undgå hit på kingorna.
@@ -4359,7 +4361,7 @@ MAP:M0501 @N< TARGET N + Lok - POSSESSUM - CONJ-C + $$NUMERUS IF (NOT 0 Adv OR P
 MAP:M1722C @N< TARGET Num + $$NUMERUS IF (-1 Abs + $$NUMERUS)(-1 @HNOUN); #særlig for HNOUN NP 
 MAP:M0510 @N< TARGET ("alla") + N + $$KASUS + $$NUMERUS - CONJ-LU OR ("arlaaq") + N + $$KASUS + $$NUMERUS IF (-1 N + $$KASUS + $$NUMERUS)(NEGATE -1 ("ajor") + NAR + TUQ + Ins + Sg);
 MAP:M0511 @N< TARGET ATTRIBUTIV + N + $$KASUS + $$NUMERUS OR ("arlaaq") + N + $$KASUS + $$NUMERUS IF (-1 N + $$KASUS + $$NUMERUS)(NEGATE 0 (/\ NIQ\ Der\/vn\ N\ /l) + Lok) ;
-MAP:M0512 @N< TARGET N + $$KASUS + $$NUMERUS - POSSESSUM IF (*-1 $$KASUS + $$NUMERUS BARRIER (*) - @>N - @N< - @i-ADVL>N)(NEGATE -1 ("una"))(NEGATE -1 PLACE - MIU)(NEGATE 0 CONJ-C + Num LINK -1 Num OR iNum)(NEGATE 0 CONJ-C - Num)(NEGATE 0 $$KASUS LINK -1 Num LINK -1 ("nal") LINK *-1 (*) - $$KASUS)(NEGATE 0 Rel LINK 1 POSSESSUM)
+MAP:M0512 @N< TARGET N + $$KASUS + $$NUMERUS - POSSESSUM IF (*-1 $$KASUS + $$NUMERUS - @>N BARRIER (*) - @>N - @N< - @i-ADVL>N)(NEGATE -1 ("una"))(NEGATE -1 PLACE - MIU)(NEGATE 0 CONJ-C + Num LINK -1 Num OR iNum)(NEGATE 0 CONJ-C - Num)(NEGATE 0 $$KASUS LINK -1 Num LINK -1 ("nal") LINK *-1 (*) - $$KASUS)(NEGATE 0 Rel LINK 1 POSSESSUM)
 (NEGATE 0 iNum + LIK LINK *-1 NUMHOVED + Ins)
 (NEGATE -1 @i-ADVL>N LINK NOT *-1 N + $$KASUS + $$NUMERUS - POSSESSUM) #ukaliatsiap amianik sanaamik tamavimmik poorsimavoq.
 (NEGATE 0 ("tamaq") LINK -1 ("suna")) #sunut tamanut
@@ -4420,14 +4422,16 @@ MAP:M0590 (@POSS>) TARGET Rel + Sg IF (1 Via)(2 Der/vn + 3SgPoss) ;
 
 #Possessorer i opremsninger med og uden komma
 MAP:M0598 (@POSS>) TARGET Rel + Sg IF (-3 Rel LINK 1 KOMMA LINK 1 Rel)(1 KOMMA LINK 1 Rel + 3PlPoss) ; #opremsning med komma før 400
-MAP:M0599 (@POSS>) TARGET Rel + Sg IF (1 KOMMA LINK 1 Rel + Sg LINK 1 3SgPoss) ; #opremsning med komma før 400
+MAP:M0599 (@POSS>) TARGET Rel + Sg IF (1 KOMMA LINK 1 Rel + Sg LINK 1 3SgPoss)(NEGATE -1 KOMMA LINK -1 Rel + Sg - @POSS>) ; #opremsning med komma før 400
 MAP:M0600 (@POSS>) TARGET Rel + Sg IF (1 (/__Gram\/Dem\ Pron__/l) + Rel LINK 1 3SgPoss)(NEGATE *-1 Gram/Dem + Pron) ;
 #MAP:M0601 (@POSS>) TARGET Rel + Sg IF (*1 3SgPoss )(NEGATE *-1 ("soorlu") - LUSUUQ - MI CBARRIER (*) - Rel - KOMMA) ; #Fungerer ikke
 
-MAP:M0608 (@POSS>) TARGET Prop + Rel + Sg IF (*1 3SgPoss BARRIER TRANSVERB + 3Sg ) (NEGATE *1 Rel + CONJ-LU BARRIER TRANSVERB + 3Sg)(NEGATE 1 Prop + Abs)(NEGATE 1 Prop + Rel LINK 1 POSSESSUM3)(NEGATE *-1 ("soorlu") - LUSUUQ - MI CBARRIER (*) - Rel - KOMMA) #i NN-ip aappaatalu må aappaatalu ikke opfyldebetingelsen. Sidste NEGATE for at blokere NN-ip NN1 ...
+MAP:M0608 (@POSS>) TARGET Rel + Sg - Pron IF (*1 3SgPoss - iProp BARRIER TRANSVERB + 3Sg LINK NEGATE -1 Rel - _TARGET_ + 3Sg LINK 2 TRANSVERB + 3Sg) (NEGATE *1 Rel + CONJ-LU BARRIER TRANSVERB + 3Sg)(NEGATE 1 Prop + Abs)(NEGATE 1 Prop + Rel LINK 1 POSSESSUM3)(NEGATE *-1 ("soorlu") - LUSUUQ - MI CBARRIER (*) - Rel - KOMMA) #i NN-ip aappaatalu må aappaatalu ikke opfyldebetingelsen. Sidste NEGATE for at blokere NN-ip NN1 ...
 (NEGATE *1C Rel - Prop LINK 1 Aeq OR ("taamatut") LINK *1 POSSESSUM3)
 (NEGATE NOT 1 ("taamatut") LINK *1 (*) - Der/vn + POSSESSUM3 - Prop - PLACE - ORATIOOBLVERB BARRIER TRANSVERB LINK *1 TRANSVERB + 3Sg)
-(NEGATE 1 Rel - CONJ-C - POSSESSUM LINK *1 3SgPoss BARRIER (*) - OBLIQUE - Adv)
+(NEGATE 1 Rel - CONJ-C - POSSESSUM LINK *1 3SgPoss OR 4SgPoss BARRIER (*) - OBLIQUE - Adv)
+(NEGATE 0 Prop LINK NOT *1 TRANSVERB + 3Sg LINK NEGATE *-1 @SUBJ>)
+(NEGATE 1 KOMMA)
 ;
 
 MAP:M0608A @POSS> TARGET Rel IF (*1 POSSESSUM + $$NUMERUS BARRIER TRANSVERB LINK NEGATE *1 TRANSVERB)(NEGATE *-1 Rel + $$NUMERUS BARRIER KOMMA OR VFIN)(NEGATE *-1 ("tassa") OR ("soorlu") OR ("ingammik")) ;
@@ -4501,7 +4505,7 @@ MAP:M0639 (@SUBJ>) TARGET Rel + Sg + CONJ-LU IF (*-1 Rel + Sg BARRIER POSSESSUM3
 
 MAP:M0640BX @SUBJ> TARGET Rel + Sg + 4SgPoss IF (*1 TRANSVERB - Ind + 3Sg BARRIER @SUBJ> + Rel + Sg)(NEGATE 1 POSSESSUM3) ;#Ikke 4. som subjekt for finit
 
-MAP:M0640A @SUBJ> TARGET Rel + Sg IF (*1 TRANSVERB + CONT - OBJVERB)(NEGATE *1 POSSESSUM3 BARRIER (*) - (Rel Sg))(NEGATE 0 Sem/Geo LINK *1 POSSESSUM LINK NOT -1 Rel) ;
+MAP:M0640A @SUBJ> TARGET Rel + Sg IF (*1 TRANSVERB + CONT - OBJVERB - (/__TIP\ Der\/vv\ \(Gram\/..\ \)*V__/l))(NEGATE *1 POSSESSUM3 BARRIER (*) - (Rel Sg))(NEGATE 0 Sem/Geo LINK *1 POSSESSUM LINK NOT -1 Rel) ;
 
 
 #MAP:M0640B @SUBJ> TARGET Rel + Sg - 4SgPoss IF (*1 TRANSVERB + 3Sg - OBJVERB CBARRIER Prop + Rel + Sg LINK NOT 1 POSSESSUM)(NEGATE 1 POSSESSUM3) ; #blokerer for ANGUTILLI Emiliep taliata aappaa .. tigummivaa Har tidligere MAP-et ANGUTILLI korrekt ???? #indkommenteret igen. Det er en uundværlig regel!
@@ -4518,6 +4522,8 @@ MAP:M0649 @POSS> TARGET Rel + Pl IF (*1 3PlPoss OR 4PlPoss BARRIER (*) - @<APPOS
 MAP:M0650 (@SUBJ>) TARGET Rel + Pl IF (*1 TRANSVERB + 3Pl OR TRANSVERB + 4Pl OR TRANSVERB + CONT BARRIER VFIN) (NEGATE -1 Rel + Pl)(NEGATE *1 3PlPoss BARRIER (*) - @<APPOS - @N<) ;
 MAP:M0650 @SUBJ> TARGET Rel IF (1 Rel + @SUBJ> + CONJ-C) ;
 MAP:M0651A (@N<PRED) TARGET NOMEN IF (0 $$KASUS OR Abs)(-1 ("soorlu") - @ADVL> - CONJ-C - LUSUUQ - MI LINK *-1 VFIN BARRIER (*) - KOMMA LINK -1 $$KASUS) ; #Aamma suliffeqarfiit kommunelluunniit tunuliaqutarinagit inunnik ataasiakkaanik suliniuteqartoqalerpoq, soorlu *arpattartoq tamatta nalunngisarput, Kim Godtfredsen, ikiuiniarluni tusarnaartitsisoqarnissaanik isumassarsisoq oqaluttuartorlu misigissutsit suut immini eqeersinneqarsimanersut.
+
+MAP:M0651AA @POSS> TARGET Rel IF (*1 POSSESSUM3)(*1 TRANSVERB LINK *-1 @SUBJ> LINK *-1 _TARGET_) ;
 
 MAP:M0651 @<APPOS TARGET Abs + $$NUMERUS IF (*-1 Prop - @PROP> + Abs + $$NUMERUS BARRIER VERB-NOTCONT)(1 KOMMA)(NEGATE 1 KOMMA LINK *1 Rel + CONJ-LU LINK 1 Abs)(NEGATE 1 KOMMA LINK 1 Abs + CONJ-LU)(NEGATE 1 KOMMA LINK *1 ("aamma") + CONJ-C BARRIER (*) - Prop) ; #må ikke tagge opremsninger
 MAP:M0651A @<APPOS TARGET LIK + Abs + $$NUMERUS IF (*-1 Prop + Abs + $$NUMERUS BARRIER VERB-NOTCONT)(NEGATE 1 KOMMA LINK *1 Rel + CONJ-LU LINK 1 Abs)(NEGATE 1 KOMMA LINK 1 Abs + CONJ-LU) ; #må ikke tagge opremsninger #angut Hans Lennertimik atlik nerivoq.
@@ -4709,7 +4715,7 @@ MAP:M0512C @N< TARGET N + $$KASUS + $$NUMERUS + CONJ-C - POSSESSUM - Num - iNum 
 ; #sunut tamanut
 
 #Et adverbalt adled mellem et adnominalt adled og dets kerne kan ikke gå til hovedverbet.
-MAP:M0513A @i-ADVL> TARGET N - Gram/Cong OR Prop IF (*1C $$KASUS + $$NUMERUS + @N< + Der/vn BARRIER CLB OR CONJ-C OR V - CONT OR @PRED LINK NOT 1 $$KASUS)(*-1C $$KASUS + $$NUMERUS BARRIER VFIN OR @PRED OR $$KASUS OR CONJ-C)(NEGATE 1 $$KASUS);
+MAP:M0513A @i-ADVL> TARGET N - Gram/Cong OR Prop IF (*1C $$KASUS + $$NUMERUS + @N< + Der/vn BARRIER CLB OR CONJ-C OR V + ADVERBIEL OR V - CONT OR @PRED LINK NOT 1 $$KASUS)(*-1C $$KASUS + $$NUMERUS BARRIER VFIN OR @PRED OR $$KASUS OR CONJ-C)(NEGATE 1 $$KASUS);
 
 #Nomen i oblik kasus kan være adverbalt adled
 MAP:M0830 @ADVL> TARGET Lok IF (-1* BOS BARRIER (*) - @POSS> - @i->N - Lok)(NEGATE 1 Lok + CONJ-LU LINK 1 Der/vn)(*1 V)(NEGATE 0 GAANNI) ; #NEGATE for ikke at fejltagge parataktiske i-ADVL
@@ -4772,6 +4778,7 @@ MAP:M0947A @i-ADVL> TARGET OBLIQUE + Ins IF (*1C TIGE + N)(NEGATE *-1 Ins LINK *
 
 MAP:M0938 @i-ADVL> TARGET Abl IF (1 ABLVERB + N) ; #baobabimit titartakkatut.
 MAP:M0938A @i-ADVL> TARGET Abl IF (*1 SEMIOTIC + Der/vn BARRIER V) ; #Oqaasiliortut kingullermik *ataatsimiinnerannit (20.09.18) imaqarniliaq akuerineqarpoq.
+MAP:M0938B @i-ADVL> TARGET Trm IF (*1 TRMVERB + N BARRIER V - CONT OR CONJ-C OR TRMVERB + V) ;
 
 MAP:M0939 @ADVL> TARGET ("missaa") OR ("misse") IF (*1 V) ;
 MAP:M0939B @i-ADVL> TARGET $$KASUS + OBLIQUE - POSSESSUM - TIME IF (*1 Der/vn + N - $$KASUS - ("immikkoor") BARRIER V OR $$KASUS )(NEGATE 0 Ins + Sg) (NEGATE *1 V BARRIER CONJ-C LINK 1 EOS)
@@ -7317,6 +7324,7 @@ SUBSTITUTE:S0035 @i-ADVL> @i-OBJ-DOTR> TARGET Ins OR Trm IF (*1C Gram/Db BARRIER
 SUBSTITUTE:S0037A @SUBJ> @N< TARGET Gram/Cong + Nom IF (*-1C @SUBJ>) ;
 SUBSTITUTE:S0037A @SUBJ> @N< TARGET Abs + $$NUMERUS - CONJ-C - Prop IF (*-1C Abs + $$NUMERUS + @SUBJ> - CONJ-C CBARRIER V OR CLB OR @CONJ LINK *1 _TARGET_ LINK *1 INTRANSVERB + (/.Sg/r) BARRIER V)(*1 VFIN BARRIER V) ; #Taamaalisorlu suialaarneq nillertoq alanngup suialaarnera aqqusinermi suialaalerpoq,
 SUBSTITUTE:S0037A @SUBJ> @N< TARGET Rel + $$NUMERUS IF (*-1C Rel + $$NUMERUS + @SUBJ> BARRIER V OR CLB OR POSSESSUM OR iPOSSESSUM LINK *1 _TARGET_ LINK *1 VFIN + TRANSVERB + (/.Sg\ /l) BARRIER V OR POSSESSUM OR iPOSSESSUM) ; #, Nukissiorfinni ingerlatsinermut siunnersortip Niels Christian Nielsenip qularinngilaa.
+SUBSTITUTE:S0037A @SUBJ> @N< TARGET Rel + $$NUMERUS IF (*-1C Rel + $$NUMERUS + @SUBJ> BARRIER V OR CLB - KOMMA OR POSSESSUM OR iPOSSESSUM LINK *1 _TARGET_ LINK *1 VFIN + TRANSVERB + (/.Sg\ /l) BARRIER V)(*1 @POSS> BARRIER (*) - KOMMA) ; #, Nukissiorfinni ingerlatsinermut siunnersortip Niels Christian Nielsenip qularinngilaa.
 SUBSTITUTE:S0037F (/@.*/r) (@N<) TARGET Gram/Cong + OBLIQUE + (/@\(.*\)/r) IF (0 $$KASUS LINK -1 (VSTR:/@$1/r) + OBLIQUE + $$KASUS)(NEGATE 0 1Sg OR 2Sg OR 1Pl OR 2Pl) ;
 SUBSTITUTE:S0038 @HNOUN @N< TARGET Abs - Prop IF (*-1 @HNOUN + PROP BARRIER V)(NEGATE 0 CONJ-LU)(NEGATE -1 ("aamma"))(NEGATE *-1 CONJ-LU)(NEGATE *-1 Interj) ; #Til nominalsyntagmer uden verber, men ikke til opremsninger. #Rasmusinnguaq angut pitsak, maligassaq!
 SUBSTITUTE:S0039A @ADVL> @N< TARGET ATTRIBUTIV + $$KASUS (-1 $$KASUS + N)(NEGATE 0 CONJ-C) ;
