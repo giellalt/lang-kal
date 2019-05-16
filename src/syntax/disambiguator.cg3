@@ -1686,9 +1686,10 @@ SUBSTITUTE:B00043D CLB (CLB DIRTALESLUT) TARGET CLB IF (0 ("\?") OR ("\!")) (*-1
 SUBSTITUTE:B00043E CLB (CLB DIRTALEMIDDLE) TARGET CLB IF (*-1< DIRTALESTART BARRIER DIRTALESLUT)(NEGATE 0 DIRTALESLUT) (NEGATE 0 DIRTALESTART)(*1> PUNCT OR ("\?") OR ("\!") BARRIER DIRTALESLUT)(NEGATE 1 PUNCT) ; #not safe marking
 SUBSTITUTE:B00043F CLB (CLB DIRTALEMIDDLE) TARGET CLB - DIRTALESTART - DIRTALESLUT IF (*-1< DIRTALEMIDDLE BARRIER DIRTALESLUT OR PUNCT)(NEGATE *1S DIRTALESTART) (NEGATE 0 DIRTALESTART OR DIRTALEMIDDLE OR DIRTALESLUT)(NEGATE *1 PUNCT OR ("\?") OR ("\!") OR ("\:"))(*1> PUNCT OR ("\?") OR ("\!")) ; #not safe marking
 
-SUBSTITUTE:B00043G PUNCT (PUNCT DIRTALESTART) TARGET PUNCT IF (*-1 DIRTALESLUT BARRIER DIRTALESTART)(NEGATE 0 DIRTALESLUT)(NEGATE -1 WORD) (*1 DIRTALESLUT BARRIER DIRTALESTART)(*1> PUNCT OR ("\?") OR ("\!")) ; #not safe marking
 
 SUBSTITUTE:B00043H PUNCT (PUNCT DIRTALESLUT) TARGET PUNCT IF (*-1< DIRTALESTART BARRIER DIRTALESLUT)(NEGATE 0 DIRTALESLUT)(NEGATE 0 DIRTALESTART) ; #not safe marking
+
+SUBSTITUTE:B00043G PUNCT (PUNCT DIRTALESTART) TARGET PUNCT IF (*-1 DIRTALESLUT BARRIER DIRTALESTART)(NEGATE 0 DIRTALESLUT)(NEGATE -1 WORD) (*1 DIRTALESLUT BARRIER DIRTALESTART)(*1> PUNCT OR ("\?") OR ("\!")) ; #not safe marking
 
 
 
@@ -2306,7 +2307,7 @@ REMOVE:0001Prop ("(\\p{Lu}.*)"r) + Fornavn IF (0 N)#(NEGATE *0CW (VSTR:"%l$1"r))
 #Proprium med MI er næsten altid lokativ
 REMOVE:0042 Prop + MI IF (0 Prop + Lok);
 
-SELECT:0001X Prop - Orth/Copy - Orth/Append IF (NEGATE -1 BOS);
+SELECT:0001X Prop - Orth/Copy - Orth/Append IF (NEGATE -1 BOS OR DIRTALESTART);
 
 #HNOUN NP i citationstegn med og uden komma
 SELECT:0040GX Abs IF (1 Abs)(2 KOMMA)(3 ("”"))(*1 ORATIOOBLVERB) ;
@@ -3484,10 +3485,6 @@ MAP:M0010B @PRED TARGET CONT - ADVERBIEL - OBJVERB (1 EOS)(*-1 CONJ-C - ORATIOOB
 MAP:M0010C @PRED TARGET CONT + INTRANSVERB + $$AFFINGERET - U - CONJ-C - ADV-PARTIKEL - (/__RIAR\ Der\/vv\ Gram\/..\ V__/l) - (/__TIP\ Der\/vv\ Gram\/..\ V__/l) - (/__SIMA\ Der\/vv\ Gram\/..\ V__/l) - (/__NIAR\ Der\/vv\ Gram\/..\ V__/l) - (/__RIIR\ Der\/vv\ Gram\/..\ V__/l) - (/__LIR\ Der\/vv\ Gram\/..\ V__/l)(1 $$AFFINGERET + @PRED + INTRANSVERB - ORATIOOBLVERB - CONJ-C)(NEGATE -1 CONJ-LU) ; #både-og, opremsning #Kaffeqarluni theqarumaarpoq.
 MAP:M0010D @PRED TARGET CONT + $$AFFINGERET + CONJ-C (1 $$AFFINGERET + @PRED - ORATIOOBLVERB)(NEGATE -1 CONJ-LU) ; #både-og, opremsning #Kaageqarluni, kaffeqarluni *theqarlunilu safteqassaaq.
 MAP:M0010DX @PRED TARGET CONT + $$AFFINGERET + CONJ-C (-1 $$AFFINGERET - ORATIOOBLVERB LINK 0 CONT OR @PRED)(NEGATE -1 CONJ-LU)(1 CLB OR PUNCT) ; #både-og: „Ila kinalisarpungamita,“ Imminut oqarfigaaq, „Arnisarnerlunga atuarnerlungaluunniit?“
-
-
-„Ila kinalisarpungamita,“ Imminut oqarfigaaq, „Arnisarnerlunga angusisarnerlungaluunniit?“
-
 MAP:M0010E @PRED TARGET CONT + (/\([A-Z]*\)\ Der\/vv\ \(Gram\/..\ \)*V\ Cont\ /l) IF (1 @PRED + CONJ-C + (VSTR:$1)) ; #bør kræve at affikset står som sidste affix i ord nr. 2
 
 
