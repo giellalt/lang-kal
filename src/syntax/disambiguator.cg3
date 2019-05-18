@@ -1433,8 +1433,8 @@ LIST NON-POSSESSUM = "malunnar" "utoqqaq" ; #en klasse af ord, der sjældent ell
 
 # TEMPLATES
 # ==========
-Template NexusHøjre =  (*1 Abs - Gram/Comp LINK *1 INTRANSVERB BARRIER VFIN) OR (*1 Rel LINK *1 TRANSVERB BARRIER VFIN) OR (*1 Abs + Sg LINK *1 TRANSVERB + 3SgO BARRIER VFIN) OR (*1 Abs + Pl LINK *1 TRANSVERB + 3PlO BARRIER VFIN) ; #3. og 4. OR på grund af transitiv med implicit subjekt
-Template NexusVenstre =  (-*1 Abs LINK *1 INTRANSVERB BARRIER _TARGET_ OR VFIN) OR (-*1 Rel LINK *1 TRANSVERB BARRIER _TARGET_ OR VFIN) OR (*-1 Abs + Pl LINK *1 TRANSVERB + 3PlO BARRIER _TARGET_ OR VFIN); # OR (*-1 VFIN + @PRED); #20170417 tilføjet VFIN + @PRED til nexus med implicit subjekt
+TEMPLATE NexusHøjre =  (*1 Abs - Gram/Comp LINK *1 INTRANSVERB BARRIER VFIN) OR (*1 Rel LINK *1 TRANSVERB BARRIER VFIN) OR (*1 Abs + Sg LINK *1 TRANSVERB + 3SgO BARRIER VFIN) OR (*1 Abs + Pl LINK *1 TRANSVERB + 3PlO BARRIER VFIN) ; #3. og 4. OR på grund af transitiv med implicit subjekt
+TEMPLATE NexusVenstre =  (-*1 Abs LINK *1 INTRANSVERB BARRIER _TARGET_ OR VFIN) OR (-*1 Rel LINK *1 TRANSVERB BARRIER _TARGET_ OR VFIN) OR (*-1 Abs + Pl LINK *1 TRANSVERB + 3PlO BARRIER _TARGET_ OR VFIN); # OR (*-1 VFIN + @PRED); #20170417 tilføjet VFIN + @PRED til nexus med implicit subjekt
 
 
 
@@ -2694,6 +2694,7 @@ MAP:M0099E @ADVL> TARGET Gram/Cong + Ins + Sg IF (1* V)(NEGATE *-1 Ins + Sg BARR
 #Template til at håndtere NP-er i sætningsemner
 
 TEMPLATE NP = (1 N + Abs) OR (1 OBLIQUE LINK 1 N + Abs) ;
+#TEMPLATE NP = (1 N + Abs) OR (1 OBLIQUE LINK 1 N + Abs) OR (0 Rel LINK 1 POSSESSUM + OBLIQUE LINK 1 N); #20190518 virker ikke. Tag den op med Tino
 
 TEMPLATE alone =
 	(@0 BOS LINK 1 EOS) # Faktisk kun 1 ord i sætningen
@@ -5660,11 +5661,14 @@ SELECT:0614 N + Sg + Ins OR Num + Sg + Ins IF (1 N + Sg + Ins)(NEGATE *0 V) ; # 
 SELECT:0615 N + Sg + Abl OR Num + Sg + Abl IF (1 N + Sg + Abl)(NEGATE *0 V) ; # Vedr. overskrifter og sætningsemner
 SELECT:0616 N + Sg + Via OR Num + Sg + Via IF (1 N + Sg + Via)(NEGATE *0 V) ; # Vedr. overskrifter og sætningsemner
 SELECT:0617 N + Sg + Aeq OR Num + Sg + Aeq IF (1 N + Sg + Aeq)(NEGATE *0 V) ; # Vedr. overskrifter og sætningsemner
- 
 
 SELECT Ins + CONJ-LU IF (-1C Ins) ;
 SELECT Abs + CONJ-LU + Pl IF (-1C Abs + Pl);
+
 SELECT Abs + CONJ-LU + Sg IF (-1C Abs + Sg)(NEGATE 0 Rel + Sg LINK 1 3SgPoss);
+
+#SELECT Abs + CONJ-LU + Sg IF (-1C Abs + Sg)(NEGATE 0 Rel + Sg LINK 1 3SgPoss)(NEGATE 0 Par LINK *-1 T:NP);
+
 SELECT:1610 Abs + CONJ-LU IF (*-1 Abs)(*1 INTRANSVERB + 3Pl BARRIER V)(NEGATE 0 Rel + Pl LINK 1 3PlPoss)(NEGATE 0 Part)(NEGATE -1 KOMMA)(NEGATE -1C Rel LINK *2 TRANSVERB + 3Pl) ; # Et parataktisk subjekt. Skal komme før 1641 for at holde Lok + 3SgPoss ude fra Abs + 4SgPoss, men må ikke hitte på possessor i pluralis # komma + konjunktion deler syntamerne
 
 SELECT Rel + Pl IF (1 (/__Gram\/Dem\ Pron__/l) + Rel + Pl)(NEGATE 2 3PlO); #'ILLUT taakku eqqaanni @SUBJ> ... @PRED'
