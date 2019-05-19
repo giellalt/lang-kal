@@ -1337,7 +1337,7 @@ LIST NOTSPLIT = ("neri" TAQ SSAQ) ; # cannot take i- -arguments.
 
 LIST MAANED = "januar" "januaari" "februar" "februaari" "marts" "marsi" "april" "apriili" "maj" "maaji" "juni" "juuni" "juli" "juuli" "august" "aggusti" "augusti" "september" "septembari" "oktober" "oktobari" "november" "novembari" "december" "decembari" ;
 SET CLOCK = (Num Trm) - AFFINGERET ;
-LIST OTHERTIME = Sem/Time ("aallar" QQAAR UTE) ("aasaq") "akunneq" ("aqagu") (/\"inuk\"\ U\ .*\ NIQ/l) ("ippassaq") "juulli" ("kingulleq") ("kingu" NIQ) ("kinguneq") ("kinguninnguaq") ("kingusip") ("maanna") "minut" "naggat" ("nali") ("piffik") ("qaammat") ("qangali") "qangangaatsiaq" ("qeqqa") ("sapaat") ("sapaatip-akunneq") ("sivisu") "sivitsunngitsoq" ("siulleq") ("siuneq") ("taarsi") "time" ("ualeq") ("ukiaq") ("ukiar" TUQ) ("ukiartoq") ("ukioq") ("ullaa") ("ullaaq") "ullaaralaaq" "ullaaror" ("ulloq") ("unnuaq") "unnuaqeqqa" ("unnuk") ;
+LIST OTHERTIME = Sem/Time ("aallar" QQAAR UTE) ("aasaq") "akunneq" ("aqagu") (/\"inuk\"\ U\ .*\ NIQ/l) ("ippassaq") "juulli" ("kingulleq") ("kingu" NIQ) ("kinguneq") ("kinguninnguaq") ("kingusip") ("maanna") "minut" "naggat" ("nali") ("piffik") ("qaammat") ("qangali") "qangangaatsiaq" ("qeqqa") ("sapaat") ("sapaatip-akunneq") ("sivisu") "sivitsunngitsoq" ("siulleq") ("siuneq") ("taarsi") "time" ("ualeq") ("ukiaq") ("ukiar" TUQ) ("ukiartoq") ("ukioq") ("ullaa") ("ullaaq") "ullaaralaaq" "ullaaror" "ullaassaq" ("ulloq") ("unnuaq") "unnuaqeqqa" ("unnuk") ;
 SET TIMENOUN = UGEDAGE | OTHERDAY | SEASON | MAANED | CLOCK | OTHERTIME ;
 SET TIME = TEMPUSVERB | TIMEVERB | OTHERTIME | TIDSPARTIKEL ;
 
@@ -2072,6 +2072,9 @@ APPEND ("$1ssa"v Orth/Append V Int 3Sg) TARGET ("<(.*)ssava>"r) (NOT 0 WORD - (<
 #SUBSTITUTE (\?) (Prop Rel Sg) TARGET (/\\p{Lu}\\p{Ll}+-?i?p>/r) ;
 
 
+APPEND ("$1"v Orth/Append U Der/nv V Cont 4Sg) TARGET N + Abs - MI + ("<([a-z]*)>"r)(**-1 ("aappaq") + POSSESSUM3 LINK 1 U + V LINK *1 ("aappaq") + POSSESSUM LINK 1 _TARGET_)(NOT 0 V + U) ; # aappaa qaqortuuvoq, aappaa qernertoq (underforstået qernertuulluni)(NEGATE 0 (Orth/Append).
+
+
 ### USIKRE TAGGINGS AF ULÆSELIGE ORD ###
 #======================================#
 APPEND ("$1"v Orth/Append N Gram/ACR Lok Pl) TARGET ("<(\\p{Lu}{2,})-i?ni>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # HK
@@ -2109,7 +2112,7 @@ APPEND ("$1"v Orth/Append Prop) TARGET ("<(\\p{Lu}.*)>"r) - MIU (NEGATE *-1 BOS 
 
 
 REMOVE (\?) IF (0 WORD) ;
-REMOVE:9974 Orth/Append IF (0 WORD - (<heur> <f:[0-9]+>r)) ; #Slet gættede former, hvis ikke eneste læsning
+REMOVE:9974 Orth/Append IF (0 WORD - (<heur> <f:[0-9]+>r))(NEGATE -1 ("aappaq") + POSSESSUM) ; #Slet gættede former, hvis ikke eneste læsning
 
 
 ### MULIGE, SIKRE TAGGINGS AF PROPRIER ###
@@ -2158,7 +2161,7 @@ SELECT:0110D FAM + KKUT + Abs IF (*1 V + 3Pl OR V + 3PlO) ;
 REMOVE:0130 KKUT + Abs IF (NEGATE *1 INTRANSVERB + 3Pl)(NEGATE *0 3PlO) ;
 REMOVE:0131B KKUT + Rel IF (NEGATE *1 TRANSVERB + 3Pl)(NEGATE 1 3PlPoss OR 3SgPoss) ;
 REMOVE:0131C KKUT IF (0 PLACE) ;
-REMOVE:0131D KKUT IF (0 Via + TIMENOUN)
+REMOVE:0131D KKUT IF (0 Via + TIMENOUN) ;
 
 
 ### NIR ###
@@ -2252,7 +2255,8 @@ REMOVE:0003C Gram/Exclm + ("(.*)r"r) IF (0 ("$1q"v)) ; #Slet en Exclm der ender 
 REMOVE:0003D Gram/Exclm IF (0 Abs LINK *-1 Gram/Dem LINK 1 SPATIAL LINK 1 _TARGET_) ; #PL 20190302 0003 vælger Gram/Exclm i 'Unami atinniittoq ITERSALIARSUAQ suugami?'
 SELECT:0003 Ind - SUB IF (NEGATE *0 VFIN BARRIER KOMMA)(NEGATE 0 NIR OR INDERIVERENDE_SUBSTANTIV)(NEGATE 0 Int LINK 1 ("?"))(NEGATE 0 Par LINK *-1 KONCESSIV)(NEGATE -1 NIQ + Gram/Comp)(NEGATE 0 Gram/Exclm LINK *1 Par LINK -*1 KONCESSIV)(NEGATE 0 KONCESSIV)(NEGATE *-1 ("tassa") LINK -1 BOS) #SUB undtaget for ikke at gøre Via som matuagut til Ind 1Pl. Må ikke slette Par i koncessiver og efterlade fx GALUAQ + GE + Ind. Må ikke slette NIQ fulgt af Par. Sidste NEGATE fordi 'ilaat' kan læses som IP + LAAR + Exclm. Allersidste NEGATE for at undgå at naak analyseres som naap+Exclm
 (NEGATE 0 Rel LINK 1 POSSESSUM)
-(NEGATE 0 ("aappaq") OR GIIP) ;
+(NEGATE 0 ("aappaq") OR GIIP)
+(NEGATE 0 ("qulleq")) ;
 
 
 
@@ -3520,6 +3524,9 @@ MAP:M0012D @CL-<ADVL TARGET TempPart IF (-*1 VFIN)(NEGATE *1 VFIN BARRIER KOMMA)
 MAP:M0012F @PRED TARGET CONT + 2Sg IF (1 EOS)
 (NEGATE *-1 V BARRIER CONJ-C OR @CONJ) ;
 
+#Ledsagemåde som erstatning for VFIN i konstruktionen aappaa-aappaa
+MAP:M0012G @PRED TARGET CONT IF (-1 ("aappaq") + POSSESSUM3 LINK *-1 ("aappaq") + POSSESSUM3) ;
+
 #Hybridverber
 MAP:M0065 @>V TARGET Abs + NIQ - POSSESSUM IF (1 ("ajor") - (/\"ajor\"\ Gram\/TV\ TAQ\ /l) - NAR OR ("saper")) 
 (NEGATE 0 (NIQ SSAQ)) #Paasiuminaatsumik sunnertikkaanni akuersinnginnissaq ajornartarpoq.
@@ -4168,6 +4175,7 @@ MAP:M0410 (@HNOUN) TARGET APPELLATIV + Abs OR Prop + Abs OR Gram/Abbr - FIRSTNAM
 MAP:M0411A @HNOUN TARGET WORD - V - Interj - Gram/Exclm - Pron IF (NEGATE *0 V OR OCCATION OR INDERIVERENDE_SUBSTANTIV BARRIER DIRTALESLUT)(1 EOS)(NEGATE NOT -1 ("suna") LINK 1 $$KASUS LINK -1 $$KASUS) #su tamaq undtaget
 (NEGATE 0 Conj)
 ;
+
 
 MAP:M0411F @ADVL>N TARGET SEASON + Lok IF (*1 N - Lok - AFFINGERET BARRIER (*) - SEASON) ; #upernaami aput
 
