@@ -2162,7 +2162,6 @@ REMOVE:9974 Orth/Append IF (0 WORD - (<heur> <f:[0-9]+>r))(NEGATE -1 ("aappaq") 
 
 ### MULIGE, SIKRE TAGGINGS AF PROPRIER ###
 #========================================#
-
 LIST ROMANNUMBER = "I" "II" "III" "IV" "V" "VI" "VII" "VIII" "IX" "X" "XI" "XII" "XIII" "XIV" "XV" "XVI" XVII" "XVIII" "XIX" "XX" "XXI" "XXII" "XXIII" "XXIV" "XXV" "XXVI" "XXVII" "XXVIII";
 
 COPY ("%u$1"v Orth/Copy) EXCEPT (".*"r) TARGET ("<[A-Z][a-z].*>"r "([^<].*)"r) IF (0 N)(NEGATE 0 Prop OR iProp OR Pali OR Adv)(NEGATE 0 Gram/Abbr - Orth/Append) (NEGATE -1 ROMANNUMBER)(NEGATE 0 MIU OR TITEL);
@@ -2174,7 +2173,7 @@ SUBSTITUTE (N Prop) (Prop) TARGET (/N\ Prop/l);
 
 REMOVE (MIU) - iProp IF (0 (Orth/Copy iProp MIU)) ;
 
-REMOVE (Orth/Copy) IF (-*1 BOS BARRIER (*) - PUNCT)(NEGATE 1 Prop OR iProp) ;
+REMOVE (Orth/Copy) OR (<added-prop>) - OLang/DAN IF (-*1 BOS BARRIER (*) - PUNCT)(NEGATE 1 Prop OR iProp) ;
 REMOVE (Orth/Copy Prop Pl) IF (-*1 BOS BARRIER (*) - PUNCT - ("nuna"))(1 Prop + Sg - 2SgPoss) ;
 REMOVE (Orth/Copy Prop Sg) IF (-*1 BOS BARRIER (*) - PUNCT)(1C Prop + Pl) ;
 REMOVE (Orth/Copy Prop) IF (0 OBLIQUE) (-*1 BOS BARRIER (*) - PUNCT)(1 Prop) ;
@@ -2654,6 +2653,7 @@ REMOVE:0072D Imp IF (0 Rel)(*-1 VFIN) ; #sorlaasalu er ikke Imp
 REMOVE:0072 Rel + Pl  IF (NEGATE *1 3PlPoss OR i3PlPoss BARRIER KOMMA)(NEGATE *0 TRANSVERB + 3Pl BARRIER KOMMA)(NEGATE 0 CONJ-LU LINK -1 3Pl)(NEGATE 0 Num LINK -1 Pl + Rel)(NEGATE 0 Der/vn + Pl LINK -1 CONT LINK -1 Rel + Pl)(NEGATE 1 ("nuna") + POSSESSUM3 OR ("nuna") + iPOSSESSUM3)  #Må ikke slette adled til Rel til venstre
 (NEGATE 0 Rel LINK *1 ("soorlu") LINK *1 Rel BARRIER V)
  #Nalunngereerpara ullorissat annerit atserneqarsimasut, soorlu nunarsuup ...
+(NEGATE 0 CONJ-LU LINK *1 TRANSVERB + 3Sg BARRIER Abs + Sg) #sideordnet subjekt kan have sg-verbum
 (NEGATE 0 Imp + 1Pl) #sorlaasa og nuliaasa og aasami er ikke Imp...
 (NEGATE *1 ("ateq")  BARRIER V LINK 0 LIK OR TAAQ OR QAR)
 ;
@@ -3517,7 +3517,7 @@ REMOVE:0430D Abs IF (*-1 ("soorlu") BARRIER (*) - Abs - Adv LINK -1C Rel) ;
 #ADD (@baseform-no-i) ("\\p{Lu}.*[^i]"r) ;
 #REMOVE ("\\p{Lu}.*i"r) IF (0 ("\\p{Lu}.*[^i]"r)) ;
 
-MAP:M00000 @>N TARGET ("nalunaaqutaq") IF (1 Num + Trm OR Num + Abl OR Num + Abs) ;
+MAP:M00000 @>N TARGET ("nalunaaqutaq") + &&IV_SUBJ& IF (1 Num + Trm OR Num + Abl OR Num + Abs LINK NEGATE 1 Trm LINK *1 V + &&IV_SUBJ&) ; #NEGATE  tamannalu pillugu unnugu *nalunaaqutaq qulinit aqqanermut siuartinneqassaaq.
 MAP:M00001 @>N TARGET ("ukioq") IF (1 Num OR iNum)(NEGATE 0 $$KASUS LINK 1 (*) + $$KASUS - AFFINGERET)(NEGATE 1 POSSESSUM)(NEGATE 1 INSOBJVERB OR U OR NNGUR)(NEGATE -1 Num)(NEGATE NOT 0 Ins LINK 1 LIK)(NEGATE 2 Sem/Unit)  ;
 MAP:M0000 (@PRED) TARGET VFIN (NEGATE 0 Gram/Exclm LINK -1* ("una") BARRIER (*) - Abs - Conj)(NEGATE -1 ("\"") LINK 1 _TARGET_ LINK 1 ("\"")) #Et finit verbum er altid prædikat #Negate fordi et verbum i anførselstegn fungerer som et nomen.
 #(NEGATE 0 (*) - CONJ-C - KONJUNKTION LINK *-1C VFIN - CONJ-C - Gram/Exclm BARRIER CONJ-C OR KONJUNKTION OR KOMMA OR CLB OR PUNCT) 
@@ -3708,14 +3708,14 @@ MAP:M0031F @PROP> TARGET FIRSTNAME + Abs IF (1 Sem/Mask + Rel - CONJ-C OR Gram/A
 MAP:M0031G @PROP> TARGET Sem/Mask + Abs IF (1 Sem/Mask - CONJ-C)(NEGATE 1 Abl LINK *1 NIRU OR ("anneq") BARRIER V) ;
 MAP:M0031H @PROP> TARGET Sem/Fem + Abs IF (1 Sem/Fem + Abs - CONJ-C) ;
 
-MAP:M0031I @PROP> TARGET Sem/Hum + Abs IF (1 Sem/Hum - Sem/Mask - Sem/Fem - Abl - CONJ-C - SEMIOTIC OR (Orth/Append Prop))(NEGATE 1 Sem/Geo) ; #Beregnet til fornavn-efternavn, men usikker pga manglende kønstagging af fornavnet.
+MAP:M0031I @PROP> TARGET Sem/Hum + Abs - ORGANISATION IF (1 Sem/Hum - Sem/Mask - Sem/Fem - Abl - CONJ-C - SEMIOTIC OR (Orth/Append Prop))(NEGATE 1 Sem/Geo) ; #Beregnet til fornavn-efternavn, men usikker pga manglende kønstagging af fornavnet.
 
 MAP:M0031M @i-PROP> TARGET Prop + Sem/Geo IF (1 (MIU)); #Amerika Kujallermiu
 MAP:M0031N @i-PROP> TARGET Prop + Sem/Geo IF (1 PLACE + iProp + iOBLIQUE) ;
 MAP:M0031N @i-PROP> TARGET Prop + Sem/Geo IF (1 PLACE + iN + iOBLIQUE) ;
 MAP:M0031O @PROP> TARGET Prop + Sem/Geo + Abs IF (1 PLACE - Prop - CONJ-C)(NEGATE 1 POSSESSUM + Rel)(NEGATE -1 N + Abs) ;
 
-MAP:M0031P @PROP> TARGET ORGANISATION IF (1 Prop) (NEGATE 1 ORGANISATION + CONJ-C) ;
+MAP:M0031P @PROP> TARGET ORGANISATION IF (1 Prop) (NEGATE 1 ORGANISATION + CONJ-C OR INSTITUTION) ;
 MAP:M0031Q @PROP> TARGET Gram/ACR + Abs IF (1 Prop) ;
 
 MAP:M0031 (@PROP>) TARGET Prop + Abs OR FIRSTNAME + Abs OR TITEL + Abs IF (0 $$NUMERUS)(1 Prop + $$NUMERUS - CONJ-C)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + CONJ-LU LINK *1 V + 3Pl )(NEGATE 1 Prop + CONJ-LU LINK *1 V + 3PlO)(NEGATE 0 FIRSTNAME LINK 1 FIRSTNAME)(NEGATE 0 FIRSTNAME LINK 1 ("Kalaallit"))(NEGATE 1 FIRSTNAME + CONJ-LU)(NEGATE 0 Abs + Sg LINK *1 TRANSVERB + 3SgO BARRIER V)(NEGATE 1 Prop LINK 1 Prop - Abs)(NEGATE 1 Prop LINK -2 OBLIQUE)(NEGATE 1 SEMIOTIC)(NEGATE 1 POSSESSUM)
@@ -4090,7 +4090,7 @@ MAP:M0341 @N< TARGET Abs + Sg + Der/vn - CONJ-LU IF (-*1 Abs + Sg - FIRSTNAME - 
 (NEGATE -1 Part + CONJ-LU LINK -1 Abs ) # Ikke Sem/FirstName+Abs og ikke TITEL fordi de ikke har syntaktisk funktion i sig selv. 
 (NEGATE -1 KOMMA LINK -1 @EXCLM OR Gram/Exclm)
 (NEGATE 0 ("(..*)t.*p"r) LINK *-1 ("$1"v)) ; # toqu... toqutsip... er ikke @N< Den skal gøres generel.
-MAP:M0341X @N< TARGET Rel + $$NUMERUS - Sem/Fem - Sem/Mask - TIME - CONJ-LU - Pron - Prop IF (*-1 &&POSS34_POSS& + $$NUMERUS + Rel - Prop - @>N BARRIER (*) - Adv - OBLIQUE LINK *1 &&POSS34_POSS& BARRIER V) (NEGATE 0 POSSESSUM)(NEGATE -1 Gram/Dem + Rel)(NEGATE 1 Abs LINK *1 TRANSVERB BARRIER (*) - OBLIQUE); #Må ikke tagge naatsiiviup MATUATA tungaanut og ikke N med foranstillet @Pron>N. Fornavne og deres særlige hensyn (fx type Perip Najannguup N-a .. holdt uden for denne regel. Må heller ikke tagge, når -1 subjekt for transverb og 0 POSS for objekt som i .. anernerata ELEVATORIP ilua silaannalussitippaa. TIME ikke medtaget pga. type Perip SAPAATIP akunneranut pulaartagaa ..
+MAP:M0341X @N< TARGET Rel + $$NUMERUS - Sem/Fem - Sem/Mask - TIMENOUN - CONJ-LU - Pron - Prop IF (*-1 &&POSS34_POSS& + $$NUMERUS + Rel - Prop - @>N BARRIER (*) - Adv - OBLIQUE LINK *1 &&POSS34_POSS& BARRIER V) (NEGATE 0 POSSESSUM)(NEGATE -1 Gram/Dem + Rel)(NEGATE 1 Abs LINK *1 TRANSVERB BARRIER (*) - OBLIQUE); #Må ikke tagge naatsiiviup MATUATA tungaanut og ikke N med foranstillet @Pron>N. Fornavne og deres særlige hensyn (fx type Perip Najannguup N-a .. holdt uden for denne regel. Må heller ikke tagge, når -1 subjekt for transverb og 0 POSS for objekt som i .. anernerata ELEVATORIP ilua silaannalussitippaa. TIME ikke medtaget pga. type Perip SAPAATIP akunneranut pulaartagaa ..
 
 #PL 20190414 Forsøgt gjort mere generel for også at tagge .. inersuup AMMASUP tungaanut tikkuarluni .. korrekt men skal revurderes, da mange overraskelser. Forsøger i stedet med M0341X ovenfor
 #MAP:M0341 @N< TARGET $$KASUS + Der/vn - CONJ-LU IF (-*1 $$KASUS - Sem/FirstName - Sem/Fem - TITEL - ("kinguneq") - @>N - @Pron>N - TIME BARRIER V OR ("soorlu") OR CONJ-C OR Gram/Pers)(NEGATE *-1 Gram/Dem LINK -1 TIME) #kinguneq tilføjet 20170425 for at undgå hit på kingorna.
@@ -4210,7 +4210,7 @@ MAP:M0408Jnum @>N TARGET PRENUM (1 Num);
 MAP:M0408Knum @>N TARGET NUMHOVED + Abs IF (1 iNum - @N< - AFFINGERET);
 MAP:M0408Lnum @>N TARGET NUMHOVED + Abs IF (1 Num - AFFINGERET - Abs - @N<);
 MAP:M0408Mnum @i->N TARGET NUMHOVED + Abs (1 QAR) ;
-MAP:M0408R @>N TARGET Gram/ACR OR Prop IF (1 EVENT + N OR Gram/ACR - Der/nv) ;
+MAP:M0408R @>N TARGET Gram/ACR OR Prop + Abs IF (1 EVENT + N OR Gram/ACR - Der/nv) ;
 MAP:M0408S @>N TARGET PLACE - Prop - iProp - CONJ-C - MIU - OBLIQUE IF (1 Prop - PLACE) ; #Atuarfik Gammeqarfiup pisortaa.
 MAP:M0408T @>N TARGET MAANED + Abs - MI IF (1 Num - POSSESSUM OR iNum) ; #November 1962 #nalunaarutaat nr.15, 20. oktober 2009-meersoq
 MAP:M0408U @>N TARGET Num + Lok IF (-*1 MAANED + Rel BARRIER (*) - ("ulloq")) (1 Num - POSSESSUM) ; #marsip ulluisa 30-anni 2019
@@ -7077,7 +7077,7 @@ SELECT:5999AA ("assik") + LIUR IF (0 ("assilior"))(-1 Rel) ; #nunap@i-POSS> assi
 SELECT:5999AB ("akuere") + HTR IF (0 IR OR IRSIR) ;
 REMOVE:5999AC ("ataaseq") IF (0 ("ataatsimiip")) ;
 REMOVE:5999AD ("inuk") + U + VIK + SIUR IF (0 ("inuuissior")) ;
-
+REMOVE:5999AE N IF (0 INSTITUTION) ; #Naalakkersuisut
 #Partiklerne
 REMOVE:5860 ("taama") + Interj IF (0 ("taama") + Adv LINK 1 V) ;
 REMOVE:5861 ("alla") + POSSESSUM IF ( 0 ("allaat") + Part ) ; #
