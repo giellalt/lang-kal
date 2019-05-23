@@ -1129,9 +1129,10 @@ SET ATORLUGU = ("ator" Cont) - AFFINGERET | ("ator" ContNeg) - AFFINGERET ;
 SET ILAGALUGU = ("ila" GE Cont) | ("ila" GE ContNeg) ;
 SET KILLEQQULLUGU = ("killeqqup" Cont) - AFFINGERET | ("killeqqup" ContNeg) - AFFINGERET ;
 SET MALILLUGU = ("malip" Cont) - AFFINGERET | ("malip" ContNeg) - AFFINGERET ;
+SET TAMAKKERLUGU = ("tamakker" Cont) - AFFINGERET | ("tamakker" ContNeg) - AFFINGERET ;
 SET TIKILLUGU = ("tikip" Cont) - AFFINGERET | ("tikip" ContNeg) - AFFINGERET ;
 SET TUNNGAVIGALUGU = ("tunnga" VIK GE Cont) | ("tunnga" VIK GE ContNeg) ;
-SET OBJVERB = PILLUGU | PISSUTIGALUGU | AQQUSAARLUGU | ATORLUGU | ILAGALUGU |  MALILLUGU | TIKILLUGU | TUNNGAVIGALUGU ;
+SET OBJVERB = PILLUGU | PISSUTIGALUGU | AQQUSAARLUGU | ATORLUGU | ILAGALUGU |  MALILLUGU | TAMAKKERLUGU | TIKILLUGU | TUNNGAVIGALUGU ;
 LIST NONOBJVERB = ("agguar" QATE GIIP TIP Cont) ;
 
 # Nominer
@@ -1457,7 +1458,7 @@ SET FIRSTNAME = (Sem/Mask Prop) | (Sem/Fem Prop) | Mask | Fem | ("Frederik") | (
 SET NAME = FIRSTNAME | Sur ;
 SET NOT-FIRST = WORD - FIRSTNAME ;
 
-LIST INSTITUTION = "Inatsisartut" "Naalakkersuisut" "Oqaasileriffik" "Oqaasiliortut" ;
+LIST INSTITUTION = "Folketing" "Folketinget" "Inatsisartut" "Naalakkersuisut" "Oqaasileriffik" "Oqaasiliortut" ;
 
 LIST FAM_UNIK = "ui" "nuliaq" ("angut" 3SgPoss) ("angut" 3PlPoss) ("angut" 4SgPoss) "anaana" "arnarsiaq" "ataata" "aana" "aanaq" "aanarsiaq" "ittoq" "aata" "aataq" "aataa" ;
 # betegnelser som sjældent optræder uden for sing.
@@ -2173,7 +2174,7 @@ SUBSTITUTE (N Prop) (Prop) TARGET (/N\ Prop/l);
 
 REMOVE (MIU) - iProp IF (0 (Orth/Copy iProp MIU)) ;
 
-REMOVE (Orth/Copy) OR (<added-prop>) - OLang/DAN IF (-*1 BOS BARRIER (*) - PUNCT)(NEGATE 1 Prop OR iProp) ;
+REMOVE (Orth/Copy) OR (<added-prop>) - OLang/DAN IF (-*1 BOS BARRIER (*) - PUNCT)(NEGATE 1 Prop OR iProp)(NEGATE 0 INSTITUTION) ;
 REMOVE (Orth/Copy Prop Pl) IF (-*1 BOS BARRIER (*) - PUNCT - ("nuna"))(1 Prop + Sg - 2SgPoss) ;
 REMOVE (Orth/Copy Prop Sg) IF (-*1 BOS BARRIER (*) - PUNCT)(1C Prop + Pl) ;
 REMOVE (Orth/Copy Prop) IF (0 OBLIQUE) (-*1 BOS BARRIER (*) - PUNCT)(1 Prop) ;
@@ -4345,7 +4346,7 @@ MAP:M0742 @i-MIK-OBJ> TARGET ("inneq") + Ins IF (1 ("anip") + HTR + N) ;
 MAP @i-N< TARGET Ins - CONJ-C (-1 LIK_QAR - PLACE - iNum - Prop LINK NOT -1 Ins)(NEGATE 1 HTR OR (/TAQ\ Der\/vn\ QAR/l)) #Inoqarpammi naasumik asasaqartumik
 (NEGATE -1 Aeq LINK 1 ("ip")) #Uangalu nalunngisaqaruma naasumik nunarsuarmi asseqanngitsumik 
 (NEGATE 1 Ins + CONJ-C) ;
-MAP:M0750A (@i->N) TARGET Ins - NÆPPE_OBJ OR ("imatut") IF (*1 LIK_QAR - iNum OR ("quleriilik") BARRIER KOMMA OR V OR NIQAR OR ("aamma") + Conj OR VFIN OR HTR - CONJ-C - HUMAN - <Hprof>)(NEGATE -*1 Ins + ATTRIBUTIV - ("ajor" NAR TUQ) BARRIER (*) - VFIN - Adv - Pali - Interj - @POSS> - (/@i-.*/r))(NEGATE 1 (/__HTR\ Der\/vv\ Gram\/IV\ TUQ\ Der\/vn\ QAR__/l))(NEGATE 0 TIME - ("inuk"))
+MAP:M0750A (@i->N) TARGET Ins - NÆPPE_OBJ OR ("imatut") OR ("misse")IF (*1 LIK_QAR - iNum OR ("quleriilik") BARRIER KOMMA OR V OR NIQAR OR ("aamma") + Conj OR VFIN OR HTR - CONJ-C - HUMAN - <Hprof>)(NEGATE -*1 Ins + ATTRIBUTIV - ("ajor" NAR TUQ) BARRIER (*) - VFIN - Adv - Pali - Interj - @POSS> - (/@i-.*/r))(NEGATE 1 (/__HTR\ Der\/vv\ Gram\/IV\ TUQ\ Der\/vn\ QAR__/l))(NEGATE 0 TIME - ("inuk"))
 ; # "tit" skal præciseres eller reduceres til en ADD-regel #NEGATE tilføjet 20180507 fordi det altid er @i-MIK-OBJ> ved N-mik takunnittoqarpoq. #Nyt sæt NÆPPE_OBJ til forebyggelse af *nuannersumik@i->N persuarsiorfigineqarsimallutik
 
 MAP:M0750B (@i->N) TARGET Ins - NÆPPE_OBJ OR ("imatut") IF (*1 INSOBJVERB BARRIER V LINK NOT *1 HTR BARRIER CONJ-C OR VFIN) ;
@@ -4819,7 +4820,7 @@ MAP:M0835 @ADVL> TARGET Abl IF (*1 NIRU - N - iOBLIQUE BARRIER (*) - Abl) ;
 MAP:M0840 @ADVL> TARGET Ins IF (*1 V - DOTR BARRIER Der/vn OR INDERIVERENDE_SUBSTANTIV)(NEGATE *1 ("quleriilik") OR V + QAR OR V + LIK )(NEGATE 1 KOMMA) ; #OR Der/vn fjernet og BARRIER tilfoejet 20091109. OR i første constraint tilføjet for ikke at tagge fx amermik qaatigooq
 MAP:M0841 @ADVL> TARGET Aeq IF (*1 V - ("ip") - QQU BARRIER (*) - Aeq) ;
 
-MAP:M0850 (@i-<ADVL) TARGET (Lok) + POSSESSUM3 IF (-2 Der/vn - NAR)(-1 Rel)(NEGATE *1 V OR Der/vn - CONJ-LU) ; #20091104
+MAP:M0850 (@i-<ADVL) TARGET (Lok) + POSSESSUM3 IF (-2 Der/vn - NAR)(-1 Rel)(NEGATE *1 V OR Der/vn - CONJ-LU OR LIK) ; #20091104
 MAP:M0860 (@i-<ADVL) TARGET (Lok) IF (0 CONJ-LU)(-1 (Lok) + (@i-<ADVL)) ; #20091104 #Byrådimut ilaasoq.
 MAP:M0860 @i-<ADVL TARGET Abl OR Trm IF (*-1 INDERIVERENDE_SUBSTANTIV)(NEGATE *1 V OR Der/vn) ; #Peqataasut Oqaasiliortunit
 
