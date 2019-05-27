@@ -452,7 +452,7 @@ LIST LUINNAR_SIMA_GUNAR = LUINNAR\=SIMA\=GUNAR ;
 LIST LUINNAR_SIMA_SSA = LUINNAR\=SIMA\=SSA ;
 LIST LUINNAR_GUMAAR = LUINNAR\=GUMAAR ;
 LIST LUP = LUP ;
-LIST MIUQ = MIUQ ;
+LIST MIUQ = MIUQ MIU ;
 LIST MIU = MIU MIUQ;
 LIST NAAR = NAAR ;
 LIST NAR = NAR ;
@@ -1373,7 +1373,7 @@ LIST TRANSINTRANS = "naalap" "nuup" "oqar"; #Set til verber med både transitive
 LIST SEKVENTIELLE_VERBER = "ani" "innar" ; #Sæt til anvendelse sammen med coref tidsbisætning
 LIST NAAR_VERBER = "angi" ("aki" KIP) "amerla" "isorartu" "kingusip" "miki" "oqip" "sivikip" "siusip" ; #stammer, der kan tage NAAR. Alle andre slettes
 LIST EVALUERENDE_VERBER = "kajungeraa" ; #verber med semantik der betinger objekt efter NIQ+Ins/Abl
-LIST INDERIVERENDE_SUBSTANTIV = (/\"aki\"\ [^\(Gram\/IV\)]/l SSAQ) "angajoqqaaq" "atuakkiaq" "blogger" "bloggeri" "blog" "filmiliaq" ("film" LIAQ) "igalaasartooq" "ilaqutaq" "ilassinnissut" "inatsit" "inerteqqut" "isertugaq" "isi" "isuma" ("isuma" QATE GIIP UTE) "minister" "mittarfik" "naapeqatigiinneq" "nalliuttorsiorneq" "nalunaarusiaq" "nassaaq" "nioqqut" "nuuttoq" "oqallissaarut" "oqaluttuaq" "oqimaassusilik" "peqataasoq" "peqqussut" "pineq" "piniartoq" "qaartartorsuaq" "qaatigooq" "sanaaq" "sinniisoq" "siunnersuisoq" "siunnersorti" "sungiusaasoq" "tigummiaq" FAM ;
+LIST INDERIVERENDE_SUBSTANTIV = (/\"aki\"\ [^\(Gram\/IV\)]/l SSAQ) "angajoqqaaq" "atuakkiaq" "blogger" "bloggeri" "blog" "filmiliaq" ("film" LIAQ) "igalaasartooq" "ilaqutaq" "ilassinnissut" "inatsit" "inerteqqut" "isertugaq" "isi" "isuma" ("isuma" QATE GIIP UTE) "minister" "mittarfik" "naapeqatigiinneq" "nalliuttorsiorneq" "nalunaarusiaq" "nassaaq" "nioqqut" "nuuttoq" "oqallissaarut" "oqaluttuaq" "oqartussaaffik" "oqimaassusilik" "peqataasoq" "peqqussut" "pineq" "piniartoq" "qaartartorsuaq" "qaatigooq" "sanaaq" "sinniisoq" "siunnersuisoq" "siunnersorti" "sungiusaasoq" "tigummiaq" FAM ;
 #LIST VERBALNOMEN = "isuma" "oqaluttuaq" "naapeqatigiinneq" ;
 LIST INSOBJVERB = LIUR RAAR (/\ SI\ Der\/nv/l) SSIP TAAR SIUR (/\ TUR\ Der\/nv/l) (/__LIR\ Der\/nv__/l) ;
 LIST NOTSPLIT = ("neri" TAQ SSAQ) ; # cannot take i- -arguments.
@@ -2534,6 +2534,11 @@ MAP:M0043I @>N TARGET ("mingutsitsisoq") (1 ("gas")) ; #silaannarmik mingutsitsi
 SELECT:0043I ("nuna" Lok) (1 ("alla" MIU)) ; #danskit nunani allamiunut aqutsisoqarfiannit
 MAP:M0043I @>N TARGET ("nuna" Lok) (1 ("alla" MIU)) ; #danskit nunani allamiunut aqutsisoqarfiannit
 
+#SELECT:0043I ("nuna" Lok) (1 ("alla" MIU) OR ("alla" MIUQ)) ; #danskit nunani allamiunut aqutsisoqarfiannit
+#MAP:M0043I @>N TARGET ("nuna" Lok) (1 ("alla" MIU) OR ("alla" MIUQ)) ; #danskit nunani allamiunut aqutsisoqarfiannit
+
+
+
 #PL 20190413 Adled med karakter af altid at være andet led af MWE
 SELECT:MWE01 ("ilaasortaat") IF (-1 ("umiarsuaq") OR ("umiaq") + SUAQ ) ;
 MAP:MMWE01 @N< TARGET ("ilaasortaat") + $$KASUS IF (-1 ("umiarsuaq") + $$KASUS OR ("umiaq") + SUAQ + $$KASUS) ;
@@ -3479,8 +3484,9 @@ MAP:M0408R @i-ADVL>N TARGET Adv IF (1C INDERIVERENDE_SUBSTANTIV - QAR - GE LINK 
 MAP:M0408S @i-ADVL>N TARGET Ins + $$NUMERUS - FAM IF (*1 INDERIVERENDE_SUBSTANTIV - LIK_QAR - INSOBJVERB - POSSESSUM12 BARRIER KOMMA OR V OR @i-ADVL>N OR CONJ-C LINK NOT 1 HVVERB)(NEGATE -*1 Ins + ATTRIBUTIV - ("ajor" NAR TUQ) BARRIER (*) - VFIN - Adv - Pali - Interj - @POSS> - (/@i-.*/r))(NEGATE 1 (/__HTR\ Der\/vv\ Gram\/IV\ TUQ\ Der\/vn\ QAR__/l))(NEGATE 0 TIME - ("inuk"))(NEGATE -1 Ins + $$NUMERUS) ; #NEGATE tilføjet 20180507 fordi det altid er @i-MIK-OBJ> ved N-mik takunnittoqarpoq. #Nyt sæt NÆPPE_OBJ til forebyggelse af *nuannersumik@i->N persuarsiorfigineqarsimallutik
 MAP:M0408T @i-ADVL>N TARGET Trm IF (*1 INDERIVERENDE_SUBSTANTIV - GE - ("isuma" QAR) - NIAR - Trm BARRIER V OR LIK_QAR OR TIME OR Interj OR @i-ADVL>N - CONJ-C)(NEGATE 0 TIME)(NEGATE -1 TIME)(NEGATE -1 Trm)(NEGATE 1 POSSESSUM + Der/vn) ;
 MAP:M0408U @i-ADVL>N TARGET Cau OR Con IF (1 INDERIVERENDE_SUBSTANTIV + N - POSSESSUM12) ;
-MAP:M0408V @i-ADVL>N TARGET Trm OR Lok IF (0 $$KASUS)(1 INDERIVERENDE_SUBSTANTIV + N - QATE - INSOBJVERB)(NEGATE -1C $$KASUS) ;
+MAP:M0408V @i-ADVL>N TARGET Trm OR Lok IF (0 $$KASUS)(1 INDERIVERENDE_SUBSTANTIV + N - QATE - INSOBJVERB)(NEGATE NOT 0 POSSESSUM LINK -1C $$KASUS) ; #Peqqussut pineqartoq tassaavoq nunani allamiunut inatsisip nunatsinnut *atuutsinneqarneranut peqqussut.
 MAP:M0408X @i-ADVL>N TARGET V - VFIN IF (0 Cau OR Con OR LI)(1 FAM + POSSESSUM - AFFINGERET) ; #Efterskoleramaana arnarsiama Dorthep, kursusereeruma aaniaraanga, aperigami qaqugu qassinullu aasinnaanerlunga adresselu apeqqutigalugu. 
+MAP:M0408X @i-ADVL>N TARGET $$KASUS + CONJ-C IF (-1C $$KASUS + @i-ADVL>N) ;
 
 ######################
 # 4SgPoss eller Lok+Pl?
