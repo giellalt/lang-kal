@@ -1715,7 +1715,7 @@ REMOVE:0003A ("uv") + Interj IF (0 ("uffa") + Interj) ;
 #############################################
 # Et særligt afsnit til "unnerpoq/ unnerpaa #
 #############################################
-#"unner" er ofte inquit samtidig med at være ledsagende omstændighed til et ORATIOOBLVERB til venstre 
+#"unner" er ofte inquit samtidig med at være ledsagende omstændighed til et ORATIOOBLVERB til venstre. Tidlige regler til denne specielle "fyldords"-konstruktion
 MAP:unner01 @CL-CIT> TARGET Par IF (*-1 ORATIOOBLVERB BARRIER V)(1 ("unner"));
 MAP:unner02 @<ADVL TARGET ("unner") + CONT IF (*-1 ORATIOOBLVERB BARRIER V - Par LINK *1 Par BARRIER _TARGET_);
 
@@ -2578,7 +2578,9 @@ SELECT:0044 ADJEKTIVISK + Abs + Sg IF (-1 Abs + Sg)(*1 3SgO BARRIER V)(NEGATE *0
 REMOVE:0044A ("ilaaq") - QAR OR LIK IF (0 ("ila") + POSSESSUM) ; #'ilaaq' uden QAR el. lign. usandsynlig
 REMOVE:0044B ("isu") + MAA IF (0 ("isuma"));
 
-SELECT:0045A Gram/Comp IF (1 ("ajor") OR ("artor") OR ("saper") OR ("nalu"));
+SELECT:0045A Gram/Comp IF (1 ("ajor") OR ("artor") OR ("saper") OR ("nalu"))
+(NEGATE 0 (/Gram/IV\ NIQ/l) LINK 1 TRANSVERB) #Ikke intransiv NIQ med transitivt verbum
+;
 REMOVE:0045B Gram/Comp IF (NEGATE 1 ("ajor") OR ("artor") OR ("saper") OR ("nalu"));
 #20100228 NY (PL): Vælger og fjerner alle transitiver med NIQ
 
@@ -2915,7 +2917,9 @@ MAP:M0136X @SUBJ> TARGET Abs + Pl IF (*1 NUM + Pl + Abs BARRIER (*) - ("tamaq") 
 MAP:M0136XX @ADVL>N TARGET ("akunneq") IF (-1 NUM + Pl + Abs )(1 NUM LINK *1 V + 3Pl BARRIER (*) - OBLIQUE ) ;
 
 SELECT:0136 Rel + Pl - FAM_UNIK IF #(*1 (*) - Rel - Num)
-(*1C POSSESSUM + 3PlPoss OR TRANSVERB - 3PlO BARRIER INTRANSVERB)(NEGATE *-1 INTRANSVERB + 3Pl OR TRANSVERB + 3PlO)
+(*1C POSSESSUM + 3PlPoss OR TRANSVERB - 3PlO BARRIER INTRANSVERB)
+(NEGATE *1 Trm BARRIER KOMMA LINK 1 NIQ + 3PlPoss + Ins LINK *1 NIQAR + 3Pl BARRIER V) # ILAQUTAASUT ikiorneqarumasut sumut saaffiginnissinnaanerannik paasitinneqareerput, arlallillu saaffiginnereerlutik.
+(NEGATE *-1 INTRANSVERB + 3Pl OR TRANSVERB + 3PlO)
 (*1 POSSESSUM OR iPOSSESSUM OR TRANSVERB + 3Pl OR TRANSVERB + 4Pl BARRIER ("soorlu") OR ("taama")) 
 (NEGATE 0 Ins OR ("isuma"))(NEGATE *-1 ORATIOOBLVERB)
 (NEGATE *1 TRANSVERB + 3Pl) #qanga qulliit ukkusissat qaammaqqutigaat.
@@ -3813,7 +3817,21 @@ MAP:M0049B @i-ADVL> TARGET V - VFIN IF (1 HUM + GE + POSSESSUM) ; # Aanip nalunn
 
 MAP:M0050 (@PRED) TARGET Par IF (*-1 ADVERBIUM OR UNA BARRIER V)(NEGATE *0 ORATIOOBLVERB)(NEGATE *0 @PRED OR VFIN BARRIER KOMMA OR CONJ-C) ; #20091109 #20190405 rettet fra PRED2 til PRED
 MAP:M0050 (@PRED2) TARGET CONT IF (*-1 UNA BARRIER V)(NEGATE *0 ORATIOOBLVERB)(NEGATE *1 V) ; #20091109 #Overvej om den skal omdøbes til PRED i stedet for PRED2. #Kopi af M0050 til ledsagemåder som erstatning for Par efter UNA. #iggavilli inoqanngeriarmat nerisarfimmut alakkarpoq taavaana Jaakubiini nerriviliorluni inilersoq unaluuna qungujulaarluni.
-MAP:M0051 (@PRED2) TARGET Par OR CONT IF (*-1 ("soorlu") BARRIER V)(NEGATE *0 VFIN) ;
+
+#Særtilfælde før 0051 til helt løsrevne indskud som ulloriaani angalasumi, SOORLU ULLORISSANI TAMANI TAAMAATTOQ, ... BARRIER V OR KOMMA for ikke at hitte på @<ADVL som Titartaaneq atuartitsinermini iluaqutiginiartarsimavaa atuartitsissutini assigiinngitsuni, soorlu silamiut ingerlaasiannik oqaluttuarisani, ASSILIARTALERSORTITTARLUGIT.
+MAP:M0051X (@PRED2) TARGET Par OR CONT IF (*-1 ("soorlu") BARRIER V OR KOMMA LINK -1 KOMMA) 
+(NEGATE *0 VFIN OR CON_CAU BARRIER KOMMA) #ikke soorlulusooq NALORNILIVISSIMALLUNI aperimmanga
+(NEGATE *-1 VFIN LINK *1 CONJ-LU OR LI LINK *1 _TARGET_ ) #Ikke ved paratakser: Nalunngilaa nukappiaqqat qaninniartarsimagaluaraat, soorluli .. MALUNNARSIMANANI
+(*-1 $$KASUS LINK *-1 ("soorlu") LINK -1 KOMMA LINK *-1 $$KASUS) 
+;
+
+MAP:M0051 (@PRED2) TARGET Par OR CONT IF (*-1 ("soorlu") BARRIER V)
+(NEGATE *0 VFIN OR CON_CAU BARRIER KOMMA) #ikke soorlulusooq NALORNILIVISSIMALLUNI aperimmanga
+(NEGATE *-1 VFIN LINK *1 CONJ-LU OR LI LINK *1 _TARGET_ ) #Ikke ved paratakser: Nalunngilaa nukappiaqqat qaninniartarsimagaluaraat, soorluli .. MALUNNARSIMANANI
+(NEGATE *-1 ("soorlu") BARRIER V LINK -1 KOMMA LINK *-1 Der/vn + N BARRIER V) #for så er det @i-<ADVL
+(NEGATE 0 CONT LINK *-1 ("soorlu") BARRIER V LINK -1 KOMMA LINK *-1 @PRED BARRIER V) #for så er det en @<ADVL
+;
+
 MAP:M0052 (@PRED) TARGET Par + 3Pl IF (NEGATE *0 VFIN OR Cau)(NEGATE 0 VFIN)(NEGATE *-1 ORATIOOBLVERB) ; #Må ikke MAP-e or. obl. Jf. SELECT:100 #Ændret fra PRED2 20190311. Mapper kun ord, der fungerer som PRED.
 # De følgende 4 om non-coreferente ledsagemåder, der er koncessive
 MAP:M0053 (@PRED2) TARGET CONT + 4Pl IF (*-1 Abs + Sg + CONJ-LU)(NEGATE *1 VFIN + 3Pl)(1* Abs + Sg LINK 1* V + 3Sg) ;
@@ -5624,6 +5642,9 @@ REMOVE:0471 Par IF (*-1 Prop LINK *1 ("\,") BARRIER V)(*1 ("\,"))(NEGATE *0 VFIN
 REMOVE:0473 INTRANSVERB + Par + 3Pl IF (-1 Con OR Cau LINK *-1 Abs) ;
 #Bisætning med participium står ikke uden subjekt umiddelbart efter finit Cau og Con
 
+#En lidt snævrere REMOVE for at vælge @N< i subjekts-NP med et teoretisk inquit som mest overordnet verbum. Inquit formodes kun at være inquit hvis intrans sing. eller trans med 3SgO
+REMOVE:0474 INTRANSVERB + Par + 3Pl IF (NEGATE *0 ORATIOOBLVERB + INTRANSVERB + 3Sg OR ORATIOOBLVERB + TRANSVERB + 3SgO OR ORATIOOBLVERB + CON_CAU + 4Sg)(NEGATE -1 Abs + Pl + TIME) ;
+
 REMOVE:0475 INTRANSVERB + Par + 3Pl IF (NEGATE *0 ORATIOOBLVERB)(NEGATE -1 Abs + Pl + TIME); #Sidste NEGATE for at hitte på tidsparticipier
 
 SELECT:0476 Par + 3Sg + GALUAR IF (-1 Abs + Sg LINK *-1 BOS BARRIER (*) - Rel)(*1 VFIN) ;
@@ -6851,9 +6872,11 @@ REMOVE:5550 PAK + LUP IF (0 PALUP) ;
 REMOVE:5551 ("qiteq") + QATE IF (0 ("qitip")) ;
 REMOVE:5552 ("niviaq") + SIAQ IF (0 ("niviarsiaq"));
 REMOVE:0553 NIQ + QAR IF (0 (/\"taa\"\ Gram\/TV\ NIQAR\ /l)) ;
-#REMOVE:0553A NIQAR IF (0 NIQ + QAR LINK -1 Ins + Pl OR Ins + Num)(NEGATE *-1C Abl BARRIER VFIN OR CONJ-C) ;#PL 20190413 hitter på aningaasanik pisartagaqartinneqarmat
-#REMOVE:0553A NIQAR IF (0 NIQ + QAR LINK -1 Ins + Pl OR Ins + Num)(NEGATE *-1C Abl BARRIER VFIN OR CONJ-C)(NEGATE 0 (/__\ QAR\ Der/nv\ Gram\/IV\ TIP\ Der\/vv\ Gram\/TV\ NIQAR__/l)) ;#PL 20190413 formel fejl i ordering. Reformuleres ad hoc
-REMOVE:0553A NIQAR IF (0 NIQ + QAR LINK -1 Ins + Pl - CONJ-C OR Ins + Num)(NEGATE *-1C Abl BARRIER VFIN OR CONJ-C)(NEGATE 0 QAR + TIP + NIQAR) ;#PL 20190413 formel fejl i ordering. Reformuleres ad hoc
+
+REMOVE:0553A NIQAR IF (0 NIQ + QAR LINK -1 Ins + Pl - CONJ-C OR Ins + Num)(NEGATE *-1C Abl BARRIER VFIN OR CONJ-C)(NEGATE 0 QAR + TIP + NIQAR) #PL 20190413 formel fejl i ordering. Reformuleres ad hoc
+(NEGATE 0 (/Gram/TV\ Gram/Pass\ NIQ/l)) #ikke transverb+NIQ som ikiorNEQARsinnaasunga
+;
+
 REMOVE (/__INNAQ\ Der\/vn\__/l) IF (0 (/__INNAQ\ Der\/nn\__/l)) ;
 
 REMOVE:5553B NIQ + QAR IF (0 NIQAR)(NEGATE -1 Ins + POSSESSUM); #Sen regel udelukkende ud fra sandsynlighed
@@ -6965,6 +6988,7 @@ SELECT:5639L SAAR + ("apeqqarip") OR ("apeqqarissaar") ;
 REMOVE:5639M U + TIP IF (0 (/\".*p\"/r) - TIP OR UTE) ;
 REMOVE:5639N (*) - Gram/Pass IF (0 (/Gram\/Pass\ NIQ/l)) #Aasaanerani nalunaaquttap *siuartinnissaa piffissanngorpoq.
 (NEGATE 0 (/Gram\/IV\ NIQ/l) OR (/Gram\/HV\ NIQ/l) OR NIQAR)(NEGATE 0 Gram/Refl LINK -1 ("immi"))(NEGATE 0 Gram/Refl + (/\ NNGUR\ Der\/nv\ Gram\/IV\ TIP\ /l)) #qinigassanngortinnissamut 
+(NEGATE 0 (/Gram/TV\ NIQ/l) + Gram/Comp LINK 1 TRANSVERB) #må ikke slette korrekte Gram/Comp .. angunni ASALIVINNEQ sapissavaa
 ; 
 REMOVE:5639O IR IF (0 (*) - IR) ; #overgenerer vildt!
 REMOVE:5639P (/TUQ\ Der\/vn\ RUJUK\ Der\/nn\ SUAQ\ Der\/nn\ NNGUR\ /l); # IF (0 TURUJUSSUANNGUR) ;
@@ -7408,9 +7432,18 @@ REMOVE:9967D i1SgPoss + iPl IF (0 i1SgPoss + iSg)(NEGATE -1 ("una") + Pl) ;
 REMOVE:9967E 1SgPoss + Sg IF (0 1SgPoss + Pl)(-1 ("una") + Pl) ;
 REMOVE:9967F i1SgPoss + iSg IF (0 i1SgPoss + iPl)(-1 ("una") + Pl) ;
 
+##############################
 #Mapping af resterende verber
-#MAP:M0099C @PRED TARGET V (NOT *0 @PRED);
-MAP:M0099C @PRED2 TARGET V (*0 @PRED);
+##############################
+
+#Oratio obliqua, som endnu ikke er fanget
+SELECT:9968A Par + &&IV_SUBJ& IF (-*1 @SUBJ> + &&IV_SUBJ& BARRIER V)(*1 ORATIOOBLVERB) ;
+MAP:M9968A @CL-CIT> TARGET Par + &&IV_SUBJ& IF (-*1 @SUBJ> + &&IV_SUBJ& BARRIER V)(*1 ORATIOOBLVERB) ;
+
+MAP:M0099C @PRED2 TARGET V (*0 @PRED)
+(NEGATE *-1 ORATIOOBLVERB BARRIER V) #Må ikke hitte på or. obl. med inquit til venstre Isumaqarpunga TAAMAATTOQ ilaannginnavit
+;
+
 
 #Mapping af restende nominer
 MAP:M0099D @OBJ> TARGET N + Abs + Pl (1* TRANSVERB + 3PlO);
@@ -7420,6 +7453,8 @@ MAP:0099D4 @>N TARGET Num OR iNum IF (1 N);
 
 #Mapping af resterende partikler
 MAP:M0099E @FOC TARGET UNA ; #20180522. Den skal afgrænses.
+
+
 
 ##################################################
 #Specifikke regler til disambiguering af Gram/IV vs. Gram/TV
