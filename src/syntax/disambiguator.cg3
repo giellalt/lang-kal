@@ -1657,8 +1657,8 @@ COPY ("$1"v) EXCEPT Gram/Pass TARGET ("(.*)"r) + (/Gram\/Pass\ NIQ\ Der\/vn\ N\ 
 
 REMOVE:00000 (URL) IF (0 Sem/Url) ; #dobbeltgenerering fra FST'ens url.lexc
 #Arnaq Meeraq m.fl. i første position er et reelt problem
-REMOVE:0001X ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"%l$1"r)) ;
-#PL genaktiveret 20190430. Har været testet på minicorpus
+REMOVE:0001X ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"%l$1"r))(NEGATE 0 ("Nuna") + Prop + 1PlPoss) ;
+#PL genaktiveret 20190430. Har været testet på minicorpus men må ikke slette Nunarput
 SELECT:0001PropX ("Aqissiaq") + Ins IF (1 ("oqaluttuaq")) ; #MWE-lignende særtilfælde
 #REMOVE:0001Prop ("(\\p{Lu}.*)"r) + Fornavn IF (NEGATE *0CW (VSTR:"%l$1"r)) (-1 BOS) (NEGATE 1 Prop)(NEGATE 0 Hmyth LINK *1 2Sg) #Kun personnavne, ikke institutioner som Pinngortitaleriffik. Forbehold for vokativer
 #(NEGATE 0 ("Mikkel") OR ("Anna") OR ("Manu") OR ("Minik") OR ("Nuka") OR ("Najannguaq") ) #Ad hoc for ikke at slette Mikkel til fordel for bynavnet Mikkeli eller Anna for pron anna samt et par meget frekvente
@@ -2357,9 +2357,9 @@ REMOVE:7255A Interj IF (0 Adv) (*-1 Rel BARRIER (*) - Adv - CONT) (*1 POSSESSUM 
 ### PROPRIUM ###
 #==============#
 #Arnaq i første position er et reelt problem
-REMOVE:0001L ("\\p{Lu}.*"r) + Prop IF (0 ("([a-z].*)"r))(**0CW (VSTR:"$1"r))(-1 BOS) ; #vælg den med lille begyndelsesbogstav hvis den samme findes med lille begyndelsesbogstav i nærheden.
+REMOVE:0001L ("\\p{Lu}.*"r) + Prop IF (0 ("([a-z].*)"r))(**0CW (VSTR:"$1"r))(-1 BOS)(NEGATE 0 ("Nuna") + 1PlPoss) ; #vælg den med lille begyndelsesbogstav hvis den samme findes med lille begyndelsesbogstav i nærheden, men må ikke slette Nunarput
 
-REMOVE:0001X ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"%l$1"r))(-1 BOS) (NEGATE 1 Prop) ;
+REMOVE:0001X ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"%l$1"r))(-1 BOS) (NEGATE 1 Prop)(NEGATE 0 ("Nuna") + 1PlPoss) ;
 SELECT:0001Y ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"$1"r))(-1 BOS)(NEGATE 0 Lok) ;
 REMOVE:0001Z N IF (0 PROP_VS_APPELLATIV LINK *1 HUMVERB OR humverb BARRIER Pron + Rel)(NEGATE 0 $$KASUS LINK 1 $$KASUS); #Manu iserpoq. Manu er mest sandsynligt et proprium.
 REMOVE:0001Z N - FAM IF (0 Prop - Sem/Geo + Abs LINK *1 HUMVERB + INTRANSVERB OR humverb + INTRANSVERB BARRIER V)(@1 _TARGET_); #Manu iserpoq. Manu er mest sandsynligt et proprium.
@@ -4158,7 +4158,7 @@ MAP:M0341X @N< TARGET Rel + $$NUMERUS - Sem/Fem - Sem/Mask - TIMENOUN - CONJ-LU 
 #(NEGATE 0 ("(..*)t.*p"r) LINK *-1 ("$1"v)) ; # toqu... toqutsip... er ikke @N< Den skal gøres generel.
 
 
-MAP:M0341A @N< TARGET Abs + Pl + Der/vn - CONJ-LU IF (-*1C Abs + Pl - Sem/FirstName - TITEL - ("kinguneq") BARRIER V OR PUNCT)(*1 3PlO BARRIER KOMMA)(NEGATE -1 Abs + Pl LINK *1 CONT + 3PlO LINK *1 INTRANSVERB + 3Sg BARRIER KOMMA OR VFIN)(NEGATE -1 Part + CONJ-LU LINK -1 Abs ) # Ikke Sem/FirstName+Abs og ikke TITEL fordi de ikke har syntaktisk funktion i sig selv. Sidste NEGATE fordi TARGET er objekt i sekvensen SUBJ+Abs : OBJ : CONT+3SgO : INTRANSVERB+3Sg. - kinguneq tilføjet 20170425 for at undgå hit på kingorna
+MAP:M0341A @N< TARGET Abs + Pl + Der/vn - CONJ-LU IF (-*1C Abs + Pl - Sem/FirstName - TITEL - ("kinguneq") BARRIER V OR PUNCT);#(*1 3PlO BARRIER KOMMA)(NEGATE -1 Abs + Pl LINK *1 CONT + 3PlO LINK *1 INTRANSVERB + 3Sg BARRIER KOMMA OR VFIN)(NEGATE -1 Part + CONJ-LU LINK -1 Abs ) # Ikke Sem/FirstName+Abs og ikke TITEL fordi de ikke har syntaktisk funktion i sig selv. Sidste NEGATE fordi TARGET er objekt i sekvensen SUBJ+Abs : OBJ : CONT+3SgO : INTRANSVERB+3Sg. - kinguneq tilføjet 20170425 for at undgå hit på kingorna
 ;
 
 MAP:M0342 @N< TARGET Abs + Sg + Der/vn IF (-*1 Abs + Sg BARRIER VFIN OR KOMMA OR OBJVERB OR CONT + CONJ-LU LINK -*1 Abs + Sg)(NEGATE *-1 Gram/Dem LINK -1 TIME)(*1 3SgO BARRIER KOMMA)(NEGATE *-1 Abs + Sg LINK 1 NIQ + Ins)(NEGATE *-1 ("pi") + CONT LINK **-1 Abs BARRIER (*) - CONT)
@@ -4274,7 +4274,7 @@ MAP:M0408S @>N TARGET PLACE - Prop - iProp - CONJ-C - MIU - OBLIQUE - V IF (1 Pr
 MAP:M0408T @>N TARGET MAANED + Abs - MI IF (1 Num - POSSESSUM OR iNum) ; #November 1962 #nalunaarutaat nr.15, 20. oktober 2009-meersoq
 MAP:M0408U @>N TARGET Num + Lok IF (-*1 MAANED + Rel BARRIER (*) - ("ulloq")) (1 Num - POSSESSUM OR iNum - POSSESSUM) ; #marsip ulluisa 30-anni 2019
 
-MAP:M0409 (@HNOUN) TARGET N OR Gram/Abbr OR Num IF (NEGATE *0 V - @i-ADVL>N OR OCCATION) #PL 20190503 undtaget @i-ADVL>N da PISARA HNOUN i inuuissiorama pisara.
+MAP:M0409 (@HNOUN) TARGET N OR Gram/Abbr OR Num IF (NEGATE *0 V - @i-ADVL> OR OCCATION) #PL 20190503 undtaget @i-ADVL> da PISARA HNOUN i inuuissiorama pisara.
 (1 ParagrafSlut)(NEGATE 0 $$KASUS LINK -1 $$KASUS LINK NOT 0 Ins + Sg - POSSESSUM); #20100827 Safe headlines
 MAP:M0410 (@HNOUN) TARGET APPELLATIV + Abs OR Prop + Abs OR Gram/Abbr - FIRSTNAME IF (NEGATE *0 VERB-NOTCONT)(NEGATE *1 TRANSVERB + CONT)(NEGATE *-1 ("tassa") LINK *1 CONT + INTRANSVERB OR Cau + INTRANSVERB BARRIER VFIN)(NEGATE 0 Gram/Abbr OR ("nalunaaqutaq") LINK 1 Num)(NEGATE 0 $$KASUS LINK -1 $$KASUS)
 (NEGATE 0 HUMAN LINK 1 MIU - Der/nv)
