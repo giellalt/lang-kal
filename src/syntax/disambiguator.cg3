@@ -1352,8 +1352,9 @@ LIST thingobjverb = ("qaammaqqut" GE) ("qaammaqqutige") ("qamip" Gram/TV) ; #tra
 LIST animalverb = "qilup" "pangalip" "pui" ; #forudsætter subjekt ANIMAL
 LIST <fn:Remove> = "nioor" "nioorar";
 LIST <fn:Take/Bring> = "ikaap" "ikaassor" ;
+LIST <fn:Put> = "issorar" ;
 
-SET HUMVERB = humverb OR ORATIOOBLVERB OR <fn:Remove> OR <fn:Take/Bring>; # alle verb  der vil ha humane subj
+SET HUMVERB = humverb OR ORATIOOBLVERB OR <fn:Remove> OR <fn:Take/Bring> OR <fn:Put>; # alle verb  der vil ha humane subj
 
 LIST PLAY = "arsar" ("arsar" UTE); #often plural and reciprocal
 
@@ -1395,7 +1396,7 @@ LIST USPATIAL = "sanik" "ateq";
 
 LIST ORGANISATION = "Inuit Ataqatigiit" "Inatsisartut" "parti" "Siumut" "Atassut" "IA" ("Naalakkersuisoq" Pl) "Demokraatit" "peqatigiiffik" "Suleqatigiissitsisut" ;
 LIST ANATOMIC = "arlaaq" "assak" "isigak" "niaqoq" "niu" "siulleeq" "taleq" ;
-LIST ANIMAL = "qeerlutooq" "qimmeq" "qitsuk" "puisi"  "pulateriaarsuk" "puuluki" "sava" "tikaagullik" ;
+LIST ANIMAL = "qeerlutooq" "qimmeq" "qitsuk" "puisi"  "pulateriaarsuk" "puuluki" "sava" "saarullik" "tikaagullik" ;
 LIST BIO = "baobab" "orpigaq" "orpik" "kuanneq" "naasoq" ("sikker" NIQ);
 LIST DISEASE = "gigt" ;
 LIST ABSTRACT = "taaq" ;
@@ -1420,8 +1421,9 @@ LIST TOOL = "kaataq" "savik" (__/UTE\ Der\/vn__/l) "sakkoq" "sakku";
 LIST TOOLTHING = "kikiak" "kikiassuaq" "qinnilik" ;
 
 LIST f-an_SG = "qaneq" "qingaq" ;
+
 #Nye semantiske klasser 20190503 til forberedelse af import af prototyper. NB <fn:..>-tags ovenfor før set HUMVERB. 
-LIST <con> = "pooq" "poorsuaq";
+LIST <con> = "nappartaq" "pooq" "poorsuaq";
 LIST <cc> = "nioqqutissaq" ;
 LIST <Hprof> = ("eqqiar" HTR TUQ)("eqqartuup" HTR TUQ) ;
 
@@ -2554,7 +2556,7 @@ MAP:MMWE01 @N< TARGET ("ilaasortaat") + $$KASUS IF (-1 ("umiarsuaq") + $$KASUS O
 # Test med <prototype> og <fs:frame> sets 20190503. Skal udvides, gerne med SELECT-regler #
 ###########################################################################################
 REMOVE:0043_ImplicitSubjekt Rel + Pl IF 
-(0 <con> OR <cc> LINK *1 TRANSVERB + HUMVERB + 3PlO BARRIER TRANSVERB + 3PlO ) #NIOQQUTISSAT ikaassorpaat
+(0 <con> OR <cc> OR ANIMAL LINK *1 TRANSVERB + HUMVERB + 3PlO BARRIER TRANSVERB + 3PlO ) #NIOQQUTISSAT ikaassorpaat
 (NEGATE *1 POSSESSUM + 3PlPoss BARRIER (*) - Adv - OBLIQUE) #forbehold for mulig possessor
 ;
 MAP:M0043_ImplicitSubjekt @OBJ> Abs + Pl IF 
@@ -4201,7 +4203,7 @@ MAP:M0350NY @N< TARGET Der/vn + $$KASUS + $$NUMERUS - CONJ-LU - CONJ-LUUNNIIT OR
 (NEGATE 1 ("nalunaaqutaq")) 
 ;
 
-MAP:M0350NZ @N< TARGET (/LIK\ Der\/nn\ N/l) - iNum + $$KASUS IF (-1 N + $$KASUS)
+MAP:M0350NZ @N< TARGET (/LIK\ Der\/nn\ N/l) - iNum + $$KASUS IF (-*1 N + $$KASUS BARRIER (*) - Ins) #BARRIER pga nappartat AALISAKKANIK imallit
 (NEGATE 0 LIK_QAR + Ins LINK -1 Ins LINK NOT *-1 Ins)
  ;
 MAP:M0350NZA @N< TARGET (/LIK\ Der\/nn\ N/l) + iNum + $$KASUS IF (-1 N - Num - iNum + $$KASUS)
@@ -4227,7 +4229,8 @@ MAP:M0350 @N< TARGET N + $$KASUS + $$NUMERUS - CONJ-LU - Prop IF (-1 Prop - Sem/
 #Adnominale adled (adjektiver). Bredeste regel for adled til substantiver. -LU for at forhindre hit på parataktiske NP og NEGATE nødvendig for ikke at tagge en possessor efter proprium i relativ. NEGATE for at forhindre hit på possessor fulgt af apposition og NEGATE for at udelukke fornavn fulgt af efternavn. NEGATE fordi HTR TUQ QAR ikker er <N til et Ins, men Ins er @i-MIK-OBJ> til HTR TUQ QAR. 
 MAP:M0350A @N< TARGET N - V + $$KASUS + $$NUMERUS - CONJ-LU - CONJ-LUUNNIIT IF (-1 N + $$KASUS + $$NUMERUS OR Pron + $$KASUS + $$NUMERUS OR Adv + $$KASUS)(NEGATE -1 Rel LINK 1 Rel LINK 1 POSSESSUM3 OR POSSESSUM4)(NEGATE -1 Rel LINK 1 Rel + POSSESSUM3 LINK 1 Prop)(NEGATE 0 (/__HTR\ Der\/vv\ Gram\/IV\ TUQ\ Der\/vn\ QAR__/l) LINK -1 Ins LINK -1 BOS)(NEGATE -1 @Pron>N)(NEGATE *-1 (*) - Ins BARRIER V) ; #NB Næstsidste NEGATE for skyld typen 'Taakku meeqqat naalapput' #Sidste NEGATE for at undgå at adverbale Ins bliver adnominale i et helt andet syntagme.
 #Specialitet ved parataktiske adnominaler. NY 20180526
-MAP:M0350AX @N< TARGET N - V + $$KASUS + $$NUMERUS IF (0 CONJ-LU OR CONJ-LUUNNIIT )(-1 @N< + $$KASUS + $$NUMERUS OR Pron + $$KASUS + $$NUMERUS OR Adv + $$KASUS)(NEGATE -1 Rel LINK 1 Rel LINK 1 POSSESSUM3 OR POSSESSUM4)(NEGATE -1 Rel LINK 1 Rel + POSSESSUM3 LINK 1 Prop)(NEGATE 0 (/__HTR\ Der\/vv\ Gram\/IV\ TUQ\ Der\/vn\ QAR__/l) LINK -1 Ins LINK -1 BOS) 
+MAP:M0350AX @N< TARGET N - V + $$KASUS + $$NUMERUS IF (0 CONJ-LU OR CONJ-LUUNNIIT )(-1 @N< + $$KASUS + $$NUMERUS OR Pron + $$KASUS + $$NUMERUS OR Adv + $$KASUS)(NEGATE -1 Rel LINK 1 Rel LINK 1 POSSESSUM3 OR POSSESSUM4)(NEGATE -1 Rel LINK 1 Rel + POSSESSUM3 LINK 1 Prop)(NEGATE 0 (/__HTR\ Der\/vv\ Gram\/IV\ TUQ\ Der\/vn\ QAR__/l) LINK -1 Ins LINK -1 BOS)
+(NEGATE 0 CONJ-LU LINK -1 LIK LINK *-1 @OBJ> BARRIER (*) - Ins) #nappartat@OBJ> orsunik@i->N imallit@N< SAARULLIILLU. Torskene er ikke adled men parataktisk objekt 
 #(NEGATE 0 ("<(.....*).*>"r) LINK -2 ("<$1.*>"v)) # pulateriaarsuk pulateriaarsullu. Den skal gøres generel.
 (NEGATE 0 ("<(.....*)llu>"r) LINK -2 ("<$1k>"v)) # pulateriaarsuk pulateriaarsullu. Den skal gøres generel.
 ;
