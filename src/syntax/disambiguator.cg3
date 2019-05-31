@@ -258,6 +258,9 @@ LIST Err/Sub = Err/Sub ;
 LIST Gram/PlurTant = Gram/PlurTant ;
 LIST Gram/Refl = Gram/Refl ;
 LIST Gram/Pass = Gram/Pass ;
+LIST Gram/Reci = Gram/Reci ;
+
+SET Refl_Reci = Gram/Refl OR Gram/Reci ; #til disambiguering af begge klasser med 'immi'
 
 LIST KOMMA = "," ;
 LIST ParagrafSlut = "¶" "." ; #To be added in all corpora in order to deal efficiently with headlines
@@ -849,6 +852,7 @@ LIST SSA_SIMA = SSA\=SIMA ;
 LIST SSAQ = SSAQ ;
 LIST SSAQ_SIAQ = SSAQ\=SIAQ ;
 LIST SSAQ_SIAQ_SSAQ = SSAQ\=SIAQ\=SSAQ  ;
+LIST SSAAR = SSAAR ;
 LIST SSIP = SSIP ;
 LIST SUAQ = SUAQ ;
 LIST SSUSIQ = SSUSIQ ;
@@ -6119,8 +6123,8 @@ REMOVE:7486A ("pi") + Gram/Refl IF (0  ("pi") - Gram/Refl)(-1 Aeq) ;
 SELECT:7486A ("ip") + Gram/IV - Gram/Refl - Gram/Pass IF (0  ("ip"))(-1 Aeq) ;
 REMOVE Gram/Refl IF (0 NIQ + Trm - Gram/Refl LINK *1 ("pissut") + U BARRIER V); #NY 20190521 .. imminut ajorniartarneranut OBJ pissutaatinniartarpaa 
 
-#Disambiguerer Gram/Refl fra intransitiv
-SELECT:7486 Gram/Refl IF (*-1 ("immi") BARRIER V OR KOMMA OR NIQ) ;
+#Disambiguerer Gram/Refl fra intransitiv. Nyt set Refl_Reci for også at inkludere reciprokke som .. imminnut perujuutilersarput
+SELECT:7486 Refl_Reci IF (*-1 ("immi") BARRIER V OR KOMMA OR NIQ) ;
 
 
 
@@ -7021,7 +7025,11 @@ REMOVE:5639R HTR IF (0 U + HUMAN)(NEGATE 0 (/__HTR\ Gram\/IV\ TUQ__/l)) ;
 SELECT:5639S HUMAN - FAM IF (0 U + TUQ - HUMAN) ;
 #REMOVE HTR IF (0 U)(NEGATE *-1 Ins) ;
 #REMOVE:5639Q U IF (0 AFFINGERET - U + HTR)(NEGATE 0 HUMAN) ;
-
+REMOVE:5639T ("peqqip") + SSAAR IF (0 ("peqqip") + SAAR) ; #næsten uproduktivt. Enkelte faste som makissaar- må i verbs.lexc
+#REMOVE:5639T (".*ip"r) + SSAAR IF (0 (VSTR:"$1"r) + SAAR) ;
+REMOVE:5639U ("peqqip") + HTR IF (0 ("peqqip") + SAAR)(NEGATE *0 @ALLMIK-OBJ) ; #
+REMOVE:5639V ("peqqissar") + HTR IF (0 ("peqqip") + SAAR)(NEGATE *0 @ALLMIK-OBJ) ; #
+ 
 # Enkelte substantiver
 REMOVE ("pineq") IF (NEGATE *0 ("kamik")) ; #20091103 pineq+QAR vs. pineqar-
 REMOVE ("illaaq") IF (NEGATE 0 POSSESSUM OR QAR OR LIK); #20091112 soedyrsfostre vist altid moderdyrets
