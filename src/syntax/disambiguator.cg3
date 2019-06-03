@@ -1298,7 +1298,7 @@ SET TIKILLUGUnAFF = ("tikip") - AFFINGERET + CONT ;
 SET SIULLIULLUNI = ("siulleq") + U + CONT ;
 LIST ADVERBIUM = "ima" "qanoq" ; #20091109 tilfoejet 'qanoq', der maaske staar lidt malplaceret her
 SET ADVERBIEL = Adv | Pali | ("ataaseer") + CONT | ("ataaseq") + Ins - Num - AFFINGERET | ASSERSUUTIGALUGU | NUMERAL + RIAR + Cont + INTRANSVERB | ILANNGUPnAFF | ("immikkoor") | ("isertor") + TUQ + Ins | NUSUPnAFF | TAMAKKERnAFF | ("piffik") + SSAQ + TIP + CONT | PILLUGU | ("pinngitsaali") + HTR + UTE | QULAREnAFF | TIKILLUGU | ADVERBIAL_DERIVATIVES | ("sapinngisaq" Ins) | ("unner") | ("siulleq") + U + CONT ;
-LIST FOKUSPART = ("uv" Prefix/AA) ("una" Prefix/AA) "tassa" "aali" "sunaaffa" "aajuku" "aajuna" "aaku" "aana" ; #oqaqqarniutit imal. oqaaseqatigiinni oqaluutitaqanngitsut 
+LIST FOKUSPART = ("uv" Prefix/AA) ("una" Prefix/AA) "tassa" "aali" "sunaaffa" "aajuku" "aajuna" "aaku" "aana" "naak" ; #oqaqqarniutit imal. oqaaseqatigiinni oqaluutitaqanngitsut 
 LIST KONCESSIV = "massa" "naak" "uffa" "sunaaffa" ; #oqaaseqatigiinni minnerni oqaluummik pisariaqartitsisut
 LIST SPØRGEPARTIKEL = "naak" "sumi" "suna" "qanoq" ; #
 LIST TIDSPARTIKEL = "ilaanni" ("qaammat" Trm) ("ulloq" Trm) ;
@@ -1328,6 +1328,8 @@ LIST TRMVERB = "aallar" "iser" "nunnip" "nuup" ("peqat" U) "pulaar" ("quja" Gram
 LIST INSVERB = "taa" ;
 
 SET MOVE-VERB = LOKVERB | ABLVERB | TRMVERB ;
+
+LIST MUT-OBJ = "asa" ; #"mik-objekter", som kan tage Trm i stedet for Ins.
 
 # 20091106 Foelgende med tak til Tino for at forebygge at "oqar" + USIQ opfattes som inquit
 LIST ORATIOOBLVERBnOQAR = "aalajanger" "aalianger" ("apeqqut" GE) "apere" ("assuarliut" GE) "eqqaa" "eqqaama" "eqqartor" "erseqqissar" "ilimage" "ilimasup" "ilisimatitsi" "ilisimatitsissut" "ilumoor" "imaap" ("isuma" LIUR) ("isuma" QAR)
@@ -2491,6 +2493,7 @@ SELECT:Adv_allaat Adv + ("allaat") IF (-1 N + &&IV_SUBJ&)(1 V + &&IV_SUBJ&); #iv
 SELECT:Adv_plus Adv + PRENUM IF (1 Num + $$KASUS OR iNum)(NEGATE *-1 Num + $$KASUS BARRIER VFIN) ;
 SELECT:Conj_plus Conj + PRENUM IF (1 Num + $$KASUS)(*-1 Num + $$KASUS BARRIER VFIN) ;
 SELECT ("allaat") + Adv IF (-1 CLB) ;
+REMOVE:Conj_FOKUSPART Conj IF (0 FOKUSPART)(*-1 BOS BARRIER (*) - Adv)(NEGATE 1 V) ;
 
 ### ULØSELIGHEDER ###
 #===================#
@@ -3933,7 +3936,7 @@ MAP:M0080A @CL-ADVL> TARGET ("kingu" NIQ) + 3SgPoss IF (-2 BOS OR KOMMA)(-1 Rel)
 MAP:M0080B @CL-ADVL> TARGET ("nali") + 3SgPoss IF (-2 BOS OR KOMMA)(-1 Rel) ;
 MAP:M0080AX @CL-ADVL> TARGET ("kingu" NIQ) + 3SgPoss + Abs IF (-1 Rel) ; #20170425 skummel regel, der måske skal begrænses
 MAP:M0080AY @CL-ADVL> TARGET ("taava") + MI IF (*1 VFIN OR ("...")) ;
-MAP:M0080AZ @CL-ADVL> TARGET ("taava") IF (*1 V) ; #Taava(lu) er vist altid sætningsadverbiel.
+MAP:M0080AZ @CL-ADVL> TARGET ("taava") IF (*1 V OR FOKUSPART + Adv) ; #Taava(lu) er vist altid sætningsadverbiel.
 MAP:M0080AV @CL-ADVL> TARGET TIME + Abs - VERBALNOMEN - POSSESSUM IF (@1 _TARGET_) (NEGATE *1 TIMEVERB OR TRANSVERB)(NEGATE *1 OBJVERB) ;
 
 MAP:M0081H @CL-<ADVL TARGET Ins + POSSESSUM IF (1 EOS)(NEGATE *-1 LIK_QAR BARRIER VFIN OR CONJ-C)(*-1 V); #Motoorima ajutoornera ajorsigaluttuinnartutut isikkoqarpoq imissaralu nungulerluni, ajornerpaamik annilaanngatigilikkannik.
@@ -3962,7 +3965,7 @@ MAP:M0210 (@>N) TARGET (Prop Gram/Abbr) IF (1 Num);
 #Sætningsemner og overskrifter. Først fjernes evt. Par fra kongruensadleddet
 #MAP:M0211A @HNOUN TARGET Abs + $$NUMERUS IF (-1 Abs + $$NUMERUS)(NEGATE *0 V BARRIER KOMMA) ;
 #MAP:M0211B @HNOUN TARGET Abs + $$NUMERUS IF (1 Abs + $$NUMERUS)(NEGATE *0 V BARRIER KOMMA) ;
-MAP:M0211C @HNOUN TARGET Prop + Abs IF (NEGATE *0 V OR INDERIVERENDE_SUBSTANTIV OR AFFINGERET) ;
+MAP:M0211C @HNOUN TARGET Prop + Abs IF (NEGATE *0 V OR INDERIVERENDE_SUBSTANTIV OR AFFINGERET)(NEGATE *-1 FOKUSPART) ;
 
 
 # Forkortelser - MAP-regler
@@ -4051,8 +4054,8 @@ MAP:M0291 (@i->V) TARGET ("taama") OR ("qanoq") OR ("ima") OR Aeq IF (*1 TIGE + 
 MAP:M0291 (@>V) TARGET ("taama") OR ("qanoq") OR ("ima") OR Aeq IF (*1 TIGE BARRIER (*) - Adv - Conj LINK NEGATE 0 N) ;
 MAP:M0292 (@i-ADVL>) TARGET ("siornatigut") + Part IF (1 Der/vn) ;
 MAP:M0293 @i-ADVL> TARGET OTHERTIME + Lok IF (1 UTE + N) ; #Juullimi tunissut
-MAP:M0294 @i-ADVL> TARGET OBLIQUE - Ins IF (1 HTR + (/__NIQ\ Der\/vn\ \(SSAQ\ Der\/nn\ \)?N__/l)) ;
-MAP:M0295 @i-ADVL> TARGET OBLIQUE - Ins - CONJ-C - Num IF (1 (/__NIQ\ Der\/vn\ \(SSAQ\ Der\/nn\ \)?N__/l) - Gram/Comp - NIQAR - TIME)(NEGATE 0 $$KASUS LINK *-1 $$KASUS + Adv)(NEGATE 1 OBLIQUE LINK 1 LIK_QAR LINK NOT 0 @SUBJ> OR @OBJ>)(NEGATE 0 TIME + $$KASUS LINK -1 TIME + $$KASUS) ; #mindre sikker regel end M0294
+MAP:M0294 @i-ADVL> TARGET OBLIQUE - Ins IF (1 HTR + (/__NIQ\ Der\/vn\ \(SSAQ\ Der\/nn\ \)?N__/l))(NEGATE 0 Trm LINK 1 MUT-OBJ + HTR) ;
+MAP:M0295 @i-ADVL> TARGET OBLIQUE - Ins - CONJ-C - Num IF (1 (/__NIQ\ Der\/vn\ \(SSAQ\ Der\/nn\ \)?N__/l) - Gram/Comp - NIQAR - TIME)(NEGATE 0 $$KASUS LINK *-1 $$KASUS + Adv)(NEGATE 1 OBLIQUE LINK 1 LIK_QAR LINK NOT 0 @SUBJ> OR @OBJ>)(NEGATE 0 TIME + $$KASUS LINK -1 TIME + $$KASUS)(NEGATE 0 Trm LINK 1 MUT-OBJ + HTR) ; #mindre sikker regel end M0294
 
 #MAP-regler ved oratio obliqua
 #Først en specialitet ved 
@@ -4072,6 +4075,7 @@ MAP:M0301 @SUBJ> TARGET Abs + Sg - PRENUM - Gram/Dem - ("kinguneq") - LIK IF (*1
 
 #MAP:M0302 @<SUBJ TARGET Abs IF (-1 (Prefix/AA) + (/__Gram\/Dem\ Pron__/l)) ; #En tvivlsom analyse! Og i hvert fald ukorrekt når target del af nexus efter @FOC. Følgende mindre forkert, men hele mappingen skal måske genovervejes
 MAP:M0302 @<SUBJ TARGET Abs IF (*-1 (Prefix/AA) + (/__Gram\/Dem\ Pron__/l) BARRIER (*) - N - Conj)(NEGATE *1 Par CBARRIER V - Cont) ;
+MAP:M0302B @<SUBJ TARGET Abs IF (*-1 FOKUSPART + @FOC BARRIER (*) - N - Prop - CONJ-C)(NEGATE *1 Par CBARRIER V - CONT) ;
 
 # Nominer - De sikre MAP regler
 # =============================
@@ -4185,7 +4189,7 @@ MAP:M0341X @N< TARGET Rel + $$NUMERUS - Sem/Fem - Sem/Mask - TIMENOUN - CONJ-LU 
 
 
 MAP:M0341A @N< TARGET Abs + Pl + Der/vn - CONJ-LU IF (-*1C Abs + Pl - Sem/FirstName - TITEL - ("kinguneq") BARRIER V OR PUNCT);#(*1 3PlO BARRIER KOMMA)(NEGATE -1 Abs + Pl LINK *1 CONT + 3PlO LINK *1 INTRANSVERB + 3Sg BARRIER KOMMA OR VFIN)(NEGATE -1 Part + CONJ-LU LINK -1 Abs ) # Ikke Sem/FirstName+Abs og ikke TITEL fordi de ikke har syntaktisk funktion i sig selv. Sidste NEGATE fordi TARGET er objekt i sekvensen SUBJ+Abs : OBJ : CONT+3SgO : INTRANSVERB+3Sg. - kinguneq tilføjet 20170425 for at undgå hit på kingorna
-;
+
 
 MAP:M0342 @N< TARGET Abs + Sg + Der/vn IF (-*1 Abs + Sg BARRIER VFIN OR KOMMA OR OBJVERB OR CONT + CONJ-LU LINK -*1 Abs + Sg)(NEGATE *-1 Gram/Dem LINK -1 TIME)(*1 3SgO BARRIER KOMMA)(NEGATE *-1 Abs + Sg LINK 1 NIQ + Ins)(NEGATE *-1 ("pi") + CONT LINK **-1 Abs BARRIER (*) - CONT)
 (NEGATE 0 CONJ-C)
@@ -4719,7 +4723,7 @@ MAP:M0652I @<APPOS TARGET $$KASUS + $$NUMERUS IF (*-1 $$KASUS + $$NUMERUS CBARRI
 MAP:M0652J @<APPOS TARGET $$KASUS + $$NUMERUS - CONJ-C OR (Orth/Append Prop) IF (*-1 ("soorlu") - @ADVL> - @PROP> - LUSUUQ - MI - CONJ-C BARRIER @PRED LINK **-1 $$KASUS + $$NUMERUS CBARRIER (*) - $$KASUS - CONJ-C - KOMMA - @POSS> - @i-ADVL>N - @PROP>) ;
 
 MAP:M0652K @<APPOS TARGET $$KASUS IF (*-1 @FOC>N BARRIER $$KASUS LINK *-1 $$KASUS) ;
-MAP:M0652L @<APPOS TARGET $$KASUS + $$NUMERUS + Prop - CONJ-C IF (*-1 $$KASUS + $$NUMERUS - CONJ-C - UNA - UKU - @PROP> BARRIER DIRTALESLUT OR (*) - KOMMA  - Prop)(NEGATE -1 DIRTALE) ;
+MAP:M0652L @<APPOS TARGET $$KASUS + $$NUMERUS + Prop - CONJ-C IF (*-1 $$KASUS + $$NUMERUS - CONJ-C - UNA - UKU - @PROP> - @>N BARRIER DIRTALESLUT OR (*) - KOMMA  - Prop)(NEGATE -1 DIRTALE) ;
 MAP:M0652M @<APPOS TARGET Abs + Sg IF (*-1 ("soorlu") - LUSUUQ - MI BARRIER (*) - @PROP> LINK *-1 Abs + Pl LINK *1 _TARGET_ LINK *1 INTRANSVERB BARRIER V);
 
 MAP:M0517 @<APPOS TARGET Prop - OBLIQUE - Rel IF (*-1 PUNCT + LEFT BARRIER V LINK -1 N OR Prop)(*1 PUNCT + RIGHT BARRIER V) ; #Siornatigut Alata niviarsiaqqat atiannit Alatannguamit (Alatannguaq) tunngaveqartutut 	Oqaasileriffimmut saaffiginnissutigineqarnikuuvoq #ingen kasuskongruens
