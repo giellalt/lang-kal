@@ -1334,7 +1334,7 @@ SET MOVE-VERB = LOKVERB | ABLVERB | TRMVERB ;
 LIST MUT-OBJ = "asa" "akuere" ; #"mik-objekter", som kan tage Trm i stedet for Ins.
 
 # 20091106 Foelgende med tak til Tino for at forebygge at "oqar" + USIQ opfattes som inquit
-LIST ORATIOOBLVERBnOQAR = "aalajanger" "aalianger" ("apeqqut" GE) "apere" ("assuarliut" GE) "eqqaa" "eqqaama" "eqqartor" "erseqqissar" "ilimage" "ilimasup" "ilisimatitsi" "ilisimatitsissut" "ilumoor" "imaap" ("isuma" LIUR) ("isuma" QAR)
+LIST ORATIOOBLVERBnOQAR = "aalajanger" "aalianger" ("apeqqut" GE) "apere" ("assuarliut" GE) "eqqaa" "eqqaama" "eqqartor" "erseqqissar" "ilimage" "ilimasup" ("ili" SIMA TIP HTR) "ilisimatitsi" "ilisimatitsissut" "ilumoor" "imaap" ("isuma" LIUR) ("isuma" QAR)
 "isummer" "kaammattor" "maluge" "malunnar" "malunnarsi" "misige" "naatsorsor" "nalu" "nalunaar" "nalunaarfige" "nalunaarut" "nalunaarutige" "neriorsor" "neriup" "nipangiup" ("oqar" UTE GE) "oqaluttuar" ("oqar" VIK GE) "paasi" "pinngitsaali" "puigor" "puior" "qular" "qulare" "qularnar" "qinnuige" "sinnattoq GE" "siunnersor" "takorloor" ("taku" Gram/TV) "tusar" "unner" "uggore" "uppernarsar" ("uppernar" SAR) (/SSAQ\ Der\/nn\ GE\ Der\/nv/l); #GE tilføjet til objektssætninger som ikke er indirekte tale
 SET ATUARnTAQ = ("atuar") - TAQ - VIK - QATE;
 SET OQARnUSIQ = ("oqar") - (USIQ) ;
@@ -4271,6 +4271,8 @@ MAP:M0352A @N< TARGET Der/vn + CONJ-LU + $$KASUS + $$NUMERUS IF (-1 Der/vn + $$K
 
 MAP:M0352B @N< TARGET $$KASUS + Pl + TUQ - Pron IF (-1 $$KASUS + Sg + CONJ-C LINK -1 $$KASUS + Sg); #til paratakse: #Angunni Anettelu qimaguppaluttut tusaavai
 
+MAP:M0352C @N< TARGET $$KASUS + $$NUMERUS + PASSIV - POSSESSUM - CONJ-C IF (*-1 $$KASUS + $$NUMERUS - Num BARRIER VFIN OR @PRED OR KOMMA LINK NEGATE 0 Abs LINK 1 OBJVERB) ;
+
 #Semantiske regler
 REMOVE:0352 Rel IF (0 Abs + THING OR Abs + MATERIAL)(*0 thingobjverb);#(NEGATE *1C POSSESSUM) ;
 MAP:M0352 @N< + $$KASUS TARGET MATERIAL IF (-1 THING + $$KASUS) ;
@@ -4359,7 +4361,7 @@ MAP:M0470A @OBJ> TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (1 Abs + CON
 MAP:M0470B @OBJ> TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (1 KOMMA LINK 1 Abs LINK 1 Abs + CONJ-LU LINK *1 TRANSVERB - 3Pl + 3PlO BARRIER INTRANSVERB + 3Pl) ;
 
 MAP:M0470 @OBJ> TARGET APPELLATIV + Abs + Pl OR Prop + Abs + Pl IF ( *1 TRANSVERB - 3Pl + 3PlO CBARRIER INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl OR PUNCT)(NEGATE *-1 Abs + Pl BARRIER V + 3PlO)(NEGATE 1 Abs + Pl LINK 1 CONT + 3PlO) #20091105 Kun sikker, naar subjekt != 3Pl. Der maa mere avancerede regler til at adskille implicit subjekt 3Pl fra objekt Pl. BARRIER fordi somme tider subjekt for cau, con etc. i stedet for objekt for et senere V. Sidste NEGATE fordi adled skal have @N< i stedet for @OBJ. Sidste NEGATE for at forebygge at subjekter tagges som objekter for en ledsagemåde til venstre, som i forevejen har et objekt
-(NEGATE *1 QQU + Gram/Db BARRIER VFIN) ;
+(NEGATE *1 Gram/Db BARRIER VFIN) ;
 
 MAP:M0475 @OBJ> TARGET N + Abs + Pl OR Prop + Abs + Pl IF (1 (Gram/Cong Akk 3Pl) LINK 1* TRANSVERB + 3PlO) ;
 MAP:M0475 @OBJ> TARGET N + Abs + Sg + CONJ-C OR Prop + Abs + Sg + CONJ-C IF (1 (Gram/Cong Akk 3Pl) LINK 1* TRANSVERB + 3PlO)(-1 N + Abs OR Prop + Abs) ;
@@ -4968,6 +4970,7 @@ MAP:M0910 (@i-ADVL>) TARGET (Ins) IF (1 Der/vn - NAR)(NEGATE 1 TAR + RIAQ + IRUP
 MAP:M1911 @i-ADVL> TARGET Abl IF (1 TIME LINK 1 Num OR iNum) ;
 #Specialitet ved opremsninger med og uden adled. Skal komme før M0930
 MAP:M0920 (@AGENS) TARGET Abl - iV - OCCATION IF (*1 PASSIV BARRIER VFIN OR Trm)(NEGATE 0 TIME)(NEGATE 0 WEATHER LINK NOT *0 WEATHERVERB)(NEGATE *-1 Trm + Sem/Geo BARRIER V OR @PRED)(NEGATE 1 Trm - TUQ OR Lok - TUQ); #Tidsadverbaler må ikke blive agens. -V for at forhindre hit på verber med IR og IP
+MAP:M0920 (@AGENS) TARGET Abl - iV - OCCATION IF (*1 PASSIV + Gram/Db BARRIER VFIN OR @PRED)(NEGATE 0 TIME)(NEGATE 0 WEATHER LINK NOT *0 WEATHERVERB)(NEGATE *-1 Trm + Sem/Geo BARRIER V OR @PRED)(NEGATE 1 Trm - TUQ OR Lok - TUQ); #Tidsadverbaler må ikke blive agens. -V for at forhindre hit på verber med IR og IP
 MAP:M0900 (@i-ADVL>) TARGET (Aeq) IF (*1 Der/vn - NAR - NIQAR - @AGENS BARRIER (*) - @N<)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Aeq )(NEGATE 1 CONJ-LU + Aeq)(NEGATE 0 CONJ-LU LINK -1 Aeq)(NEGATE *0 ("isikku") + QAR + V OR ("oqar") + UTE + GE); #Kun Trm til Der/vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse
 MAP:M0929A @ADVL> TARGET Trm IF (1 KOMMA)(2 Trm + @ADVL>)(3 KOMMA);
 MAP:M0929B @ADVL> TARGET Trm IF (1 KOMMA)(2 Trm OR Ins)(3 Trm)(4 KOMMA);
