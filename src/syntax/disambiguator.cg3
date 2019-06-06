@@ -1166,7 +1166,7 @@ SET NOT-POSSESSUM = N - POSSESSUM ;
 
 SET iPOSSESSUM1 = (iN i1SgPoss) | (iN i1PlPoss) ;
 SET iPOSSESSUM2 = (iN i2SgPoss) | (iN i2PlPoss) ;
-SET iPOSSESSUM3 = (iN i3SgPoss) | (iN i3PlPoss) | (iNum i3SgPoss) | (iNum i3PlPoss) ;
+SET iPOSSESSUM3 = (iN i3SgPoss) | (iN i3PlPoss) | (iNum i3SgPoss) | (iNum i3PlPoss) | (iProp i3SgPoss) | (iProp i3PlPoss) ;
 SET iPOSSESSUM4 = (iN i4SgPoss) | (iN i4PlPoss) ;
 SET iPOSSESSUM12 = (iN i1SgPoss) | (iN i2SgPoss) | (iN i1PlPoss) | (iN i2PlPoss) ;
 
@@ -1283,6 +1283,7 @@ SET SUBJTRANSVERB& = SUBJ1S2SO | SUBJ1S3SO | SUBJ1S4SO | SUBJ1S2PO | SUBJ1S3PO |
 
 LIST NÆPPE_OBJ = ("nuanner" TUQ);
 LIST NÆPPE_SUBJ = ("nalinginnaq") ;
+LIST AGENS_NOUN = ("katersugaq") ;
 
 SET IVTVSUBJ& = IV_SUBJ& | SUBJTRANSVERB& ;
 
@@ -1715,7 +1716,7 @@ REMOVE:0001AF (/\ UR\ Gram\/TV/l) IF (0 (/\ UR\ Gram\/IV/l)) ;
 REMOVE:0001AG (/\NIQ\ Der\/vn\ SSAQ\ Der\/nn\ N\ Lok/l) + Pl IF (0 (/\NIQ\ Der\/vn\ SSAQ\ Der\/nn\ N\ Abs/l)) ;
 REMOVE:0001AH ("su") + Opt IF (0 ("suli") + ADVERBIEL ) ; #"Måtte han su" er ret usandsynlig
 REMOVE:0001AI (/\"nali\"\ \(Gram\/..\ \)?U__/l) IF (0 ("nalaasaar")) ;
-
+REMOVE:0001AJ ("aap") + Opt IF (0 ("aallar")) ; #aallarami
 
 
 #REMOVE:0001XX UGEDAGE + Gram/TV IF (0 UGEDAGE + Gram/IV) ; #NNGUR + Gram/TV utænkelig ved ugedages navne #udkommenteret og gjort listen entydig i stedet.
@@ -2208,7 +2209,9 @@ SUBSTITUTE (N Prop) (Prop) TARGET (/N\ Prop/l);
 REMOVE (MIU) - iProp IF (0 (Orth/Copy iProp MIU)) ;
 
 REMOVE (Orth/Copy) OR (<added-prop>) - OLang/DAN IF (-*1 BOS BARRIER (*) - PUNCT)(NEGATE 1 Prop OR iProp)(NEGATE 0 INSTITUTION) ;
-REMOVE (Orth/Copy Prop Pl) IF (-*1 BOS BARRIER (*) - PUNCT - ("nuna"))(1 Prop + Sg - 2SgPoss) ;
+REMOVE (Orth/Copy Prop Pl) IF (-*1 BOS BARRIER (*) - PUNCT - ("nuna"))(1 Prop + Sg - 2SgPoss)
+(NEGATE 0 NATIONALITY LINK *1 POSSESSUM3 + Prop BARRIER VFIN OR @PRED) #Kalaallit Røde Korsiat
+;
 REMOVE (Orth/Copy Prop Sg) IF (-*1 BOS BARRIER (*) - PUNCT)(1C Prop + Pl) ;
 REMOVE (Orth/Copy Prop) IF (0 OBLIQUE) (-*1 BOS BARRIER (*) - PUNCT)(1 Prop) ;
 REMOVE (Orth/Copy Prop) IF (0 SSAQ)(1 Prop)(-1 BOS OR CLB); #Præsidentissaq Obama
@@ -2374,10 +2377,12 @@ REMOVE:7255A Interj IF (0 Adv) (*-1 Rel BARRIER (*) - Adv - CONT) (*1 POSSESSUM 
 ### PROPRIUM ###
 #==============#
 #Arnaq i første position er et reelt problem
-REMOVE:0001L ("\\p{Lu}.*"r) + Prop IF (0 ("([a-z].*)"r))(**0CW (VSTR:"$1"r))(-1 BOS)(NEGATE 0 ("Nuna") + 1PlPoss) ; #vælg den med lille begyndelsesbogstav hvis den samme findes med lille begyndelsesbogstav i nærheden, men må ikke slette Nunarput
+REMOVE:0001L ("\\p{Lu}.*"r) + Prop IF (0 ("([a-z].*)"r))(**0CW (VSTR:"$1"r))(-1 BOS)(NEGATE 0 ("Nuna") + 1PlPoss) #vælg den med lille begyndelsesbogstav hvis den samme findes med lille begyndelsesbogstav i nærheden, men må ikke slette Nunarput
+(NEGATE 0 NATIONALITY LINK *1 POSSESSUM3 + Prop BARRIER VFIN OR @PRED) #Kalaallit Røde Korsiat
+;
 
 REMOVE:0001X ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"%l$1"r))(-1 BOS) (NEGATE 1 Prop)(NEGATE 0 ("Nuna") + 1PlPoss) ;
-SELECT:0001Y ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"$1"r))(-1 BOS)(NEGATE 0 Lok) ;
+#SELECT:0001Y ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"$1"r))(-1 BOS)(NEGATE 0 Lok) ; #Må ikke vælge Abs frem for andre kasus, hvis der ikke er nogen kriterier for kasusvalg...
 REMOVE:0001Z N IF (0 PROP_VS_APPELLATIV LINK *1 HUMVERB OR humverb BARRIER Pron + Rel)(NEGATE 0 $$KASUS LINK 1 $$KASUS); #Manu iserpoq. Manu er mest sandsynligt et proprium.
 REMOVE:0001Z N - FAM IF (0 Prop - Sem/Geo + Abs LINK *1 HUMVERB + INTRANSVERB OR humverb + INTRANSVERB BARRIER V)(@1 _TARGET_); #Manu iserpoq. Manu er mest sandsynligt et proprium.
 REMOVE:0001Z N IF (0 Prop - Sem/Geo + Rel - TUQ LINK *1 HUMVERB + TRANSVERB BARRIER CONJ-C OR Prop + Rel)(NEGATE 1 POSSESSUM)(NEGATE 0 $$KASUS LINK 1 $$KASUS); #Manu iserpoq. Manu er mest sandsynligt et proprium. #Ulloriaatima amerlassusii pappiliamut allariarlugit taanna pappiliaq amusartumut ileriarlugu parnaarutissara. Ulloriaatima er ikke Prop.
@@ -2395,6 +2400,7 @@ REMOVE:0001V ("\\p{Lu}.*"r) + Prop + PROP_VS_APPELLATIV IF (-1 BOS)(0 ("([a-z].*
 
 REMOVE:0001Prop ("(\\p{Lu}.*)"r) + Fornavn IF (0 N)#(NEGATE *0CW (VSTR:"%l$1"r)) 
 (-1 BOS) (NEGATE 1 Prop)(NEGATE 0 Hmyth LINK *1 2Sg) #Kun personnavne, ikke institutioner som Pinngortitaleriffik. Forbehold for vokativer
+(NEGATE 0 GUUQ) #Alliarooruna arnaq silatoorsuaq sullerissorsuarlu, (Alliaq, ikke Als LIAQ)
 (NEGATE 0 ("Mikkel") OR ("Anna") OR ("Manu") OR ("Minik") OR ("Nuka") OR ("Najannguaq") ) #Ad hoc for ikke at slette Mikkel til fordel for bynavnet Mikkeli eller Anna for pron anna samt et par meget frekvente
 ; #Laver alt for mange fejl, fx Flemming<Geo> illumik piareersaavoq. Der mangler nok en betingelse? Proprier disambigueres senere.
 
@@ -2694,7 +2700,7 @@ SELECT:0072C Rel + Pl IF (*1 Abs LINK 1 CONT + 3SgO LINK *1 TRANSVERB + 3Pl BARR
 REMOVE:0072E Abs - TIME - Prop + CONJ-C IF (0 Rel)(**-1C Rel BARRIER (*) - Rel) ;
 REMOVE:0072D Imp IF (0 Rel)(*-1 VFIN) ; #sorlaasalu er ikke Imp
 #REMOVE:0072E Abs + Pl IF (
-REMOVE:0072 Rel + Pl  IF (NEGATE *1 3PlPoss OR i3PlPoss BARRIER KOMMA)(NEGATE *0 TRANSVERB + 3Pl BARRIER KOMMA)(NEGATE 0 CONJ-LU LINK -1 3Pl)(NEGATE 0 Num LINK -1 Pl + Rel)(NEGATE 0 Der/vn + Pl LINK -1 CONT LINK -1 Rel + Pl)(NEGATE 1 ("nuna") + POSSESSUM3 OR ("nuna") + iPOSSESSUM3)  #Må ikke slette adled til Rel til venstre
+REMOVE:0072 Rel + Pl IF (NEGATE *1 3PlPoss OR i3PlPoss BARRIER KOMMA)(NEGATE *0 TRANSVERB + 3Pl BARRIER KOMMA)(NEGATE 0 CONJ-LU LINK -1 3Pl)(NEGATE 0 Num LINK -1 Pl + Rel)(NEGATE 0 Der/vn + Pl LINK -1 CONT LINK -1 Rel + Pl)(NEGATE 1 ("nuna") + POSSESSUM3 OR ("nuna") + iPOSSESSUM3)  #Må ikke slette adled til Rel til venstre
 (NEGATE 0 Rel LINK *1 ("soorlu") LINK *1 Rel BARRIER V)
  #Nalunngereerpara ullorissat annerit atserneqarsimasut, soorlu nunarsuup ...
 (NEGATE 0 CONJ-LU LINK *1 TRANSVERB + 3Sg BARRIER Abs + Sg) #sideordnet subjekt kan have sg-verbum
@@ -3722,6 +3728,7 @@ REMOVE Abs IF (1 CONJ-C + Rel LINK 1 ADVERBIEL + POSSESSUM OR SPATIAL + POSSESSU
 
 MAP:M00222A @POSS> TARGET Rel IF (1* ADVERBIEL + POSSESSUM + OBLIQUE BARRIER V LINK NEGATE 0 POSSESSUM4)(NEGATE *-1 Rel BARRIER V)  ; #saniatigut
 MAP:M00222B @POSS> TARGET Rel IF (*1 SPATIAL + POSSESSUM + OBLIQUE - AFFINGERET BARRIER V LINK NEGATE 0 POSSESSUM4)(NEGATE *-1 Rel BARRIER V)  ; #saniatigut
+MAP:M00222C @POSS> TARGET Rel + Prop IF (*1 POSSESSUM3 + Prop BARRIER VFIN OR @PRED) ; #Kalaallit Røde Korsiannit
 
 #Vokativer
 MAP:M0023A @VOK TARGET Prop + Abs IF (-1 KOMMA)(1 EOS)(NEGATE *-1 §noun-comma BARRIER (*) - KOMMA)(NEGATE -2 Prop) ;
@@ -4970,7 +4977,8 @@ MAP:M0910 (@i-ADVL>) TARGET (Ins) IF (1 Der/vn - NAR)(NEGATE 1 TAR + RIAQ + IRUP
 MAP:M1911 @i-ADVL> TARGET Abl IF (1 TIME LINK 1 Num OR iNum) ;
 #Specialitet ved opremsninger med og uden adled. Skal komme før M0930
 MAP:M0920 (@AGENS) TARGET Abl - iV - OCCATION IF (*1 PASSIV BARRIER VFIN OR Trm)(NEGATE 0 TIME)(NEGATE 0 WEATHER LINK NOT *0 WEATHERVERB)(NEGATE *-1 Trm + Sem/Geo BARRIER V OR @PRED)(NEGATE 1 Trm - TUQ OR Lok - TUQ); #Tidsadverbaler må ikke blive agens. -V for at forhindre hit på verber med IR og IP
-MAP:M0920 (@AGENS) TARGET Abl - iV - OCCATION IF (*1 PASSIV + Gram/Db BARRIER VFIN OR @PRED)(NEGATE 0 TIME)(NEGATE 0 WEATHER LINK NOT *0 WEATHERVERB)(NEGATE *-1 Trm + Sem/Geo BARRIER V OR @PRED)(NEGATE 1 Trm - TUQ OR Lok - TUQ); #Tidsadverbaler må ikke blive agens. -V for at forhindre hit på verber med IR og IP
+MAP:M0920B (@AGENS) TARGET Abl - iV - OCCATION IF (*1 PASSIV + Gram/Db BARRIER VFIN OR @PRED)(NEGATE 0 TIME)(NEGATE 0 WEATHER LINK NOT *0 WEATHERVERB)(NEGATE *-1 Trm + Sem/Geo BARRIER V OR @PRED)(NEGATE 1 Trm - TUQ OR Lok - TUQ); #Oqaasileriffimmit ilisimatitsissutit Oqaasileriffimmi *pisortamit Katti Frederiksenimit allaganngorlugit Oqaasiliortunut *nassiunneqarnikut Oqaasiliortut siulittaasuannit Oqaasiliortunut ilisimatitsissutigineqarput.
+MAP:M0920C @AGENS TARGET Abl IF (*1 AGENS_NOUN BARRIER VFIN OR @PRED) ;
 MAP:M0900 (@i-ADVL>) TARGET (Aeq) IF (*1 Der/vn - NAR - NIQAR - @AGENS BARRIER (*) - @N<)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Aeq )(NEGATE 1 CONJ-LU + Aeq)(NEGATE 0 CONJ-LU LINK -1 Aeq)(NEGATE *0 ("isikku") + QAR + V OR ("oqar") + UTE + GE); #Kun Trm til Der/vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse
 MAP:M0929A @ADVL> TARGET Trm IF (1 KOMMA)(2 Trm + @ADVL>)(3 KOMMA);
 MAP:M0929B @ADVL> TARGET Trm IF (1 KOMMA)(2 Trm OR Ins)(3 Trm)(4 KOMMA);
