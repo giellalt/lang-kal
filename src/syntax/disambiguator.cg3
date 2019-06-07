@@ -1300,6 +1300,7 @@ SET TAMAKKERnAFF = ("tamakker") - AFFINGERET + CONT ;
 SET TIKILLUGUnAFF = ("tikip") - AFFINGERET + CONT ;
 SET SIULLIULLUNI = ("siulleq") + U + CONT ;
 LIST ADVERBIUM = "ima" "qanoq" ; #20091109 tilfoejet 'qanoq', der maaske staar lidt malplaceret her
+LIST DEM-ADV = "sunaaffa" "sooruna" "usiuffali" "usiiffali" ; #demonstrative adverbier mappes @PRED, når de er neksusdannende. OBS: kan også være koncessive
 SET ADVERBIEL = Adv | Pali | ("ataaseer") + CONT | ("ataaseq") + Ins - Num - AFFINGERET | ASSERSUUTIGALUGU | NUMERAL + RIAR + Cont + INTRANSVERB | ILANNGUPnAFF | ("immikkoor") | ("isertor") + TUQ + Ins | NUSUPnAFF | TAMAKKERnAFF | ("piffik") + SSAQ + TIP + CONT | PILLUGU | ("pinngitsaali") + HTR + UTE | QULAREnAFF | TIKILLUGU | ADVERBIAL_DERIVATIVES | ("sapinngisaq" Ins) | ("unner") | ("siulleq") + U + CONT ;
 LIST FOKUSPART = ("uv" Prefix/AA) ("una" Prefix/AA) "tassa" "aali" "sunaaffa" "aajuku" "aajuna" "aaku" "aana" "naak" ; #oqaqqarniutit imal. oqaaseqatigiinni oqaluutitaqanngitsut 
 LIST KONCESSIV = "massa" "naak" "uffa" "unnit" "sunaaffa" ; #oqaaseqatigiinni minnerni oqaluummik pisariaqartitsisut
@@ -1444,6 +1445,7 @@ LIST EVENT = "stafet" "marathon" "løb" "stafetløb" ; #DHL stafet, CPH Marathon
 LIST OCCATION = ("ataatsimiip" NIQ) ;
 LIST LANDTRANSPORT = "bussi" "biili" "bil" ;
 LIST AIRTRANSPORT = "qajaq" "timmi" "helikopter" "helikopteri" "qulimiguulik" "timmisartoq" "zeppeliner" ;
+SET TRANSPORT = LANDTRANSPORT | AIRTRANSPORT ;
 LIST BIRDS = "appa" "appaliarsuk" "aqisseq" "kukkukooq" "kussak" "miteq" "naaja" "nattoralik" "oqaatsoq" "orpimmiutaq" "qupaloraarsuk" "serfaq" "taateraaq" "timmiaq" "tulugaq" "tuullik" "uppik" ;
 SET AIRBORNE = BIRDS | AIRTRANSPORT ;
 LIST GEOOBJ = "imaq" ("naalap" VIK) "nuna" "qarmaq" "qeqertaq" "sermeq" "sineriak" "sissaq" "tungi"; # et specifikt set af mulige objekter til disambiguering af fx sinip vs. siner og ersi vs. ersip
@@ -2822,7 +2824,7 @@ REMOVE ANIMAL + POSSESSUM - ("qimmeq") IF (NEGATE 0 UTE) ;
 REMOVE:0100X 2SgPoss IF (NEGATE @0 (*) LINK -1*W Abs + 2Sg BARRIER BOS) (T:alone) ;
 REMOVE:0100Z 2SgPoss IF (NEGATE *0SWC 2Sg OR 2SgO OR 2SgPoss)(NEGATE *0W ("illit") OR 2Sg + Par)(NEGATE *1 EXCLMARK)(NEGATE *0 Gram/Exclm)(*0 V + 3Pl OR V + 3PlO OR 3PlPoss) ;
 
-REMOVE:0100W 2SgPoss IF (NEGATE *0S V OR ("quja")) ;
+REMOVE:0100W 2SgPoss IF (NEGATE *0S V OR ("quja"))(NEGATE -1 ("illit")) ;
 SELECT:0100Y Pl + $$KASUS IF (1 Num + Pl + $$KASUS) (0C 2SgPoss) ;
 
 SELECT:0100A 2SgPoss IF (*0 ("quja" NAR Gram/Exclm))(NEGATE -1 ("uanga"))(NEGATE *0 VFIN) ; #Kontekst, der maa sikres foer foelgende REMOVE
@@ -3395,8 +3397,7 @@ MAP:tassa @ADVL> TARGET ("tassa") + LI (*1 Cau OR @CAU BARRIER V LINK NOT *-1 VF
 (NEGATE 1 ("taama") + IP) ;
 
 #foc
-MAP:tassa @FOC TARGET ("tassa") + UNA 
-IF (*1 Par BARRIER VFIN) ; #Eqqarsaammeriarluni akivoq: - Tassaana taassuma karsip tunniussavit iluaqutigigaa unnuakkut savap illuatut atorneqarsinnaagami. 
+MAP:tassa @FOC TARGET ("tassa") IF (0 UNA OR UKU) (*1 Par BARRIER VFIN) ; #Eqqarsaammeriarluni akivoq: - Tassaana taassuma karsip tunniussavit iluaqutigigaa unnuakkut savap illuatut atorneqarsinnaagami. 
 
 #tassa kan være mest overordnede V i oo.
 MAP:tassa @CL-<CIT TARGET ("tassa") 
@@ -3860,8 +3861,8 @@ MAP:M0048B @i-ADVL> TARGET CONT (*1 DOTR + UTE BARRIER (*) - OBLIQUE)(NEGATE (0 
 MAP:M0049 @i-ADVL> TARGET OBJVERB IF (*1C Der/vn + N BARRIER VFIN LINK NEGATE *1 V BARRIER KOMMA) ;
 MAP:M0049B @i-ADVL> TARGET V - VFIN IF (1 HUM + GE + POSSESSUM) ; # Aanip nalunngilaa nukappissanit qassiinit ajuutigineqarluni – ingammik Jensimit *meeraallunili ikinngutigisaminit. #se også M0408X
 
-MAP:M0050 (@PRED) TARGET Par IF (*-1 ADVERBIUM OR UNA BARRIER V)(NEGATE *0 ORATIOOBLVERB)(NEGATE *0 @PRED OR VFIN BARRIER KOMMA OR CONJ-C) ; #20091109 #20190405 rettet fra PRED2 til PRED
-MAP:M0050 (@PRED2) TARGET CONT IF (*-1 UNA BARRIER V)(NEGATE *0 ORATIOOBLVERB)(NEGATE *1 V) ; #20091109 #Overvej om den skal omdøbes til PRED i stedet for PRED2. #Kopi af M0050 til ledsagemåder som erstatning for Par efter UNA. #iggavilli inoqanngeriarmat nerisarfimmut alakkarpoq taavaana Jaakubiini nerriviliorluni inilersoq unaluuna qungujulaarluni.
+MAP:M0050 (@PRED) TARGET Par IF (*-1 ADVERBIUM OR UNA OR UKU BARRIER V)(NEGATE *0 ORATIOOBLVERB)(NEGATE *0 @PRED OR VFIN BARRIER KOMMA OR CONJ-C) ; #20091109 #20190405 rettet fra PRED2 til PRED
+MAP:M0050 (@PRED) TARGET CONT IF (*-1 UNA OR UKU BARRIER V)(NEGATE *0 ORATIOOBLVERB)(NEGATE *1 V) ; #20091109 #Overvej om den skal omdøbes til PRED i stedet for PRED2. #Kopi af M0050 til ledsagemåder som erstatning for Par efter UNA. #iggavilli inoqanngeriarmat nerisarfimmut alakkarpoq taavaana Jaakubiini nerriviliorluni inilersoq unaluuna qungujulaarluni.
 
 #Særtilfælde før 0051 til helt løsrevne indskud som ulloriaani angalasumi, SOORLU ULLORISSANI TAMANI TAAMAATTOQ, ... BARRIER V OR KOMMA for ikke at hitte på @<ADVL som Titartaaneq atuartitsinermini iluaqutiginiartarsimavaa atuartitsissutini assigiinngitsuni, soorlu silamiut ingerlaasiannik oqaluttuarisani, ASSILIARTALERSORTITTARLUGIT.
 MAP:M0051X (@PRED2) TARGET Par OR CONT IF (*-1 ("soorlu") BARRIER V OR KOMMA LINK -1 KOMMA) 
@@ -3876,7 +3877,7 @@ MAP:M0051 (@PRED2) TARGET Par OR CONT IF (*-1 ("soorlu") BARRIER V)
 (NEGATE *-1 VFIN LINK *1 ("soorlu") + CONJ-LU OR ("soorlu") + LI LINK *1 _TARGET_ BARRIER KOMMA)
 (NEGATE *-1 ("soorlu") BARRIER V LINK -1 KOMMA LINK *-1 Der/vn + N BARRIER V) #for så er det @i-<ADVL
 (NEGATE 0 CONT LINK *-1 ("soorlu") BARRIER V LINK -1 KOMMA LINK *-1 @PRED BARRIER V) #for så er det en @<ADVL
-(NEGATE *-1 ("soorlu") LINK 0 UNA OR UKU OR UKUA) #for så indleder det oratio obl.
+(NEGATE *-1 ("soorlu") LINK 0 UNA OR UKU) #for så indleder det oratio obl.
 ;
 
 MAP:M0052 (@PRED) TARGET Par + 3Pl IF (NEGATE *0 VFIN OR Cau)(NEGATE 0 VFIN)(NEGATE *-1 ORATIOOBLVERB) ; #Må ikke MAP-e or. obl. Jf. SELECT:100 #Ændret fra PRED2 20190311. Mapper kun ord, der fungerer som PRED.
@@ -3888,7 +3889,7 @@ MAP:M0055 (@PRED2) TARGET CONT + 4Pl IF (*-1 Abs + Pl)(NEGATE *1 V + 3Pl)(1* Abs
 #MAP:M0056 (@PRED2) TARGET CONT + 4Sg IF (*-1 Abs + Sg)(NEGATE *1 V + 3Sg)(1* Abs + Pl LINK 1* V + 3Pl) ;
 MAP:M0058 @ADVL> TARGET TIP + GALUAR + CONT + TRANSVERB (1 V); #...tikkaluarlugu er ADVL og ikke CL-CIT.
 MAP:M0059 @ADVL> TARGET CONT + 4Sg IF (*1 KASIK + @PRED2 BARRIER V LINK 1 EOS) ; #adverbal til KASIK brugt som participium
-MAP:M0060 (@PRED2) TARGET Cont + 1Sg OR ContNeg + 1Sg IF (*-1 ADVERBIUM OR UNA LINK *-1 VFIN + 1Sg)(NEGATE *0 ORATIOOBLVERB) ; #20091109
+MAP:M0060 (@PRED) TARGET Cont + 1Sg OR ContNeg + 1Sg IF (*-1 ADVERBIUM OR UNA OR UKU LINK *-1 VFIN + 1Sg)(NEGATE *0 ORATIOOBLVERB) ; #20091109
 MAP:M0061A @CL-<CIT TARGET Par + NIR OR CONT + NIR IF (*-1 ORATIOOBLVERB - Cau BARRIER DIRTALESTART LINK 0 V OR NIQ)(NEGATE *1 ORATIOOBLVERB BARRIER KOMMA) ; #NIQ til NIQAJOR
 MAP:M0061 (@CL-<CIT) TARGET CONT + 4Sg IF (-*1 ORATIOOBLVERB - N + 3Sg BARRIER ("soorlu") LINK NOT 1 KOMMA)(NEGATE *1 Cont - (/@.*>/r) BARRIER CONT + CONJ-C) (NEGATE *1 Par)(NEGATE *1 N + Abs BARRIER (*) - Adv LINK 0 INDERIVERENDE_SUBSTANTIV OR LIK_QAR OR NIQ );
 MAP:M0061A (@CL-<CIT) TARGET Cont + 1Sg IF (-*1 ORATIOOBLVERB + 1Sg)(NEGATE *1 Cont) (NEGATE *1 Par)(NEGATE 0 CONJ-LU LINK -1 KOMMA);
@@ -3904,7 +3905,7 @@ MAP:M0063 (@CL-<CIT) TARGET CONT + TRANSVERB IF (-*1 ORATIOOBLVERB - N - TAQ BAR
 #MAP:M0063A (@CL-<CIT) TARGET CONT + TRANSVERB IF (-*1 ORATIOOBLVERB BARRIER @PRED)(NEGATE *1 Cont)(NEGATE *1 Par)(NEGATE *-1C Par LINK *1 (<<<) BARRIER ORATIOOBLVERB ) ; #Eqqaamavaa inuppassuullutik kongruerer ikke.
 ;
 MAP:M0063B @CL-<CIT TARGET Par IF (*-1 ("tassa") + V BARRIER V - CONT) ;
-MAP:M0063B @CL-<CIT TARGET Par IF (*-1 ("soorlu") BARRIER V - CONT LINK 0 UNA OR UKU OR UKUA) ;
+MAP:M0063B @CL-<CIT TARGET Par IF (*-1 ("soorlu") OR ("usiuffa") BARRIER V - CONT LINK 0 UNA OR UKU) ;
 
 #Simpel co-ref oratio obliqua uden andre ledsagemåder end CL-CIT
 
@@ -4034,7 +4035,7 @@ MAP:M0230 (@CONJ) TARGET KONJUNKTION - Adv IF (-1 BOS OR KOMMA)
 #Flyttet fra 1168 forebygge konflikt med @ADVL> 
 MAP:M0231 (@CONJ) TARGET ("aammalu" Conj) OR ("taamatut") + LU; #vistnok undtagelsesløs
 MAP:M0232 (@CONJ) TARGET Conj ; #Konjunktioner skal tagges som konjunktioner
-MAP:M0233 @CONJ TARGET Adv + CONJ-C IF (NEGATE *0 V OR INDERIVERENDE_SUBSTANTIV OR Der/vn OR LIK_QAR)(NEGATE 0 Conj)(NEGATE -1 UNA) ; #qanoq taavalu qaqugu
+MAP:M0233 @CONJ TARGET Adv + CONJ-C IF (NEGATE *0 V OR INDERIVERENDE_SUBSTANTIV OR Der/vn OR LIK_QAR)(NEGATE 0 Conj)(NEGATE -1 UNA OR UKU) ; #qanoq taavalu qaqugu
 
 #MAP:M0235B @>V TARGET ("allaat") + Adv IF (1 Rel LINK 1 Trm + POSSESSUM); #allaat Nuup imartaanut pipput #ADVL>
 #MAP:M0235C @>V TARGET ("allaat") + Adv IF (1 Trm); #allaat Nuummut pipput #ADVL>
@@ -4050,8 +4051,8 @@ MAP:M0250 (@FOC) TARGET FOKUSPART + Pali IF (NEGATE *0 VERB-NOTCONT BARRIER KOMM
 MAP:M0252 @FOC TARGET FOKUSPART IF (NEGATE *0 VERB-NOTCONT BARRIER KOMMA) ;
 MAP:M0253 @FOC TARGET ("una") + Prefix/AA ; #aajuna/aana er vist altid @FOC
 
-MAP:M0254 @FOC>N TARGET ("soorlu") - UNA IF (*-1 $$KASUS BARRIER (*) - KOMMA)(1 $$KASUS - @PROP>) ; #soorlu i betydningen 'fx'. #ADVL i Taamaannera soorlu Hans Møllerimut kajumissaariinnartoq.
-MAP:M0255 @FOC>N TARGET ("soorlu") - UNA IF (1 $$KASUS - @PROP>)(*-1 $$KASUS BARRIER (*) - KOMMA) ; #soorlu i betydningen 'fx'.
+MAP:M0254 @FOC>N TARGET ("soorlu") - UNA - UKU IF (*-1 $$KASUS BARRIER (*) - KOMMA)(1 $$KASUS - @PROP>) ; #soorlu i betydningen 'fx'. #ADVL i Taamaannera soorlu Hans Møllerimut kajumissaariinnartoq.
+MAP:M0255 @FOC>N TARGET ("soorlu") - UNA - UKU IF (1 $$KASUS - @PROP>)(*-1 $$KASUS BARRIER (*) - KOMMA) ; #soorlu i betydningen 'fx'.
 MAP:M0255 @FOC>N TARGET ("ingammik") IF (*1 $$KASUS)(*-1 $$KASUS) ;
 
 MAP:M0260 (@ADVL>) TARGET ("tassa") + Part - Cau IF (-*1 V OR Der/vn)(*1 V)# OR Der/vn OR Prop OR ("\:"))
@@ -5737,9 +5738,10 @@ SELECT:0476 Par + 3Sg + GALUAR IF (-1 Abs + Sg LINK *-1 BOS BARRIER (*) - Rel)(*
 REMOVE:0477 INTRANSVERB + Par + 3Sg - TIME - GAANNI - ADV-LU #Par + LU kan være adverbiel
 IF (NEGATE *0 ORATIOOBLVERB)(NEGATE *-1 TIME + Sg + Abs OR WEATHER)
 (NEGATE *-1 Interj OR ("sunaaffa") BARRIER V)
-(NEGATE *-1 KONCESSIV OR UNA OR UKU BARRIER VFIN OR Par LINK *1 _TARGET_ LINK NOT *1 Par)
+(NEGATE *-1 KONCESSIV OR UNA OR UKU OR UKUA BARRIER VFIN OR Par LINK *1 _TARGET_ LINK NOT *1 Par)
 (NEGATE -2 BOS OR KOMMA OR ("-") LINK 1 Abs + Sg)(NEGATE -1 ("tassa") LINK -1 BOS)
 (NEGATE 0 ("tunnga"))
+(NEGATE 0 TUQ LINK 0 UNA OR UKU OR UKUA)
 #komma forekommer også mellem oratio recte og obliqua. NEGATE for ikke at slette absolut tempus. Næsstsidste NEGATE for ikke at slette emfase, concession. Sidste for at håndtere tidsbisætning efter fx komma
 ;
 
@@ -5756,7 +5758,8 @@ REMOVE:0483 INTRANSVERB + Par + 3Pl - GAANNI IF (1 Con)(2 TRANSVERB + 3Pl) ;
 SELECT:0484 INTRANSVERB + Par + 3Sg - GAANNI IF (-1 Par)(T:NexusHøjre);
 REMOVE:0485 INTRANSVERB + Par + 3Sg - GAANNI - ADV-LU IF (NEGATE *-1 Abs + Sg BARRIER V)(NEGATE *0 ORATIOOBLVERB)(NEGATE 1 VFIN)(NEGATE *-1 Interj OR ("sunaaffa") BARRIER V)
 (NEGATE *-1 KONCESSIV OR UNA OR UKU BARRIER VFIN OR Par LINK *1 _TARGET_ LINK NOT *1 Par)
-(NEGATE -1 ("tassa") LINK -1 BOS) ;
+(NEGATE -1 ("tassa") LINK -1 BOS)
+(NEGATE 0 TUQ LINK 0 UNA OR UKU OR UKUA) ;
 
 REMOVE:0487 INTRANSVERB + Par + 3Sg - GAANNI IF (0 Abs + Sg)(1 Cont + 3SgO)(NEGATE 1 ORATIOOBLVERB); # fjerner ' .. ujarak eqqaminnut TUTTOQ takullugu .. ' 20170404 må være forkert for taku er ORATIOOBLVERB
 
@@ -5843,6 +5846,10 @@ SELECT:0549B N OR Prop - Sem/Hum IF (*1 LIK BARRIER V)(NEGATE 0 Adv OR Pali OR N
 REMOVE:0549C Par IF (0 Prop + &&IV_SUBJ& OR N + &&IV_SUBJ&)(1 ORATIOOBLVERB + INTRANSVERB + &&IV_SUBJ&) 
 (NEGATE 1 ("oqar") - AFFINGERET LINK *0 (*) - WORD BARRIER (*) - _TARGET_ LINK NEGATE *1 (:)) #Oqarpoq vil altid have objekt eller være inquit. qiiasoq oqarpoq.
 ; #Issittoq allaanngilaq ...
+
+REMOVE:0549D N + TUQ - TAR IF (0 Par LINK 0 UNA OR UKU OR UKUA) ; #Susoqartoruna er verbal, men timmisartoruna er nominal.
+
+REMOVE:0549E Par IF (0 N + TUQ + TRANSPORT) ;
 
 SECTION #Skal kun bruges til at isolere Par - reglerne
 
