@@ -1338,7 +1338,7 @@ LIST MUT-OBJ = "asa" "akuere" "pulaar" ; #"mik-objekter", som kan tage Trm i ste
 # 20091106 Foelgende med tak til Tino for at forebygge at "oqar" + USIQ opfattes som inquit
 LIST ORATIOOBLVERBnOQAR = "aalajanger" "aalianger" ("apeqqut" GE) "apere" ("assuarliut" GE) "eqqaa" "eqqaama" "eqqartor" "erseqqissar" "ilimage" "ilimasup" ("ili" SIMA TIP HTR) "ilisimatitsi" "ilisimatitsissut" "ilumoor" "imaap" ("isuma" LIUR) ("isuma" QAR)
 "isummer" "kaammattor" "maluge" "malunnar" "malunnarsi" "misige" "naatsorsor" "nalu" "nalunaar" "nalunaarfige" "nalunaarut" "nalunaarutige" "neriorsor" "neriup" "nipangiup" ("oqar" UTE GE) "oqaluttuar" ("oqar" VIK GE) "paasi" "pinngitsaali" "puigor" "puior" "qular" "qulare" "qularnar" "qinnuige" "sinnattoq GE" "siunnersor" "takorloor" ("taku" Gram/TV) "tusar" "unner" "uggore" "uppernarsar" ("uppernar" SAR) (/SSAQ\ Der\/nn\ GE\ Der\/nv/l); #GE tilføjet til objektssætninger som ikke er indirekte tale
-SET ATUARnTAQ = ("atuar") + TRANSVERB - TAQ - VIK - QATE;
+SET ATUARnTAQ = ("atuar" + TRANSVERB - TAQ - VIK - QATE) OR ("atuar" NIQAR); #vist aldrig intrans som inquit
 SET OQARnUSIQ = ("oqar") - (USIQ) ;
 SET ALLAANNGIT = ("alla") + U + NNGIT ;
 SET ALLAPnTAQ = ("allap") - TAQ - VIK ;
@@ -1412,7 +1412,7 @@ LIST BIO = "baobab" "orpigaq" "orpik" "kuanneq" "naasoq" ("sikker" NIQ);
 LIST DISEASE = "gigt" ;
 LIST ABSTRACT = "taaq" ;
 
-LIST PLACE = ("atuar" VIK) "illu" "imaq" "itersaq" "itersaliaq" "itersaliarsuaq" ("mip" TAR VIK) "mittarfik" "nuna" ("oqalup" VIK) "orpippassuaq" "sakkutooqarfik" "siku" "silarsuaq" "ungaloq" "village" Sem/Geo ^Sem/Hum "lexicon" ; 
+LIST PLACE = ("atuar" VIK) "illu" "imaq" "itersaq" "itersaliaq" "itersaliarsuaq" "klasse" ("mip" TAR VIK) "mittarfik" "nuna" ("oqalup" VIK) "orpippassuaq" "sakkutooqarfik" "siku" "silarsuaq" "ungaloq" "village" Sem/Geo ^Sem/Hum "lexicon" ; 
 LIST PLACE_MORE = (/\"<\\p{Lu}.*\>"/r);
 SET PLACE_EXTENDED = PLACE | PLACE_MORE ;
 LIST ADJEKTIVISK = "akisooq" "akutakujooq" "akutakujuk" "angisooq" "angut" "arnaq" "ataavartoq" "ilivitsoq" ("isertor" TUQ) "itisooq" "manissoq" ("perler" TUQ) ("portu" JAAR) "takisooq" "siulleq" "tamalaaq" "tulleq" "tulliup" "tungujortoq" (NAR TUQ) (/.*tooq\"/r); #angut og arnaq medtaget lidt skummelt, men anvendes ofte adjektivisk
@@ -2457,6 +2457,7 @@ REMOVE:0030 4SgPoss + Pl + ("aataq") OR 4SgPoss + Pl + ("aata")IF (0 ("aataq") +
 
 #Rel + 4SgPoss sammenblandes ofte med Lok. Derfor en tidlig regel til at selecte sikre subjekter
 SELECT:0035 Rel + 4SgPoss IF (*1 TRANSVERB + 3Sg + CON_CAU BARRIER V)(NEGATE 0 Interj)(NEGATE 0 V)(NEGATE 1 3SgPoss)(NEGATE 0 VIK + Lok)(NEGATE 0 Rel + Pl LINK 1 POSSESSUM + 3PlPoss); #fx Ikke Ilami! og anillakkami, ikke possessor og ikke ADVL
+
 SELECT:0035B Rel + Sg + 4SgPoss IF (NEGATE 0 Adv OR PLACE OR TIME OR Cau + 4Sg OR Aeq)(1 POSSESSUM + 3SgPoss - Lok)(NEGATE *0 Lok BARRIER VFIN) ;
 
 #4Sg kan ikke være subjekt for et finit verbum.
@@ -3629,7 +3630,7 @@ MAP:M0007A (@PRED) TARGET CONT IF (-*2 VFIN BARRIER (*) - CONT - Abs LINK 1 Abs 
 MAP:M0008 (@CAU) TARGET CONT + TRANSVERB IF (-2 Cau)(-1 Abs + CONJ-LU) ; #Paratakser med transitive verber med objekt som andet led
 MAP:M0009A @PRED TARGET CONT + INTRANSVERB + &&Cont& IF (-1 Abs + CONJ-LU + &&Cont& LINK -1 VFIN) ;
 MAP:M0009 (@PRED) TARGET CONT + CONJ-C IF (-1 VFIN)(NEGATE *1 V BARRIER KOMMA LINK NOT *-1 _TARGET_ + ORATIOOBLVERB) ;
-MAP:M0009B @PRED TARGET CONT - OBJVERB - ADVERBIEL IF (*-1 CONJ-LU - V BARRIER V LINK -1* VFIN BARRIER V OR CONJ-C)(1 EOS) ;
+MAP:M0009B @PRED TARGET CONT - OBJVERB - ADVERBIEL IF (*-1 CONJ-LU - V BARRIER V LINK -1* VFIN BARRIER V OR CONJ-C)(1 EOS OR KOMMA) ;
 MAP:M0010 (@CAU) TARGET CONT + CONJ-LU IF (-1 Cau) ;
 MAP:M0010B @PRED TARGET CONT - ADVERBIEL - OBJVERB (1 EOS)(*-1 CONJ-C - ORATIOOBLVERB - VFIN - KONCESSIV BARRIER V - CONT OR ORATIOOBLVERB LINK *-1 VFIN - ORATIOOBLVERB)(NEGATE *-1 $$KASUS + CONJ-C BARRIER V LINK *-1 $$KASUS BARRIER V) ;
 #MAP:M0010A @PRED TARGET CONT - ADVERBIEL - OBJVERB IF (*-1 CONJ-C - ORATIOOBLVERB - @PRED BARRIER V LINK *-1 VFIN - ORATIOOBLVERB)(NEGATE *1 VFIN OR @PRED) ;
@@ -3688,7 +3689,8 @@ MAP:M0015 (@PRED2) TARGET INTRANSVERB + Cont + 4Pl - NIR IF (*-1 Abs + Pl OR Abs
 
 MAP:M0015B @PRED2 TARGET CONT + 4Pl IF (*-1 KONCESSIV LINK -*1 VFIN + @PRED ) ;
 
-MAP:M0016 (@PRED2) TARGET INTRANSVERB + Par + 3Pl IF (*-1 Abs + Pl)(NEGATE *0 ORATIOOBLVERB BARRIER VFIN)(1 Abs OR ("\,"))(NEGATE *-1 ("soorlu") OR ("tassa")); #koncessive saetninger uden konjunktion
+MAP:M0016 (@PRED2) TARGET INTRANSVERB + Par + 3Pl IF (*-1 Abs + Pl)(NEGATE *0 ORATIOOBLVERB BARRIER VFIN)(1 Abs OR KOMMA)(NEGATE *-1 ("soorlu") OR ("tassa")); #koncessive saetninger uden konjunktion
+
 MAP:M0017 (@PRED2) TARGET INTRANSVERB + Par + 3Sg IF (*-1 Abs + Sg)(NEGATE *0 ORATIOOBLVERB CBARRIER VFIN)(*-1S TIMEVERB OR WEATHERVERB) #(1 Abs OR ("\,")) #koncessive saetninger uden konjunktion #Barrier gjort Careful 20180707. #20190311 PRED2 skal ikke omfatte koncessive sætninger.
 ;
 
@@ -3784,7 +3786,7 @@ MAP:M0031B @PROP> TARGET Orth/Append + Abs - Num OR Orth/Copy + Abs IF (1 Orth/A
 
 MAP:M0031C @PROP> TARGET FIRSTNAME + Abs IF (1 NAME - Sem/Fem - CONJ-C)(NEGATE *1 INTRANSVERB + 3Sg) ; #Fornavne er @PROP til efternavne eller efterfølgende fornavne. Et mandligt navn kan bruges som efternavn.
 
-MAP:M0031D @PROP> TARGET Sem/Fem + Abs IF (1 Sem/Fem + Abs) ;
+MAP:M0031D @PROP> TARGET Sem/Fem + Abs IF (1 Sem/Fem + Abs - CONJ-LU) ; #Må ikke hitte Niviarsiaqqat JANE Emilielu ..
 #MAP:M0031A @PROP> TARGET Prop + Sem/FirstName IF (1 Prop + Sur)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + CONJ-LU LINK *1 V + 3Pl )(NEGATE 1 Prop LINK 1 Prop)(NEGATE 0 FIRSTNAME LINK 1 FIRSTNAME)(NEGATE 0 FIRSTNAME LINK 1 ("Kalaallit")); #Mange fejlhit på Kalaallit Illuutaat og Kalaallit Nunaat
 #0031A ændret ad hoc med + Sur i mangel af mulighed for at adskille for- og efternavne
 
