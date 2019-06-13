@@ -107,6 +107,7 @@ LIST Sem/Time = Sem/Time ;
 LIST Sem/Mask = Sem/Mask ; #Introduceret som test 20180613. Skal måske ud igen
 LIST Sem/Fem = Sem/Fem ; #Introduceret som test 20180613. Skal måske ud igen
 LIST Sem/Url = Sem/Url ; #Semantisk tag til webadresser.
+LIST Sem/Concessive = Sem/Concessive ; #koncessive sætninger
 LIST Gram/Abbr = Gram/Abbr ;
 LIST Gram/ACR = Gram/ACR ;
 LIST Gram/Ord = Gram/Ord ; # Ordinaltal
@@ -1339,7 +1340,7 @@ LIST LOKVERB = "angala" "najugaq" "najugaqar" "ilinniar" ("taku" UTE) ;
 SET AALLAR = ("aallar") - (QQAAR UTE) ;
 SET ABLVERB = ("aallar") - AALLAR | ("ani") | ("titartar" TAQ) ;
 
-LIST TRMVERB = "aallar" "ini"iser" "nunnip" "nuup" ("peqat" U) "pulaar" ("qiner" QQU SAAR) ("quja" Gram/Exclm);
+LIST TRMVERB = "aallar" "akiler" ("aningaasaq" LIR) "ator" "ini" "iser" "nunnip" "nuup" ("peqat" U) "pulaar" ("qiner" QQU SAAR) ("quja" Gram/Exclm) "sangu" "uppernarsar" ;
 
 LIST INSVERB = "taa" ;
 
@@ -1393,16 +1394,21 @@ SET SEASON = ("aasaq") | ("ukiaq") | ("ukioq") | ("upernaaq") ; #årstider
 LIST TIMEVERB = ("agger") ("assi" GIIAAR) ("ili" NIQ)("ingerla") ("naammassi") ("ip" TUQ U) "pula" ("qaama") "qaanger" "qaangiup" ("qiteqqup") ("sivitsor") ("imaali"); #verber som kan have tidsudtryk som subjekt
 SET TEMPUSVERB = UGEDAGE | ("ilaanneeriar") | ("qaanger") | ("qaqutigut" U) | ("qiteqqup") | ("taamaali") | ("ukiar") | ("ukioq" U) ;
 LIST TIMEAFFIX = (/__RIIR\ Der\/vv\ \(Gram\/..\ \)*V__/l) (/__LIR\ Der\/vv\ \(Gram\/..\ \)*V__/l) ;
+LIST DISTANCEVERB = "ungasip" "qanip" ;
 LIST VERB_medGE = "ipianngu" "miki" ; #Set til stammer, der kan tage GE+Der/vv
 LIST VERB_udenUTE = "inor" ; #Set til de enormt mange verber, der ikke kan tage UTE+vn
 LIST TRANSINTRANS = "naalap" "nuup" "oqar"; #Set til verber med både transitive og intransitive stammer
 LIST SEKVENTIELLE_VERBER = "ani" "innar" ; #Sæt til anvendelse sammen med coref tidsbisætning
 LIST NAAR_VERBER = "angi" ("aki" KIP) "amerla" "isorartu" "kingusip" "miki" "oqip" "sivikip" "siusip" ; #stammer, der kan tage NAAR. Alle andre slettes
 LIST EVALUERENDE_VERBER = "kajungeraa" ; #verber med semantik der betinger objekt efter NIQ+Ins/Abl
-LIST INDERIVERENDE_SUBSTANTIV = (/\"aki\"\ [^\(Gram\/IV\)]/l SSAQ) "angajoqqaaq" "atuakkiaq" "blogger" "bloggeri" "blog" "filmiliaq" ("film" LIAQ) "igalaasartooq" "ilaqutaq" "ilassinnissut" "inatsit" "inerteqqut" "isertugaq" "isi" "isuma" ("isuma" QATE GIIP UTE) "minister" "mittarfik" "naapeqatigiinneq" "nalliuttorsiorneq" "nalunaarusiaq" "nassaaq" "nioqqut" "nuuttoq" "oqallissaarut" "oqaluttuaq" "oqartussaaffik" "oqimaassusilik" "peqataasoq" "peqqussut" "pineq" "piniartoq" "qaartartorsuaq" "qaatigooq" "sanaaq" "sinniisoq" "siunnersuisoq" "siunnersorti" "sungiusaasoq" "tigummiaq" FAM ;
+LIST INDERIVERENDE_SUBSTANTIV = (/\"aki\"\ [^\(Gram\/IV\)]/l SSAQ) "akiliut" "angajoqqaaq" "atuakkiaq" "blogger" "bloggeri" "blog" "filmiliaq" ("film" LIAQ) "igalaasartooq" "ilaqutaq" "ilassinnissut" "inatsit" "inerteqqut" "isertugaq" "isi" "isuma" ("isuma" QATE GIIP UTE) "minister" "mittarfik" "naapeqatigiinneq" "nalliuttorsiorneq" "nalunaarusiaq" "nassaaq" "nioqqut" "nuuttoq" "oqallissaarut" "oqaluttuaq" "oqartussaaffik" "oqimaassusilik" "peqataasoq" "peqqussut" "pineq" "piniartoq" "pisortaqarfik" "qaartartorsuaq" "qaatigooq" "sanaaq" "sinniisoq" "siunnersuisoq" "siunnersorti" "sungiusaasoq" "tigummiaq" "ujaasineq" FAM ;
 #LIST VERBALNOMEN = "isuma" "oqaluttuaq" "naapeqatigiinneq" ;
 LIST INSOBJVERB = LIUR RAAR (/\ SI\ Der\/nv/l) SSIP TAAR SIUR (/\ TUR\ Der\/nv/l) (/__LIR\ Der\/nv__/l) ;
 LIST NOTSPLIT = ("neri" TAQ SSAQ) ; # cannot take i- -arguments.
+LIST NIQABL = (/NIQ\ Der\/vn\ N\ Abl/l) ;
+LIST NIQINS = (/NIQ\ Der\/vn\ N\ Ins/l) ;
+LIST NIQTRM = (/NIQ\ Der\/vn\ N\ Trm/l) ;
+SET NIRMIT = N - POSSESSUM + NIQABL | N - POSSESSUM + NIQINS | N - POSSESSUM + NIQTRM ;
 
 
 # Nominernes leksikalske klasser
@@ -1589,7 +1595,8 @@ LIST @PRED2 = @PRED2 ; # saettes paa verbet i en bunden ledsaetning
 LIST @SUBJ_COMP = @SUBJ_COMP ;	#Prædikat til subjekt/ subjective complement
 LIST @N<PRED = @N<PRED ; #Efterstillet appositionslignende nominalsyntagme, som ikke kongruerer med det det er 'apposition' til.
 LIST @VOK = @VOK ;
-LIST @NIQ_OBJ> = @NIQ_OBJ> ; #Kun til objekter for absolutte konstruktioner med NIQ+Abl (NIQ+Ins)
+LIST @NIQ_SUBJ> = @NIQ_SUBJ> ; #Kun til objekter for absolutte konstruktioner med NIQ+Abl (NIQ+Ins) (NIQ+Trm)
+LIST @NIQ_OBJ> = @NIQ_OBJ> ; #Kun til objekter for absolutte konstruktioner med NIQ+Abl (NIQ+Ins) (NIQ+Trm)
 LIST @<CONT_TASSA = @<CONT_TASSA ; #Ledsagemåder, der står som subjektprædikater efter "tassa"
 
 LIST @SML_HNOUN = @SML_HNOUN ;
@@ -1736,6 +1743,7 @@ REMOVE:0001AI (/\"nali\"\ \(Gram\/..\ \)?U__/l) IF (0 ("nalaasaar")) ;
 REMOVE:0001AJ ("aap") + Opt IF (0 ("aallar")) ; #aallarami
 REMOVE:0001AK N + AA IF (0 V - AA) ; #Paasiartuinnalersoraa
 REMOVE:0001AL TUQ + NGA + Opt IF (0 Par + 1Sg) ; #ukioqartungali
+REMOVE:0001AM (/__LIR\ Der\/nv\ \(Gram\/..\ \)*V\ Ind\ Gram\/Exclm__\/l) ; #Oqaaseq er ikke exclm
 
 #REMOVE:0001XX UGEDAGE + Gram/TV IF (0 UGEDAGE + Gram/IV) ; #NNGUR + Gram/TV utænkelig ved ugedages navne #udkommenteret og gjort listen entydig i stedet.
 
@@ -2685,6 +2693,10 @@ REMOVE:0063AB Rel + Pl IF (0 Abs + Pl LINK NOT 1 Rel)(0 (/TUQ\ Der\/vn\ N/l))(*-
 (NEGATE *1 ("akunneq") OR ("ila") OR SPATIAL BARRIER (*) - Rel + Pl LINK 0 3PlPoss)
 (NEGATE *-1 Rel BARRIER (*) - OBLIQUE LINK *1 _TARGET_ LINK *1 3PlPoss BARRIER V)
 ; #***
+REMOVE:0064A POSSESSUM4 IF (0 Ins) (1C Ins + CONJ-C) ;
+REMOVE:0064B POSSESSUM4 IF (0 Ins + CONJ-C) (-1C Ins) ;
+
+REMOVE:0064C POSSESSUM4 IF (0 NIRMIT) ; #NIRMIT mere sandsynlig
 
 SELECT:0066 Aeq IF (0 ("inuiak") LINK 1 ("ulloq") OR ("ullorsior")) ;
 
@@ -3237,7 +3249,7 @@ REMOVE:0322 Gram/Refl IF (NEGATE *-1 ("immi") BARRIER KOMMA)
 (NEGATE 0 (/NNGUR\ Der\/nv\ Gram\/IV\ TIP\ /l)) #qinigassanngortinnissaq
 (NEGATE 0 (NIQ QAR) LINK -1 Ins) #I mangel af en CG-formalisme til at kontrollere når alle andre læsninger end en selv er Arch. En helt specifik regel, der skal forhindre at en Arch-læsning overlever som den sidste mens vi venter på nye faciliteter i CG-formalismen. 
 #20100822 disambiguerer refleksiv fra monovalente former men må ikke overskrive regel 5556
-(NEGATE 0 (/NIQ\ Der\/vn\ N\ Abl/l) OR (/NIQ\ Der\/vn\ N\ Ins/l))
+(NEGATE 0 NIRMIT)
 (NEGATE 0 (/TIP\ Der\/vv\ Gram\/TV\ SIMA\ Der\/vv\ Gram\/Refl\ \(Gram\/IV\ \)?V\ /l)) 
 (NEGATE 0 NAAR OR (".*naar"r))
 ;
@@ -3715,20 +3727,23 @@ MAP:M0017 (@PRED2) TARGET INTRANSVERB + Par + 3Sg IF (*-1 Abs + Sg)(NEGATE *0 OR
 ;
 
 #De vanskeligt isolerbare absolutte konstruktioner med objekter til NIQ+Abl (NIQ+Ins). De må i hvert fald ikke være possessum. Hvis der ikke er andre Abs + Sg og intrans til venstre, er der nok tale om et subjekt. Og hvis intet andet Abs + Sg mellem 0 og 3SgO, er det nok et normalt objekt
-MAP:M0018A @NIQ_OBJ> TARGET Abs IF (*1 (/Gram\/TV\ \(Gram\/Pass\ \)?NIQ\ Der/vn\ N\ Abl__/l) OR (/Gram\/TV\ \(Gram\/Pass\ \)?NIQ\ Der/vn\ N\ Ins__/l) BARRIER (/@.*/r) - @N< OR V - CONT OR Gram/Db LINK NEGATE *1 HTR BARRIER (*) - Ins)(NEGATE 1 POSSESSUM)(NEGATE *1 INTRANSVERB + 3Sg BARRIER Abs + Sg)(NEGATE *1 3SgO BARRIER Abs + Sg) #nunap piniagassarsui tusaamanermit nuussimavugut.
+MAP:M0018A @NIQ_OBJ> TARGET Abs IF (*1 (/Gram\/TV\ \(Gram\/Pass\ \)?NIQ__/l) + NIRMIT BARRIER (/@.*/r) - @N< OR V - CONT OR Gram/Db OR INDERIVERENDE_SUBSTANTIV LINK NEGATE *1 HTR BARRIER (*) - Ins)(NEGATE 1 POSSESSUM)(NEGATE *1 INTRANSVERB + 3Sg BARRIER Abs + Sg)(NEGATE *1 3SgO BARRIER Abs + Sg) #nunap piniagassarsui tusaamanermit nuussimavugut.
 (NEGATE *1 LIK BARRIER (*) - Ins ) #inatsisileritooq aningaasaqarnermik akileraartarnermillu soqutigisalik.
 ;
-MAP:M0018B @NIQ_OBJ> TARGET Abs - CONJ-C IF (1* (/Gram\/TV\ NIQ\ Der/vn\ N\ Abl__/l) + Gram/TV - Gram/IV - POSSESSUM - @N< BARRIER (/@.*/r) - @N< OR V) ;
-MAP:M0018B @NIQ_OBJ> TARGET Abs - CONJ-C IF (1* (/NIQ\ Der/vn\ N\ Ins__/l) + Gram/TV - Gram/IV - POSSESSUM - @N< BARRIER (/@.*/r) - @N< OR V) ; #Samme som M0018A. Midlertidigt nødvendig fordi TV-taggen ikke er propageret til sidste plads før NIQ.
+MAP:M0018B @NIQ_OBJ> TARGET Abs - CONJ-C IF (1*C (/Gram\/TV\ NIQ\ Der\/vn\ N__/l) + NIRMIT - @N< BARRIER (/@.*/r) - @N< OR V - (\(/Gram\/IV\ NIQ\ Der\/vn\ N__/l\) NIRMIT)) ;
 SUBSTITUTE @NIQ_OBJ> @N< TARGET Abs IF (NEGATE 0 CONJ-C) (-1 @NIQ_OBJ> + Abs) ;
 SUBSTITUTE @NIQ_OBJ> @N< TARGET Abs IF (NEGATE 0 CONJ-C) (-1 @N< LINK -1 @NIQ_OBJ> + Abs) ; #sideordnede adled
 
-MAP:M0018A (@NIQ_SUBJ>) TARGET Abs - Gram/Pers IF (*1 (/Gram\/IV\ NIQ\ Der/vn\ N\ Abl__/l) - POSSESSUM OR (/Gram\/IV\ NIQ\ Der/vn\ N\ Ins__/l) - POSSESSUM BARRIER V OR (/@.*/r) - @N< OR KOMMA LINK NEGATE *1 HTR BARRIER (*) - Ins)(NEGATE 1 POSSESSUM)(NEGATE *1 INTRANSVERB + 3Sg BARRIER Abs + Sg)(NEGATE *1 3SgO BARRIER Abs + Sg) #nunap piniagassarsui tusaamanermit nuussimavugut.
+MAP:M0018A (@NIQ_SUBJ>) TARGET Rel - Gram/Pers IF (*1 (/Gram\/TV\ NIQ\ Der\/vn\ N__/l) + NIRMIT BARRIER V OR (/@.*/r) - @NIQ_OBJ> - @N< OR KOMMA LINK NEGATE *1 HTR BARRIER (*) - Ins)(NEGATE 1 POSSESSUM)(NEGATE *1 INTRANSVERB + 3Sg BARRIER Abs + Sg)(NEGATE *1 3SgO BARRIER Abs + Sg) #nunap piniagassarsui tusaamanermit nuussimavugut.
+; #til transitive neq-konstruktioner #*Panimmaana nutella mamarinermut.
+MAP:M0018A (@NIQ_SUBJ>) TARGET Abs - Gram/Pers IF (*1 (/Gram\/IV\ NIQ\ Der\/vn\ N\__/l) + NIRMIT BARRIER V OR (/@.*/r) - @N< OR KOMMA LINK NEGATE *1 HTR BARRIER (*) - Ins)(NEGATE 1 POSSESSUM)(NEGATE *1 INTRANSVERB + 3Sg BARRIER Abs + Sg)(NEGATE *1 3SgO BARRIER Abs + Sg)(NEGATE *1 NIRMIT + Trm LINK *1 TRMVERB BARRIER @PRED OR VFIN) #nunap piniagassarsui tusaamanermit nuussimavugut.
+(NEGATE *1 Ins + NIRMIT BARRIER VFIN LINK 1 INSOBJVERB OR LIK_QAR ) #Dagmar Jensen aatsaat ernutaqarnermik misigisaqalerpoq.
 (NEGATE *1 LIK BARRIER (*) - Ins ) #inatsisileritooq aningaasaqarnermik akileraartarnermillu soqutigisalik.
 (NEGATE -1 Abs)
 (NEGATE 0 TITEL LINK 1 N OR Prop)
 ;
-#MAP:M0018B (@NIQ_SUBJ>) TARGET Abs - CONJ-C IF (1* (/NIQ\ Der/vn\ N\ Abl__/l) - @N< OR (/NIQ\ Der/vn\ N\ Ins__/l) - @N< BARRIER (/@.*/r) - @N<)(**1 Gram/IV - Gram/TV BARRIER (/@.*/r) - @N< - Gram/TV - POSSESSUM)(NEGATE -1 Abs) ; #Samme som M0018A. Midlertidigt nødvendig fordi TV-taggen ikke er propageret til sidste plads før NIQ.
+
+SUBSTITUTE:S0018A @NIQ_SUBJ> @N< TARGET $$KASUS IF (*-1 @NIQ_SUBJ> + $$KASUS - CONJ-C BARRIER CONJ-C OR @PRED)(*1 (/Gram\/IV\ NIQ\ Der\/vn\ N__/l) + NIRMIT) ;
 
 #Transitive ledsagemåder brugt koncessivt. A ved coref Cau før koncessionen B uden. 0019AX og 0019BXfor at tage højde for implicit subjekt i inquit fulgt at or. obl.
 
@@ -3873,9 +3888,12 @@ MAP:M0038B @SUBJ> TARGET N + Abs + 4SgPoss IF (1 Abs + CONJ-LU LINK *1 Par + 3Pl
 MAP:M0040 (@SUBJ>) TARGET N + Abs + CONJ-LU IF (-1 VFIN + 3Sg)(1 Cont + 4Pl)(2 N + Sg LINK *1 V + 3Sg) ;
 #Uggoraa Pitarlu qiteqatigiillualeruttorlutik
 MAP:M0041 (@SUBJ>) TARGET N + Abs + CONJ-LU OR Prop + Abs + CONJ-LU IF (-1 VFIN + 3Sg)(1 Cont + 4Pl)(2 N + Pl LINK *1 V + 3Pl) ;
-MAP:M0044 @CL-ADVL> TARGET N - POSSESSUM + (/NIQ\ Der\/vn\ N\ Abl/l) IF (*1 VFIN)(NEGATE 0 Abl LINK 1 NIRU) ; #-nermit vist altid sætningsadverbial
-MAP:M0044 @CL-<ADVL TARGET N - POSSESSUM + (/NIQ\ Der\/vn\ N\ Abl/l) OR N - POSSESSUM + (/NIQ\ Der\/vn\ N\ Ins/l) IF (-*1 VFIN) (NEGATE *1S V - CONJ-C BARRIER KOMMA OR CONJ-C) 
+MAP:M0044A @CL-ADVL> TARGET NIRMIT IF (*1 VFIN - HTR - LIK_QAR - INDERIVERENDE_SUBSTANTIV BARRIER HTR OR LIK_QAR)(NEGATE 0 Abl LINK 1 NIRU)(NEGATE 1 OBLIQUE - SPATIAL - NIRMIT)(NEGATE -1 POSSESSUM4)(NEGATE 0 Trm LINK *1 TRMVERB BARRIER VFIN) ; #-nermit vist altid sætningsadverbial
+MAP:M0044B @CL-ADVL> TARGET NIRMIT IF (*-1 @NIQ_SUBJ> OR @NIQ_OBJ>)(*1 V OR @PRED)(NEGATE *-1 @PRED BARRIER KOMMA)(NEGATE 0 Trm LINK *1 TRMVERB BARRIER VFIN OR @PRED) ;
+
+MAP:M0044C @CL-<ADVL TARGET NIRMIT IF (-*1 VFIN) (NEGATE *1S V - CONJ-C BARRIER KOMMA OR CONJ-C) (NEGATE 0 Trm LINK *-1 VFIN + TRMVERB BARRIER VFIN)(NEGATE 0 $$KASUS + $$NUMERUS LINK -1 $$KASUS + $$NUMERUS)
 (NEGATE 0 Ins LINK *1 HTR BARRIER VFIN OR KOMMA)(NEGATE 0C Ins LINK *1 QAR); #-nermit vist altid sætningsadverbial
+MAP:M0044D @CL-<ADVL TARGET NIRMIT + CONJ-C IF (-*1 NIRMIT + @CL-<ADVL) ;
 
 #Nedenstående to bliver for upræcise. Skal måske forsøges længere nede.
 #MAP:M0044H @CL-ADVL> TARGET NIQ + POSSESSUM - TIME (0 Lok - Aeq OR Trm)(*1 V - CONT - TRMVERB - UTE - (".*uup"r) - ADVERBIEL BARRIER CONT OR VFIN)(NEGATE -1 Rel)(NEGATE 1 ("pi")); # giver ofte sætningsadverbial: Baobabit aallaqqaammut mikisuusarput - allinnginnerminni.
@@ -4851,7 +4869,7 @@ MAP:M0669 @SUBJ> TARGET Abs + Pl IF (*1 Abs + Pl LINK *1 CONT + 3PlO LINK *1 INT
 (NEGATE 1 Abs + Pl + @N< LINK *1 CONT + 3PlO BARRIER Abs + Pl - @N<) 
 (NEGATE 0 CONJ-LU LINK -1 Abs ) #PL tilføjet for at forhindre hit på andre paratakser fx objekter
 ; 
-MAP:M0670 (@SUBJ>) TARGET Abs + Pl IF (*1 INTRANSVERB + 3Pl - CONJ-C OR INTRANSVERB + 4Pl - CONJ-C BARRIER TRANSVERB + 3PlO OR (/NIQ\ Der\/vn\ N\ Abl/l) OR (/NIQ\ Der\/vn\ N\ Ins/l))(NEGATE *-1 Rel + Sg - @POSS> LINK *1 3Sg + 3PlO)(NEGATE 0 2SgPoss) ; #så er det et objekt for TRANSVERB. NEGATE tilføjet 20171121 for at redde objekter for V til højre. #Sidste NEGATE for at undgå at 2SgPoss bliver valgt i lange sætninger.
+MAP:M0670 (@SUBJ>) TARGET Abs + Pl IF (*1 INTRANSVERB + 3Pl - CONJ-C OR INTRANSVERB + 4Pl - CONJ-C BARRIER TRANSVERB + 3PlO OR NIRMIT)(NEGATE *-1 Rel + Sg - @POSS> LINK *1 3Sg + 3PlO)(NEGATE 0 2SgPoss) ; #så er det et objekt for TRANSVERB. NEGATE tilføjet 20171121 for at redde objekter for V til højre. #Sidste NEGATE for at undgå at 2SgPoss bliver valgt i lange sætninger.
 MAP:M0680 (@SUBJ>) TARGET (Rel) - 12IV IF (*1 TRANSVERB + 34IV BARRIER POSSESSUM3 OR INTRANSVERB + 34IV LINK NEGATE 0 VFIN LINK *-1 _TARGET_ LINK 0 4SgPoss OR 4PlPoss)
 (NEGATE 0 Pl LINK *1 TRANSVERB + 3Sg OR 4Sg); #Krævet numeruskongruens
 MAP:M0681 @SUBJ> TARGET Abs + 1Pl IF (*1 INTRANSVERB + 1Pl BARRIER VFIN)(NEGATE *1 TRANSVERB + 1PlO BARRIER INTRANSVERB + 1Pl) ; 
@@ -7639,12 +7657,12 @@ MAP:M0099E @FOC TARGET UNA OR UKU ; #20180522. Den skal afgrænses.
 #specifikkere regler
 REMOVE:9962A (/\"\ Gram\/TV/l) IF (0 ("angalaar") + TIP) ;
 REMOVE:9962B TRANSVERB IF (0 $$PN + CONT + INTRANSVERB LINK 1 $$PN) ; #Sooq taama kingusinaartigalusi tikippisi?
+REMOVE:9962C Gram/Pass OR Gram/Refl OR Gram/TV IF (0 DISTANCEVERB) ;
 
-SELECT:9962I (/Gram\/TV\ NIQ\ Der\/vn\ N\ /l) IF (0 Abl OR Ins)(*-1 @NIQ_OBJ>) ;
-REMOVE:9962H (/Gram\/Refl\ \(Gram\/IV\ \)?NIQ\ /l) OR (/Gram\/Pass\ \(Gram\/IV\ \)?NIQ\ /l) IF (0 Abl OR Ins)(*-1 (@NIQ_SUBJ>) OR @NIQ_OBJ>) ;
+SELECT:9962I (/Gram\/TV\ NIQ\ Der\/vn\ N\ /l) + NIRMIT IF (*-1 @NIQ_OBJ>) ;
+REMOVE:9962H (/Gram\/Refl\ \(Gram\/IV\ \)?NIQ\ /l) OR (/Gram\/Pass\ \(Gram\/IV\ \)?NIQ\ /l) IF (0 NIRMIT)(*-1 @NIQ_SUBJ> OR @NIQ_OBJ>) ;
 
-
-REMOVE:9962H (/Gram\/TV\ Gram\/Pass\ NIQ\ Der\/vn\ N\ Abl/l) OR (/Gram\/TV\ Gram\/Pass\ \(Gram\/IV\ \)?NIQ\ Der\/vn\ N\ Ins/l) IF (*-1 (@NIQ_SUBJ>) OR @NIQ_OBJ>) ;
+REMOVE:9962H (/Gram\/TV\ Gram\/Pass\ NIQ\ Der\/vn\ N__/l) + NIRMIT IF (*-1 @NIQ_SUBJ> OR @NIQ_OBJ>) ;
 
 
 REMOVE:9963 $$BFORM + (/\"\ Gram\/TV/l) + INTRANSVERB - NIQAR - Gram/Db IF (0 $$BFORM + (/\"\ Gram\/IV/l) + INTRANSVERB) ; #supplerer 9965C for verberne. Regressionstestet men meget bred, så bør observeres 
@@ -7665,7 +7683,7 @@ SELECT:9965G TRANSVERB IF (NEGATE 0 POSSESSUM) (*-1 Rel BARRIER POSSESSUM OR iPO
 SELECT:9966X (/__Gram\/TV\ TIP__/l) + TRANSVERB IF (-1C Trm OR Ins LINK -1C Abs - TIME LINK NOT 0 HUMAN)(NEGATE -1 Trm + SPATIAL) ; #heuristisk valg af transitiv sent i kaskaden ved dobbelttransitiver. HUMAN og TIME og SPATIAL tilføjet for at gøre den sikrere. Suliara inersimasunut TAKUTILLUGU aperaakka taanna ersigineraat.
 REMOVE:9966Y (/__LIRSUR\ Der\/nv\ Gram\/IV\ TIP__/l) IF (0 (/__LIRSUR\ Der\/nv\ Gram\/IV\ TIP__/l)) ; #heuristisk valg af intransitiv sent i kaskaden # LIRSUR er transitiv i Titartaaneq atuartitsinermini iluaqutiginiartarsimavaa atuartitsissutini assigiinngitsuni, soorlu silamiut ingerlaasiannik oqaluttuarisani, assiliartalersortittarlugit.
 
-SELECT:9966 (/__Gram\/IV\ NIQ__/l) - (/Gram\/Refl\ \(Gram\/IV\ NIQ\ \)?/l) IF (0 (/__Gram\/TV\ \(Gram\/Pass\ \)?NIQ__/l) )  (NEGATE -1 Ins + Pl)(NEGATE 0 (/NIQ\ Der\/vn\ N\ Ins/l) OR (/NIQ\ Der\/vn\ N\ Abl/l)) ; #heuristisk valg af intransitiv sent i kaskaden
+SELECT:9966 (/__Gram\/IV\ NIQ__/l) - (/Gram\/Refl\ \(Gram\/IV\ NIQ\ \)?/l) IF (0 (/__Gram\/TV\ \(Gram\/Pass\ \)?NIQ__/l) )  (NEGATE -1 Ins + Pl)(NEGATE 0 NIRMIT) ; #heuristisk valg af intransitiv sent i kaskaden
 SELECT:9966A (/__Gram\/IV\ TIP__/l) - (/Gram\/Refl\ Gram\/IV\ NIQ\ /l) IF (0 (/__Gram\/TV\ TIP__/l)) ; #heuristisk valg af intransitiv sent i kaskaden 
 SELECT:9966B (/__Gram\/IV\ TUQ__/l) IF (0 (/__Gram\/TV\ TUQ__/l)) ; #heuristisk valg af intransitiv sent i kaskaden 
 SELECT:9966C (/__Gram\/IV\ TUQ__/l) IF (0 (/__Gram\/TV\ Gram\/Pass\ TUQ__/l) + ("tikeraar")) ; #heuristisk valg af intransitiv sent i kaskaden. I første omgang kun lavet specifikt for tikeraartoq (tikeraartoraat).
