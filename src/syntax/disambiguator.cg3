@@ -1459,7 +1459,7 @@ LIST <con> = "nappartaq" "pooq" "poorsuaq";
 LIST <cc> = "nioqqutissaq" ;
 LIST <Hprof> = ("eqqiar" HTR TUQ)("eqqartuup" HTR TUQ) ;
 
-LIST NUMHOVED = "dollar" "dollari" "euro" "franc" "grad" "gram" "kapitali" "kapitel" "kiilu" "kilo" "kilometer" "klasse" "koruuni" "krone" "meter" "milliardi" "milliard" "miliuuni" "million" ("nalunaar" UTE) "niveau" "nr" "oori" "procent" ("qupper" NIQ) "side" "sipaaq" ("titar" NIQ) (/".*vej/r) "øre" Sem/Unit ;
+LIST NUMHOVED = "dollar" "dollari" "euro" "franc" "grad" "gram" "hjerter" "kapitali" "kapitel" "kiilu" "kilo" "kilometer" "klasse" "kulooq" "koruuni" "krone" "meter" "milliardi" "milliard" "miliuuni" "million" ("nalunaar" UTE) "niveau" "nr" "oori" "procent" ("qupper" NIQ) "ruder" "side" "sipaaq" ("titar" NIQ) (/".*vej/r) "øre" Sem/Unit ;
 LIST NUMCOMP = "hundrede" "tusind" "million" "milliard" ; #anden del af sammensatte tal, famtan milliuuni
 LIST COMPOUND_N = "Windows" "Linux" "program" ;
 LIST PRENUM = "plus" "minus" ;
@@ -1575,7 +1575,7 @@ LIST @ADVL>N = @ADVL>N ; # adverbial som står til noget nominalt, fx 'Bosniap q
 LIST @i-MWE>N = @i-MWE>N ; #juxtaposition eller del af MWE, som peger på en viderederiveret del af MWE'en
 #LIST @POSS = @POSS> @<POSS ;		 # sæt af de to possessorer
 LIST @POSS> = @POSS> ;		 # possessor
-LIST @<POSS = @<POSS ; #løst efterstillet afterthought-lignende præcisering af tidligere nævnt possessor
+#LIST @<POSS = @<POSS ; #løst efterstillet afterthought-lignende præcisering af tidligere nævnt possessor #bruges ikke juni 2019
 LIST @i-POSS = @i-POSS> @<i-POSS ;		 # sæt af de to possessorer til inderiveret nomen
 LIST @i-POSS> = @i-POSS> ;		 # possessor til inderiveret nomen
 LIST @i-<POSS = @i-<POSS ; #løst efterstillet afterthought-lignende præcisering af tidligere nævnt possessor til inderiveret nomen
@@ -1820,7 +1820,7 @@ SUBSTITUTE:B00043G PUNCT (PUNCT DIRTALESTART) TARGET PUNCT IF (*-1 DIRTALESLUT B
 LIST MWEHOVED = "B612" Prop ;
 LIST MWEPRÆNOM = "ulloriaq" ;
 SET PRÆNOM = TITEL OR MWEPRÆNOM ;
-MAP:M0005Juxta @i->N TARGET PRÆNOM + $$KASUS + $$NUMERUS IF (*1 MWEHOVED + Der/nv BARRIER (*) - KONGRUENSADLED) ; #Rettet til @i->N, da det peger ind i et verbum. #Pissutissaqarlunga isumaqarpunga ulloriaaraq ataqqinartuaqqap najugaqarfigisaa ulloriaaraq ANGALASOQ B612-iussasoq.
+MAP:M0005Juxta @i-MWE>N TARGET PRÆNOM + $$KASUS + $$NUMERUS IF (*1 MWEHOVED + Der/nv BARRIER (*) - KONGRUENSADLED) ; #Pissutissaqarlunga isumaqarpunga ulloriaaraq ataqqinartuaqqap najugaqarfigisaa ulloriaaraq ANGALASOQ B612-iussasoq.
 
 #############
 # Test: Mapping af konjunktioner vs. adverbialer
@@ -2062,6 +2062,7 @@ REMOVE:0147K ("pulateriaq") + ARSUK ;
 REMOVE:0147L ("inuk") IF (0 ("inuusup")) ;
 REMOVE:0147M (/QQU\ Der\/vv\ Gram\/TV\ TAAR\ Der\/vv/l) IF (0 (/QQU\ Der\/vv\ Gram\/TV\ SAAR\ Der\/vv/l)) ;
 REMOVE:0147N (/QQU\ Der\/vv\ Gram\/TV\ TIR\ /l) IF (0 (/.*qqup"/r)) ; #qeqertat saneqqutilikkavut ateqarput Killiit.
+REMOVE:0147O Imp OR Opt IF (0 (/__NIR\ Der\/vv\ \(Gram\/...?.?\ \)*V__/l)) ; #qaninnerit
 
 REMOVE:0040I NAAR - NAAR_VERBER ; #Sletter irriterende fejlanalyser med NAAR på verber, der ikke kan indeholde et element af vurdering
 
@@ -2267,7 +2268,7 @@ REMOVE:0005C Via + FAM OR Via + Prop IF (0 KKUT) ;
 REMOVE:0044C KKUT IF (-1 Rel + Pl)(1 3PlPoss)(0 Via)(NEGATE 0 Prop LINK -1 FAM + Pl); 
 SELECT:0110D FAM + KKUT + Abs IF (*1 V + 3Pl OR V + 3PlO) ;
 REMOVE:0130 KKUT + Abs IF (NEGATE *1 INTRANSVERB + 3Pl)(NEGATE *0 3PlO) ;
-REMOVE:0131B KKUT + Rel IF (NEGATE *1 TRANSVERB + 3Pl)(NEGATE 1 3PlPoss OR 3SgPoss) ;
+REMOVE:0131B KKUT + Rel IF (NEGATE *1 TRANSVERB + 3Pl)(NEGATE 1 3PlPoss OR 3SgPoss)(*1 V) ;
 REMOVE:0131C KKUT IF (0 PLACE) ;
 REMOVE:0131D KKUT IF (0 Via + TIMENOUN) ;
 
@@ -3977,7 +3978,7 @@ MAP:M0061AX (@CL-<CIT) TARGET Ind OR Int IF (-*1 ORATIOOBLVERB + Opt + 1Sg OR OR
 MAP:M0066 @INTERIM TARGET ("assi") + GE + TAQ + Abs + Pl + 3PlPoss + CONJ-LU IF (1 EOS); #assigisaallu før punktum vist altid sætningsemne. Taggen skal ændres
 
 #Løst tilføjede adled til led til venstre
-MAP:M0067 @<POSS TARGET N IF (0 Rel LINK *-1 POSSESSUM BARRIER V)(NEGATE *1 V)(*-1 KOMMA LINK *-1 Rel LINK 1 POSSESSUM3)(NEGATE 1 POSSESSUM3)(NEGATE 0 Pl LINK *-1 3SgPoss)(NEGATE 0 POSSESSUM4) ; #NEGATE for at sikre at det kongruerer. #Anden NEGATE fordi der var mange fejlhits.
+#MAP:M0067 @<POSS TARGET N IF (0 Rel LINK *-1 POSSESSUM BARRIER V)(NEGATE *1 V)(*-1 KOMMA LINK *-1 Rel LINK 1 POSSESSUM3)(NEGATE 1 POSSESSUM3)(NEGATE 0 Pl LINK *-1 3SgPoss)(NEGATE 0 POSSESSUM4) ; #NEGATE for at sikre at det kongruerer. #Anden NEGATE fordi der var mange fejlhits. #mapper kun forkert juni 2019.
 
 #Kausativer som anførende verballed, men underordnet hovedsætning
 MAP:M1331 (@<CAU) TARGET Cau IF (1 (":"))(*-1 V) ;
@@ -4130,6 +4131,7 @@ MAP:M0282 @ADVL> TARGET ("imatut") OR ("ima") + Pali IF (*1 LIK_QAR BARRIER V) ;
 MAP:M0285 (@CONJ) TARGET Part + Conj IF (-1 Rel)(*1 Rel BARRIER V) ;
 MAP:M0286 (@CL-ADVL>) TARGET Part IF (-2 BOS OR ("\,"))(-1 Interj)(NEGATE 0 KONJUNKTION)(*1 V)(NEGATE 1 TIGE) ; #20091109 .., aasiit TAAMATUT, ...
 MAP:M0287 (@CL-ADVL>) TARGET Part - ("aamma") IF (-1 BOS)(NEGATE 0 KONJUNKTION OR ("qanoq") OR ("taamatut") OR ("suli"))(NEGATE *1 TIGE OR Gram/Exclm BARRIER (*) - Adv - Conj)
+(NEGATE 0 ("taama") LINK *1 ("oqar") BARRIER V) #Taama oqartorlu paatsiveeruppunga
 (*1 V BARRIER KOMMA)(NEGATE *1 GAANNI BARRIER V) ;
 MAP:M0291 (@i->V) TARGET ("taama") OR ("qanoq") OR ("ima") OR Aeq IF (*1 TIGE + N BARRIER (*) - Adv - Conj) ;
 MAP:M0291 (@>V) TARGET ("taama") OR ("qanoq") OR ("ima") OR Aeq IF (*1 TIGE BARRIER (*) - Adv - Conj LINK NEGATE 0 N) ;
@@ -4377,9 +4379,9 @@ MAP:M0399 @SUBJ_COMP TARGET Abs IF (-2 @FOC)(-1 OBLIQUE)(NEGATE *0 VERB-NOTCONT)
 
 MAP:M0401 @<APPOS TARGET Abs + Prop OR Orth/Append + Prop IF (-1 Abs + Pl)(*1 Abs + Prop + CONJ-LU BARRIER (*) - KOMMA);
 MAP:M0402 @<APPOS TARGET Abs + Prop + CONJ-LU OR Orth/Append + Prop + CONJ-LU IF (*-2 Abs + Pl BARRIER (*) - Prop - KOMMA)(*-1 Abs + Prop OR Orth/Append + Prop BARRIER (*) - KOMMA);
-MAP:M0407Bnum @i-MWE>N TARGET Num IF (1 NUMHOVED + LIK) ; # 7 miliuunit koruunilik. NB bør heller ikke ved QAR etc. analyseres som @i->N
+MAP:M0407Bnum @i-MWE>N TARGET Num IF (1 NUMHOVED + LIK) ; # 7 *miliuunit koruunilik. NB bør heller ikke ved QAR etc. analyseres som @i->N
 MAP:M0407Anum (@>N) TARGET Num IF (1 NUMHOVED + N); # ' .. 2 oorimoorlutik ..' specialfald før 189-190
-MAP:M0407Bnum @i-MWE>N TARGET NUMHOVED IF (-1 Num)(1 NUMHOVED + Der/nv) ; # 7 miliuunit koruuneqarput. NB bør heller ikke ved QAR etc. analyseres som @i->N
+MAP:M0407Bnum @i-MWE>N TARGET NUMHOVED IF (-1 Num)(1 NUMHOVED + Der/nv) ; # 7 *miliuunit koruuneqarput. NB bør heller ikke ved QAR etc. analyseres som @i->N
 MAP:M0407Bnum @>N TARGET NUMHOVED IF (-1 Num)(1 NUMHOVED) ; # 7 miliuunit koruuneqarput. NB bør heller ikke ved QAR etc. analyseres som @i->N
 MAP:M0408num (@>N) TARGET NUMHOVED - Trm IF (1 Num + Abs - @N<); # ' .. kapitel 2 ..' specialfald før de følgende
 MAP:M0408Anum (@i-MWE>N) TARGET Num IF (1 NUMHOVED + Der/nv OR NUMHOVED + iN); #20180912 skal ikke være i->N #tal i Abs før enhed er MWE.
@@ -4894,7 +4896,7 @@ MAP:M0680 (@SUBJ>) TARGET (Rel) - 12IV IF (*1 TRANSVERB + 34IV BARRIER POSSESSUM
 MAP:M0681 @SUBJ> TARGET Abs + 1Pl IF (*1 INTRANSVERB + 1Pl BARRIER VFIN)(NEGATE *1 TRANSVERB + 1PlO BARRIER INTRANSVERB + 1Pl) ; 
 MAP:M0690 (@SUBJ>) TARGET N IF (-1 ("\("))(1 ("\)"))(-2 @SUBJ>) ; #Parantetiske indskud samme led som foregående ord
 
-MAP:M0694 (@SUBJ>) TARGET Rel IF (-*1 TRANSVERB LINK *-1 Rel LINK *1 Abs LINK *1 KOMMA)(*1 Abs BARRIER V)(NEGATE 0 Gram/Coref) ; # Opremsning uden transitive verber
+MAP:M0694 (@SUBJ>) TARGET Rel IF (-*1 TRANSVERB LINK *-1 Rel LINK *1 Abs LINK *1 KOMMA)(*1 Abs BARRIER V)(NEGATE 0 Gram/Coref)(NEGATE *-1 TRANSVERB LINK *-1 @POSS>) ; # Opremsning uden transitive verber
 MAP:M0695 (@SUBJ>) TARGET Rel IF (-*1 Rel LINK *-1 Rel LINK *1 _TARGET_ LINK *1 TRANSVERB - OBJVERB LINK *1 KOMMA)(*1 Abs BARRIER V) ; # Opremsning uden transitive verber
 MAP:M0696 (@OBJ>) TARGET Abs IF (-*1 Rel BARRIER KOMMA OR V)(-1 Abs)(0 CONJ-LU)(NEGATE *1 INTRANSVERB LINK 1 EOS) ; # Opremsning uden transitive verber
 #MAP:M0697 (@OBJ>) TARGET Abs IF (-1 Rel)(1 KOMMA OR CONJ-LU OR CONJ-LUUNNIIT OR EOS)(NEGATE *-1 TRANSVERB BARRIER (*) - @POSS> - @i->N)(NEGATE *1 INTRANSVERB LINK 1 EOS) ; # Opremsning uden transitive verber
