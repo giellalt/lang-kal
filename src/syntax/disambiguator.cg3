@@ -1447,7 +1447,7 @@ LIST DRINKABLE = "kaffi" "tii" "immuk" "whisky" "immiaaraq" "immiaq" "baaja" "sn
 LIST TUR-ABLE = "cigaret" "tupa" ;
 SET FOOD = EDIBLE | DRINKABLE | TUR-ABLE;
 LIST CLOTHES = "aqajaqanngitsoq" "kamik" "annoraaq" "kavaajaq" "alersi" "alerseq" "qarlik" "skuu" ;
-LIST THING = "alussaat" "aqqusineq" ("ati" TAQ) "ilullissiaq" "manu" "qulleq" "siu" "timi" "savik" "torsuusaq" "ungaloq" ;
+LIST THING = "alussaat" "aqqusineq" ("ati" TAQ) ("atuar" TAQ) "ilullissiaq" "manu" "qulleq" "siu" "timi" "savik" "torsuusaq" "ungaloq" ;
 LIST MATERIAL = "ameq" "ukkusissaq" "ulik" "qipik" ;
 LIST TOOL = "kaataq" "savik" (__/UTE\ Der\/vn__/l) "sakkoq" "sakku";
 LIST TOOLTHING = "kikiak" "kikiassuaq" "qinnilik" ;
@@ -2964,6 +2964,8 @@ REMOVE:0067_1SgPoss_CombiA POSSESSUM12 IF (0 (/TUQ\ Der\/vn\ QAR\ Der\/nv(\ Gram
 
 
 REMOVE:0068_1SgPoss 1SgPoss IF (NEGATE *0W 1Sg OR 1SgO OR 1SgPoss OR DIRTALE OR DIRTALESTART) ; #Will be too unsafe with the standard of 5 windows if not looking to both sides.
+
+REMOVE:0068A 4SgPoss + Rel IF (0 OBLIQUE)(-1 DIRTALESTART)(1 DIRTALESLUT LINK *1 ("oqar") BARRIER VERB-NOTCONT) ; # Isoleret oblique i direkte tale: - NAPPARSIMAVIMMI, Eriup taamak oqarlunilu .. er ikke 4SgPoss
 
 REMOVE:0069_3SgPoss 3SgPoss IF (*-1 BOS BARRIER (*) - Adv)(0 1SgPoss)(*-1< DIRTALESTART OR DIRTALEMIDDLE BARRIER DIRTALESLUT OR ("\?") OR ("\!"))(NEGATE *1 DIRTALESTART) ;
 REMOVE:0070_3SgPoss 3SgPoss IF (*-1 BOS BARRIER (*) - Adv)(0 1SgPoss)(*1> DIRTALESLUT OR ("\?") OR ("\!") BARRIER DIRTALESTART) ; #R12
@@ -5199,7 +5201,10 @@ MAP:M0165 @ADVL> TARGET ("([0-2]?[1-9]((:|;|.)[0-5][1-9])){1,2}"r) IF (*1 V); #k
 # ==================
 #MAP:M1070 (@PARATAKSE_CONT->N) TARGET Cont + CONJ-LU IF (1 Abs + Der/vn) ; #misissueqqissaarutaallunilu oqaasiliuut .. Skal elaboreres!! #Vistnok overflødig. Må skulle mappes @CONT->N i stedet, parataksen giver jo sig selv.
 MAP:M1080 (@CONT->N) TARGET Cont + 4Sg IF (1 Ins)(2C Der/vn + Abs + Sg)(*1 V + 3Sg); #OBJ pillugu Ins vn+subjekt verbum 
-MAP:M1090 (@i-ADVL>) TARGET Cont + 4Sg IF (1C Der/vn + Abs + Sg LINK *1 V + 3Sg); #OBJ pillugu vn+subjekt verbum
+
+#MAP:M1090 (@i-ADVL>) TARGET Cont + 4Sg IF (1C Der/vn + Abs + Sg LINK *1 V + 3Sg); #OBJ pillugu vn+subjekt verbum. #Fejltagger Eriup taamak OQARLUNILU atuakkani .. ilipallariarlugu. De første 10 hits i testcorpus alle forkerte. Udkommenteres. Håndteres i forvejen af M1147A
+
+
 MAP:M1095 @i-ADVL> TARGET Adv IF (*1 Der/vn BARRIER (*) - @ADVL> - @i-ADVL> - @SUBJ> LINK *1 ("tassa") BARRIER (*) - @ADVL> - @i-ADVL> - @SUBJ>); #Namminersorneq pillugu AQAGU ikumatitalisarluni ingerlaaqatigiinnissaq aamma tassaassaaq Inatsisartuni pisut pillugit akerliussutsimik takutitsineq.
 MAP:M1100 (@CONT->N) TARGET Cont + 4Sg + 3SgO IF (-1 @SUBJ> OR ("\)") OR ("\"")) ; #Det blev alt for ad hoc med baade citation og parantes
 #MAP:M1110 (@ABSOLUT_PRED) TARGET Par + PASSIV + 3Pl IF (-3 Rel)(-2 Abs + Pl)(-1 Ins)(1 POSSESSUM); #matcher SELECT:ParantetiskParPl #udkommenteret 2019, da den vistnok er overflødig.
@@ -5207,7 +5212,8 @@ MAP:M1120 (@i-ADVL>) TARGET CONT IF (1 Part)(2 NIQ); #Eqqarsaatigiinnarnagu inge
 MAP:M1130 (@i-ADVL>) TARGET Cont IF (*1 NIQ + Abs - ("inuk" U NIQ) - Gram/Int - Gram/Comp BARRIER (*) - Adv - ADVERBIEL LINK NOT 1 KOMMA); #Uangalu anorip karrit aqqusaarlugit siorsunnera nuannaringaalissagaluarpara... #Panini namminermisut inuunermik taamaattumik atugaqaqqunagu silattunnginnerani toqoqatigalugu inuunera kipiniaraluarpaa ...! 
 # Mapping af ledsagemåde til inderiveret verbum
 MAP:M1131 @i-ADVL> TARGET CONT IF (*1 N)(NEGATE *0 V);
-MAP:M1140 @i-ADVL> TARGET CONT - TRANSVERB IF (*1C Der/vn BARRIER (*) - CONT LINK NOT 0 CONJ-C LINK NOT 1 HTR) #naamik kingornagut AJORANI panertunik atisereermat illarnarnera assissaqanngilaq.
+
+MAP:M1140 @i-ADVL> TARGET CONT - TRANSVERB IF (*1C Der/vn - THING BARRIER (*) - CONT LINK NOT 0 CONJ-C LINK NOT 1 HTR) #må ikke hitte naamik kingornagut AJORANI panertunik atisereermat illarnarnera assissaqanngilaq.
 #(NEGATE *-1 N + &&Cont& BARRIER V)
 (NEGATE 1 V - ATTRIBUTIV LINK NOT 0 CONT + CONJ-C) #i-ADVL til vn, men ikke hvis del af en nexus og ikke hvis Der/vn senere  bliver nv. TRANSVERB tilføjet 20170125 (usandsynlig som i-ADVL??)
 (NEGATE 1 @i-N< LINK 1 @CONJ OR EOS) 
@@ -5216,6 +5222,7 @@ MAP:M1140 @i-ADVL> TARGET CONT - TRANSVERB IF (*1C Der/vn BARRIER (*) - CONT LIN
 (NEGATE 0 4Pl LINK *1 3Pl + INTRANSVERB BARRIER V OR 3PlPoss OR @N< OR Adv)
 (NEGATE 0 CONJ-C LINK NOT -1 CONT)
 ;
+
 MAP:M1141 @i-ADVL> TARGET CONT + 4Sg IF (*1 IP)(NEGATE 0* 4Sg OR 3Sg) ;
 MAP:M1142 @<ADVL TARGET CONT + LUSUUQ (*-1 V); #Sigguilu aatsalaarmata QUNGUJUNNIARLUNILUSOOQ kingumut eqqarsalerpunga Ataqqinartuaraq sinittoq una pillugu killitsissutiga tassaavoq naasunnguamut aalajaatsuunera. #Det er ikke sikkert reglen holder?
 MAP:M1143 @i-<ADVL TARGET V IF (NEGATE *1 V OR INDERIVERENDE_SUBSTANTIV OR Der/vn)(*-1 ("soorlu") BARRIER V LINK *-1 Der/vn + N BARRIER V)(NEGATE *-1 ORATIOOBLVERB - HTR OR ("iluaqut") + GE) ;
@@ -5256,18 +5263,20 @@ MAP:M1148C1 @i-ADVL>N TARGET CONT + TRANSVERB IF (0 PILLUGU OR ("pissut") LINK 1
 MAP:M1148J @ADVL> TARGET ADVERBIEL (*1 V BARRIER KOMMA);
 
 MAP:M1148K @ADVL> TARGET CONT + TRANSVERB IF (*-1 ORATIOOBLVERB + TRANSVERB + 3SgO)(*1 V)(*1 @<OBJ BARRIER TRANSVERB + 3SgO); #Hvis et oo-verbum har et objekt til højre for sig, som ikke er objekt for noget andet, kan der ikke også være en cl-cit.
-MAP:M1148L @ADVL> TARGET CONT + TRANSVERB IF (*1 V BARRIER NEXUS) (NEGATE *-1 ORATIOOBLVERB - TAQ - Aeq BARRIER VFIN) #20170127 (NEGATE 1 Der/vn + N) #fjernet
+
+MAP:M1148L @ADVL> TARGET CONT + TRANSVERB IF (*1 V BARRIER NEXUS) (NEGATE *-1 ORATIOOBLVERB - TAQ - Aeq BARRIER VFIN LINK NOT *-1 DIRTALESLUT) #20170127 (NEGATE 1 Der/vn + N) #fjernet
 (NEGATE 1 ORATIOOBLVERB LINK 1 KOMMA OR EOS - (":")) 
 (NEGATE 1 KOMMA LINK *-2 VFIN BARRIER KOMMA) # Forhindrer tagging af <ADVL til et andet syntagme
 (NEGATE 0 ORATIOOBLVERB LINK -1 VFIN) #Er -1 VFIN, er TARGET sandsynligvis @<ADVL
 (NEGATE 0 CONJ-C LINK 1 CONJ-C) #Kamaanniaqalugulu asaniaqalugulu. 
 (NEGATE 0 CONJ-LU OR CONJ-LUUNNIIT LINK *1 VFIN)
 (NEGATE 1 KOMMA)
-#(*0 ("tassa") OR ("\?") OR @PRED BARRIER KOMMA )
-#(NEGATE NOT 0 CONJ-C LINK *1S VFIN BARRIER KOMMA)
 (*0 @PRED OR ("tassa") OR ("\?"))
 (NEGATE -1S CONJ-C LINK NEGATE *1 @PRED OR ("\?"))
 ;
+#(*0 ("tassa") OR ("\?") OR @PRED BARRIER KOMMA )
+#(NEGATE NOT 0 CONJ-C LINK *1S VFIN BARRIER KOMMA)
+
 MAP:M1148M @<ADVL TARGET (/\ TIP\ Der\/vv\ Gram\/..\ V\ /l) + CONT IF (1 EOS)(*-1 V) ; #...tillugit
 MAP:M1148K @ADVL> TARGET CONT + TRANSVERB IF (*-1 ORATIOOBLVERB + TRANSVERB + 3SgO)(*1 V)(*1 @<OBJ BARRIER TRANSVERB + 3SgO); #Hvis et oo-verbum har et objekt til højre for sig, som ikke er objekt for noget andet, kan der ikke også være en cl-cit.
 
@@ -5284,7 +5293,9 @@ MAP:M1148B @CL-<CIT TARGET CONT + TRANSVERB IF (*-1 ORATIOOBLVERB - TAQ - Aeq - 
 (NEGATE *-1 @CL-<CIT BARRIER CONJ-C)
 (NEGATE 0 INTRANSVERB - Gram/Pass - Gram/Refl)
 (NEGATE 0 OBJVERB)
+(NEGATE *-1 ORATIOOBLVERB + ("oqar") LINK *-1 DIRTALESLUT BARRIER VERB-NOTCONT) #ikke når inquit til venstre har direkte tale endnu længere til venstre - Napparsimavimmi, Eriup taamak oqarlunilu atuakkani .. ILIPALLARIARLUGU ..
 ;
+
 MAP:M1148C (@CL-<CIT) TARGET CONT + TRANSVERB IF (-*1 ORATIOOBLVERB - N - TAQ + 3Sg BARRIER @PRED)(NEGATE *1 CONT + TRANSVERB OR Cau + TRANSVERB)(NEGATE -1 CONJ-LU LINK -1 KOMMA)(NEGATE *1 Par + 3Sg)(NEGATE -1 KOMMA LINK 2 VFIN)(NEGATE *-1 ORATIOOBLVERB LINK *1 _TARGET_ LINK *1 Par LINK 1 EOS)(NEGATE 0 ADVERBIEL OR ("pissut") - AFFINGERET) #Eqqaamavaa inuppassuullutik kongruerer ikke. #Efterfølges en inquit af både CONT og Par, er Par nok det mest overordnede i oo'en. Sidste NEGATE til pillugu og pissutigalugu.
 (NEGATE 1 (":")) 
 (NEGATE *-1 @CL-<CIT BARRIER CONJ-C)
