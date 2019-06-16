@@ -1353,6 +1353,9 @@ LIST MUT-OBJ = "asa" "akuere" "pulaar" ; #"mik-objekter", som kan tage Trm i ste
 LIST ORATIOOBLVERBnOQAR = "aalajanger" "aalianger" ("apeqqut" GE) ("apeqqut" U) "apere" ("assuarliut" GE) "eqqaa" "eqqaama" "eqqartor" "erseqqissar" ("erser" QQIP TAQ UTE GE) "ilimage" "ilimasup" ("ili" SIMA TIP HTR) "ilisimatitsi" "ilisimatitsissut" "ilumoor" "imaap" ("isuma" LIUR) ("isuma" QAR)
 "isummer" "kaammattor" "maluge" "malunnar" "malunnarsi" "misige" "naatsorsor" "nalu" "nalunaar" "nalunaarfige" "nalunaarut" "nalunaarutige" "neriorsor" "neriup" "nipangiup" ("oqar" UTE GE) "oqaluttuar" ("oqar" VIK GE) "paasi" "paasissutisser" ("pi" GUMA TAQ GE) "pinngitsaali" "puigor" "puior" "qular" "qulare" "qularnar" "qinnuige" "sinnattoq GE" "siunnersor" "takorloor" ("taku" Gram/TV) "tusar" "unner" "uggore" "uppernarsar" ("uppernar" SAR) (/SSAQ\ Der\/nn\ GE\ Der\/nv/l); #GE tilføjet til objektssætninger som ikke er indirekte tale
 
+# 20190616 Begyndelsen af en ny LIST med de forholdsvis få inquit, der kan styre or. obl. med causativ
+LIST ORATIOOBLVERB_CAU = ("ilisimatitsi" UTE 3SgO) ;
+
 SET ATUARnTAQ_x = ("atuar") + TRANSVERB - TAQ - VIK - QATE ;
 SET ATUARnTAQ = ATUARnTAQ_x OR ("atuar" NIQAR); #vist aldrig intrans som inquit
 SET OQARnUSIQ = ("oqar") - (USIQ) ;
@@ -5444,9 +5447,18 @@ MAP:M1389B (@CL-CIT>) TARGET Par + INTRANSVERB + 3Sg OR CONT + INTRANSVERB + 4Sg
 
 MAP:M1390X @ADVL> TARGET CONT + 4Sg IF (1 Par + 3Sg) ; #En ad hoc regel til emfatisk eller inkonsistent brug af Par selv i coref for at undgå at adleddet tagges som @CL-<CIT
 
-MAP:M1390 (@CL-<CIT) TARGET Par + INTRANSVERB + 3Sg OR CONT + INTRANSVERB + 4Sg OR Cau + INTRANSVERB + 3Sg IF (-*1 ORATIOOBLVERB + V BARRIER ("soorlu") OR ("tassa") OR VFIN LINK NOT -1 @OBJ> )(-*1 Abs + Sg BARRIER ORATIOOBLVERB)(NEGATE 1 Prop + Abs OR Prop + Sem/FirstName)(NEGATE 0 Der/nv LINK *1 Par + Sg)(NEGATE 0 Cau LINK *1 CONT OR Par)
+#MAP:M1390 (@CL-<CIT) TARGET Par + INTRANSVERB + 3Sg OR CONT + INTRANSVERB + 4Sg OR Cau + INTRANSVERB + 3Sg IF (-*1 ORATIOOBLVERB + V BARRIER ("soorlu") OR ("tassa") OR VFIN LINK NOT -1 @OBJ> )(-*1 Abs + Sg BARRIER ORATIOOBLVERB)(NEGATE 1 Prop + Abs OR Prop + Sem/FirstName)(NEGATE 0 Der/nv LINK *1 Par + Sg)(NEGATE 0 Cau LINK *1 CONT OR Par)
+#(NEGATE 1 ("unner")) #Den gamle form Paasitippaat .. TOQUSOQ unnerlugu hvor det er "unner", der er inquit
+#; #20100322 Næstsidste NEGATE for skyld oo, hvor et verbalnomen er subjekt. Sidste NEGATE for tid og causalitet inde i oratio obl.
+
+MAP:M1390 (@CL-<CIT) TARGET Par + &&IV_SUBJ& OR CONT + &&IV_SUBJ& IF (-*1 ORATIOOBLVERB + V BARRIER ("soorlu") OR ("tassa") OR VFIN LINK NOT -1 @OBJ> )(-*1 N + &&IV_SUBJ& BARRIER ORATIOOBLVERB)(NEGATE 1 Prop + Abs OR Prop + Sem/FirstName)(NEGATE 0 Der/nv LINK *1 Par + Sg)(NEGATE 0 Cau LINK *1 CONT OR Par)
 (NEGATE 1 ("unner")) #Den gamle form Paasitippaat .. TOQUSOQ unnerlugu hvor det er "unner", der er inquit
-; #20100322 Næstsidste NEGATE for skyld oo, hvor et verbalnomen er subjekt. Sidste NEGATE for tid og causalitet inde i oratio obl.
+; #20100322 Næstsidste NEGATE for skyld oo, hvor et verbalnomen er subjekt. Sidste NEGATE for tid og causalitet inde i oratio obl. Reformuleret til både Sg og Pl 20190616
+
+#CL-CIT med Cau må håndteres for sig selv, da anderledes krav til inquit
+MAP:M1390A @CL-<CIT TARGET Cau + &&IV_SUBJ& IF (-*1 ORATIOOBLVERB_CAU + V BARRIER ("soorlu") OR ("tassa") OR VFIN LINK NOT -1 @OBJ> )(-*1 N + &&IV_SUBJ& BARRIER ORATIOOBLVERB)(NEGATE 1 Prop + Abs OR Prop + Sem/FirstName)(NEGATE 0 Der/nv LINK *1 Par + Sg)(NEGATE 0 Cau LINK *1 CONT OR Par)
+(NEGATE 1 ("unner")) #Den gamle form Paasitippaat .. TOQUSOQ unnerlugu hvor det er "unner", der er inquit
+; #20100322 Næstsidste NEGATE for skyld oo, hvor et verbalnomen er subjekt. Sidste NEGATE for tid og causalitet inde i oratio obl. 
 
 MAP:M1391 @CL-<CIT TARGET Par + INTRANSVERB + 3Pl OR CONT + INTRANSVERB + 4Pl OR Cau + INTRANSVERB + 3Pl IF (-*1 ORATIOOBLVERB + V OR ("tassa") BARRIER VFIN)(NEGATE 1 Prop + Abs OR Prop + Sem/FirstName)(NEGATE 0 Der/nv LINK *1 Par + Sg) #20100322 Sidste NEGATE for skyld oo, hvor et verbalnomen er subjekt
 #(-*1 Abs + Pl BARRIER ORATIOOBLVERB) 
@@ -6101,7 +6113,9 @@ SELECT:1700A Rel + Pl IF (*1 Abs + Sg BARRIER V LINK *1 3SgO )(NEGATE *1 CONJ-C 
 (NEGATE 0 Rel + Sg LINK *1 3SgPoss) #1700B må ikke selecte subjekt for transitivt verbum
 (NEGATE 0 Ins LINK *1 LIK_QAR OR HTR BARRIER V OR 3PlPoss) # ' ..namminiilivinnissamut ISUMMERNISSAMIK Siumukkormiut siunniussaqarnerat Atassutikkormiut iluarisimaarpaat.' men der tages højde for mulig possessum mellem Rel+Pl og LIK_QAR
 ; 
-SELECT:1700B Abs + Pl IF (-*1C INTRANSVERB + 3Pl OR 4Pl)(NEGATE *1 INTRANSVERB + 3Pl OR 4Pl)(NEGATE *1 TRANSVERB + 3PlO)(NEGATE *1 3PlPoss BARRIER KOMMA)(NEGATE 0 Der/vn LINK *-1 Rel + Pl)(NEGATE 0 Rel + Pl LINK *1 TRANSVERB + 3Pl BARRIER INTRANSVERB) ; #må ikke hitte på adled til Rel+Pl
+SELECT:1700B Abs + Pl IF (-*1C INTRANSVERB + 3Pl OR 4Pl)(NEGATE *1 INTRANSVERB + 3Pl OR 4Pl)(NEGATE *1 TRANSVERB + 3PlO)(NEGATE *1 3PlPoss BARRIER KOMMA)(NEGATE 0 Der/vn LINK *-1 Rel + Pl)(NEGATE 0 Rel + Pl LINK *1 TRANSVERB + 3Pl BARRIER INTRANSVERB)  #må ikke hitte på adled til Rel+Pl
+(NEGATE 0 Par + &&IV_SUBJ& LINK *-1 N + &&IV_SUBJ& LINK *-1 ORATIOOBLVERB) #Ikke slette Par i Nalujunnaareersimavaami inuit tamarmik TOQUSARTUT
+;
 
 SELECT:1701 Abl + CONJ-LU IF (-1 Abl);
 SELECT:1702 Ins + CONJ-LU IF (-1 Ins);
@@ -7794,6 +7808,7 @@ REMOVE:9972 ("([^<].*)"r) IF
 	(NEGATE 0 NIKUU) #Må ikke vælge NIKUQ+U frem for NIKUU i V
 (NEGATE 0 SPATIAL + iLok + POSSESSUM12) #ikke sanik+tsinni, men sani+tsinni
 ; 
+
 REMOVE:9972B ("([^<]...*).."r) + (/Der\/.*/r) IF (0 (VSTR:"$1...+"r) - (/Der\/.*/r)) ; #En mere farlig regel end 9972A, men kræver til gengæld derivation. Skrevet til ord som 'aqerluusaq'.
 
 REMOVE:9975 (/__LLUAR\ Der\/vv\ INNAR__/l) IF (0 LLUINNAR) ;
