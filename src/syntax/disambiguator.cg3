@@ -1460,7 +1460,7 @@ LIST f-an_SG = "qaneq" "qingaq" ;
 #Nye semantiske klasser 20190503 til forberedelse af import af prototyper. NB <fn:..>-tags ovenfor før set HUMVERB. 
 LIST <con> = "nappartaq" "pooq" "poorsuaq";
 LIST <cc> = "nioqqutissaq" ;
-LIST <Hprof> = ("eqqiar" HTR TUQ)("eqqartuup" HTR TUQ) ;
+LIST <Hprof> = ("eqqiar" HTR TUQ)("eqqartuup" HTR TUQ)("siulittar" HTR TUQ) ;
 
 LIST NUMHOVED = "dollar" "dollari" "euro" "franc" "grad" "gram" "hjerter" "kapitali" "kapitel" "kiilu" "kilo" "kilometer" "klasse" "kulooq" "koruuni" "krone" "meter" "milliardi" "milliard" "miliuuni" "million" ("nalunaar" UTE) "niveau" "nr" "oori" "procent" ("qupper" NIQ) "ruder" "side" "sipaaq" ("titar" NIQ) (/".*vej/r) "øre" Sem/Unit ;
 LIST NUMCOMP = "hundrede" "tusind" "million" "milliard" ; #anden del af sammensatte tal, famtan milliuuni
@@ -2756,6 +2756,7 @@ REMOVE:0072 Rel + Pl IF (NEGATE *1 3PlPoss OR i3PlPoss BARRIER KOMMA)(NEGATE *0 
 (NEGATE 0 CONJ-LU LINK *1 TRANSVERB + 3Sg BARRIER Abs + Sg) #sideordnet subjekt kan have sg-verbum
 (NEGATE 0 Imp + 1Pl) #sorlaasa og nuliaasa og aasami er ikke Imp...
 (NEGATE *1 ("ateq")  BARRIER V LINK 0 LIK OR TAAQ OR QAR)
+(NEGATE 0 INSTITUTION LINK 1 3SgPoss) #Naalakkersuisut siulittaasua
 ;
 REMOVE:0072E Abs + TIME IF (1 POSSESSUM3) ;
 REMOVE:0072F Rel + Sg + TIME IF (1 POSSESSUM3 + ("ila")) ;
@@ -3057,6 +3058,7 @@ REMOVE:0155B Prop + (".*ĸ.*"r) IF (0 Prop) (0 (".*q.*"r) - OLang/DAN OR (".*gp.
 # Altid Guuti undtagen guuteqarpoq o.lign.
 SELECT:0156 ("Guuti") + Prop + Sg IF ( 0 ("<\\p{Lu}.*>"r)) ;
 REMOVE:0157 Par + 3Pl IF (0 INSTITUTION) ;
+REMOVE:0158 N IF (0 Prop + INSTITUTION) (1 POSSESSUM) ; #Possessum kongrurerer ikke nødvendigvis. #Naalakkersuisut siulittaasua
 
 REMOVE:0160 Via IF (0 NAME + KKUT LINK *1 3Pl OR 3PlO )(NEGATE 0 ("alla") LINK -1 BOS) ;
 # Filtrerer Via fra NAME + KKUT som subjekt eller objekt
@@ -4675,7 +4677,8 @@ MAP:M0512 @N< TARGET N + $$KASUS + $$NUMERUS - POSSESSUM IF (*-1 $$KASUS + $$NUM
 (NEGATE 0 ("tamaq") LINK -1 ("suna")) #sunut tamanut
 (NEGATE 0 Ins LINK 1 HTR)
 (NEGATE 0 Rel LINK *1 POSSESSUM3 BARRIER V OR KOMMA OR CONJ-C LINK *1 TRANSVERB BARRIER VFIN)
-(NEGATE 0 (/NIQ\ Der/vn\ N\ Abl\ Sg/l)) #En lidt skummel undtagelse for at forhindre @N< på .. aanaminit ASANEQARNERMIT arnamisut isigigamiuk
+(NEGATE 0 NIRMIT) #En lidt skummel undtagelse for at forhindre @N< på .. aanaminit ASANEQARNERMIT arnamisut isigigamiuk
+(NEGATE 0 TIME)
 ;
 MAP:M0513 @N< TARGET N + $$KASUS IF (0 ("tamalaaq") OR ("killeq") LINK -1 ("nuna") + $$KASUS) ;
 #MAP:0514X @N< TARGET $$KASUS + $$NUMERUS - CONJ-C IF (*-1 KOMMA LINK -1 $$KASUS + $$NUMERUS BARRIER V) ; #PL 20190414
@@ -4773,6 +4776,7 @@ MAP:M0609D @POSS> TARGET Rel + Sg - Prop IF (*1 3SgPoss BARRIER TRANSVERB + 3Sg 
 ;
 MAP:M0610 (@POSS>) TARGET Rel + Pl IF (1 Lok OR Ins OR Aeq OR CONT OR TIDSPARTIKEL)(2 3PlPoss) ; #Særtilfælde med adled til possessum. TIDSPARTIKEL tilføjet 20170407
 MAP:M0611 (@POSS>) TARGET Rel + Pl IF (1 3PlPoss) ;
+MAP:M0611 (@POSS>) TARGET Rel + Pl + INSTITUTION IF (1 3SgPoss) ; #Naalakkersuisut siulittaasua
 #MAP:M0611A @POSS> TARGET Rel + Sg IF (1 3PlPoss)((0 CONJ-LU) OR (-1 @POSS> + CONJ-LU)) ;
 MAP:M0611B @POSS> TARGET Rel + Sg IF (*1 3PlPoss BARRIER (*) - @N<)((0 CONJ-LU) OR (-*1 CONJ-LU BARRIER (*) - @POSS> - (/@i.+>/r) LINK 0 @POSS> - (/@i.+>/r) LINK NOT -1 @POSS> OR (/@i.+>/r))) ; #Qissimiinnarlugimmi Kinap ARIZONALLU assigiinngissutaat takusinnaavara.
 MAP:M0611C @POSS> TARGET Rel IF (1 CONJ-LU)(*1 @POSS> BARRIER @POSS> - (/@i.+>/r) LINK *1 3PlPoss BARRIER (*) - @N<) ; #Qissimiinnarlugimmi KINAP Arizonallu assigiinngissutaat takusinnaavara.
@@ -5164,6 +5168,7 @@ MAP:M0951 @<ADVL TARGET OBLIQUE - iV IF (-*1C V - ORATIOOBLVERB BARRIER @CL-ADVL
 SUBSTITUTE @i-ADVL> @ADVL> TARGET $$KASUS (1 $$KASUS + @ADVL> + CONJ-C - INDERIVERENDE_SUBSTANTIV) ; #Adverbale adled i paratakse er adverbale til samme verbum
 SUBSTITUTE @i-ADVL> @N< TARGET Lok - Num - iNum - CONJ-C - Sem/Geo IF (-*1 Lok - ("akunneq") - TIME - Num BARRIER (*) - @POSS>) ;
 SUBSTITUTE @i->N @N< TARGET Ins - Num - iNum IF (0 $$NUMERUS - CONJ-C - POSSESSUM)(*-1 Ins + $$NUMERUS BARRIER CONJ-C OR KOMMA OR VFIN OR Abs)(NEGATE 0 (/\"alla\"\ N\ Ins/l)) ;
+SUBSTITUTE @ADVL> @i-ADVL> TARGET Lok OR Trm IF (1 <Hprof>) ;
 
 MAP:M0952 @N< TARGET N IF (0 $$KASUS + $$NUMERUS LINK -*1 $$KASUS + $$NUMERUS - TIME - PLACE - @PROP> BARRIER CONJ-LU OR (*) - Adv - Pali - Interj - @POSS> - (/@i-.*/r) LINK NOT 0 @POSS> OR @ADVL> OR @CL-ADVL> OR @<ADVL OR @CL-<ADVL OR ("taama") LINK (NOT 0 Rel) OR (0 @SUBJ>))(NOT 0 CONJ-C)(NEGATE 0 Rel LINK 1 POSSESSUM)(NEGATE -1 ("akunneq"))(NEGATE *-1 Gram/Dem BARRIER VFIN) ;
 MAP:M0953 @N< TARGET N IF (0 $$KASUS + $$NUMERUS LINK -*1 $$KASUS + $$NUMERUS - TIME - PLACE BARRIER CONJ-LU OR (*) - Adv - Pali - Interj - @POSS> - (/@i-.*/r) - @OBJ> LINK NOT 0 @POSS> OR @ADVL> OR @CL-ADVL> OR @<ADVL OR @CL-<ADVL OR ("taama") LINK (NOT 0 Rel) OR (0 @SUBJ>))(NOT 0 CONJ-C)(NEGATE 0 Rel LINK 1 POSSESSUM)(NEGATE -1 ("akunneq"))(0 N LINK *-1 ("pi") + CONT LINK *-1 $$KASUS + $$NUMERUS) ; #Også tilladt objekter til pillugu.
@@ -6594,6 +6599,8 @@ REMOVE N IF (0 @CAU LINK 1 CLB)
 (NEGATE *-1 VFIN) ;
 
 SELECT @CAU IF (1 CLB) ;
+
+REMOVE N + POSSESSUM IF (0 V) (NEGATE *0 V OR @PRED OR @HNOUN OR @FOC) ; #Tulleriipput
 
 # Numerus
 # -------
