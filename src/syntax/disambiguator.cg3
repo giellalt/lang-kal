@@ -111,7 +111,7 @@ LIST Sem/Concessive = Sem/Concessive ; #koncessive sætninger
 LIST Sem/Temporal = Sem/Temporal ; #måske kan den bare slås sammen med Sem/Time. #til baggrundsparticipier.
 LIST Gram/Abbr = Gram/Abbr ;
 LIST Gram/ACR = Gram/ACR ;
-LIST Gram/Ord = Gram/Ord ; # Ordinaltal
+LIST Gram/Ord = Gram/Ord Der/Ord ; # Ordinaltal #Hedder Der/Ord i den videre kæde.
 LIST Clt = Clt ; # LU og andre
 LIST SUB = Orth/Arch Orth/Alt Orth/Youth ;
 LIST Orth/Arch = Orth/Arch ;
@@ -2337,7 +2337,7 @@ SELECT:0099L ("taleq") IF (0 ("tallimat" POSSESSUM)) ; #ikke taleq 1SgPoss AAT
 SELECT:0099M Gram/Ord IF (0 SSAQ ) ;
 
 #aappaq Gram/Ord
-SELECT:0099R Gram/Ord IF (-1 MAANED OR TIME) 
+SELECT:0099R Gram/Ord - Via IF (-1 MAANED OR TIME) 
 (NEGATE 0 Num + $$KASUS + $$NUMERUS LINK -1 $$KASUS + $$NUMERUS) #tiimit SISAMAT ilinniartarpoq
 ;
 SELECT:0099S iNum OR Num OR ("marlussuk") IF (-1 MAANED OR TIME) ;
@@ -2603,6 +2603,7 @@ MAP:M0043H @N< TARGET ("angala") + TUQ IF (-1 ("ulloriaq")) ;
 MAP:M0043I @>N TARGET ("mingutsitsisoq") (1 ("gas")) ; #silaannarmik mingutsitsisoq gassi = drivhusgas
 SELECT:0043I ("nuna" Lok) (1 ("alla" MIU)) ; #danskit nunani allamiunut aqutsisoqarfiannit
 MAP:M0043I @>N TARGET ("nuna" Lok) (1 ("alla" MIU)) ; #danskit nunani allamiunut aqutsisoqarfiannit
+MAP:M0043J @>N TARGET EDIBLE + Abs (1 ("tiitorfik")) ; #assigaa kaffi tiitorfimmut
 
 #SELECT:0043I ("nuna" Lok) (1 ("alla" MIU) OR ("alla" MIUQ)) ; #danskit nunani allamiunut aqutsisoqarfiannit
 #MAP:M0043I @>N TARGET ("nuna" Lok) (1 ("alla" MIU) OR ("alla" MIUQ)) ; #danskit nunani allamiunut aqutsisoqarfiannit
@@ -4566,7 +4567,7 @@ MAP:M0750A (@i->N) TARGET Ins - NÆPPE_OBJ OR ("imatut") IF (*1 LIK_QAR - iNum O
 MAP:M0750B (@i->N) TARGET Ins - NÆPPE_OBJ OR ("imatut") IF (*1 INSOBJVERB BARRIER V LINK NOT *1 HTR BARRIER CONJ-C OR VFIN) ;
 
 
-MAP:M0755 (@i->N) TARGET (Aeq) IF (1 LIK )(NEGATE 1 Rel LINK 1 POSSESSUM3 + Aeq )(NEGATE 1 CONJ-LU + Aeq)(NEGATE 0 CONJ-LU LINK -1 Aeq)(NEGATE *0 ("isikku") + QAR + V); #Kun Trm til Der/vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse #Kopi af M0900 til at håndtere LIK
+MAP:M0755 (@i->N) TARGET (Aeq) IF (1 LIK)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Aeq )(NEGATE 1 CONJ-LU + Aeq)(NEGATE 0 CONJ-LU LINK -1 Aeq)(NEGATE *0 ("isikku") + QAR + V)(NEGATE 1 ("siu" LIK TAQ)) ; #Kun Trm til Der/vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse #Kopi af M0900 til at håndtere LIK
 SUBSTITUTE (@i->N) (@N<) TARGET Ins + ("alla") IF (-1 Num OR iNum OR ("ataaseq")) ; #untritilinnik ALLANIK
 SUBSTITUTE (@i->N) (@N<) TARGET Num OR iNum OR ("ataaseq") IF (-1 Ins - Num - iNum) ; #minutsimik ATAASIINNARMIK
 SUBSTITUTE (@i->N) (@N<) TARGET Ins + Pl IF (-1 Ins + Pl LINK NOT 0 Adv OR Part)(NEGATE 0 CONJ-C OR INDERIVERENDE_SUBSTANTIV OR LIK_QAR OR INSOBJVERB OR Adv OR Part) ; #
@@ -6211,7 +6212,7 @@ REMOVE (/__Gram\/IV\ NIQ\ Der\/vn\ N__/l) + Gram/Comp IF (1 TRANSVERB ) ;
 
 # De overordnede modi
 REMOVE:1828 (Int) IF (*1 Ind) ;
-SELECT:1829A Ind IF (NEGATE *-1 Ind)(NEGATE *1 Ind OR ("?"))(NEGATE 0 Par LINK *-1 KONCESSIV)(NEGATE 0 INDERIVERENDE_SUBSTANTIV); # Et unikt verb men ikke i koncessive sætninger
+SELECT:1829A Ind IF (NEGATE *-1 Ind)(NEGATE *1 Ind OR ("?"))(NEGATE 0 Par LINK *-1 KONCESSIV)(NEGATE 0 INDERIVERENDE_SUBSTANTIV)(NEGATE 0 N - AFFINGERET) ; # Et unikt verb men ikke i koncessive sætninger
 SELECT:1829B Ind + INTRANSVERB + 3Pl IF (-*1 Abs + Pl BARRIER VFIN LINK NEGATE -*1 Rel + Pl BARRIER POSSESSUM)(NEGATE 0 3PlO LINK *-1 Abs + Pl BARRIER V)(NEGATE 0 1PlPoss LINK NOT 1 DIRTALESLUT OR EOS OR KOMMA) # Piitakkut ikinngutaat QASOQAAT
 (NEGATE -1 Gram/Cong + Nom OR Gram/Cong + Akk LINK -1 (*) - Abs - Rel) #Nuuttartut amerlangaarmata nuussimasunik tamatta ilisarisimasaqarnerput qularinngilara.
 ;
@@ -6609,6 +6610,7 @@ SELECT:8415 3PlO IF (*-1C (Pl @OBJ>))(*-1 @SUBJ>)
 (NEGATE 0 INTRANSVERB + &&IV_SUBJ& LINK *-1 Abs + &&IV_SUBJ&)
 ;
 
+REMOVE:8415 3PlO IF (*1 @<OBJ + Sg BARRIER V LINK NEGATE *1 @<OBJ BARRIER V) ; #Aalajangerpaat ataasinngornikkut tallimanngornikkullu mersoqatigiittarnissartik nakorsap illuani. # De enedes om at mødes og sy sammen mandage og fredage i lægens hus.
 
 
 # ========================= #	
@@ -7011,7 +7013,7 @@ REMOVE:5488AC ("sivikip") + NAAR IF (0 ("sivikinaar")) ;
 REMOVE:5489 ("pissap") + HTR IF (0 ("pissaq") + U)(NEGATE *-1 @ALLMIK-OBJ) ;
 REMOVE:5489A ("masser") IF (0 ("massip") LINK *0 @ALLSUBJ + HUMAN); #Sikrere fjernelse af '(sår) læges' ved eksplicit subjekt
 REMOVE:5489B ("masser") IF (0 ("massip"))(NEGATE *0 ("iki")); #mere usikker end A. Fjerner '(sår) læges' fra 'rejse sig'
-
+REMOVE:5489C ("kaa") IF (0 ("kaap"))(*-1 @SUBJ> + HUM) ;
 
 # Der/nv eller Der/vv?
 SELECT:5493 QATE + Der/vn + GE IF (0 QATE + Der/nn + GE)(NEGATE *-1 HUMAN + @OBJ>) ;
@@ -7434,7 +7436,8 @@ REMOVE:5860 ("taama") + Interj IF (0 ("taama") + Adv LINK 1 V) ;
 REMOVE:5861 ("alla") + POSSESSUM IF ( 0 ("allaat") + Part ) ; #
 REMOVE:5862 ("umiarsuaartoq") + LIR IF (0 ("umiarsuaartor"));
 REMOVE:5863 ("oqaluttuaq") + LIR IF (0 ("oqaluttuar") + LIR) ;
-REMOVE:5863 ("ni") IF (0 ("ni") + U + LIR) ; #Niunialeraluarinnilu
+REMOVE:5864 ("ni") IF (0 ("ni") + U + LIR) ; #Niunialeraluarinnilu
+REMOVE:5865 ("assigaq") IF (0 ("assi" GE)) (*1 Par BARRIER V OR Trm) ; #assigaa illit toqukkit! Assigaa kaffi tiitorfimmut .
 
 # Ugedagene #Håndteres ovenfor i forbindelse med skelnen mellem NIRU og NIQ + U.
 #REMOVE ("marluk") + NNGUR + NIRU IF (0 ("marluk") + NNGUR + NIQ + U) ;
