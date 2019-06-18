@@ -2331,13 +2331,16 @@ APPEND ("$1"v Orth/Append Sem/Unit N Rel Sg) TARGET ("([a-z].*)"r) (0 NUMHOVED) 
 #=========#
 
 #Num eller ej
+REMOVE:0099J ("marluk") + SUAQ + $$KASUS IF (0 ("marlussuk"))(-1 N + $$KASUS) #marluk+SUAQ næppe sandsynlig for marlussuk+Pl
 REMOVE:0099K Num OR iNum IF (0 ("ataaseq" iLok IP)) ;
 SELECT:0099L ("taleq") IF (0 ("tallimat" POSSESSUM)) ; #ikke taleq 1SgPoss AAT
 SELECT:0099M Gram/Ord IF (0 SSAQ ) ;
 
 #aappaq Gram/Ord
-SELECT:0099R Gram/Ord IF (-1 MAANED OR TIME) ;
-SELECT:0099S iNum OR Num IF (-1 MAANED OR TIME) ;
+SELECT:0099R Gram/Ord IF (-1 MAANED OR TIME) 
+(NEGATE 0 Num + $$KASUS + $$NUMERUS LINK -1 $$KASUS + $$NUMERUS) #tiimit SISAMAT ilinniartarpoq
+;
+SELECT:0099S iNum OR Num OR ("marlussuk") IF (-1 MAANED OR TIME) ;
 REMOVE:0099T Gram/Ord IF (NEGATE *0 MAANED OR TIME) ;
 REMOVE:0099U Gram/Ord IF (*-1 FAM OR MASK OR FEM BARRIER POSSESSUM LINK 0 Rel) ;
 REMOVE:0099V Gram/Ord IF (-1 Prop + Rel) ;
@@ -4030,6 +4033,7 @@ MAP:M0080B @CL-ADVL> TARGET ("nali") + 3SgPoss IF (-2 BOS OR KOMMA)(-1 Rel) ;
 MAP:M0080AX @CL-ADVL> TARGET ("kingu" NIQ) + 3SgPoss + Abs IF (-1 Rel) ; #20170425 skummel regel, der måske skal begrænses
 MAP:M0080AY @CL-ADVL> TARGET ("taava") + MI IF (*1 VFIN OR ("...")) ;
 MAP:M0080AZ @CL-ADVL> TARGET ("taava") IF (*1 V OR FOKUSPART + Adv) ; #Taava(lu) er vist altid sætningsadverbiel.
+MAP:0080AVX @CL-ADVL> TARGET TIME + Abs - VERBALNOMEN - POSSESSUM IF (-1 Trm LINK -1 ("sapaat") + Rel LINK -1 BOS) (NEGATE *1 TIMEVERB OR TRANSVERB)(NEGATE *1 OBJVERB) ;#Sap. akunneranut TIIMIT sisamat ilinniartarpoq nås ikke af M0080AV
 MAP:M0080AV @CL-ADVL> TARGET TIME + Abs - VERBALNOMEN - POSSESSUM IF (@1 _TARGET_) (NEGATE *1 TIMEVERB OR TRANSVERB)(NEGATE *1 OBJVERB) ;
 
 MAP:M0081H @CL-<ADVL TARGET Ins + POSSESSUM IF (1 EOS)(NEGATE *-1 LIK_QAR BARRIER VFIN OR CONJ-C)(*-1 V); #Motoorima ajutoornera ajorsigaluttuinnartutut isikkoqarpoq imissaralu nungulerluni, ajornerpaamik annilaanngatigilikkannik.
@@ -7308,6 +7312,7 @@ REMOVE:5859T ("ate") IF (0 ("ateq") LINK *0 CALL) ;
 REMOVE:5859U ("qaliaq") + ALL_OBLIQUE + ALL_Pl IF (0 ("qaliaq") + ALL_Sg + i3SgPoss ) ;
 REMOVE:5859V ("Kangeq") + POSSESSUM IF (0 ("kangiamioq") ) ;
 REMOVE:5859X ("angajoq") IF (0 ("angaju"));
+REMOVE:5859Y ("tii") + Abl IF (0 ("time"))(1 Num OR Gram/Ord); #Nødvendig, fordi regel 9945D ellers sletter 'tiimi'
 
 # Appellativ eller proprium?
 SELECT:5729 N - Prop IF (0 ("angut") OR ("arnaq")) (0 POSSESSUM - AFFINGERET) ;
@@ -7623,7 +7628,7 @@ REMOVE Gram/ACR IF (0 Prop - Orth/Append) ;
 REMOVE:9945 Orth/Arch ;
 #REMOVE:9945A SUB;
 REMOVE:9945B Orth/Alt IF (NOT 0 SUB) ;
-REMOVE Orth/Alt (NEGATE 0 Gram/Pass OR Prop) ;
+REMOVE:9945D Orth/Alt (NEGATE 0 Gram/Pass OR Prop) ;
 REMOVE:9945C Orth/Copy ;
 REMOVE Orth/Alt IF (0 (*) - Gram/Pass - Orth/Alt - Prop) ;
 REMOVE Orth/Youth ; #Ny PL 20190503
