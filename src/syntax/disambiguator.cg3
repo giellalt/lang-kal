@@ -1445,7 +1445,7 @@ SET ATTRIBUTIV = ADJEKTIVISK | COLOUR | (/QAR\ Der\/nv\ \(Gram\/IV\ \)?TUQ\ /l) 
 LIST NATIONALITY = "dansk" "grønlænder" "kalaaleq" "qallunaaq" ;
 SET LANGUAGE = NATIONALITY + Aeq | ("kalaallisut");
 
-LIST EDIBLE = "iffiaq" "issingigassaq" "kaagi" "kaffi" "kalorie" "kissartoq" "mamartoq" "naatitaq" "neqi" "nutaaq" "orsoq" "panertoq" "siku" "sukku" "tarajoq" ;
+LIST EDIBLE = "iffiaq" "issingigassaq" "kaagi" "kaffe" "kaffi" "kalorie" "kissartoq" "mamartoq" "naatitaq" "neqi" "nutaaq" "orsoq" "panertoq" "siku" "sukku" "tarajoq" ;
 LIST DRINKABLE = "kaffi" "tii" "immuk" "whisky" "immiaaraq" "immiaq" "baaja" "snaps" "sodavand" ;
 LIST TUR-ABLE = "cigaret" "tupa" ;
 SET FOOD = EDIBLE | DRINKABLE | TUR-ABLE;
@@ -1749,6 +1749,8 @@ REMOVE:0001AK N + AA IF (0 V - AA) ; #Paasiartuinnalersoraa
 REMOVE:0001AL TUQ + NGA + Opt IF (0 Par + 1Sg) ; #ukioqartungali
 REMOVE:0001AM (/__LIR\ Der\/nv\ \(Gram\/..\ \)*V\ Ind\ Gram\/Exclm__\/l) ; #Oqaaseq er ikke exclm
 REMOVE:0001AN LUP + Imp IF (0 Cont) ; #sinnilaarlugit
+REMOVE:0001AO UTE + SI IF (0 HTR - SI) ;
+
 
 #REMOVE:0001XX UGEDAGE + Gram/TV IF (0 UGEDAGE + Gram/IV) ; #NNGUR + Gram/TV utænkelig ved ugedages navne #udkommenteret og gjort listen entydig i stedet.
 
@@ -1786,7 +1788,7 @@ SUBSTITUTE:A00044 PUNCT (PUNCT DIRTALESLUT) TARGET PUNCT IF (1 EOS)(*-1 PUNCT) ;
 SUBSTITUTE:A00044B CLB (CLB DIRTALESLUT) TARGET ("\?") OR ("\!") IF (1*W> PUNCT BARRIER WORD LINK NOT 1 WORD)(*-1 DIRTALESTART OR DIRTALEMIDDLE BARRIER DIRTALESLUT) ;
 SUBSTITUTE:A00045 PUNCT (PUNCT DIRTALESTART) TARGET PUNCT IF (*1 DIRTALESLUT)(NEGATE *-1 PUNCT)
 (NEGATE -1 LIK) ;
-SUBSTITUTE:A00046 PUNCT (PUNCT DIRTALESLUT) TARGET PUNCT - ("-") IF (*-1 DIRTALESTART)(NEGATE *1 DIRTALESLUT)
+SUBSTITUTE:A00046 PUNCT (PUNCT DIRTALESLUT) TARGET PUNCT - ("-") - ("\)") IF (*-1 DIRTALESTART)(NEGATE *1 DIRTALESLUT)
  ;
 SUBSTITUTE:A00047 CLB (CLB DIRTALESLUT) TARGET CLB - ("¶") (*-1 DIRTALESTART) (NEGATE *0 DIRTALESLUT)(NEGATE NOT 1 ("¶"));
 SUBSTITUTE:A00048 PUNCT (PUNCT DIRTALESTART) TARGET PUNCT - ("-") IF (*-1 DIRTALE) (*1W PUNCT - ("-"))(NEGATE *-1 PUNCT) ;
@@ -1916,6 +1918,7 @@ SUBSTITUTE:con11lux (LU)(CONJ-LU) TARGET LU + TIME (*-1 TIME OR Num + Lok OR Num
 SUBSTITUTE:con12lux (LU)(CONJ-LU) TARGET LU + OBLIQUE (-1 KOMMA)(*1 V BARRIER KOMMA) ;
 SUBSTITUTE:con13lux (LU)(CONJ-LU) TARGET LU (-1 $$KASUS LINK NOT 0 Adv LINK 1 $$KASUS) ; #rettet fra (1 $$KASUS)
 SUBSTITUTE:con14lux (LU)(CONJ-LU) TARGET LU + $$KASUS (-1 $$KASUS) ;
+SUBSTITUTE:con15lux (LU)(CONJ-LU) TARGET LU + Adv (1 $$KASUS) (-1 $$KASUS) ; #kiisalu
 #SUBSTITUTE:con15lux (LU)(CONJ-LU) TARGET LU - N - V (-1 KOMMA) ;
 SUBSTITUTE:con16lux (LU)(CONJ-LU) TARGET LU (-1 KOMMA) ;
 SUBSTITUTE:conj17lux (LU)(CONJ-LU) TARGET LU (1 CLB) ;
@@ -1997,7 +2000,7 @@ REMOVE:conj ("aamma") + Conj IF (-1 BOS)(1 NIQ) ; #så plejer aamma at være i-A
 REMOVE:conj ("aamma") + Conj IF (-1 UNA OR UKU) ;
 REMOVE:conj ("aamma") + Conj IF (-1 KONCESSIV) ;
 REMOVE:conj ("aamma") + Conj IF (-1 ORATIOOBLVERB LINK *2 Par BARRIER VFIN) ;
-REMOVE:conjx ("aamma") + Conj IF (-1 OBLIQUE) ;
+REMOVE:conjx ("aamma") + Conj IF (-1 $$OBLIQUE) (NEGATE 1 $$OBLIQUE) ;
 
 REMOVE:7254 Adv + ("kisianni") IF (-1 BOS) ; #Kisianni aramaannarniarit piffissaatillugu.
 
@@ -3495,7 +3498,7 @@ SUBSTITUTE @i-N< @PROP> TARGET Prop + Abs IF (1 Prop - CONJ-C OR Gram/Abbr - CON
 MAP:tassa @SUBJ> TARGET Pron + Abs + &&IV_SUBJ& OR N + Abs + &&IV_SUBJ& IF (*1 ("tassa") + U + V + &&IV_SUBJ& BARRIER V)(NEGATE -1 ("ila") + U LINK NEGATE *-1 @SUBJ> BARRIER V) ;
 MAP:tassa @SUBJ> TARGET Gram/Pers + Pron + $$NUMERUS OR Pron + $$NUMERUS (1 ("tassa") + U + $$NUMERUS) ;
 MAP:tassa @SUBJ> TARGET Gram/Pers + Pron OR Pron (1 ("tassa") - U) ;
-MAP:tassa @SUBJ> TARGET N (1 ("tassa") - U LINK *1 Prop OR N BARRIER V) ; #Nuannaarutituaa tassa Emilie.
+MAP:tassa @SUBJ> TARGET N + Abs (1 ("tassa") - U LINK *1 Prop OR N BARRIER V) ; #Nuannaarutituaa tassa Emilie.
 MAP:tassa @SUBJ> TARGET Gram/Dem + Pron + Pl IF (1 ("tassa") + U + V + 3Pl) ;
 MAP:tassa @SUBJ> TARGET Gram/Dem + Pron + Sg IF (1 ("tassa") + U + V + 3Sg) ;
 
@@ -4250,7 +4253,9 @@ MAP:M0330Y @>N TARGET Aeq IF (-1 Rel)(1 POSSESSUM)
 #Opremsninger
 MAP:M0699E @ADVL> TARGET OBLIQUE + $$KASUS OR Adv IF (-*1 KOMMA OR CONJ-C - Adv LINK *-1 $$KASUS BARRIER KOMMA)(NEGATE *-1 V - CONT)(*1 VFIN) #Ullorissat ilaanni, ullorissat angalasut ilaanni, maani, nunarsuarmi, ataqqinartuaraqarpoq tuppallersarneqartariaqartumik! 
 (NEGATE 1 POSSESSUM) #mere sandsynligt @i-ADVL
+(NEGATE **-1 $$KASUS BARRIER (*) - KOMMA - $$KASUS - CONJ-C LINK -1 ("tassa") LINK -1 $$KASUS)
 (NEGATE -1 $$KASUS + $$NUMERUS)(NEGATE  0 Ins LINK *-1 KOMMA LINK *1 LIK_QAR OR HTR OR HVVERB BARRIER KOMMA OR CONJ-C) ; #Opremsning til nominer der er adverbale
+
 
 ###################################################################
 # Adnominale adled - Forsøg på ny, mere generel struktur 20180128 #
@@ -4881,6 +4886,8 @@ MAP:M0652K @<APPOS TARGET $$KASUS IF (*-1 @FOC>N BARRIER $$KASUS LINK *-1 $$KASU
 MAP:M0652L @<APPOS TARGET $$KASUS + $$NUMERUS + Prop - CONJ-C IF (*-1 $$KASUS + $$NUMERUS - CONJ-C - UNA - UKU - @PROP> - @>N BARRIER DIRTALESLUT OR (*) - KOMMA  - Prop)(NEGATE -1 DIRTALE)(NEGATE 0 Sem/Fem LINK -1 KOMMA LINK -1 Sem/Mask)(NEGATE 0 Sem/Mask LINK -1 KOMMA LINK -1 Sem/Fem) ; #<APPOS kræver i hvert fald overensstemmelse på køn
 MAP:M0652M @<APPOS TARGET Abs + Sg IF (*-1 ("soorlu") - LUSUUQ - MI BARRIER (*) - @PROP> LINK *-1 Abs + Pl LINK *1 _TARGET_ LINK *1 INTRANSVERB BARRIER V);
 
+MAP:M0652N @<APPOS TARGET $$KASUS IF (*-1 @FOC>N BARRIER (*) - KOMMA - @<APPOS LINK *-1 $$KASUS) ;
+
 MAP:M0517 @<APPOS TARGET Prop - OBLIQUE - Rel IF (*-1 PUNCT + LEFT BARRIER V LINK -1 N OR Prop)(*1 PUNCT + RIGHT BARRIER V) ; #Siornatigut Alata niviarsiaqqat atiannit Alatannguamit (Alatannguaq) tunngaveqartutut 	Oqaasileriffimmut saaffiginnissutigineqarnikuuvoq #ingen kasuskongruens
 MAP:M0518 @<APPOS TARGET Prop IF (*-1 KOMMA BARRIER (*) - @PROP> - @>N LINK *-1 @<APPOS LINK *-1 ("soorlu") BARRIER V) ;
 
@@ -4905,6 +4912,8 @@ MAP:M0660X (@SUBJ>) TARGET Abs + Sg - ("kinguneq") - OTHERTIME IF (*1C INTRANSVE
 ; #TRANSVERB tilføjet for at forhindre tag på obj i: SUBJ OBJ TRANSVERB INTRANSVERB. 20170425 -kinguneq for at forebygge hit på sætningsadverbialer
 
 SUBSTITUTE @N< @<APPOS TARGET N + $$KASUS IF (*-1 CONJ-C BARRIER VFIN OR $$KASUS - CONJ-C LINK -1S @<APPOS)(NEGATE -1 @<APPOS + CONJ-LU LINK -1 @<APPOS) ; #Suliffeqarfissuit soorlu Royal Arctic Line aamma Namminersornerullutik Oqartussat suleqatigiissapput.
+
+SUBSTITUTE (@N<) (@<APPOS) TARGET N + $$KASUS IF (**-1 $$KASUS + @<APPOS BARRIER (*) - KOMMA - @<APPOS - @N< - CONJ-C LINK -1 (@FOC>N)) ;
 
 MAP:M0660 (@SUBJ>) TARGET Abs + Sg - ("kinguneq") - OTHERTIME IF (*1C INTRANSVERB + VERB-NOTCONT + 3Sg OR INTRANSVERB + VERB-NOTCONT + 4Sg BARRIER POSSESSUM3 OR TRANSVERB OR VFIN)(NEGATE -1 ("\("))(NEGATE *1 ("(") LINK *1 INTRANSVERB + VERB-NOTCONT + 3Sg OR INTRANSVERB + VERB-NOTCONT + 4Sg BARRIER POSSESSUM3 OR TRANSVERB LINK 1* (")") LINK 1* INTRANSVERB) 
 (NEGATE 0 POSSESSUM + Der/vn LINK -1 Rel LINK -1 Abs) #må ikke hitte på possessumadnominal til SUBJ> til venstre
@@ -5007,6 +5016,7 @@ MAP:M09900C @ADVL> TARGET ("akunneq") IF (-1 ("sapaat"))(*1 V BARRIER DIRTALESTA
 MAP:M09900D @ADVL> TARGET TIME IF (1 Num)(*1 V - OBJVERB BARRIER OBJVERB) ; #ukiut marluk
 MAP:M09900E @ADVL> TARGET Num IF (-1 ("nalunaaqutaq"))(*1 V BARRIER (/NIQ\ Der\/vn\ N\ Lok\ Sg\ 3SgPoss/l)) ; #Aqagu@ADVL> maani Oqaasileriffimmi nal.13 katersalerisut tamakkerluta, studentermedhjælperillu, naapilerpugut. #Nalunaaqutaq arfineq-pingasunut@i-ADVL> Danmarkip ukiortaalernerani qilak qummoroortaatinik kusanarluinnartunik qaammaqattaarpoq, Nunattali ukiortaarsiulernerani suli kusanarnerullutik.
 
+MAP:M09900F @i-ADVL> TARGET Abl IF (*1 ("tunnga") + N BARRIER (*) - PUNCT - @N< - @<APPOS - @A<) ;
 
 #DivPron-regler. Flyttet før M0780 for ikke at blokere for M0991D
 MAP:M0991A @OBJ> TARGET Gram/Cong + Akk IF (*1 TRANSVERB BARRIER KOMMA) ;
@@ -7290,7 +7300,7 @@ REMOVE:5639T ("peqqip") + SSAAR IF (0 ("peqqip") + SAAR) ; #næsten uproduktivt.
 REMOVE:5639U ("peqqip") + HTR IF (0 ("peqqip") + SAAR)(NEGATE *0 @ALLMIK-OBJ) ; #
 REMOVE:5639V ("peqqissar") + HTR IF (0 ("peqqip") + SAAR)(NEGATE *0 @ALLMIK-OBJ) ; 
 REMOVE:5639W (/__UTE\ Der\/vn\ N__/l) - POSSESSUM IF (0 POSSESSUM - (/__UTE\ Der\/vn\ N__/l) LINK -1 BOS) ; #Nuannaarutiginerusaalli tassa kunngertik pitsaasuullunilu uppertuummat.
-
+REMOVE:5639X VIP IF (0 HTR - VIK) ;
  
 # Enkelte substantiver
 REMOVE ("pineq") IF (NEGATE *0 ("kamik")) ; #20091103 pineq+QAR vs. pineqar-
