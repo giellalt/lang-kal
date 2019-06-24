@@ -117,7 +117,7 @@ LIST SUB = Orth/Arch Orth/Alt Orth/Youth ;
 LIST Orth/Arch = Orth/Arch ;
 LIST Orth/Alt = Orth/Alt ;
 LIST Orth/Youth = Orth/Youth ;
-LIST Orth/Append = Orth/Append ; #readings added by CG (APPEND)
+LIST Orth/Append = Orth/Append <append> ; #readings added by CG (APPEND)
 LIST Orth/Copy = Orth/Copy ; #Alternative append rules
 LIST Sub/YouthSubj = Sub/YouthSubj ; #Subject in absolutive case when it should have been Relative case
 LIST Gram/Comp = Gram/Comp ; #20100228 Ny tag udelukkende til neq ajor/saper/artor/nalu (PL)
@@ -3877,7 +3877,7 @@ MAP:M0031F @PROP> TARGET FIRSTNAME + Abs IF (1 Sem/Mask + Rel - CONJ-C OR Gram/A
 MAP:M0031G @PROP> TARGET Sem/Mask + Abs IF (1 Sem/Mask - CONJ-C)(NEGATE 1 Abl LINK *1 NIRU OR ("anneq") BARRIER V) ;
 MAP:M0031H @PROP> TARGET Sem/Fem + Abs IF (1 Sem/Fem + Abs - CONJ-C) ;
 
-MAP:M0031I @PROP> TARGET Sem/Hum + Abs - ORGANISATION IF (1 Sem/Hum - Sem/Mask - Sem/Fem - Abl - CONJ-C - SEMIOTIC OR (Orth/Append Prop))(NEGATE 1 Sem/Geo) ; #Beregnet til fornavn-efternavn, men usikker pga manglende kønstagging af fornavnet.
+MAP:M0031I @PROP> TARGET Sem/Hum + Abs - ORGANISATION IF (1 Sem/Hum - Sem/Mask - Sem/Fem - Abl - CONJ-C - SEMIOTIC OR Orth/Append + Prop) (NEGATE 1 Sem/Geo) ; #Beregnet til fornavn-efternavn, men usikker pga manglende kønstagging af fornavnet.
 
 MAP:M0031M @i-PROP> TARGET Prop + Sem/Geo + Abs IF (1 (MIU)); #Amerika Kujallermiu
 MAP:M0031N @i-PROP> TARGET Prop + Sem/Geo + Abs IF (1 PLACE + iProp + iOBLIQUE) ;
@@ -3891,6 +3891,7 @@ MAP:M0031 (@PROP>) TARGET Prop + Abs OR FIRSTNAME + Abs #OR TITEL + Abs
 IF (0 $$NUMERUS)(1 Prop + $$NUMERUS - CONJ-C)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + CONJ-LU LINK *1 V + 3Pl )(NEGATE 1 Prop + CONJ-LU LINK *1 V + 3PlO)(NEGATE 0 FIRSTNAME LINK 1 FIRSTNAME)(NEGATE 0 FIRSTNAME LINK 1 ("Kalaallit"))(NEGATE 1 FIRSTNAME + CONJ-LU)(NEGATE 0 Abs + Sg LINK *1 TRANSVERB + 3SgO BARRIER V)(NEGATE 1 Prop LINK 1 Prop - Abs)(NEGATE 1 Prop LINK -2 OBLIQUE)(NEGATE 1 SEMIOTIC)(NEGATE 1 POSSESSUM)
 (NEGATE 1 Sem/Geo LINK NOT 1 Prop) #Geografiske navne bruges også som efternavne, men negate er bedre end ingenting...
 (NEGATE 1 INSTITUTION)
+(NEGATE *1 Prop + CONJ-LU BARRIER (*) - Prop) #Andreas Wille Mathias Witoftilu ilanngutassiortuupput.
 ;
 MAP:M0031S @i-PROP> TARGET Prop + Abs - Sem/Hum (1 iProp - CONJ-C LINK NEGATE *1 PROP + CONJ-C) ;
 MAP:M0031Z @>N TARGET N + TITEL + Abs (1 Prop - CONJ-C) ;
@@ -4016,6 +4017,10 @@ MAP:M0063 (@CL-<CIT) TARGET CONT + TRANSVERB IF (-*1 ORATIOOBLVERB - N - TAQ BAR
 MAP:M0063B @CL-<CIT TARGET Par IF (*-1 ("tassa") + V BARRIER V - CONT LINK 0 @PRED OR @CL-CIT) ;
 #MAP:M0063B @CL-<CIT TARGET Par IF (*-1 ("soorlu") OR ("usiuffa") BARRIER V - CONT LINK 0 UNA OR UKU) ; #det ser ud som om ... / jeg troede ...
 MAP:M0063B @CL-<CIT TARGET Cau IF (*-1 ("tassa") + @PRED OR ("tassa") + @CL-<CIT BARRIER V - CONT OR KOMMA OR @i-N<)(NEGATE *1 @i-N< OR @<CONT_TASSA BARRIER @PRED) ; #Nuannaarutiginerusaalli tassa kunngertik pitsaasuullunilu uppertuummat.
+
+#både-og
+MAP:M0036C @CL-<CIT TARGET CONT + ADV-LU - ORATIOOBLVERB IF (1 @CL-<CIT)(NEGATE -1 CONT) ; #Nuannaarutiginerusaalli tassa kunngertik pitsaasuullunilu uppertuummat.
+MAP:M0036C @CL-<CIT TARGET CONT + CONJ-LU - ORATIOOBLVERB IF (1 @CL-<CIT)(NEGATE -1 CONT) ; #både-og er sådan set både konjunktionel og adverbiel...
 
 #Simpel co-ref oratio obliqua uden andre ledsagemåder end CL-CIT
 
@@ -4907,7 +4912,7 @@ MAP:M0652I @<APPOS TARGET $$KASUS + $$NUMERUS IF (*-1 $$KASUS + $$NUMERUS CBARRI
 MAP:M0652J @<APPOS TARGET $$KASUS + $$NUMERUS - CONJ-C OR (Orth/Append Prop) IF (*-1 ("soorlu") - @ADVL> - @PROP> - LUSUUQ - MI - CONJ-C BARRIER @PRED LINK **-1 $$KASUS + $$NUMERUS CBARRIER (*) - $$KASUS - CONJ-C - KOMMA - @POSS> - @i-ADVL>N - @PROP>) ;
 
 MAP:M0652K @<APPOS TARGET $$KASUS IF (*-1 @FOC>N BARRIER $$KASUS LINK *-1 $$KASUS) ;
-MAP:M0652L @<APPOS TARGET $$KASUS + $$NUMERUS + Prop - CONJ-C IF (*-1 $$KASUS + $$NUMERUS - CONJ-C - UNA - UKU - @PROP> - @>N BARRIER DIRTALESLUT OR (*) - KOMMA  - Prop)(NEGATE -1 DIRTALE)(NEGATE 0 Sem/Fem LINK -1 KOMMA LINK -1 Sem/Mask)(NEGATE 0 Sem/Mask LINK -1 KOMMA LINK -1 Sem/Fem) ; #<APPOS kræver i hvert fald overensstemmelse på køn
+MAP:M0652L @<APPOS TARGET $$KASUS + $$NUMERUS + Prop - CONJ-C IF (*-1 $$KASUS + $$NUMERUS - CONJ-C - UNA - UKU - @PROP> - @>N BARRIER DIRTALESLUT OR (*) - KOMMA  - Prop)(NEGATE -1 DIRTALE)(NEGATE 0 Sem/Fem LINK -1 KOMMA LINK -1 Sem/Mask)(NEGATE 0 Sem/Mask LINK -1 KOMMA LINK -1 Sem/Fem)(NEGATE 0 Sem/Hum OR Orth/Append LINK *-1 Sem/Hum + $$KASUS - @PROP> OR Orth/Append + $$KASUS - @PROP> BARRIER (*) - Prop - KOMMA - CONJ-C) ; #<APPOS kræver i hvert fald overensstemmelse på køn
 MAP:M0652M @<APPOS TARGET Abs + Sg IF (*-1 ("soorlu") - LUSUUQ - MI BARRIER (*) - @PROP> LINK *-1 Abs + Pl LINK *1 _TARGET_ LINK *1 INTRANSVERB BARRIER V);
 
 MAP:M0652N @<APPOS TARGET $$KASUS IF (*-1 @FOC>N BARRIER (*) - KOMMA - @<APPOS LINK *-1 $$KASUS) ;
@@ -5075,6 +5080,7 @@ MAP:M0793 @OBJ> TARGET N + Abs IF (*1 KOMMA BARRIER (*) - @N< LINK *1C N + Abs +
 
 MAP:M0868 @AGENS TARGET Abl IF (*1 (/TIP\ Der\/vv\ Gram\/TV\ TAQ\ /l) BARRIER V - CONT) ;
 
+SUBSTITUTE:S0529B (/@.*/r) @PROP> TARGET Prop + Abs (-1 (/\(@.*\)/r) + Prop)(0 (VSTR:$1))(1 (VSTR:$1) + Prop) ; #Andreas Wille *Mathias Witoftilu ilanngutassiortuupput.
 
 #Adled hen over verber
 MAP:M0512A @N< TARGET N + $$KASUS + $$NUMERUS - POSSESSUM - Num - iNum - Lok - Aeq - NUMHOVED - TIMENOUN IF (*-1 $$KASUS + $$NUMERUS - PLACE - @i-ADVL>N BARRIER (*) - @>N - @N< - @i-ADVL>N - VFIN - @ADVL> - @<ADVL - CONT - OBLIQUE LINK NEGATE 1 CONJ-C)(NEGATE -1 ("una"))(NEGATE 0 CONJ-C + Num LINK -1 Num OR iNum)(NEGATE 0 CONJ-C - Num)(NEGATE 0 $$KASUS LINK -1 Num LINK -1 ("nal") LINK *-1 (*) - $$KASUS)(NEGATE 0 Rel LINK 1 POSSESSUM)
@@ -5123,7 +5129,7 @@ MAP:M0860 (@i-<ADVL) TARGET (Lok) IF (0 CONJ-LU)(-1 (Lok) + (@i-<ADVL)) ; #20091
 MAP:M0860 @i-<ADVL TARGET Abl OR Trm IF (*-1 INDERIVERENDE_SUBSTANTIV)(NEGATE *1 V OR Der/vn) ; #Peqataasut Oqaasiliortunit
 
 #Særlig regel før M0940 til inderiverede adverbale adled inkl. de særlige substantiver, der inderiverer selv om de ikke er Der/vn (fx inatsit). LU holdes udenfor da oftest paratakse og LINK til Ins fulgt af V til sekvenser af fx type Ins-adled Lok-adled V 
-MAP:M0869 @i-ADVL> TARGET OBLIQUE - Aeq IF (1 Der/vn + N - (/__\"ati\"\ Gram\/TV\ TAQ__/l) )(NEGATE 0 CONJ-LU + $$KASUS LINK -1 $$KASUS)(NEGATE 0 $$KASUS LINK 1 $$KASUS + CONJ-LU)(NEGATE 1 OBLIQUE LINK 1 V)(NEGATE 0 Lok + PLACE LINK 1 HUMAN)(NEGATE 1 PLACE)(NEGATE *1 KOMMA BARRIER V)(NEGATE 0 $$KASUS LINK *-1 $$KASUS BARRIER (*) - Adv - Pali - Interj - @POSS> - (/@i-.*/r))(NEGATE *0 ("isikku") - QAR - V)#(NEGATE 0 Trm - Gram/Pers LINK 1 Trm) #Lok + PLACE for at hindre inderivation ved fx nunaqarfimmi inuusuttoq pikkorippoq.
+MAP:M0869 @i-ADVL> TARGET OBLIQUE - Aeq IF (1 Der/vn + N - (/__\"ati\"\ Gram\/TV\ TAQ__/l) )(NEGATE 0 CONJ-LU + $$KASUS LINK -1 $$KASUS)(NEGATE 0 $$KASUS LINK 1 $$KASUS + CONJ-LU)(NEGATE 1 OBLIQUE LINK 1 V)(NEGATE 0 Lok + PLACE LINK 1 HUMAN)(NEGATE 1 PLACE)(NEGATE *1 KOMMA BARRIER V)(NEGATE 0 $$KASUS - Num LINK *-1 $$KASUS BARRIER (*) - Adv - Pali - Interj - @POSS> - (/@i-.*/r))(NEGATE *0 ("isikku") - QAR - V)#(NEGATE 0 Trm - Gram/Pers LINK 1 Trm) #Lok + PLACE for at hindre inderivation ved fx nunaqarfimmi inuusuttoq pikkorippoq.
 (NEGATE 0 Lok LINK *1 (/__QAR\ Der\/nv\ Gram\/IV\ V\ Ind\ 3Sg__/l)) #...mi ...qarpoq
 (NEGATE 1 ADVERBIEL + $$KASUS LINK NOT *1 OBLIQUE - $$KASUS) #SEPTEMBARIMI immikkoortut suliffigisinnaasatit silissiumaarpavut er ikke i-ADVL>. #Heller ikke fst-p ILUANI immikkoortuni aalajangersimasuni nammineersorsinnaalissasutit
 (NEGATE -1 QQU LINK NOT *2 QQU) #Titartagaq peqqissaaruteqqissaarpara ikinngutikka mianersoqqullugit navianartumut nalusatsinnut qangali uatsinnik navianartorsiortitsisimasumut.
