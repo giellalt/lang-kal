@@ -119,7 +119,7 @@ LIST Orth/Alt = Orth/Alt ;
 LIST Orth/Youth = Orth/Youth ;
 LIST Orth/Append = Orth/Append <append> ; #readings added by CG (APPEND)
 LIST Orth/Copy = Orth/Copy ; #Alternative append rules
-LIST Sub/YouthSubj = Sub/YouthSubj ; #Subject in absolutive case when it should have been Relative case
+LIST Err/YouthSubj = Err/YouthSubj ; #Subject in absolutive case when it should have been Relative case
 LIST Gram/Comp = Gram/Comp ; #20100228 Ny tag udelukkende til neq ajor/saper/artor/nalu (PL)
 LIST Coll = Coll ; #20100406 Ny tag til ikke-godkendte proprier
 LIST TempPart = TempPart ; #De særlige verbumlignende nominer med tempusfunktion
@@ -1392,7 +1392,7 @@ SET HVVERB = (Gram/HV) | ("neri") | ("naammattoorsi") | ("pulaar") ;
 
 LIST IntransTrans = "neri" "ilassior" Gram/HV ; #Set til disambiguering af Ins, VIP vs. HTR mv.
 
-SET UGEDAGE = (/__\"arfineq\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"ataaseq\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"marluk\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"pingasut\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | ("sapaat") | (/__\"sisamat\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"tallimat\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | ("ataasinngorpat") | ("ataasinngormat") | ("marlunngorpat") | ("marlunngormat") | ("pingasunngorpat") | ("pingasunngormat") | ("sisamanngorpat") | ("sisamanngormat") | ("tallimanngorpat") | ("tallimanngormat") | ("arfininngorpat") | ("arfininngormat") ;
+SET UGEDAGE = (/__\"arfineq\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"ataaseq\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"marluk\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"pingasut\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | ("sapaat") | (/__\"sisamat\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"tallimat\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | ("ataasinngorpat") | ("ataasinngormat") | ("marlunngorpat") | ("marlunngormat") | ("pingasunngorpat") | ("pingasunngormat") | ("sisamanngorpat") | ("sisamanngormat") | ("tallimanngorpat") | ("tallimanngormat") | ("arfininngorpat") | ("arfininngormat") | ("ataasinngorneq") | ("ataasinngorneq") | ("marlunngorneq") | ("marlunngorneq") | ("pingasunngorneq") ;
 SET OTHERDAY = ("ullortuneq") | ("ullukinneq") ;
 SET SEASON = ("aasaq") | ("ukiaq") | ("ukioq") | ("upernaaq") ; #årstider
 #LIST MONTH = "januar" "januaari" "februar" "februaari" "marts" "marsi" "april" "apriili" "maj" "maaji" "juni" "juuni" "juli" "juuli" "august" "aggusti" "september" "septembari" "oktober" "oktobari" "november" "novembari" "december" "decembari" ;
@@ -5731,21 +5731,21 @@ MAP:M1942A @PRED TARGET CONT + 4Sg IF (NEGATE *0 VFIN OR @PRED)(*-1 ("tassa"))(N
 MAP:M1942B @PRED TARGET CONT + 4Pl IF (NEGATE *0 VFIN OR @PRED)(*-1 ("tassa"))(NEGATE *1 CONT + 4Pl) ;
 
 #Ungt sprog
-#SUBSTITUTE:S1950A (VSTR:$1) (Sub/YouthSubj /\([A-Z]+.*\)/r) TARGET WORD IF (0 Rel + Sg LINK *1 3Sg + HTR + @PRED BARRIER @ALLSUBJ>);
-#SUBSTITUTE:S1950B (VSTR:$1) (Sub/YouthSubj /\([A-Z]+.*\)/r) TARGET WORD IF (0 Abs + Sg LINK *1 TRANSVERB + 3Sg + TIP + @PRED BARRIER @ALLSUBJ>); #Paasissutissiisarsimanerit kukkusut pissutigalugit, Joannes Eidesgaard nunat tamalaat paasitikkusuppai Savalimmiormiut allanik eqqarsaatersortuusut.
+#SUBSTITUTE:S1950A (VSTR:$1) (Err/YouthSubj /\([A-Z]+.*\)/r) TARGET WORD IF (0 Rel + Sg LINK *1 3Sg + HTR + @PRED BARRIER @ALLSUBJ>);
+#SUBSTITUTE:S1950B (VSTR:$1) (Err/YouthSubj /\([A-Z]+.*\)/r) TARGET WORD IF (0 Abs + Sg LINK *1 TRANSVERB + 3Sg + TIP + @PRED BARRIER @ALLSUBJ>); #Paasissutissiisarsimanerit kukkusut pissutigalugit, Joannes Eidesgaard nunat tamalaat paasitikkusuppai Savalimmiormiut allanik eqqarsaatersortuusut.
  
-#MAP @SUBJ> TARGET (Sub/YouthSubj) ;
-#REMOVE (Sub/YouthSubj) IF (NOT 0 @SUBJ>) ;
+#MAP @SUBJ> TARGET (Err/YouthSubj) ;
+#REMOVE (Err/YouthSubj) IF (NOT 0 @SUBJ>) ;
 #Jeg kan ikke lige få ovenstående til at virke, derfor nedenstående...
 
 MAP:M1950A @SUBJ>+SUB TARGET Rel + Sg IF (*1 3Sg + HTR + @PRED BARRIER @ALLSUBJ>);
 MAP:M1950B @SUBJ>+SUB TARGET Abs + Sg IF (*1 TRANSVERB + 3Sg + TIP + @PRED BARRIER @ALLSUBJ>); #Paasissutissiisarsimanerit kukkusut pissutigalugit, Joannes Eidesgaard nunat tamalaat paasitikkusuppai Savalimmiormiut allanik eqqarsaatersortuusut.
 
-SUBSTITUTE:1950A (N) (Sub/YouthSubj N) TARGET @SUBJ>+SUB ;
-SUBSTITUTE:1950A (Prop) (Sub/YouthSubj Prop) TARGET @SUBJ>+SUB ;
+SUBSTITUTE:1950A (N) (Err/YouthSubj N) TARGET @SUBJ>+SUB ;
+SUBSTITUTE:1950A (Prop) (Err/YouthSubj Prop) TARGET @SUBJ>+SUB ;
 
-SUBSTITUTE (@SUBJ>+SUB) (@SUBJ>) TARGET (Sub/YouthSubj) ;
-REMOVE (Sub/YouthSubj) IF (NOT 0 @SUBJ>) ;
+SUBSTITUTE (@SUBJ>+SUB) (@SUBJ>) TARGET (Err/YouthSubj) ;
+REMOVE (Err/YouthSubj) IF (NOT 0 @SUBJ>) ;
 
 
 #@FOC + OBLIQUE + N
