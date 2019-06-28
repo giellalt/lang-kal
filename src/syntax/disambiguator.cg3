@@ -133,6 +133,8 @@ LIST geoProp = geoProp ;
 LIST humProp = humProp ;
 LIST Prefix/TA = Prefix/TA ;
 LIST Prefix/AA = Prefix/AA ;
+LIST Gram/Conj-encl = Gram/Conj-encl ; #sideordnende enklitiske konjunktioner
+LIST Gram/Adv-encl = Gram/Adv-encl ;
 
 LIST Sg = Sg ;
 LIST Du = Du ;
@@ -1304,7 +1306,7 @@ SET CONT_V& = 1SgCONT1Sg | 2SgCONT2Sg | 4SgCONT3Sg | 4SgCONT4Sg | 1PlCONT1Pl | 2
 # Partikler
 # ---------
 LIST KONJUNKTION = ("aamma" Conj) "kisianni" "imaluunniit" ("immaqa" CONJ-LUUNNIIT ) ;#"taava" ; Taava er normalt adverbiel.
-SET CONJ-C = LU | LUUNNIIT | LI | KONJUNKTION | CONJ-LUUNNIIT | CONJ-LU ; #Sideordnende konjunktioner, alenestående og efterhængte partikler
+SET CONJ-C = LU | LUUNNIIT | LI | KONJUNKTION | CONJ-LUUNNIIT | Gram/Conj-encl | CONJ-LU ; #Sideordnende konjunktioner, alenestående og efterhængte partikler
 SET CONJ-S = Conj - CONJ-C ; #Underordnende konjunktioner
 SET ASSERSUUTIGALUGU = ("assersor") + UTE + GE + CONT ;
 SET ILANNGUPnAFF = ("ilanngup") - AFFINGERET + CONT ;
@@ -1531,84 +1533,98 @@ TEMPLATE NexusVenstre =  (-*1 Abs LINK *1 INTRANSVERB BARRIER _TARGET_ OR VFIN) 
 
 # Tags
 # ====
-LIST @<APPOS = @<APPOS ;		# attributter og appositioner med og uden komma
-LIST @AGENS = @AGENS ;		# agens ved PASSIV
-LIST @PRED = @PRED ; 		 # predikat
+# Prædikater og adverbale tags
+LIST @PRED = @PRED ; 		 # predikat, fx "atuarpoq", "nakkaravit?", "susutit?", "sunaana *naalagaaffigigit?", "usiuffa *sapertutit", "qanoq *tassa", "qanga *qanngulunnguarsi".
+LIST @PRED2 = @PRED2 ; # sættes på verbet i en koncessiv sætning eller temporal bisætning: "upperpunga naak *qulartaraluarlunga", "taama *oqartungalu..."
+LIST @ADVL> = @ADVL> ;		 # adverbial med kerne t.h.: "*kaalluni innarpoq", "*sumut iluaqutigaajuk?", "Nunap *ilaani ippoq"
+LIST @<ADVL = @<ADVL ;		 # adverbal med kerne t.v.: "inuusuppallaarsimavunga *paasissallugu"
+LIST @i-ADVL> = @i-ADVL> ;	 # adverbial der står til inkorporeret verbal t.h.: #naasoq *sikkersumigut pilutalik", "*maani nillernermik"
+LIST @i-<ADVL = @i-<ADVL ;	 # adverbial der står til inkorporeret verbal t.v.: "aalajangerpaat mersoqatigiittarnissartik *illuani"
+
+# Neksusadverbielle tags
+LIST @CON = @CON ;	# erstatter CL-ADVL ved conditionalis - baade coref og non-coref: "*nererusukkuit neriniarit!"
+LIST @CON> = @CON> ; #20190627 ny
+LIST @<CON = @<CON; #20190627 ny
+LIST @CAU = @CAU ;	# erstatter CL-ADVL ved causativ - baade coref og non-coref: "*takoqqaaramiuk aperaaq:", "titartaanianngilanga *nalunarpallaaqimmat"
+LIST @<CAU = @<CAU ; # causal eller temporal underordnet sætning
+LIST @CL-ADVL> = @CL-ADVL> ; # neksusadverbial der modificerer t.h.: "*taava naak kavaajara?", "*quliugaangata innartarpoq", "*suminngaanneeraluaraanniluunniit atuupput"
+LIST @CL-<ADVL = @CL-<ADVL ; # neksusadverbial der modificerer t.v. Ofte gaanni eller oblikke nominer eller -nirmit
+LIST @i-CL-ADVL> = @i-CL-ADVL> ; #neksusadverbial der modificerer inderiveret th. "ualeq sisamanut *qiteqqukkaa oqalugiarnermini oqarpoq" 
+
+# Objektssætninger (oratio obliqua)
+LIST @CL-CIT> = @CL-CIT> ;	 # predikat i oo der står til inquit t.h. CL-OBJ (oo=oratiobl): "illariarpoqli *Jonasiusoq takugamiuk".
+LIST @CL-<CIT = @CL-<CIT ;	 # predikat i oo der står til inquit t.v. (CIT=sitat): "isumaqarpoq ajornartorsiut *tassaasoq inatsisit *erseqqarluppallaartoq.
+LIST @CL-CIT = @CL-CIT> @CL-<CIT @i-CL-<CIT @i-CL-CIT>;	 # predikat i oo der står til et matriseverb t.h. CL-OBJ (oo=oratobl)
+LIST @i-CL-CIT> = @i-CL-CIT> ; # kernen i oo som refererer til et inderiveret inquit: "qanoq *pilersaaruteqarnersut ilisimatinneqartarnissarput pingaaruteqarpoq."
+LIST @i-CL-<CIT = @i-CL-<CIT ; # kernen i oo som refererer til et inderiveret inquit: "atuakkortoqarpoq atuagarpassuarnik allassimasunik qanoq *pisarnersut."
+#LIST @CL->N = @CL->N ;       # Relativsætning stående til nominal til højre #bruges ikke juni 2019
+LIST @<CONT_TASSA = @<CONT_TASSA ; #Ledsagemåder, der står som subjektprædikater efter "tassa": "suliassaq tassaavoq aatsitassat *nassaarissallugit"
+
+# Komposita
+LIST @>V = @>V ;                 # adled til verbum med ajor, saper, artor, nalu. "asaneq ajorpara", "taama nuannertigivoq", "aputitut qaqortigilersippara" 
+#LIST @V< = @V< ;                 # adled til verbum # N-tut ippaa #uanvendt 20180817
+LIST @i->V = @i->V ; # adled til inderiveret verbum: "ajortuliaat *aatttut aappalutsigisoq", "taama sukkatiginissat"
+
+# Aktanter
 LIST @SUBJ> = @SUBJ> ;		 # subjekt med pred t.h.
 LIST @SUBJ>+SUB = @SUBJ>+SUB ;		 # subjekt med pred t.h. men forkert kasus
 LIST @<SUBJ = @<SUBJ ;		 # subjekt med pred t.v.
+LIST @AGENS = @AGENS ;		# agens ved PASSIV dannet med NIQAR og TAQ uden possessor og TAQ=U
 LIST @OBJ> = @OBJ> ;		 # objekt med pred t.h.
 LIST @<OBJ = @<OBJ ;		 # objekt med pred t.v.
-LIST @ADVL> = @ADVL> ;		 # adverbial med kerne t.h.
-LIST @<ADVL = @<ADVL ;		 # adverbal med kerne t.v.
-LIST @A< = @A< ;				# adnominal til adverbium
-LIST @CONJ = @CONJ ;			 # konjunktion
-LIST @CON> = @CON> ; #20190627 ny
-LIST @<CON = @<CON; #20190627 ny
-LIST @CON = @CON ;	# erstatter de foelgende ved conditionalis - baade coref og non-coref
-LIST @CAU = @CAU ;	# erstatter de foelgende ved causativ - baade coref og non-coref
-LIST @<CAU = @<CAU ; # causal eller temporal underordnet sætning
-LIST @CL-ADVL> = @CL-ADVL> ; # neksusadverbial der modificerer t.h. 
-LIST @CL-<ADVL = @CL-<ADVL ; # neksusadverbial der modificerer t.v.
-LIST @i-CL-ADVL> = @i-CL-ADVL> ; #neksusadverbial der modificerer inderiveret th. 
-LIST @CL-CIT> = @CL-CIT> ;	 # predikat i oo der står til et matriseverb t.h. CL-OBJ (oo oratobl)
-LIST @CL-<CIT = @CL-<CIT ;	 # predikat i oo der står til et matriseverb t.v. (CIT=sitat)
-LIST @CL-CIT = @CL-CIT> @CL-<CIT @i-CL-<CIT @i-CL-CIT>;	 # predikat i oo der står til et matriseverb t.h. CL-OBJ (oo oratobl)
-LIST @i-CL-<CIT = @i-CL-<CIT ; # kernen i oo som refererer til et inderiveret inquit
-LIST @i-CL-CIT> = @i-CL-CIT> ; # kernen i oo som refererer til et inderiveret inquit
-LIST @i-SUBJ> = @i-SUBJ> ;   # "dativ-objektet" ved dotr verbal t.h. 'Beatrinep PERIMUT allagaq aaqquaa'
-LIST @i-<SUBJ = @i-<SUBJ ;   # "dativ-objektet" ved dotr verbal t.v. 
-LIST @MIK-OBJ> = @MIK-OBJ> ; # indef objekt ved HTR til hoejre
+#LIST @i-SUBJ> = @i-SUBJ> ;   # "dativ-objektet" ved dotr verbal t.h. 'Beatrinep PERIMUT allagaq aaqquaa'
+#LIST @i-<SUBJ = @i-<SUBJ ;   # "dativ-objektet" ved dotr verbal t.v. 
+LIST @OBJ-DOTR> = @OBJ-DOTR> ; #Terminalisobjekt/sekundært subjekt for et dobbelttransitivt verbum: "*politikerinut eqqarsaatigeqquaat"
+LIST @i-OBJ-DOTR> = @i-OBJ-DOTR> ;     # tingsobjekt i Ins eller personobjekt i Trm ved indr. dotr th: "*Nunatsinnut ilisimatitsisarneq", "*tikiunnerminik nalunaarfigitikkamiuk."
+#LIST @i-<OBJ = @i-<OBJ ;	 # tingsobjekt i Ins eller personobjekt i Trm ved dotr tv #bruges ikke
+LIST @MIK-OBJ> = @MIK-OBJ> ; # indef objekt ved HTR til højre: "*Andamut asannippoq", "Andamik asannippoq", "aviisimik atuarpoq"
 LIST @<MIK-OBJ = @<MIK-OBJ ; # indef objekt ved HTR til venstre #Findes den kontekst overhovedet??
-LIST @i-MIK-OBJ> = @i-MIK-OBJ> ; #objekt ved inderiveret halvtransitiv 20091106
-LIST @i-OBJ-DOTR> = @i-OBJ-DOTR> ;     # tingsobjekt i Ins eller personobjekt i Trm ved dotr th
-LIST @OBJ-DOTR> = @OBJ-DOTR> ; #Objekt for et dobbelttransitivt verbum
-LIST @i-<OBJ = @i-<OBJ ;	 # tingsobjekt i Ins eller personobjekt i Trm ved dotr tv #bruges ikke
-LIST @i-ADVL> = @i-ADVL> ;	 # adverbial der står til inkorporeret verbal t.h.
-LIST @i-<ADVL = @i-<ADVL ;	 # adverbial der står til inkorporeret verbal t.v.
-LIST @INTERJ = @INTERJ ;	 # interjektion
-LIST @EXCLM = @EXCLM	;		# Eksklamation som er nominal, men med verbal semantik.
-LIST @PROP> = @PROP> ;		 # proprium til venstre i propriumskede
-LIST @i-PROP> = @i-PROP> ;	#inderiveret proprium til venstre i propriumskæde
-LIST @HNOUN = @HNOUN ;		 # løst nomen uden predikat
-#LIST @HEADLINE = @HEADLINE ;	# loes partikel eller verbum i overskrifter #Bruges ikke juni 2019.
-LIST @>N = @>N ;		     # prenominalt adled (slagter Hansen) og determinativ (UA allaffinni/ 1. maj); upernaami aput
-LIST @N< = @N< ;	    	 # postnominalt adled
-LIST @Pron>N = @Pron>N ; # Pronominale adled, der vender "den forkerte vej" - Taakku meeqqat naalapput
-LIST @FOC>N = @FOC>N ; #meeqqat soorlu Piitaq, i betydningen 'fx'
-LIST @i->N = @i->N ;		 # adled der står til inkorporeret nominal t.h.
-LIST @i-N< = @i-N< ;		 # adled der står til inkorporeret nominal t.v.
-LIST @i-ADVL>N = @i-ADVL>N ; # adled der står til verbalt nomen: isuma, oqaluttuaq
-LIST @ADVL>N = @ADVL>N ; # adverbial som står til noget nominalt, fx 'Bosniap qulaani silaannaq'. Ofte temporal eller lokal.
-LIST @i-MWE>N = @i-MWE>N ; #juxtaposition eller del af MWE, som peger på en viderederiveret del af MWE'en
-#LIST @POSS = @POSS> @<POSS ;		 # sæt af de to possessorer
+LIST @i-MIK-OBJ> = @i-MIK-OBJ> ; #objekt ved inderiveret halvtransitiv: "Andamut asanninneq", "Andamik asanninneq".
+LIST @NIQ_SUBJ> = @NIQ_SUBJ> ; #Kun til subjekter for absolutte konstruktioner med NIQ+Abl (NIQ+Ins) (NIQ+Trm)
+LIST @NIQ_OBJ> = @NIQ_OBJ> ; #Kun til objekter for absolutte konstruktioner med NIQ+Abl (NIQ+Ins) (NIQ+Trm)
+
+# Adnominale tags
+LIST @PROP> = @PROP> ;		 # proprium til venstre i propriumskede "*Anda *Peter Lynge"
+LIST @i-PROP> = @i-PROP> ;	#inderiveret proprium til venstre i propriumskæde: "Anda *Peter Lyngemukarput
+LIST @>N = @>N ;		     # prenominalt adled i Abs (slagter Hansen) og determinativ (UA allaffinni/ 1. maj). Også til "*sumut tamanut" i alle kasus.
+LIST @N< = @N< ;	    	 # postnominalt adled: "naasoq pilutalik", "ilisivissuaq una"
+#LIST @N<PRED = @N<PRED ; #Efterstillet appositionslignende nominalsyntagme, som ikke kongruerer med det det er 'apposition' til.
+LIST @Pron>N = @Pron>N ; # Pronominale adled, der vender "den forkerte vej" - "Taakku meeqqat naalapput"
+LIST @A< = @A< ;				# adnominal til adverbium: "maani *najukkanni"
+LIST @<APPOS = @<APPOS ;		# attributter og appositioner med og uden komma: "... atiannit *Alatannguamit (*Alatannguaq) tunngaveqarpoq", "suliffeqarfiit soorlu Royal Arctic *Line"
+LIST @i->N = @i->N ;		 # adled der står til inkorporeret nominal t.h.: "*angutinik ilaqarput", "*pingasuinnarnik pilutalik"
+LIST @i-N< = @i-N< ;		 # adled der står til inkorporeret nominal t.v.: "uppernarsaatissat tassaapput *inqunarluinnarnera *illartarneralu", "angutaanngilaq *asannittumik"
+LIST @SUBJ_COMP = @SUBJ_COMP ;	#Prædikat til subjekt/ subjective complement: "tassa *qajannaat"
 LIST @POSS> = @POSS> ;		 # possessor
 #LIST @<POSS = @<POSS ; #løst efterstillet afterthought-lignende præcisering af tidligere nævnt possessor #bruges ikke juni 2019
-LIST @i-POSS = @i-POSS> @<i-POSS ;		 # sæt af de to possessorer til inderiveret nomen
-LIST @i-POSS> = @i-POSS> ;		 # possessor til inderiveret nomen
+#LIST @POSS = @POSS> @<POSS ;		 # sæt af de to possessorer
+LIST @i-POSS> = @i-POSS> ;		 # possessor til inderiveret eller viderederiveret nomen "*Qallunaat Nunaaliassamaarpit?", "*atuagaq saqqaaniippoq"
 #LIST @i-<POSS = @i-<POSS ; #løst efterstillet afterthought-lignende præcisering af tidligere nævnt possessor til inderiveret nomen
+LIST @i-POSS = @i-POSS> @<i-POSS ;		 # sæt af de to possessorer til inderiveret nomen
+LIST @i-MWE>N = @i-MWE>N ; #juxtaposition eller del af MWE, som peger på en viderederiveret del af MWE'en: "20 *millionit koruuneqarput"
+#LIST @CONT->N = @CONT->N ;	# tag forbeholdt de saerlige adnominale transitive infinitiver uden objekt (ilitsoqqussaralugu oqaatsit)
+#LIST @PARATAKSE_CONT->N = @PARATAKSE_CONT->N ; # Placeholder for infinitiv i paratakse med substantiv. Skal udskiftes i allersidste section
+LIST @ADVL>N = @ADVL>N ; # adverbial som står til noget nominalt, fx 'Bosniap qulaani silaannaq'. Ofte temporal eller lokal.
+LIST @i-ADVL>N = @i-ADVL>N ; # adled der står til verbalt nomen: isuma, oqaluttuaq; "*avatangiisinut ministeria"
 LIST @PRENOM = @POSS> /@i-.*/r ; #listen er ikke sikker og skal derfor kun bruges i barriers.
-LIST @>V = @>V ;                 # adled til verbum # asaneq ajorpara og taama nuannertigivoq
-#LIST @V< = @V< ;                 # adled til verbum # N-tut ippaa #uanvendt 20180817
-LIST @i->V = @i->V ; # adled til inderiveret verbum # Angut Peritut asanartigisoq
-LIST @FOC = @FOC ;		# Pali mv., der erstatter et verballed
+
+# Øvrige tags
+LIST @VOK = @VOK ; #"Hej *Gitte", "aa, *ataata"
+LIST @EXCLM = @EXCLM	;		# Eksklamation som er nominal, men med verbal semantik. "kusanaq", "qujanassusia"
+LIST @INTERJ = @INTERJ ;	 # interjektion: "*hej Gitte", "*aa, ataata"
+LIST @FOC = @FOC ;		# Pali mv., der erstatter et verballed: "*aajuku sinneri", "sunaana", "sunaaffa!", "*naak kavaajara?"
+LIST @FOC>N = @FOC>N ; #fokuserende eller eksemplificerende soorlu, tassa og ingammik: "meeqqat *soorlu Piitaq"
+LIST @HNOUN = @HNOUN ; # løst nomen uden predikat: "*naasoq pilutalik", "savaanngilaq *anguteralanguna" "najukkanni *nillernermik"
+#LIST @HEADLINE = @HEADLINE ;	# løs partikel eller verbum i overskrifter #Bruges ikke juni 2019.
+LIST @SML_HNOUN = @SML_HNOUN ; #Sammenlignende handling: "isigisarpara soorlu *ujarakassak", "orfaarujoortilerpaa soorlu *meeraq sinnassagaq"
+#LIST @ABSOLUT_PRED = @ABSOLUT_PRED ;	#Participier med nexus inde i en NP eller afterthoughts
+LIST @CONJ = @CONJ ;	# sideordnende konjunktion inkl. soorlu. Enklitiske konjunktioner kan mappes med Gram/Conj-encl
+
+# Midlertidige tags
 LIST @X = @X ;                   # dette ord har endnu ikke fået en mapping-regel
 LIST @TEST = @TEST ; 
 LIST @INTERIM = @INTERIM ;	#en tag til noget, der afventer teoretisk afklaring o.lign.
-#LIST @CL->N = @CL->N ;       # Relativsætning stående til nominal til højre #bruges ikke juni 2019
-LIST @CONT->N = @CONT->N ;	# tag forbeholdt de saerlige adnominale transitive infinitiver uden objekt (ilitsoqqussaralugu oqaatsit)
-#LIST @PARATAKSE_CONT->N = @PARATAKSE_CONT->N ; # Placeholder for infinitiv i paratakse med substantiv. Skal udskiftes i allersidste section
-LIST @PRED2 = @PRED2 ; # saettes paa verbet i en bunden ledsaetning
-#LIST @ABSOLUT_PRED = @ABSOLUT_PRED ;	#Participier med nexus inde i en NP eller afterthoughts
-#LIST @i->V = @i->V ; 	# NIQ ved ajor, saper, artor, nalu #Udkommenteret 20180522. @>V
-LIST @SUBJ_COMP = @SUBJ_COMP ;	#Prædikat til subjekt/ subjective complement
-LIST @N<PRED = @N<PRED ; #Efterstillet appositionslignende nominalsyntagme, som ikke kongruerer med det det er 'apposition' til.
-LIST @VOK = @VOK ;
-LIST @NIQ_SUBJ> = @NIQ_SUBJ> ; #Kun til objekter for absolutte konstruktioner med NIQ+Abl (NIQ+Ins) (NIQ+Trm)
-LIST @NIQ_OBJ> = @NIQ_OBJ> ; #Kun til objekter for absolutte konstruktioner med NIQ+Abl (NIQ+Ins) (NIQ+Trm)
-LIST @<CONT_TASSA = @<CONT_TASSA ; #Ledsagemåder, der står som subjektprædikater efter "tassa"
 
-LIST @SML_HNOUN = @SML_HNOUN ;
 
 LIST §noun-comma = §noun-comma ;
 LIST DIRTALESTART = DIRTALESTART ; #direkte tale
@@ -1617,7 +1633,7 @@ LIST §PropNexusPl = §PropNexusPl ;
 LIST §PropNexusSg = §PropNexusSg ;
 
 
-SET TAGGED = @PRED OR @SUBJ> OR @<SUBJ OR @OBJ> OR @<OBJ OR @ADVL> OR @<ADVL OR @CL-ADVL> OR @CL-<ADVL OR @CL-CIT> OR @CL-<CIT OR @i-SUBJ> OR @i-<SUBJ OR @i-OBJ-DOTR> OR @OBJ-DOTR> OR @i-<OBJ OR @i-ADVL> OR @i-<ADVL OR @INTERJ OR @PROP> OR @HNOUN OR @>N OR @N< OR @i->N OR @i-N< OR @POSS> OR @>V OR @i-POSS ;
+SET TAGGED = @PRED OR @SUBJ> OR @<SUBJ OR @OBJ> OR @<OBJ OR @ADVL> OR @<ADVL OR @CL-ADVL> OR @CL-<ADVL OR @CL-CIT> OR @CL-<CIT OR @i-OBJ-DOTR> OR @OBJ-DOTR> OR @i-ADVL> OR @i-<ADVL OR @INTERJ OR @PROP> OR @HNOUN OR @>N OR @N< OR @i->N OR @i-N< OR @POSS> OR @>V OR @i-POSS ;
 
 # Syntaks
 # =======
@@ -1637,13 +1653,13 @@ SET @ALL-<ARG = @<ARG OR @CL-<ARG ;
 
 
 LIST @ALLOBJ> = @OBJ> @i-OBJ-DOTR> @OBJ-DOTR> ;
-LIST @<ALLOBJ = @<OBJ @i-<OBJ ;
+#LIST @<ALLOBJ = @<OBJ ;#@i-<OBJ ;
 
 LIST @ALLSUBJ> = @SUBJ> @i-SUBJ> @SUBJ>+SUB ;
-LIST @<ALLSUBJ = @<SUBJ @i-<SUBJ ;
-SET @ALLSUBJ = @ALLSUBJ> OR @<ALLSUBJ ;
+#LIST @<ALLSUBJ = @<SUBJ ;#@i-<SUBJ ;
+SET @ALLSUBJ = @ALLSUBJ> OR @<SUBJ ;
 SET @ALLMIK-OBJ = @MIK-OBJ> OR @i-MIK-OBJ> ;
-SET @FUNC = @ALLSUBJ | @ALLOBJ> | @<ALLOBJ | @ALLMIK-OBJ ; #alle funktionstags for sætningsniveauargumenter
+SET @FUNC = @ALLSUBJ | @ALLOBJ> | @<OBJ | @ALLMIK-OBJ ; #alle funktionstags for sætningsniveauargumenter
 
  # Kladdenotatar, skal slettast
  # SU: abs(IV), rel(tv), trm(dotv), ins; 4subm
@@ -5297,13 +5313,13 @@ MAP:M0165 @ADVL> TARGET ("([0-2]?[1-9]((:|;|.)[0-5][1-9])){1,2}"r) IF (*1 V); #k
 # Verber anden runde
 # ==================
 #MAP:M1070 (@PARATAKSE_CONT->N) TARGET Cont + CONJ-LU IF (1 Abs + Der/vn) ; #misissueqqissaarutaallunilu oqaasiliuut .. Skal elaboreres!! #Vistnok overflødig. Må skulle mappes @CONT->N i stedet, parataksen giver jo sig selv.
-MAP:M1080 (@CONT->N) TARGET Cont + 4Sg IF (1 Ins)(2C Der/vn + Abs + Sg)(*1 V + 3Sg); #OBJ pillugu Ins vn+subjekt verbum 
+#MAP:M1080 (@CONT->N) TARGET Cont + 4Sg IF (1 Ins)(2C Der/vn + Abs + Sg)(*1 V + 3Sg); #OBJ pillugu Ins vn+subjekt verbum 
 
 #MAP:M1090 (@i-ADVL>) TARGET Cont + 4Sg IF (1C Der/vn + Abs + Sg LINK *1 V + 3Sg); #OBJ pillugu vn+subjekt verbum. #Fejltagger Eriup taamak OQARLUNILU atuakkani .. ilipallariarlugu. De første 10 hits i testcorpus alle forkerte. Udkommenteres. Håndteres i forvejen af M1147A
 
 
 MAP:M1095 @i-ADVL> TARGET Adv IF (*1 Der/vn BARRIER (*) - @ADVL> - @i-ADVL> - @SUBJ> LINK *1 ("tassa") BARRIER (*) - @ADVL> - @i-ADVL> - @SUBJ>); #Namminersorneq pillugu AQAGU ikumatitalisarluni ingerlaaqatigiinnissaq aamma tassaassaaq Inatsisartuni pisut pillugit akerliussutsimik takutitsineq.
-MAP:M1100 (@CONT->N) TARGET Cont + 4Sg + 3SgO IF (-1 @SUBJ> OR ("\)") OR ("\"")) ; #Det blev alt for ad hoc med baade citation og parantes
+#MAP:M1100 (@CONT->N) TARGET Cont + 4Sg + 3SgO IF (-1 @SUBJ> OR ("\)") OR ("\"")) ; #Det blev alt for ad hoc med baade citation og parantes
 #MAP:M1110 (@ABSOLUT_PRED) TARGET Par + PASSIV + 3Pl IF (-3 Rel)(-2 Abs + Pl)(-1 Ins)(1 POSSESSUM); #matcher SELECT:ParantetiskParPl #udkommenteret 2019, da den vistnok er overflødig.
 MAP:M1120 (@i-ADVL>) TARGET CONT IF (1 Part)(2 NIQ); #Eqqarsaatigiinnarnagu ingerlaannaq piviusunngortitsineq
 MAP:M1130 (@i-ADVL>) TARGET Cont IF (*1 NIQ + Abs - ("inuk" U NIQ) - Gram/Int - Gram/Comp BARRIER (*) - Adv - ADVERBIEL LINK NOT 1 KOMMA); #Uangalu anorip karrit aqqusaarlugit siorsunnera nuannaringaalissagaluarpara... #Panini namminermisut inuunermik taamaattumik atugaqaqqunagu silattunnginnerani toqoqatigalugu inuunera kipiniaraluarpaa ...! 
@@ -7036,7 +7052,7 @@ SELECT ("naa") IF (*0 ("naatser")); #'naavoq' sandsynligere end 'naappoq' ved 'v
 REMOVE ("kivi") IF (NEGATE *0 ("imaq")); #
 #REMOVE ("allar") IF (NEGATE 0 AFFINGERET LINK *0 ("qilak")) ; #20091103 allar- eller allap-
 REMOVE ("allar") IF (NEGATE *0 ("qilak")) ; #20091103 allar- eller allap-
-REMOVE ("ili") IF (0 ("ilisima"))(NEGATE *0 THING + @ALLOBJ> OR THING + @<ALLOBJ) ; #20091109
+REMOVE ("ili") IF (0 ("ilisima"))(NEGATE *0 THING + @ALLOBJ> OR THING + (@<ALLOBJ)) ; #20091109
 REMOVE ("isigip") IF (-1 Trm) ; #20091112 sandsynligvis "isigaa" i den stilling
 REMOVE ("aak") + LISAR OR ("aaq") + LISAR IF (0 ("aalisar")) ;
 REMOVE ("paap") IF (0 ("paa"))(NEGATE *0 MATERIAL) ;
@@ -8020,8 +8036,17 @@ SUBSTITUTE (Interj) (Gram/Adv-encl Interj) TARGET WORD + ADV-LUUNNIIT ;
 SUBSTITUTE (Pron) (Gram/Adv-encl Pron) TARGET WORD + ADV-LUUNNIIT ;
 SUBSTITUTE (Prop) (Gram/Adv-encl Prop) TARGET WORD + ADV-LUUNNIIT ;
 SUBSTITUTE (Num) (Gram/Adv-encl Num) TARGET WORD + ADV-LUUNNIIT ;
-
-SUBSTITUTE (ADV-LUUNNIIT)(LUUNNIIT) TARGET ADV-LUUNNIIT ;
+SUBSTITUTE (V) (Gram/Conj-encl V) TARGET WORD + CONJ-LUUNNIIT ;
+SUBSTITUTE (N) (Gram/Conj-encl N) TARGET WORD + CONJ-LUUNNIIT ;
+SUBSTITUTE (Pali) (Gram/Conj-encl Pali) TARGET WORD + CONJ-LUUNNIIT ;
+SUBSTITUTE (Conj) (Gram/Conj-encl Conj) TARGET WORD + CONJ-LUUNNIIT ;
+SUBSTITUTE (Adv) (Gram/Conj-encl Adv) TARGET WORD + CONJ-LUUNNIIT ;
+SUBSTITUTE (Interj) (Gram/Conj-encl Interj) TARGET WORD + CONJ-LUUNNIIT ;
+SUBSTITUTE (Pron) (Gram/Conj-encl Pron) TARGET WORD + CONJ-LUUNNIIT ;
+SUBSTITUTE (Prop) (Gram/Conj-encl Prop) TARGET WORD + CONJ-LUUNNIIT ;
+SUBSTITUTE (Num) (Gram/Conj-encl Num) TARGET WORD + CONJ-LUUNNIIT ;
+SUBSTITUTE (ADV-LUUNNIIT)(LUUNNIIT) TARGET (Gram/Adv-encl) ;
+SUBSTITUTE (CONJ-LUUNNIIT)(LUUNNIIT) TARGET (Gram/Conj-encl) ;
 SUBSTITUTE (/....?-LUUNNIIT/r) (LUUNNIIT) TARGET (*);
 SUBSTITUTE (/....?-LU/r) (LU) TARGET (*);
 SUBSTITUTE (/....?-LI/r) (LI) TARGET (*);
