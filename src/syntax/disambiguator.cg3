@@ -1125,6 +1125,7 @@ SET VERB-NOTCONT = V - Cont - ContNeg;
 SET CONT = Cont OR ContNeg;
 SET CON_CAU = Con OR Cau ;
 SET PASSIV = (GE SIMA) OR NIQAR OR (/Gram\/TV\ TAQ\ Der\/vn\ U/l) ;
+SET PASSIV_ALTERNATIV = NIQAR OR (/Gram\/TV\ TAQ\ Der\/vn\ U/l) ; #PL ny 20190630 fordi (GE SIMA) forekommer for farlig
 LIST NO_HTR = "allap" ; #20091108 - Verber, der ikke kan kombinere med HTR
 SET SchwaDerivativ = GE | TARE | QE ;
 SET PERSON = 1Sg | 2Sg | 3Sg | 4Sg | 1Pl | 2Pl | 3Pl | 4Pl ;
@@ -1787,6 +1788,9 @@ REMOVE:0003A ("uv") + Interj IF (0 ("uffa") + Interj) ;
 REMOVE:0003B (/\("naveer"\)\ Gram/TV\ HTR/l) IF (0 (/\("naveer"\)\ Gram/IV\ TIP/l))
 (NEGATE *-1 Ins BARRIER (*) - V) #ikke hvis MIK-OBJ
 ;
+
+#ukuvoq overgenererer
+REMOVE:0003C ("uku") + Int + 3Sg IF (0 ("una") + Pl)(NEGATE *-1 Abs + Sg BARRIER V OR KOMMA);
 
 #############################################
 # Et særligt afsnit til "unnerpoq/ unnerpaa #
@@ -4253,7 +4257,10 @@ MAP:M0301 @SUBJ> TARGET Abs + Sg - PRENUM - Gram/Dem - ("kinguneq") - LIK IF (*1
 #MAP:M0302 @<SUBJ TARGET Abs IF (-1 (Prefix/AA) + (/__Gram\/Dem\ Pron__/l)) ; #En tvivlsom analyse! Og i hvert fald ukorrekt når target del af nexus efter @FOC. Følgende mindre forkert, men hele mappingen skal måske genovervejes
 MAP:M0302 @<SUBJ TARGET Abs IF (*-1 (Prefix/AA) + (/__Gram\/Dem\ Pron__/l) BARRIER (*) - N - Conj)(NEGATE *1 Par CBARRIER V - Cont) ;
 MAP:M0302B @<SUBJ TARGET Abs IF (*-1 FOKUSPART + @FOC BARRIER (*) - N - Prop - CONJ-C)(NEGATE *1 Par CBARRIER V - CONT) ;
-
+#VS i stedet for SV normal efter passiv
+MAP:M0302C @<SUBJ TARGET Abs + Sg IF (*-1 PASSIV_ALTERNATIV + 3Sg BARRIER VFIN OR KOMMA LINK *-1 BOS OR KOMMA BARRIER (*)) #.., naatsorsuutigineqarporlu unnugu arfineq pingasut missaanni Nuummut TIKINNISSAAT, .. NB: SKAL OMSKRIVES TIL UNIFICATION
+(NEGATE *1 Par + 3Sg BARRIER ORATIOOBLVERB) #Ikke hitte @SUBJ> ved oo: Oqaatigineqarpoq IGINNEQ qajuusaasanngorlugu panertitaq iffiassanut akussiarineqarsimasoq
+;
 # Nominer - De sikre MAP regler
 # =============================
 #specialitet ved NIQ+Abl på transverb - SLETTES. håndteres af M0018
@@ -6249,8 +6256,13 @@ SELECT:1700A Rel + Pl IF (*1 Abs + Sg BARRIER V LINK *1 3SgO )(NEGATE *1 CONJ-C 
 (NEGATE 0 Rel + Sg LINK *1 3SgPoss) #1700B må ikke selecte subjekt for transitivt verbum
 (NEGATE 0 Ins LINK *1 LIK_QAR OR HTR BARRIER V OR 3PlPoss) # ' ..namminiilivinnissamut ISUMMERNISSAMIK Siumukkormiut siunniussaqarnerat Atassutikkormiut iluarisimaarpaat.' men der tages højde for mulig possessum mellem Rel+Pl og LIK_QAR
 ; 
-SELECT:1700B Abs + Pl IF (-*1C INTRANSVERB + 3Pl OR 4Pl)(NEGATE *1 INTRANSVERB + 3Pl OR 4Pl)(NEGATE *1 TRANSVERB + 3PlO)(NEGATE *1 3PlPoss BARRIER KOMMA)(NEGATE 0 Der/vn LINK *-1 Rel + Pl)(NEGATE 0 Rel + Pl LINK *1 TRANSVERB + 3Pl BARRIER INTRANSVERB)  #må ikke hitte på adled til Rel+Pl
+SELECT:1700B Abs + Pl IF (-*1C INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl)
+(NEGATE *1 INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl)
+(NEGATE *1 TRANSVERB + 3PlO)
+(NEGATE *1 3PlPoss BARRIER KOMMA)(NEGATE 0 Der/vn LINK *-1 Rel + Pl)
+(NEGATE *-1 Rel + Pl LINK *1 _TARGET_ LINK *1 TRANSVERB + 3Pl BARRIER INTRANSVERB + 3Pl)  #må ikke hitte på adled til Rel+Pl
 (NEGATE 0 Par + &&IV_SUBJ& LINK *-1 N + &&IV_SUBJ& LINK *-1 ORATIOOBLVERB) #Ikke slette Par i Nalujunnaareersimavaami inuit tamarmik TOQUSARTUT
+(NEGATE 0 Rel + Pl LINK *1 TRANSVERB + 3Pl BARRIER (*) - Abs - Trm)#Ikke fjerne subjekter: Qorsussuup matuneqannginnissaa ANGAJOQQAAT politikerinut eqqarsaatigeqquaat.
 ;
 
 SELECT:1701 Abl + CONJ-LU IF (-1 Abl);
@@ -6497,8 +6509,15 @@ SELECT:7486 Refl_Reci IF (*-1 ("immi") BARRIER V OR KOMMA OR NIQ)
 SELECT Rel + Pl IF (1 Der/vn + Rel + Pl - CONJ-LU)(2 3PlPoss)(NEGATE 0 Adv); # 'ADVL SUBJ> NAASORPASSUIT qalipaatigissaartut akornanni pinnguarput ...' Antager, at Der/vn normalt er et adled. Ny regel 30.3.
 
 #SELECT:7490 Abs + Pl IF (*1C INTRANSVERB + VFIN + 3Pl BARRIER 3PlPoss)(NEGATE 0 Lok + Pl)(NEGATE 0 Via + Sg)(NEGATE 0 Part); #20170416 forstår ikke VFIN så prøver i stedet med følgende
-SELECT:7490 Abs + Pl IF (*1C INTRANSVERB + 3Pl OR 4Pl BARRIER 3PlPoss OR KOMMA)(NEGATE 0 Lok + Pl)(NEGATE 0 Via + Sg)(NEGATE 0 Part)(NEGATE 0 Aeq)(NEGATE 0 Rel + Pl LINK -1 Rel + Pl)(NEGATE *1C INTRANSVERB + 3Pl OR 4Pl LINK *1 TRANSVERB + 3Pl OR 4Pl BARRIER V)(NEGATE -1 Rel + CONJ-LU LINK -1 Abs); 
-#må ikke hitte på Lok i 'subjekt lokalis-plur Vb'eller slette Via eller slette partikler. Må heller ikke hitte på adled til N + Rel til venstre. Må ikke hitte på Rel + Pl fulgt JRaf ledsagemåde til TRANSVERB + 3Pl til højre. 20170425 sidste NEGATE fordi ikke sikkert at parataktisk possessum er Pl fordi verbet er det
+SELECT:7490 Abs + Pl IF (*1C INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl BARRIER 3PlPoss OR KOMMA)
+(NEGATE 0 Lok + Pl) #må ikke hitte på Lok i 'subjekt lokalis-plur Vb'
+(NEGATE 0 Via + Sg)(NEGATE 0 Part) #eller slette Via eller slette partikler
+(NEGATE 0 Aeq)
+(NEGATE 0 Rel + Pl LINK -1 Rel + Pl) #Må heller ikke hitte på adled til N + Rel til venstre. 
+(NEGATE *1C INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl LINK *1 TRANSVERB + 3Pl OR TRANSVERB + 4Pl BARRIER V)(NEGATE -1 Rel + CONJ-LU LINK -1 Abs)
+(NEGATE *1 TRANSVERB + 3Pl);# BARRIER VFIN + INTRANSVERB + 3Pl)#Ikke subjekt for transverb langt til højre POLITIIT inuinnarnik ikiorteqarlutik ujarlersut .. (OBJ) .. naammattoorpaat
+#; 
+#Må ikke hitte på Rel + Pl fulgt JRaf ledsagemåde til TRANSVERB + 3Pl til højre. 20170425 sidste NEGATE fordi ikke sikkert at parataktisk possessum er Pl fordi verbet er det
 
 REMOVE HTR IF (0 Der/vn + QAR); #en skummel regel, der skal lukke op for @i->N og blokere @MIK-OBJ
 SELECT @i-MIK-OBJ> IF (1 HTR + Der/vn - V) ; #20091106
@@ -6543,7 +6562,7 @@ SELECT:2548 Rel + Pl - CONJ-C IF (*1 TRANSVERB + 3Pl + 3SgO BARRIER CONT + 3PlO)
 #SELECT:2549 Rel + Pl IF (*1 TRANSVERB + GE + 3Pl + 3PlO)(*-1 Abs + Pl BARRIER TRANSVERB)(NEGATE *1 Abs + Pl BARRIER TRANSVERB); 
 #OSV som specialtilfælde. Forudsætter vist GE??
 
-SELECT:2550 Rel + Pl IF (*1 TRANSVERB + 3Pl + 3SgO)(*1 Abs + Sg BARRIER TRANSVERB ) #Den normale SOV
+SELECT:2550 Rel + Pl IF (*1 TRANSVERB + 3Pl + 3SgO BARRIER KOMMA)(*1 Abs + Sg BARRIER TRANSVERB ) #Den normale SOV
 (NEGATE 0 (/\ TAQ\ Der\/vn\ N/l)) #pinngitsaalisamik
 (NEGATE 0 Ins LINK *1 LIK_QAR BARRIER V OR 3PlPoss)
 (NEGATE 0 Rel + Sg LINK 1 3SgPoss) # ' ..namminiilivinnissamut ISUMMERNISSAMIK Siumukkormiut siunniussaqarnerat Atassutikkormiut iluarisimaarpaat.' men der tages højde for mulig possessum mellem Rel+Pl og LIK_QAR
@@ -6894,8 +6913,8 @@ REMOVE:8554 Par + 3Pl IF (*1 3PlO)(NEGATE *-1 ORATIOOBLVERB BARRIER KOMMA) ;
 #Sene disambigueringer af resterende Abs + Pl fra Rel + Pl
 #Objekt med kongruensadled med possessor
 #REMOVE:8555 N + Rel + Pl - (/TUQ\Der\/vn\ N\ /l) IF (*-1 Rel + Pl OR POSSESSUM BARRIER CONJ-C OR V)(*1 TRANSVERB + 3Pl OR TRANSVERB + CONT)(NEGATE 0 CONJ-C)(NEGATE *-1 V)(NEGATE 1 Rel + Pl) ; #Slet Rel hvis der i forvejen er et subjekt
-REMOVE:8555 Abs + Pl IF (*1C TRANSVERB + 3Pl - 3PlO BARRIER 3PlPoss)(NEGATE 0 Abs LINK *-2 Rel BARRIER V OR POSSESSUM)(NEGATE 0 HUM LINK NOT *1 iOBLIQUE + Abs) ;
-REMOVE:8555 Rel + Pl IF (0 Abs + Pl)(1 Rel)(2 Abs + Pl + POSSESSUM) ;
+REMOVE:8555A Abs + Pl IF (*1C TRANSVERB + 3Pl - 3PlO BARRIER 3PlPoss OR KOMMA)(NEGATE 0 Abs LINK *-2 Rel BARRIER V OR POSSESSUM)(NEGATE 0 HUM LINK NOT *1 iOBLIQUE + Abs) ;
+REMOVE:8555B Rel + Pl IF (0 Abs + Pl)(1 Rel)(2 Abs + Pl + POSSESSUM) ;
 
 #Aequalis med possessor uden foranstående pronomen
 SELECT:8556 2SgPoss + Aeq IF (*1 V + 2Sg OR V + 2SgO) ;
@@ -6998,6 +7017,7 @@ REMOVE:8529 ("illoq") IF (0 ("illu")) ;
 REMOVE:8530 ("ateq") IF (0 ("ate") + IP LINK 1 PLACE) ; #ATINNIITTOQ itersaliarsuaq ikke "ateq"
 SELECT:8531 ("inuiaassuseq") IF (0 ("inuk") + IAR + HTR + SSUSIQ) ;
 SELECT:8532A UGEDAGE IF (0 NIRMIT) ; #marlunngornermut er ikke NIRMIT
+REMOVE:8532B ("tasersuk") IF (0 ("taseq") + SUAQ) ; #tasersuk findes ikke i corpus. Er måske archaisk
 
 #De særlige former af TUQ + Aeq på transitiver fulgt af "ippaa" slettes hvis ikke fulgt af "ippaa"
 REMOVE:8599 TUQ + Aeq - Der/vn IF (0 TUQ + Aeq + Der/vn)(NEGATE 1 ("ip")); 
