@@ -3934,7 +3934,9 @@ MAP:M0031G @PROP> TARGET Sem/Mask + Abs IF (1 Sem/Mask - CONJ-C)(NEGATE 1 Abl LI
 MAP:M0031H @PROP> TARGET Sem/Fem + Abs IF (1 Sem/Fem + Abs - CONJ-C) ;
 
 MAP:M0031I @PROP> TARGET Sem/Hum + Abs - ORGANISATION IF (1 Sem/Hum - Sem/Mask - Sem/Fem - Abl - CONJ-C - SEMIOTIC OR Orth/Append + Prop) (NEGATE 1 Sem/Geo) ; #Beregnet til fornavn-efternavn, men usikker pga manglende kønstagging af fornavnet.
-
+MAP:M0031J @PROP> TARGET PROP + Abs - CONJ-C IF (1 PROP - CONJ-C - PLACE)(-1 PROP) 
+(NEGATE *1 Prop + CONJ-LU BARRIER (*) - Prop) #Andreas Wille Mathias Witoftilu ilanngutassiortuupput.
+; #Kalaallit *Røde Korsiannit katersukkat tamarmik Dansk Røde Korsimut tunniunneqassapput.
 MAP:M0031M @i-PROP> TARGET Prop + Sem/Geo + Abs IF (1 (MIU)); #Amerika Kujallermiu
 MAP:M0031N @i-PROP> TARGET Prop + Sem/Geo + Abs IF (1 PLACE + iProp + iOBLIQUE) ;
 MAP:M0031N @i-PROP> TARGET Prop + Sem/Geo + Abs IF (1 PLACE + iN + iOBLIQUE) ;
@@ -3943,12 +3945,13 @@ MAP:M0031O @PROP> TARGET Prop + Sem/Geo + Abs IF (1 PLACE - Prop - CONJ-C)(NEGAT
 MAP:M0031P @PROP> TARGET ORGANISATION IF (1 Prop) (NEGATE 1 ORGANISATION + CONJ-C OR INSTITUTION) ;
 MAP:M0031Q @PROP> TARGET Gram/ACR + Abs IF (1 Prop) ;
 
-MAP:M0031 (@PROP>) TARGET Prop + Abs OR FIRSTNAME + Abs #OR TITEL + Abs 
+MAP:M0031R (@PROP>) TARGET Prop + Abs OR FIRSTNAME + Abs #OR TITEL + Abs 
 IF (0 $$NUMERUS)(1 Prop + $$NUMERUS - CONJ-C)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + CONJ-LU LINK *1 V + 3Pl )(NEGATE 1 Prop + CONJ-LU LINK *1 V + 3PlO)(NEGATE 0 FIRSTNAME LINK 1 FIRSTNAME)(NEGATE 0 FIRSTNAME LINK 1 ("Kalaallit"))(NEGATE 1 FIRSTNAME + CONJ-LU)(NEGATE 0 Abs + Sg LINK *1 TRANSVERB + 3SgO BARRIER V)(NEGATE 1 Prop LINK 1 Prop - Abs)(NEGATE 1 Prop LINK -2 OBLIQUE)(NEGATE 1 SEMIOTIC)(NEGATE 1 POSSESSUM)
 (NEGATE 1 Sem/Geo LINK NOT 1 Prop) #Geografiske navne bruges også som efternavne, men negate er bedre end ingenting...
 (NEGATE 1 INSTITUTION)
 (NEGATE *1 Prop + CONJ-LU BARRIER (*) - Prop) #Andreas Wille Mathias Witoftilu ilanngutassiortuupput.
 ;
+
 MAP:M0031S @i-PROP> TARGET Prop + Abs - Sem/Hum (1 iProp - CONJ-C LINK NEGATE *1 PROP + CONJ-C) ;
 MAP:M0031Z @>N TARGET N + TITEL + Abs (1 Prop - CONJ-C) ;
 #MAP:M0031 (@PROP>) TARGET Prop OR FIRSTNAME OR TITEL IF (1 Prop)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop #+ CONJ-LU LINK *1 V + 3Pl BARRIER N + Pl )(NEGATE 1 Prop LINK 1 Prop); #fra 1350 for at udelukke overtallig SUBJ-tagging. ##NEGATE for at forebygge typen 'Per NN-ikkut isermata Vb'. Andet NEGATE for parataktiske Karen Perilu anipput. Tredie #NEGATE for at parataktiske Karen Perilu ilagalugit. Fjerde #NEGATE for at forebygge @PROP på subjektet i (SUBJ)(PROP> propriuskærne)
@@ -6708,6 +6711,8 @@ SELECT:0821 Sg + Abs + 4SgPoss IF (*-1 Sg + Rel + @SUBJ>)(*1 3SgO); #fjerner Lok
 
 SELECT:0822 $$KASUS + $$NUMERUS IF (1 Gram/Cong + @N< + $$KASUS + $$NUMERUS) ; #soorlu ullorissani tamini taamaattoq
 
+SELECT:0823 PROP + @POSS> IF (0 N + @POSS>) (*1 PROP + POSSESSUM) ; #*Kalaallit Røde Korsiannit katersukkat tamarmik Dansk Røde Korsimut tunniunneqassapput.
+
 
 # Verbal disambiguering
 # =====================
@@ -7616,6 +7621,7 @@ REMOVE:5862 ("umiarsuaartoq") + LIR IF (0 ("umiarsuaartor"));
 REMOVE:5863 ("oqaluttuaq") + LIR IF (0 ("oqaluttuar") + LIR) ;
 REMOVE:5864 ("ni") IF (0 ("ni") + U + LIR) ; #Niunialeraluarinnilu
 REMOVE:5865 ("assigaq") IF (0 ("assi" GE)) (*1 Par BARRIER V OR Trm) ; #assigaa illit toqukkit! Assigaa kaffi tiitorfimmut .
+REMOVE:5866 ("Danmark") + Sem/Hum IF (0 Sem/Geo) ;
 
 # Ugedagene #Håndteres ovenfor i forbindelse med skelnen mellem NIRU og NIQ + U.
 #REMOVE ("marluk") + NNGUR + NIRU IF (0 ("marluk") + NNGUR + NIQ + U) ;
@@ -8082,24 +8088,28 @@ SUBSTITUTE DIRTALESTART (*) TARGET (*) ;
 SUBSTITUTE DIRTALEMIDDLE (*) TARGET (*) ;
 SUBSTITUTE DIRTALESLUT (*) TARGET (*) ;
 SUBSTITUTE (CONJ-LUUNNIIT Gram/Unsafe-encl)(LUUNNIIT) TARGET CONJ-LUUNNIIT + (Gram/Unsafe-encl) ;
-SUBSTITUTE (V) (Gram/Adv-encl V) TARGET WORD + ADV-LUUNNIIT ;
-SUBSTITUTE (N) (Gram/Adv-encl N) TARGET WORD + ADV-LUUNNIIT ;
-SUBSTITUTE (Pali) (Gram/Adv-encl Pali) TARGET WORD + ADV-LUUNNIIT ;
-SUBSTITUTE (Conj) (Gram/Adv-encl Conj) TARGET WORD + ADV-LUUNNIIT ;
-SUBSTITUTE (Adv) (Gram/Adv-encl Adv) TARGET WORD + ADV-LUUNNIIT ;
-SUBSTITUTE (Interj) (Gram/Adv-encl Interj) TARGET WORD + ADV-LUUNNIIT ;
-SUBSTITUTE (Pron) (Gram/Adv-encl Pron) TARGET WORD + ADV-LUUNNIIT ;
-SUBSTITUTE (Prop) (Gram/Adv-encl Prop) TARGET WORD + ADV-LUUNNIIT ;
-SUBSTITUTE (Num) (Gram/Adv-encl Num) TARGET WORD + ADV-LUUNNIIT ;
-SUBSTITUTE (V) (Gram/Conj-encl V) TARGET WORD + CONJ-LUUNNIIT ;
-SUBSTITUTE (N) (Gram/Conj-encl N) TARGET WORD + CONJ-LUUNNIIT ;
-SUBSTITUTE (Pali) (Gram/Conj-encl Pali) TARGET WORD + CONJ-LUUNNIIT ;
-SUBSTITUTE (Conj) (Gram/Conj-encl Conj) TARGET WORD + CONJ-LUUNNIIT ;
-SUBSTITUTE (Adv) (Gram/Conj-encl Adv) TARGET WORD + CONJ-LUUNNIIT ;
-SUBSTITUTE (Interj) (Gram/Conj-encl Interj) TARGET WORD + CONJ-LUUNNIIT ;
-SUBSTITUTE (Pron) (Gram/Conj-encl Pron) TARGET WORD + CONJ-LUUNNIIT ;
-SUBSTITUTE (Prop) (Gram/Conj-encl Prop) TARGET WORD + CONJ-LUUNNIIT ;
-SUBSTITUTE (Num) (Gram/Conj-encl Num) TARGET WORD + CONJ-LUUNNIIT ;
+SUBSTITUTE (/^\(V|N|Pali|Conj|Adv|Inter|Conj|Pron|Prop|Num\)$/r)
+(Gram/Adv-encl VSTR:$1) TARGET ADV-LUUNNIIT ;
+SUBSTITUTE (/^\(V|N|Pali|Conj|Adv|Inter|Conj|Pron|Prop|Num\)$/r)
+(Gram/Conj-encl VSTR:$1) TARGET CONJ-LUUNNIIT ;
+#SUBSTITUTE (V) (Gram/Adv-encl V) TARGET WORD + ADV-LUUNNIIT ;
+#SUBSTITUTE (N) (Gram/Adv-encl N) TARGET WORD + ADV-LUUNNIIT ;
+#SUBSTITUTE (Pali) (Gram/Adv-encl Pali) TARGET WORD + ADV-LUUNNIIT ;
+#SUBSTITUTE (Conj) (Gram/Adv-encl Conj) TARGET WORD + ADV-LUUNNIIT ;
+#SUBSTITUTE (Adv) (Gram/Adv-encl Adv) TARGET WORD + ADV-LUUNNIIT ;
+#SUBSTITUTE (Interj) (Gram/Adv-encl Interj) TARGET WORD + ADV-LUUNNIIT ;
+#SUBSTITUTE (Pron) (Gram/Adv-encl Pron) TARGET WORD + ADV-LUUNNIIT ;
+#SUBSTITUTE (Prop) (Gram/Adv-encl Prop) TARGET WORD + ADV-LUUNNIIT ;
+#SUBSTITUTE (Num) (Gram/Adv-encl Num) TARGET WORD + ADV-LUUNNIIT ;
+#SUBSTITUTE (V) (Gram/Conj-encl V) TARGET WORD + CONJ-LUUNNIIT ;
+#SUBSTITUTE (N) (Gram/Conj-encl N) TARGET WORD + CONJ-LUUNNIIT ;
+#SUBSTITUTE (Pali) (Gram/Conj-encl Pali) TARGET WORD + CONJ-LUUNNIIT ;
+#SUBSTITUTE (Conj) (Gram/Conj-encl Conj) TARGET WORD + CONJ-LUUNNIIT ;
+#SUBSTITUTE (Adv) (Gram/Conj-encl Adv) TARGET WORD + CONJ-LUUNNIIT ;
+#SUBSTITUTE (Interj) (Gram/Conj-encl Interj) TARGET WORD + CONJ-LUUNNIIT ;
+#SUBSTITUTE (Pron) (Gram/Conj-encl Pron) TARGET WORD + CONJ-LUUNNIIT ;
+#SUBSTITUTE (Prop) (Gram/Conj-encl Prop) TARGET WORD + CONJ-LUUNNIIT ;
+#SUBSTITUTE (Num) (Gram/Conj-encl Num) TARGET WORD + CONJ-LUUNNIIT ;
 SUBSTITUTE (ADV-LUUNNIIT)(LUUNNIIT) TARGET (Gram/Adv-encl) ;
 SUBSTITUTE (CONJ-LUUNNIIT)(LUUNNIIT) TARGET (Gram/Conj-encl) ;
 SUBSTITUTE (/....?-LUUNNIIT/r) (LUUNNIIT) TARGET (*);
