@@ -1,0 +1,17 @@
+#cg-pre-pipe: ~/langtech/kal/tools/shellscripts/kal-tokenise ~/langtech/kal/tools/tokenisers/tokeniser-disamb-gt-desc.pmhfst #
+
+INCLUDE STATIC disambiguator.cg3 ;
+
+
+# ============ #
+# Regelsektion #
+# ============ #
+
+BEFORE-SECTIONS
+
+
+
+#ADD misser i første omgang fordi der står en CLB mellem : og - Den fjernes før ADD
+REMCOHORT:paragraftegn ("¶") + CLB IF (-*1W (":") + EOS OR (".") + EOS BARRIER EOS);
+#BARRIER EOS for at sikre at det kun er den foregående sætning og ikke noget langt til venstre
+#ADD:DIRSTART01 DIRTALESTART TARGET ("-") + PUNCT OR (""") + PUNCT IF (-*1W (":") + EOS BARRIER EOS);
