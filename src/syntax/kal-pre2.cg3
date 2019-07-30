@@ -1,10 +1,16 @@
 #cg-pre-pipe: ~/langtech/kal/tools/shellscripts/kal-tokenise ~/langtech/kal/tools/tokenisers/tokeniser-disamb-gt-desc.pmhfst | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/syntax/kal-pre1.cg3 #
 
+#ADD-reglerne bedst placeret i selvstændig CG, fordi DIRTALE.*-tags ikke er synlige i første no-mappings kørsel (i modsætning til SUBSTITUTE, der kan ses straks, men til gengæld gentages et uskønt antal gange) samt fordi de nye tags ikke kan anvendes i constraints, der peger mod højre. Sidste forbehold gælder også for SUBSTITUTE. 
+
 INCLUDE STATIC disambiguator.cg3 ;
 
 #ADD misser i første omgang fordi der står en CLB mellem : og - Den fjernes før ADD
 #REMCOHORT:TEST ("¶") + CLB IF (-*1W (":") + EOS OR (".") + EOS BARRIER EOS);
 #BARRIER EOS for at sikre at det kun er den foregående sætning og ikke noget langt til venstre
+#Farlige interimregler mens vi venter på at regressionen gøres kontekstsensitiv
+ADD:DIRSTART_Int1 DIRTALESTART TARGET ("-") + PUNCT OR (""") + PUNCT OR ("„") + (PUNCT LEFT) IF (-1 BOS) ;
+
+
 ADD:DIRSTART01 DIRTALESTART TARGET ("-") + PUNCT OR (""") + PUNCT IF (-*1W (":") + EOS BARRIER EOS);
 ADD:DIRSTART02 DIRTALESTART TARGET ("-") + PUNCT IF (-*1W (".") + EOS );#BARRIER EOS);
 
@@ -16,7 +22,7 @@ ADD:DIRSLUT01 DIRTALESLUT TARGET ("?") + CLB OR ("!") + CLB OR (".") + CLB IF (*
 (NEGATE *-1 KOMMA LINK 1 Prop LINK *1 ("oqar") + Ind BARRIER VERB-NOTCONT)#men ikke kommaseparerede inquit jf. DIRSLUT02
  ;
 ADD:DIRSLUT02 DIRTALESLUT TARGET KOMMA + CLB IF (1 Prop + Abs LINK *1 ("oqar") + Ind BARRIER VERB-NOTCONT) ;#til inquit uden citationstegn slut og uden !, ? eller .
-SUBSTITUTE DIRTALESLUT DIRTALESTART TARGET DIRTALESLUT IF (NEGATE *1W ("¶") + CLB BARRIER CLB)(NEGATE *1 ("oqar"));# BARRIER CLB - KOMMA OR DIRTALESLUT); #Ved interpunktion inde i DIRTALE: Trin 1: Gør den mediale DIRTALESLUT til en DIRTALESTART. Trin 2: Fjern de overflødige DIRTALESTART
+SUBSTITUTE DIRTALESLUT DIRTALEMIDDLE TARGET DIRTALESLUT IF (NEGATE *1W ("¶") + CLB BARRIER CLB)(NEGATE *1 ("oqar"));# BARRIER CLB - KOMMA OR DIRTALESLUT); #Ved interpunktion inde i DIRTALE: Trin 1: Gør den mediale DIRTALESLUT til en DIRTALESTART. Trin 2: Fjern de overflødige DIRTALESTART
 #SUBSTITUTE DIRTALESTART (*) TARGET DIRTALESTART IF (*-1 DIRTALESTART)(NEGATE 0 DIRTALESTART LINK -*1 DIRTALESLUT) ;
 
 #dummy-regel for at teste DIRTALE-grænser
