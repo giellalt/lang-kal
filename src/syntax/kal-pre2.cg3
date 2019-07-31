@@ -4,25 +4,30 @@
 
 INCLUDE STATIC disambiguator.cg3 ;
 
-#ADD misser i første omgang fordi der står en CLB mellem : og - Den fjernes før ADD
-#REMCOHORT:TEST ("¶") + CLB IF (-*1W (":") + EOS OR (".") + EOS BARRIER EOS);
-#BARRIER EOS for at sikre at det kun er den foregående sætning og ikke noget langt til venstre
-#Farlige interimregler mens vi venter på at regressionen gøres kontekstsensitiv
-ADD:DIRSTART_Int1 DIRTALESTART TARGET ("-") + PUNCT OR (""") + PUNCT OR ("„") + (PUNCT LEFT) IF (-1 BOS) ;
+#Farlige interimregler importeret fra "Livs GCG" mens vi venter på at regressionen gøres kontekstsensitiv
+ADD:DIRSTART_Int1 DIRTALESTART TARGET ("-") + PUNCT OR (""") + PUNCT OR ("”") + (PUNCT RIGHT) OR ("„") + (PUNCT LEFT) IF (-1 BOS) ;
+ADD:DIRSTART_Int2 DIRTALESTART TARGET (":") IF (NEGATE 0 DIRTALESTART OR DIRTALESLUT) ; #not safe marking
+
+ADD:DIRSLUT_Int01 DIRTALESLUT TARGET CLB IF (0 ("?") OR ("!")) (*-1< DIRTALESTART OR DIRTALEMIDDLE BARRIER DIRTALESLUT)(NEGATE 0 DIRTALESLUT) (NEGATE 0 DIRTALESTART)(NEGATE *1> DIRTALESLUT OR PUNCT BARRIER DIRTALESTART OR DIRTALEMIDDLE) ; #not safe marking
 
 
 ADD:DIRSTART01 DIRTALESTART TARGET ("-") + PUNCT OR (""") + PUNCT IF (-*1W (":") + EOS BARRIER EOS);
 ADD:DIRSTART02 DIRTALESTART TARGET ("-") + PUNCT IF (-*1W (".") + EOS );#BARRIER EOS);
 
-
-
 ADD:DIRTALESLUT1 DIRTALESLUT TARGET (""") + PUNCT IF (-*1W (".") + EOS OR ("!") + EOS OR ("?") + EOS BARRIER EOS);
+
 ADD:DIRSLUT01 DIRTALESLUT TARGET ("?") + CLB OR ("!") + CLB OR (".") + CLB IF (*-1W DIRTALESTART BARRIER CLB - KOMMA)
 (NEGATE *1W (""") + PUNCT BARRIER EOS)#Ikke slut hvis anført tale i citationstegn
-(NEGATE *-1 KOMMA LINK 1 Prop LINK *1 ("oqar") + Ind BARRIER VERB-NOTCONT)#men ikke kommaseparerede inquit jf. DIRSLUT02
+(NEGATE *-1 KOMMA LINK 1 Prop OR N LINK *1 <fn:Talk> + Ind + 3Sg BARRIER VERB-NOTCONT)#men ikke kommaseparerede inquit jf. DIRSLUT02
+(NEGATE *-1 ("?") LINK 1 Prop OR N LINK *1 <fn:Talk> + Ind + 3Sg BARRIER VERB-NOTCONT)#men ikke kommaseparerede inquit jf. DIRSLUT02
  ;
 ADD:DIRSLUT02 DIRTALESLUT TARGET KOMMA + CLB IF (1 Prop + Abs LINK *1 ("oqar") + Ind BARRIER VERB-NOTCONT) ;#til inquit uden citationstegn slut og uden !, ? eller .
-SUBSTITUTE DIRTALESLUT DIRTALEMIDDLE TARGET DIRTALESLUT IF (NEGATE *1W ("¶") + CLB BARRIER CLB)(NEGATE *1 ("oqar"));# BARRIER CLB - KOMMA OR DIRTALESLUT); #Ved interpunktion inde i DIRTALE: Trin 1: Gør den mediale DIRTALESLUT til en DIRTALESTART. Trin 2: Fjern de overflødige DIRTALESTART
+ADD:DIRSLUT03 DIRTALESLUT TARGET KOMMA + CLB IF (*-1 DIRTALESTART)(*1 Abs + Sg LINK *1 <fn:Talk> + 3Sg);
+
+ADD:DIRSLUT00 DIRTALESLUT TARGET ("?") + CLB OR ("!") + CLB OR (".") + CLB IF (*-1 DIRTALESTART OR DIRTALEMIDDLE BARRIER DIRTALESLUT);
+
+
+SUBSTITUTE DIRTALESLUT DIRTALEMIDDLE TARGET DIRTALESLUT IF (NEGATE *1W ("¶") + CLB BARRIER CLB)(NEGATE *1W <fn:Talk> + 3Sg BARRIER CLB - KOMMA OR DIRTALESLUT); #Ved interpunktion inde i DIRTALE: Trin 1: Gør den mediale DIRTALESLUT til en DIRTALESTART. Trin 2: Fjern de overflødige DIRTALESTART
 #SUBSTITUTE DIRTALESTART (*) TARGET DIRTALESTART IF (*-1 DIRTALESTART)(NEGATE 0 DIRTALESTART LINK -*1 DIRTALESLUT) ;
 
 #dummy-regel for at teste DIRTALE-grænser
