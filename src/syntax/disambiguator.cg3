@@ -4591,9 +4591,12 @@ MAP:M0352C @N< TARGET $$KASUS + $$NUMERUS + PASSIV - POSSESSUM - CONJ-C IF (*-1 
 ;
 
 #Semantiske regler
-REMOVE:0352 Rel IF (0 Abs + THING OR Abs + MATERIAL)(*0 thingobjverb);#(NEGATE *1C POSSESSUM) ;
-MAP:M0352 @N< + $$KASUS TARGET MATERIAL IF (-1 THING + $$KASUS) ;
-MAP:M0352 @OBJ> TARGET THING + Abs IF (*1 thingobjverb) ;
+#En tidlig objektsregel. Et pluralis subjekt i position 1 for coref CAU_CON er samtidig subjekt for transitiv VFIN, medens Abs + Pl mellem CON_CAU og TRANSVERB sandsynligvis er OBJ>
+MAP:0352D @OBJ> TARGET Abs + Pl IF (*-1 BOS LINK 1 Rel + Pl LINK 1 CON_CAU + 4Pl LINK 1 _TARGET_ LINK *1 3PlO); #Angutit qiareeramik NUNAQARFIMMIUT paasitippaat ajunaarnerup qanoq pisimaneranik.
+
+REMOVE:0353 Rel IF (0 Abs + THING OR Abs + MATERIAL)(*0 thingobjverb);#(NEGATE *1C POSSESSUM) ;
+MAP:M0353B @N< + $$KASUS TARGET MATERIAL IF (-1 THING + $$KASUS) ;
+MAP:M0353C @OBJ> TARGET THING + Abs IF (*1 thingobjverb) ;
 
 #Subjektskomplementer ved "tassa" med og uden inderiveret OBLIQUE. 396 en specialitet ved komma
 MAP:M0396 @SUBJ_COMP TARGET Abs IF (-1 OBLIQUE + CONJ-LU LINK -1 KOMMA LINK *-1 ("tassa") LINK *-1 Abs BARRIER V); 
@@ -6773,7 +6776,9 @@ SELECT (Abs Sg) IF (0C (@SUBJ>))(*1C 3SGSUBJVERB);
 SELECT:2558 Abs + 4SgPoss IF (*1 INTRANSVERB + 3Sg LINK *1 TRANSVERB + 3Sg + 3SgO) (NEGATE *1 Cont + 3PlO); #panini inequnarmat asavaa, men flertal hvis ledsagemåde imellem
 SELECT:2559 Abs + 4SgPoss - Orth/Arch IF (*1 TRANSVERB + 3Sg + 3SgO BARRIER INTRANSVERB ) ; 
 #en usikker disambiguering af Rel + Pl vs. Abs + Pl efter CAU hvis intet objekt til subjekt eller evt. hvis intet subjekt til objektet. Flyttet op før SELECT objekt med implicit subjekt
-SELECT:2560 Rel + Pl IF (-1 Cau + 4Pl)(NEGATE *1 N + Pl)(*1 TRANSVERB + 3Pl) ;
+SELECT:2560 Rel + Pl IF (-1 Cau + 4Pl)(NEGATE *1 N + Pl)(*1 TRANSVERB + 3Pl)
+(NEGATE *-1 BOS LINK 1 Rel + Pl LINK 1 CON_CAU + 4Pl LINK 1 _TARGET_ LINK *1 3PlO); #Angutit qiareeramik NUNAQARFIMMIUT paasitippaat ajunaarnerup qanoq pisimaneranik.
+ ;
 
 #Disambiguerer pluralisobjekt med implicit subjekt fra pluralissubjekt med implicit objekt. Det er sikkert objekt hvis subjekt i forrige sætning er Pl OG der står et 3PlO til højre OG ??? OG Pl-ordet ikke er possessor, heller ikke for et possessum med inderiveret adverbial OG Pl-ordet ikke er subjekt i oratio oblique. Der tages forbehold for SUB (oftest vai-endelsen) som Pl - PlO i foregående sætning
 SELECT:2561 Abs + Pl - Gram/Dem IF (@0 (*) LINK -*1W V + 3Pl - SUB BARRIER BOS OR V)(*1 TRANSVERB + 3PlO)(NEGATE *0 Abs + Sg)(NEGATE 1 POSSESSUM + 3PlPoss)(NEGATE 1 CONT + 4Pl LINK 1 POSSESSUM + 3PlPoss)(NEGATE *1 Par + 3Pl BARRIER V ) (NEGATE 0 Rel + Sg LINK *1 Par + 3Sg + 3PlO); #LINK *0 ORATIOOBLVERB ); virkede ikke med LINK
