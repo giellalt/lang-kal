@@ -1320,7 +1320,7 @@ SET TIKILLUGUnAFF = ("tikip") - AFFINGERET + CONT ;
 SET SIULLIULLUNI = ("siulleq") + U + CONT ;
 LIST ADVERBIUM = "ima" "qanoq" ; #20091109 tilfoejet 'qanoq', der maaske staar lidt malplaceret her
 LIST NEXUS = "asu" "sunaaffa" "soorlu" "usiuffa" "usiiffa" ; #Når verbum i underordnet modus står i underordnet funktion sammen med partikler der kan være neksusdannende, mappes verbet @PRED. OBS: kan også være koncessive
-SET ADVERBIEL = Adv | Pali | ("ataaseer") + CONT | ("ataaseq") + Ins - Num - AFFINGERET | ASSERSUUTIGALUGU | NUMERAL + RIAR + Cont + INTRANSVERB | ILANNGUPnAFF | ("immikkoor") | ("isertor") + TUQ + Ins | NUSUPnAFF | TAMAKKERnAFF | ("piffik") + SSAQ + TIP + CONT | PILLUGU | ("pinngitsaali") + HTR + UTE | QULAREnAFF | TIKILLUGU | ADVERBIAL_DERIVATIVES | ("sapinngisaq" Ins) | ("unner") | ("siulleq") + U + CONT ;
+SET ADVERBIEL = Adv | Pali | ("ataaseer") + CONT | ("ataaseq") + Ins - Num - AFFINGERET | ASSERSUUTIGALUGU | ("ersarip") | NUMERAL + RIAR + Cont + INTRANSVERB | ILANNGUPnAFF | ("immikkoor") | ("isertor") + TUQ + Ins | NUSUPnAFF | TAMAKKERnAFF | ("piffik") + SSAQ + TIP + CONT | PILLUGU | ("pinngitsaali") + HTR + UTE | QULAREnAFF | TIKILLUGU | ADVERBIAL_DERIVATIVES | ("sapinngisaq" Ins) | ("unner") | ("siulleq") + U + CONT ;
 LIST FOKUSPART = ("uv" Prefix/AA) ("una" Prefix/AA) "tassa" "aali" "sunaaffa" "aajuku" "aajuna" "aaku" "aana" "naak" ; #oqaqqarniutit imal. oqaaseqatigiinni oqaluutitaqanngitsut 
 LIST KONCESSIV = "aali" "massa" "naanaak" "naak" "nanaak" "uffa" "ugga" "unni" "unniit" "unnit" ;#"sunaaffa" ; #oqaaseqatigiinni minnerni oqaluummik pisariaqartitsisut
 LIST SPØRGEPARTIKEL = "naak" "sumi" "suna" "qanoq" ; #
@@ -1841,6 +1841,7 @@ REMOVE:0001AM (/__LIR\ Der\/nv\ \(Gram\/..\ \)*V\ Ind\ Gram\/Exclm__\/l) ; #Oqaa
 REMOVE:0001AN LUP + Imp IF (0 Cont) ; #sinnilaarlugit
 REMOVE:0001AO UTE + SI IF (0 HTR - SI) ;
 
+REMOVE:0001BA (/SIMA\ Der/vv\ TIP\ Der/vv\ Gram/Db/l) ;
 
 #REMOVE:0001XX UGEDAGE + Gram/TV IF (0 UGEDAGE + Gram/IV) ; #NNGUR + Gram/TV utænkelig ved ugedages navne #udkommenteret og gjort listen entydig i stedet.
 
@@ -2153,7 +2154,7 @@ REMOVE:0018 ("assoq") + 2SgPoss IF (0 (/__\"assut\"\ Adv__/l) OR (/__\"assut\"\ 
 REMOVE:0021 ("usi") + Abs IF (0 ("usi") + Interj)(-1 BOS OR KOMMA)(1 KOMMA); #'last' som isoleret ord nærmest utænkelig
 REMOVE:0021A (/__\"ingerla\"\ Gram\/TV__/l) IF (0 Gram/IV)(NEGATE *0 Sem/Unit) ; #ingerla er sjældent transitiv, sandsynligvis kun når obj er unit.
 REMOVE:0022 (/__TUQ\ Der\/vn\ LIR\ Der\/nv__/l) IF (0 ("ilungersor") + LIR) ;
-REMOVE:0022A UTE + Der/nn + NOT-POSSESSUM - SSAQ - PALAAQ - SUAQ - TAAR IF ( 0 POSSESSUM)(NEGATE 0 Ins LINK *1 QAR OR LIK)(NEGATE 0 (UTE QAR VIK) OR (SSIP HTR UTE) OR (UTE LIK))(NEGATE 0 GIIP) ; #SSAQ og PALAAQ medtaget som mulige +Der/nn
+REMOVE:0022A UTE + Der/nn + NOT-POSSESSUM - SSAQ - PALAAQ - SUAQ - TAAR IF ( 0 POSSESSUM)(NEGATE 0 Ins LINK *1 QAR OR LIK)(NEGATE 0 (UTE QAR VIK) OR (SSIP HTR UTE) OR (UTE LIK))(NEGATE 0 GIIP)(NEGATE 0 ("aningaasaq" UTE)) ; #SSAQ og PALAAQ medtaget som mulige +Der/nn
 REMOVE:0039A ("sani") + LIK IF ( 0 ("sanileq"));
 REMOVE:0142 ("anaq") + U IF (0 ("anaana") ) ;
 REMOVE:0143 ("Ana") + U IF (0 ("anaana") ) ;
@@ -4593,6 +4594,8 @@ MAP:M0318 (@ADVL>) TARGET Lok + TIME - ("akunneq") IF (*1 V BARRIER NIQ + POSSES
 
 MAP:M0325 @ADVL> TARGET TIME + Via IF (*1 IteCau BARRIER V) ;
 
+MAP:M0326 @ADVL> TARGET ADVERBIEL IF (1 ORATIOOBLVERB + V OR DIRTALE + V) ; #ersarissumik oqarpoq
+
 #En særregel, der blokerer at Lok efter Lok i et helt andet syntagme ikke læses som @N< i forbindelse med atatip etc.
 MAP:M0330X @>N TARGET Lok IF (1 Trm)(2 ("pi") + CONT OR ("ata") + CONT OR ("tunnga") + CONT) ; 
 
@@ -4880,6 +4883,8 @@ MAP:M0511 @OBJ> TARGET Prop - OBLIQUE - Rel OR N - OBLIQUE - Rel IF (1C OBJVERB 
 #MAP:M0520 (@POSS>) TARGET ("kalaaleq") + Rel + Pl IF (1 ("oqaaseq") OR ("nuna") OR ("Nuna")); #20091103 Kalaallit Nunaat
 MAP:M0051A_idiom @i-POSS> TARGET NATIONALITY + Rel IF (1 ("oqaaseq") + AFFINGERET + N OR ("[nN]una"r) + AFFINGERET + N OR ("oqar") + USIQ + Der/nv + N);
 MAP:M0051A_idiom @POSS> TARGET NATIONALITY + Rel IF (1 ("oqaaseq") OR ("nuna") OR ("Nuna") OR ("oqar") + USIQ);
+MAP:M0051B_puisipneqaa @i-POSS> TARGET ANIMAL + Rel IF (1 EDIBLE) (NEGATE *1 POSSESSUM - iPOSSESSUM) ; #puisip neqitorpoq
+MAP:M0051B_puisipneqaa @POSS> TARGET ANIMAL + Rel IF (1 EDIBLE + POSSESSUM) ;
 
 #adled til OBJ kløvet af V som 'OBJ> SUBJ> oqaaseraat isumaqartoq
 MAP:M0521 @<OBJ TARGET LIK + Sg + Abs OR QAR + Sg + Abs IF (*-1 TRANSVERB + 3SgO BARRIER TUQ + N + Sg + Abs LINK *-1 Sg + Abs)(NEGATE *1 3SgO BARRIER V) ;
