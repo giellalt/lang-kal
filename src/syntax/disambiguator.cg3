@@ -87,6 +87,7 @@ LIST Gram/Int = Gram/Int ;
 LIST Gram/Indef = Gram/Indef ;
 LIST DivPron = Gram/Cong DivPron ;
 LIST Gram/Cong = Gram/Cong ;
+LIST Gram/Hyb = Gram/Hyb ;
 LIST Gram/Pers = Gram/Pers ;
 LIST Gram/Coref = Gram/Coref ;
 LIST Gram/Dem = Gram/Dem ;
@@ -1801,7 +1802,7 @@ REMOVE:0001B ("pitsap") + Gram/Exclm ;
 REMOVE:0001C (/__\"ili\"\ Gram\/IV__/l) - SAR IF (NEGATE *-1 ("qanoq"))(NEGATE 0 Orth/Arch) ; #Accepter kun 'qanoq ililluni/ isilluni' etc. Ellers nok ilivaa/iserpoq/isigivaa etc.
 REMOVE:0001D (/__\"isi\"\ Gram\/IV__/l) IF (NEGATE *-1 ("qanoq")) ;
 REMOVE:0001E ("to") + VIK IF (0 ("tui")) ;
-REMOVE:0001F ("ip") IF (NEGATE -1 Aeq OR ("qanoq") OR ("taama") OR ("ima") OR ("immi") + Via )(NEGATE 0 ("ittoq") OR ("ittuk"));
+REMOVE:0001F ("ip") IF (NEGATE -1 Aeq OR ("qanoq") OR ("taama") OR ("ima") OR ("immi") + Via )(NEGATE 0 ("ittoq") OR ("ittuk"))(NEGATE 1 ("soorlu"));
 REMOVE:0001G ("illip") + Gram/Exclm IF (0 ("illit")) ;
 REMOVE:0001H ("ata") + USIQ IF (0 ("ataaseq")) ;
 REMOVE:0001I ("tulleq") + GIIP + JAAR IF (0 ("tulleriiaar")) ;
@@ -5419,7 +5420,8 @@ MAP:M09900E @ADVL> TARGET Num IF (-1 ("nalunaaqutaq"))(*1 V BARRIER (/NIQ\ Der\/
 MAP:M09900F @i-ADVL> TARGET Abl IF (*1 ("tunnga") + N BARRIER (*) - PUNCT - @N< - @<APPOS - @A<) ;
 
 #DivPron-regler. Flyttet før M0780 for ikke at blokere for M0991D
-MAP:M0991A @OBJ> TARGET Gram/Cong + Akk IF (*1 TRANSVERB BARRIER KOMMA) ;
+MAP:M0991A @OBJ> TARGET Gram/Cong + Akk IF (*1 TRANSVERB BARRIER KOMMA) 
+(NEGATE 0 1Sg LINK *1 1Sg BARRIER V);
 MAP:M0991B @<OBJ TARGET Gram/Cong + Akk IF (*-1 TRANSVERB BARRIER KOMMA) ;
 MAP:M0991C @CL-ADVL> TARGET Gram/Cong + Akk + 3Pl;
 MAP:M0991D @CL-ADVL> TARGET Abs + Pl IF (1 Gram/Cong + Akk + 3Pl); #ullut tamaasa typen 
@@ -8035,6 +8037,10 @@ REMOVE ("ilik") + NIAR ; #20091112 - ad hoc regel, der skal erstattes, naar --or
 ####################
 # Generelle regler #
 ####################
+
+##### Konsekvensrettelser efter intro af hybriderne #####
+REMOVE:Hyb01 ("IP") + Gram/Hyb IF (0 ("ip"))(-1 Aeq);
+
 
 #Disambiguering af gamle Par+4. fra Par med objekt i 4.
 REMOVE Par + 1Sg + @CL-<CIT IF (0 Par + 4Pl + @CL-<CIT LINK *-1 ORATIOOBLVERB + 3Sg + @PRED) ;
