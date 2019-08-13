@@ -79,7 +79,7 @@ LIST iN = iN ; #Præprocessorens tagging af N, som skifter ordklasse senere i or
 LIST iProp = iProp ; #Præprocessorens tagging af Prop, som skifter ordklasse senere i ordet.
 LIST iPron = iPron ; #Præprocessorens tagging af Pron, som skifter ordklasse senere i ordet.
 SET iALL = iV | iN | iProp ;
-LIST Part = Part Pali Adv ^"ma" ^"av" ^"pav" ^"qav" ^"kan" ^"qam" ^"sam" ^"pik" ^"iv" ^"ik" ^"kig" ^"uv" "aali" "aamma" "imaluunniit" "kisianni" "naak" "qanorli" "soorli" "tassali" "tassa" "taamaattoq" "unnit";
+LIST Part = Part Pali Adv ^"ma" ^"av" ^"pav" ^"qav" ^"kan" ^"qam" ^"sam" ^"pik" ^"iv" ^"ik" ^"kig" ^"uv" "aali" (Adv "aamma") "imaluunniit" "kisianni" "naak" "qanorli" "soorli" "tassali" "tassa" "taamaattoq" "unnit";
 LIST Pali = Pali ;
 LIST Conj = Conj ;
 LIST Pron = Pron ;
@@ -1456,6 +1456,7 @@ LIST <fn:CognitiveMaking> = "eqqarsar" ;
 SET INQUIT_VERB = <fn:Talk> | <fn:CognitiveMaking> ; 
 
 LIST <Lciv> = "kommune" ;
+LIST <coll> = "gruppe" ;
 
 SET HUMVERB = humverb OR ORATIOOBLVERB OR <fn:Remove> OR <fn:Take/Bring> OR <fn:Put>; # alle verb  der vil ha humane subj
 
@@ -1534,7 +1535,7 @@ LIST f-an_SG = "qaneq" "qingaq" ;
 #Nye semantiske klasser 20190503 til forberedelse af import af prototyper. NB <fn:..>-tags ovenfor før set HUMVERB. 
 LIST <con> = "nappartaq" "pooq" "poorsuaq";
 LIST <cc> = "nioqqutissaq" ;
-LIST <Hprof> = ("eqqiar" HTR TUQ)("eqqartuup" HTR TUQ)("siulittar" HTR TUQ) ;
+LIST <Hprof> = ("eqqiar" HTR TUQ)("eqqartuup" HTR TUQ)("siulittar" HTR TUQ) (/\"suli\"\ Gram/IV\ TUQ/l);
 
 LIST NUMHOVED = "dollar" "dollari" "euro" "franc" "grad" "gram" "hjerter" "kapitali" "kapitel" "kiilu" "kilo" "kilometer" "klasse" "kulooq" "koruuni" "krone" "meter" "milliardi" "milliard" "miliuuni" "million" ("nalunaar" UTE) "niveau" "nr" "oori" "procent" ("qupper" NIQ) "ruder" "side" "sipaaq" ("titar" NIQ) (/".*vej/r) "øre" Sem/Unit ;
 LIST NUMCOMP = "hundrede" "tusind" "million" "milliard" ; #anden del af sammensatte tal, famtan milliuuni
@@ -2738,6 +2739,8 @@ MAP:M0043I @>N TARGET ("mingutsitsisoq") (1 ("gas")) ; #silaannarmik mingutsitsi
 SELECT:0043I ("nuna" Lok) (1 ("alla" MIU)) ; #danskit nunani allamiunut aqutsisoqarfiannit
 MAP:M0043I @>N TARGET ("nuna" Lok) (1 ("alla" MIU)) ; #danskit nunani allamiunut aqutsisoqarfiannit
 MAP:M0043J @>N TARGET EDIBLE + Abs (1 ("tiitorfik")) ; #assigaa kaffi tiitorfimmut
+MAP:M0043K @>N TARGET ORGANISATION (1 <coll>) ; #Siumut gruppiani
+MAP:M0043L @>N TARGET Lok (1 <Hprof> - Der/vn) ; #fritidshjemmimi kiffaq
 
 #SELECT:0043I ("nuna" Lok) (1 ("alla" MIU) OR ("alla" MIUQ)) ; #danskit nunani allamiunut aqutsisoqarfiannit
 #MAP:M0043I @>N TARGET ("nuna" Lok) (1 ("alla" MIU) OR ("alla" MIUQ)) ; #danskit nunani allamiunut aqutsisoqarfiannit
@@ -2773,10 +2776,11 @@ REMOVE:0044X N - ATTRIBUTIV - HUM IF (0 Par - Orth/Alt)(NEGATE *0 VFIN OR Cau OR
 (NEGATE 1 ("..."))
 (NEGATE 1 MIU) #Vil typisk være apposition til et nomen og ikke til Par
 (NEGATE 1 V LINK NOT 0 ORATIOOBLVERB)
-(NEGATE -1 BOS LINK NOT *1 U BARRIER (*) - Part LINK NEGATE *1S ORATIOOBLVERB) #isoleret taannaanngitsoq og aqaguunngitsoq kan være begge
+(NEGATE -1 BOS LINK NOT *1 U BARRIER (*) - Part - CONJ-C LINK NEGATE *1S ORATIOOBLVERB) #isoleret taannaanngitsoq og aqaguunngitsoq kan være begge
 (NEGATE 0 V + CONJ-LU LINK -1 N)
 (NEGATE *-1 N + $$KASUS + $$NUMERUS BARRIER (*) - Adv LINK *1 _TARGET_ + &&IV_SUBJ& LINK *1 V + &&IV_SUBJ& BARRIER VERB-NOTCONT) #må ikke ramme @N< i Niviarsiaraq MIKISOQ illumi .. najugaqartoq
 (NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER (*) - Adv)#Nalunaarutigalugulu ANGERLARSIMAFFEQANNGITSUT qanoq amerlatiginerannik
+(NEGATE *-1 Gram/Dem + Pron LINK -1 BOS)
 ;
 
 #En tidlig regel, der fjerner Par + 3Sg fra kongruensadled i objektsyntagmer forudsat, der ikke findes et inquit
@@ -3755,6 +3759,8 @@ MAP:M0408U @i-ADVL>N TARGET Cau OR Con IF (1 INDERIVERENDE_SUBSTANTIV + N - POSS
 MAP:M0408V @i-ADVL>N TARGET Trm OR Lok IF (0 $$KASUS)(1 INDERIVERENDE_SUBSTANTIV + N - QATE - INSOBJVERB)(NEGATE NOT 0 POSSESSUM LINK -1C $$KASUS) ; #Peqqussut pineqartoq tassaavoq nunani allamiunut inatsisip nunatsinnut *atuutsinneqarneranut peqqussut.
 MAP:M0408X @i-ADVL>N TARGET V - VFIN IF (0 Cau OR Con OR LI)(1 FAM + POSSESSUM - AFFINGERET) ; #Efterskoleramaana arnarsiama Dorthep, kursusereeruma aaniaraanga, aperigami qaqugu qassinullu aasinnaanerlunga adresselu apeqqutigalugu. 
 MAP:M0408X @i-ADVL>N TARGET $$KASUS + CONJ-C IF (-1C $$KASUS + @i-ADVL>N) ;
+
+MAP:M0043L @i-ADVL> TARGET Lok (1 <Hprof> + Der/vn) ; #fritidshjemmimi sulisoq
 
 ######################
 # 4SgPoss eller Lok+Pl?
@@ -5591,7 +5597,7 @@ MAP:M0951 @<ADVL TARGET OBLIQUE - iV IF (-*1C V - ORATIOOBLVERB BARRIER @CL-ADVL
 #(NEGATE 0 Lok + POSSESSUM) ;#Lok + Possessum giver ofte sætningsadverbial: Baobabit aallaqqaammut mikisuusarput - allinnginnerminni.
 #MAP:0750 @<ADVL TARGET OBLIQUE IF (-*1 V BARRIER KOMMA OR CONJ-LU)(NEGATE -1 ("\("))(NEGATE 1 Der/vn) ; # 20091109 sidste NEGATE #MAP og ikke ADD
 SUBSTITUTE @i-ADVL> @ADVL> TARGET $$KASUS (1 $$KASUS + @ADVL> + CONJ-C - INDERIVERENDE_SUBSTANTIV) ; #Adverbale adled i paratakse er adverbale til samme verbum
-SUBSTITUTE @i-ADVL> @N< TARGET Lok - Num - iNum - CONJ-C - Sem/Geo IF (-*1 Lok - ("akunneq") - TIME - Num BARRIER (*) - @POSS>) ;
+SUBSTITUTE @i-ADVL> @N< TARGET Lok - Num - iNum - CONJ-C - Sem/Geo IF (-*1 Lok - ("akunneq") - TIME - Num - Sem/Geo BARRIER (*) - @POSS>) ;
 SUBSTITUTE @i->N @N< TARGET Ins - Num - iNum IF (0 $$NUMERUS - CONJ-C - POSSESSUM)(*-1 Ins + $$NUMERUS BARRIER CONJ-C OR KOMMA OR VFIN OR Abs)(NEGATE 0 (/\"alla\"\ N\ Ins/l))(NEGATE 0 ("tamaq") LINK -1 ("suna")) ;
 SUBSTITUTE @ADVL> @i-ADVL> TARGET Lok OR Trm IF (1 <Hprof>) ;
 
@@ -6280,7 +6286,7 @@ SELECT:0439 Par + 3Sg IF (-*1 Abs + Sg BARRIER VFIN OR CONJ-C)(NEGATE *0 VFIN)(N
 REMOVE:0441 Par + 3Pl IF (NEGATE *0 VFIN)(NEGATE 0 VFIN)(*1 Par + 3Pl) ; # evt. også (@1 ("tassa")) som IF, hvis for bred
 #vn, som er subjekt to SELECT:100 er ikke selv Par
 
-SELECT:0443 Par + 3Pl IF (NEGATE *0 VFIN)(NEGATE 0 VFIN)(NEGATE *1 CONT + 3PlO)(NEGATE *1 3PlO BARRIER V )(NEGATE 0 HUMAN LINK 1 HUMAN + CONJ-LU) #2009115 'ajoraatsit' selv baade Par og Ind. Må ikke hitte på ledsagemåders objekter. Sidste NEGATE for at få 'inuusuttut' i opremsninger til IKKE at være Par
+SELECT:0443 Par + 3Pl IF (NEGATE *0 VFIN) (NEGATE *-1 Gram/Dem + Pron LINK -1 BOS) (NEGATE 0 VFIN)(NEGATE *1 CONT + 3PlO)(NEGATE *1 3PlO BARRIER V )(NEGATE 0 HUMAN LINK 1 HUMAN + CONJ-LU) #2009115 'ajoraatsit' selv baade Par og Ind. Må ikke hitte på ledsagemåders objekter. Sidste NEGATE for at få 'inuusuttut' i opremsninger til IKKE at være Par
 (NEGATE 1 (LIK N Pl)) 
 (NEGATE 1 ("..."))
 (NEGATE 0 CONJ-LU LINK -1C N)
@@ -6505,6 +6511,7 @@ SELECT:0553 ("aammalu" Adv) IF (NEGATE *0S V BARRIER DIRTALE) ;
 #"tassa" vikarierer for inquit når først i sætningen og fulgt af Par-nexus uden finit V i sætningen
 #SELECT:0553 ("tassa") + Pali IF (-1 BOS)(NEGATE *1 VFIN)(*1 Par)(NEGATE *1 VFIN BARRIER KOMMA ) ; #Kan evt. præciseres med et N + Par unification
 SELECT:0554 KONJUNKTION - ("aamma") IF (-1 BOS);
+REMOVE:0554B Adv + ("aamma") IF (-1 KOMMA LINK -1 VFIN LINK *1 VFIN) ;
 SELECT:0555 Part OR Interj IF (-1 BOS OR (","))(*1C VFIN)(NEGATE 0 DivPron + 4Pl LINK *1 3Pl OR 4Pl) ;
 #MAP (@CONJ) TARGET ("tassa") + Part IF (-*1 V)(*1 V) ; Skal sådan noget skrives ind??
 #Nominer med tilhængspartikler
