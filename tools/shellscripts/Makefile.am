@@ -9,5 +9,6 @@
 # processing.
 bin_SCRIPTS=ukal-gt.sh \
 	kal-generate \
+	kal-hybrid-split \
 	kal-tokenise \
 	# Let this line end the definition

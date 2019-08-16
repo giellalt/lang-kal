@@ -5,6 +5,7 @@ use warnings;
 use utf8;
 use FileHandle;
 use IPC::Open2;
+use FindBin qw($Bin);
 
 BEGIN {
 	$| = 1;
@@ -41,7 +42,7 @@ if ($opt_verbose) {
 }
 
 my $prefix = '@prefix@';
-my @fsts = ('', "@datarootdir@/giella/@GTLANG@/tokeniser-disamb-gt-desc.pmhfst", '/usr/local/share/giella/@GTLANG@/tokeniser-disamb-gt-desc.pmhfst', '/usr/share/giella/@GTLANG@/tokeniser-disamb-gt-desc.pmhfst');
+my @fsts = ('', "@datarootdir@/giella/@GTLANG@/tokeniser-disamb-gt-desc.pmhfst", '/usr/local/share/giella/@GTLANG@/tokeniser-disamb-gt-desc.pmhfst', '/usr/share/giella/@GTLANG@/tokeniser-disamb-gt-desc.pmhfst', "$Bin/../tokenisers/tokeniser-disamb-gt-desc.pmhfst");
 if (defined $ARGV[0] && -s $ARGV[0]) {
    $fsts[0] = $ARGV[0];
 }
@@ -60,13 +61,13 @@ if ($opt_verbose) {
    print STDERR "kal-tokenise: Using ${fst}\n";
 }
 
-my $t = "${bin} -L ${fst}";
+my $t = "${bin} -L ${fst} | grep --line-buffered -v -F 'Use/Hybrid'";
 
 # Prefixes from root.lexc ca. lines 14-15
 my @p = qw(AA TA);
 
 # Main POS tags from root.lexc ca. lines 19-29
-my @m = qw(N V Pali Conj Adv Interj Pron Prop Num);
+my @m = qw(N V Pali Conj Adv Interj Pron Prop Num Symbol);
 
 # Other POS tags from root.lexc ca. lines 114-180
 my @a = qw(
