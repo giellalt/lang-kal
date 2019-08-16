@@ -175,6 +175,7 @@ gt_CONFIG_FILES
 
 AC_CONFIG_FILES([tools/shellscripts/kal-tokenise], [chmod +x tools/shellscripts/kal-tokenise])
 AC_CONFIG_FILES([tools/shellscripts/kal-generate], [chmod +x tools/shellscripts/kal-generate])
+AC_CONFIG_FILES([tools/shellscripts/kal-hybrid-split], [chmod +x tools/shellscripts/kal-hybrid-split])
 
 ############ END: Language-specific scripts. #############
 
