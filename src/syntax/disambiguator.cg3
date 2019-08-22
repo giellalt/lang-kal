@@ -1476,7 +1476,7 @@ SET UGEDAGE = (/__\"arfineq\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"ataaseq\"\ 
 SET OTHERDAY = ("ullortuneq") | ("ullukinneq") ;
 SET SEASON = ("aasaq") | ("ukiaq") | ("ukioq") | ("upernaaq") ; #årstider
 #LIST MONTH = "januar" "januaari" "februar" "februaari" "marts" "marsi" "april" "apriili" "maj" "maaji" "juni" "juuni" "juli" "juuli" "august" "aggusti" "september" "septembari" "oktober" "oktobari" "november" "novembari" "december" "decembari" ;
-LIST TIMEVERB = ("agger") ("assi" GIIAAR) ("ili" NIQ)("ingerla") ("naammassi") ("ip" TUQ U) "pula" ("qaama") "qaanger" "qaangiup" ("qiteqqup") ("sivitsor") ("imaali"); #verber som kan have tidsudtryk som subjekt
+LIST TIMEVERB = ("agger") ("assi" GIIAAR) ("ili" NIQ) ("ingerla") ("naammassi") ("ip" TUQ U) "pula" ("qaama") "qaanger" "qaangiup" ("qiteqqup") ("sivitsor") ("imaali"); #verber som kan have tidsudtryk som subjekt
 SET TEMPUSVERB = UGEDAGE | ("ilaanneeriar") | ("qaanger") | ("qaqutigut" U) | ("qiteqqup") | ("taamaali") | ("ukiar") | ("ukioq" U) | ("unnup") ;
 LIST TIMEAFFIX = (/__RIIR\ Der\/vv\ \(Gram\/..\ \)*V__/l) (/__LIR\ Der\/vv\ \(Gram\/..\ \)*V__/l) ;
 LIST DISTANCEVERB = "ungasip" "qanip" ;
@@ -2709,6 +2709,9 @@ SELECT:0041A Prop + Abs IF (1 Prop + Rel + Sg LINK 1 3SgPoss LINK *1 CONT + 3SgO
 MAP:M0041AX @SUBJ> TARGET Prop + Abs IF (1 Prop + Rel + Sg LINK 1 3SgPoss LINK *1 CONT + 3SgO LINK *1 INTRANSVERB + 3Sg BARRIER KOMMA OR VFIN) ;
 #SELECT:0041B Abs + 3SgPoss IF (-1 Prop + Rel + Sg)(*1 CONT + 3SgO BARRIER KOMMA OR VFIN LINK *1 INTRANSVERB + 3Sg BARRIER KOMMA OR VFIN) ;
 MAP:M0041BX @OBJ> TARGET Abs + 3SgPoss IF (-1 Prop + Rel + Sg)(*1 CONT + 3SgO BARRIER KOMMA OR VFIN LINK *1 INTRANSVERB + 3Sg BARRIER KOMMA OR VFIN) ;
+
+#Subjekter med apposition af typen NN-mit IR+TUQ KOMMA Prop PRED skaber ofte problemer for andre regler så den får sin egen særlige regel her
+MAP:M0042A @SUBJ> TARGET (/"IR"\ Gram/IV\ TUQ\ Der/vn\ N\ Abs/l) IF (1 KOMMA LINK *1 Prop + Abs BARRIER (*) - Prop LINK *1 VFIN + 3Sg BARRIER VERB-NOTCONT); #Air Greenlandip timmisartunik aqutsisoqarfianeERSOQ, Hans Baadsgård oqaluttuarpoq.
 
 #nv adled til proprium subjekt for et ytringsverbum er næsten umulig at adskille fra oratio obliqua. Specialregler:
 #0043AZ forebygger fejlhit på typen BOS (evt. dem.pron) SUBJ U+@N< @PRED, hvor PRED er et ORATIOOBLVERB: Unalu angut PITSAASOQ oqarpoq Oleulluni. Reglen forkaster muligheden af or.obl. (*han sagde at manden var fin) stochastisk, idet or.obl. til venstre sjældenere en or.obl. til højre
@@ -4937,7 +4940,9 @@ MAP:M0523D @SUBJ> TARGET Abs + Prop OR Abs + iProp IF (*1 VFIN - Imp + INTRANSVE
 MAP:M0523E @SUBJ> TARGET Abs + &&IV_SUBJ& - TIME - Num - iNum - Gram/Ord - Sem/Unit - TUQ - ADJEKTIVISK IF (*1 VFIN - Imp + INTRANSVERB + &&IV_SUBJ& BARRIER PUNCT OR ("taava") OR VFIN OR DIRTALESLUT OR OBJVERB OR KONCESSIV)(NEGATE -1 Rel LINK *2 TRANSVERB)(NEGATE *-1 Pron OR Prop + Sg OR ("soorlu"))(NEGATE 1 TRANSVERB LINK *1 Abs LINK *1 VFIN + INTRANSVERB)(NEGATE 1 Akk)
 (NEGATE *1 TRANSVERB + CONT BARRIER VFIN OR N + Abs - @N< OR N + OBLIQUE)
 (NEGATE 0 Pron LINK 1 KOMMA LINK 1 Sg) #Illit, ataqqinartorsuaq
-(NEGATE 0 Sem/Geo + AA) ; #Ikke TIM+AA, men timi+3SgPoss i Timaa assoruuppalulerpoq
+(NEGATE 0 Sem/Geo + AA) #Ikke TIM+AA, men timi+3SgPoss i Timaa assoruuppalulerpoq
+(NEGATE *-1 VFIN + &&IV_SUBJ& LINK NOT *0 Abs + &&IV_SUBJ& BARRIER _TARGET_ ) #Nutsertoqarnerujussuanut peqqutaavoq pingaartumik nunaqarfinni arnanut naleqquttunik SULIFFISSAQANNGINNERA,
+;
 MAP:M0523A @SUBJ> TARGET Abs IF (*-1 Rel + CONJ-LU CBARRIER (*) - Rel LINK -1 Abs)(*1 PLURSUBJVERB OR TRANSVERB + CONT BARRIER V OR KOMMA)(NEGATE 1 Akk) ; #Paratakse ved subjekter i Abs som er possessum. 20180917 Meget bred. Skal checkes
 MAP:M0523B @SUBJ> TARGET Abs IF (*1 Rel + CONJ-LU BARRIER (*) - Rel)(*1 PLURSUBJVERB OR TRANSVERB + CONT BARRIER V OR KOMMA) ; #Paratakse ved subjekter i Abs som er possessum. 20180917 Meget bred. Skal checkes
 MAP:M0741 @SUBJ> TARGET N + Abs + $$NUMERUS IF (*1 INTRANSVERB BARRIER V OR KOMMA LINK 0 Cau OR Con)(NEGATE *0 Abs BARRIER V OR CONJ-C);
@@ -5023,6 +5028,8 @@ MAP:M0760C @i-N< TARGET Abs + Prop IF (*-1 ("ateq") + LIK_QAR BARRIER VFIN)(NEGA
 
 MAP:M0760D @i-N< TARGET Abs - POSSESSUM - LIK_QAR - CONJ-C - ("nutaaq") (*-1 LIK_QAR - Par - ("isuma" QAR) BARRIER (*) - OBLIQUE - Abs -  KOMMA - CONJ-C LINK NOT -1 $$KASUS + Sg) (*1 CLB BARRIER (*) - Abs - PUNCT)
 (NEGATE 1 KOMMA LINK 1 Prop LINK *1 3Sg BARRIER (*) - Prop)#Air Greenlandip timmisartunik aqutsisoqarfianeERSOQ, Hans Baadsgård oqaluttuarpoq. Er subjekt pga. appositionen
+(NEGATE 1 KOMMA LINK *1 Abs + Der/vn BARRIER (*) - OBLIQUE LINK *1 VFIN + 3Sg BARRIER VERB-NOTCONT)#RUC-imi lektori Rasmus Ole RASMUSSEN, 2005-imi piniartunik misissuinermik ingerlatsisuusimasoq oqarpoq.
+
 ;#(NEGATE *-1 TRANSVERB - VFIN BARRIER (*) - Abs - KOMMA LINK *-1 VFIN BARRIER (*) - Abs - KOMMA) ; #Proprier kan være flertalsnominer.
 
 
@@ -5249,8 +5256,12 @@ MAP:M0617A @<MIK-OBJ TARGET Ins IF (-*1 HTR + V + ORATIOOBLVERB - LIK_QAR BARRIE
 MAP:M0617AX @<MIK-OBJ TARGET Trm IF (-*1 MUT-OBJ + HTR + V + ORATIOOBLVERB - LIK_QAR BARRIER V)(NEGATE *1 V OR Der/vn OR INDERIVERENDE_SUBSTANTIV) ;
 MAP:M0617B @<MIK-OBJ TARGET Ins - POSSESSUM IF (-*1 HTR + V - LIK_QAR BARRIER V)(NEGATE *1 INDERIVERENDE_SUBSTANTIV OR HTR BARRIER V) ;
 MAP:M0617BX @<MIK-OBJ TARGET Trm - POSSESSUM IF (-*1 MUT-OBJ + HTR + V - LIK_QAR BARRIER V)(NEGATE *1 INDERIVERENDE_SUBSTANTIV OR HTR BARRIER V) ;
-MAP:M0619 (@i-MIK-OBJ>) TARGET Ins - TIME - ADJEKTIVISK IF (*1 HTR + Der/vn + N BARRIER V );
+MAP:M0619 (@i-MIK-OBJ>) TARGET Ins - TIME - ADJEKTIVISK IF (*1 HTR + Der/vn + N BARRIER V OR NIQ - LU);
 MAP:M0619X (@i-MIK-OBJ>) TARGET Trm - TIME IF (*1 MUT-OBJ + HTR + Der/vn + N BARRIER V );
+#Der kræves en undtagelse for NIQ i tidsudtryk. De skal ikke blokere for et Der/vn længere til højre
+MAP:M0619A @i-MIK-OBJ> TARGET Ins - TIME - ADJEKTIVISK IF (*1 ("ingerla") + NIQ BARRIER (*) - Num - TIMENOUN LINK *1 HTR + Der/vn + N BARRIER V OR NIQ - LU);
+#AVATAARSUALIARTARTUNIK ukiut tallimat ingerlannginnerini Qaammammukartitsinissani
+
 ADD:M0620 (@MIK-OBJ>) TARGET Ins - ADVERBIEL IF (*1 HTR + V BARRIER V); #Ikke MAP fordi ogsaa ADVL> mulig
 ADD:M0620X (@MIK-OBJ>) TARGET Trm - ADVERBIEL IF (*1 MUT-OBJ + HTR + V BARRIER V); #Ikke MAP fordi ogsaa ADVL> mulig
 MAP:M0630 (@i-MIK-OBJ>) TARGET Ins IF (1 HTR + Der/vn - V) ; #20091106
@@ -5350,8 +5361,10 @@ MAP:M0660 (@SUBJ>) TARGET Abs + Sg - ("kinguneq") - OTHERTIME IF (*1C INTRANSVER
 (NEGATE 0 POSSESSUM + Der/vn LINK -1 Rel LINK -1 Abs) #må ikke hitte på possessumadnominal til SUBJ> til venstre
 (NEGATE 1 Num + POSSESSUM)(NEGATE 1 iNum + POSSESSUM) #ukiut sisamassaat
 (NEGATE 0 Sem/Geo + AA) #Ikke TIM+AA, men timi+3SgPoss i Timaa assoruuppalulerpoq
-(NEGATE *-1 3SgO LINK NOT *1 3Sg BARRIER CONJ-LU);#Nalunaarutigalugulu ISUMAQATAANINI taamatullu ... oqaatigalugu. ikke @SUBJ>, men @<OBJ TRANSVERB tilføjet for at forhindre tag på obj i: SUBJ OBJ TRANSVERB INTRANSVERB. 20170425 -kinguneq for at forebygge hit på sætningsadverbialer
+(NEGATE *-1 3SgO LINK NOT *1 3Sg BARRIER CONJ-LU)#Nalunaarutigalugulu ISUMAQATAANINI taamatullu ... oqaatigalugu. ikke @SUBJ>, men @<OBJ TRANSVERB tilføjet for at forhindre tag på obj i: SUBJ OBJ TRANSVERB INTRANSVERB. 20170425 -kinguneq for at forebygge hit på sætningsadverbialer
+(NEGATE *-1 VFIN + &&IV_SUBJ& LINK NOT *0 Abs + &&IV_SUBJ& BARRIER _TARGET_ ) #Nutsertoqarnerujussuanut peqqutaavoq pingaartumik nunaqarfinni arnanut naleqquttunik SULIFFISSAQANNGINNERA,
 
+;
 #MAP:M0661 (@SUBJ>) TARGET Gram/Pers + Pron + Abs + 1Sg IF (*1 INTRANSVERB + VERB-NOTCONT + 1Sg OR INTRANSVERB + VERB-NOTCONT + 1Sg BARRIER POSSESSUM3 OR TRANSVERB)(NEGATE -1 ("\(")) ; #TRANSVERB tilføjet for at forhindre tag på obj i: SUBJ OBJ TRANSVERB INTRANSVERB
 MAP:M0661 @SUBJ> TARGET Gram/Pers + Pron + Abs + 1Sg IF (*1 VERB-NOTCONT + 1Sg BARRIER TRANSVERB + 1SgO)(NEGATE -1 ("\(")) ; #Ny formulering testet 20150318
 MAP:M0661A @SUBJ> TARGET Gram/Pers + Pron + Abs + 2Sg IF (*1 VERB-NOTCONT + 2Sg BARRIER TRANSVERB + 2SgO)(NEGATE *1 2SgO)(NEGATE -1 ("\(")) ; #Ny formulering testet 20150318
