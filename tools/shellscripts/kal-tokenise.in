@@ -104,6 +104,12 @@ my %cache = ();
 sub call_tokenizer {
    my ($in) = @_;
 
+   # Turn very long ALL-UPPER strings to First Upper to avoid geometric slowdown
+   while ($in =~ m@(\p{Lu}{15,})@) {
+      my ($w,$t) = ($1, ucfirst(lc($1)));
+      $in =~ s@$w@\x{e001} $t@g;
+   }
+
    my $out = '';
    if (defined $cache{$in}) {
       $out = $cache{$in};
@@ -115,6 +121,10 @@ sub call_tokenizer {
          $out .= <OUT>;
       }
       $out =~ s@\Q$nonce\E\s*@@sg;
+
+      # Restore ALL-UPPER forms
+      $out =~ s@\x{e001} *\n"<([^\n]+?)>"@"<\U$1>"@g;
+      $out =~ s@"<\x{e001}>"\n\t"\x{e001}" \?\n"<(.+?)>"@"<\U$1>"@g;
 
       # Move prefixes after the base form
       $out =~ s@^(\s+)($pp) (".+?" )@$1$3Prefix/$2 @mg;
