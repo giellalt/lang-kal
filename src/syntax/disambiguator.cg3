@@ -1140,7 +1140,7 @@ SET PISSUTIGALUGU = ("pissut" GE Cont) | ("pissut" GE ContNeg) ;
 SET AQQUSAARLUGU = ("aqqusaar" Cont) | ("aqqusaar" ContNeg) ;
 SET ATORLUGU = ("ator" Cont) - AFFINGERET | ("ator" ContNeg) - AFFINGERET ;
 SET ILAGALUGU = ("ila" GE Cont) | ("ila" GE ContNeg) ;
-SET ILANNGULLUGU = ("ilanngup" Cont) ; #kan både stå alene "også" og tage objekt.
+#SET ILANNGULLUGU = ("ilanngup" Cont) ; #kan både stå alene "også" og tage objekt.
 SET KILLEQQULLUGU = ("killeqqup" Cont) - AFFINGERET | ("killeqqup" ContNeg) - AFFINGERET ;
 SET MALILLUGU = ("malip" Cont) - AFFINGERET | ("malip" ContNeg) - AFFINGERET ;
 SET NAAPERTORLUGU = ("naapertor" Cont) - AFFINGERET | ("naapertor" ContNeg) - AFFINGERET ;
@@ -1705,6 +1705,7 @@ LIST @INTERIM = @INTERIM ;	#en tag til noget, der afventer teoretisk afklaring o
 
 LIST §noun-comma = §noun-comma ;
 LIST DIRTALESTART = DIRTALESTART ; #direkte tale
+LIST DIRTALEMIDDLE = DIRTALEMIDDLE ; #direkte tale
 LIST DIRTALESLUT = DIRTALESLUT ; #direkte tale
 LIST §PropNexusPl = §PropNexusPl ;
 LIST §PropNexusSg = §PropNexusSg ;
@@ -1852,6 +1853,10 @@ REMOVE:0001AO UTE + SI IF (0 HTR - SI) ;
 
 REMOVE:0001BA (/SIMA\ Der/vv\ TIP\ Der/vv\ Gram/Db/l) ;
 REMOVE:0001BB ("kaa") + LI IF (0 ("Kaali")) ;
+REMOVE:0001BC ("kii") + LU IF (0 ("kilo")) ;
+REMOVE:0001BD ("ih") IF (0 ("illu")) ;
+REMOVE:0001BE ("ja") IF (0 ("Jaaku")) ;
+
 
 #REMOVE:0001XX UGEDAGE + Gram/TV IF (0 UGEDAGE + Gram/IV) ; #NNGUR + Gram/TV utænkelig ved ugedages navne #udkommenteret og gjort listen entydig i stedet.
 
@@ -1871,6 +1876,11 @@ REMOVE:0003B (/\("naveer"\)\ Gram/TV\ HTR/l) IF (0 (/\("naveer"\)\ Gram/IV\ TIP/
 #ukuvoq overgenererer
 REMOVE:0003C ("uku") + Int + 3Sg IF (0 ("una") + Pl)(NEGATE *-1 Abs + Sg BARRIER V OR KOMMA);
 
+
+ADDCOHORT (VSTR:"<->" VSTR:"-" PUNCT DIRTALESTART) BEFORE (*) (0 @INTERJ OR @VOK OR Interj - ("tassa") - ("tass") - ("qanoq") - ("ima") - ("taamaattoq") - ("imaattoq") - ("imaap") LINK NOT 0 Adv LINK NOT 0 Conj) (-1 BOS) (NEGATE 0 DIRTALESTART OR DIRTALEMIDDLE OR DIRTALESLUT) (NEGATE *-1W PUNCT - ("-") - (".") - KOMMA) ; 
+
+
+
 #############################################
 # Et særligt afsnit til "unnerpoq/ unnerpaa #
 #############################################
@@ -1881,7 +1891,6 @@ MAP:unner02 @<ADVL TARGET ("unner") + CONT IF (*-1 ORATIOOBLVERB BARRIER V - Par
 ############################################
 # Mappings needed for later disambiguation #
 ############################################
-LIST DIRTALEMIDDLE = DIRTALEMIDDLE ;
 
 #Følgende 23 udkommenteret ad hoc 20190708
 #SUBSTITUTE CLB (CLB DIRTALESLUT) TARGET KOMMA IF (-1 $$OBLIQUE)(*2 DIRTALE)(NEGATE *-1 V)(NEGATE *2 $$OBLIQUE BARRIER VFIN OR DIRTALE) ; #Sunut tamanut, kunngi akivoq taamaattussaaginnartutut isiginnippasilluni.
@@ -2149,7 +2158,6 @@ REMOVE:0005Q (/Gram/Db\ Gram/Refl\ NIQ\ Der/vn\ QAR/l) IF (0 NIQAR);
 SELECT:0005 ("ingip") + A + 3Pl IF (0 ("issaq") OR IP + SAR) ; #Totalt forvirrede ambiguiteter ved issaapput
 REMOVE:0006 ("qaap") IF (0 ("qaammat"));
 REMOVE:0006A (/"utaqqi"\ Gram/TV\ QQAAR\ Der/vv\ Gram/TV\ TUSSAA\ Der/vv\ Gram/Refl/l) IF (0 (/"utaqqi"\ Gram/IV\ QQAAR\ Der/vv\ Gram/IV\ TUQ\ Der/vn\ SSAQ\ Der/nn\ U\ Der/nv\ Gram/IV/l)); #UTAQQEQQAARTUSSAALLUNGA paasitinneqarpunga.
-REMOVE:0011	("ih") IF (0 ("illu")) ;
 REMOVE:0012 ("ipi") + RAR IF (0 ("iperar"));
 REMOVE:0013 ("iper") + RAR IF (0 ("iperar"));
 REMOVE:0014 ("ipip") + RAR IF (0 ("iperar"));
@@ -3029,6 +3037,7 @@ TEMPLATE alone =
 	;
 
 REMOVE ANIMAL + POSSESSUM - ("qimmeq") IF (NEGATE 0 UTE) ;
+REMOVE:qujanaq POSSESSUM1 IF (0 POSSESSUM2 LINK -1 ("quja") OR ("qujanaq")) ;
 
 #Vanskelige sammenfald mellem plur. og 2SgPoss i absolutte konstruktioner håndteres før SELECT:0100
 REMOVE:0100X 2SgPoss IF (NEGATE @0 (*) LINK -1*W Abs + 2Sg BARRIER BOS) (T:alone) ;
@@ -4011,7 +4020,7 @@ MAP:M0026 @VOK TARGET Prop + Abs IF (-1 BOS - DIRTALESTART)(1 KOMMA)(*0 V) #For 
 #Interjektioner med og uden komma. Undgå hit på parataktiske subjekter
 MAP:M0027 @VOK TARGET Prop + Abs IF (-3 BOS)(-2 Interj)(-1 KOMMA)(NEGATE *1 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO BARRIER V)(NEGATE 0 CONJ-LU LINK *1 V + 1Pl BARRIER V);
 
-MAP:M0028A @VOK TARGET Prop + Abs IF (-2 BOS)(-1 Interj)(NEGATE 1 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO)(NEGATE *1 CONT LINK *1 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO BARRIER V)(NEGATE *1 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO BARRIER V)(NEGATE 0 CONJ-LU LINK *1 V + 1Pl BARRIER V);
+MAP:M0028A @VOK TARGET Prop + Abs IF (-2 BOS OR DIRTALESTART)(-1 Interj)(NEGATE 1 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO)(NEGATE *1 CONT LINK *1 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO BARRIER V)(NEGATE *1 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO BARRIER V)(NEGATE 0 CONJ-LU LINK *1 V + 1Pl BARRIER V);
 
 MAP:M0028B @VOK TARGET Prop + Sem/Hum + Abs IF (NEGATE *1 3Sg OR 3SgO BARRIER V)(-1 BOS)(NEGATE 0 Sem/FirstName LINK 1 Prop + Sem/Hum)(NEGATE 0 Prop + Sem/Hum LINK 1 Prop + Sem/Hum + CONJ-C)(NEGATE *1 VFIN + 3Sg)(NEGATE *0 (*) - V BARRIER KOMMA) ;
 #Fejltagge RASMUS i "Rasmus atuaqatigiit qiimasortaat, sanianut .. oqarpoq. Sidste NEGATE tilføjet 20180523 
@@ -6058,7 +6067,7 @@ MAP:M1611 (@OBJ>) TARGET Gram/Pers + Pron + 2Sg IF (*1 @SUBJ> LINK *1 GE + 2SgO)
 MAP:M1612 @OBJ> TARGET Akk + 3Pl IF (-1 Abs + Pl)(NEGATE 0 ("tamaq") LINK -1 ("ulloq")) ;
 MAP:M1613 @ADVL> TARGET ("tamaq") + Akk + Pl IF (-1 ("ulloq") + Abs + Pl) ;
 
-ADDCOHORT (VSTR:"<->" VSTR:"-" PUNCT DIRTALESTART) BEFORE @INTERJ OR @VOK (0 @INTERJ) (-1 BOS) (NEGATE 0 DIRTALESTART OR DIRTALEMIDDLE OR DIRTALESLUT) ; 
+ADDCOHORT (VSTR:"<->" VSTR:"-" PUNCT DIRTALESTART) BEFORE @INTERJ OR @VOK (-1 BOS) (NEGATE 0 DIRTALESTART OR DIRTALEMIDDLE OR DIRTALESLUT) (NEGATE *-1W PUNCT - ("-") - (".") - KOMMA) (NEGATE 0 Adv - @INTERJ - @VOK) ; 
 
 
 #De "normale" adverbale infinitiver
