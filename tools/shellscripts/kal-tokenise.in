@@ -5,6 +5,7 @@ use warnings;
 use utf8;
 use FileHandle;
 use IPC::Open2;
+use Digest::SHA qw(sha1_base64);
 use FindBin qw($Bin);
 
 BEGIN {
@@ -110,6 +111,18 @@ sub call_tokenizer {
       $in =~ s@$w@\x{e001} $t@g;
    }
 
+   # Turn URLs into placeholders to avoid endless loop
+   my %url_cache = ();
+   while ($in =~ m@((?:(ht|f)tp(s?)://)?[^\s\pZ/]+\.[a-z]{2,}/\S*)@) {
+      my ($s,$u) = ($1,$1);
+      utf8::encode($s); # sha1_base64() can't handle UTF-8 for some reason
+      my $hash = sha1_base64($s);
+      $hash =~ s/[^a-zA-Z0-9]/x/g;
+      $url_cache{$u} = "URL_$hash";
+      $in =~ s@\Q$u\E@URL_$hash@g;
+      print STDERR "URL $u -> $hash\n";
+   }
+
    my $out = '';
    if (defined $cache{$in}) {
       $out = $cache{$in};
@@ -125,6 +138,12 @@ sub call_tokenizer {
       # Restore ALL-UPPER forms
       $out =~ s@\x{e001} *\n"<([^\n]+?)>"@"<\U$1>"@g;
       $out =~ s@"<\x{e001}>"\n\t"\x{e001}" \?\n"<(.+?)>"@"<\U$1>"@g;
+
+      # Restore URLs and give them the default analysis
+      while (my ($u,$h) = each(%url_cache)) {
+         $out =~ s@"<\Q$h\E>"@"<$u>"@g;
+         $out =~ s@\t"\Q$h\E" \?@\t"$u" Sem/Url Prop Abs\n\t"$u" URL@g;
+      }
 
       # Move prefixes after the base form
       $out =~ s@^(\s+)($pp) (".+?" )@$1$3Prefix/$2 @mg;
