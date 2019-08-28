@@ -1140,6 +1140,7 @@ SET PISSUTIGALUGU = ("pissut" GE Cont) | ("pissut" GE ContNeg) ;
 SET AQQUSAARLUGU = ("aqqusaar" Cont) | ("aqqusaar" ContNeg) ;
 SET ATORLUGU = ("ator" Cont) - AFFINGERET | ("ator" ContNeg) - AFFINGERET ;
 SET ILAGALUGU = ("ila" GE Cont) | ("ila" GE ContNeg) ;
+SET ILANNGULLUGU = ("ilanngup" Cont) ; #kan både stå alene "også" og tage objekt.
 SET KILLEQQULLUGU = ("killeqqup" Cont) - AFFINGERET | ("killeqqup" ContNeg) - AFFINGERET ;
 SET MALILLUGU = ("malip" Cont) - AFFINGERET | ("malip" ContNeg) - AFFINGERET ;
 SET NAAPERTORLUGU = ("naapertor" Cont) - AFFINGERET | ("naapertor" ContNeg) - AFFINGERET ;
@@ -1147,7 +1148,7 @@ SET SINNERLUGU = ("sinner" Cont) - AFFINGERET ;
 SET TAMAKKERLUGU = ("tamakker" Cont) - AFFINGERET | ("tamakker" ContNeg) - AFFINGERET ;
 SET TIKILLUGU = ("tikip" Cont) - AFFINGERET | ("tikip" ContNeg) - AFFINGERET ;
 SET TUNNGAVIGALUGU = ("tunnga" VIK GE Cont) | ("tunnga" VIK GE ContNeg) ;
-SET OBJVERB = PILLUGU | PISSUTIGALUGU | AQQUSAARLUGU | ATORLUGU | ILAGALUGU |  MALILLUGU | NAAPERTORLUGU | SINNERLUGU | TAMAKKERLUGU | TIKILLUGU | TUNNGAVIGALUGU ;
+SET OBJVERB = PILLUGU | PISSUTIGALUGU | AQQUSAARLUGU | ATORLUGU | ILAGALUGU | MALILLUGU | NAAPERTORLUGU | SINNERLUGU | TAMAKKERLUGU | TIKILLUGU | TUNNGAVIGALUGU ;
 LIST NONOBJVERB = ("agguar" QATE GIIP TIP Cont) ;
 
 # Nominer
@@ -2847,6 +2848,7 @@ SELECT:0063A Rel + Pl IF (1 TIDSPARTIKEL LINK 1C 3PlPoss)(NEGATE 2 ("siuneq") + 
 
 REMOVE:0063B Rel + Pl + FAM_UNIK OR Rel + Pl + PLACE_EXTENDED IF (1C 3PlPoss - VIK - Prop)(0 CONJ-C LINK -1 Prop + Rel + Sg) ; #Nyvejip Qingartallu paarlaffianni inigisaqarpoq. 
 SELECT:0063 Rel + Pl - FAM_UNIK IF (1C 3PlPoss)(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 1 ("assi") + POSSESSUM + CONJ-LU)(NEGATE -1 ("ila") LINK 2 ("ila"))(NEGATE 0 Par LINK *-1 Adv BARRIER V OR @PRED) #må ikke hitte på siornatigut og ikke på opremsede participier med assigisaallu og heller ikke på opremsninger med ilaat .. ilaat. Må ikke hitte på fx nuliami pii
+(NEGATE 1 Pl LINK 1 ADVERBIEL + TRANSVERB LINK 1 3Pl - TRANSVERB LINK NEGATE *-4 Rel)
 (NEGATE 0 (TUQ Der/vn N Ins)) ; #iluaqutaasumik
 SELECT:0063B Rel + Pl - FAM_UNIK - 4PlPoss - 4SgPoss IF (1C Rel + Pl - Prop LINK 1C 3PlPoss - Prop - iALL)(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 1 ("assi") + POSSESSUM + CONJ-LU)(NEGATE -1 ("ila") LINK 2 ("ila"))(NEGATE 0 ("assut") OR ("taama")) ;
 SELECT:0063C Rel + Pl - FAM_UNIK IF (1C Rel + Pl - Prop LINK 1C Rel + Pl LINK 1 3PlPoss - Prop)(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 1 ("assi") + POSSESSUM + CONJ-LU)(NEGATE -1 ("ila") LINK 2 ("ila"))(NEGATE *1 INTRANSVERB + 3Pl + VFIN BARRIER VFIN) ;
@@ -2889,6 +2891,7 @@ SELECT:0070L Rel + FAM + POSSESSUM IF (0 FAM + Lok - POSSESSUM) #anaanami
 (NEGATE 0 PLACE) #må ikke hitte på illu/illoq
 ;
 SELECT:0070 Rel + Pl IF (1C 3PlPoss)(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 1 ("assi") + POSSESSUM + CONJ-LU)(NEGATE -1 ("ila") LINK 2 ("ila")) #må ikke hitte på siornatigut og ikke på opremsninger med assigisaallu og ilaat .. ilaat
+(NEGATE 1 Pl LINK 1 ADVERBIEL + TRANSVERB LINK 1 3Pl - TRANSVERB LINK NEGATE *-4 Rel)
 (NEGATE 0 (TUQ Der/vn N Ins)) ; #iluaqutaasumik
 REMOVE:0071 Rel + Sg IF (NEGATE *1 3SgPoss OR i3SgPoss)(NEGATE *0 TRANSVERB + 3Sg OR TRANSVERB + 4Sg)(NEGATE 0 Gram/Coref + Pron)(NEGATE 0 Ins)(NEGATE *1 NIRMIT + Gram/TV - HTR BARRIER CONJ-C OR @PRED LINK NEGATE 0 Trm LINK *1 TRMVERB BARRIER CONJ-C OR @PRED); #Gram/Coref + Pron må vist håndteres separat
 #Før 0072 for at holde på den før andet gennemløb sletter possessum med regel 0105
@@ -3806,7 +3809,8 @@ SELECT:0410 Par + INTRANSVERB + 3Pl IF (@1 Abs + Pl)(NEGATE *-1 VERB-NOTCONT)(NE
 #Må ikke hitte på Rel+Pl SUBJ>. Må heller ikke hitte på kongruensadled efter komma. 0412A fordi Der/nv adled til subjekt for ledsagemåde er ikke Par 
 #(NEGATE -1 N + Abs + Sg LINK 1 QAR + (TUQ N) OR U + (TUQ N)) ;
 SELECT:0412A Der/vn + Pl + Abs - Orth/Arch IF (-1 Abs + Pl)(1 Cont + 4Pl)(NEGATE 0 FAM_UNIK) ;
-SELECT:0412B Der/vn + Pl + Rel IF (1C 3PlPoss - Orth/Arch)(NEGATE 0 Par + 3Pl LINK *-1 Abs + Pl LINK *-1 ORATIOOBLVERB ) ; #må ikke slette Par efter inquit. -Orth/Arch pga. et eksempel hvor nutak+Orth/Arch+3PlPoss valgt frem for korrekt nutaaq+Pl
+SELECT:0412B Der/vn + Pl + Rel IF (1C 3PlPoss - Orth/Arch)(NEGATE 1 Pl LINK 1 ADVERBIEL + TRANSVERB LINK 1 3Pl - TRANSVERB LINK NEGATE *-4 Rel)
+(NEGATE 0 Par + 3Pl LINK *-1 Abs + Pl LINK *-1 ORATIOOBLVERB ) ; #må ikke slette Par efter inquit. -Orth/Arch pga. et eksempel hvor nutak+Orth/Arch+3PlPoss valgt frem for korrekt nutaaq+Pl
 
 REMOVE:0412C Par + INTRANSVERB + CONJ-LU IF (0 $$KASUS + $$NUMERUS) (*-1 $$KASUS + $$NUMERUS + CONJ-LU BARRIER (*) - $$KASUS LINK -1 KOMMA) ; #hvis der er LU begge led, er det mere sandsynligt paratakse. #, meeqqallu ilinniartullu pinngitsaalisamik inuup taassuma qanoq inuusimanera kikkullu kinguaarinerai ilinniartalerpaat, ...
 
@@ -4186,7 +4190,7 @@ MAP:OrObl0100 @CL-<CIT TARGET CONT IF (-*1 OQARPOQ BARRIER KOMMA LINK NEGATE -*1
 
 ;
 #MAP:Test0101 @CL-CIT> TARGET CONT IF (*1 ("oqar") - USIQ - (VIK GE) - (UTE GE) - TUQ BARRIER KOMMA LINK NEGATE -*1 ("taama") OR ("nalinginnaq")) #oo ved oqarpoq aldrig simultan med taama
-MAP:OrObl0101 @CL-CIT> TARGET CONT - ADV-LU IF (*1 OQARPOQ BARRIER CON_CAU LINK NEGATE -*1 ("taama") OR ("nalinginnaq")) #oo ved oqarpoq aldrig simultan med taama
+MAP:OrObl0101 @CL-CIT> TARGET CONT - ADV-LU - ("nipi" QAR) IF (*1 OQARPOQ BARRIER CON_CAU LINK NEGATE -*1 ("taama") OR ("nalinginnaq")) #oo ved oqarpoq aldrig simultan med taama
 (NEGATE *1 DIRTALESTART BARRIER CLB - KOMMA) #aldrig oo simultan med anførende sætning
 (NEGATE *-1W DIRTALESLUT BARRIER CLB - KOMMA) #aldrig oo simultan med anførende sætning
 (NEGATE *1W BOS BARRIER BOS LINK 1 DIRTALESTART) #aldrig oo simultan med anførende sætning. *1W BOS BARRIER BOS LINK for at ramme næste position 1 og kun den
@@ -5405,6 +5409,7 @@ MAP:M0698 (@SUBJ>) TARGET Rel IF (-*1 Rel LINK *1 _TARGET_ LINK *1 TRANSVERB - O
 MAP:M0099 @SUBJ> TARGET Abs IF (*1 V + INTRANSVERB - NAR - QAR - 2Sg BARRIER OBJVERB LINK 1 EOS)(NEGATE *0 Abs - TIME - Num - iNum - NUMHOVED)(NEGATE -1 PUNCT OR BOS LINK 2 KOMMA)(NEGATE 0 TIME LINK *1 HUMVERB)(NEGATE -1 ("nalunaaqutaq")) ; #Hvis eneste Abs, må det næsten være subjekt, dog ikke hvis tidsangivelse Aanami toqunerata KINGORNA naalannginniarnerulersoq.
 MAP:M0699 @OBJ> TARGET Abs - TIME - Num IF (*1 CONT + TRANSVERB BARRIER Abs - @N< - Num - MAANED OR VFIN OR ("soorlu") OR V + CONJ-C) 
 (NEGATE *1 Par + 3Sg BARRIER (*) - OBLIQUE - Adv LINK *1 ORATIOOBLVERB BARRIER VERB-NOTCONT)# .. taamatullu MISISSUINISSAQ pisariaqartinneqartoq oqaatigalugu. er @SUBJ>
+(NEGATE 1 Abs + Pl LINK 1 ADVERBIEL + TRANSVERB LINK 1 3Pl - TRANSVERB LINK NEGATE *-4 Rel)
 ;
 MAP:M0699A @OBJ> TARGET Abs - TIME - Num IF (1 CONJ-C LINK 1S @OBJ>) ;
 MAP:M0699B @OBJ> TARGET Abs - TIME + Sg IF (*1 VFIN + TRANSVERB + 3SgO BARRIER (*) - OBLIQUE - Part)(NEGATE *-1 Abs BARRIER VFIN) ; #laver en masse fejl
@@ -6809,7 +6814,9 @@ SELECT (@<SUBJ Sg Abs) IF (-*1 INTRANSVERB + 3Sg)(NEGATE *1 VFIN)(NEGATE 0 CONJ-
 SELECT (@<SUBJ Pl Rel) IF (-*1 TRANSVERB + 3Pl)(NEGATE *1 VFIN) ; 
 SELECT (@<SUBJ Sg Rel) IF (-*1 TRANSVERB + 3Sg BARRIER ("\,"))(NEGATE *1 VFIN) ;
 
-SELECT (@POSS> Pl) IF (*1 POSSESSUM + 3PlPoss BARRIER (*) - @i-ADVL>) ;
+REMOVE @POSS> IF (0 @SUBJ>) (NEGATE *0 @SUBJ>) ;
+
+SELECT (@POSS> Pl) IF (*1 POSSESSUM + 3PlPoss BARRIER (*) - @i-ADVL>)  ;
 SELECT (@POSS> Sg) IF (*1 POSSESSUM + 3SgPoss BARRIER (*) - @i-ADVL>) ;
 SELECT Abl IF (*1 PASSIV BARRIER VFIN)(NEGATE 0 Ins LINK *1 QAR BARRIER V)(NEGATE *1 HTR BARRIER V)(NEGATE 0 Ins + CONJ-LUUNNIIT)(NEGATE 0 THING)
 (NEGATE 0 ("ini") LINK 1 ("IP"))#ad hoc regel mens vi afventer opsplitning af GCG til to grammatikker
