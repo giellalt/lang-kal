@@ -1464,7 +1464,6 @@ SET INQUIT_VERB = <fn:Talk> | <fn:CognitiveMaking> ;
 
 LIST <Lciv> = "kommune" ;
 LIST <coll> = "gruppe" ;
-LIST <inst> = "universitet" ;
 
 SET HUMVERB = humverb OR ORATIOOBLVERB OR <fn:Remove> OR <fn:Take/Bring> OR <fn:Put>; # alle verb  der vil ha humane subj
 
@@ -1824,7 +1823,7 @@ REMOVE:0001M (/Gram\/TV\ Gram\/Refl\ V\ Opt/l) ;
 REMOVE:0001N (/Gram\/TV\ Gram\/Refl\ V\ Imp/l) ;
 
 REMOVE:0001O ("akisup") IF (0 ("aki" TUQ SSAQ U VIK)) ;
-REMOVE:0001P N - AFFINGERET - POSSESSUM - ("SAS") IF (0 Num - AFFINGERET) ;
+REMOVE:0001P N - AFFINGERET - POSSESSUM IF (0 Num - AFFINGERET) ;
 REMOVE:0001Q ("sooq") + LU IF (0 ("soorlu")) ;
 REMOVE:0001R ("illu") OR ("illoq") IF (0 ("ip") + Cont)(-1 Aeq) ;
 REMOVE:0001S ("kimik") IF (0 ("kina") + LUUNNIIT) ;
@@ -1859,7 +1858,6 @@ REMOVE:0001BD ("ih") IF (0 ("illu")) ;
 REMOVE:0001BE ("ja") IF (0 ("Jaaku")) ;
 REMOVE:0001BF 1SgPoss + MI IF (0 Cau) ; #iserami
 REMOVE:0001BG (/SINNAAQ\ Der/vn\ N__/l) IF (0 V) ; #iliorsinnaava
-REMOVE:0001BH ("nuup") + V IF (0 ("Nuuk")) ;
 
 
 #REMOVE:0001XX UGEDAGE + Gram/TV IF (0 UGEDAGE + Gram/IV) ; #NNGUR + Gram/TV utænkelig ved ugedages navne #udkommenteret og gjort listen entydig i stedet.
@@ -2418,7 +2416,9 @@ REMOVE:0005A KKUT IF (0 GeoProp);
 REMOVE:0005AA ("massak") IF (NEGATE *0 ("nappar") OR ("eqqor")) ; #vælg massakkut frem for massak+KKUT og massak+Via
 REMOVE:0005B ("massak") + KKUT IF (0 ("massakkut")); #næppe nogensinde 'milt m.fl.'
 SELECT:0005BB (/__\"uer\"\ Gram\/IV\ NGA\ Der\/vv\ Gram\/IV\ NIQ__/l) ; #uinganikkut er ikke ui.
-REMOVE:0005C Via + FAM OR Via + Prop IF (0 KKUT) ;
+REMOVE:0005C Via + FAM OR Via + Prop IF (0 KKUT)
+(NEGATE 0 ("Skype"))#Bør udvides til et sæt. Ord som Skype er lige så meget Sem/Hum som andre proprier, så ikke rigtigt noget at adskille dem på
+ ;
 #En tidlig regel fjerner læsning af KKUT som possessor i strukturen possessor vialis possessum som i ilaqutama timmisartukkut aqqutissaat
 REMOVE:0044C KKUT IF (-1 Rel + Pl)(1 3PlPoss)(0 Via)(NEGATE 0 Prop LINK -1 FAM + Pl); 
 SELECT:0110D FAM + KKUT + Abs IF (*1 V + 3Pl OR V + 3PlO) ;
@@ -2493,7 +2493,7 @@ SELECT:0099M Gram/Ord IF (0 SSAQ ) ;
 SELECT:0099R Gram/Ord - Via IF (-1 MAANED OR TIME) 
 (NEGATE 0 Num + $$KASUS + $$NUMERUS LINK -1 $$KASUS + $$NUMERUS) #tiimit SISAMAT ilinniartarpoq
 ;
-SELECT:0099S iNum OR Num OR ("marlussuk") IF (-1 MAANED OR TIME) (NEGATE 0 ("SAS"));
+SELECT:0099S iNum OR Num OR ("marlussuk") IF (-1 MAANED OR TIME) ;
 REMOVE:0099T Gram/Ord IF (NEGATE *0 MAANED OR TIME) ;
 REMOVE:0099U Gram/Ord IF (*-1 FAM OR MASK OR FEM BARRIER POSSESSUM LINK 0 Rel) ;
 REMOVE:0099V Gram/Ord IF (-1 Prop + Rel) ;
@@ -3939,6 +3939,7 @@ MAP:M0065A @>V TARGET Gram/Comp + NIQ - POSSESSUM IF (1 ("ajor") - (/\"ajor\"\ G
 #Ledsagemåde som 'subjektiv infinitiv' ved NAR, hvis ingen N-kandidater i sætningen
 MAP:M0065C @SUBJ> TARGET Cont + 4Sg IF (*1 VFIN + 3Sg + NAR OR VFIN + 3Sg + (/.*nar\"\ Gram/IV\ V/l) OR VFIN + 3Sg + (/.*nar\"\ Gram/IV\ QE\ Der/vv\ Gram/IV\ V/l))(NEGATE *0 Abs + Sg) ; #Nanortalimmi NIUERTUULLUNI kipluttunarpoq
 MAP:M0065D @SUBJ> TARGET Cont + 3SgO IF (*1 VFIN + 3Sg + NAR OR VFIN + 3Sg + (/.*nar\"\ Gram/IV\ V/l) OR VFIN + 3Sg + (/.*nar\"\ Gram/IV\ QE\ Der/vv\ Gram/IV\ V/l))(-1 Abs + Sg LINK NEGATE *0 Abs + Sg)(NEGATE *0 Cont);
+#Tamanna eqqarsaatigalugu eqqissisimanarpoq
 
 # Bisætninger og indskud, der må håndteres før andre sætningsled
 # ===============================================
@@ -4113,11 +4114,6 @@ IF (0 $$NUMERUS)(1 Prop + $$NUMERUS - CONJ-C)(NEGATE 1 (§PropNexusPl) LINK *1 V
 ;
 
 MAP:M0031S @i-PROP> TARGET Prop + Abs - Sem/Hum (1 iProp - CONJ-C LINK NEGATE *1 PROP + CONJ-C) ;
-
-MAP:M0031T @i-PROP> TARGET Prop + Abs (1 (<inst>) + Der/nv OR LIK) ;
-MAP:M0031U @PROP> TARGET Prop + Abs (1 (<inst>)) ;
-MAP:M0031T @i-PROP> TARGET Prop + Abs (1 ("(k|K)ommune"r) + Der/nv OR LIK) ;
-MAP:M0031U @PROP> TARGET Prop + Abs (1 ("kommune") OR ("Kommune")) ;
 MAP:M0031Z @>N TARGET N + TITEL + Abs (1 Prop - CONJ-C) ;
 #MAP:M0031 (@PROP>) TARGET Prop OR FIRSTNAME OR TITEL IF (1 Prop)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop #+ CONJ-LU LINK *1 V + 3Pl BARRIER N + Pl )(NEGATE 1 Prop LINK 1 Prop); #fra 1350 for at udelukke overtallig SUBJ-tagging. ##NEGATE for at forebygge typen 'Per NN-ikkut isermata Vb'. Andet NEGATE for parataktiske Karen Perilu anipput. Tredie #NEGATE for at parataktiske Karen Perilu ilagalugit. Fjerde #NEGATE for at forebygge @PROP på subjektet i (SUBJ)(PROP> propriuskærne)
 
