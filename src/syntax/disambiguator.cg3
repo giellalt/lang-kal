@@ -135,6 +135,8 @@ LIST Prefix/AA = Prefix/AA ;
 LIST Gram/Conj-encl = Gram/Conj-encl ; #sideordnende enklitiske konjunktioner
 LIST Gram/Adv-encl = Gram/Adv-encl ;
 LIST Gram/Unsafe-encl = Gram/Unsafe-encl ; #the secondary mapping is unsafe
+LIST Hyb/1-2 = Hyb/1-2;
+LIST Hyb/2-2 = Hyb/2-2;
 
 LIST Sg = Sg ;
 LIST Du = Du ;
@@ -2449,6 +2451,10 @@ REMOVE:0040M NIR + Par + 2Sg IF (0 NIQ + Pl)(NEGATE *-1 Gram/Pers + Pron + Rel +
 
 ### TIME ###
 #==========#
+REMOVE:0015X ("siorna") + N + Abs; #Ikke et lexem. Er nu fjernet fra nouns
+REMOVE:0015 ("siorna") + Pali IF (0 ("siuneq") LINK -1 ("manna") + Rel);
+MAP:M0015 @CL-ADVL> ("siuneq") + Abs + 3SgPoss IF (-1 ("manna") + Rel); #En tidlig, meget bred regel til at håndtere uforudsigelige/ manglende bøjninger af siorna
+
 REMOVE:0016 TIME + 4SgPoss IF (0 Lok) #Vælger N+Lok frem for N+4SgPoss
 (NEGATE 0 ("ulloq") + Rel + Pl LINK 1 3PlPoss)#Tamannarpiarlumi Simmitoqqap ULLUMI naalerneranni piumangaarsimavaa
 ;
@@ -2930,7 +2936,7 @@ REMOVE:0071 Rel + Sg IF (NEGATE *1 3SgPoss OR i3SgPoss)(NEGATE *0 TRANSVERB + 3S
 SELECT:0072A Rel + Pl IF (1 CONT + 4Pl)(2 3PlPoss)(NEGATE 0 (/\ TUQ\ Der\/vn\ N\ Ins\ /l)) ;
 SELECT:0072B Rel + Pl IF (1 Num + Rel)(2 CONT + 4Pl)(3 Der/vn + Rel + Pl)(4 KOMMA LINK *1 TRANSVERB + 3Pl) ; #ad hoc regel på gr. af forkert komma hos Maaliaaraq
 #Ad hoc regel før 0072 på gr. af forkert komma hos Maaliaaraq
-SELECT:0072C Rel + Pl IF (*1 Abs LINK 1 CONT + 3SgO LINK *1 TRANSVERB + 3Pl BARRIER VFIN OR INTRANSVERB) ; 
+SELECT:0072C Rel + Pl IF (*1 Abs BARRIER VFIN LINK 1 CONT + 3SgO LINK *1 TRANSVERB + 3Pl BARRIER VFIN OR INTRANSVERB) ; 
 REMOVE:0072E Abs - TIME - Prop + CONJ-C IF (0 Rel)(**-1C Rel BARRIER (*) - Rel) ;
 REMOVE:0072D Imp IF (0 Rel)(*-1 VFIN) ; #sorlaasalu er ikke Imp
 #REMOVE:0072E Abs + Pl IF (
@@ -3845,7 +3851,7 @@ SELECT:0410 Par + INTRANSVERB + 3Pl IF (@1 Abs + Pl)(NEGATE *-1 VERB-NOTCONT)(NE
 #Må ikke hitte på Rel+Pl SUBJ>. Må heller ikke hitte på kongruensadled efter komma. 0412A fordi Der/nv adled til subjekt for ledsagemåde er ikke Par 
 #(NEGATE -1 N + Abs + Sg LINK 1 QAR + (TUQ N) OR U + (TUQ N)) ;
 SELECT:0412A Der/vn + Pl + Abs - Orth/Arch IF (-1 Abs + Pl)(1 Cont + 4Pl)(NEGATE 0 FAM_UNIK) ;
-SELECT:0412B Der/vn + Pl + Rel IF (1C 3PlPoss - Orth/Arch)(NEGATE 1 Pl LINK 1 ADVERBIEL + TRANSVERB LINK 1 3Pl - TRANSVERB LINK NEGATE *-4 Rel)
+SELECT:0412B Der/vn + Pl + Rel IF (1C 3PlPoss - Orth/Arch - ("Kalaallit Nunaat"))(NEGATE 1 Pl LINK 1 ADVERBIEL + TRANSVERB LINK 1 3Pl - TRANSVERB LINK NEGATE *-4 Rel)
 (NEGATE 0 Par + 3Pl LINK *-1 Abs + Pl LINK *-1 ORATIOOBLVERB ) ; #må ikke slette Par efter inquit. -Orth/Arch pga. et eksempel hvor nutak+Orth/Arch+3PlPoss valgt frem for korrekt nutaaq+Pl
 
 REMOVE:0412C Par + INTRANSVERB + CONJ-LU IF (0 $$KASUS + $$NUMERUS) (*-1 $$KASUS + $$NUMERUS + CONJ-LU BARRIER (*) - $$KASUS LINK -1 KOMMA) ; #hvis der er LU begge led, er det mere sandsynligt paratakse. #, meeqqallu ilinniartullu pinngitsaalisamik inuup taassuma qanoq inuusimanera kikkullu kinguaarinerai ilinniartalerpaat, ...
@@ -5309,12 +5315,12 @@ MAP:M0609D @POSS> TARGET Rel + Sg - Prop IF (*1 3SgPoss BARRIER TRANSVERB + 3Sg 
 (NEGATE *1 Rel + Sg - @<APPOS - @N< - POSSESSUM BARRIER POSSESSUM3 OR CONJ-C LINK *1 TRANSVERB + 3Sg)
 ;
 MAP:M0610 (@POSS>) TARGET Rel + Pl IF (1 Lok OR Ins OR Aeq OR CONT OR TIDSPARTIKEL)(2 3PlPoss) ; #Særtilfælde med adled til possessum. TIDSPARTIKEL tilføjet 20170407
-MAP:M0611 (@POSS>) TARGET Rel + Pl IF (1 3PlPoss) ;
+MAP:M0611 (@POSS>) TARGET Rel + Pl IF (1 3PlPoss - ("Kalaallit Nunaat")) ;
 MAP:M0611 (@POSS>) TARGET Rel + Pl + INSTITUTION IF (1 3SgPoss) ; #Naalakkersuisut siulittaasua
 #MAP:M0611A @POSS> TARGET Rel + Sg IF (1 3PlPoss)((0 CONJ-LU) OR (-1 @POSS> + CONJ-LU)) ;
 MAP:M0611B @POSS> TARGET Rel + Sg IF (*1 3PlPoss BARRIER (*) - @N<)((0 CONJ-LU) OR (-*1 CONJ-LU BARRIER (*) - @POSS> - (/@i.+>/r) LINK 0 @POSS> - (/@i.+>/r) LINK NOT -1 @POSS> OR (/@i.+>/r))) ; #Qissimiinnarlugimmi Kinap ARIZONALLU assigiinngissutaat takusinnaavara.
 MAP:M0611C @POSS> TARGET Rel IF (1 CONJ-LU)(*1 @POSS> BARRIER @POSS> - (/@i.+>/r) LINK *1 3PlPoss BARRIER (*) - @N<) ; #Qissimiinnarlugimmi KINAP Arizonallu assigiinngissutaat takusinnaavara.
-MAP:M0611D @POSS> TARGET N + Rel + Pl IF (*1 3PlPoss BARRIER VFIN LINK NOT *1 TRANSVERB + 3Pl BARRIER Rel + Pl - @POSS>)
+MAP:M0611D @POSS> TARGET N + Rel + Pl IF (*1 3PlPoss - ("Kalaallit Nunaat") BARRIER VFIN LINK NOT *1 TRANSVERB + 3Pl BARRIER Rel + Pl - @POSS>)
 (NEGATE 0 N + Pl - POSSESSUM - OBLIQUE LINK *1 TRANSVERB + 3PlO BARRIER VFIN) #Negate til forkert selektering af Abs, som ikke er Poss, men Subj eller Obj
 ; #Flyttet fra bunden.
 MAP:M0611E @POSS> TARGET N + Rel + Pl IF (*1 3PlPoss BARRIER VFIN LINK -1 V - VFIN + 4Pl)
@@ -5388,7 +5394,7 @@ MAP:M0640C @SUBJ> TARGET Rel + Sg IF (*1 TRANSVERB + 4Sg)(NEGATE 1 POSSESSUM3);
 MAP:M0640D @SUBJ> TARGET Rel + Sg IF (*1 TRANSVERB + 3Sg BARRIER V) 
 (NEGATE *1 3SgPoss + OBLIQUE BARRIER (*) - 3SgPoss LINK 1 Rel + Sg LINK *1 TRANSVERB + 3Sg BARRIER VERB-NOTCONT); #Malugisimavaami JANEP aallarnerata kingornagut angummi .. pisaleraani,
 
-MAP:M0649 @POSS> TARGET Rel + Pl IF (*1 3PlPoss OR 4PlPoss BARRIER (*) - @<APPOS - @N<) ;
+MAP:M0649 @POSS> TARGET Rel + Pl IF (*1 3PlPoss - ("Kalaallit Nunaat") OR 4PlPoss BARRIER (*) - @<APPOS - @N<) ;
 MAP:M0650 (@SUBJ>) TARGET Rel + Pl IF (*1 TRANSVERB + 3Pl OR TRANSVERB + 4Pl OR TRANSVERB + CONT BARRIER VFIN)
 #(NEGATE -1 Rel + Pl)#ikke possessor SILASIORFIIT nalunaarsugaasa takutippaat ..
 (NEGATE -1 Rel + Pl LINK NOT 1 _TARGET_ + POSSESSUM)
@@ -6241,7 +6247,7 @@ MAP:M1931 @>N Gram/Coref + $$KASUS (*1 NIQ + N + $$KASUS BARRIER (*) - OBLIQUE) 
 #########################################################################################
 
 #Rel kan være possessor
-MAP:M1938 @POSS> TARGET Rel IF (*1 POSSESSUM - POSSESSUM4 - CONJ-C - iN BARRIER (*) - @N< - @<APPOS - @FOC>N - KOMMA - CONJ-C - @i->V) (NEGATE -1 POSSESSUM LINK *2 POSSESSUM3 + Pl BARRIER (*) - V - (/@i-.*/r))(NEGATE 0 POSSESSUM4 LINK -1 @POSS> LINK NEGATE *2 POSSESSUM + Pl BARRIER KOMMA)
+MAP:M1938 @POSS> TARGET Rel IF (*1 POSSESSUM - POSSESSUM4 - CONJ-C - iN - ("Kalaallit Nunaat") BARRIER (*) - @N< - @<APPOS - @FOC>N - KOMMA - CONJ-C - @i->V) (NEGATE -1 POSSESSUM LINK *2 POSSESSUM3 + Pl BARRIER (*) - V - (/@i-.*/r))(NEGATE 0 POSSESSUM4 LINK -1 @POSS> LINK NEGATE *2 POSSESSUM + Pl BARRIER KOMMA)
 ;
 
 #M1940 må ikke tagge obj i strukturen obj> CONT+advl> TRANSVERB
@@ -7124,7 +7130,7 @@ SELECT (Gram/Pers Pron Rel 1Sg @SUBJ>) IF (*1 (V 1Sg) BARRIER 1SgPoss OR 1PlPoss
 
 SELECT:2540 Rel + Pl IF (*1 TRANSVERB + 3Pl + 3PlO)(-1 Par + 3Pl); #Subjektet, når bisætningens subjekt er implicit objekt 'Pinngussanik ilaatigut qaqutiguuissunik pinngualersorlutik pinnguartut SIMAARTUAQQAT silataaniit isiginnaarrappaat ... '
 
-SELECT:2548 Rel + Pl - CONJ-C IF (*1 TRANSVERB + 3Pl + 3SgO BARRIER CONT + 3PlO)(*-1 Abs + Sg BARRIER TRANSVERB)(NEGATE *1 Abs + Sg BARRIER TRANSVERB OR VFIN)(NEGATE 0 Adv);
+SELECT:2548 Rel + Pl - CONJ-C IF (*1 TRANSVERB + 3Pl + 3SgO BARRIER CONT + 3PlO OR VFIN + INTRANSVERB + 3Pl)(*-1 Abs + Sg BARRIER TRANSVERB)(NEGATE *1 Abs + Sg BARRIER TRANSVERB OR VFIN)(NEGATE 0 Adv);
 #SELECT:2549 Rel + Pl IF (*1 TRANSVERB + GE + 3Pl + 3PlO)(*-1 Abs + Pl BARRIER TRANSVERB)(NEGATE *1 Abs + Pl BARRIER TRANSVERB); 
 #OSV som specialtilfælde. Forudsætter vist GE??
 
@@ -7193,7 +7199,7 @@ REMOVE:5627 TIP + INTRANSVERB IF (0 HTR)(-1 Ins) ;
 
 # NP-er
 # -----
-SELECT HUMAN + Rel IF (1 HUMAN + POSSESSUM3);
+SELECT HUMAN + Rel IF (1 HUMAN + POSSESSUM3 - ("Kalaallit Nunaat"));
 SELECT HUMAN IF (-1 @POSS> + HUMAN);
 #Vælger siulittar+HTR+TUQ for siu+LIK=TAQ+U+TUQ efter possessum 'partit'
 
@@ -8215,7 +8221,7 @@ REMOVE:9500B Sg + $$KASUS IF (1 Pl + $$KASUS + @N<) ;
 REMOVE:5850 3PlPoss IF (-*1 @POSS> + 3SgPoss OR 4SgPoss BARRIER 3PlPoss)(0 3SgPoss); #vælg sing. possessor hvis sing til venstre
 REMOVE:5851 3PlPoss IF (-*1 @POSS> + Sg )(0 3SgPoss); #vælg sing. possessor hvis sing til venstre
 REMOVE:5851B Abs + Pl IF (0 Abs + Sg)(1C Abs + Sg - POSSESSUM3) ; #Ambigiøse possessum ud fra adled eller apposition
-REMOVE:5851B Abs + Pl IF (0 Rel + Pl)(1C 3PlPoss)(NEGATE *1 TRANSVERB + 3PlO BARRIER V) ; #Ambigiøse possessum ud fra adled eller apposition
+REMOVE:5851B Abs + Pl IF (0 Rel + Pl)(1C 3PlPoss - ("Kalaallit Nunaat"))(NEGATE *1 TRANSVERB + 3PlO BARRIER V) ; #Ambigiøse possessum ud fra adled eller apposition
 REMOVE:5851C ("(.*)"r) + TAQ + Sg IF (0 ("$1"v) + TAQ + Pl)(*0 ("$1"v) ); #Meeqqat qaqqamut majuartut malillugit ingerlalerpoq, qaqqakkoornerli sungiusimannginnamiuk malitaminit kingullinnguukkaluttuinnarpoq. #malitaq er Pl.
 
 #Possessum sing eller plur? Hvis NIQ sandsynligvis sing
@@ -8423,6 +8429,7 @@ REMOVE:9945I ("IR") IF (-1 Lok);
 #En isoleret Abl eller Ins sidst i sætningen er sikkert begrundende Abl hvis ikke i<N til QAR eller LIK
 SELECT:9946A Abl + NIQ IF (-1 KOMMA)(1 EOS)(NEGATE *-1 QAR OR LIK) ;
 SELECT:9946B Ins IF (-1 KOMMA)(1 EOS);
+REMOVE:9946C Abl + Hyb/1-2 IF (1C ("IP"));
 
 
 #Abl eller Ins? Sandsynligvis Abl ved NIQ, men med forbehold for QAR og LIK
