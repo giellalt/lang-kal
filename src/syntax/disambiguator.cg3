@@ -1164,6 +1164,7 @@ SET KONGRUENSADLED = N + $$KASUS + $$NUMERUS ;
 SET NÆPPE-POSS = (/__TUQ\ Der\/vn\ N\ Rel\ Sg\ 4PlPoss__/l) | (/__TUQ\ Der\/vn\ N\ Rel\ Pl\ 4PlPoss__/l) ; #SET til forebyggelse af uheldige sletninger af Ins. PL 20181017
 SET ALL_OBLIQUE = OBLIQUE | iOBLIQUE ;
 
+SET 3PlPossUdenMWE = 3PlPoss - ("Kalaallit Nunaat") - ("Kalaallit Illuutaat") ;
 SET POSSESSUM1 = (N 1SgPoss) | (iN i1SgPoss) | (N 1PlPoss) | (iN i1PlPoss) | (Num 1SgPoss) | (Num 1PlPoss) | (Prop 1SgPoss) | (Prop 1PlPoss) | (iProp i1SgPoss) | (iProp i1PlPoss) | (DivPron 1PlPoss) ;
 SET POSSESSUM2 = (N 2SgPoss) | (iN i2SgPoss) | (N 2PlPoss) | (iN i2PlPoss) ;
 SET POSSESSUM3 = (N 3SgPoss) | (N 3PlPoss) | (iN i3SgPoss) | (iN i3PlPoss) | (Num 3SgPoss) | (Num 3PlPoss) | (Prop 3SgPoss) | (Prop 3PlPoss) | (iProp i3SgPoss) | (iProp i3PlPoss) | (DivPron 3PlPoss) ;
@@ -1171,7 +1172,7 @@ SET POSSESSUM4 = (N 4SgPoss) | (N 4PlPoss) | (iN i4SgPoss) | (iN i4PlPoss) ;
 SET POSSESSUM12 = (N 1SgPoss) | (N 2SgPoss) | (iN i1SgPoss) | (iN i2SgPoss)| (N 1PlPoss) | (N 2PlPoss) | (iN i1PlPoss) | (iN i2PlPoss) ;
 
 SET POSSESSUM = POSSESSUM12 OR POSSESSUM3 OR POSSESSUM4 ; 
-SET POSSESSUM3UdenMWE = POSSESSUM3 - ("Kalaallit Nunaat") ;
+SET POSSESSUM3UdenMWE = POSSESSUM3 - ("Kalaallit Nunaat") - ("Kalaallit Illuutaat");
 SET NOT-POSSESSUM = N - POSSESSUM ;
 
 SET iPOSSESSUM1 = (iN i1SgPoss) | (iN i1PlPoss) ;
@@ -1882,6 +1883,8 @@ REMOVE:0003B (/\("naveer"\)\ Gram/TV\ HTR/l) IF (0 (/\("naveer"\)\ Gram/IV\ TIP/
 #ukuvoq overgenererer
 REMOVE:0003C ("uku") + Int + 3Sg IF (0 ("una") + Pl)(NEGATE *-1 Abs + Sg BARRIER V OR KOMMA);
 
+#NIQ med 1SgPoss eller 3SgPoss: Sikker og simpel disambiguering ved 1. persons inderivering 
+REMOVE:0003D NIQ + 3SgPoss IF (-1 CONT + 1Sg) ;
 
 ADDCOHORT ("<->" "-" PUNCT DIRTALESTART) BEFORE (*) (0 @INTERJ OR @VOK OR Interj - ("tassa") - ("tass") - ("qanoq") - ("ima") - ("taamaattoq") - ("imaattoq") - ("imaap") LINK NOT 0 Adv LINK NOT 0 Conj) (-1 BOS) (NEGATE 0 DIRTALESTART OR DIRTALEMIDDLE OR DIRTALESLUT) (NEGATE *-1W PUNCT - ("-") - (".") - KOMMA)
 (NEGATE -*1W CLB + DIRTALEMIDDLE OR CLB + DIRTALESLUT BARRIER EOS)# -Ilami ... ASSISSAQANNGILAQ. ASUMIAA Norgep nunataata maniinnera sungiusimanngikkaa.
@@ -2885,7 +2888,7 @@ SELECT:0063Z Rel + Pl IF (1 Part - ("tassa") LINK 1 Rel + Pl LINK 1C 3PlPoss)(NE
 SELECT:0063A Rel + Pl IF (1 TIDSPARTIKEL LINK 1C 3PlPoss)(NEGATE 2 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 2 ("assi") + POSSESSUM + CONJ-LU)(NEGATE -1 ("ila") LINK 3 ("ila")) ; #må ikke hitte på siornatigut og ikke på opremsede participier med assigisaallu og heller ikke på opremsninger med ilaat .. ilaat. Tilføjet 20170407
 
 REMOVE:0063B Rel + Pl + FAM_UNIK OR Rel + Pl + PLACE_EXTENDED IF (1C 3PlPoss - VIK - Prop)(0 CONJ-C LINK -1 Prop + Rel + Sg) ; #Nyvejip Qingartallu paarlaffianni inigisaqarpoq. 
-SELECT:0063 Rel + Pl - FAM_UNIK IF (1C 3PlPoss - ("Kalaallit Nunaat"))(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 1 ("assi") + POSSESSUM + CONJ-LU)(NEGATE -1 ("ila") LINK 2 ("ila"))(NEGATE 0 Par LINK *-1 Adv BARRIER V OR @PRED) #må ikke hitte på siornatigut og ikke på opremsede participier med assigisaallu og heller ikke på opremsninger med ilaat .. ilaat. Må ikke hitte på fx nuliami pii
+SELECT:0063 Rel + Pl - FAM_UNIK IF (1C 3PlPossUdenMWE)(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 1 ("assi") + POSSESSUM + CONJ-LU)(NEGATE -1 ("ila") LINK 2 ("ila"))(NEGATE 0 Par LINK *-1 Adv BARRIER V OR @PRED) #må ikke hitte på siornatigut og ikke på opremsede participier med assigisaallu og heller ikke på opremsninger med ilaat .. ilaat. Må ikke hitte på fx nuliami pii
 (NEGATE 1 Pl LINK 1 ADVERBIEL + TRANSVERB LINK 1 3Pl - TRANSVERB LINK NEGATE *-4 Rel)
 (NEGATE 0 (TUQ Der/vn N Ins)) ; #iluaqutaasumik
 SELECT:0063B Rel + Pl - FAM_UNIK - 4PlPoss - 4SgPoss IF (1C Rel + Pl - Prop LINK 1C 3PlPoss - Prop - iALL)(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 1 ("assi") + POSSESSUM + CONJ-LU)(NEGATE -1 ("ila") LINK 2 ("ila"))(NEGATE 0 ("assut") OR ("taama")) ;
@@ -3203,7 +3206,7 @@ MAP:M0136X @SUBJ> TARGET Abs + Pl IF (*1 NUM + Pl + Abs BARRIER (*) - ("tamaq") 
 MAP:M0136XX @ADVL>N TARGET ("akunneq") IF (-1 NUM + Pl + Abs )(1 NUM LINK *1 V + 3Pl BARRIER (*) - OBLIQUE ) ;
 
 SELECT:0136 Rel + Pl - FAM_UNIK IF #(*1 (*) - Rel - Num)
-(*1C POSSESSUM + 3PlPoss OR TRANSVERB - 3PlO BARRIER INTRANSVERB)
+(*1C POSSESSUM + 3PlPossUdenMWE OR TRANSVERB - 3PlO BARRIER INTRANSVERB)
 (NEGATE *1 Trm BARRIER KOMMA LINK 1 NIQ + 3PlPoss + Ins LINK *1 NIQAR + 3Pl BARRIER V) # ILAQUTAASUT ikiorneqarumasut sumut saaffiginnissinnaanerannik paasitinneqareerput, arlallillu saaffiginnereerlutik.
 (NEGATE *-1 INTRANSVERB + 3Pl OR TRANSVERB + 3PlO)
 (*1 POSSESSUM OR iPOSSESSUM OR TRANSVERB + 3Pl OR TRANSVERB + 4Pl BARRIER ("soorlu") OR ("taama")) 
@@ -4054,7 +4057,7 @@ MAP:M00222B @POSS> TARGET Rel IF (*1 SPATIAL + POSSESSUM + OBLIQUE - AFFINGERET 
 (NEGATE *1 Abs BARRIER V LINK *1 Lok LINK 1 ("IP") + TUQ)#ANGUTIP imigassat nerriviup qaavaniittut paariniarsimagamigit
  ; #saniatigut
 
-MAP:M00222C @POSS> TARGET Rel + Prop IF (*1 POSSESSUM3 + Prop BARRIER VFIN OR @PRED)
+MAP:M00222C @POSS> TARGET Rel + Prop IF (*1 POSSESSUM3UdenMWE + Prop BARRIER VFIN OR @PRED)
 (NEGATE 1 Prop LINK *1 TRANSVERB BARRIER VFIN) #LØKKEP Kalaallit Nunaat qutsavigaa.
  ; #Kalaallit Røde Korsiannit
 
@@ -5294,7 +5297,7 @@ MAP:M0608 (@POSS>) TARGET Rel + Sg - Pron IF (*1 3SgPoss - iProp - ("siuneq") BA
 (NEGATE *1 Abs BARRIER V LINK *1 Lok LINK 1 ("IP") + TUQ)#ANGUTIP imigassat nerriviup qaavaniittut paariniarsimagamigit
 ;
 
-MAP:M0608A @POSS> TARGET Rel IF (*1 POSSESSUM + $$NUMERUS BARRIER TRANSVERB LINK NEGATE *1 TRANSVERB)(NEGATE *-1 Rel + $$NUMERUS BARRIER KOMMA OR VFIN)(NEGATE *-1 ("tassa") OR ("soorlu") OR ("ingammik")) ;
+MAP:M0608A @POSS> TARGET Rel IF (*1 POSSESSUM + $$NUMERUS - ("Kalaallit Nunaat") - ("Kalaallit Illuutaat") BARRIER TRANSVERB LINK NEGATE *1 TRANSVERB)(NEGATE *-1 Rel + $$NUMERUS BARRIER KOMMA OR VFIN)(NEGATE *-1 ("tassa") OR ("soorlu") OR ("ingammik")) ;
 MAP:M0608B @POSS> TARGET Rel + Pl IF (*1 ("qanoq") BARRIER (*) - @N< - Adv LINK 1 (/\ NIQ\ Der\/vn\ N\ ...\ ..\ .PlPoss/l)) ;
 
 MAP:M0608B @POSS> TARGET Rel + Sg IF (*1 ("qanoq") BARRIER (*) - @N< - Adv LINK 1 (/\ NIQ\ Der\/vn\ N\ ...\ ..\ .SgPoss/l)) ;
