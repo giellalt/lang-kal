@@ -1746,39 +1746,8 @@ SET @ALLSUBJ = @ALLSUBJ> OR @<SUBJ ;
 SET @ALLMIK-OBJ = @MIK-OBJ> OR @i-MIK-OBJ> ;
 SET @FUNC = @ALLSUBJ | @ALLOBJ> | @<OBJ | @ALLMIK-OBJ ; #alle funktionstags for sætningsniveauargumenter
 
- # Kladdenotatar, skal slettast
- # SU: abs(IV), rel(tv), trm(dotv), ins; 4subm
- # DO:  abs(tv,ditv), ins(htv); 4subm
- # IO: trm(ditv,dotv)
- # iv:   subj:abs
- # htv:  subj:abs obj:ins
- # tv:   sub:rel obj:abs 
- # Evap      panini         Jensimut    paareqquaa.
- # Evap      pania          Jensimut    paareqquaa.
- # Evap      pania          Jensimut    paareqquaa.
- # Evap      Paninnguaq     Jensimut    paareqquaa.
- # @SUBJ     @OBJ           @OBJ/@ADVL     "Eva bad jens passe Paninnguaq"
- #           @iOBJ          @IOBJ/@iSUBJ          
- # Evap      Jensj        oqarfigaa panini     paareqqullugu
- # Evap      Jensi        oqarfigaa pania      paareqqullugu           
- # Evap      Jensi        oqarfigaa Paninnguaq paareqqullugu
- # subj       obj        pred      o
- # Eva bad Jens passe sin datter
- #         Jensi      iserpoq
- #         Jensi      iserpoq
- #         Evap Jensi iseqquaa.
- #         
- #         tanna tassa tassaavoq
- #         Jensi tasaavoq Olip ernera.
- #         Hansi tassa 
-         
- ###     Eva      bad            Jens      passe    Paninnguaq
- # dotv: subj:rel så             obj:trm   [cl-oa   <obj:abs]
- #       subj:rel fik til at     [subj:trm  cl-obj  <obj:abs]
- # 	    subj:rel lovede         iobj:trm  [cl-obj  <obj:abs]
- # ditv: Sonja     gav hæsten   sukker
- #       subj:rel      iobj:trm obj:abs
-
+#SET der forudsætter @-tags
+SET i-CONT = CONT + @i-ADVL> ;
 
 # ============ #
 # ============ #
@@ -4025,9 +3994,11 @@ MAP:M0018B @NIQ_OBJ> TARGET Abs - CONJ-C IF (1*C (/Gram\/TV\ NIQ\ Der\/vn\ N__/l
 SUBSTITUTE @NIQ_OBJ> @N< TARGET Abs IF (NEGATE 0 CONJ-C) (-1 @NIQ_OBJ> + Abs) ;
 SUBSTITUTE @NIQ_OBJ> @N< TARGET Abs IF (NEGATE 0 CONJ-C) (-1 @N< LINK -1 @NIQ_OBJ> + Abs) ; #sideordnede adled
 
-MAP:M0018A (@NIQ_SUBJ>) TARGET Rel - Gram/Pers IF (*1 (/Gram\/TV\ NIQ\ Der\/vn\ N__/l) + NIRMIT BARRIER V OR (/@.*/r) - @NIQ_OBJ> - @N< OR KOMMA LINK NEGATE *1 HTR BARRIER (*) - Ins)(NEGATE 1 POSSESSUM)(NEGATE *1 INTRANSVERB + 3Sg BARRIER Abs + Sg)(NEGATE *1 3SgO BARRIER Abs + Sg) #nunap piniagassarsui tusaamanermit nuussimavugut.
+MAP:M0018C (@NIQ_SUBJ>) TARGET Rel - Gram/Pers IF (*1 (/Gram\/TV\ NIQ\ Der\/vn\ N__/l) + NIRMIT BARRIER V OR (/@.*/r) - @NIQ_OBJ> - @N< OR KOMMA LINK NEGATE *1 HTR BARRIER (*) - Ins)(NEGATE 1 POSSESSUM)(NEGATE *1 INTRANSVERB + 3Sg BARRIER Abs + Sg)(NEGATE *1 3SgO BARRIER Abs + Sg) #nunap piniagassarsui tusaamanermit nuussimavugut.
 ; #til transitive neq-konstruktioner #*Panimmaana nutella mamarinermut.
-MAP:M0018A (@NIQ_SUBJ>) TARGET Abs - Gram/Pers + &&IV_SUBJ& IF (*1 (/Gram\/IV\ NIQ\ Der\/vn\ N\__/l) + NIRMIT BARRIER V OR (/@.*/r) - @N< OR KOMMA LINK NEGATE *1 HTR BARRIER (*) - Ins)(NEGATE 1 POSSESSUM)(NEGATE *1 INTRANSVERB + &&IV_SUBJ& BARRIER Abs + Sg)(NEGATE *1 3SgO BARRIER Abs + Sg)(NEGATE *1 NIRMIT + Trm LINK *1 TRMVERB BARRIER @PRED OR VFIN) #nunap piniagassarsui tusaamanermit nuussimavugut.
+MAP:M0018D (@NIQ_SUBJ>) TARGET Abs - Gram/Pers + &&IV_SUBJ& IF (*1 (/Gram\/IV\ NIQ\ Der\/vn\ N\__/l) + NIRMIT BARRIER V OR (/@.*/r) - @N< OR KOMMA LINK NEGATE *1 HTR BARRIER (*) - Ins)(NEGATE 1 POSSESSUM)(NEGATE *1 INTRANSVERB + &&IV_SUBJ& BARRIER Abs + Sg)(NEGATE *1 3SgO BARRIER Abs + Sg)(NEGATE *1 NIRMIT + Trm LINK *1 TRMVERB BARRIER @PRED OR VFIN) #nunap piniagassarsui tusaamanermit nuussimavugut.
+(NEGATE 0 Sg LINK *1 3SgO BARRIER V)#forbehold for OBJ>
+(NEGATE 0 Pl LINK *1 3PlO BARRIER V)#forbehold for OBJ>: APEQQUTIT ilisimatusarnermut tunngasut tusarnikuuakka
 (NEGATE *1 Ins + NIRMIT BARRIER VFIN LINK 1 INSOBJVERB OR LIK_QAR ) #Dagmar Jensen aatsaat ernutaqarnermik misigisaqalerpoq.
 (NEGATE *1 LIK BARRIER (*) - Ins ) #inatsisileritooq aningaasaqarnermik akileraartarnermillu soqutigisalik.
 (NEGATE -1 Abs)
@@ -4036,13 +4007,13 @@ MAP:M0018A (@NIQ_SUBJ>) TARGET Abs - Gram/Pers + &&IV_SUBJ& IF (*1 (/Gram\/IV\ N
 
 #Særregel når Abl er Ins
 MAP:M0018AX (@NIQ_SUBJ>) TARGET Abs - Gram/Pers IF (*1 (/Gram\/IV\ NIQ\ Der\/vn\ N\__/l) + Ins BARRIER V OR (/@.*/r) - @N< OR KOMMA LINK NEGATE *1 HTR BARRIER (*) - Ins)(NEGATE 1 POSSESSUM)(NEGATE *1 INTRANSVERB + 3Sg BARRIER Abs + Sg)(NEGATE *1 3SgO BARRIER Abs + Sg)(NEGATE *1 NIRMIT + Trm LINK *1 TRMVERB BARRIER @PRED OR VFIN) #nunap piniagassarsui tusaamanermit nuussimavugut.
-(NEGATE *1 Ins + NIRMIT BARRIER VFIN LINK 1 INSOBJVERB OR LIK_QAR ) #Dagmar Jensen aatsaat ernutaqarnermik misigisaqalerpoq.
+(NEGATE *1 Ins + (/Gram\/IV\ NIQ\ Der\/vn\ N\__/l) - POSSESSUM BARRIER VFIN LINK 1 INSOBJVERB OR LIK_QAR ) #Dagmar Jensen aatsaat ernutaqarnermik misigisaqalerpoq.
 (NEGATE *1 LIK BARRIER (*) - Ins ) #inatsisileritooq aningaasaqarnermik akileraartarnermillu soqutigisalik.
 (NEGATE -1 Abs)
 (NEGATE 0 TITEL LINK 1 N OR Prop)
 ;
 
-SUBSTITUTE:S0018A @NIQ_SUBJ> @N< TARGET $$KASUS IF (*-1 @NIQ_SUBJ> + $$KASUS - CONJ-C BARRIER CONJ-C OR @PRED)(*1 (/Gram\/IV\ NIQ\ Der\/vn\ N__/l) + NIRMIT) ;
+SUBSTITUTE:S0018E @NIQ_SUBJ> @N< TARGET $$KASUS IF (*-1 @NIQ_SUBJ> + $$KASUS - CONJ-C BARRIER CONJ-C OR @PRED)(*1 (/Gram\/IV\ NIQ\ Der\/vn\ N__/l) + NIRMIT) ;
 
 #Transitive ledsagemåder brugt koncessivt. A ved coref Cau før koncessionen B uden. 0019AX og 0019BXfor at tage højde for implicit subjekt i inquit fulgt at or. obl.
 
@@ -5445,7 +5416,7 @@ MAP:M0617B @<MIK-OBJ TARGET Ins - POSSESSUM IF (-*1 HTR + V - LIK_QAR BARRIER V)
 MAP:M0617BX @<MIK-OBJ TARGET Trm - POSSESSUM IF (-*1 MUT-OBJ + HTR + V - LIK_QAR BARRIER V)(NEGATE *1 INDERIVERENDE_SUBSTANTIV OR HTR BARRIER V) ;
 MAP:M0619 (@i-MIK-OBJ>) TARGET Ins - TIME - ADJEKTIVISK IF (*1 HTR + Der/vn + N BARRIER V OR NIQ - LU);
 #NIPILERSUKKANIK internetikkut oqarasuaatikkullu angallattakkakkut akiliinani aallertarneq unioqqutitsillunilu ingerlatitseqqittarneq inerteqqutaapput.
-MAP:M0619 @i-MIK-OBJ> TARGET Ins - TIME - ADJEKTIVISK IF (*1 HTR + Der/vn + N BARRIER (*) - OBLIQUE - CONT);#usikker CONT. Burde være (CONT @i-ADVL>), men det virker ikke
+MAP:M0619 @i-MIK-OBJ> TARGET Ins - TIME - ADJEKTIVISK IF (*1 HTR + Der/vn + N BARRIER (*) - OBLIQUE - i-CONT);#usikker CONT. Burde være (CONT @i-ADVL>), men det virker ikke
 
 MAP:M0619X (@i-MIK-OBJ>) TARGET Trm - TIME IF (*1 MUT-OBJ + HTR + Der/vn + N BARRIER V );
 #Der kræves en undtagelse for NIQ i tidsudtryk. De skal ikke blokere for et Der/vn længere til højre
