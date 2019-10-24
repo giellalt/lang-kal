@@ -21,10 +21,14 @@ Getopt::Long::Configure('no_ignore_case');
 my $opt_bin = '';
 my $opt_fst = 0;
 my $opt_verbose = 0;
+my $opt_noquote_hyph = 0;
+my $opt_noquote_raw = 0;
 my $rop = GetOptions(
 	'bin|b=s' => \$opt_bin,
 	'fst|f' => \$opt_fst,
 	'verbose|v' => \$opt_verbose,
+	'no-quote-hyphen|H' => \$opt_noquote_hyph,
+	'no-quote-raw|R' => \$opt_noquote_raw,
                     );
 
 my @bins = ($opt_bin, '/usr/local/bin/hfst-tokenise', '/opt/local/bin/hfst-tokenise', '/usr/bin/hfst-tokenise');
@@ -101,6 +105,12 @@ autoflush OUT 1;
 autoflush IN 1;
 
 my %cache = ();
+my $puncts = '\x{2018}-\x{201F}\x{2039}\x{203A}\x{2E42}\x{3008}-\x{300B}\x{301D}-\x{301F}”“"\'´`‘’()»«';
+my $ps_double = '[\x{2018}-\x{201B}\'´`‘’]{2,}|[\x{201C}-\x{201F}\x{2E42}\x{301D}-\x{301F}”“"]+';
+my $ps_single_r = '\x{2018}-\x{201B}\'´`‘’';
+my $ps_single = "[$ps_single_r]+";
+my $ps_parens = '[()]';
+my $ps_angle = '[\x{2039}\x{203A}\x{3008}-\x{300B}»«]';
 
 sub call_tokenizer {
    my ($in) = @_;
@@ -120,7 +130,106 @@ sub call_tokenizer {
       $hash =~ s/[^a-zA-Z0-9]/x/g;
       $url_cache{$u} = "URL_$hash";
       $in =~ s@\Q$u\E@URL_$hash@g;
-      print STDERR "URL $u -> $hash\n";
+      #print STDERR "URL $u -> $hash\n";
+   }
+
+   my @qhyphs = ();
+
+   # Turn "quoted with hyphen suffix"-imi into placeholders
+   if (!$opt_noquote_hyph) {
+      # Keep suffixes in line with affixes/propernouns.lexc lexicon ZcitationsformZ
+      my @qs = split(m@([$puncts]+\p{Pd}i?(?:p|mut|mit|minngaannit|minngaanniit|miit|mi|tut|mik|kkut))@, $in);
+      if (scalar(@qs) > 1) {
+         for (my $i=1 ; $i<scalar(@qs) ; $i+=2) {
+            my ($punct,$dash,$suffix) = ($qs[$i] =~ m@([$puncts]+)(\p{Pd})(i?(?:p|mut|mit|minngaannit|minngaanniit|miit|mi|tut|mik|kkut))@);
+
+            my @accent = ();
+            my $ps = "[$puncts]+";
+            if ($punct =~ m@^$ps_double$@) {
+               # Match double single-quotes with actual double-quotes
+               $ps = $ps_double;
+            }
+            elsif ($punct =~ m@^$ps_single$@) {
+               # Protect things like o'Malley d'Aix l'Étudiant 4'eren and possessive 's
+               while ($qs[$i-1] =~ s@(\s[\pL\pN\pM]+)([$ps_single_r])([^$ps_single_r]+)$@$1\x{E000}$3@i) {
+                  push(@accent, $2);
+               }
+               $ps = $ps_single;
+            }
+            elsif ($punct =~ m@^$ps_parens$@) {
+               $ps = $ps_parens;
+            }
+            elsif ($punct =~ m@^$ps_angle$@) {
+               # Various angle-brackets
+               $ps = $ps_angle;
+            }
+
+            if ($qs[$i-1] =~ m@(.*)(^|[\s.,:;?()])([\pL\pN\pM]*$ps)([\pL\pN\pM\s!].*?)$@) {
+               my ($pre,$ppunct,$quote) = ($1.$2, $3, $4);
+               # Skip if the quoted part contains what looks like a sentence fragment
+               if ($quote !~ m@\s[\p{Ll}\pN\pM]+\.\s\p{Lu}@ && scalar(() = ($quote =~ m@(\s+)@g)) < 20) {
+                  my $n = scalar(@qhyphs);
+                  $qs[$i-1] =~ s@(\Q$pre\E)\Q$ppunct$quote\E$@$1 QuotedHyphen$n-$suffix @;
+                  for my $ip (@accent) {
+                     $quote =~ s@\x{E000}@$ip@;
+                  }
+                  $qs[$i] = '';
+                  push(@qhyphs, ["$ppunct$quote$punct", $dash, $suffix]);
+                  #print STDERR "QHYPH $qhyphs[$n]->[0] $dash $suffix\n";
+               }
+               else {
+                  #print STDERR "REJECTED $ppunct$quote$qs[$i]\n";
+               }
+            }
+            else {
+               #print STDERR "NOMATCH $qs[$i-1] $qs[$i]\n";
+            }
+            for my $ip (@accent) {
+               $qs[$i-1] =~ s@\x{E000}@$ip@;
+            }
+         }
+         $in = join('', @qs);
+      }
+   }
+
+   if (!$opt_noquote_raw) {
+=pod
+      # Turn "double-quoted without hyphen suffix" into placeholders
+      while ($in =~ m@(^|\s|\pP)($ps_double)((?:\S+?\s+?){0,6}?\S[\pL\pN\pM]*?)($ps_double)(\s|\pP|$)@) {
+         my ($pre,$pq,$q,$sq,$suf) = ($1,$2,$3,$4,$5);
+         my $n = scalar(@qhyphs);
+         $in =~ s@\Q$pq$q$sq\E@ QuotedHyphen$n @g;
+         push(@qhyphs, ["$pq$q$sq", '', '']);
+         #print STDERR "DQUOTE $qhyphs[$n]->[0]\n";
+      }
+
+      # Turn 'single-quoted without hyphen suffix' into placeholders
+      while ($in =~ m@(^|\s|\pP)($ps_single)((?:\S+?\s+?){0,6}?\S[\pL\pN\pM]*?)($ps_single)(\s|\pP|$)@) {
+         my ($pre,$pq,$q,$sq,$suf) = ($1,$2,$3,$4,$5);
+         my $n = scalar(@qhyphs);
+         $in =~ s@\Q$pq$q$sq\E@ QuotedHyphen$n @g;
+         push(@qhyphs, ["$pq$q$sq", '', '']);
+         #print STDERR "SQUOTE $qhyphs[$n]->[0]\n";
+      }
+
+      # Turn (parentheticals) into placeholders
+      while ($in =~ m@(^|\s|\pP)([(])((?:\S+?\s+?){0,6}?\S[\pL\pN\pM]*?)([)])(\s|\pP|$)@) {
+         my ($pre,$pq,$q,$sq,$suf) = ($1,$2,$3,$4,$5);
+         my $n = scalar(@qhyphs);
+         $in =~ s@\Q$pq$q$sq\E@ QuotedHyphen$n @g;
+         push(@qhyphs, ["$pq$q$sq", '', '']);
+         print STDERR "PQUOTE $qhyphs[$n]->[0]\n";
+      }
+=cut
+   }
+
+   # If the input consisted only of quotes, undo the placeholders
+   if ($in =~ m@^(\s*QuotedHyphen\d+(?:-\S+)?)+\s*$@) {
+      for (my $n=0 ; $n<scalar(@qhyphs) ; ++$n) {
+         my ($q,$d,$s) = @{$qhyphs[$n]};
+         $in =~ s@QuotedHyphen$n-@$q$d@g;
+         $in =~ s@QuotedHyphen$n(\s|$)@$q$1@g;
+      }
    }
 
    my $out = '';
@@ -143,6 +252,14 @@ sub call_tokenizer {
       while (my ($u,$h) = each(%url_cache)) {
          $out =~ s@"<\Q$h\E>"@"<$u>"@g;
          $out =~ s@\t"\Q$h\E" \?@\t"$u" Sem/Url Prop Abs\n\t"$u" URL@g;
+      }
+
+      for (my $n=0 ; $n<scalar(@qhyphs) ; ++$n) {
+         my ($q,$d,$s) = @{$qhyphs[$n]};
+         $q =~ s@[\s\pZ]+@\x{E020}@g;
+         $out =~ s@"QuotedHyphen$n"( N [^\n]+)@"$q"$1 Heur/Quote@g;
+         $out =~ s@<QuotedHyphen$n-@<$q$d@g;
+         $out =~ s@<QuotedHyphen$n>@<$q>@g;
       }
 
       # Move prefixes after the base form
@@ -270,7 +387,7 @@ sub analyze {
                   $n->[0] =~ s/^("<.*>")/"<$orig>"/;
                }
                if ($h) {
-                  $n->[0] =~ s/^("<.*>")/$1 $h/;
+                  $n->[1] =~ s/(\t".*"[^\n]+)/$1 $h/g;
                }
             }
             splice(@cs, $i, 1, @ncs);
