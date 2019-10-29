@@ -3238,7 +3238,7 @@ SELECT:0153A Prop + Sem/FirstName IF (1 Prop + Pl + KKUT) (NEGATE 1 Prop + IP); 
 
 REMOVE:0154 Prop IF (-1 BOS)(1 (/__Gram\/Dem\ Pron__/l)) ; #Arnaq eller arnaq først i sætningen?
 
-SELECT:0155 (Prop) OR iProp IF (0 ("<\\p{Lu}.*>"r)) (NEGATE *-1 BOS BARRIER (*) - PUNCT - ROMANNUMBER) ;
+SELECT:0155 (Prop) OR iProp IF (0 ("<\\p{Lu}.*>"r)) (NEGATE *-1 BOS OR RIGHT BARRIER (*) - PUNCT - ROMANNUMBER) ;
 # Select Prop hvis Wordform starter med stort, men ikke hvis første ord i sætning eller i direkte tale
 
 REMOVE:0155B Prop + (".*ĸ.*"r) IF (0 Prop) (0 (".*q.*"r) - OLang/DAN OR (".*gp.*"r) - OLang/DAN OR (".*gt.*"r) - OLang/DAN) (NEGATE *0 Orth/Arch) ; #Anguteĸ fravælges for Anguteq
@@ -4728,6 +4728,8 @@ MAP:M0318 (@ADVL>) TARGET Lok + TIME - ("akunneq") IF (*1 V BARRIER NIQ + POSSES
 
 #MAP:M0319 (@<ADVL) TARGET Lok + TIME - ADJEKTIVISK OR ("affaq") IF (-*1 V)(NEGATE 1 Der/vn OR ("nalunaaqutaq"))(NEGATE *1 ("qanoq") LINK 1 ("pisar") OR ("pi") + TAR) ; #PL udkommenteret. Kørt på testcorpus hvor kun anvendt 4 gange alle forkerte
 
+MAP:M0324 @ADVL> TARGET ("kinguneq") + Sg + POSSESSUM3 - AFFINGERET (*1 V) ;
+
 MAP:M0325 @ADVL> TARGET TIME + Via IF (*1 IteCau BARRIER V) ;
 
 MAP:M0326 @ADVL> TARGET ADVERBIEL IF (1 ORATIOOBLVERB + V OR DIRTALE + V) ; #ersarissumik oqarpoq
@@ -4746,9 +4748,8 @@ MAP:M0699E @ADVL> TARGET OBLIQUE + $$KASUS OR Adv IF (-*1 KOMMA OR CONJ-C - Adv 
 (NEGATE **-1 $$KASUS BARRIER (*) - KOMMA - $$KASUS - CONJ-C LINK -1 ("tassa") LINK -1 $$KASUS)
 (NEGATE -1 $$KASUS + $$NUMERUS)(NEGATE  0 Ins LINK *-1 KOMMA LINK *1 LIK_QAR OR HTR OR HVVERB BARRIER KOMMA OR CONJ-C)
 (NEGATE -1 Hyb/1-2 + 3SgPoss LINK -1 Rel + Sg LINK -1 $$OBLIQUE LINK -1 KOMMA LINK -1 $$OBLIQUE)#må ikke tagge kongruensadled efter appositioner qeqertarpaat ilaannut, Franz Josef Landimut Inngikitsullip UNGASINNGISAANIITTUMUT
-(NEGATE **-1 $$KASUS - (/@.*>.*/r) BARRIER (*) - KOMMA - $$KASUS - CONJ-C - OBLIQUE - Adv LINK 1 KOMMA) #Umiarsuarmut pingasunik napparutitalimmut, issittup imartaanit aatsaat *tikittumut ikigit.
+(NEGATE **-1 $$KASUS - (/@.*>.*/r) BARRIER V LINK *1 _TARGET_ LINK NEGATE -1 KOMMA LINK -2 KOMMA) #Umiarsuarmut pingasunik napparutitalimmut, issittup imartaanit aatsaat *tikittumut ikigit.
  ; #Opremsning til nominer der er adverbale
-
 
 ###################################################################
 # Adnominale adled - Forsøg på ny, mere generel struktur 20180128 #
@@ -6909,7 +6910,7 @@ REMOVE:1681A 1SgPoss IF (0 Aeq)(NEGATE *1 1Sg) ;
 
 REMOVE:1681B 2SgPoss IF (0 Prop LINK 1 iProp) ;
 REMOVE:1681C Prop + POSSESSUM1 - AFFINGERET - ("Nuna") IF (0 PROP - POSSESSUM) ;
-REMOVE:1681D N IF (0 Prop - POSSESSUM)(NEGATE *-1 BOS BARRIER WORD) ;
+REMOVE:1681D N IF (0 Prop - POSSESSUM)(NEGATE *-1 BOS BARRIER WORD) (NEGATE -1 RIGHT) ;
 REMOVE:1681E Prop + AFFINGERET IF (0 Prop - AFFINGERET) ;
 
 REMOVE:1682 2SgPoss IF (0 NUMHOVED) ; #kapitalit pingajuanniippoq.
@@ -7100,7 +7101,7 @@ REMOVE @ADVL> IF (0 @N< + LIK OR @N< + TUQ OR @N< + ADJEKTIVISK) ; #Arnat Danmar
 
 # One-cohort disambiguation - cycle 0
 
-SELECT:1851 Prop IF (NEGATE *-1 BOS BARRIER (*) - PUNCT - ROMANNUMBER)(0 Prop) ; #Lyder som en mærkelig regel. Skal checkes
+SELECT:1851 Prop IF (NEGATE *-1 BOS BARRIER (*) - PUNCT - ROMANNUMBER)(0 Prop)(NEGATE -1 RIGHT) ; #Lyder som en mærkelig regel. Skal checkes
 	## Ilalu Nuup eqqaani iliverpassuit. # SNM: det neste anførselstegn resetter syntaksfarger "
 REMOVE:1852 N IF (0 Prop + Sem/Geo + @SUBJ> - AA) ; #Uden -AA slettes TIMAA assoruuppalulerpoq
 
@@ -8231,7 +8232,7 @@ REMOVE:5895Ø ("siunnersuisoq") IF (0 (/"siunnersor"\ Gram/TV\ HTR\ Der/vv\ Gram
 SELECT:5729 N - Prop IF (0 ("angut") OR ("arnaq")) (0 POSSESSUM - AFFINGERET) ;
 SELECT:5730 Prop - FAM - TITEL IF (-1 BOS)(1 Prop + CONJ-LU)(NEGATE 0 FAM); #Stochastisk overvejelse. Paratakse af appellativ og proprium ikke ret sandsynlig
 #("(.*)[a-z]"r) IF (<**-1C ("$1"v))
-SELECT Prop IF (0 (@HNOUN)) ;
+#SELECT Prop IF (0 (@HNOUN)) ; #Lyder farlig, når det ikke kræves at @HNOUN og Prop er samme ord. Fejler her: 6) Majuartaat innaallagissamik ingerlatilik arfineq marlunnik napparutitalik.
 REMOVE Prop IF (0 ("Aleqa") OR ("Anersaaq")) ;
 REMOVE ("qanik") + QAR IF ( *0 @SUBJ> + HUMAN ) ;
 REMOVE ("alliaq") IF (0 TU) ; #vælger 'alliartor' frem for alliaq+TU
