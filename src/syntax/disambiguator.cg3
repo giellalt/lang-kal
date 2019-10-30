@@ -286,7 +286,7 @@ LIST ARAQ = ARAQ ;
 LIST ARSUK = ARSUK ;
 LIST IAR = IAR ;
 LIST IAR_HTR = IAR\=HTR ;
-LIST IP = IP ;
+LIST IP = IP ("IP") ;
 LIST IP_QAT_GE = IP\=QAT\=GE ;
 LIST INNAQ = INNAQ ;
 LIST INNAR = INNAR ;
@@ -1527,7 +1527,7 @@ LIST DISEASE = "gigt" ;
 LIST ABSTRACT = "taaq" ;
 
 LIST PLACE = ("atuar" VIK) "illu" "imaq" "itersaq" "itersaliaq" "itersaliarsuaq" "klasse" ("mip" TAR VIK) "mittarfik" "nuna" ("oqalup" VIK) "orpippassuaq" "sakkutooqarfik" "siku" "silarsuaq" "ungaloq" "village" Sem/Geo ^Sem/Hum "lexicon" ; 
-LIST PLACE_MORE = (/\"<\\p{Lu}.*\>"/r);
+LIST PLACE_MORE = (/\"<\\p{Lu}.*\>"/r) ^Hyb/2-2;
 SET PLACE_EXTENDED = PLACE | PLACE_MORE ;
 LIST ADJEKTIVISK = "akisooq" "akutakujooq" "akutakujuk" "angisooq" ("arlaq" LIK) "ataavartoq" "ilivitsoq" ("isertor" TUQ) "itisooq" "manissoq" ("perler" TUQ) ("portu" JAAR) "takisooq" "siulleq" "tamalaaq" "tulleq" "tulliup" "tungujortoq" (NAR TUQ) (/.*tooq\"/r); #angut og arnaq medtaget lidt skummelt, men anvendes ofte adjektivisk. PL 20190806 mange fejl, så arnaq og angut fjernet igen. sakkutooq undtaget fra .*tooq
 LIST COLOUR = "aappaluttoq" ("aak" PALUP TUQ) "qaqortoq" "qaqqorik" "qernertoq" "qorsuk" "sungaartoq" "tungujortoq" ;
@@ -2380,6 +2380,10 @@ REMOVE (Orth/Copy Prop) IF (0 VIK)(1 Sem/Hum)(-1 BOS OR CLB);
 #SUBSTITUTE (Orth/Copy) (*) TARGET (Orth/Copy) ;
 
 
+### Hybrider
+MAP:00001A @i-ADVL> TARGET Hyb/1-2 IF (1 Hyb/2-2 - V) ;
+MAP:00001A @ADVL> TARGET Hyb/1-2 IF (1 Hyb/2-2 + V) ;
+
 ###################################################################################
 ### USIKRE TAGGINGS AF LÆSBARE ORD HVOR MORFOLOGI OG SYNTAKS IKKE HÆNGER SAMMEN ###
 #=================================================================================#
@@ -2683,8 +2687,16 @@ REMOVE:0113 SPATIAL + LIR IF (0 ("ungasip")); #20120422 ("ungate")+LIR vist alti
 
 REMOVE:0114A SPATIAL - ("aki") - ("ilumoor") (NEGATE 0 ("ilu" iTrm))(NEGATE 0 POSSESSUM OR KANNIQ OR INNAQ) ;
 REMOVE:0114 Abs + 4SgPoss IF (0 SPATIAL + POSSESSUM + Lok LINK -1 Rel)(NEGATE 0 ("ate") + TAQ)(NEGATE 0 ("aki") + TUQ + SSAQ ) ; # Olep saani næppe subjekt og objekt men possessor possessum. Må dog ikke hitte på atisat og ikke på "aki" i fx "akisussaassuseq"
+
+
 SELECT:0115 SPATIAL - ("ate") - LIK + (Sg) IF (0 POSSESSUM - 2SgPoss)(NEGATE 0 $$KASUS + $$NUMERUS LINK -1 POSSESSUM + $$KASUS + $$NUMERUS)(NEGATE 0 V - iN)(NEGATE 0 ("Tunu"));
-SELECT:0116 SPATIAL - LIK + (Sg) IF (0C POSSESSUM)(NEGATE 0 (/__\"ate\"\ Gram\/TV\ TAQ__/l) OR ("ateq"))(NEGATE 0 (/__\"ate\"\ Gram\/TV\ LIK__/l))(NEGATE 0 ("ataata")) ; #2.4. hitter paa ati + TAQ og på "ataata"
+
+SELECT:0116 SPATIAL - LIK + (iSg) IF (1SC iPOSSESSUM)(NEGATE 0 (/__\"ate\"\ Gram\/TV\ TAQ__/l) OR ("ateq"))(NEGATE 0 (/__\"ate\"\ Gram\/TV\ LIK__/l))(NEGATE 0 ("ataata")) # kujataaneersut. Her skal vælges spatial, men ikke Sg ...
+; #2.4. hitter paa ati + TAQ og på "ataata"
+
+SELECT:0116 SPATIAL - LIK + (Sg) IF (0C POSSESSUM)(NEGATE 0 (/__\"ate\"\ Gram\/TV\ TAQ__/l) OR ("ateq"))(NEGATE 0 (/__\"ate\"\ Gram\/TV\ LIK__/l))(NEGATE 0 ("ataata")) 
+(NEGATE 0 iSg) # kujataaneersut. Her skal vælges spatial, men ikke Sg ...
+; #2.4. hitter paa ati + TAQ og på "ataata"
 #REMOVE:0117 SPATIAL IF (0 QAR) ; #Gør vist ikke andet end at fjerne ("aki") forkert
 SELECT SPATIAL IF (0 KANNIQ) ; #kujammukanneq
 REMOVE N - SPATIAL OR iN - SPATIAL IF (0 SPATIAL + POSSESSUM3 - Rel - AFFINGERET OR SPATIAL + iPOSSESSUM3 - Rel - AFFINGERET)
@@ -6577,7 +6589,7 @@ SELECT:0433 Par + INTRANSVERB IF (*-1 VFIN + ORATIOOBLVERB + 3SgO LINK -*1 Abs +
 SELECT:0435 Par + INTRANSVERB IF (*-1 VFIN - ORATIOOBLVERB)(NEGATE -*1 VFIN + U OR VFIN + GE)(1 EOS)(*-1 Abs BARRIER KOMMA)
 #(NEGATE 0 ATTRIBUTIV) #PL udkommenteret 20190626 da blokerer for meget. Testet med Testcorpus og regression uden konsekvenser
 (NEGATE *-1 ORATIOOBLVERB LINK NEGATE *1 @CL-<CIT LINK *1 _TARGET_)
-(NEGATE 0 Abs LINK -*1 Abs + &&IV_SUBJ& BARRIER (*) - ALL_OBLIQUE LINK -*1 IP + POSSESSUM + &&IV_SUBJ&) #avatinnguaniippoq sissaq nalunnguartorpassuaqartartoq. VS normal ved IP+POSSESSUM konstruktioner i stedet for forventet SV 
+(NEGATE 0 Abs + $$NUMERUS LINK -*1 Abs + $$NUMERUS BARRIER (*) - ALL_OBLIQUE LINK -*1 IP LINK -1S POSSESSUM BARRIER (*) - Hyb/2-2) #avatinnguaniippoq sissaq nalunnguartorpassuaqartartoq. VS normal ved IP+POSSESSUM konstruktioner i stedet for forventet SV 
 ;
 
 #Samme regel for or. obl.
@@ -8511,7 +8523,8 @@ SELECT:9940_1SgPoss_obj 1SgPoss IF (0 @SUBJ> LINK *1 V + 1Sg BARRIER V - CONT) ;
 
 REMOVE:9941_1SgPoss_func 1SgPoss IF (0 3SgPoss)(0 @FUNC)(NEGATE *0 VFIN + 1Sg OR VFIN + 1SgO)(NEGATE *-1 1Sg OR 1SgO BARRIER V) ; #R20
 
-REMOVE:9942 SPATIAL + ALL_Pl + ALL_OBLIQUE IF (0 SPATIAL + ALL_Sg + ALL_OBLIQUE) ; #	"sani" Lok Pl 1PlPoss vs. "sani" Lok Sg 1PlPoss
+REMOVE:9942A SPATIAL + iPl + ALL_OBLIQUE IF (0 SPATIAL + iSg + ALL_OBLIQUE) ; #	"sani" Lok Pl 1PlPoss vs. "sani" Lok Sg 1PlPoss
+REMOVE:9942B SPATIAL + Pl + ALL_OBLIQUE IF (0 SPATIAL + Sg + ALL_OBLIQUE) ; #	"sani" Lok Pl 1PlPoss vs. "sani" Lok Sg 1PlPoss
 
 REMOVE:9943 @CL-<CIT IF (0 @POSS> + Pl LINK *1 3PlPoss BARRIER (*) - Adv );#Nalunaarutigalugu ANGERLARSIMAFFEQANNGITSUT qanoq amerlatiginerannik er @POSS>, ikke @CL-<CIT
 #SELECT:0125_1SgPossx 1SgPoss IF (*-1C VERB-NOTCONT + 1SgO BARRIER (*) - 1Sg) ; # - ... Nujuillisarsinnaagummali inuunera qaamanerulissagaluarpoq. #Burde kræve at der et sted til venstre (x vinduer) er DIRTALESTART.
