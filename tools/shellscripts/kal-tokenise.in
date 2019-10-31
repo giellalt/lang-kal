@@ -115,6 +115,11 @@ my $ps_angle = '[\x{2039}\x{203A}\x{3008}-\x{300B}»«]';
 sub call_tokenizer {
    my ($in) = @_;
 
+   # Protect tags early, to avoid that the various workarounds mangle them
+   if ($in =~ m@^<\w+.*>@) {
+      return $in;
+   }
+
    # Turn very long ALL-UPPER strings to First Upper to avoid geometric slowdown
    while ($in =~ m@(\p{Lu}{15,})@) {
       my ($w,$t) = ($1, ucfirst(lc($1)));
