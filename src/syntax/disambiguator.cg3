@@ -1772,6 +1772,7 @@ REMOVE:MIUQ ("(.*)mioq"r) IF (0 (VSTR:"$1miu.*"r) + N );
 #####################################
 COPY ("$1"v) EXCEPT Gram/Pass TARGET ("(.*)"r) + (/Gram\/Pass\ NIQ\ Der\/vn\ N\ Abl/l); # transitiv -nermit #nunap piniagassarsui tusaamanermit nuussimavugut.
 
+REMOVE:00000A (Gram/Hyb) IF (0 (/\"ataatsim.*\"/r)) ; #ataatsimiippoq, ataatsimoorpoq osv. er aldrig hybrider
 REMOVE:00000 (URL) IF (0 Sem/Url) ; #dobbeltgenerering fra FST'ens url.lexc
 #Arnaq Meeraq m.fl. i første position er et reelt problem
 REMOVE:0001X ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"%l$1"r))(NEGATE 0 ("Nuna") + Prop + 1PlPoss) ;
@@ -2894,7 +2895,7 @@ SELECT:0063 Rel + Pl - FAM_UNIK IF (1C 3PlPossUdenMWE)(NEGATE 1 ("siuneq") + Via
 
 SELECT:0063B Rel + Pl - FAM_UNIK - 4PlPoss - 4SgPoss IF (1C Rel + Pl - Prop LINK 1C 3PlPoss - Prop - iALL)(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 1 ("assi") + POSSESSUM + CONJ-LU)(NEGATE -1 ("ila") LINK 2 ("ila"))(NEGATE 0 ("assut") OR ("taama")) ;
 SELECT:0063C Rel + Pl - FAM_UNIK IF (1C Rel + Pl - Prop LINK 1C Rel + Pl LINK 1 3PlPoss - Prop)(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 1 ("assi") + POSSESSUM + CONJ-LU)(NEGATE -1 ("ila") LINK 2 ("ila"))(NEGATE *1 INTRANSVERB + 3Pl + VFIN BARRIER VFIN) ;
-SELECT:0064 Rel + Sg - NÆPPE-POSS IF (1C 3SgPoss)(NEGATE 0 Ins LINK 1 LIK_QAR)(NEGATE 1 CONJ-LU)(NEGATE 0 ("affaq"))(NEGATE 0 PLACE + Lok)(NEGATE 0 Ins + CONJ-C LINK -1 Ins); #asanninnermik pigisaqarneranut er ikke en possessor-possessum forbindelse
+SELECT:0064 Rel + Sg - NÆPPE-POSS IF (1C 3SgPoss)(NEGATE 0 Ins LINK 1 LIK_QAR)(NEGATE 1 CONJ-LU)(NEGATE 0 ("affaq"))(NEGATE 0 PLACE + Lok)(NEGATE 0 Ins + CONJ-C LINK -1 Ins) (NEGATE 0 Prop + Lok LINK NOT -1 PUNCT OR BOS); #asanninnermik pigisaqarneranut er ikke en possessor-possessum forbindelse
 REMOVE:0065 N IF (1 FAM_UNIK + POSSESSUM)(NEGATE *-1 V) ;
 REMOVE:0063AB Rel + Pl IF (0 Abs + Pl LINK NOT 1 Rel)(0 (/TUQ\ Der\/vn\ N/l))(*-1 Abs + Pl BARRIER INTRANSVERB - 4Pl OR VFIN)(*1 INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl OR TRANSVERB + 3PlO - 3Pl BARRIER V) #Inuppassuit uniaaluttut ulapitsigalutik *ingerlarsortut tunuanni takulerpara ikittaartumik allaqqasorsuaq: “Welcome to New York!”.
 (NEGATE *1 ("akunneq") OR ("ila") OR SPATIAL BARRIER (*) - Rel + Pl LINK 0 3PlPoss)
@@ -6887,7 +6888,7 @@ SELECT Abs + Prop IF (-3 Prop + Abs)(-2 ("\,"))(-1 Abs)(NEGATE 0 Rel LINK 1 POSS
 #REMOVE N IF (0 Prop + Sem/Geo) ; #sletter TIMAA til fordel for Tim+AA i Timaa assoruuppalulerpoq. PL 20190430
 REMOVE N IF (0 Prop + Sem/Geo - AA) ;
 
-REMOVE:2221 N - Prop - iProp - Der/vv - ANIMAL IF (0 ("<\\p{Lu}.*>"r))(*0C ("<\\p{Lu}.*>"r))(NEGATE 0 FAM_UNIK OR TITEL OR HUM OR WEATHER OR NON-PROP)(NEGATE 0 Rel)(NEGATE 0 V)(NEGATE 0 ("ateq") LINK 1 Prop) ;
+REMOVE:2221 N - Prop - iProp - Der/vv - ANIMAL IF (0 ("<\\p{Lu}.*>"r))(*0C ("<\\p{Lu}.*>"r) - (Hyb/2-2))(NEGATE 0 FAM_UNIK OR TITEL OR HUM OR WEATHER OR NON-PROP)(NEGATE 0 Rel)(NEGATE 0 V)(NEGATE 0 ("ateq") LINK 1 Prop) ;
 # Select Prop hvis Wordform starter med stort, og der også er et andet Prop i sætningen.
 
 SELECT:2222 Prop + Lok IF (-1 Lok) ;
@@ -6943,7 +6944,7 @@ REMOVE:1681A 1SgPoss IF (0 Aeq)(NEGATE *1 1Sg) ;
 REMOVE:1681B 2SgPoss IF (0 Prop LINK 1 iProp) ;
 REMOVE:1681C Prop + POSSESSUM1 - AFFINGERET - ("Nuna") IF (0 PROP - POSSESSUM) ;
 REMOVE:1681D N IF (0 Prop - POSSESSUM)(NEGATE *-1 BOS BARRIER WORD) (NEGATE -1 RIGHT) ;
-REMOVE:1681E Prop + AFFINGERET IF (0 Prop - AFFINGERET) ;
+REMOVE:1681E Prop + AFFINGERET IF (0 Prop - AFFINGERET) (NEGATE 0 PROP + Aeq - AFFINGERET LINK 0 PROP + HTR + TUQ + AFFINGERET) ; #Siulersuisut må ikke vælge Siulersuaq+Aeq
 
 REMOVE:1682 2SgPoss IF (0 NUMHOVED) ; #kapitalit pingajuanniippoq.
 REMOVE:1683 POSSESSUM12 IF (0 Pl - POSSESSUM)(*1 NIQAR) ;
@@ -6996,7 +6997,7 @@ REMOVE:1705 (TUQ INNAQ N) + Abs + Pl + POSSESSUM IF (NEGATE -1C Rel + Pl); #anni
 #SELECT:0146 Rel + Sg + 4SgPoss IF (*1 TRANSVERB + 3Sg OR TRANSVERB + 4Sg BARRIER V)(NEGATE 0 Cau + 4Sg)(NEGATE 1 POSSESSUM + 3SgPoss); # TAQ + 4Sg undertiden homonym med Cau + 4Sg og som possessor håndteres den af den følgende regel
 
 SELECT:1707 ("oqaaseq") + Rel + Pl + 4SgPoss IF (1 POSSESSUM + 3PlPoss - Lok)(NEGATE 0 Cau + 4Sg); #Specialfald fordi oqaaseq oftest pluralis
-SELECT:1708 Rel + Sg + 4SgPoss IF (1 POSSESSUM + 3SgPoss - Lok)(NEGATE 0 Cau + 4Sg)(NEGATE 0 PLACE); # TAQ + 4SgPoss undertiden homonym med Cau + 4Sg. -Lok fordi alt for mange hit på homonyme Abs+4SgPoss og Lok+3SgPoss. Flyttet til efter Par-reglerne, da fejl pga. U+Par blandes med Aeq+3SgPoss
+SELECT:1708 Rel + Sg + 4SgPoss IF (1 POSSESSUM + 3SgPoss - Lok)(NEGATE 0 Cau + 4Sg)(NEGATE 0 PLACE OR Lok); # TAQ + 4SgPoss undertiden homonym med Cau + 4Sg. -Lok fordi alt for mange hit på homonyme Abs+4SgPoss og Lok+3SgPoss. Flyttet til efter Par-reglerne, da fejl pga. U+Par blandes med Aeq+3SgPoss
 
 
 #Pronominer
