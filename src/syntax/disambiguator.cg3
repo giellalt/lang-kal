@@ -1160,7 +1160,7 @@ LIST NONOBJVERB = ("agguar" QATE GIIP TIP Cont) ;
 SET KASUS = Abs | Rel | Trm | Abl | Lok | Aeq | Ins | Via ;
 SET NOT-REL = KASUS - Rel ;
 SET OBLIQUE =  Trm | Abl | Lok | Aeq | Ins | Via ;
-SET iOBLIQUE = iTrm | iAbl | iLok | iAeq | iIns | iVia ;
+SET iOBLIQUE = iTrm | iAbl | iLok | iAeq | iIns | iVia | Trm + Hyb/1-2 | Abl + Hyb/1-2 | Lok + Hyb/1-2 | Aeq + Hyb/1-2 | Ins + Hyb/1-2 | Via + Hyb/1-2 ;
 SET NUMERUS = Sg | Pl ;
 SET KONGRUENSADLED = N + $$KASUS + $$NUMERUS ;
 SET NÆPPE-POSS = (/__TUQ\ Der\/vn\ N\ Rel\ Sg\ 4PlPoss__/l) | (/__TUQ\ Der\/vn\ N\ Rel\ Pl\ 4PlPoss__/l) ; #SET til forebyggelse af uheldige sletninger af Ins. PL 20181017
@@ -1331,7 +1331,7 @@ SET ADVERBIEL = Adv | Pali | ("ataaseer") + CONT | ("ataaseq") + Ins - Num - AFF
 LIST FOKUSPART = ("uv" Prefix/AA) ("una" Prefix/AA) "tassa" "aali" "sunaaffa" "aajuku" "aajuna" "aaku" "aana" "naak" ; #oqaqqarniutit imal. oqaaseqatigiinni oqaluutitaqanngitsut 
 LIST KONCESSIV = "aali" "massa" "naanaak" "naak" "nanaak" "uffa" "ugga" "unni" "unniit" "unnit" ;#"sunaaffa" ; #oqaaseqatigiinni minnerni oqaluummik pisariaqartitsisut
 LIST SPØRGEPARTIKEL = "naak" "sumi" "suna" "qanoq" ; #
-LIST TIDSPARTIKEL = "ilaanni" ("qaammat" Trm) ("ulloq" Trm) ("ulloq" Lok 1PlPoss) ;
+LIST TIDSPARTIKEL = "ilaanni" ("qaammat" Trm) ("ulloq" Trm) ("ulloq" Lok 1PlPoss) "ullumikkut" ;
 LIST CLOSE-ADV = "iluamik" ; #adverbier som står tæt på deres verbum
 SET ADV-PARTIKEL = Tilhængspartikel - CONJ-C ;
 
@@ -2883,7 +2883,7 @@ SELECT:0062 Rel + Sg IF (1 (/__Gram\/Dem\ Pron__/l) + Rel LINK 1 3SgPoss);
 REMOVE:0063X i3SgPoss IF (0 i3PlPoss LINK *-1 Rel + Pl BARRIER KOMMA )(NEGATE *-1 Rel + Sg)(NEGATE *-1 3PlPoss LINK *-1 Rel + Pl); #nødvendig disambiguering før 0063. Sidste NEGATE på gr. af helt andre possessum længere til venstre
 REMOVE:0063X 3SgPoss IF (0 3PlPoss - Err/Sub LINK *-1 Rel + Pl BARRIER KOMMA )(NEGATE *-1 Rel + Sg)(NEGATE *-1 3PlPoss LINK *-1 Rel + Pl); #nødvendig disambiguering før 0063. Sidste NEGATE på gr. af helt andre possessum længere til venstre
 #Disambiguering af possessor fulgt af partikel og adled som i "Kalaallit taamanikkut sulilluartut pigisaat"
-SELECT:0063Z Rel + Pl IF (1 Part - ("tassa") LINK 1 Rel + Pl LINK 1C 3PlPoss)(NEGATE 1 ("siuneq") + Via) ; #må ikke hitte på siornatigut og ikke på opremsede participier med assigisaallu og heller ikke på opremsninger med ilaat .. ilaat
+SELECT:0063Z Rel + Pl IF (1 Part - ("tassa") LINK 1 Rel + Pl LINK 1C 3PlPoss)(NEGATE 1 ("siuneq") + Via OR TIDSPARTIKEL) ; #må ikke hitte på siornatigut og ikke på opremsede participier med assigisaallu og heller ikke på opremsninger med ilaat .. ilaat
 
 SELECT:0063A Rel + Pl IF (1 TIDSPARTIKEL LINK 1C 3PlPoss)(NEGATE 2 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 2 ("assi") + POSSESSUM + CONJ-LU)(NEGATE -1 ("ila") LINK 3 ("ila")) ; #må ikke hitte på siornatigut og ikke på opremsede participier med assigisaallu og heller ikke på opremsninger med ilaat .. ilaat. Tilføjet 20170407
 
@@ -3100,7 +3100,7 @@ SELECT:0101X Abs + 2SgPoss - PLACE_MORE IF
 (NEGATE 0 Rel LINK *1 iPOSSESSUM) ;#LINK *1 Ind + 3Sg + INTRANSVERB BARRIER V) #Et subjekt er ikke sikkert hvis det kan være possessor #Attu Aasiaat eqqaanniippoq.
  #Et sikkert subjekt må ikke læses som plur. BARRIER pga. mulig ledsagemåde med objekt. Der tages højde for en mulig or. obl. før verbet
 
-REMOVE Pl IF (0 Sg LINK *-1C Gram/Dem + Pron + Sg BARRIER (*) - PUNCT)(NEGATE *1 Pl BARRIER (*) - PUNCT) ;
+REMOVE Pl IF (0 Sg - POSSESSUM LINK *-1C Gram/Dem + Pron + Sg BARRIER (*) - PUNCT)(NEGATE *1 Pl BARRIER (*) - PUNCT) ;
 REMOVE:0101 Abs + 2SgPoss IF (NEGATE *0C ("illit") OR Imp + 2Sg) (NEGATE *1 3SgO)(NEGATE *1 INTRANSVERB + 3Sg BARRIER Abs + Sg)(NEGATE 1 ("tassa") LINK 1C Sg); #Sidste NEGATE for skyld "Soraluannguit tassa niviarsiaq .."
 #REMOVE Abs + 2SgPoss IF (-1C Cont + 4Pl OR ContNeg+ 4Pl)(NEGATE *1 Rel + Pl LINK *1 TRANSVERB + GE + 3SgO); #0 maa vaere plur hvis nabo til en ledsagemaade, men der maa tages hoejde for muligheden af et OSV verbum.
 REMOVE:0102 Abs + 2SgPoss + TUQ IF (NEGATE *0 ("illit")); #1.4. Evt. elaboreres med TAQ og UTE
@@ -3125,7 +3125,7 @@ REMOVE:0111A iOBLIQUE + i2SgPoss IF (1C i1SgPoss) ;
 REMOVE:0111B iOBLIQUE + i1SgPoss IF (1C i2SgPoss) ;
 REMOVE:0111C iOBLIQUE + iPOSSESSUM IF (0 TUQ + U - iOBLIQUE) ;
 REMOVE:0111D iOBLIQUE + (/i..*Der\/nv\ Gram\/TV/l) IF (0 Gram/IV) ;
-REMOVE:0112 OBLIQUE + 1SgPoss IF (NEGATE -1 ("uanga") + 1Sg)(NEGATE *0 VERB-NOTCONT + 1Sg)(NEGATE 0*W 1Sg OR 1SgPoss)(NEGATE 0 FAM + POSSESSUM + Ins LINK *1 HTR); # (0*W (someset)) Sidste NEGATE forebygger sletning af possessum i mik-objekter når der er tale om familiebetegnelser
+REMOVE:0112 OBLIQUE + 1SgPoss IF (NEGATE -1 ("uanga") + 1Sg)(NEGATE *0 VERB-NOTCONT + 1Sg)(NEGATE 0*W 1Sg OR 1SgPoss - Hyb/1-2)(NEGATE 0 FAM + POSSESSUM + Ins LINK *1 HTR); # (0*W (someset)) Sidste NEGATE forebygger sletning af possessum i mik-objekter når der er tale om familiebetegnelser
 REMOVE:0113 OBLIQUE + 2SgPoss IF (NEGATE -1 ("illit"))(NEGATE *0 VERB-NOTCONT + 2Sg)(NEGATE 1 2SgPoss)(NEGATE -*1 ("quja") + Gram/Exclm) ;
 #REMOVE:0114 OBLIQUE + 1SgPoss IF (NEGATE *0 ("uanga") OR 1Sg);
 
@@ -3221,6 +3221,7 @@ SELECT:0136 Rel + Pl - FAM_UNIK IF #(*1 (*) - Rel - Num)
 (NEGATE *1 CONT + 3PlO BARRIER V) #qanga qulliit ukkusissat qaammaqqutigaat.
 (NEGATE *1 3PlPoss - Rel BARRIER (*) - (Abs Pl) - (Rel Pl) LINK *1 CONT + 3PlO BARRIER V OR KOMMA) #najugallit allat isersimaannarnissaannik qinnuigalugit.
 (NEGATE 0 Num + Lok)
+(NEGATE 1C TRANSVERB)
 ;
 
 REMOVE:0140 Via + 3PlPoss IF (0 3SgPoss)(NEGATE -1 Pl + Rel) ;
@@ -6810,7 +6811,7 @@ REMOVE:0529A N + TUQ IF (*1 ORATIOOBLVERB + INTRANSVERB + V - NIQAR - TAQ BARRIE
 
 REMOVE:0520 N + U + TUQ IF (0 Par)(*1 ORATIOOBLVERB - NIQAR - TAQ - Gram/Pass - Gram/Refl BARRIER CONJ-C OR VFIN)(NEGATE 1 Gram/Cong) ;
 
-REMOVE:0521 Par IF (0 N + $$KASUS + $$NUMERUS LINK *-1 VFIN BARRIER KOMMA LINK -1 $$KASUS + $$NUMERUS)
+REMOVE:0521 Par IF (0 N + $$KASUS + $$NUMERUS LINK *-1 VFIN BARRIER KOMMA LINK *-1 $$KASUS + $$NUMERUS BARRIER (*) - Hyb/1-2)
 (NEGATE 1 ("unner") + CONT)#
  ;
 REMOVE:0522 Par + INTRANSVERB - TIME IF (0 TUQ + N OR Prop)(*1 V - PASSIV BARRIER KOMMA OR V)(NEGATE *-1 UNA OR UKU)(NEGATE *1 ORATIOOBLVERB + TRANSVERB)(NEGATE *1 ORATIOOBLVERB LINK NOT *1 Par)(NEGATE 0 QQU LINK *-1 ORATIOOBLVERB)(NEGATE 0 CONJ-LU LINK NOT -1 KOMMA OR BOS)(NEGATE *-1 BOS LINK *1 _TARGET_ BARRIER Par) ;
@@ -6835,7 +6836,7 @@ REMOVE:0549DD N + TUQ IF (0 Par)(*-1 NEXUS BARRIER @PRED) (NEGATE *-1 N BARRIER 
 REMOVE:0549D N + TUQ - TAR IF (0 Par LINK 0 UNA OR UKU) ; #Susoqartoruna er verbal, men timmisartoruna er nominal.
 
 REMOVE:0549E Par IF (0 N + TUQ + TRANSPORT) ;
-REMOVE:0549F Par IF (0 N + TUQ + $$NUMERUS) (1 iOBLIQUE + Abs + $$NUMERUS) ;
+REMOVE:0549F Par IF (0 N + TUQ + $$NUMERUS) ((1 iOBLIQUE + Abs + $$NUMERUS) OR (*1 OBLIQUE + Hyb/1-2 LINK 1 Abs + $$NUMERUS + Hyb/2-2)) ;
 
 SECTION #Skal kun bruges til at isolere Par - reglerne
 
@@ -7262,7 +7263,7 @@ SELECT:7490 Abs + Pl IF (*1C INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl BARRIER 3PlP
 (NEGATE *1C INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl LINK *1 TRANSVERB + 3Pl OR TRANSVERB + 4Pl BARRIER V)(NEGATE -1 Rel + CONJ-LU LINK -1 Abs)
 (NEGATE *1 TRANSVERB + 3Pl)# BARRIER VFIN + INTRANSVERB + 3Pl)#Ikke subjekt for transverb langt til højre POLITIIT inuinnarnik ikiorteqarlutik ujarlersut .. (OBJ) .. naammattoorpaat
 (NEGATE *-1 ("tusar") + INTRANSVERB BARRIER V LINK NEGATE *-1 Ins OR ("taama"))#Kingorna tusaramik Putugormiut toqorarneqanngitsut kingumut nunaminnut uterput.#
-(NEGATE 0 Rel + Pl LINK *1 i3PlPoss OR 3PlPoss BARRIER (*) - Rel)#Nunaqarfimmi Ilimanami ILULISSAT kujatinnguanniittumi
+(NEGATE 0 Rel + Pl LINK *1 i3PlPoss OR 3PlPoss BARRIER (*) - Rel - Hyb/1-2)#Nunaqarfimmi Ilimanami ILULISSAT kujatinnguanniittumi
 ; 
 #Må ikke hitte på Rel + Pl fulgt JRaf ledsagemåde til TRANSVERB + 3Pl til højre. 20170425 sidste NEGATE fordi ikke sikkert at parataktisk possessum er Pl fordi verbet er det
 
@@ -8080,7 +8081,7 @@ REMOVE:5552 ("niviaq") + SIAQ IF (0 ("niviarsiaq"));
 REMOVE:0553 NIQ + QAR IF (0 (/\"taa\"\ Gram\/TV\ NIQAR\ /l)) ;
 REMOVE:0553B (/TAAQ\ Der/nn\ LIR\ Der/nv/l) ; #meerartaalrput
 
-REMOVE:0553A NIQAR IF (0 NIQ + QAR LINK -1 Ins + Pl - CONJ-C OR Ins + Num)(NEGATE *-1C Abl BARRIER VFIN OR CONJ-C)(NEGATE 0 QAR + TIP + NIQAR) #PL 20190413 formel fejl i ordering. Reformuleres ad hoc
+REMOVE:0553A NIQAR IF (0 NIQ + QAR - HTR LINK -1 Ins + Pl - CONJ-C OR Ins + Num)(NEGATE *-1C Abl BARRIER VFIN OR CONJ-C)(NEGATE 0 QAR + TIP + NIQAR) #PL 20190413 formel fejl i ordering. Reformuleres ad hoc
 (NEGATE 0 (/Gram/TV\ Gram/Pass\ NIQ/l)) #ikke transverb+NIQ som ikiorNEQARsinnaasunga
 ;
 
