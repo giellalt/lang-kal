@@ -2622,7 +2622,7 @@ MAP:0045 @HNOUN TARGET ROMANNUMBER IF (-1 BOS) ;
 #Også verbalfraser i citationstegn, indskudt i sætninger.
 SELECT:0040I VFIN IF (*-1 PUNCT)(*1 PUNCT)(NEGATE *0 VFIN BARRIER PUNCT)(NEGATE 0 MI OR Gram/Cong)(NEGATE 0 POSSESSUM3 LINK -1 Rel) ;
 
-MAP:M0565 @i-POSS> TARGET Pron + Rel + 1Sg IF (1 i1SgPoss + N);
+MAP:M0565 @i-POSS> TARGET Pron + Rel + 1Sg IF ((1 i1SgPoss - V) OR (1 1SgPoss + Hyb/1-2 LINK 1 Hyb/2-2 - V));
 
 SELECT:0054B Prop + Sg + 3PlPoss OR iProp + iSg + i3PlPoss IF (-1 Prop + Rel + Pl);
 SELECT:0057 Prop + Rel - ("nuna") IF (1 Prop + POSSESSUM OR ("Nunaat") OR iProp + iPOSSESSUM) ;
@@ -2895,7 +2895,7 @@ SELECT:0063 Rel + Pl - FAM_UNIK IF (1C 3PlPossUdenMWE)(NEGATE 1 ("siuneq") + Via
 (NEGATE -1 Rel + Pl LINK 1 _TARGET_ + OBLIQUE LINK 1 3PlPossUdenMWE) #Jaakuaraq 1960-ikkunni pissutsit SAKKORTUUMIK allanngulernerannit eqqorneqartunut ilaavoq.
 ; #iluaqutaasumik
 
-SELECT:0063B Rel + Pl - FAM_UNIK - 4PlPoss - 4SgPoss IF (1C Rel + Pl - Prop LINK 1C 3PlPoss - Prop - iALL)(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 1 ("assi") + POSSESSUM + CONJ-LU)(NEGATE -1 ("ila") LINK 2 ("ila"))(NEGATE 0 ("assut") OR ("taama")) ;
+SELECT:0063B Rel + Pl - FAM_UNIK - 4PlPoss - 4SgPoss IF (1C Rel + Pl - Prop LINK 1C 3PlPoss - Prop - iALL - Hyb/1-2)(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 1 ("assi") + POSSESSUM + CONJ-LU)(NEGATE -1 ("ila") LINK 2 ("ila"))(NEGATE 0 ("assut") OR ("taama")) ;
 SELECT:0063C Rel + Pl - FAM_UNIK IF (1C Rel + Pl - Prop LINK 1C Rel + Pl LINK 1 3PlPoss - Prop)(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 1 ("assi") + POSSESSUM + CONJ-LU)(NEGATE -1 ("ila") LINK 2 ("ila"))(NEGATE *1 INTRANSVERB + 3Pl + VFIN BARRIER VFIN) ;
 SELECT:0064 Rel + Sg - NÆPPE-POSS IF (1C 3SgPoss)(NEGATE 0 Ins LINK 1 LIK_QAR)(NEGATE 1 CONJ-LU)(NEGATE 0 ("affaq"))(NEGATE 0 PLACE + Lok)(NEGATE 0 Ins + CONJ-C LINK -1 Ins) (NEGATE 0 Prop + Lok LINK NOT -1 PUNCT OR BOS); #asanninnermik pigisaqarneranut er ikke en possessor-possessum forbindelse
 REMOVE:0065 N IF (1 FAM_UNIK + POSSESSUM)(NEGATE *-1 V) ;
@@ -6903,7 +6903,7 @@ SELECT:2224 $$KASUS IF (*1 @FOC>N CBARRIER (*) - KASUS - KOMMA LINK *1 $$KASUS B
 
 #Nominer - kongruens og paratakse
 SELECT:0610A Prop + Sg + Lok IF (1 N - Prop)(NEGATE *0 V) ; # i-ADVL> i overskrifter og sætningsemner
-SELECT:0610 N + Sg + Abs OR Num + Sg + Abs IF (1 N + Sg + Abs)(NEGATE *0 V) ; # Vedr. overskrifter og sætningsemner
+SELECT:0610 N + Sg + Abs OR Num + Sg + Abs IF (*1 N + Sg + Abs BARRIER (*) - Hyb/1-2)(NEGATE *0 V) ; # Vedr. overskrifter og sætningsemner
 #SELECT:0611 N + Sg + Rel OR Num + Sg + Rel IF (1 N + Sg + Rel)(NEGATE *0 V) ; # Vedr. overskrifter og sætningsemner #PL 20190414 ikke ILLUAQQAMI aataap qangangaatsiarli sanaarisimasaani
 SELECT:0611 N + Sg + Rel OR Num + Sg + Rel IF (1 N + Sg + Rel)(NEGATE *0 V)(NEGATE 0 Lok LINK 1 Rel LINK *1 POSSESSUM + Lok); # Vedr. overskrifter og sætningsemner #PL 20190414 ikke ILLUAQQAMI aataap qangangaatsiarli sanaarisimasaani
 SELECT:0612 N + Sg + Lok OR Num + Sg + Lok IF (1 N + Sg + Lok)(NEGATE *0 V) ; # Vedr. overskrifter og sætningsemner
@@ -7692,7 +7692,7 @@ SELECT:8556 2SgPoss + Aeq IF (*1 V + 2Sg OR V + 2SgO) ;
 
 SELECT:8557A N + Pl + Abs IF (1C Pl + Abs + Der/vn - POSSESSUM3 OR Pl + Abs + ADJEKTIVISK) ; #kernens numerus bestemt af adleddet
 SELECT:8557B N + Pl + Rel IF (1C Pl + Rel + Der/vn OR Pl + Rel + ADJEKTIVISK)(NEGATE 0 Adv) ; #kernens numerus bestemt af adleddet
-SELECT:8557C N + Pl + $$OBLIQUE IF (1C Pl + $$OBLIQUE + Der/vn OR Pl + $$OBLIQUE + ADJEKTIVISK)(NEGATE 1 Lok + IP) ; #kernens numerus bestemt af adleddet. Mange fejl på verbalnominer med Lok+IP
+SELECT:8557C N + Pl + $$OBLIQUE IF (*1C Pl + $$OBLIQUE + Der/vn OR Pl + $$OBLIQUE + ADJEKTIVISK BARRIER (*) - Hyb/1-2)(NEGATE 1 Lok + Hyb/1-2) ; #kernens numerus bestemt af adleddet. Mange fejl på verbalnominer med Lok+IP
 
 REMOVE Pl + $$KASUS IF (1C Sg + @N< + $$KASUS) ;
 
