@@ -1529,7 +1529,7 @@ LIST ABSTRACT = "taaq" ;
 LIST PLACE = ("atuar" VIK) "illu" "imaq" "itersaq" "itersaliaq" "itersaliarsuaq" "klasse" ("mip" TAR VIK) "mittarfik" "nuna" ("oqalup" VIK) "orpippassuaq" "sakkutooqarfik" "siku" "silarsuaq" "ungaloq" "village" Sem/Geo ^Sem/Hum "lexicon" ; 
 LIST PLACE_MORE = (/\"<\\p{Lu}.*\>"/r) ^Hyb/2-2;
 SET PLACE_EXTENDED = PLACE | PLACE_MORE ;
-LIST ADJEKTIVISK = "akisooq" "akutakujooq" "akutakujuk" "angisooq" ("arlaq" LIK) "ataavartoq" "ilivitsoq" ("isertor" TUQ) "itisooq" "manissoq" ("perler" TUQ) ("portu" JAAR) "takisooq" "siulleq" "tamalaaq" "tulleq" "tulliup" "tungujortoq" (NAR TUQ) (/.*tooq\"/r); #angut og arnaq medtaget lidt skummelt, men anvendes ofte adjektivisk. PL 20190806 mange fejl, så arnaq og angut fjernet igen. sakkutooq undtaget fra .*tooq
+LIST ADJEKTIVISK = "akisooq" "akutakujooq" "akutakujuk" "angisooq" ("arlaq" LIK) "ataavartoq" "ilivitsoq" ("isertor" TUQ) "itisooq" "manissoq" "nutaaq" ("perler" TUQ) ("portu" JAAR) "takisooq" "siulleq" "tamalaaq" "tulleq" "tulliup" "tungujortoq" (NAR TUQ) (/.*tooq\"/r); #angut og arnaq medtaget lidt skummelt, men anvendes ofte adjektivisk. PL 20190806 mange fejl, så arnaq og angut fjernet igen. sakkutooq undtaget fra .*tooq
 LIST COLOUR = "aappaluttoq" ("aak" PALUP TUQ) "qaqortoq" "qaqqorik" "qernertoq" "qorsuk" "sungaartoq" "tungujortoq" ;
 SET ATTRIBUTIV = ADJEKTIVISK - ("sakkutooq") | COLOUR | (/QAR\ Der\/nv\ \(Gram\/IV\ \)?TUQ\ /l) | ("IP" TUQ) ;
 LIST NATIONALITY = "dansk" "grønlænder" "kalaaleq" "qallunaaq" ;
@@ -2537,6 +2537,7 @@ SELECT:0003 Ind - SUB IF (NEGATE *0 VFIN BARRIER KOMMA)(NEGATE 0 NIR OR INDERIVE
 (NEGATE 0 ("aappaq") OR GIIP)
 (NEGATE 0 ("qulleq"))
 (NEGATE 0 ("silaannaq"))
+(NEGATE 0 ("kultur"))
 (NEGATE 0 Prop - Orth/Append) ;
 
 
@@ -2959,7 +2960,7 @@ REMOVE:0072 Rel + Pl IF (NEGATE *1 3PlPoss OR i3PlPoss BARRIER KOMMA)(NEGATE *0 
 (NEGATE 0 INSTITUTION LINK 1 3SgPoss) #Naalakkersuisut siulittaasua
 (NEGATE -1 ("nal.") LINK 1 _TARGET_ LINK 1 ("miss.") OR ("missaa"))#Nal. 2 miss. aggissaanga.
 ;
-REMOVE:0072E Abs + TIME IF (1 POSSESSUM3) ;
+REMOVE:0072E Abs + TIME IF (1 POSSESSUM3 - ADJEKTIVISK - Orth/Arch) ; #ikke NAAMMASSISUT nutaat (hvor nutak ikke må tage nutaaq's plads)
 REMOVE:0072F Rel + Sg + TIME IF (1 POSSESSUM3 + ("ila")) ;
 REMOVE:0072G Abs + Pl IF (0 Rel + CONJ-C LINK *-1C Rel BARRIER (*) - Adv) ;
 REMOVE:0072H TIMENOUN + POSSESSUM - AFFINGERET IF (0 TIMENOUN + Lok)
@@ -3154,7 +3155,9 @@ REMOVE:0123 Aeq + POSSESSUM - AFFINGERET IF (0 Aeq LINK NEGATE 0 Ins OR Lok OR T
 SELECT:0065_3SgPoss_semanticA POSSESSUM3 OR iPOSSESSUM3 IF (0 WEATHERVERB)(*-1 WEATHER + Rel BARRIER KOMMA OR VERB-NOTCONT) ;
 SELECT:0065_3SgPoss_semanticB POSSESSUM3 OR iPOSSESSUM3 IF (0 TIMEVERB)(*-1 TIME + Rel BARRIER KOMMA OR VERB-NOTCONT) ;
 SELECT:0065_3SgPoss_semanticC POSSESSUM3 OR iPOSSESSUM3 IF (*-1 WEATHER + Rel BARRIER (*) - Adv) ; #Nappaatit, silap qanoq innera naalakkersuisullu pillugit tusagaqarusunngilanga.
-SELECT:0065_3SgPoss_semanticD POSSESSUM3 OR iPOSSESSUM3 IF (*-1 TIME + Rel BARRIER (*) - Adv) ; #Nappaatit, silap qanoq innera naalakkersuisullu pillugit tusagaqarusunngilanga.
+SELECT:0065_3SgPoss_semanticD POSSESSUM3 OR iPOSSESSUM3 IF (*-1 TIME + Rel BARRIER (*) - Adv) #Nappaatit, silap qanoq innera naalakkersuisullu pillugit tusagaqarusunngilanga.
+(NEGATE 0 ADJEKTIVISK)#ikke naammassisut NUTAAT allagartartaartippai
+;
 
 # POSSESSUM safe rules
 SELECT:0124_1SgPoss 1SgPoss OR i1SgPoss IF (*-1 Gram/Pers + 1Sg + Rel BARRIER VERB-NOTCONT OR Pron - 1Sg OR POSSESSUM - POSSESSUM1 OR iPOSSESSUM - iPOSSESSUM1) ; #Uanga terianniamik kammaqarsimanera nuannaarutigeqaara...
@@ -4577,7 +4580,7 @@ MAP:M0082A @CONJ TARGET ("soorlu" Conj)(*1 @SML_HNOUN BARRIER V) ;
 #==============
 
 MAP:M0136XY @ADVL>N TARGET iAbl (1 Prop) (NEGATE -1 N OR Prop);
-MAP:M0136XZ @ADVL>N TARGET ("IR") + Hyb/2-2 (1 Prop) (NEGATE -2 N OR Prop);
+MAP:M0136XZ @ADVL>N TARGET ("IR") + Hyb/2-2 (1 Prop) (NEGATE -2 N OR Prop OR Num);
 
 MAP:M0194 (@SUBJ>) TARGET Prop + Rel IF (-*1 TRANSVERB - OBJVERB LINK *-1 Rel LINK *1 Abs LINK *1 KOMMA)(*1 Abs BARRIER V)(NEGATE 1 POSSESSUM3) ; # 20101014 Opremsning uden transitive verber men må ikke tagge possessor-possessum
 MAP:M0195A (@SUBJ>) TARGET Prop + Rel IF (-*1 Rel LINK *-1 Rel LINK *1 TRANSVERB LINK *1 KOMMA)(*1 Abs BARRIER V) (NEGATE *1 POSSESSUM3 BARRIER (*) - OBLIQUE); # 20101014 Opremsning uden transitive verber men må ikke tagge possessor-possessum
@@ -5845,10 +5848,12 @@ MAP:M0910 (@i-ADVL>) TARGET (Ins) IF (1 Der/vn - NAR)(NEGATE 1 TAR + RIAQ + IRUP
 (NEGATE *1 HTR BARRIER (*) - Adv - OBLIQUE)#Aqqaluartaannguup qallunaat nunaanniinnerani anaana ANINGAASANIK paggatsitassaminik katersisimavoq.
 ; 
 MAP:M1911 @i-ADVL> TARGET Abl IF (1 TIME LINK 1 Num OR iNum) ;
+
 #Specialitet ved opremsninger med og uden adled. Skal komme før M0930
 MAP:M0920 (@AGENS) TARGET Abl - iV - OCCATION - THING IF (*1 PASSIV BARRIER VFIN OR Trm OR ("tunngavik") + QAR)(NEGATE 0 TIME)(NEGATE 0 WEATHER LINK NOT *0 WEATHERVERB)(NEGATE *-1 Trm + Sem/Geo BARRIER V OR @PRED)
 (NEGATE 1 Trm - TUQ OR Lok - TUQ) #Tidsadverbaler må ikke blive agens. -V for at forhindre hit på verber med IR og IP
 (NEGATE 0 $$KASUS LINK 1 $$KASUS + PASSIV) ; #imermit mingutsinneqartumit uffareernermi kingorna
+
 MAP:M0920B (@AGENS) TARGET Abl - iV - OCCATION IF (*1 PASSIV + Gram/Db BARRIER VFIN OR @PRED)(NEGATE 0 TIME)(NEGATE 0 WEATHER LINK NOT *0 WEATHERVERB)(NEGATE *-1 Trm + Sem/Geo BARRIER V OR @PRED)(NEGATE 1 Trm - TUQ OR Lok - TUQ); #Oqaasileriffimmit ilisimatitsissutit Oqaasileriffimmi *pisortamit Katti Frederiksenimit allaganngorlugit Oqaasiliortunut *nassiunneqarnikut Oqaasiliortut siulittaasuannit Oqaasiliortunut ilisimatitsissutigineqarput.
 MAP:M0920C @AGENS TARGET Abl IF (*1 AGENS_NOUN BARRIER VFIN OR @PRED) ;
 MAP:M0900 (@i-ADVL>) TARGET (Aeq) IF (*1 Der/vn - NAR - NIQAR - @AGENS BARRIER (*) - @N<)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Aeq )(NEGATE 1 CONJ-LU + Aeq)(NEGATE 0 CONJ-LU LINK -1 Aeq)(NEGATE *0 ("isikku") + QAR + V OR ("oqar") + UTE + GE); #Kun Trm til Der/vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse
