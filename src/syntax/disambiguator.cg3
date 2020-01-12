@@ -1335,6 +1335,8 @@ LIST SPØRGEPARTIKEL = "naak" "sumi" "suna" "qanoq" ; #
 LIST TIDSPARTIKEL = "ilaanni" ("qaammat" Trm) ("ulloq" Trm) ("ulloq" Lok 1PlPoss) "ullumikkut" ;
 LIST CLOSE-ADV = "iluamik" ; #adverbier som står tæt på deres verbum
 SET ADV-PARTIKEL = Tilhængspartikel - CONJ-C ;
+#Et sæt til hypotaktiske tidsudtryk i BARRIER 
+LIST TIDSPOSSESSOR = ("ulloq" Rel) ; 
 
 # Syntaktiske sets
 # ============
@@ -2660,6 +2662,9 @@ REMOVE:0028C Lok OR MI IF (0 Rel + HUMAN)(*1C POSSESSUM BARRIER (*) - Adv - Pali
 
 REMOVE:0028D MI IF (0 Rel OR Lok) (NEGATE -1 BOS OR CLB OR CONJ-C OR PUNCT)(NEGATE 0 CONJ-C) ;
 
+#Forsøgsvist flyttet til efter 3015, når nogle umulige Abs er disambigueret
+#REMOVE:0028E 4SgPoss + Rel + Sg IF (0 Lok)(NEGATE *1 CON_CAU + TRANSVERB + 3Sg LINK *1 VFIN + 3Sg)(NEGATE *1 3SgPoss BARRIER (*) - OBLIQUE - Adv - CONT - TIDSPOSSESSOR) (NEGATE *1 Par + TRANSVERB + 3Sg BARRIER (*) - OBLIQUE - Adv ); # .. Frederiksen, KOMMUNALBESTYRELSEMI pissaaneq tigummiinnassaguniuk qineqqusaarnissami tamaviaartariaqassaaq.
+
 REMOVE:0029 4SgPoss + Pl + ("aanaq") OR 4SgPoss + Pl + ("aana") IF (0 ("aanaq") + 4SgPoss + Sg OR ("aana") + 4SgPoss + Sg) ;
 REMOVE:0030 4SgPoss + Pl + ("aataq") OR 4SgPoss + Pl + ("aata")IF (0 ("aataq") + 4SgPoss + Sg OR ("aata") + 4SgPoss + Sg) ;
 
@@ -3012,6 +3017,8 @@ REMOVE:0078 Abs + Sg + 4SgPoss IF (NEGATE *1 TRANSVERB + 3SgO OR Cau + 3Sg OR Co
 (NEGATE -1 TRANSVERB + 3SgO LINK 2 CLB)
 (NEGATE 1 Gram/Cong + Akk)
 (NEGATE *1 Abs - TIME + CONJ-C LINK *1 TRANSVERB + 3PlO OR INTRANSVERB + 3Pl);
+
+REMOVE:0028E 4SgPoss + Rel + Sg IF (0 Lok)(NEGATE *1 CON_CAU + TRANSVERB + 3Sg LINK *1 VFIN + 3Sg)(NEGATE *1 3SgPoss BARRIER (*) - OBLIQUE - Adv - CONT - TIDSPOSSESSOR) (NEGATE *1 Par + TRANSVERB + 3Sg BARRIER (*) - OBLIQUE - Adv ); # .. Frederiksen, KOMMUNALBESTYRELSEMI pissaaneq tigummiinnassaguniuk qineqqusaarnissami tamaviaartariaqassaaq.
 
 REMOVE:0079 Abs + Pl + 4SgPoss IF (NEGATE *1 3PlO OR Cau + 3Pl OR Con + 3Pl BARRIER VFIN)(NEGATE 0 CONJ-LU)(NEGATE *-1 3PlO BARRIER KOMMA)
 (NEGATE *1 Par + 3Pl BARRIER VERB-NOTCONT)#subjekt for or.obl... malugaaq ISINI imerlaarsisut
@@ -5115,6 +5122,7 @@ MAP:M0415 @i-ADVL> TARGET Trm IF (1 N + Der/vn - ("pingaar" UTE ) OR (/TUQ\ Der/
 MAP:M0420 (@<OBJ) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (-1 TRANSVERB + 3SgO)(*1 CLB OR EOS BARRIER 3SgO)(NEGATE *-1 ORATIOOBLVERB LINK *1 V + 3Sg LINK *1 _TARGET_)(NEGATE *1 V + 3Sg BARRIER KOMMA)(NEGATE 0 CONJ-C)(NEGATE *1 Abs + Sg + CONJ-C BARRIER (*) - (Abs Sg) - KOMMA) #20100227 Tronds tilfoejelse. 20100322 første NEGATE forebygger forkerte hit paa subjekter (PL), andet NEGATE pga. .. pillugu PER nalorsarpoq,hvor PER ikke må pege på pillugu
 (NEGATE *-1 Abs BARRIER (*) - CONT + LU LINK 1 CONT + LU LINK 1 _TARGET_ LINK *1 V + 3Pl)#aalisarneq inuussutissarsiutigalugulu PINIARNEQ ingerlalluarput
 ;
+
 MAP:M0430 (@OBJ>) TARGET APPELLATIV + Abs + Sg - TIME OR Prop + Abs + Sg IF (*1 Rel BARRIER INTRANSVERB LINK *1 TRANSVERB + 3SgO BARRIER VERB-NOTCONT OR KOMMA)  #Typen O S V-GE udvidet til også at hitte uden GE. Komma tilføjet for at undgå hit på subjekter med possessor-possessum appositioner
 (NEGATE -1 BOS LINK 2 Rel + Sg LINK *1 TRANSVERB + 3Sg BARRIER VERB-NOTCONT OR 3SgPoss);#TAAMAAKKALUARTOQ Avatap nammineq suliassaq nuannaarluni tiguaa;
 
@@ -5531,6 +5539,7 @@ SUBSTITUTE:S0611 @POSS> @N< TARGET Rel - OTHERTIME IF (*-1C Rel - Pron OR @POSS>
 (NEGATE 0 CONJ-C + $$KASUS LINK -1 $$KASUS LINK NOT -1 $$KASUS)
 (NEGATE -1 CLB)
 (NEGATE 0 Rel + &&POSS34_POSS& LINK 1 Ins + POSS34_POSS& LINK *1 humanobjverb BARRIER V)#milutsitsisuata kristumiunngorsimasup KRISTUMIUT upperisaannik ajoqersorsimavaa
+(NEGATE 0 Rel + Pl LINK 1 3PlPoss + Rel LINK 1 POSSESSUM3UdenMWE) #Canadamiut aatsitassarsioqatigiiffiata Quadra Miningip siulersuisuisa qanittukkut aalajangissavaat, Tunumi ILLOQQORTOORMIUT kangerlussuata avannaani ukiualunnguit qaangiuppata saviminermik piiaaffiliornissaq.
 ;
 SUBSTITUTE:S0611 @POSS> @N< TARGET Rel - OTHERTIME - Prop IF (*-1C @POSS> - POSSESSUM BARRIER ("imaluunniit") OR Adv OR POSSESSUM OR CONJ-C OR CLB)(0 Sg LINK -*1 Rel + Sg LINK *1 _TARGET_ LINK *1 3SgPoss BARRIER (*) - @>N - @N< - @i->N - CONJ-C - Hyb/1-2)(NEGATE 0 POSSESSUM LINK 1 POSSESSUM)(NEGATE -1 VFIN)(NEGATE NOT 0 CONJ-C LINK 1 @N< + POSSESSUM)(NEGATE 1 @N< LINK 1 POSSESSUM)(NEGATE 0 CONJ-LU - Num LINK NOT -1 Num)(NEGATE -1 Gram/Dem + Pron)(NEGATE *1 TRANSVERB + 3Sg BARRIER V - CONT)(NEGATE 1 SPATIAL + POSSESSUM) ;
 SUBSTITUTE:S0612 @POSS> @SUBJ> TARGET Rel IF (*1 @POSS> - Rel BARRIER POSSESSUM OR TRANSVERB LINK *1 POSSESSUM + Sg BARRIER POSSESSUM + Pl OR TRANSVERB) ;
