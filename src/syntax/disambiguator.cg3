@@ -62,7 +62,8 @@ OPTIONS += ordered ;
 LIST BOS = (>>>);# (DIRTALESTART); #sætningsbegyndelse PL fjerner 20190708
 LIST EOS = (<<<);# (DIRTALESLUT); # vislcg and CG-2 together. 
 LIST CLB = CLB ; # Fra Trond
-LIST PUNCT = PUNCT ; # Fra Trond
+LIST Symbol = Symbol ;
+LIST PUNCT = PUNCT Symbol ; # Fra Trond
 LIST LEFT = LEFT ; # Fra Trond
 LIST RIGHT = RIGHT ; # Fra Trond
 LIST COMMONAFFSTRING = \= ;
@@ -100,7 +101,7 @@ LIST Num = Num ;
 LIST iNum = iNum ;
 LIST Sem/FirstName = Sem/FirstName ;
 LIST Sem/Geo = Sem/Geo ;
-LIST Sem/Hum = Sem/Hum ;
+LIST Sem/Hum = Sem/Hum <hum> ;
 LIST Sem/Unit = Sem/Unit ;
 LIST Sem/Time = Sem/Time ;
 LIST Sem/Mask = Sem/Mask ; #Introduceret som test 20180613. Skal måske ud igen
@@ -1773,6 +1774,7 @@ DELIMIT ("<">") IF (-1W _S_DELIMITERS_) ; #virker tilsyneladende ikke
 #SUBSTITUTE ("(.*)mioq"r) (VSTR:"$1miu"r) TARGET N ;
 #SUBSTITUTE ("<(.*)mioq>"r) (VSTR:"<$1miu>"r) TARGET N ; #ikke verber som takkummioq
 
+REMOVE:Symbol Symbol IF (0 PUNCT) ;
 REMOVE:MIUQ (MIUQ) IF (0 (MIU)) ;
 REMOVE:MIUQ ("(.*)mioq"r) IF (0 (VSTR:"$1miu.*"r) + N );
 #####################################
@@ -2380,7 +2382,7 @@ REMOVE:9974 Orth/Append IF (0 WORD - (<heur> <f:[0-9]+>r))(NEGATE -1 ("aappaq") 
 #========================================#
 LIST ROMANNUMBER = "I" "II" "III" "IV" "V" "VI" "VII" "VIII" "IX" "X" "XI" "XII" "XIII" "XIV" "XV" "XVI" "XVII" "XVIII" "XIX" "XX" "XXI" "XXII" "XXIII" "XXIV" "XXV" "XXVI" "XXVII" "XXVIII";
 
-COPY ("%u$1"v Orth/Copy) EXCEPT (".*"r) TARGET ("<[A-Z][a-z].*>"r "([^<].*)"r) IF (0 N OR iN)(NEGATE 0 Prop OR iProp OR Pali OR Adv)(NEGATE 0 Gram/Abbr - Orth/Append) (NEGATE -1 ROMANNUMBER)(NEGATE 0 MIU OR TITEL);
+COPY ("%u$1"v Orth/Copy) EXCEPT (".*"r) TARGET ("<[A-Z][a-z].*>"r "([^<].*)"r) IF (0 N OR iN)(NEGATE 0 Prop OR iProp OR Pali OR Adv)(NEGATE 0 Gram/Abbr - Orth/Append) (NEGATE 0 Symbol) (NEGATE -1 ROMANNUMBER)(NEGATE 0 MIU OR TITEL);
 SUBSTITUTE iN (Orth/Copy iN iProp) TARGET (Orth/Copy)(NEGATE 0 iProp) ;
 SUBSTITUTE N (Orth/Copy N Prop) TARGET (Orth/Copy)(NEGATE 0 Prop OR iProp OR MIU) ;
 SUBSTITUTE MIU (Orth/Copy iProp MIU) TARGET (Orth/Copy)(NEGATE 0 iProp) ;
@@ -4204,7 +4206,7 @@ MAP:M0031A @PROP> TARGET Prop + Abs + $$NUMERUS - Sem/Geo IF (1 Prop + Sem/Hum +
 
 #Tilføjet M0031C-E ad hoc 20180621 efter restrukturering af propernouns med køns-tags for at få regression test til at fungere.
 
-MAP:M0031B @PROP> TARGET Orth/Append + Abs - Num OR Orth/Copy + Abs IF (1 Orth/Append OR Orth/Copy)(NEGATE 1 iOBLIQUE) ;
+MAP:M0031B @PROP> TARGET Orth/Append + Abs - Num OR Orth/Copy + Abs OR (/<Xxx.?>/r) OR Sem/Hum IF (1 Orth/Append OR Orth/Copy);#(NEGATE 1 iOBLIQUE) ;
 
 MAP:M0031C @PROP> TARGET FIRSTNAME + Abs IF (1 NAME - Sem/Fem - CONJ-C)(NEGATE *1 INTRANSVERB + 3Sg) ; #Fornavne er @PROP til efternavne eller efterfølgende fornavne. Et mandligt navn kan bruges som efternavn.
 
