@@ -1588,7 +1588,7 @@ SET EXCLAMATION = ("tipi" N) | (SSUSIQ 3SgPoss) | (SSUSIQ Pl 3PlPoss) | WEATHER 
 LIST Mask = "Aron" "Egon" "Eri" "Erik" "Eskild" "Hans" "Jens" "Manu" "Mik" "Mikkel" "Miki" "Morten" "Niels" "Ole" "Per" "Piitaq" "Rasmus" "Sean" "Trond" Sem/Mask ;
 LIST Fem = "Anette" "Anna" "Arnaq" "Dagmar" "Emilie" "Gitte" "Hanne" "Jane" "Karen" "Kirsten" "Maliina" "Margrethe" "Meeraq" "Mette" Sem/Fem ;
 LIST Sur = "Jensen" "Jenseni" "Møller" "Olsen" "Rasmussen" "Trosterud" Sem/LastName ;
-LIST TITEL = "borgmester" "fru" "Gammel" "hr" "hotel" ("ilinniar" TIP HTR TUQ) "kunngi" "lektor" "minister" "nakorsaq" "naalagaq" ("pisoq" TAQ) "præsident" ("qalipap" HTR TUQ) "senator" ("siulittar" TUQ) ("siunnersor" HTR TUQ) ("siunnersuisoq") ("ulloriarsior" TUQ) "ulloriarsiortoq";
+LIST TITEL = "borgmester" "fru" "Gammel" "hr" "hotel" ("ilinniar" TIP HTR TUQ) "kunngi" "lektor" "minister" "miss" "nakorsaq" "naalagaq" ("pisoq" TAQ) "præsident" ("qalipap" HTR TUQ) "senator" ("siulittar" TUQ) ("siunnersor" HTR TUQ) ("siunnersuisoq") ("ulloriarsior" TUQ) "ulloriarsiortoq";
 LIST COUNTRY = "Canada" "Danmark" "Finland" "Grønland" "Island" "Kalaallit Nunaat" "Norge" "Rusland" "Sverige" "Tyskland" "USA" ; 
 LIST GeoProp = Sem/Geo "Danmark" "Finland" "Gladsaxe" "Mose" "Tåstrup" ;
 SET Fornavn = Mask | Fem ;
@@ -8159,6 +8159,8 @@ REMOVE:5489H ("ajor") + TUUR IF (0 ("ajutoor")) ; #additiv TUUR er idiosynkratis
 REMOVE:5489I (/"pige"\ Gram/TV/l) IF (0 (/"pi"\ GE\ Der/nv\ Gram/TV/l));
 REMOVE:5489J ("artukker") IF (0 (/"artugaq"\ LIR\ Der/nv\ Gram/TV/l));
 REMOVE:5489K ("siani") IF (0 ("sianer") LINK *-1 Trm BARRIER V) ;
+REMOVE:5489L ("tusarner") + JAAR IF (0 ("tusarniaa"));
+REMOVE:5489M (/"ataaseq"\ iN\ iTrm\ iSg\ U\ Der/nv/l) IF (0 (/"ataaseq"\ iN\ iTrm\ iSg\ Gram/Hyb\ UR\ Der/nv/l));
 
 # Der/nv eller Der/vv?
 SELECT:5493 QATE + Der/vn + GE IF (0 QATE + Der/nn + GE)(NEGATE *-1 HUMAN + @OBJ>) ;
@@ -8774,47 +8776,11 @@ REMOVE:9942A SPATIAL + iPl + ALL_OBLIQUE IF (0 SPATIAL + iSg + ALL_OBLIQUE) ; #	
 REMOVE:9942B SPATIAL + Pl + ALL_OBLIQUE IF (0 SPATIAL + Sg + ALL_OBLIQUE) ; #	"sani" Lok Pl 1PlPoss vs. "sani" Lok Sg 1PlPoss
 
 REMOVE:9943 @CL-<CIT IF (0 @POSS> + Pl LINK *1 3PlPoss BARRIER (*) - Adv );#Nalunaarutigalugu ANGERLARSIMAFFEQANNGITSUT qanoq amerlatiginerannik er @POSS>, ikke @CL-<CIT
-#SELECT:0125_1SgPossx 1SgPoss IF (*-1C VERB-NOTCONT + 1SgO BARRIER (*) - 1Sg) ; # - ... Nujuillisarsinnaagummali inuunera qaamanerulissagaluarpoq. #Burde kræve at der et sted til venstre (x vinduer) er DIRTALESTART.
-
-#SELECT:9939AJ_1SgPoss_late (/...Poss/r) IF (*-1 (/$1/) BARRIER (*) - CONJ-C) ;
-
-#SELECT:9945D ("(.*[a-z])"r) IF (<**-1C ("$1"v))(NEGATE 0 iAeq OR Adv OR Pali OR ("pi") OR Gram/Exclm); #Vælg den, hvis der er en magen til den til venstre for den. #
-
-
-#REMOVE:9939AJ_1SgPoss_late NIQ + 1SgPoss IF (0 MOVE-VERB LINK *0 ORATIOOBLVERB)(NEGATE *-1 ("uanga")) # (taassuma) takkuteriasaarnera tupinnartoq paasiniassallugu periarfissarseriasaarpunga.
-# ;
-#REMOVE:9939AK_1SgPoss_late NIQ + 1SgPoss IF (0 3SgPoss LINK *-1 Rel + Sg BARRIER (*) - Adv) #- Piuminaatsuuniarama, Emiliep taamatut oqarnera aappaata quiagaa.
-#(NEGATE *0 1Sg BARRIER Rel - TIME) #1Sg som subjekt eller possessor # ... pulagumalu ukiut ingerlanerini ataatsimoorluta misigisarsimasavut nuannersut uterfigissagikka, qimaqqinngisaannassallugillu ukiup qanoq ilinera sumilu najugaqarnera akornutiginagit.
-#;
-#REMOVE:9939AM_1SgPoss_late NIQ + 1SgPoss IF (1* ORATIOOBLVERB - 3Sg BARRIER VFIN LINK NOT -1 BOS LINK NOT *2 1Sg) ; #LINK til "Sumiuunera puigorlugu uangaaginnarlanga."
-#Sen regel til at disambiguere NIQ+1SgPoss fra NIQ+3SgPoss
-#REMOVE:9939AO_1SgPoss_late NIQ + 1SgPoss IF (*-1 Sg + @OBJ> LINK *1 PILLUGU CBARRIER V LINK *1 ("tassa") LINK *1 Sg + @i-N< BARRIER V) ; #Sigguilu aatsalaarmata qungujunniarlunilusooq kingumut eqqarsalerpunga "Ataqqinartuaraq sinittoq una pillugu killitsissutiga tassaavoq naasunnguamut AALAJAATSUUNERA. Naasup taassuma assinga qullertulli qaamanerivaa sinikkaluarluniluunniit ...” 
-
-#Stochastisk regel:
-#REMOVE:9939AP_3SgPoss_late NIQ + 3SgPoss OR (".*neq"r) - AFFINGERET + 3SgPoss IF (*-1 1Sg BARRIER 3Sg OR POSSESSUM3 OR 3SgO) ; #Kan evt. gøres bredere ved at kræve HFAM i stedet for NIQ eller neq. Kun erneq slutter på neq. Kan også rammes på direkte tale-tagging. #Utileruma ernera Esbjergimiittoq ilagissavara, ukua ilaquttani ilagilaarniassammagit. 
-
-
-#REMOVE:9939AQ_3SgPoss_late 1SgPoss IF (*-1 @POSS> + 1Sg BARRIER V) ; #Ataatama qanga qanoq inuuneqarsimanera uanga susassarinngilara
-
-
-#REMOVE:9939AR_3SgPoss_late 3SgPoss - ("misse") IF (*1 1Sg BARRIER V OR Pron); #barrier personligt pronomen #Uunnaaviup qaava paavialeraluarlugu sumiinnera eqqaalerakku imaq maajunnaqimmat tamanna unitsiinnarpara.
-
-#REMOVE:9939AS_1SgPoss_late 1SgPoss IF (*-1 3SgPoss - TIMEVERB BARRIER 1Sg OR 1SgO OR TIME OR VFIN)(NEGATE *1 1Sg OR 1SgO BARRIER V) ;
-
-#REMOVE:9939AT_3SgPoss_late 3SgPoss + @OBJ> IF (*1 ORATIOOBLVERB + TRANSVERB + 3SgO)(*-1 1Sg) ; #probable 1SgPoss if 1Sg occurs antecedent #Kinaanera isertuunnianngilara, ilumoortumilli ilisaritissaguma ilimagisariaqarpoq oqaatigisakka tamarmik ilumoorluinnartutut tamanillu ersersitsisutut naatsorsuutigineqartariaqanngimmata, ajunnginnerussagaluarpormi inuup allap ilisaritittuuppanga, taassumami kinaassagaluarnersup tamakkiinerusumik *kinaanera oqaatigisinnaassagaluarmagu.
-
-
-#Stochastik ud over sætningsgrænser:
-#SELECT:9939AN_1SgPoss_late NIQ + 1SgPoss IF (0*WC 1Sg)(0 NIQ + 3SgPoss) #Possessor 1.Sg hvis 1. Sg i omgivende sætninger
-#(NEGATE *-1 Rel + Sg BARRIER KOMMA) #Ataatama qanga qanoq inuuneqarsimanera uanga susassarinngilara
-#(NEGATE *-1W DIRTALESTART BARRIER DIRTALESLUT) 
-#;
-
 
 
 #Sen regel til at disambiguere 3SgPoss+Rel+Pl fra 3PlPoss+Rel+Pl fra "arnaq" N Lok Sg Aeq
 REMOVE:9939B 3PlPoss IF (0*W 3Sg)(0 3SgPoss)(NEGATE *-1 3Pl)(NEGATE -1 Pl) ; #Possessor 3Sg hvis 3Sg i omgivende sætninger og ingen 3Pl lige til venstre
-#REMOVE:9939C 3SgPoss IF (-1*W 3Pl)(0 3PlPoss)(NEGATE *-1 3Sg) ; #Possessor 3Pl hvis 3Pl i omgivende sætninger
+
 REMOVE:9939C 3SgPoss IF (0 3PlPoss LINK -1 Rel + Pl) ;
 REMOVE:9939C 3PlPoss IF (-1*W 3Sg OR 3SgO)(0 3SgPoss)(NEGATE *-1 3Pl) ; #Possessor 3Pl hvis 3Pl i omgivende sætninger
 #REMOVE:9939C 3SgPoss IF (-1*W 3Pl OR 3PlO)(0 3PlPoss)(NEGATE *-1 3Sg) ; #Possessor 3Pl hvis 3Pl i omgivende sætninger
@@ -8822,6 +8788,7 @@ REMOVE:9939C 3PlPoss IF (-1*W 3Sg OR 3SgO)(0 3SgPoss)(NEGATE *-1 3Pl) ; #Possess
 #Usikker regel til at disambiguere "arnaq" N Aeq Sg 4SgPoss fra "arnaq" N Lok Sg Aeq
 REMOVE:9939D (/N\ Lok\ Sg\ Aeq/l) IF (0 HUM + 4SgPoss LINK *1 3Sg OR 4Sg BARRIER (*) - Adv - OBLIQUE); #Lige som på HUM må vist være sjælden
 
+REMOVE:9939E ("sapaatip-akunneq") + 3PlPoss IF (0 ("sapaatip-akunneq") + 3SgPoss);
 
 #Sen regel til at disambiguere synkretisme 1Sg+2PlO vs. 1Pl+2PlO
 REMOVE:9940 1Sg + 2PlO IF (0 1Pl + 2PlO)(*0 1Pl) ;
@@ -9022,6 +8989,8 @@ REMOVE:9962F (/Gram\/TV\ Gram\/Pass\ NIQ\ Der\/vn\ N__/l) + NIRMIT IF (*-1 @NIQ_
 REMOVE:9962G (/NNGUR\ Der/nv\ Gram/TV\ V\ Cont/l) IF (0 (/NNGUR\ Der/nv\ Gram/IV\ V\ Cont/l));
 
 REMOVE:9962H (/"pisar"\ Gram/TV/l) + NIQ IF (0 (/"pi"\ Gram/IV\ TAR\ Der/vv\ Gram/IV\ NIQ\ Der/vn\ N/l)) ;#
+
+REMOVE:9962I (/"ator"\ Gram/TV\ QQAAR\ Der/vv\ TIP/l) IF (0 (/"ator"\ Gram/IV\ QQAAR\ Der/vv\ TIP/l));#ATOQQAARTIP..
 
 REMOVE:9963 $$BFORM + (/\"\ Gram\/TV/l) + INTRANSVERB - NIQAR - Gram/Db - NAR IF (0 $$BFORM + (/\"\ Gram\/IV/l) + INTRANSVERB) ; #supplerer 9965C for verberne. Regressionstestet men meget bred, så bør observeres 
 
