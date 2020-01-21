@@ -277,6 +277,10 @@ SET Refl_Reci = Gram/Refl OR Gram/Reci ; #til disambiguering af begge klasser me
 LIST KOMMA = "," ;
 LIST ParagrafSlut = "¶" "." ; #To be added in all corpora in order to deal efficiently with headlines
 
+#Diverse tags defineret i kal-pre2
+LIST %NumPossessum = %NumPossessum ; #("misse")+3PlPoss når possessum for -1 Num 
+LIST %ContHypotagme = %ContHypotagme ; #CONT når -1 Abs eller Abs når 1 CONT
+
 # Derivatives #
 
 LIST A* = A* ;
@@ -1422,7 +1426,7 @@ SET DelvistFossileredeCont = FossileredeCont | AltidAdvlCont ;
 
 SET OQARPOQ = (/"oqar"\ Gram/IV\ V/l) OR (/"oqar"\ Gram/IV\ NNGIT\ Der/vv\ Gram/IV\ V/l) OR (/"oqar"\ Gram/IV\ TUQ\ Der/vn\ QAR\ Der/nv\ Gram/IV\ V/l) OR (/"oqar"\ Gram/IV\ TUQ\ Der/vn\ QAR/l);
 # 20091106 Foelgende med tak til Tino for at forebygge at "oqar" + USIQ opfattes som inquit
-LIST ORATIOOBLVERBnOQAR = "aalajanger" "aalianger" ("allap" USIQ GE) ("apeqqut" GE) ("apeqqut" U) "apere" ("assuarliut" GE) "eqqaa" "eqqaama" "eqqartor" "erseqqissar" ("erser" QQIP TAQ UTE GE) "ilimage" "ilimasup" ("ili" SIMA TIP HTR) "ilisimatitsi" "ilisimatitsissut" "ilumoor" "imaap" ("inassut" GE) "inassutige" ("isuma" LIUR) ("isuma" QAR) "isummer" "kaammattor" "maluge" "malunnar" "malunnarsi" "misige" "naatsorsor" (/"nali"\ LIR\ Der/nv Gram/TV/l) "nalu" "nalunaar" "nalunaarfige" "nalunaarut" "nalunaarutige" "neriorsor" "neriup" "nipangiup" ("nuannaar" UTE GE) ("oqalup" UTE) ("oqar" UTE GE) "oqaluttuar" ("oqar" VIK GE) "paasi" "paasissutisser" ("pi" GUMA TAQ GE) "pinngitsaali" ("piumaffik" GE) "puigor" "puior" "qular" "qulare" "qularnar" "qinnuige" "sinnattoq GE" "siunnersor" "takorloor" ("taku" Gram/TV) "tusar" "unner" "uggore" "uppernarsar" ("uppernar" SAR) (/SSAQ\ Der\/nn\ GE\ Der\/nv/l); #GE tilføjet til objektssætninger som ikke er indirekte tale
+LIST ORATIOOBLVERBnOQAR = "aalajanger" "aalianger" ("allap" USIQ GE) ("apeqqut" GE) ("apeqqut" U) "apere" ("assuarliut" GE) "eqqaa" "eqqaama" "eqqartor" "erseqqissar" ("erser" QQIP TAQ UTE GE) "ilimage" "ilimasup" ("ili" SIMA TIP HTR) "ilisimatitsi" "ilisimatitsissut" "ilumoor" "imaap" ("inassut" GE) "inassutige" ("isuma" LIUR) ("isuma" QAR) "isummer" "kaammattor" "maluge" "malunnar" "malunnarsi" "misige" "naatsorsor" (/"nali"\ LIR\ Der/nv\ Gram/TV/l) "nalu" "nalunaar" "nalunaarfige" "nalunaarut" "nalunaarutige" "neriorsor" "neriup" "nipangiup" ("nuannaar" UTE GE) ("oqalup" UTE) ("oqar" UTE GE) "oqaluttuar" ("oqar" VIK GE) "paasi" "paasissutisser" ("pi" GUMA TAQ GE) "pinngitsaali" ("piumaffik" GE) "puigor" "puior" "qular" "qulare" "qularnar" "qinnuige" "sinnattoq GE" "siunnersor" "takorloor" ("taku" Gram/TV) "tusar" "unner" "uggore" "uppernarsar" ("uppernar" SAR) (/SSAQ\ Der\/nn\ GE\ Der\/nv/l); #GE tilføjet til objektssætninger som ikke er indirekte tale
 
 LIST INQUIT_HTR = "akuere" "apersor" "erseqqissar" ("ilisima" TIP) "misilip" "nassuiar" "neriorsor" "siorasaar" "soqutige" ; 
 
@@ -1539,6 +1543,7 @@ LIST PLACE = ("atuar" VIK) "illu" "imaq" "itersaq" "itersaliaq" "itersaliarsuaq"
 LIST PLACE_MORE = (/\"<\\p{Lu}.*\>"/r) ^Hyb/2-2;
 SET PLACE_EXTENDED = PLACE | PLACE_MORE ;
 LIST ADJEKTIVISK = "akisooq" "akutakujooq" "akutakujuk" "angisooq" ("arlaq" LIK) "ataavartoq" "ilivitsoq" ("isertor" TUQ) "itisooq" "manissoq" "nutaaq" ("perler" TUQ) ("portu" JAAR) "takisooq" "siulleq" "tamalaaq" "tulleq" "tulliup" "tungujortoq" (NAR TUQ) (/.*tooq\"/r); #angut og arnaq medtaget lidt skummelt, men anvendes ofte adjektivisk. PL 20190806 mange fejl, så arnaq og angut fjernet igen. sakkutooq undtaget fra .*tooq
+SET NON_ADJEKTIVISK = N - ADJEKTIVISK ;
 LIST COLOUR = "aappaluttoq" ("aak" PALUP TUQ) "qaqortoq" "qaqqorik" "qernertoq" "qorsuk" "sungaartoq" "tungujortoq" ;
 SET ATTRIBUTIV = ADJEKTIVISK - ("sakkutooq") | COLOUR | (/QAR\ Der\/nv\ \(Gram\/IV\ \)?TUQ\ /l) | ("IP" TUQ) ;
 LIST NATIONALITY = "dansk" "grønlænder" "kalaaleq" "qallunaaq" ;
@@ -1605,7 +1610,7 @@ LIST FAM_UNIK = "ui" "nuliaq" ("angut" 3SgPoss) ("angut" 3PlPoss) ("angut" 4SgPo
 # betegnelser som sjældent optræder uden for sing.
 
 SET FAM = FAM_UNIK | ("aappaq" GIIT) | ("aja") | ("ajak") | ("angaaq") | ("angajoqqaaq") | ("ilaqutaq") | ("ilaqutaq" GIIT) | ("illoq") | ("panik") ;
-LIST HUM = ("ajor" TUQ) "angut" "arnaq" ("atuar" TUQ)"ikinngut" "ila" "ilaqutaq" "inuk" ("inuusup" TUQ) "kalaaleq" "meeraq" "niviarsiaraq" "peqataasoq" "qallunaaq" "sanileq" ("siuaa" TAQ) "tarneq" "tarnik" "utoqqaq" ; #tarneq og tarnik medtaget da ofte objekt for +HUM verber. ilaqutaq da ofte adjektivisk på linie med arnaq m.fl.
+LIST HUM = (/"ajor"\ Gram/IV\ TUQ/l) "angut" "arnaq" ("atuar" TUQ)"ikinngut" "ila" "ilaqutaq" "inuk" ("inuusup" TUQ) "kalaaleq" "meeraq" "niviarsiaraq" "peqataasoq" "qallunaaq" "sanileq" ("siuaa" TAQ) "tarneq" "tarnik" "utoqqaq" ; #tarneq og tarnik medtaget da ofte objekt for +HUM verber. ilaqutaq da ofte adjektivisk på linie med arnaq m.fl.
 
 SET HUMAN = FAM OR NAME OR TITEL OR ORGANISATION OR HUM OR Prop - Sem/Geo  OR <Hprof> ;
 SET NON_HUMAN = N - HUMAN ;
@@ -3480,7 +3485,10 @@ SELECT:0251 Gram/Coref + Pron IF (1 Gram/Refl) ; #Immaqaana aamma immisut misigi
 ###################
 
 #Specialiteten adnominale Pron, der peger mod højre, må ind før @FOC-reglerne
-MAP:M0230NY @Pron>N TARGET Gram/Dem + Pron + Abs + Pl - Prefix/AA IF (*1 N OR Num BARRIER (*) - PUNCT LINK 0 Abs + Pl)(NEGATE *1 3PlO BARRIER VFIN OR Num + Abs + Pl) ; #Skal i stedet have et unification set PL 20180530
+MAP:M0230NY @Pron>N TARGET Gram/Dem + Pron + Abs + Pl - Prefix/AA IF (*1 N OR Num BARRIER (*) - PUNCT LINK 0 Abs + Pl)(NEGATE *1 3PlO BARRIER VFIN OR Num + Abs + Pl) #Skal i stedet have et unification set PL 20180530
+(NEGATE *1 Abs + Pl)#Uumasunik illersuiniaqatigiit TAAKKU marluk Japanimiunit arfanniummut inuttaasunit tigummineqarput
+;
+
 MAP:M0230NY2 @Pron>N TARGET Gram/Dem + Pron + Abs + Sg - Prefix/AA IF (*1 N + Abs + Sg BARRIER (*) - PUNCT)#Skal i stedet have et unification set PL 20180530
 (NEGATE *1 3SgO BARRIER VFIN)
 (NEGATE 0 ("manna") + LI LINK -1 BOS OR CLB) #tamannali
@@ -4119,6 +4127,7 @@ MAP:M0018AX (@NIQ_SUBJ>) TARGET Abs - Gram/Pers IF (*1 (/Gram\/IV\ NIQ\ Der\/vn\
 (NEGATE *1 LIK BARRIER (*) - Ins ) #inatsisileritooq aningaasaqarnermik akileraartarnermillu soqutigisalik.
 (NEGATE -1 Abs)
 (NEGATE 0 TITEL LINK 1 N OR Prop)
+(NEGATE 0 Pl LINK *1 VFIN + 3Pl)#MEEQQAT taakkua sisamat qitinnermik festivalimi soqutiginnilluinnarlutik peqataapput
 ;
 
 SUBSTITUTE:S0018E @NIQ_SUBJ> @N< TARGET $$KASUS IF (*-1 @NIQ_SUBJ> + $$KASUS - CONJ-C BARRIER CONJ-C OR @PRED)(*1 (/Gram\/IV\ NIQ\ Der\/vn\ N__/l) + NIRMIT) ;
@@ -5234,7 +5243,7 @@ MAP:M0522 @SUBJ> TARGET Abs + CONJ-LU IF (-1 Abs)(1 Abs + CONJ-LU OR KOMMA)(*1 V
 MAP:M0523A @SUBJ> TARGET Abs IF (1 Abs + CONJ-LU)(*1 PLURSUBJVERB BARRIER V OR KOMMA)(NEGATE *-1 ("soorlu") BARRIER VFIN) ; #Paratakse ved 0523B. 20150710 Meget bred. Skal checkes
 MAP:M0523AB @SUBJ> TARGET Abs IF (*1 KOMMA BARRIER (*) - (Abs @N<) LINK *1 Abs + CONJ-LU)(*1 PLURSUBJVERB BARRIER V)(NEGATE *-1 ("soorlu") BARRIER VFIN) ; #Opremsning ved 0523B.
 
-MAP:M0523B @SUBJ> TARGET Abs + CONJ-LU IF (-*1 Abs BARRIER (*) - CONT - Adv)(*1 PLURSUBJVERB BARRIER V OR KOMMA)(NEGATE -1 @OBJ>)(NEGATE 1 Abs + Pl) ; #20140523 Meget bred. Skal checkes
+MAP:M0523B @SUBJ> TARGET Abs + CONJ-LU IF (-*1 Abs BARRIER (*) - CONT - Adv)(*1 PLURSUBJVERB BARRIER V OR KOMMA)(NEGATE -*1 @OBJ> BARRIER (*) - Abs)(NEGATE 1 Abs + Pl) ; #20140523 Meget bred. Skal checkes
 
 MAP:M0523C @SUBJ> TARGET Abs + CONJ-LU IF ((-1 BOS) OR (-1 Part LINK -1 BOS))(*1 PLURSUBJVERB) ; #20170408. Smal regel til parataktiske subjekt med implicit førsteled
 #Særtilfælde for at forhindre OBJ-tagging Per i Per tamanna pillugu nalusarpoq
@@ -5307,7 +5316,7 @@ MAP:M0742 @i-MIK-OBJ> TARGET ("inneq") + Ins IF (1 ("anip") + HTR + N) ;
 
 # Ins er tit adled til inkorporet objekt
 MAP @i-N< TARGET Ins - CONJ-C (-1 LIK_QAR - PLACE - iNum - Prop - 
-(/QAR\ Der/nv\ UTE\ Der/vn\ N__/l)#Leksikaliseringer må undtages. ATTAVEQAATIP ajutoorneranik pissuteqarpoq
+(/QAR\ Der/nv\ UTE\ Der/vn\ N__/l) - (/"suli"\ Gram/IV\ VIK\ Der/vn\ QAR\ Der/nv\ Gram/IV\ VIK/l)#Leksikaliseringer må undtages. ATTAVEQAATIP ajutoorneranik pissuteqarpoq
  LINK NOT -1 Ins)(NEGATE 1 HTR OR (/TAQ\ Der\/vn\ QAR/l)) #Inoqarpammi naasumik asasaqartumik
 (NEGATE -1 Aeq LINK 1 ("ip")) #Uangalu nalunngisaqaruma naasumik nunarsuarmi asseqanngitsumik 
 (NEGATE 1 Ins + CONJ-C)
@@ -5548,7 +5557,7 @@ MAP:M0608 (@POSS>) TARGET Rel + Sg - Pron IF (*1 3SgPoss - iProp - ("siuneq") BA
 #MAP:M0608A @POSS> TARGET Rel IF (*1 POSSESSUM + $$NUMERUS - ("Kalaallit Nunaat") - ("Kalaallit Illuutaat") BARRIER TRANSVERB LINK NEGATE *1 TRANSVERB)(NEGATE *-1 Rel + $$NUMERUS BARRIER KOMMA OR VFIN)(NEGATE *-1 ("tassa") OR ("soorlu") OR ("ingammik")) ;
 
 MAP:M0608A1 @POSS> TARGET Rel + Sg IF (*1 POSSESSUM + 3SgPoss BARRIER TRANSVERB LINK NEGATE *1 TRANSVERB)(NEGATE *-1 Rel + $$NUMERUS BARRIER KOMMA OR VFIN)(NEGATE *-1 ("tassa") OR ("soorlu") OR ("ingammik")) ;
-MAP:M0608A2 @POSS> TARGET Rel + Pl IF (*1 POSSESSUM + 3PlPoss - ("Kalaallit Nunaat") - ("Kalaallit Illuutaat") BARRIER TRANSVERB LINK NEGATE *1 TRANSVERB)(NEGATE *-1 Rel + $$NUMERUS BARRIER KOMMA OR VFIN)(NEGATE *-1 ("tassa") OR ("soorlu") OR ("ingammik")) ;
+MAP:M0608A2 @POSS> TARGET Rel + Pl IF (*1 POSSESSUM + 3PlPoss - ("Kalaallit Nunaat") - ("Kalaallit Illuutaat") - %NumPossessum BARRIER TRANSVERB LINK NEGATE *1 TRANSVERB)(NEGATE *-1 Rel + $$NUMERUS BARRIER KOMMA OR VFIN)(NEGATE *-1 ("tassa") OR ("soorlu") OR ("ingammik")) ;
 
 
 MAP:M0608B @POSS> TARGET Rel + Pl IF (*1 ("qanoq") BARRIER (*) - @N< - Adv LINK 1 (/\ NIQ\ Der\/vn\ N\ ...\ ..\ .PlPoss/l)) ;
@@ -5583,7 +5592,7 @@ MAP:M0611 (@POSS>) TARGET Rel + Pl + INSTITUTION IF (1 3SgPoss) ; #Naalakkersuis
 MAP:M0611B @POSS> TARGET Rel + Sg IF (*1 3PlPoss BARRIER (*) - @N<)((0 CONJ-LU) OR (-*1 CONJ-LU BARRIER (*) - @POSS> - (/@i.+>/r) LINK 0 @POSS> - (/@i.+>/r) LINK NOT -1 @POSS> OR (/@i.+>/r))) ; #Qissimiinnarlugimmi Kinap ARIZONALLU assigiinngissutaat takusinnaavara.
 MAP:M0611C @POSS> TARGET Rel IF (1 CONJ-LU)(*1 @POSS> BARRIER @POSS> - (/@i.+>/r) LINK *1 3PlPoss BARRIER (*) - @N<) ; #Qissimiinnarlugimmi KINAP Arizonallu assigiinngissutaat takusinnaavara.
 
-MAP:M0611D @POSS> TARGET N + Rel + Pl IF (*1 3PlPoss - ("Kalaallit Nunaat") BARRIER VFIN OR Par LINK NOT *1 TRANSVERB + 3Pl BARRIER Rel + Pl - @POSS>)(NEGATE 0 N + Pl - POSSESSUM - OBLIQUE LINK *1 TRANSVERB + 3PlO BARRIER VFIN) #Negate til forkert selektering af Abs, som ikke er Poss, men Subj eller Obj
+MAP:M0611D @POSS> TARGET N + Rel + Pl IF (*1 3PlPoss - ("Kalaallit Nunaat") - %NumPossessum BARRIER VFIN OR Par LINK NOT *1 TRANSVERB + 3Pl BARRIER Rel + Pl - @POSS>)(NEGATE 0 N + Pl - POSSESSUM - OBLIQUE LINK *1 TRANSVERB + 3PlO BARRIER VFIN) #Negate til forkert selektering af Abs, som ikke er Poss, men Subj eller Obj
 ; #Flyttet fra bunden.
 
 MAP:M0611E @POSS> TARGET N + Rel + Pl IF (*1 3PlPoss BARRIER VFIN LINK -1 V - VFIN + 4Pl)
@@ -5619,6 +5628,8 @@ MAP:M0617A @<MIK-OBJ TARGET Ins IF (-*1 HTR + V + ORATIOOBLVERB - LIK_QAR BARRIE
 MAP:M0617AX @<MIK-OBJ TARGET Trm IF (-*1 MUT-OBJ + HTR + V + ORATIOOBLVERB - LIK_QAR BARRIER V)(NEGATE *1 V OR Der/vn OR INDERIVERENDE_SUBSTANTIV) ;
 MAP:M0617B @<MIK-OBJ TARGET Ins - POSSESSUM IF (-*1 HTR + V - LIK_QAR BARRIER V)(NEGATE *1 INDERIVERENDE_SUBSTANTIV OR HTR BARRIER V) ;
 MAP:M0617BX @<MIK-OBJ TARGET Trm - POSSESSUM IF (-*1 MUT-OBJ + HTR + V - LIK_QAR BARRIER V)(NEGATE *1 INDERIVERENDE_SUBSTANTIV OR HTR BARRIER V) ;
+
+MAP:M0617C @<MIK-OBJ TARGET Ins + LUUNNIIT IF (-1 KOMMA LINK *-1 HTR BARRIER (*) - Ins);#tassa ullorissamik allamik pinngortitsisartoq, NAASUMILLUUNNIIT nutaamik.
 
 MAP:M0619 (@i-MIK-OBJ>) TARGET Ins - TIME - ADJEKTIVISK IF (*1 HTR + Der/vn + N BARRIER V OR NIQ - LU - ("peqqip" NIQ));
 #NIPILERSUKKANIK internetikkut oqarasuaatikkullu angallattakkakkut akiliinani aallertarneq unioqqutitsillunilu ingerlatitseqqittarneq inerteqqutaapput.
@@ -5929,7 +5940,9 @@ MAP:M0512B @N< TARGET N + $$KASUS + $$NUMERUS +  ("(.*)"r) - POSSESSUM - Num - i
 (NEGATE 0 Trm LINK 1 TRM_NOUN) #Avatangiisinut sunniutinut skema assersuutitut.
 ; #sunut tamanut
 
-MAP:M0512C @N< TARGET N + $$KASUS + $$NUMERUS + CONJ-C - POSSESSUM - Num - iNum - Lok - Ins - NUMHOVED - TIMENOUN IF (-1 N + $$KASUS + $$NUMERUS LINK *-1 $$KASUS + $$NUMERUS - PLACE BARRIER Con OR Cau OR ("tassa"))(NEGATE -1 ("una"))(NEGATE 0 CONJ-C + Num LINK -1 Num OR iNum)(NEGATE 0 $$KASUS LINK -1 Num LINK -1 ("nal") LINK *-1 (*) - $$KASUS)(NEGATE 0 Rel LINK 1 POSSESSUM) #alternativ barrier
+MAP:M0512C @N< TARGET N + $$KASUS + $$NUMERUS + CONJ-C - POSSESSUM - Num - iNum - Lok - Ins - NUMHOVED - TIMENOUN IF (-1 N + $$KASUS + $$NUMERUS LINK *-1 $$KASUS + $$NUMERUS - PLACE BARRIER Con OR Cau OR ("tassa"))
+(NEGATE -1 ("una"))(NEGATE 0 CONJ-C + Num LINK -1 Num OR iNum)(NEGATE 0 $$KASUS LINK -1 Num LINK -1 ("nal") LINK *-1 (*) - $$KASUS)(NEGATE 0 Rel LINK 1 POSSESSUM) #alternativ barrier
+(NEGATE 0 NON_ADJEKTIVISK LINK -2 HUMAN)#inuit ataasiakkaat SULIFFEQARFIILLU annertuumik ikiorsersinnaavagut. Meget ad hoc. Sættet må udbygges og/ eller gentænkes
 (NEGATE 0 Aeq LINK 1 ("ip") OR ("isi" GE) OR ("pi"))
 (NEGATE 0 Trm LINK 1 ("tunnga"))
 #(NEGATE 0 iNum + LIK LINK *-1 Sem/Unit + Ins)
@@ -7022,7 +7035,10 @@ REMOVE:0549 Abs IF (0 Par + ADV-LU LINK NOT -1 Abs)(NEGATE 0 Rel)(NEGATE -1 BOS 
 
 REMOVE:0549A Par IF (0 TUQ LINK 1C ADV-LU + Par) ;
 
-SELECT:0549B N OR Prop - Sem/Hum IF (*1 LIK BARRIER V)(NEGATE 0 Adv OR Pali OR Num) ;
+#Er i tvivl om hvad følgende regel gør, så vil ikke slette den, men korrigerer bare for en akut fejl
+SELECT:0549B N OR Prop - Sem/Hum IF (*1 LIK BARRIER V)(NEGATE 0 Adv OR Pali OR Num)
+(NEGATE 0 Par LINK *1 (/"ilisima"\ Gram/TV\ TAQ\ Der/vn\ LIK/l) + &&IV_SUBJ& LINK *1 ORATIOOBLVERB + &&IV_SUBJ&)#Kalaallit meerartaat 1.000-it missaanniittut inooqatigiinnikkut ilungersunartunik AJORNARTORSIUTEQARTUT , immikkut ilisimasallit naliliipput skal være Par
+ ;
 
 REMOVE:0549C Par + INTRANSVERB IF (0 Prop + &&IV_SUBJ& OR N + &&IV_SUBJ&)(1 ORATIOOBLVERB + INTRANSVERB + &&IV_SUBJ&) 
 (NEGATE 1 ("oqar") - AFFINGERET LINK *0 (*) - WORD BARRIER (*) - _TARGET_ LINK NEGATE *1 (":")) #Oqarpoq vil altid have objekt eller være inquit. qiiasoq oqarpoq.
@@ -8180,6 +8196,7 @@ REMOVE:5489K ("siani") IF (0 ("sianer") LINK *-1 Trm BARRIER V) ;
 REMOVE:5489L ("tusarner") + JAAR IF (0 ("tusarniaa"));
 REMOVE:5489M (/"ataaseq"\ iN\ iTrm\ iSg\ U\ Der/nv/l) IF (0 (/"ataaseq"\ iN\ iTrm\ iSg\ Gram/Hyb\ UR\ Der/nv/l));
 REMOVE:5489N (/"nalliup"\ Gram/IV\ SI\ Der/vv/l) IF (0 ("nalliussi")) ; #Inuit marluk katinnerisa NALLIUSSINERAT
+REMOVE:5489O (/"ator"\ Gram/IV\ VIP/l) IF (0 (/"ator"\ Gram/TV\ HTR/l));#piffissamik ATUIFFIUNGAATSIARTOQ Oqaasileriffimmi immikkut siunnersorti naliliivoq
 
 # Der/nv eller Der/vv?
 SELECT:5493 QATE + Der/vn + GE IF (0 QATE + Der/nn + GE)(NEGATE *-1 HUMAN + @OBJ>) ;
@@ -8987,8 +9004,12 @@ SELECT:9969A ("aamma") + Conj IF (-1 BOS OR DIRTALESTART) ;
 MAP:M0410A @HNOUN TARGET Pron (NEGATE *0 V OR @PRED OR @PRED2 OR UNA OR UKU OR UKUA) ; #illit uangaluunniit
 
 #Disambiguering af @PRED2 vs @N<
-REMOVE Par + (/@i?-?CL-<?CIT>?/r) IF (0 TUQ + @N<) ; #Uulia nassaarineqartoq ilimagisamit annertuneruvoq.
-REMOVE TUQ + @N< IF (0 Par + &&IV_SUBJ& LINK *-1 &&IV_SUBJ& + @SUBJ> BARRIER V + &&IV_SUBJ&);
+REMOVE Par + (/@i?-?CL-<?CIT>?/r) IF (0 TUQ + @N<)  #Uulia nassaarineqartoq ilimagisamit annertuneruvoq.
+(NEGATE *-1 Abs + &&IV_SUBJ& LINK *1 _TARGET_ + Par + &&IV_SUBJ& LINK *1 ORATIOOBLVERB)#Kalaallit meerartaat 1.000-it missaanniittut inooqatigiinnikkut ilungersunartunik AJORNARTORSIUTEQARTUT , immikkut ilisimasallit naliliipput .
+;
+REMOVE TUQ + @N< IF (0 Par + &&IV_SUBJ& LINK *-1 &&IV_SUBJ& + @SUBJ> BARRIER V + &&IV_SUBJ&)
+(NEGATE *1 ORATIOOBLVERB LINK *-1 Par + &&IV_SUBJ& LINK *-1 _TARGET_ + Abs + &&IV_SUBJ&)#Kalaallit meerartaat 1.000-it missaanni ITTUT inooqatigiinnikkut ilungersunartunik ajornartorsiuteqartut , immikkut ilisimasallit naliliipput .
+;
 
 REMOVE TUQ + @SUBJ> IF (0 Par + @PRED2 + &&IV_SUBJ& LINK *-1 OTHERTIME + &&IV_SUBJ&);#Sapaatip akunnera QAANGIUTTOQ Jaaku tikippoq assut qungujulaarluni iluarusuttoq nalunarani
 
@@ -9095,8 +9116,9 @@ SELECT (@CL-<CIT) IF (*-1 ORATIOOBLVERB BARRIER V-NOT-Par)(NEGATE 0 @OBJ> LINK *
 SELECT:9969 TUQ + Abs IF (-1 V + U )(1 KOMMA OR EOS)(NEGATE -1 TEMPUSVERB + Par) ;
 REMOVE @CL-CIT> IF (1 @N<) ; # Hvis det er en CL-CIT, er der ikke et adnominalt adled til højre for det. I så fald er det et objekt, eller det ord der er tagget som @N< er CL-CIT. Naasorli ajortuusoq paasigaanni. 
 SELECT:9970 (@CL-CIT>) IF (*1 ORATIOOBLVERB + V BARRIER V-NOT-Par LINK NOT 1 ("\:") LINK NOT -2 ("taama"))(NEGATE 0 Abs + Sg + Der/nv LINK -1 Sg + Abs)(NEGATE 0 Abs + Pl + Der/nv LINK -1 Sg + Pl)#Uden NEGATE hit på adled til objekt
-(NEGATE *-1 @SUBJ> + Pl LINK 1 _TARGET_ LINK *1 ORATIOOBLVERB + NIQAR ); #Ilaqutaasut ikiorneqarumasut sumut saaffiginnissinnaanerannik paasitinneqareerput. Reglen ikke helt vandtæt, men næsten jf. Lene Espersenip timmisartuani aquttut Kabul-imut missinnaanngitsut paasitinneqarput
-
+(NEGATE *-1 @SUBJ> + Pl LINK 1 _TARGET_ LINK *1 ORATIOOBLVERB + NIQAR ) #Ilaqutaasut ikiorneqarumasut sumut saaffiginnissinnaanerannik paasitinneqareerput. Reglen ikke helt vandtæt, men næsten jf. Lene Espersenip timmisartuani aquttut Kabul-imut missinnaanngitsut paasitinneqarput
+(NEGATE *1 ORATIOOBLVERB LINK *-1 Par + &&IV_SUBJ& LINK *-1 _TARGET_ + Abs + &&IV_SUBJ&)#Kalaallit meerartaat 1.000-it missaanni ITTUT inooqatigiinnikkut ilungersunartunik ajornartorsiuteqartut , immikkut ilisimasallit naliliipput .
+;
 SELECT:9971 @CL-CIT> IF (*-1 @SUBJ> + 4SgPoss)(*1 ORATIOOBLVERB + VFIN LINK NOT -1 ("taama")) ;
 SELECT:9971A HTR - V IF (*-1 @i-MIK-OBJ> BARRIER (*) - @i-ADVL> - @N<) ;
 #Karlssons lov anden version: Vælg den mest komplette af flere ord, hvoraf ingen er hele stammer
