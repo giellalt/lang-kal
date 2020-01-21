@@ -1495,8 +1495,9 @@ LIST IntransTrans = "neri" "ilassior" Gram/HV ; #Set til disambiguering af Ins, 
 SET UGEDAGE = (/__\"arfineq\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"ataaseq\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"marluk\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"pingasut\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | ("sapaat") | (/__\"sisamat\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | (/__\"tallimat\"\ NNGUR\ Der\/nv\ Gram\/IV__/l) | ("ataasinngorpat") | ("ataasinngormat") | ("marlunngorpat") | ("marlunngormat") | ("pingasunngorpat") | ("pingasunngormat") | ("sisamanngorpat") | ("sisamanngormat") | ("tallimanngorpat") | ("tallimanngormat") | ("arfininngorpat") | ("arfininngormat") | ("ataasinngorneq") | ("ataasinngorneq") | ("marlunngorneq") | ("marlunngorneq") | ("pingasunngorneq") ;
 SET OTHERDAY = ("ullortuneq") | ("ullukinneq") ;
 SET SEASON = ("aasaq") | ("ukiaq") | ("ukioq") | ("upernaaq") ; #årstider
-#LIST MONTH = "januar" "januaari" "februar" "februaari" "marts" "marsi" "april" "apriili" "maj" "maaji" "juni" "juuni" "juli" "juuli" "august" "aggusti" "september" "septembari" "oktober" "oktobari" "november" "novembari" "december" "decembari" ;
-LIST TIMEVERB = ("agger") ("assi" GIIAAR) ("ili" NIQ) ("ingerla") ("naammassi") ("ip" TUQ U) "pula" ("qaama") "qaanger" "qaangiup" ("qiteqqup") ("sivitsor") ("imaali"); #verber som kan have tidsudtryk som subjekt
+
+LIST TIMEVERB = ("agger") ("assi" GIIAAR) ("ili" NIQ) ("ingerla") ("ip" TUQ U) ("naammassi" - Gram/Pass) "pula" ("qaama") "qaanger" "qaangiup" ("qiteqqup") ("sivitsor") ("imaali"); #verber som kan have tidsudtryk som subjekt #("naammassi") reduceret for Gram/Pass, da ellers overblokerende
+
 SET TEMPUSVERB = UGEDAGE | ("ilaanneeriar") | ("qaanger") | ("qaqutigut" U) | ("qiteqqup") | ("taamaali") | ("ukiar") | ("ukioq" U) | ("unnup") ;
 LIST TIMEAFFIX = (/__RIIR\ Der\/vv\ \(Gram\/..\ \)*V__/l) (/__LIR\ Der\/vv\ \(Gram\/..\ \)*V__/l) ;
 LIST DISTANCEVERB = "ungasip" "qanip" ;
@@ -1524,6 +1525,7 @@ LIST TRM_NOUN = "skema" ;
 #partit (@POSS) siulittar+HTR+TUQ vs. siu+LIK=TAQ+U+TUQ: ORGANISATION og TITEL listes og begge tilføjes SET HUMAN. Så kan man selecte HUMAN hvis @POSS er HUMAN
 
 LIST MAANED = "januar" "januaari" "februar" "februaari" "marts" "marsi" "april" "apriili" "maj" "maaji" "juni" "juuni" "juli" "juuli" "august" "aggusti" "augusti" "september" "septembari" "oktober" "oktobari" "november" "novembari" "december" "decembari" ;
+
 SET CLOCK = (Num Trm) - AFFINGERET ;
 LIST OTHERTIME = Sem/Time ("aallar" QQAAR UTE) ("aasaq") "akunneq" ("aqagu") (/\"inuk\"\ U\ .*\ NIQ/l) ("ippassaq") "juulli" ("kingulleq") ("kingu" NIQ) ("kinguneq") ("kinguninnguaq") ("kingusip") ("maanna") "minut" "naggat" ("nali") ("piffik") ("qaammat") ("qangali") "qangangaatsiaq" ("qeqqa") ("sapaat") ("sapaatip-akunneq") (/"silattor"\ Gram/IV\ NNGIT\ Der/vv\ Gram/IV\ NIQ/l) "sivisoorsuaq" ("sivisu") "sivitsunngitsoq" ("siulleq") ("siuneq") ("siorna") ("taarsi") "time" ("ualeq") ("ukiaq") ("ukiar" TUQ) ("ukiartoq") ("ukioq") ("ullaa") ("ullaaq") "ullaaralaaq" "ullaaralaannguaq" ("ullaaq" RALAAQ NNGUAQ) "ullaaror" "ullaassaq" ("ulloq") ("unnuaq") "unnuaqeqqa" ("unnuk") ;
 SET TIMENOUN = UGEDAGE | OTHERDAY | SEASON | MAANED | CLOCK | OTHERTIME ;
@@ -2822,12 +2824,16 @@ MAP:0043H @ADVL> TARGET Abs + Pron + 1Sg OR Abs + Pron + 1Pl IF (NEGATE *1 1Sg O
 #En mulig Par fulgt af mulig inquit, som ikke er det pga. semantik længere til højre. Takkuteriasaarnera TUPINNARTOQ paasiniassallugu periarfissarseriasaarpunga,
 REMOVE:0042B Par + 3Sg IF (-1 Abs + Sg)(*1 (/"periar"\ Gram/IV\ VIK\ Der/vn\ SSAQ/l) + V OR ("periarfissip") + V BARRIER KOMMA LINK *-1 SSA + Cont LINK -1 _TARGET_);
 
-#Fysikerit marluk Risømi ilisimatusarfimmeersut taamanikkut sermip ataani Amerikamiut atomreaktoriliornissaanut pilersaarutaannik saqqummiussiffigineqarput .
+#Fysikerit marluk RISØMI ilisimatusarfimmeersut taamanikkut sermip ataani Amerikamiut atomreaktoriliornissaanut pilersaarutaannik saqqummiussiffigineqarput .
 MAP:M_uløselighed0001 @i-ADVL> TARGET ("Risø") + Lok IF (1 (/"ilisimatusar"\ Gram/IV\ VIK/l));
+#TASIILAMI aalakoorlutik biilertut mianersuaalliorlutik toqutsisutut unnerluutigineqarput
+MAP:M_uløselighed0002 @i-ADVL> TARGET Sem/Geo + Lok IF (1 ("aalakoor") + CONT LINK 1 ("biiler")); #Semantikken så generisk at skopus må være snæver
 
 #Lok anvendt på MIK-OBJ i stedet for Ins er svær (umulig?) at håndtere. En tidlig og farlig regel, der skal følges op på
 SUBSTITUTE Lok Ins TARGET (HTR) IF (1 HTR - ("ilar")); #siunnersortit .. Tasiilami inunnik ISUMAGINNINNERMI ingerlatitsivimmi .. ikiuussimapput. Mange fejl pga. ambiguøs ilaivoĸ vs. ilauvoĸ
 
+#Faste fraser
+MAP:M_faste0001 @i-ADVL> TARGET ("mianersuaallior") + CONT IF (1 (/"toqup"\ Gram/TV\ HTR\ Der/vv\ Gram/IV/l)); #uagtsomt manddrab
 
 #######
 # MWE #
@@ -4872,6 +4878,7 @@ MAP:M0311 @<APPOS TARGET $$KASUS + Hyb/2-2 (-1 Gram/ACR + Hyb/1-2) (-2 N + $$KAS
 # Appositions without comma including parataxis må ikke overskrive i-ADVL
 MAP:M0316 (@ADVL>) TARGET TIME + Abs + Sg IF (NEGATE *1 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO)(*1 V)(NEGATE 1 KOMMA)
 (NEGATE *-1 Abs BARRIER (*) - CONT + LU LINK 1 CONT + LU LINK 1 _TARGET_ LINK *1 V + 3Pl)#aalisarneq inuussutissarsiutigalugulu PINIARNEQ ingerlalluarput
+(NEGATE *-1 VFIN LINK *1 LU LINK *1 _TARGET_ LINK *1 CONT + 4Sg BARRIER (*) - OBLIQUE - Adv)#suliniut qulingiluanik inuttalerneqarpoq, 2021-llu naanerani NAAMMASSINISSAA naatsorsuutigineqarluni.
  ; 
 
 MAP:M0318 (@ADVL>) TARGET Lok + TIME - ("akunneq") IF (*1 V BARRIER NIQ + POSSESSUM + OBLIQUE OR ("nalunaaqutaq")) ;
@@ -5631,7 +5638,9 @@ MAP:M0615A @MIK-OBJ> TARGET Ins IF (*1 HVVERB + V BARRIER V OR VERBALNOMEN - Ins
 MAP:M0615A @MIK-OBJ> TARGET Trm IF (*1 HVVERB + MUT-OBJ + V BARRIER V OR VERBALNOMEN - Ins) (NEGATE -1 @MIK-OBJ>) ; #Ikke MAP fordi ogsaa ADVL> mulig. PL 20181017 tilføjet VERBALNOMEN for at forebygge hit på 'qanoq sukkatigisumik ingerlaarsinnaaneranut TAKUSSUTISSAALLUARPOQ'
 MAP:M0617A @<MIK-OBJ TARGET Ins IF (-*1 HTR + V + ORATIOOBLVERB - LIK_QAR BARRIER V)(NEGATE *1 V OR Der/vn OR INDERIVERENDE_SUBSTANTIV) ;
 MAP:M0617AX @<MIK-OBJ TARGET Trm IF (-*1 MUT-OBJ + HTR + V + ORATIOOBLVERB - LIK_QAR BARRIER V)(NEGATE *1 V OR Der/vn OR INDERIVERENDE_SUBSTANTIV) ;
-MAP:M0617B @<MIK-OBJ TARGET Ins - POSSESSUM IF (-*1 HTR + V - LIK_QAR BARRIER V)(NEGATE *1 INDERIVERENDE_SUBSTANTIV OR HTR BARRIER V) ;
+MAP:M0617B @<MIK-OBJ TARGET Ins - POSSESSUM IF (-*1 HTR + V - LIK_QAR BARRIER V)(NEGATE *1 INDERIVERENDE_SUBSTANTIV OR HTR BARRIER V) 
+(NEGATE *1 VFIN LINK *-1 _TARGET_ LINK *-1 KOMMA LINK *-1 HTR)#Imaanngilaq nutserisunik pisariaqartitsiunnaartussaasugut, kisianni inuit ataasiakkaat suliffeqarfiillu ANNERTUUMIK ikiorsersinnaavagut
+;
 MAP:M0617BX @<MIK-OBJ TARGET Trm - POSSESSUM IF (-*1 MUT-OBJ + HTR + V - LIK_QAR BARRIER V)(NEGATE *1 INDERIVERENDE_SUBSTANTIV OR HTR BARRIER V) ;
 
 MAP:M0617C @<MIK-OBJ TARGET Ins + LUUNNIIT IF (-1 KOMMA LINK *-1 HTR BARRIER (*) - Ins);#tassa ullorissamik allamik pinngortitsisartoq, NAASUMILLUUNNIIT nutaamik.
@@ -8048,6 +8057,7 @@ SELECT:8532A UGEDAGE IF (0 NIRMIT) ; #marlunngornermut er ikke NIRMIT
 REMOVE:8532B ("tasersuk") IF (0 ("taseq") + SUAQ) ; #tasersuk findes ikke i corpus. Er måske archaisk
 REMOVE:8532C ("avatangiiseq") IF (0 ("avatangiisi"));
 REMOVE:8532D ("(.*)"r) - Sem/Unit IF (0 (VSTR:"$1"v) + Sem/Unit LINK -1 Num); #fx grad+<unit> vs. grad+<ac> 
+REMOVE:8532E Gram/IV IF (0 (/"naammassi"\ Gram/TV\ Gram/Pass\ NIQ\ Der/vn\ SSAQ/l) + POSSESSUM );
 
 #De særlige former af TUQ + Aeq på transitiver fulgt af "ippaa" slettes hvis ikke fulgt af "ippaa"
 REMOVE:8599 TUQ + Aeq - Der/vn IF (0 TUQ + Aeq + Der/vn)(NEGATE 1 ("ip")); 
@@ -8380,6 +8390,7 @@ REMOVE:5581 TIR IF (0 TIP) ; #skal måske blødes lidt op (20150323)
 SELECT:5582 NIQSSAQ IF (0 NIQ + SSAQ)(NEGATE 0 Orth/Arch )(NEGATE 0 TRANSINTRANS OR NNGUR) ; #Enkelte archaiske intrans med transitive endelser skal holdes ude ligesom ord med både trans og intrans former
 REMOVE:5583 ("anger") + SSUSIQ IF ( 0 ("angi") + SSUSIQ) ;
 REMOVE:5584 SSIP IF ( 0 ("assi") + TIP) ; #ingen fodring med billeder
+REMOVE:5585X (/HTR\ Der/vv\ Gram/IV\ TUUR/l) IF (0 HTR + TUQ + U ); #specialfald før følgende
 REMOVE:5585 TUQ + U IF (0 TUUR OR ("akunnattoor") );
 REMOVE:5586 ("kalak") + U + LIR IF ( 0 ("kalaaleq"));
 REMOVE:5587 TAQ + LIR + Der/nv IF (0 TAR + LIR + Der/vv);
