@@ -1525,7 +1525,7 @@ LIST OTHERTIME = Sem/Time ("aallar" QQAAR UTE) ("aasaq") "akunneq" ("aqagu") (/\
 SET TIMENOUN = UGEDAGE | OTHERDAY | SEASON | MAANED | CLOCK | OTHERTIME ;
 SET TIME = TEMPUSVERB | TIMEVERB | OTHERTIME | TIDSPARTIKEL ;
 
-LIST SPATIAL = "aki" "ate" "illuatunge" "ilu" "eqqaq" "killeq" "killik" "kujate" "qaaq" "qule" "saaq" "sani" "silate" "siu" "tunge" "tunu" "ungate" ; #PL 20180522 slettet "arlaq". Næppe spatialt indhold og fejlhitter fx på 'Arlaqanngitsut qitipput'
+LIST SPATIAL = "aki" "ate" "illuatunge" "ilu" "eqqaq" "killeq" "killik" "kujate" "qaaq" "qule" "saaq" "sani" "silate" "siu" "tunge" "tunu" "ungate" (".*kannersoq"r); #PL 20180522 slettet "arlaq". Næppe spatialt indhold og fejlhitter fx på 'Arlaqanngitsut qitipput'
 LIST USPATIAL = "sanik" "ateq";
 
 LIST ORGANISATION = "Inuit Ataqatigiit" "Inatsisartut" "parti" "Siumut" "Atassut" "IA" ("Naalakkersuisoq" Pl) "Naalakkersuisut" "Demokraatit" "peqatigiiffik" "Suleqatigiissitsisut" ;
@@ -3480,7 +3480,7 @@ SELECT:0251 Gram/Coref + Pron IF (1 Gram/Refl) ; #Immaqaana aamma immisut misigi
 ###################
 
 #Specialiteten adnominale Pron, der peger mod højre, må ind før @FOC-reglerne
-MAP:M0230NY @Pron>N TARGET Gram/Dem + Pron + Abs + Pl - Prefix/AA IF (*1 N + Abs + Pl BARRIER (*) - PUNCT)(NEGATE *1 3PlO BARRIER VFIN) ; #Skal i stedet have et unification set PL 20180530
+MAP:M0230NY @Pron>N TARGET Gram/Dem + Pron + Abs + Pl - Prefix/AA IF (*1 N OR Num BARRIER (*) - PUNCT LINK 0 Abs + Pl)(NEGATE *1 3PlO BARRIER VFIN OR Num + Abs + Pl) ; #Skal i stedet have et unification set PL 20180530
 MAP:M0230NY2 @Pron>N TARGET Gram/Dem + Pron + Abs + Sg - Prefix/AA IF (*1 N + Abs + Sg BARRIER (*) - PUNCT)#Skal i stedet have et unification set PL 20180530
 (NEGATE *1 3SgO BARRIER VFIN)
 (NEGATE 0 ("manna") + LI LINK -1 BOS OR CLB) #tamannali
@@ -3856,7 +3856,7 @@ MAP:exclm @EXCLM TARGET EXCLAMATION IF (*-1 (*) - V LINK -1 ("-"))
 (*1 KOMMA LINK *1 DIRTALE) ;
 MAP:exclm @EXCLM TARGET Gram/Exclm IF (1 EXCLMARK) 
 (NEGATE *0S V - Gram/Exclm - GAANNI) ;
-MAP:exclm @EXCLM TARGET EXCLAMATION IF (NEGATE *0S V - DIRTALE)(NEGATE 0 Rel)(NEGATE 0 TAQ);
+MAP:exclm @EXCLM TARGET EXCLAMATION IF (NEGATE *0S V - DIRTALE)(NEGATE -1 Rel)(NEGATE 0 Rel)(NEGATE 0 TAQ);
 MAP:exclm @EXCLM TARGET EXCLAMATION IF (-1 Interj OR @INTERJ) ;
 MAP @ADVL> TARGET Gram/Dem (1 @EXCLM OR Gram/Exclm LINK 1* EXCLMARK) ;
 #Direkte tale markeres fordi det danner selvstændige sætninger.
@@ -4089,7 +4089,7 @@ MAP:M0017 (@PRED2) TARGET INTRANSVERB + Par + 3Sg IF (*-1 Abs + Sg)(NEGATE *0 OR
 ;
 
 #De vanskeligt isolerbare absolutte konstruktioner med objekter til NIQ+Abl (NIQ+Ins). De må i hvert fald ikke være possessum. Hvis der ikke er andre Abs + Sg og intrans til venstre, er der nok tale om et subjekt. Og hvis intet andet Abs + Sg mellem 0 og 3SgO, er det nok et normalt objekt
-MAP:M0018A @NIQ_OBJ> TARGET Abs IF (*1 (/Gram\/TV\ \(Gram\/Pass\ \)?NIQ__/l) + NIRMIT - Hyb/1-2 BARRIER (/@.*/r) - @N< OR V - CONT OR Gram/Db OR INDERIVERENDE_SUBSTANTIV LINK NEGATE *1 HTR BARRIER (*) - Ins)(NEGATE 1 POSSESSUM)(NEGATE *1 INTRANSVERB + 3Sg BARRIER Abs + Sg)(NEGATE *1 3SgO BARRIER Abs + Sg) #nunap piniagassarsui tusaamanermit nuussimavugut.
+MAP:M0018A @NIQ_OBJ> TARGET Abs - TIME IF (*1 (/Gram\/TV\ \(Gram\/Pass\ \)?NIQ__/l) + NIRMIT - Hyb/1-2 BARRIER (/@.*/r) - @N< OR V - CONT OR Gram/Db OR INDERIVERENDE_SUBSTANTIV LINK NEGATE *1 HTR BARRIER (*) - Ins)(NEGATE 1 POSSESSUM)(NEGATE *1 INTRANSVERB + 3Sg BARRIER Abs + Sg)(NEGATE *1 3SgO BARRIER Abs + Sg) #nunap piniagassarsui tusaamanermit nuussimavugut.
 (NEGATE *1 LIK BARRIER (*) - Ins ) #inatsisileritooq aningaasaqarnermik akileraartarnermillu soqutigisalik.
 ;
 #Tilføjelse når Abl bliver Ins
@@ -4782,6 +4782,9 @@ MAP:M0293B @i-ADVL> TARGET OTHERTIME + Abs IF (1 NIQ + N)
 MAP:M0294 @i-ADVL> TARGET OBLIQUE - Ins IF (1 HTR + (/__NIQ\ Der\/vn\ \(SSAQ\ Der\/nn\ \)?N__/l) - Gram/Db)(NEGATE 0 Trm LINK 1 MUT-OBJ + HTR) (NEGATE 0 $$KASUS + Num LINK -1 $$KASUS + TIME) ;
 
 MAP:opremsning1 @ADVL> TARGET OBLIQUE + $$KASUS - Adv IF (-*1 KOMMA OR CONJ-C - Adv LINK *-1 $$KASUS BARRIER (*) - OBLIQUE - Adv)(NEGATE *-1 V - CONT)(*1 VFIN) #Qiimassutsimigut, ILLARTARNERMIGUT qungujulasarnermigullu minguitsukkut anitsiarfiit nuannernerulersittarpai.
+(NEGATE *-1 ("tassa") + @FOC>N) #Aasaanerani angallaffiunerpaajunerata nalaani tassa majimi, juunimi, juulimi, aggustimi kiisalu septembarimi SAS sapaatip-akunneranut marloriarluni timmisartuussisassaaq.
+
+(NEGATE *-1 KOMMA LINK *-1 $$KASUS + $$NUMERUS LINK *-1 $$KASUS + $$NUMERUS BARRIER KOMMA) #Umiarsuarmut pingasunik napparutitalimmut, issittup imartaanit aatsaat tikittumut ikigit.
 (NEGATE -1 $$KASUS + $$NUMERUS)(NEGATE  0 Ins LINK *-1 KOMMA LINK *1 LIK_QAR OR HTR OR HVVERB BARRIER KOMMA OR CONJ-C)
 (NEGATE -1 Hyb/1-2 + 3SgPoss LINK -1 Rel + Sg LINK -1 $$OBLIQUE LINK -1 KOMMA LINK -1 $$OBLIQUE)#må ikke tagge kongruensadled efter appositioner qeqertarpaat ilaannut, Franz Josef Landimut Inngikitsullip UNGASINNGISAANIITTUMUT
 (NEGATE 0 Ins LINK *1 HTR OR ("ulikkaar") BARRIER (*) - Ins - Adv)#Ikke hitte MIK-OBJ puiaasanik imalinnik imaqanngitsunillu, IMERTARFINNILLU ulikkaartup
@@ -4921,6 +4924,7 @@ MAP:M0981F @N< TARGET N + $$OBLIQUE + $$NUMERUS + (/SIMA\ Der\/vv\ \([A-Z]+[a-z]
 
 MAP:M0069CX12 @N< TARGET (/__Gram\/Dem\ Pron__/l) + $$KASUS IF (-1 N + $$KASUS LINK NOT 0 @PRED OR @PRED2) #Skal ikke gælde hvis -1 er Par
 (NEGATE *-1 Gram/Dem + Pron - Trm LINK -1 KOMMA OR BOS)
+((0 Pl LINK -1 Pl) OR (0 Sg LINK -1 Sg) OR (0 Pl LINK (-1 CONJ-C) OR (*-2 CONJ-C)))
 ;
 MAP:M0069CY @Pron>N TARGET (/__Gram\/Dem\ Pron__/l) + $$KASUS + $$NUMERUS IF (1C N + $$KASUS + $$NUMERUS - Gram/Comp)(NEGATE -1 N + $$KASUS)(NEGATE 1 4PlPoss OR 4SgPoss)(NEGATE 0 ("manna") + LI); #Alternativ ordstilling: taassuma karsip
 
@@ -8449,7 +8453,7 @@ REMOVE:5639AA LIK IF (0 ("aningaasaq" LIAQ)) ;
 REMOVE:5639AB (/INNAQ\ Der/vn/l) IF (0 INNAR) ; #Kristumiuujunnaariartuinnarpasikkama
 REMOVE:5639AC ("qitornaq") + IRNIAR IF (0 ("qitornaq") + TAAR) ;
 REMOVE:5639AD ("meeraq") + IRNIAR IF (0 ("meeraq") + TAAR) ;
-
+REMOVE:5639AE (/__LIK\ Der/nn\ N\ ...\ ..\ ...Poss/l) ; #Arnap specialeliani tunniuppaa
 
 # Enkelte substantiver
 REMOVE ("pineq") IF (NEGATE *0 ("kamik")) ; #20091103 pineq+QAR vs. pineqar-
