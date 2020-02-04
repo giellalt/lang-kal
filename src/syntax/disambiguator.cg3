@@ -1514,7 +1514,7 @@ LIST TRANSINTRANS = "naalap" "nuup" "oqar"; #Set til verber med både transitive
 LIST SEKVENTIELLE_VERBER = "ani" "innar" ; #Sæt til anvendelse sammen med coref tidsbisætning
 LIST NAAR_VERBER = "angi" ("aki" KIP) "amerla" "isorartu" "kingusip" "miki" "oqip" "sivikip" "siusip" ; #stammer, der kan tage NAAR. Alle andre slettes
 LIST EVALUERENDE_VERBER = "kajungeraa" ; #verber med semantik der betinger objekt efter NIQ+Ins/Abl
-LIST INDERIVERENDE_SUBSTANTIV = (/\"aki\"\ [^\(Gram\/IV\)]/l SSAQ) "akiliut" "angajoqqaaq" "angallat" "atuakkiaq" "blogger" "bloggeri" "blog" "filmiliaq" ("film" LIAQ) "igalaasartooq" "ilaqutaq" "ilassinnissut" "inatsit" "inerteqqut" "isertugaq" "isi" "isuma" ("isuma" QATE GIIP UTE) "minister" "mittarfik" "naapeqatigiinneq" "nalliuttorsiorneq" "nalunaarusiaq" "nassaaq" "nioqqut" "nuuttoq" "oqallissaarut" "oqaluttuaq" "oqartussaaffik" "oqimaassusilik" "peqataasoq" "peqqussut" "pineq" "piniartoq" "pisortaqarfik" "qaartartorsuaq" "qaatigooq" "sanaaq" "sinniisoq" "siunnersuisoq" "siunnersorti" "suliaqartoq" "sungiusaasoq" "tigummiaq" "timersoqatigiiffik" "ujaasineq" FAM TUGAQ ;
+LIST INDERIVERENDE_SUBSTANTIV = (/\"aki\"\ [^\(Gram\/IV\)]/l SSAQ) "akiliut" "angajoqqaaq" "angallat" "ataatsimiititaliaq" (/"ataatsimiip"\ Gram/IV\ TIP\ Der/vv\ Gram/TV\ TAQ\ Der/vn\ LIAQ/l) "atuakkiaq" "blogger" "bloggeri" "blog" "filmiliaq" ("film" LIAQ) "igalaasartooq" "ilaqutaq" "ilassinnissut" "inatsit" "inerteqqut" "isertugaq" "isi" "isuma" ("isuma" QATE GIIP UTE) "minister" "mittarfik" "naapeqatigiinneq" "nalliuttorsiorneq" "nalunaarusiaq" "nassaaq" "nioqqut" "nuuttoq" "oqallissaarut" "oqaluttuaq" "oqartussaaffik" "oqimaassusilik" "peqataasoq" "peqqussut" "pineq" "piniartoq" "pisortaqarfik" "qaartartorsuaq" "qaatigooq" "sanaaq" "sinniisoq" "siunnersuisoq" "siunnersorti" "suliaqartoq" "sungiusaasoq" "tigummiaq" "timersoqatigiiffik" "ujaasineq" FAM TUGAQ ;
 LIST INDERIVERENDE_TITEL = "adjunkt" "lektor" "minister" "naalakkersuisoq" "professor";
 #LIST VERBALNOMEN = "isuma" "oqaluttuaq" "naapeqatigiinneq" ;
 LIST INSOBJVERB = LIUR (/".*nior"/r) RAAR (/\ SI\ Der\/nv/l) SSIP TAAR SIUR (/\ TUR\ Der\/nv/l) (/__LIR\ Der\/nv__/l) ;
@@ -2911,6 +2911,10 @@ REMOVE:0044X N - ATTRIBUTIV - HUM IF (0 Par - Orth/Alt)(NEGATE *0 VFIN OR Cau OR
 (NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER (*) - Adv)#Nalunaarutigalugulu ANGERLARSIMAFFEQANNGITSUT qanoq amerlatiginerannik
 (NEGATE *-1 Gram/Dem + Pron LINK -1 BOS)
 ;
+
+#Tidlig disambiguering af næsten helt sikker possessor-possessum
+SELECT:0043B Rel + Pl IF (*1 3PlPoss + NIRSAQ BARRIER (*) - Rel) ;
+MAP:M0043B @POSS> TARGET Rel + Pl IF (*1 3PlPoss + NIRSAQ BARRIER (*) - Rel) ;
 
 #En tidlig regel, der fjerner Par + 3Sg fra kongruensadled i objektsyntagmer forudsat, der ikke findes et inquit
 SELECT:0044 ADJEKTIVISK + Abs + Sg IF (-1 Abs + Sg)(*1 3SgO BARRIER V)(NEGATE *0 ORATIOOBLVERB) ; 
@@ -4355,7 +4359,9 @@ MAP:M0040 (@SUBJ>) TARGET N + Abs + CONJ-LU IF (-1 VFIN + 3Sg)(1 Cont + 4Pl)(2 N
 MAP:M0041 (@SUBJ>) TARGET N + Abs + CONJ-LU OR Prop + Abs + CONJ-LU IF (-1 VFIN + 3Sg)(1 Cont + 4Pl)(2 N + Pl LINK *1 V + 3Pl) ;
 
 MAP:M0041 @SUBJ> TARGET N + Abs IF (1 Gram/Exclm + (/__Gram\/IV\ V\ Ind\ Gram\/Exclm__/l))(NEGATE *-1 V BARRIER CONJ-C) ; #siunissaq pissanganaq!
-MAP:M0044A @CL-ADVL> TARGET NIRMIT - UGEDAGE IF (*1 VFIN - HTR - LIK_QAR - INDERIVERENDE_SUBSTANTIV BARRIER HTR OR LIK_QAR)(NEGATE 0 Abl LINK 1 NIRU)(NEGATE 1 OBLIQUE - SPATIAL - NIRMIT)(NEGATE -1 POSSESSUM4)(NEGATE 0 Trm LINK *1 TRMVERB BARRIER VFIN) ; #-nermit vist altid sætningsadverbial
+MAP:M0044A @CL-ADVL> TARGET NIRMIT - UGEDAGE IF (*1 VFIN - HTR - LIK_QAR - INDERIVERENDE_SUBSTANTIV BARRIER HTR OR LIK_QAR)(NEGATE 0 Abl LINK 1 NIRU)(NEGATE 1 OBLIQUE - SPATIAL - NIRMIT)(NEGATE -1 POSSESSUM4)(NEGATE 0 Trm LINK *1 TRMVERB BARRIER VFIN)  #-nermit vist altid sætningsadverbial
+;
+
 MAP:M0044B @CL-ADVL> TARGET NIRMIT IF (*-1 @NIQ_SUBJ> OR @NIQ_OBJ>)(*1 V OR @PRED)(NEGATE *-1 @PRED BARRIER KOMMA)(NEGATE 0 Trm LINK *1 TRMVERB BARRIER VFIN OR @PRED) ;
 
 MAP:M0044C @CL-<ADVL TARGET NIRMIT IF (-*1 VFIN) (NEGATE *1S V - CONJ-C BARRIER KOMMA OR CONJ-C) (NEGATE 0 Trm LINK *-1 VFIN + TRMVERB BARRIER VFIN)(NEGATE 0 $$KASUS + $$NUMERUS LINK -1 $$KASUS + $$NUMERUS)
