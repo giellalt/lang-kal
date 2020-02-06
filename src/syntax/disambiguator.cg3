@@ -1588,7 +1588,7 @@ LIST EVENT = "stafet" "marathon" "løb" "stafetløb" ; #DHL stafet, CPH Marathon
 LIST OCCATION = ("ataatsimiip" NIQ) ;
 LIST LANDTRANSPORT = "bussi" "biili" "bil" "pisummik" <Vground> "ATV" ;
 LIST AIRTRANSPORT = "timmi" "helikopter" "helikopteri" "qulimiguulik" "timmisartoq" "zeppeliner" ;
-LIST WATERTRANSPORT = "qajaq" <Vwater> ;
+LIST WATERTRANSPORT = "qajaq" <Vwater> "umiaq" "umiarsuaq" "umiatsiaq";
 SET TRANSPORT = LANDTRANSPORT | AIRTRANSPORT | WATERTRANSPORT;
 LIST BIRDS = "appa" "appaliarsuk" "aqisseq" "kukkukooq" "kussak" "miteq" "naaja" "nattoralik" "oqaatsoq" "orpimmiutaq" "qupaloraarsuk" "serfaq" "taateraaq" "timmiaq" "tulugaq" "tuullik" "uppik" ;
 SET AIRBORNE = BIRDS | AIRTRANSPORT ;
@@ -1607,7 +1607,7 @@ SET EXCLAMATION = ("tipi" N) | (SSUSIQ 3SgPoss) | (SSUSIQ Pl 3PlPoss) | WEATHER 
 LIST Mask = "Aron" "Egon" "Eri" "Erik" "Eskild" "Hans" "Jens" "Manu" "Mik" "Mikkel" "Miki" "Morten" "Niels" "Ole" "Per" "Piitaq" "Rasmus" "Sean" "Trond" Sem/Mask ;
 LIST Fem = "Anette" "Anna" "Arnaq" "Dagmar" "Emilie" "Gitte" "Hanne" "Jane" "Karen" "Kirsten" "Maliina" "Margrethe" "Meeraq" "Mette" Sem/Fem ;
 LIST Sur = "Jensen" "Jenseni" "Møller" "Olsen" "Rasmussen" "Trosterud" Sem/LastName ;
-LIST TITEL = "borgmester" "fru" "Gammel" "hr" "hotel" ("ilinniar" TIP HTR TUQ) "kunngi" "lektor" "minister" "miss" "nakorsaq" "naalagaq" ("pisoq" TAQ) "præsident" ("qalipap" HTR TUQ) "senator" ("siulittar" TUQ) ("siunnersor" HTR TUQ) ("siunnersuisoq") ("ulloriarsior" TUQ) "ulloriarsiortoq";
+LIST TITEL = "borgmester" "fru" "Gammel" "hr" "hotel" ("ilinniar" TIP HTR TUQ) "kunngi" "lektor" "minister" "miss" "MS" "nakorsaq" "naalagaq" ("pisoq" TAQ) "præsident" ("qalipap" HTR TUQ) "senator" ("siulittar" TUQ) ("siunnersor" HTR TUQ) ("siunnersuisoq") ("ulloriarsior" TUQ) "ulloriarsiortoq";
 LIST COUNTRY = "Canada" "Danmark" "Finland" "Grønland" "Island" "Kalaallit Nunaat" "Norge" "Rusland" "Sverige" "Tyskland" "USA" ; 
 LIST GeoProp = Sem/Geo "Danmark" "Finland" "Gladsaxe" "Mose" "Tåstrup" ;
 SET Fornavn = Mask | Fem ;
@@ -2860,7 +2860,7 @@ SUBSTITUTE Lok Ins TARGET (HTR) IF (1 HTR - ("ilar")); #siunnersortit .. Tasiila
 #Faste fraser
 MAP:M_faste0001 @i-ADVL> TARGET ("mianersuaallior") + CONT IF (1 (/"toqup"\ Gram/TV\ HTR\ Der/vv\ Gram/IV/l)); #uagtsomt manddrab
 MAP:M_faste0002 @i-ADVL> TARGET MEDIER + Via IF (1 TAQ) ; #Måske for bred
-
+#Syntaks ved forskellige udtryk for kvoter er helt idiosynkratisk og uforudsigelig. Må listes enkeltvist
 MAP:M_faste0003 @>N TARGET ("qernertaq") + Ins IF (1 (".*tassiissut"r) );
 
 #######
@@ -4308,9 +4308,9 @@ MAP:M0031N @i-PROP> TARGET Prop + Sem/Geo + Abs IF (1 PLACE + iN + iOBLIQUE) ;
 MAP:M0031O @PROP> TARGET Prop + Sem/Geo + Abs IF (1 PLACE - Prop - CONJ-C)(NEGATE 1 POSSESSUM + Rel)(NEGATE -1 N + Abs) ;
 
 MAP:M0031P @PROP> TARGET ORGANISATION IF (1 Prop) (NEGATE 1 ORGANISATION + CONJ-C OR INSTITUTION) ;
-MAP:M0031Q @PROP> TARGET Gram/ACR + Abs IF (1 Prop) ;
+MAP:M0031Q @PROP> TARGET Gram/ACR + Abs - TITEL IF (1 Prop) ;
 
-MAP:M0031R (@PROP>) TARGET Prop + Abs OR FIRSTNAME + Abs #OR TITEL + Abs 
+MAP:M0031R (@PROP>) TARGET Prop + Abs OR FIRSTNAME + Abs - TITEL #OR TITEL + Abs 
 IF (0 $$NUMERUS)(1 Prop + $$NUMERUS + Sem/Hum - CONJ-C)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + CONJ-LU LINK *1 V + 3Pl )(NEGATE 1 Prop + CONJ-LU LINK *1 V + 3PlO)(NEGATE 0 FIRSTNAME LINK 1 FIRSTNAME)(NEGATE 0 FIRSTNAME LINK 1 ("Kalaallit"))(NEGATE 1 FIRSTNAME + CONJ-LU)(NEGATE 0 Abs + Sg LINK *1 TRANSVERB + 3SgO BARRIER V)(NEGATE 1 Prop LINK 1 Prop - Abs)(NEGATE 1 Prop LINK -2 OBLIQUE)(NEGATE 1 SEMIOTIC)(NEGATE 1 POSSESSUM)
 (NEGATE 1 Sem/Geo LINK NOT 1 Prop) #Geografiske navne bruges også som efternavne, men negate er bedre end ingenting...
 (NEGATE 1 INSTITUTION)
@@ -5621,6 +5621,9 @@ MAP:M0598 (@POSS>) TARGET Rel + Sg IF (-3 Rel LINK 1 KOMMA LINK 1 Rel)(1 KOMMA L
 MAP:M0599 (@POSS>) TARGET Rel + Sg IF (1 KOMMA LINK 1 Rel + Sg LINK 1 3SgPoss)(NEGATE -1 KOMMA LINK -1 Rel + Sg - @POSS>) ; #opremsning med komma før 400
 MAP:M0600 (@POSS>) TARGET Rel + Sg IF (1 (/__Gram\/Dem\ Pron__/l) + Rel LINK 1 3SgPoss)(NEGATE *-1 Gram/Dem + Pron) ;
 #MAP:M0601 (@POSS>) TARGET Rel + Sg IF (*1 3SgPoss )(NEGATE *-1 ("soorlu") - LUSUUQ - MI CBARRIER (*) - Rel - KOMMA) ; #Fungerer ikke
+
+#MWE-lignende proprier med Kujalleq og Avannarleq skal MAP-es som kerne + adled
+MAP:M0608X @N< TARGET ("Kujalleq") + Prop + $$KASUS OR ("Avannarleq") + Prop + $$KASUS IF (-1 Prop + $$KASUS); #Umiarsuaq takornariartaat MS Explorer sapaatip akunnerata siuliani Sikuiuitsup KUJALLIUP imartaani iluliarsuarmut apornermi kingorna umiuvoq.
 
 MAP:M0608 (@POSS>) TARGET Rel + Sg - Pron IF (*1 3SgPoss - iProp - ("siuneq") BARRIER TRANSVERB + 3Sg LINK NEGATE -1 Rel - _TARGET_ + 3Sg LINK 2 TRANSVERB + 3Sg) (NEGATE *1 Rel + CONJ-LU BARRIER TRANSVERB + 3Sg)(NEGATE 1 Prop + Abs)(NEGATE 1 Prop + Rel LINK 1 POSSESSUM3)(NEGATE *-1 ("soorlu") - LUSUUQ - MI CBARRIER (*) - Rel - KOMMA) #i NN-ip aappaatalu må aappaatalu ikke opfyldebetingelsen. Sidste NEGATE for at blokere NN-ip NN1 ...
 (NEGATE *1C Rel - Prop LINK 1 Aeq OR ("taamatut") LINK *1 POSSESSUM3)
@@ -8412,6 +8415,7 @@ REMOVE:5576 ("oqalup") IF (0 (/__\"oqaluttuar\"\ Gram\/IV\ UTE__/l)); # Sikkert 
 REMOVE:5577 ("ilar") + HTR + N IF (0 ("ila") + U + N) ; #PL 20190412 næppe en htr-isstumpefjerner
 REMOVE:5578 ("aalajanger") + TAR IF (0 ("aalajanger") + SAR) ;
 REMOVE:5578A ("upper") + (KAA) IF (0 ("uppip") + (KAA) OR ("uppikaa"));
+REMOVE:5578B ("umik") + U IF (0 ("umiu") LINK *-1 WATERTRANSPORT + @SUBJ> ) ; 
 
 # Enkelte derivativer
 REMOVE IR + Der/nv IF (0 V + Der/vv OR ("ila")) ; #'ilaarpaa' ikke 'ila+IR'
