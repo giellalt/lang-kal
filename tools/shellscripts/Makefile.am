@@ -8,6 +8,7 @@
 # following line with an indent and a comment, though, to fool the automake
 # processing.
 bin_SCRIPTS=ukal-gt.sh \
+	kal-analyse \
 	kal-generate \
 	kal-hybrid-split \
 	kal-hybrid-merge \
