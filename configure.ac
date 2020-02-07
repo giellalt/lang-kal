@@ -173,6 +173,7 @@ gt_CONFIG_FILES
 ##### BEGIN: Add language-specific list of files to ######
 ########## be processed by autoconf below here: ##########
 
+AC_CONFIG_FILES([tools/shellscripts/kal-analyse], [chmod +x tools/shellscripts/kal-analyse])
 AC_CONFIG_FILES([tools/shellscripts/kal-tokenise], [chmod +x tools/shellscripts/kal-tokenise])
 AC_CONFIG_FILES([tools/shellscripts/kal-generate], [chmod +x tools/shellscripts/kal-generate])
 AC_CONFIG_FILES([tools/shellscripts/kal-hybrid-split], [chmod +x tools/shellscripts/kal-hybrid-split])

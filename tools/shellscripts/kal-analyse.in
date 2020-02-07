@@ -1,0 +1,250 @@
+#!/usr/bin/env perl
+# -*- mode: cperl; indent-tabs-mode: nil; tab-width: 3; cperl-indent-level: 3; -*-
+use strict;
+use warnings;
+use utf8;
+use FindBin qw($Bin);
+
+BEGIN {
+	$| = 1;
+	binmode(STDIN, ':encoding(UTF-8)');
+	binmode(STDOUT, ':encoding(UTF-8)');
+}
+use open qw( :encoding(UTF-8) :std );
+use feature 'unicode_strings';
+
+if ((($ENV{LANGUAGE} || "").($ENV{LANG} || "").($ENV{LC_ALL} || "")) !~ /UTF-?8/i) {
+   die "Locale is not UTF-8 - bailing out!\n";
+}
+if ($ENV{PERL_UNICODE} !~ /S/ || $ENV{PERL_UNICODE} !~ /D/ || $ENV{PERL_UNICODE} !~ /A/) {
+   die "Envvar PERL_UNICODE must contain S and D and A!\n";
+}
+
+sub return_newest {
+   use Cwd qw(realpath);
+
+   my ($files, $paths) = @_;
+   my $file;
+   my $mtime;
+
+   foreach my $f (@$files) {
+      foreach my $p (@$paths) {
+         my $np = $p;
+         my $nf = "$np/$f";
+         if (-s $nf) {
+            if (!$file || -M $nf < $mtime) {
+               if (defined $ENV{DEBUG_NEWER}) {
+                  print STDERR "NEWER: $nf\n";
+               }
+               $file = $nf;
+               $mtime = -M $nf;
+            }
+         }
+         while ($np =~ m@/\.\./\.\./@) {
+            $np =~ s@/\.\./\.\./@/../@;
+            my $nf = "$np/$f";
+            if (-s $nf) {
+               if (!$file || -M $nf < $mtime) {
+                  if (defined $ENV{DEBUG_NEWER}) {
+                     print STDERR "NEWER: $nf\n";
+                  }
+                  $file = $nf;
+                  $mtime = -M $nf;
+               }
+            }
+         }
+      }
+   }
+
+   if (!$file) {
+      die "Could not find @$files in @$paths!\n";
+   }
+   $file = realpath($file);
+
+   if (defined $ENV{DEBUG_NEWEST}) {
+      print STDERR "NEWEST: $file\n";
+   }
+   return $file;
+}
+
+sub find_newest_bin {
+   my @files = @_;
+   use FindBin qw($Bin);
+   use File::HomeDir;
+   my $home = File::HomeDir->my_home;
+   my @paths = ('', $Bin, "$Bin/bin", "$Bin/../bin", "$home/langtech/kal/tools/shellscripts", '/usr/bin', '/usr/local/bin', '/opt/local/bin');
+
+   return return_newest(\@files, \@paths);
+}
+
+sub find_newest_etc {
+   my @files = @_;
+   use FindBin qw($Bin);
+   use File::HomeDir;
+   my $home = File::HomeDir->my_home;
+   my $prefix = '@prefix@';
+   my @paths = ('', $Bin, "$home/langtech/kal/src/syntax", "$home/kal/src/syntax", "@datarootdir@/giella/@GTLANG@/", '/usr/share/giella/kal');
+
+   return return_newest(\@files, \@paths);
+}
+
+sub find_newest_lex {
+   my @files = @_;
+   use FindBin qw($Bin);
+   use File::HomeDir;
+   my $home = File::HomeDir->my_home;
+   my $prefix = '@prefix@';
+   my @paths = ('', $Bin, "$home/langtech/kal/src", "$home/langtech/kal/tools/tokenisers", "$home/langtech/kal/tools/spellcheckers/fstbased/desktop/hfst/3", "@datarootdir@/giella/@GTLANG@/", '/usr/share/giella/kal', "@datarootdir@/voikko/3/", '/usr/share/voikko/3');
+
+   return return_newest(\@files, \@paths);
+}
+
+sub _find_newest_cb {
+   my ($dir, $file) = @_;
+   if ($dir eq 'BIN') {
+      return find_newest_bin($file);
+   }
+   elsif ($dir eq 'ETC') {
+      return find_newest_etc($file);
+   }
+   return find_newest_lex($file);
+}
+
+sub handle_cmdline_opts {
+   my (@cmds) = @_;
+
+   use Getopt::Long;
+   Getopt::Long::Configure('bundling');
+   Getopt::Long::Configure('no_ignore_case');
+   my %opts = ();
+   my @popts = ('help|h|?', 'trace|t', 'from|f=s', 'regtest', 'cmd', 'raw', 'xSEPx');
+   my $n = 0;
+   my $last_opt = '';
+   foreach my $cmd (@cmds) {
+      $last_opt = $cmd->{'_opt'} = 'auto-'.(++$n);
+      if ($cmd->{'opt'}) {
+         ($last_opt) = ($cmd->{'_opt'}) = ($cmd->{'opt'} =~ m/^([^|]+)/);
+         push(@popts, $cmd->{'opt'});
+      }
+      if (! defined $cmd->{'test'}) {
+         $cmd->{'test'} = '--trace | REGTEST_CG';
+      }
+   }
+   GetOptions(\%opts, @popts);
+   $opts{$last_opt} = 1;
+
+   if (defined $opts{'help'}) {
+      print "Possible options are:\n";
+      foreach my $po (@popts) {
+         if ($po eq 'xSEPx') {
+            print "Pipe breakpoints:\n";
+            next;
+         }
+         $po =~ s/[|]/ /g;
+         $po =~ s/ (\w)/ -$1/g;
+         $po =~ s/ -(\w\w)/ --$1/g;
+         $po =~ s/ /, /g;
+         $po =~ s/=s/ [breakpoint]/g;
+         print "\t--$po\n";
+      }
+      exit(0);
+   }
+
+   if (defined $opts{'regtest'}) {
+      %opts = ( regtest => 1, 'raw' => defined $opts{'raw'}, $last_opt => 1, );
+   }
+
+   if (defined $opts{'from'}) {
+      my $good = 0;
+      for my $cmd (@cmds) {
+         if ("|$cmd->{'opt'}|" =~ m@\|$opts{'from'}\|@) {
+            $opts{'from'} = $cmd->{'_opt'};
+            $good = 1;
+            last;
+         }
+      }
+      if (!$good) {
+         die($opts{'from'}." is not a valid breakpoint to start from!\n");
+      }
+   }
+
+   my @cmdline = ();
+   foreach my $cmd (@cmds) {
+      if (defined $opts{'from'}) {
+         if ($opts{'from'} ne $cmd->{'_opt'}) {
+            next;
+         }
+         delete $opts{'from'};
+      }
+      push (@cmdline, $cmd->{'cmd'});
+      if (defined $opts{'regtest'}) {
+         $cmdline[-1] .= ' '.$cmd->{'test'}.' '.$cmd->{'_opt'};
+      }
+      if (defined $opts{$cmd->{'_opt'}}) {
+         if (defined $opts{'trace'} && $cmd->{'trace'}) {
+            $cmdline[-1] .= ' '.$cmd->{'trace'};
+         }
+         last;
+      }
+   }
+
+   my $cmdline = join(' | ', @cmdline);
+   if (!$opts{'raw'}) {
+      $cmdline =~ s@(BIN|ETC|LEX)/(\S+)@_find_newest_cb("$1", "$2")@eg;
+   }
+   if (defined $opts{'regtest'} || defined $opts{'cmd'} || defined $opts{'raw'}) {
+      print $cmdline."\n";
+      exit(0);
+   }
+
+   return (\%opts, $cmdline);
+}
+
+my @cmds = (
+   {
+      cmd => "BIN/kal-tokenise LEX/tokeniser-disamb-gt-desc.pmhfst",
+      opt => 'fst',
+      test => '| REGTEST_AUTO',
+   },
+   {
+      cmd => "vislcg3 -g ETC/kal-pre1.cg3",
+      opt => 'pre1',
+      trace => '--trace',
+   },
+   {
+      cmd => "BIN/kal-hybrid-split LEX/generator-gt-desc.hfstol",
+      opt => 'hybrids|hyb',
+      test => '| REGTEST_AUTO',
+   },
+   {
+      cmd => "vislcg3 -g ETC/kal-pre2.cg3",
+      opt => 'pre2',
+      trace => '--trace',
+   },
+   {
+      cmd => "vislcg3 -g ETC/disambiguator.cg3 --no-mappings",
+      opt => 'morf',
+      trace => '--trace',
+   },
+   {
+      cmd => "vislcg3 -g ETC/disambiguator.cg3",
+      opt => 'syntax|syn',
+      trace => '--trace',
+   },
+   {
+      cmd => "perl -wpne 's~ [^/\\s]+/[^/\\s]+~~g; s~ i[A-Z\\d]\\w*~~g; s~\\x{E020}~\\x{20}~g; while(s~( DIRTALE[A-Z]+)\\1~\$1~g){}' | cg-sort",
+      opt => 'all',
+      test => '| REGTEST_AUTO',
+   },
+   );
+
+my ($opts, $cmdline) = handle_cmdline_opts(@cmds);
+
+if (defined $ENV{DEBUG_CMD}) {
+   print STDERR $cmdline."\n";
+}
+open(FH, "$cmdline|") or die $!;
+while (<FH>) {
+	print;
+}
+close FH;
