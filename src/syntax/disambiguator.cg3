@@ -102,7 +102,7 @@ LIST iNum = iNum ;
 LIST Sem/FirstName = Sem/FirstName ;
 LIST Sem/Geo = Sem/Geo ;
 LIST Sem/Hum = Sem/Hum <hum> ;
-LIST Sem/Unit = Sem/Unit ;
+LIST Sem/Unit = Sem/Unit <unit>;
 LIST Sem/Time = Sem/Time ;
 LIST Sem/Mask = Sem/Mask ; #Introduceret som test 20180613. Skal måske ud igen
 LIST Sem/Fem = Sem/Fem ; #Introduceret som test 20180613. Skal måske ud igen
@@ -2170,7 +2170,7 @@ REMOVE:conj ("aamma") + Conj IF (-1 BOS)(1 NIQ) ; #så plejer aamma at være i-A
 REMOVE:conj ("aamma") + Conj IF (-1 UNA OR UKU) ;
 REMOVE:conj ("aamma") + Conj IF (-1 KONCESSIV) ;
 REMOVE:conj ("aamma") + Conj IF (-1 ORATIOOBLVERB LINK *2 Par BARRIER VFIN) ;
-REMOVE:conjx ("aamma") + Conj IF (-1 $$OBLIQUE) (NEGATE 1 $$OBLIQUE) ;
+REMOVE:conjx ("aamma") + Conj IF (-1C $$OBLIQUE) (NEGATE 1 $$OBLIQUE) ;
 
 REMOVE:7254 Adv + ("kisianni") IF (-1 BOS) ; #Kisianni aramaannarniarit piffissaatillugu.
 
@@ -2314,6 +2314,12 @@ APPEND ("$1k"v Orth/Append N Rel Sg) TARGET ("<(\\p{L}+)-?up>"r) (NOT 0 WORD - (
 APPEND ("$1lik"v Orth/Append N Rel Sg) TARGET ("<(\\p{L}+)-?llip>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)); # nattoralik
 APPEND ("$1uaq"v Orth/Append N Rel Sg) TARGET ("<(\\p{L}+)-?uup>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)); # illunnguaq
 APPEND ("$1"v Orth/Append N Rel Sg) TARGET ("<(\\p{L}+)-?i?u?p>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)); # fst, bananasplit
+
+APPEND ("$1"v Orth/Append N Gram/ACR Lok Sg) TARGET ("<(\\p{Lu}{2,})-?i?mi>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # HK
+APPEND ("$1"v Orth/Append Prop Gram/ACR Lok Sg) TARGET ("<(\\p{Lu}{2,}.*)-?i?mi>"r) (NOT 0 WORD - Gram/ACR - (<heur> <f:[0-9]+>r))(0 (\?)) ; # CBS
+APPEND ("$1uaq"v Orth/Append Prop Lok Sg) TARGET ("<(\\p{Lu}\\p{Ll}*)uami>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # Qeqertarsuamit
+APPEND ("$1"v Orth/Append Prop Lok Sg) TARGET ("<(\\p{Lu}\\p{Ll}*)-?i?mi>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # Liv
+APPEND ("$1"v Orth/Append N Lok Sg) TARGET ("<(\\p{L}+)-?i?mi>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)); # fst, bananasplit
 
 APPEND ("$1"v Orth/Append N Gram/ACR Trm Sg) TARGET ("<(\\p{Lu}{2,})-?i?mut>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # HK
 APPEND ("$1"v Orth/Append Prop Gram/ACR Trm Sg) TARGET ("<(\\p{Lu}{2,}.*)-i?mut>"r) (NOT 0 WORD - Gram/ACR - (<heur> <f:[0-9]+>r))(0 (\?)) ; # CBS
@@ -7376,6 +7382,7 @@ SELECT ContNeg + 1Sg IF (*1 VFIN + 1Sg) ; #20091108 -
 SELECT ContNeg + 1Sg IF (*-1 VFIN + 1Sg) ; #20091108
 SELECT Cont + 4Pl IF (*1 VFIN + 3Pl) ;
 #SELECT ContNeg + 4Sg IF (*0 VFIN + 3Sg) ; Vælger anaq U ContNeg frem for anaana 4SgPoss i 'Aanaminit paasivaa anaanani toqusimasoq.'
+REMOVE CONT IF (0 Pron) ; #ukunani
 SELECT ContNeg + 4Sg IF (*0 VFIN + 3Sg)(NEGATE *1 Par + 3Sg)
 (NEGATE 0 Abs + &&IV_SUBJ& LINK *1 V + &&IV_SUBJ&) #'ANAANANI kalaaliummat' ikke "anar" Gram/TV HTR Der/vv Gram/IV V ContNeg 4Sg
  ;
@@ -7571,7 +7578,7 @@ SELECT:7485A DivPron + 1Sg + @SUBJ> IF (*1 V + 1Sg BARRIER V OR KOMMA);
 SELECT:7485B DivPron + 2Sg + @SUBJ> IF (*1 V + 2Sg BARRIER V OR KOMMA);
 SELECT:7485C DivPron + 4Sg + @SUBJ> IF (*1 V + 3Sg OR V + 4Sg BARRIER V OR KOMMA)(NEGATE -1 Lok);
 
-
+REMOVE Adv IF (0 Conj)(1 $$KASUS) (-1 $$KASUS) ;
 #Specialitet at Aeq + pi ikke må vælge refl selv om der står "immi" til venstre
 REMOVE:7486A ("pi") + Gram/Refl IF (0  ("pi") - Gram/Refl)(-1 Aeq) ;
 SELECT:7486A ("ip") + Gram/IV - Gram/Refl - Gram/Pass IF (0  ("ip"))(-1 Aeq) ;
