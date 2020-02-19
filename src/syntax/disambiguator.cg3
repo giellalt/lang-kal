@@ -1515,7 +1515,7 @@ LIST TRANSINTRANS = "naalap" "nuup" "oqar"; #Set til verber med både transitive
 LIST SEKVENTIELLE_VERBER = "ani" "innar" ; #Sæt til anvendelse sammen med coref tidsbisætning
 LIST NAAR_VERBER = "angi" ("aki" KIP) "amerla" "isorartu" "kingusip" "miki" "oqip" "sivikip" "siusip" ; #stammer, der kan tage NAAR. Alle andre slettes
 LIST EVALUERENDE_VERBER = "kajungeraa" ; #verber med semantik der betinger objekt efter NIQ+Ins/Abl
-LIST INDERIVERENDE_SUBSTANTIV = (/\"aki\"\ [^\(Gram\/IV\)]/l SSAQ) "akiliut" "angajoqqaaq" "angallat" "ataatsimiititaliaq" (/"ataatsimiip"\ Gram/IV\ TIP\ Der/vv\ Gram/TV\ TAQ\ Der/vn\ LIAQ/l) "atuakkiaq" "blogger" "bloggeri" "blog" "filmiliaq" ("film" LIAQ) "igalaasartooq" "ilaqutaq" "ilassinnissut" "inatsit" "inerteqqut" "isertugaq" "isi" "isuma" ("isuma" QATE GIIP UTE) "minister" "mittarfik" "naapeqatigiinneq" "nalliuttorsiorneq" "nalunaarusiaq" "nassaaq" "nioqqut" "nuuttoq" "oqallissaarut" "oqaluttuaq" "oqartussaaffik" "oqimaassusilik" "peqataasoq" "peqqussut" "pineq" "piniartoq" "pisortaqarfik" "qaartartorsuaq" "qaatigooq" "sanaaq" "sinniisoq" "siunnersuisoq" "siunnersorti" "suliaqartoq" "sungiusaasoq" "tigummiaq" "timersoqatigiiffik" "ujaasineq" FAM TUGAQ ;
+LIST INDERIVERENDE_SUBSTANTIV = (/\"aki\"\ [^\(Gram\/IV\)]/l SSAQ) "akiliut" "angajoqqaaq" "angallat" "ataatsimiititaliaq" (/"ataatsimiip"\ Gram/IV\ TIP\ Der/vv\ Gram/TV\ TAQ\ Der/vn\ LIAQ/l) "atuakkiaq" "blogger" "bloggeri" "blog" "filmiliaq" ("film" LIAQ) "igalaasartooq" "ilaqutaq" "ilassinnissut" "ilisimatusartoq" "inatsit" "inerteqqut" "isertugaq" "isi" "isuma" ("isuma" QATE GIIP UTE) "minister" "mittarfik" "naapeqatigiinneq" "nalliuttorsiorneq" "nalunaarusiaq" "nassaaq" "nioqqut" "nuuttoq" "oqallissaarut" "oqaluttuaq" "oqartussaaffik" "oqimaassusilik" "peqataasoq" "peqqussut" "pineq" "piniartoq" "pisortaqarfik" "qaartartorsuaq" "qaatigooq" "sanaaq" "sinniisoq" "siunnersuisoq" "siunnersorti" "suliaqartoq" "suliassaq" "sungiusaasoq" "tigummiaq" "timersoqatigiiffik" "ujaasineq" FAM TUGAQ ;
 LIST INDERIVERENDE_TITEL = "adjunkt" "lektor" "minister" "naalakkersuisoq" "professor";
 #LIST VERBALNOMEN = "isuma" "oqaluttuaq" "naapeqatigiinneq" ;
 LIST INSOBJVERB = LIUR (/".*nior"/r) RAAR (/\ SI\ Der\/nv/l) SSIP TAAR SIUR (/\ TUR\ Der\/nv/l) (/__LIR\ Der\/nv__/l) ;
@@ -1525,7 +1525,7 @@ LIST NIQINS = (/NIQ\ Der\/vn\ N\ Ins/l) ;
 LIST NIQTRM = (/NIQ\ Der\/vn\ N\ Trm/l) ;
 SET NIRMIT = N - POSSESSUM + NIQABL |  N - POSSESSUM + NIQTRM ;
 
-LIST TRM_NOUN = "skema" ;
+LIST TRM_NOUN = "skema" "suliaq" "suliassaq";
 
 # Nominernes leksikalske klasser
 # =============================
@@ -2246,6 +2246,7 @@ REMOVE:0147L ("inuk") IF (0 ("inuusup")) ;
 REMOVE:0147M (/QQU\ Der\/vv\ Gram\/TV\ TAAR\ Der\/vv/l) IF (0 (/QQU\ Der\/vv\ Gram\/TV\ SAAR\ Der\/vv/l)) ;
 REMOVE:0147N (/QQU\ Der\/vv\ Gram\/TV\ TIR\ /l) IF (0 (/.*qqup"/r)) ; #qeqertat saneqqutilikkavut ateqarput Killiit.
 REMOVE:0147O Imp OR Opt IF (0 (/__NIR\ Der\/vv\ \(Gram\/...?.?\ \)*V__/l)) ; #qaninnerit
+REMOVE:0147P (/\ GE\ Der/nv\ \(Gram/[A-Z]*[a-z]*\ \)*V\ Imp\ /l) ; #inuiaqatigiit
 
 REMOVE:0040I NAAR - NAAR_VERBER ; #Sletter irriterende fejlanalyser med NAAR på verber, der ikke kan indeholde et element af vurdering
 
@@ -2787,7 +2788,7 @@ SELECT:Adv_allaat Adv + ("allaat") IF (-1 N + &&IV_SUBJ&)(1 V + &&IV_SUBJ&); #iv
 SELECT:Adv_plus Adv + PRENUM IF (1 Num + $$KASUS OR iNum)(NEGATE *-1 Num + $$KASUS BARRIER VFIN) ;
 SELECT:Conj_plus Conj + PRENUM IF (1 Num + $$KASUS)(*-1 Num + $$KASUS BARRIER VFIN) ;
 SELECT ("allaat") + Adv IF (-1 CLB) ;
-REMOVE ("naak") + Adv IF (-1 BOS) ;
+REMOVE ("naak") + Adv IF (-1 BOS LINK NOT *2 ("\?")) ; #Cave: Naak Anna?
 REMOVE:Conj_FOKUSPART Conj IF (0 FOKUSPART)(*-1 BOS OR DIRTALESTART BARRIER (*) - Adv)(NEGATE 1 V) ;
 
 ### ULØSELIGHEDER ###
@@ -2842,6 +2843,7 @@ SELECT:0043AXX Abs + $$NUMERUS + &&IV_SUBJ& - 2SgPoss IF (*0 ORATIOOBLVERB BARRI
 (NEGATE 0 Par + LI LINK *-1 Par BARRIER (*) - KOMMA) #parataktisk Par ikke N 'inquit orpigaaraanngitsut ORPISSUUSULLI
 (NEGATE 0 ("allaat") + Adv OR ("assut") + Adv) #alla+3PlPoss usandsynlig
 (NEGATE 1 POSSESSUM) #så er det mere sandsynligt Rel
+(NEGATE 0 Par LINK 1 KOMMA LINK *1 ORATIOOBLVERB)
 ; 
 
 SELECT:0043A Abs + Sg + Der/nv - NIQ IF (-1 Prop + Abs)(*1 INTRANSVERB + 3Sg LINK NOT T:NexusHøjre)((NOT 0 MI) OR (NOT 0 Lok)) ;
@@ -3406,6 +3408,10 @@ REMOVE:0170 ("\\p{Lu}.*i"r) IF (0 ("\\p{Lu}.*[^i]"r)) ;
 #Fjerner Ruthi og vælger Ruth m.fl. NB tags er ad hoc og altså ikke listede! #OBS: fjerner også biologi for biolog
 
 REMOVE:0171 Prop + Abs IF (0 Prop + Rel)(1 ("nuna") OR ("Nuna"))(1 iProp or iN) ;
+
+SELECT:0172 Prop + ("(.*)"r) IF (*0C Prop + (VSTR:"$1")) ; #Vælg samme proprium, hvis det helt sikkert også findes andetsteds i samme sætning. Måske for striks?
+
+MAP:M0010E @PRED TARGET CONT + (/\([A-Z]*\)\ Der\/vv\ \(Gram\/..\ \)*V\ Cont\ /l) IF (1 @PRED + CONJ-C + (VSTR:$1)) ; #bør kræve at affikset står som sidste affix i ord nr. 2
 
 #######################################
 # Frequent and safe rules - particles #
@@ -8178,6 +8184,7 @@ REMOVE:8532C ("avatangiiseq") IF (0 ("avatangiisi"));
 REMOVE:8532D ("(.*)"r) - Sem/Unit IF (0 (VSTR:"$1"v) + Sem/Unit LINK -1 Num); #fx grad+<unit> vs. grad+<ac> 
 REMOVE:8532E Gram/IV IF (0 (/"naammassi"\ Gram/TV\ Gram/Pass\ NIQ\ Der/vn\ SSAQ/l) + POSSESSUM );
 REMOVE:8532F (/"inuaq"\ TAQ\ Der/nn/l) IF (0 ("inuartaq")) ; #tilhørende=finger usandsynlig
+REMOVE:8532G ("inuk") + IAR IF (0 ("inuiaqat")) ;
 
 #De særlige former af TUQ + Aeq på transitiver fulgt af "ippaa" slettes hvis ikke fulgt af "ippaa"
 REMOVE:8599 TUQ + Aeq - Der/vn IF (0 TUQ + Aeq + Der/vn)(NEGATE 1 ("ip")); 
@@ -8338,7 +8345,7 @@ REMOVE:5489O (/"ator"\ Gram/IV\ VIP/l) IF (0 (/"ator"\ Gram/TV\ HTR/l));#piffiss
 REMOVE:5489P (/"ikili"\ Gram/TV\ TAR/l) + TRANSVERB IF (0 (/"ikili"\ Gram/IV\ SAR/l) + TRANSVERB) ;#fordi transitiv ikili har meget lav frekvens
 
 # Der/nv eller Der/vv?
-SELECT:5493 QATE + Der/vn + GE IF (0 QATE + Der/nn + GE)(NEGATE *-1 HUMAN + @OBJ>) ;
+SELECT:5493 QATE + Der/vn + GE - Imp IF (0 QATE + Der/nn + GE)(NEGATE *-1 HUMAN + @OBJ>) ;
 REMOVE:5494 (/__\"pi\"\ LIR\ Der\/nv__/l) IF (0 (/__\"pi\"\ LIR\ Der\/vv__/l))(NEGATE 0 NIQAR); # vaelger pi+LIR=TIP frem for pi+LIR+TIP
 #SELECT:5495 ("pi") + Der/nn ; # ad hoc for at disambiguere pi+Der/nn fra pi+vn #Fungerer ikke efter hensigten
 REMOVE:5496 ("pup") + LAAR IF (0 ("pulaar")) ; 
