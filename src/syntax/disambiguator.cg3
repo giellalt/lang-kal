@@ -1429,7 +1429,7 @@ SET DelvistFossileredeCont = FossileredeCont | AltidAdvlCont ;
 
 SET OQARPOQ = (/"oqar"\ Gram/IV\ V/l) OR (/"oqar"\ Gram/IV\ NNGIT\ Der/vv\ Gram/IV\ V/l) OR (/"oqar"\ Gram/IV\ TUQ\ Der/vn\ QAR\ Der/nv\ Gram/IV\ V/l) OR (/"oqar"\ Gram/IV\ TUQ\ Der/vn\ QAR/l);
 # 20091106 Foelgende med tak til Tino for at forebygge at "oqar" + USIQ opfattes som inquit
-LIST ORATIOOBLVERBnOQAR = "aalajanger" "aalianger" ("allap" USIQ GE) ("apeqqut" GE) ("apeqqut" U) "apere" ("assuarliut" GE) "eqqaa" "eqqaama" "eqqartor" "erseqqissar" ("erser" QQIP TAQ UTE GE) "ilimage" "ilimasup" ("ili" SIMA TIP HTR) "ilisimatitsi" "ilisimatitsissut" "ilumoor" "imaap" ("inassut" GE) "inassutige" ("isuma" LIUR) ("isuma" QAR) "isummer" "kaammattor" "maluge" "malunnar" "malunnarsi" "misige" "naatsorsor" (/"nali"\ LIR\ Der/nv\ Gram/TV/l) "nalu" "nalunaar" "nalunaarfige" "nalunaarut" "nalunaarutige" "neriorsor" "neriup" "nipangiup" ("nuannaar" UTE GE) ("oqalup" UTE) ("oqar" UTE GE) "oqaluttuar" ("oqar" VIK GE) "paasi" "paasissutisser" (/"paasissutissiissut"\ GE\ Der/nv/l) ("pi" GUMA TAQ GE) "pinngitsaali" ("piumaffik" GE) "puigor" "puior" "qular" "qulare" "qularnar" "qinnuige" "sinnattoq GE" "siunnersor" "takorloor" ("taku" Gram/TV) "tusar" "tusarnaar" "unner" "uggore" "uppernarsar" ("uppernar" SAR) (/SSAQ\ Der\/nn\ GE\ Der\/nv/l); #GE tilføjet til objektssætninger som ikke er indirekte tale
+LIST ORATIOOBLVERBnOQAR = "aalajanger" "aalianger" ("allap" USIQ GE) ("apeqqut" GE) ("apeqqut" U) "apere" ("assuarliut" GE) "eqqaa" "eqqaama" "eqqartor" "erseqqissar" ("erser" QQIP TAQ UTE GE) "ilimage" "ilimasup" ("ili" SIMA TIP HTR) "ilisimatitsi" "ilisimatitsissut" "ilumoor" "imaap" ("inassut" GE) "inassutige" ("isuma" LIUR) ("isuma" QAR) "isummer" "kaammattor" "maluge" "malunnar" "malunnarsi" "misige" "naatsorsor" (/"nali"\ LIR\ Der/nv\ Gram/TV/l) "nalu" "nalunaar" "nalunaarfige" "nalunaarut" "nalunaarutige" "neriorsor" "neriup" "nipangiup" ("nuannaar" UTE GE) ("oqalup" UTE) ("oqar" UTE GE) "oqaluttuar" ("oqar" VIK GE) "paasi" "paasissutisser" (/"paasissutissiissut"\ GE\ Der/nv/l) ("pi" GUMA TAQ GE) "pinngitsaali" ("piumaffik" GE) "puigor" "puior" "qular" "qulare" "qularnar" "qinnuige" "sinnattoq GE" "siunnersor" "takorloor" ("taku" Gram/TV) "tusar" "tusarnaar" "umer" "unner" "uggore" "uppernarsar" ("uppernar" SAR) (/SSAQ\ Der\/nn\ GE\ Der\/nv/l); #GE tilføjet til objektssætninger som ikke er indirekte tale
 
 LIST INQUIT_HTR = "akuere" "apersor" "erseqqissar" ("ilisima" TIP) "misilip" "nassuiar" "neriorsor" "siorasaar" "soqutige" ; 
 
@@ -8357,6 +8357,7 @@ REMOVE:5489M (/"ataaseq"\ iN\ iTrm\ iSg\ U\ Der/nv/l) IF (0 (/"ataaseq"\ iN\ iTr
 REMOVE:5489N (/"nalliup"\ Gram/IV\ SI\ Der/vv/l) IF (0 ("nalliussi")) ; #Inuit marluk katinnerisa NALLIUSSINERAT
 REMOVE:5489O (/"ator"\ Gram/IV\ VIP/l) IF (0 (/"ator"\ Gram/TV\ HTR/l));#piffissamik ATUIFFIUNGAATSIARTOQ Oqaasileriffimmi immikkut siunnersorti naliliivoq
 REMOVE:5489P (/"ikili"\ Gram/TV\ TAR/l) + TRANSVERB IF (0 (/"ikili"\ Gram/IV\ SAR/l) + TRANSVERB) ;#fordi transitiv ikili har meget lav frekvens
+REMOVE:5489Q ("umip") IF (0 ("umer"))(NEGATE *0 ("tupeq"));
 
 # Der/nv eller Der/vv?
 SELECT:5493 QATE + Der/vn + GE - Imp IF (0 QATE + Der/nn + GE)(NEGATE *-1 HUMAN + @OBJ>) ;
@@ -9174,6 +9175,10 @@ MAP:M0099F @OBJ> TARGET Abs + Sg IF (*1 @OBJ> LINK *1 CONT + TRANSVERB BARRIER (
 #Disambiguering af @SUBJ> + MI vs. @ADVL + Lok. Vælg @SUBJ hvis eneste mulige subjekt
 REMOVE:9968D @ADVL> + Lok IF (0 @SUBJ> + &&IV_SUBJ& LINK *1 VFIN + &&IV_SUBJ&)(NEGATE *0 @SUBJ> + &&IV_SUBJ& BARRIER VERB-NOTCONT);
 
+#Disambiguering af LIR+Der/nv som illu matulerpaa og LIR+Der/vv matu matulerpaa
+REMOVE:9968E (/LIR\ Der/vv/l) IF (0 (/LIR\ Der/nv/l) LINK *-1 @i->N BARRIER V); #bør præciseres til også at håndtere former som illu matulilerpaa
+
+REMOVE:9968E (/"umik"\ LIR\ Der/nv/l) IF (0 (/"umer"\ LIR\ Der/vv/l) LINK *0 @CL-CIT>);
 
 #Disambiguering og mapping af resterende partikler
 MAP:M0099E @FOC TARGET UNA OR UKU ; #20180522. Den skal afgrænses.
@@ -9325,8 +9330,9 @@ REMOVE:9972 ("([^<].*)"r) IF
 
 ; 
 
-REMOVE:9972B ("([^<]...*).."r) + (/Der\/.*/r) IF (0 (VSTR:"$1...+"r) - (/Der\/.*/r)) ; #En mere farlig regel end 9972A, men kræver til gengæld derivation. Skrevet til ord som 'aqerluusaq'.
-
+REMOVE:9972B ("([^<]...*).."r) + (/Der\/.*/r) IF (0 (VSTR:"$1...+"r) - (/Der\/.*/r)) #En mere farlig regel end 9972A, men kræver til gengæld derivation. Skrevet til ord som 'aqerluusaq'.
+(NEGATE 0 Par LINK *0 ORATIOOBLVERB BARRIER VERB-NOTCONT)
+;
 REMOVE:9972C (/@.*>.*/r) IF (0 (/@.*<.*/r)) (1 CLB) ;
 REMOVE:9972C (/@.*<.*/r) IF (0 (/@.*>.*/r)) (-1 CLB) ;
 
