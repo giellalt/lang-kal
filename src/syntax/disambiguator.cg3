@@ -97,7 +97,7 @@ LIST Adv = Adv ;
 LIST iAdv = iAdv ;
 LIST Prop = Prop ;
 LIST Interj = Interj ;
-LIST Num = Num ;
+LIST Num = Num ("tyve") ;
 LIST iNum = iNum ;
 LIST Sem/FirstName = Sem/FirstName ;
 LIST Sem/Geo = Sem/Geo ;
@@ -1544,6 +1544,7 @@ LIST MEDIER = "Atuagagdliutit" "atuagagdliutit" "Atuagalliutit" "aviisi" "Facebo
 
 LIST OTHERTIME = Sem/Time ("aallar" QQAAR UTE) ("aasaq") "akunneq" ("aqagu") (/\"inuk\"\ U\ .*\ NIQ/l) ("ippassaq") "juulli" ("kingulleq") ("kingu" NIQ) ("kinguneq") ("kinguninnguaq") ("kingusip") ("maanna") "minut" "naggat" ("nali") ("piffik") ("qaammat") ("qangali") "qangangaatsiaq" ("qeqqa") ("sapaat") ("sapaatip-akunneq") (/"silattor"\ Gram/IV\ NNGIT\ Der/vv\ Gram/IV\ NIQ/l) "sivisoorsuaq" ("sivisu") "sivitsunngitsoq" ("siulleq") ("siuneq") ("siorna") ("taarsi") "time" ("ualeq") ("ukiaq") ("ukiar" TUQ) ("ukiartoq") ("ukioq") ("ullaa") ("ullaaq") "ullaaralaaq" "ullaaralaannguaq" ("ullaaq" RALAAQ NNGUAQ) "ullaaror" "ullaassaq" ("ulloq") ("unnuaq") "unnuaqeqqa" ("unnuk") ("unnup" Par);
 
+LIST TIMEUNIT = "minut" "sekund" "time" ;
 SET CLOCK = (Num Trm) - AFFINGERET ;
 SET TIMENOUN = UGEDAGE | OTHERDAY | SEASON | MAANED | CLOCK | OTHERTIME ;
 SET TIME = TEMPUSVERB | TIMEVERB | OTHERTIME | TIDSPARTIKEL ;
@@ -1974,6 +1975,8 @@ LIST MWEPRÆNOM = "ulloriaq" "blok" ; #BLOK 5-ip eqqaamaneqarnera
 SET PRÆNOM = TITEL OR MWEPRÆNOM ;
 MAP:Juxta0001 @i-MWE>N TARGET PRÆNOM + $$KASUS + $$NUMERUS IF (*1 MWEHOVED + Der/nv BARRIER (*) - KONGRUENSADLED) ; #Pissutissaqarlunga isumaqarpunga ulloriaaraq ataqqinartuaqqap najugaqarfigisaa ulloriaaraq ANGALASOQ B612-iussasoq.
 MAP:Juxta0002 @N< TARGET ("baobab") + $$KASUS + $$NUMERUS IF (-1 ("orpik") + $$KASUS + $$NUMERUS) ;
+MAP @>N TARGET NUMHOVED + Trm + TIMEUNIT (1 NUMHOVED + Abs) ; #Maannakkut Kalaallit Nunaata Kujataani anorersuarpoq, Qallunaat Nunaanni silasiorfik DMI malillugu anori *sekundimut meterit 50-it angullugit sakkortutigisinnaasassaaq.
+
 
 #############
 # Test: Mapping af konjunktioner vs. adverbialer
@@ -4714,6 +4717,8 @@ MAP:M0070 @CL-ADVL> TARGET U + Par + 3Sg + 3SgO ; #Den særlige transitive Par a
 MAP:M0072 @CL-ADVL> TARGET ("ila") + 3SgPoss + Abs IF (-1 TIME + Rel)(*1 T:NexusHøjre ) ; #Absolut tid med possessor
 
 MAP:M0073 @CL-ADVL> TARGET TEMPUSVERB + Par + 3Sg IF (-1 BOS) ;
+MAP:M0073 @CL-ADVL> TARGET OTHERTIME + Abs + Pl IF (-1 BOS) (*1 V + (/.Sg/r)) (NEGATE *1 V + (/.Pl/r)) ; #nalunaaquttap-akunneri 23-t sulisarpoq.
+
 
 #Sætningsadverbiel tidsangivelse
 MAP:M0074 @CL-ADVL> TARGET CONT IF (-3 BOS)(-2 TIME + Ins)(-1 Lok)(NEGATE 1 V); #
@@ -5619,8 +5624,9 @@ MAP:M0514C @N< TARGET Rel - TIME - Num - POSSESSUM3 - FAM - HUM IF (0 $$NUMERUS)
 
 
 MAP:M0515 @N< TARGET OTHERTIME + $$KASUS + $$NUMERUS + (/<\(...*\)/r) - CONJ-LU (-*1 OTHERTIME + $$KASUS + $$NUMERUS - (VSTR:$1) BARRIER (*) - @N<) ;
+
 MAP:M0516A @N< TARGET Num + $$OBLIQUE IF (NEGATE 0 iNum) (-1 OTHERTIME + $$OBLIQUE) ; # sapaatip akunnerini marlunni suliffimmi praktikissaaq.
-MAP:M0516B @N< TARGET Num - Trm IF (NEGATE 0 iNum) (-1 OTHERTIME - Via - Trm - POSSESSUM )(NEGATE 0 $$OBLIQUE LINK NEGATE -1 $$OBLIQUE) #ualikkut 16:45
+MAP:M0516B @N< TARGET Num - Trm IF (NEGATE 0 iNum) (-1 OTHERTIME - Via - Trm - @>N) (NEGATE -1 POSSESSUM + OBLIQUE) (NEGATE 0 $$OBLIQUE LINK NEGATE -1 $$OBLIQUE) #ualikkut 16:45
 (NEGATE 0 Rel LINK 1 Rel + LU) # 09.30-p er ikke adled i 09.30-p 11.30-llu akornanni
 ; 
 
@@ -5950,6 +5956,7 @@ MAP:M0720 @<SUBJ TARGET Abs + Sg - ("kinguneq") - UNA - UKU IF (-*1C INTRANSVERB
 (NEGATE *-1 V + TRANSVERB BARRIER INTRANSVERB LINK *-1 @SUBJ>)
 (NEGATE *-1 CONJ-C BARRIER V LINK -1 KOMMA) # ...pingaaruteqanngitsoq, ullumili *ulloq taama pingaaruteqartigimmat...
 (NEGATE 1 V)
+(NEGATE *1 V + 3Sg BARRIER @SUBJ> OR KOMMA)
 ;
 MAP:M0720 @<SUBJ TARGET Abs + Sg - UNA - UKU IF (-*1C INTRANSVERB + 3Sg - ("tassa") OR INTRANSVERB + 4Sg - ("tassa") BARRIER ("tassa") OR TRANSVERB OR NEXUS LINK NOT 0 (TUQ Der/vn QAR Der/nv))(NEGATE 0 ORATIOOBLVERB OR DIRTALE)(NEGATE *1 V) ; #Sumiippalu taanna ”najugaqarfiit”?
 #(NEGATE -1 ("\("))(NEGATE 1 Abs + Sg LINK *1 V) (NEGATE 0 CONJ-LU LINK *1 Rel + Sg LINK *1 TRANSVERB + 3Sg)(NEGATE -*1 TRANSVERB + 3Sg BARRIER INTRANSVERB + 3Sg)(NEGATE -1 Abs + Sg - Der/vn)(NEGATE *-1 KOMMA BARRIER V LINK -1 @PRED LINK *1 _TARGET_ LINK *1 @PRED)(NEGATE 0 ATTRIBUTIV) #20091109 - trediesidste NEGATE, 20101013 næstsidste NEGATE for at forhindre hit på 'S V O-LU S V', sidste NEGATE for ikke at hitte på kongruensadled. 20170425 -kinguneq for at forebygge hit på sætningsadverbialer
@@ -6039,7 +6046,7 @@ MAP:M0780 (@SUBJ>) TARGET APPELLATIV + Abs - ("kinguneq") OR Prop + Abs OR Num +
 ;#Det samme for resten af TIME.
 
 MAP:M0781 @SUBJ> TARGET Pl + Abs - TIME IF (0 Gram/Dem + Pron OR N LINK *1 VFIN + INTRANSVERB + 3Pl BARRIER KOMMA)(NEGATE -1 Abs + Pl);
-MAP:M0782 @SUBJ> TARGET Num + Abs IF (*1 INTRANSVERB + 3Sg - DIRTALE BARRIER V - CONT OR Sem/Unit OR N + Abs)(NEGATE *1 Num) ; #IV_SUBJ kan ikke bruges pga. manglende numerusmarkering på Num
+MAP:M0782 @SUBJ> TARGET Num + Abs IF (*1 INTRANSVERB + 3Sg - DIRTALE BARRIER V - CONT OR Sem/Unit OR N + Abs LINK NEGATE 0 (/.Sg/r) LINK *0 _TARGET_ + Pl)(NEGATE *1 Num) (NEGATE 1 TRANSVERB + CONT) ; #IV_SUBJ kan ikke bruges pga. manglende numerusmarkering på Num
 MAP:M0790 (@<OBJ) TARGET APPELLATIV + Abs OR Prop + Abs OR PRON-REFL + Abs IF (-*1 TRANSVERB - Cont BARRIER VFIN OR Cont + @ADVL> OR Cont + @<ADVL OR ("\,"))
 (NEGATE *-1 TRANSVERB + ORATIOOBLVERB LINK *1 _TARGET_ LINK *1 Par) #Skal ikke tagge objekt for et inquit, hvis det er en oo. #Taamaalillunga pingaarutilimmik paasisaqaqqippunga, paasivaralu ulloriaaraq ataqqinartuaqqap najugaqarfigisaa illumit anginerungaarunanngitsoq.
 (NEGATE *1 TRANSVERB); #20091111 af Beatrine. (linie 1243)
@@ -6310,7 +6317,7 @@ MAP:M1040 (@<ADVL) TARGET ADVERBIUM IF (*-1 (V)) ;
 # ==========
 MAP:M1050 (@>N) TARGET Num + Abs IF (1 NUMHOVED); #Ny 30.3.
 MAP:M1051 @>N TARGET Num + Abs IF (*1 NUMHOVED BARRIER (*) - Num - CONJ-C - @CONJ) ; #ini 4 gange 3 meterinik uuttuuteqarpoq.
-MAP:M1052 @N< TARGET Num IF (*-1 NUMHOVED - @>N BARRIER KOMMA OR V) ;
+MAP:M1052 @N< TARGET Num IF (*-1 NUMHOVED - @>N BARRIER KOMMA OR V OR NUMHOVED) ;
 
 MAP:M1060 (@POSS>) TARGET MAANED IF (1 Num + 3PlPoss); #NB Possessum skal vaere plur. da konsekvent underforstaaet 'ulloq' MAANED (ulluisa) Num
 
@@ -6701,6 +6708,7 @@ MAP:M1720 (@SUBJ>) TARGET Adj IF (-1 @SUBJ>); #2.4. for bred og upraecis??
 MAP:M1722A @OBJ> TARGET Abs + Der/vn + $$NUMERUS - (/"naa"\ Gram/IV\ TUQ/l) IF (-1 Abs + $$NUMERUS)(*1 TRANSVERB); #Unali NAASOQ ullut ilaanni naatsiiassamit,  suminngaanneersuugaluarnersumit tingilluni naalersumit pisuuvoq. Reglen skal reformuleres eller der skal laves et SET med substantiverede TUQ etc.
 
 MAP:M1722A @OBJ> TARGET Num + $$NUMERUS IF (-1 Abs + $$NUMERUS)(NEGATE -1 @HNOUN)(*1 TRANSVERB);
+MAP:M1722A @OBJ> TARGET Num - ("ataaseq") - ("1") - ("en") - ("et") IF (-1 Abs + Pl)(NEGATE -1 @HNOUN)(*1 TRANSVERB + 3PlO);
 #MAP:M1722C @N< TARGET Num + $$NUMERUS IF (-1 Abs + $$NUMERUS)(-1 @HNOUN); #særlig for HNOUN NP 
 
 
@@ -8724,6 +8732,7 @@ REMOVE:5859Æ ("killeq") + AFFINGERET IF (0 ("killik")) ; #'det vestlige' næppe
 REMOVE:5859Å ("ikeq") IF (0 ("iki"))(*-1 @SUBJ> + HUMAN OR @SUBJ> + ANIMAL) ; #Piitaq qaamigut ikeqarpoq
 REMOVE:5859Å ("iseq") IF (0 ("isi"))(*-1 @SUBJ> + HUMAN OR @SUBJ> + ANIMAL) ; #Piitaq tungujortunik iseqarpoq
 REMOVE:5860A ("Sms") IF (0 ("sms")) ;#lidt tilfældigt valgt disambiguering
+REMOVE:5860B NUM + VIK IF (0 NUM - VIK) ; #tiiveqarpoq
 
 # Appellativ eller proprium
 SELECT:5729 N - Prop IF (0 ("angut") OR ("arnaq")) (0 POSSESSUM - AFFINGERET) ;
