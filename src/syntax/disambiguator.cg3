@@ -281,6 +281,7 @@ LIST ParagrafSlut = "¶" "." ; #To be added in all corpora in order to deal effi
 LIST %NumPossessum = %NumPossessum ; #("misse")+3PlPoss når possessum for -1 Num 
 LIST %ContHypotagme = %ContHypotagme ; #CONT når -1 Abs eller Abs når 1 CONT
 LIST %TidHypotagme = %TidHypotagme ; #possessor og possessum, når begge er TIME
+LIST %VerbalInderivering = %VerbalInderivering ; #Transitive verber med NIRAR og SURE
 
 # Derivatives #
 
@@ -4081,6 +4082,14 @@ MAP:M0430soorlu @<ADVL TARGET N + Abs IF (-1 ("soorlu"))(*-1 ("ip") LINK NOT *0 
 #ADD (@baseform-i) ("\\p{Lu}.*i"r) ;
 #ADD (@baseform-no-i) ("\\p{Lu}.*[^i]"r) ;
 #REMOVE ("\\p{Lu}.*i"r) IF (0 ("\\p{Lu}.*[^i]"r)) ;
+
+#Verbal inderivering
+MAP:VerbalInd0001 @i-ADVL> TARGET OBLIQUE IF (*1 %VerbalInderivering BARRIER VERB-NOTCONT)
+(NEGATE *1 Abs + Sg LINK *1 %VerbalInderivering + 3SgO)#Må ikke hitte ADVL til venstre for objektet (dvs. subjekt for det inderiverede verbum)
+(NEGATE *1 Abs + Pl LINK *1 %VerbalInderivering + 3PlO)#Må ikke hitte ADVL til venstre for objektet (dvs. subjekt for det inderiverede verbum)
+ ;
+MAP:VerbalInd0002 @i-ADVL> TARGET CONT IF (*1 %VerbalInderivering BARRIER V) ;
+
 
 MAP:M00000 @>N TARGET ("nalunaaqutaq") + &&IV_SUBJ& IF (1 Num + Trm OR Num + Abl OR Num + Abs LINK NEGATE 1 Trm LINK *1 V + &&IV_SUBJ&) ; #NEGATE  tamannalu pillugu unnugu *nalunaaqutaq qulinit aqqanermut siuartinneqassaaq.
 MAP:M00001 @>N TARGET ("ukioq") IF (1 Num OR iNum)(NEGATE 0 $$KASUS LINK 1 (*) + $$KASUS - AFFINGERET)(NEGATE 1 POSSESSUM)(NEGATE 1 INSOBJVERB OR U OR NNGUR)(NEGATE -1 Num)(NEGATE NOT 0 Ins LINK 1 LIK)(NEGATE 2 Sem/Unit)  ;
@@ -8682,6 +8691,9 @@ REMOVE:5639AD ("meeraq") + IRNIAR IF (0 ("meeraq") + TAAR) ;
 REMOVE:5639AE (/__LIK\ Der/nn\ N\ ...\ ..\ ...Poss/l) ; #Arnap specialeliani tunniuppaa
 REMOVE:5639AF NIKUQ + USAQ IF (0 NIKUU + TAQ) ;
 REMOVE:5639AG (/"qaamaneq"\ U\ Der/nv/l) IF (0 (/"qaama"\ Gram/IV\ NIRU\ Der/vv/l));#
+REMOVE:5639AH SURE IF (0 (/HTR\ Der/vv\ Gram/IV\ TUQ\ Der/vn\ GE\ Der/nv/l) LINK *-1 Ins BARRIER (*) - CONT - OBLIQUE - Adv);
+REMOVE:5639AI SURE IF (0 (/"ilinniar"\ Gram/IV\ TIP\ Der/vv\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TUQ\ Der/vn\ GE__/l)); #Tilføjer ilinniartitsisoq også uden MIK-objekt til foregående
+
 
 # Enkelte substantiver
 REMOVE ("pineq") IF (NEGATE *0 ("kamik")) ; #20091103 pineq+QAR vs. pineqar-
