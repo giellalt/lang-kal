@@ -1517,7 +1517,7 @@ LIST SEKVENTIELLE_VERBER = "ani" "innar" ; #Sæt til anvendelse sammen med coref
 LIST NAAR_VERBER = "angi" ("aki" KIP) "amerla" "isorartu" "kingusip" "miki" "oqip" "sivikip" "siusip" ; #stammer, der kan tage NAAR. Alle andre slettes
 LIST EVALUERENDE_VERBER = "kajungeraa" ; #verber med semantik der betinger objekt efter NIQ+Ins/Abl
 LIST INDERIVERENDE_SUBSTANTIV = (/\"aki\"\ [^\(Gram\/IV\)]/l SSAQ) "akiliut" "angajoqqaaq" "angallat" "ataatsimiititaliaq" (/"ataatsimiip"\ Gram/IV\ TIP\ Der/vv\ Gram/TV\ TAQ\ Der/vn\ LIAQ/l) "atuakkiaq" "blogger" "bloggeri" "blog" "filmiliaq" ("film" LIAQ) "igalaasartooq" "ilaqutaq" "ilassinnissut" "ilisimatusartoq" "inatsit" "inerteqqut" "isertugaq" "isi" "isuma" ("isuma" QATE GIIP UTE) "minister" "mittarfik" "naapeqatigiinneq" "nalliuttorsiorneq" "nalunaarusiaq" "nassaaq" "nioqqut" "nuuttoq" "oqallissaarut" "oqaluttuaq" "oqartussaaffik" "oqimaassusilik" "peqataasoq" "peqqussut" "pineq" "piniartoq" "pisortaqarfik" "qaartartorsuaq" "qaatigooq" "sanaaq" "sinniisoq" "siunnersuisoq" "siunnersorti" "suliaqartoq" "suliassaq" "sungiusaasoq" "tigummiaq" "timersoqatigiiffik" "tunngavilersuutige" "tunngavik" "ujaasineq" FAM TUGAQ ;
-LIST INDERIVERENDE_TITEL = "adjunkt" "lektor" "minister" "naalakkersuisoq" "professor";
+LIST INDERIVERENDE_TITEL = "adjunkt" "bachelor" "lektor" "minister" "naalakkersuisoq" "professor";
 #LIST VERBALNOMEN = "isuma" "oqaluttuaq" "naapeqatigiinneq" ;
 LIST INSOBJVERB = LIUR (/".*nior"/r) RAAR (/\ SI\ Der\/nv/l) SSIP TAAR SIUR (/\ TUR\ Der\/nv/l) (/__LIR\ Der\/nv__/l) ;
 LIST NOTSPLIT = ("neri" TAQ SSAQ) ; # cannot take i- -arguments.
@@ -1622,7 +1622,7 @@ SET FIRSTNAME = (Sem/Mask Prop) | (Sem/Fem Prop) | Mask | Fem | ("Frederik") | (
 SET NAME = FIRSTNAME | Sur ;
 SET NOT-FIRST = WORD - FIRSTNAME ;
 
-LIST INSTITUTION = "Folketing" "Folketinget" "Inatsisartut" (/"ingerla"\ Gram/IV\ TIP\ Der/vv\ Gram/TV\ HTR\ Der/vv\ VIK/l) "Naalakkersuisut" "Oqaasileriffik" "Oqaasiliortut" ;
+LIST INSTITUTION = "Folketing" "Folketinget" "Inatsisartut" (/"ingerla"\ Gram/IV\ TIP\ Der/vv\ Gram/TV\ HTR\ Der/vv\ VIK/l) "Naalakkersuisut" "Nutserinermut Oqaluttaanermullu Immikkoortortaq" "Oqaasileriffik" "Oqaasilerinermut, Atuakkialerinermut Tusagassiuutilerinermullu Immikkoortortaq" "Oqaasiliortut" ;
 
 LIST FAM_UNIK = "ui" "nuliaq" ("angut" 3SgPoss) ("angut" 3PlPoss) ("angut" 4SgPoss) "anaana" "arnarsiaq" "ataata" "aana" "aanaq" "aanarsiaq" "ittoq" "aata" "aataq" "aataa" ;
 # betegnelser som sjældent optræder uden for sing.
@@ -3991,7 +3991,7 @@ SELECT:0408B Abs + Sg + Der/vn IF (-*1 N - Der/vn + Abs + Sg LINK 1 Der/vn + Abs
 # Mapping af adled til verbale substantiver uden derivation
 MAP:M0408C @i-ADVL>N TARGET ("ullumikkut") IF (1 ("kalaaleq") + Pl LINK *1 ("assi") + GE) ; #Til den specielle konstruktion ULLUMIKKUT kalaallit .. assigivai
 
-MAP:M0408D @i-ADVL>N TARGET Trm IF (1 INDERIVERENDE_TITEL) ;
+MAP:M0408D @i-ADVL>N TARGET Trm IF (1 INDERIVERENDE_TITEL OR Trm + LU LINK 1 INDERIVERENDE_TITEL) ;
 
 MAP:M0408N1 @i-ADVL>N TARGET PILLUGU IF (1 INDERIVERENDE_SUBSTANTIV ) ;
 #MAP:M0408N2 @i-ADVL>N TARGET Ins + $$NUMERUS IF (*1 INDERIVERENDE_SUBSTANTIV - LIK_QAR BARRIER (*) - ($$NUMERUS Ins) LINK NOT 1 HVVERB )(NEGATE -1 Ins + $$NUMERUS) ;
@@ -4229,6 +4229,7 @@ MAP:M0018D (@NIQ_SUBJ>) TARGET Abs - Gram/Pers + &&IV_SUBJ& IF (*1 (/Gram\/IV\ N
 (NEGATE -1 Abs)
 (NEGATE 0 TITEL LINK 1 N OR Prop)
 (NEGATE *1 NIQ + Abl BARRIER NIQ LINK *1 NIRU)#må ikke tagges pga 2. sammenligningsled Canadami SILA ukiaq pisarnermit kiannerusimavoq
+(NEGATE 0 FIRSTNAME LINK 1 Prop)#PER Rosing nutserinermut oqaluttaanermullu bacheloritut allagartartaarpoq. Bør måske tilføjes fx  - OBLIQUE  pga muligheder som Per INSTITUTION-mi NIQ SUBJ V
 ;
 
 #Særregel når Abl er Ins
@@ -4344,13 +4345,18 @@ MAP:M0031D @PROP> TARGET Sem/Fem + Abs IF (1 Sem/Fem + Abs - CONJ-LU) ; #Må ikk
 #MAP:M0031A @PROP> TARGET Prop + Sem/FirstName IF (1 Prop + Sur)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + CONJ-LU LINK *1 V + 3Pl )(NEGATE 1 Prop LINK 1 Prop)(NEGATE 0 FIRSTNAME LINK 1 FIRSTNAME)(NEGATE 0 FIRSTNAME LINK 1 ("Kalaallit")); #Mange fejlhit på Kalaallit Illuutaat og Kalaallit Nunaat
 #0031A ændret ad hoc med + Sur i mangel af mulighed for at adskille for- og efternavne
 
-MAP:M0031E @PROP> TARGET Sem/Mask + Abs OR Sem/Fem + Abs IF (1 Sem/Hum - Sem/Mask - Sem/Fem - Abl - CONJ-C) ;
+MAP:M0031E @PROP> TARGET Sem/Mask + Abs OR Sem/Fem + Abs IF (1 Sem/Hum - Sem/Mask - Sem/Fem - Abl - CONJ-C) 
+(NEGATE 0 FIRSTNAME LINK 1 INSTITUTION)#BIRGIT Oqaasilerinermut, Atuakkialerinermut Tusagassiuutilerinermullu Immikkoortortami pisortaavoq.
+;
 
 MAP:M0031F @PROP> TARGET FIRSTNAME + Abs IF (1 Sem/Mask + Rel - CONJ-C OR Gram/Abbr) ; #Hans Egedep nalaani inuuvoq. #Lars P. Mathæussen
 MAP:M0031G @PROP> TARGET Sem/Mask + Abs IF (1 Sem/Mask - CONJ-C)(NEGATE 1 Abl LINK *1 NIRU OR ("anneq") BARRIER V) ;
 MAP:M0031H @PROP> TARGET Sem/Fem + Abs IF (1 Sem/Fem + Abs - CONJ-C) ;
 
-MAP:M0031I @PROP> TARGET Sem/Hum + Abs - ORGANISATION IF (1 Sem/Hum - Sem/Mask - Sem/Fem - Abl - CONJ-C - SEMIOTIC - ORGANISATION OR Orth/Append + Prop) (NEGATE 1 Sem/Geo) ; #Beregnet til fornavn-efternavn, men usikker pga manglende kønstagging af fornavnet.
+MAP:M0031I @PROP> TARGET Sem/Hum + Abs - ORGANISATION IF (1 Sem/Hum - Sem/Mask - Sem/Fem - Abl - CONJ-C - SEMIOTIC - ORGANISATION OR Orth/Append + Prop) (NEGATE 1 Sem/Geo) #Beregnet til fornavn-efternavn, men usikker pga manglende kønstagging af fornavnet.
+(NEGATE 0 FIRSTNAME LINK 1 INSTITUTION)#BIRGIT Oqaasilerinermut, Atuakkialerinermut Tusagassiuutilerinermullu Immikkoortortami pisortaavoq.
+;
+
 MAP:M0031J @PROP> TARGET PROP + Abs - CONJ-C IF (1 PROP + Sem/Hum - CONJ-C - PLACE)(-1 PROP) 
 (NEGATE *1 Prop + CONJ-LU BARRIER (*) - Prop) #Andreas Wille Mathias Witoftilu ilanngutassiortuupput.
 ; #Kalaallit *Røde Korsiannit katersukkat tamarmik Dansk Røde Korsimut tunniunneqassapput.
@@ -4429,6 +4435,7 @@ MAP:M0041 (@SUBJ>) TARGET N + Abs + CONJ-LU OR Prop + Abs + CONJ-LU IF (-1 VFIN 
 
 MAP:M0041 @SUBJ> TARGET N + Abs IF (1 Gram/Exclm + (/__Gram\/IV\ V\ Ind\ Gram\/Exclm__/l))(NEGATE *-1 V BARRIER CONJ-C) ; #siunissaq pissanganaq!
 MAP:M0044A @CL-ADVL> TARGET NIRMIT - UGEDAGE IF (*1 VFIN - HTR - LIK_QAR - INDERIVERENDE_SUBSTANTIV BARRIER HTR OR LIK_QAR)(NEGATE 0 Abl LINK 1 NIRU)(NEGATE 1 OBLIQUE - SPATIAL - NIRMIT)(NEGATE -1 POSSESSUM4)(NEGATE 0 Trm LINK *1 TRMVERB BARRIER VFIN)  #-nermit vist altid sætningsadverbial
+(NEGATE 0 Trm LINK *1 Aeq BARRIER (*) - Trm)#Per Rosing NUTSERINERMUT oqaluttaanermullu bacheloritut allagartartaarpoq.
 ;
 
 MAP:M0044B @CL-ADVL> TARGET NIRMIT IF (*-1 @NIQ_SUBJ> OR @NIQ_OBJ>)(*1 V OR @PRED)(NEGATE *-1 @PRED BARRIER KOMMA)(NEGATE 0 Trm LINK *1 TRMVERB BARRIER VFIN OR @PRED) ;
