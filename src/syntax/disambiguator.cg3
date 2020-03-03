@@ -1550,7 +1550,8 @@ LIST TIMEUNIT = "minut" "sekund" "time" ;
 SET CLOCK = (Num Trm) - AFFINGERET ;
 SET TIMENOUN = UGEDAGE | OTHERDAY | SEASON | MAANED | CLOCK | OTHERTIME ;
 SET TIME = TEMPUSVERB | TIMEVERB | OTHERTIME | TIDSPARTIKEL ;
-
+SET TIME_X = TIME - ("kingulleq") ; #til alm. konstruktion som Siumup marlunngormat KINGULLERMIK ataatsimiinnera, hvor kingulleq ikke må blokere dagen fra at være i-ADVL
+ 
 LIST SPATIAL = "aki" "ate" "illuatunge" "ilu" "eqqaq" "killeq" "killik" "kujate" "qaaq" "qule" "saaq" "sani" "silate" "siu" "tunge" "tunu" "ungate" (".*kannersoq"r); #PL 20180522 slettet "arlaq". Næppe spatialt indhold og fejlhitter fx på 'Arlaqanngitsut qitipput'
 LIST USPATIAL = "sanik" "ateq";
 
@@ -4926,8 +4927,6 @@ MAP:opremsning1 @ADVL> TARGET OBLIQUE + $$KASUS - Adv IF (-*1 KOMMA OR CONJ-C - 
  ; #oblique af typen A, B C-LU
 
 MAP:M0295 @i-ADVL> TARGET OBLIQUE - Ins - CONJ-C - Num - ("<(S|s)aniatigut>"r) - ("<(p|P)ingaarnertu.*>"r) IF (1 (/__NIQ\ Der\/vn\ \(SSAQ\ Der\/nn\ \)?N__/l) - Gram/Comp - NIQAR - TIME - Gram/Db OR (/neq\"\ N/l) - Gram/Comp - NIQAR - TIME - Gram/Db - ("seqineq") - ("aqqusineq") OR (/NIQ\ Der/vn\ N__/l) - Gram/Comp - NIQAR - TIME - Gram/Db) 
-#(NEGATE 0 $$KASUS LINK *-1 $$KASUS + Adv)#ser underlig ud. Forsøgsvist rettet til 
-#(NEGATE 0 $$KASUS LINK *-1 $$KASUS BARRIER (*) - Adv)
 (NEGATE 1 OBLIQUE LINK 1 LIK_QAR LINK NOT 0 @SUBJ> OR @OBJ>)(NEGATE 0 TIME + $$KASUS LINK -1 TIME + $$KASUS)(NEGATE 0 Trm LINK 1 MUT-OBJ + HTR)(NEGATE 0 Abl LINK -1 Abl - CONJ-C) # imermit mingutsinneqartumit uffareernermi kingorna
 (NEGATE 0 Trm LINK *1 TRMVERB + V BARRIER V OR INDERIVERENDE_SUBSTANTIV) #Ilaasortat Kalaallit Nunaaliarnerat oqaluttuarisaanermut angalanertut sivikinnerpaatut ilannguppoq.
 (NEGATE 0 $$KASUS LINK -1 $$KASUS)#Paasissutissani SAQQUMMIUNNEQARTUNI pinerliinerit sumut attuumassuteqarsimanersut paasissutissiissutigineqanngilaq.
@@ -5002,7 +5001,9 @@ MAP:M0316 (@ADVL>) TARGET TIME + Abs + Sg IF (NEGATE *1 INTRANSVERB + 3Sg OR TRA
 (NEGATE *-1 VFIN LINK *1 LU LINK *1 _TARGET_ LINK *1 CONT + 4Sg BARRIER (*) - OBLIQUE - Adv)#suliniut qulingiluanik inuttalerneqarpoq, 2021-llu naanerani NAAMMASSINISSAA naatsorsuutigineqarluni.
  ; 
 
-MAP:M0318 (@ADVL>) TARGET Lok + TIME - ("akunneq") IF (*1 V BARRIER NIQ + POSSESSUM + OBLIQUE OR ("nalunaaqutaq")) ;
+MAP:M0318 (@ADVL>) TARGET Lok + TIME - ("akunneq") IF (*1 V BARRIER NIQ + POSSESSUM + OBLIQUE OR ("nalunaaqutaq")) 
+(NEGATE -1 Rel LINK 1 _TARGET_ LINK *1 3SgPoss BARRIER (*) - Lok)#Taamaalilluni Sermitsiaq.AG-p SAPAATIP-AKUNNERANI matumani allaaserisaanut siullermeerluni oqaaseqarpoq.
+;
 
 #MAP:M0319 (@<ADVL) TARGET Lok + TIME - ADJEKTIVISK OR ("affaq") IF (-*1 V)(NEGATE 1 Der/vn OR ("nalunaaqutaq"))(NEGATE *1 ("qanoq") LINK 1 ("pisar") OR ("pi") + TAR) ; #PL udkommenteret. Kørt på testcorpus hvor kun anvendt 4 gange alle forkerte
 
@@ -5535,7 +5536,7 @@ MAP:M0550 (@i-ADVL>) TARGET Part IF (1 TIP + NIQ); #ingerlaannaq piviusunngortit
 MAP:M0551 (@i-ADVL>) TARGET Part IF (0 ("taama") OR ("qanoq") OR ("taamatut"))(1 NIQ) #ingerlaannaq piviusunngortitsineq
 (NEGATE 1 Trm LINK 1 INDERIVERENDE_TITEL OR INDERIVERENDE_SUBSTANTIV)#TAAMA inatsisilerinermut professori oqarpoq
 ;
-MAP:M0552 (@i-ADVL>) TARGET Adv + OBLIQUE - ("soorlu") OR Pali IF (1 NIQ); #ingerlaannaq piviusunngortitsineq
+MAP:M0552 (@i-ADVL>) TARGET Adv + OBLIQUE - ("soorlu") OR Pali IF (*1 NIQ BARRIER (*) - OBLIQUE); #ingerlaannaq piviusunngortitsineq
 MAP:M0555 @i-ADVL> TARGET ("immikkut") IF (1 LIK_QAR) ; #Ikkuttariaannaava immikkulluunniit iliuuseqartariaqarpa?
 MAP:M0556 @i-ADVL> TARGET CLOSE-ADV IF (1 Der/vn + N) ;
 MAP:M0557 @i-ADVL> TARGET Adv IF (1 @N< + Der/vn) ;
@@ -5546,7 +5547,10 @@ MAP:M0557A @i-ADVL> TARGET Adv - ("aamma") - ("soorunami") IF (1 OBLIQUE + Der/v
 MAP:M0578 @i-ADVL> TARGET Ins IF (*1 INSVERB + N BARRIER (*) - @N<) ; #Qasigiannguanik taaneqartoq.
 
 MAP:M0560 @ADVL> TARGET Adv + ("qanga") (1 NNGUARSI) ;
-MAP:M0560A (@ADVL>) TARGET Part - OTHERTIME - LANGUAGE OR Adv - OTHERTIME IF (*1 V OR @PRED BARRIER KOMMA )(NEGATE 0 ("soorlu")) ; #(NEGATE *-1 V BARRIER ("\,")) #20091112 tilfoejet komma som BARRIER andet NEGATE er vist overflødig
+MAP:M0560A (@ADVL>) TARGET Part - OTHERTIME - LANGUAGE OR Adv - OTHERTIME OR Pali IF (*1 V OR @PRED BARRIER KOMMA )(NEGATE 0 ("soorlu")) 
+(NEGATE *1 NIQ + POSSESSUM3 OR NIQ + POSSESSUM4 BARRIER (*) - Adv - Pali - Ins)#unnerluutiginninnerit Siumup siulersuisuunerisa MARLUNNGORMAT kingullermik ataatsimiinnerminni partiip allattaaneranik suliunnaarsitsinerannut pissutaapput
+(NEGATE -1 N + $$KASUS LINK 1 _TARGET_ LINK *1 $$KASUS BARRIER (*) - $$KASUS - Adv - Pali)#Tamanna orniginartinnginnatsigu kalaallinik KALAALLISUT bloggiliortartunik ujaasilaarpunga, aajukualu nassaarisakka siulliit. Skal være i-ADVL
+; #(NEGATE *-1 V BARRIER ("\,")) #20091112 tilfoejet komma som BARRIER andet NEGATE er vist overflødig
 
 MAP:M0560AX (@ADVL>) TARGET Gram/Dem - Prefix/TA + OBLIQUE - ("una") IF (*1 V OR @PRED OR @FOC BARRIER KOMMA )(NEGATE 0 ("soorlu"))(NEGATE 1 Der/vn) (NEGATE 0 OBLIQUE LINK 1 Gram/Cong + iOBLIQUE OR ("ma") + iOBLIQUE);
 MAP:M0560B (@ADVL>) TARGET ("ila") IF (-1 TIME)(*1 V BARRIER KOMMA OR @i-ADVL>) #(NEGATE *-1 V BARRIER ("\,")) #20091112 tilfoejet komma som BARRIER andet NEGATE er vist overflødig
@@ -6419,7 +6423,9 @@ MAP:M1147A @i-ADVL> TARGET PILLUGU IF ((1 Der/vn + N - Gram/Comp) OR (1 INDERIVE
 MAP:M1147B @i-ADVL> TARGET PILLUGU IF (*1 @i-ADVL> BARRIER (*) - Adv LINK 1* Der/vn + N BARRIER (*) - @i-ADVL>)(NEGATE *1C V - ("tassa") - PILLUGU - (Cont @i-ADVL>) - (ContNeg @i-ADVL>)) ;
 
 #Tagging af ikke inderiveret 'pillugu' eller 'pissutigalugu'.
-MAP:M1148B1 @ADVL> TARGET ADVERBIEL OR ("pissut") + GE IF (*1 VFIN BARRIER V)(-1 N OR Prop OR Adv)(NEGATE *-1 VFIN BARRIER KOMMA OR CONJ-C) ;
+MAP:M1148B1 @ADVL> TARGET ADVERBIEL OR ("pissut") + GE IF (*1 VFIN BARRIER V)(-1 N OR Prop OR Adv)(NEGATE *-1 VFIN BARRIER KOMMA OR CONJ-C)
+(NEGATE *1 NIQ + POSSESSUM3 OR NIQ + POSSESSUM4 BARRIER (*) - Adv - Pali - Ins)#unnerluutiginninnerit Siumup siulersuisuunerisa MARLUNNGORMAT kingullermik ataatsimiinnerminni partiip allattaaneranik suliunnaarsitsinerannut pissutaapput
+ ;
 
 #pillugu er adverbiel til et verbum til højre, selvom det verbale indhold ikke vises i analysen
 MAP:M1148C1 @i-ADVL>N TARGET CONT + TRANSVERB IF (0 PILLUGU OR ("pissut") LINK 1 INDERIVERENDE_SUBSTANTIV LINK 1 EOS) ;
