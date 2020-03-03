@@ -2668,7 +2668,9 @@ REMOVE:0001A Prop + Sem/FirstName IF (0 Prop + Sg)(-1 N + Sg)(*1 VFIN + 3Sg BARR
 REMOVE:0001B Prop + Sem/FirstName IF (0 Prop + Sg)(-1 N + Sg)(1 N + Sg + CONJ-LU)(*1 VFIN + 3Pl BARRIER KOMMA) ;
 
 SELECT:0001Z Sem/FirstName + Abs IF (1 Prop + Sur) ; #DAGMAR Jensenip piumasaa. PL 20180613  har kun været testet på en roman. Kræver yderligere tests
-REMOVE:0001Y Sem/Hum - Sem/Mask - Sem/Fem IF (0 Sem/Hum + Sem/Mask OR Sem/Hum + Sem/Fem)(NEGATE 0 ("Olseni")) ;
+REMOVE:0001Y Sem/Hum - Sem/Mask - Sem/Fem IF (0 Sem/Hum + Sem/Mask OR Sem/Hum + Sem/Fem)(NEGATE 0 ("Olseni")) 
+(NEGATE 0 ("Lynge") + Sem/Hum - Sem/Mask)#Lynge som fornavn 10 gange sjældenere end efternavn
+;
 
 REMOVE:0001V ("\\p{Lu}.*"r) + Prop + PROP_VS_APPELLATIV IF (-1 BOS)(0 ("([a-z].*)"r))(NEGATE **0CW (VSTR:"$1"r))(NEGATE 0 Abs LINK *1 U OR NNGUR)(NEGATE 0 ("Nuka") OR NNGUAQ or ("Minik")) ; #vælg den med lille begyndelsesbogstav hvis den samme ikke findes med stort begyndelsesbogstav i nærheden.
 
@@ -4320,13 +4322,14 @@ MAP:M0028B @VOK TARGET Prop + Sem/Hum + Abs IF (NEGATE *1 3Sg OR 3SgO BARRIER V)
 MAP:M0028B @VOK TARGET Abs + $$NUMERUS (0 ARAQ OR NNGUAQ) (-1 KOMMA OR CLB)(NEGATE 0 CONJ-C)(NEGATE *1 @PRED OR VFIN BARRIER KOMMA)(NEGATE 1 Abs + $$NUMERUS) ; #Suminngaanneertutinuna, angutivaraq?. # Cave: Naasoq pingasuinnarnik sikkersumigut pilutalik, naasuarannguaq nikanartoq.
 
 
-#MAP:M0028 @<APPOS TARGET Abs + Sg + Der/vn + TUQ IF ( *-1  BARRIER V ); # Per, NN-imeersoq(@<APPOS), oqarpoq #Rettet fra N til Prop for ikke at hitte på "- Nunarsuaq, nunalerutilerisoq akivoq."
-
 #Specialtilfælde før M0031 - (Prop Prop=subjekt) (Prop=possessor possessum) samt (Prop Prop=subjekt) (Prop=objekt)
 MAP:M0029 @PROP> TARGET FIRSTNAME + Abs OR TITEL + Abs IF (1 Prop)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + CONJ-C LINK *1 V + 3Pl BARRIER N + Pl )(2 Prop + Rel LINK 1 POSSESSUM);
 
 MAP:M0030 @PROP> TARGET FIRSTNAME OR TITEL IF (1 Prop - GeoProp)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + CONJ-LU LINK *1 V + 3Pl BARRIER N + Pl )(2 Prop + Sg LINK *1 TRANSVERB + 3SgO BARRIER V)(NEGATE -1 Abs + Sg + FAM)
 (NEGATE 1 Trm LINK NEGATE *-2 Abs OR Rel) #det er usandsynligt, at sætningen starter med et navn i Trm
+(NEGATE 0 TITEL + Rel LINK *1 Prop + Rel + Sg BARRIER (*) - FIRSTNAME LINK *1 TRANSVERB + 3Sg)#Naalakkersuisut SIULITTAASUATA Aleqa Hammondip Naalakkersuisut siulittaasuata tullianut Steen Lyngemut Kim Kielsen siulittaasuugallartussatut innersuuppaa.
+(NEGATE 0 ("Lynge") + Sem/Hum - Sem/Mask)#Lynge som fornavn 10 gange sjældenere end efternavn
+
 ; # Har indføjet - GeoProp for at hindre hit på fx NAVN fulgt af toleddet prop som Høje Tåstrup. Nok en NEGATE 20150512 for at forhindre hit på apposition
 
 #MAP:M0031X @PROP> TARGET Prop + Sem/FirstName IF (1 Prop + Sem/FirstName)(2 humProp) ; #Til tagning af dobbeltnavne
@@ -4399,9 +4402,23 @@ MAP:M0032 @<APPOS TARGET PROP + $$KASUS - CONJ-LU OR PLACE_MORE - PLACE + $$KASU
 (NEGATE -1 Num)  
 (NEGATE 0 Sem/Hum LINK -1 MASK)
 (NEGATE 0 MIU)
-(NEGATE 0 Abs LINK *1 V - VFIN + INTRANSVERB BARRIER (*) - PUNCT) ;
+(NEGATE 0 Abs LINK *1 V - VFIN + INTRANSVERB BARRIER (*) - PUNCT)
+(NEGATE 0 Rel + &&POSS34_POSS& LINK 1 &&POSS34_POSS&)#Naalakkersuisut siulittaasuata Aleqa Hammondip NAALAKKERSUISUT siulittaasuata tullianut Steen Lyngemut Kim Kielsen siulittaasuugallartussatut innersuuppaa.
+
+ ;
 
 MAP:M0032A @<APPOS TARGET PROP + Abs + Sg - CONJ-LU IF (-1 Prop + Sem/FirstName)(-2 N + Abs + Sg )(NEGATE -2 @PROP>)(NEGATE -2 TITEL) ; # N per langgård
+
+#Problemer med at fange en Prop, der er APPOS, inde i et possessorsyntagme
+MAP:M0032B @<APPOS TARGET PROP + Rel + Sg - LU IF (-1 Rel + Sg )(1 POSSESSUM3) #Canadamiut aatsitassarsioqatigiiffiata QUADRA MININGIP siulersuisuisa qanittukkut aalajangissavaat,
+(NEGATE 0 Sem/Geo LINK -1 Sem/Geo)#Må ikke hitte MWE som Sikuiuitsoq Kujalleq
+(NEGATE 0 Sem/Fem LINK -1 Sem/Mask OR ("angut"))
+(NEGATE 1 3SgPoss + Ins LINK 1 3SgPoss - Ins)#Atuakkiortup ULLORISSAP sorsuttariaqarneranik oqaluttuarisaa misigissutsinik eqqarsaatersuutinillu itisilerinermigut kalaallit atuakkiaannit allanit immikkooruteqarpoq.
+(NEGATE 0 Sem/Geo LINK -1 Sem/Hum)#Fatuma Alip MANIITSUP kommunia kaammattorpaa Namminersornerullutik Oqartussanut ikiortissarsioqqullugu.
+;
+MAP:M0032B @<APPOS TARGET PROP + Rel + Sg IF (-1 KOMMA LINK -1 Rel + Sg)(1 POSSESSUM3) ;#Canadamiut aatsitassarsioqatigiiffiata, QUADRA MININGIP siulersuisuisa qanittukkut aalajangissavaat,
+
+
 MAP:M0033C1 @<APPOS TARGET PROP + Abs + Sg - CONJ-LU - iOBLIQUE IF (-1 N + Abs + Sg LINK NOT 0 V)(NEGATE -1C @PROP>)(NEGATE 1 Prop - Sem/Fem)(NEGATE -1 TITEL) ; # N Per (Men ikke N Per Lennert)
 #første NEGATE for at forhindre hit på fx (Royal Arctic Line)@SUBJ> VERBUM og -LU for ikke at hitte på Danmark Islandilu og andet NEGATE for at blokere PISORTAQ Per Langgård oqarpoq
 MAP:M0033C2 @<APPOS TARGET PROP + Abs - CONJ-LU - iOBLIQUE IF (-1 N + Abs LINK NOT 0 V)(NEGATE -1C @PROP>)(NEGATE 1 Prop - Sem/Fem)(NEGATE -1 TITEL) ; # N Per (Men ikke N Per Lennert)
@@ -4411,7 +4428,10 @@ MAP:M0033C3 @<APPOS TARGET PROP + $$OBLIQUE - CONJ-LU - OBLIQUE IF (-*1 N + $$OB
 MAP:M0033D @<APPOS TARGET PROP + Abs + Sg - CONJ-LU IF (*-1 Conj BARRIER (*) - @PROP> - TITEL - PUNCT LINK *-1 PROP + Abs + Sg - CONJ-LU BARRIER (*) - @PROP> - TITEL - PUNCT LINK *-1 N + Abs + Pl BARRIER (*) - PUNCT) ;
 MAP:M0033E @<APPOS TARGET PLACE_MORE + Abs + Sg - CONJ-LU IF (*-1 Conj BARRIER (*) - @PROP> - TITEL - PUNCT LINK *-1 PROP + Abs + Sg - CONJ-LU OR PLACE_MORE + Abs + Sg - CONJ-LU BARRIER (*) - @PROP> - TITEL - PUNCT LINK *-1 N + Abs + Pl BARRIER (*) - PUNCT) ;
 
-MAP:M0033F @<APPOS TARGET PROP + $$KASUS IF (*-1 TITEL + POSSESSUM + $$KASUS - @PROP> - @>N BARRIER (*) - KOMMA - PROP) ;
+MAP:M0033F @<APPOS TARGET PROP + $$KASUS IF (*-1 TITEL + POSSESSUM + $$KASUS - @PROP> - @>N BARRIER (*) - KOMMA - PROP) 
+(NEGATE 0 Rel + &&POSS34_POSS& LINK 1 &&POSS34_POSS&)#Naalakkersuisut siulittaasuata Aleqa Hammondip NAALAKKERSUISUT siulittaasuata tullianut Steen Lyngemut Kim Kielsen siulittaasuugallartussatut innersuuppaa.
+
+;
 
 #MAP:M0033A @N< TARGET (/__TUQ\ Der\/vn\ N__/l) + $$KASUS + $$NUMERUS IF (-1 N + $$KASUS + $$NUMERUS) ; #Erstattet med substitute i AFTERSECTIONS
 
@@ -5425,6 +5445,8 @@ MAP:M0525a (@OBJ>) TARGET Prop + Abs + Sg IF (*1 TRANSVERB + 3SgO BARRIER INTRAN
 SUBSTITUTE:M0525a @PROP> (@OBJ>) TARGET Prop + Abs + Sg + Sem/Hum IF (*1 TRANSVERB + 3SgO BARRIER INTRANSVERB + 3Sg OR 4Sg)(1 Prop + OBLIQUE) #Kopi af ovenstående regel.
 (NEGATE 1 KOMMA LINK 1 TRANSVERB)(NEGATE -1 (/__\"ateq\"\ QAR__/l) OR (/__\"ateq\"\ LIK__/l))(NEGATE *1 ("tassa"))(NEGATE -1 KOMMA OR PUNCT LINK 2 KOMMA) #Proprier tagges ikke som N. #Aqqaluartaavagooq ateqarpoq ANGERLARTOQ, kisiannigooq naalisarlugu taasarpaat Angerla. 
 (NEGATE *1 VFIN + INTRANSVERB BARRIER DIRTALESTART LINK 0 3Sg OR 3Pl LINK NEGATE *-2 @SUBJ> LINK -1 _TARGET_) #Hvis det er et proprium og der ikke er andre subjekter, er det nok subjekt.
+(NEGATE 0 FIRSTNAME LINK 1 Sem/Hum - FIRSTNAME + OBLIQUE)#Naalakkersuisut siulittaasuata Aleqa Hammondip Naalakkersuisut siulittaasuata tullianut STEEN Lyngemut Kim Kielsen siulittaasuugallartussatut innersuuppaa.
+
 ;
 MAP:M0525B @OBJ> TARGET PRON + Abs + Sg + CONJ-C IF (*1 TRANSVERB + 3SgO BARRIER V OR KOMMA) ; #Tassa ulluni makkunani Anettep pania Jane tikeraartoraat, TAANNALU Anettep killilersunngisaannarpaa, uffa ukioqatigigaa. 
 
@@ -7316,7 +7338,9 @@ SELECT COMPOUND_N + Prop + Sem/FirstName IF (1 COMPOUND_N) ; #Nominer, der bruge
 REMOVE:2220 Sem/FirstName + FIRSTNAME IF (1 FIRSTNAME) ; # Ikke Trond Perip ikinngutaa ...
 REMOVE:Semhum Sem/Hum IF (*-1C Sem/Geo BARRIER V) ;
 REMOVE:SemFam Prop IF (0 FAM + N LINK 1 Sem/Hum) ;
-SELECT FIRSTNAME IF (1 Prop + Sg)(NEGATE 0 Sem/Mask LINK 1 Sem/Fem) ; #vælger stort bogstav qua forkortelse frem for lille bogstav
+SELECT FIRSTNAME IF (1 Prop + Sg)(NEGATE 0 Sem/Mask LINK 1 Sem/Fem) 
+(NEGATE 0 ("Lynge") + Sem/Hum - Sem/Mask)#Lynge som fornavn 10 gange sjældenere end efternavn
+; #vælger stort bogstav qua forkortelse frem for lille bogstav
 SELECT Abs + Prop IF (-2 Prop + Abs)(-1 ("\,"))(NEGATE 0 Rel LINK 1 POSSESSUM3); #'Enoksen, SIUMUT' 'Kleist, INUIT Ataqatigiit'
 SELECT Abs + Prop IF (-3 Prop + Abs)(-2 ("\,"))(-1 Abs)(NEGATE 0 Rel LINK 1 POSSESSUM3); #'Enoksen, SIUMUT' 'Kleist, Inuit ATAQATIGIIT'
 #REMOVE N IF (0 Prop + Sem/Geo) ; #sletter TIMAA til fordel for Tim+AA i Timaa assoruuppalulerpoq. PL 20190430
