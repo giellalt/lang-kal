@@ -1508,7 +1508,7 @@ LIST TIMEVERB1 = ("agger") ("assi" GIIAAR) ("ili" NIQ) ("ingerla") ("ip" TUQ U) 
 
 SET TIMEVERB = TIMEVERB1 | TIMEVERB2 ;
 
-SET TEMPUSVERB = UGEDAGE | ("ilaanneeriar") | ("qaanger") | ("qaqutigut" U) | ("qiteqqup") | ("taamaali") | ("ukiar") | ("ukioq" U) | ("unnup") ;
+SET TEMPUSVERB = UGEDAGE | ("ilaanneeriar") | (/"imaali"\ Gram/IV\ LLAR\ Der/vv\ Gram/IV\ V\ Par/l) | ("qaanger") | ("qaqutigut" U) | ("qiteqqup") | ("taamaali") | ("ukiar") | ("ukioq" U) | ("unnup") ;
 LIST TIMEAFFIX = (/__RIIR\ Der\/vv\ \(Gram\/..\ \)*V__/l) (/__LIR\ Der\/vv\ \(Gram\/..\ \)*V__/l) ;
 LIST DISTANCEVERB = "ungasip" "qanip" ;
 LIST VERB_medGE = "ipianngu" "miki" ; #Set til stammer, der kan tage GE+Der/vv
@@ -4240,6 +4240,7 @@ MAP:M0018AX (@NIQ_SUBJ>) TARGET Abs - Gram/Pers IF (*1 (/Gram\/IV\ NIQ\ Der\/vn\
 (NEGATE -1 Abs)
 (NEGATE 0 TITEL LINK 1 N OR Prop)
 (NEGATE 0 Pl LINK *1 VFIN + 3Pl)#MEEQQAT taakkua sisamat qitinnermik festivalimi soqutiginnilluinnarlutik peqataapput
+(NEGATE 0 FIRSTNAME LINK 1 Sem/Hum)#Ilinniakkaminik naammassisup qatanngutaata AVIAAJA Rosingip ilinniarnermik uppernarsaat nersornaallu tallimanngormat tunniunneqartoq tiguai
 ;
 
 SUBSTITUTE:S0018E @NIQ_SUBJ> @N< TARGET $$KASUS IF (*-1 @NIQ_SUBJ> + $$KASUS - CONJ-C BARRIER CONJ-C OR @PRED)(*1 (/Gram\/IV\ NIQ\ Der\/vn\ N__/l) + NIRMIT) ;
@@ -9003,8 +9004,13 @@ SELECT:9937B Gram/Pers + Pron + Rel + $$PERSON IF (*1 TRANSVERB + $$PERSON)(NEGA
 #Sen disambiguering af verbalnomen og Par i sætningsinitiale bisætninger
 SELECT:9938 @PRED2 + 3Sg IF (*-1 @SUBJ> + Sg )(*1 V)
 (NEGATE 0 QAR + (TUQ N) OR U + (TUQ N) LINK -1 N + Sg)
-(NEGATE 0 @N< + $$KASUS + $$NUMERUS LINK *-1 $$KASUS + $$NUMERUS BARRIER (*) - CONT - KOMMA)#Naasorlu, peqqissaangaarluni PIAREERSARSIMASOQ, aatsaajutigaluni oqarpoq:
+(NEGATE 0 @N< + $$KASUS + $$NUMERUS LINK *-1 $$KASUS + $$NUMERUS BARRIER (*) - CONT - KOMMA - Pali)#Naasorlu, peqqissaangaarluni PIAREERSARSIMASOQ, aatsaajutigaluni oqarpoq:
  ;
+
+#Pendant til ovenstående
+REMOVE:9938A @PRED2 + Par IF (0 @N< + $$KASUS + $$NUMERUS LINK *-1 $$KASUS + $$NUMERUS BARRIER (*) - CONT - KOMMA - Pali) #Ilinniakkaminik naammassisup qatanngutaata Aviaaja Rosingip ilinniarnermik uppernarsaat nersornaallu tallimanngormat TUNNIUNNEQARTOQ tiguai
+(NEGATE 0 TIME)#Ataatsimiititaliami IA-mit ilaasortaatitaq IMAALILLARTOQ aatsaat aamma akuliuppoq ..
+;
 
 #Sen disambiguering af CL-CIT fra verbalnomen. Logikken baseres på, at ambiguiteten efter inquit sandsynligvis er CL-CIT
 SELECT:9939 @CL-<CIT IF (0 @<SUBJ)(*1 EOS LINK -1 _TARGET_ LINK -1 ORATIOOBLVERB OR OQARPOQ) ;
