@@ -1327,7 +1327,7 @@ SET CONT_V& = 1SgCONT1Sg | 2SgCONT2Sg | 4SgCONT3Sg | 4SgCONT4Sg | 1PlCONT1Pl | 2
 
 # Partikler
 # ---------
-LIST KONJUNKTION = ("aamma" Conj) "kisianni" "imaluunniit" ("immaqa" CONJ-LUUNNIIT ) ("<kiisalu>") ;#"taava" ; Taava er normalt adverbiel.
+LIST KONJUNKTION = ("aamma" Conj) "kisianni" "imaluunniit" ("immaqa" CONJ-LUUNNIIT ) ("kiisa") ("<kiisalu>") ;#"taava" ; Taava er normalt adverbiel.
 SET CONJ-C = LU | LUUNNIIT | LI | KONJUNKTION | CONJ-LUUNNIIT | Gram/Conj-encl | CONJ-LU ; #Sideordnende konjunktioner, alenestående og efterhængte partikler
 SET CONJ-S = Conj - CONJ-C ; #Underordnende konjunktioner
 SET ASSERSUUTIGALUGU = ("assersor") + UTE + GE + CONT ;
@@ -2133,11 +2133,11 @@ SUBSTITUTE:conj23lux (LU)(CONJ-LU) TARGET LU + Par (*-1 BOS BARRIER V - Par LINK
 SUBSTITUTE:conj24lux (LU)(CONJ-LU) TARGET LU (*-1C VFIN)(*1 CONT OR VFIN BARRIER V) ; #Taava savaatiga kaasarfimminiit amuaa erlinnartuutitullu nakkullugu tiguartilluinnarluni. - unsafe?
 
 SUBSTITUTE:adv30lux (LU)(ADV-LU) TARGET LU (-1 CONT)(NEGATE 0 $$OBLIQUE) ; #unsafe rule
-SUBSTITUTE:adv31lux (LU)(ADV-LU) TARGET LU (-1 BOS)(NEGATE 0 V - Con - Cau) ; #unsafe rule
+SUBSTITUTE:adv31lux (LU)(ADV-LU) TARGET LU - ("kiisa") (-1 BOS)(NEGATE 0 V - Con - Cau) ; #unsafe rule. kiisalu altid konjunktion
 SUBSTITUTE:adv32lux (LU)(ADV-LU) TARGET LU (0 ("alla") OR (/su\"\ U\ /l)) ; #unsafe rule
 SUBSTITUTE:adv33lux (LU)(ADV-LU) TARGET LU + $$KASUS - Rel (NEGATE *-1 $$KASUS OR iOBLIQUE) ; #unsafe rule #Aalariassanani nikorfavoq, nujaaLU suialaami erfalanngillat, ungasissumummi isigisut utimut isigisarmata.
-SUBSTITUTE:adv34lux (LU)(ADV-LU) TARGET LU + Adv - ("allaat") - ("taamaallaat") - ("imaallaat") OR LU + Pali
-(NEGATE *1 Abs BARRIER (*) - OBLIQUE LINK *-1 _TARGET_ + ("kiisa") LINK *-1 Abs LINK *-1 KOMMA BARRIER (*) - OBLIQUE)#Kangerlussuarmi sermersuarmukarneq, tammajuitsorsiorluni piniariarneq, sukisaarsaatigalugu aalisarneq, aneersuarneq KIISALU nalinginnaasumik qaqqakkut pisuttuarneq takornarissanik ussagartitsisarput.
+SUBSTITUTE:adv34lux (LU)(ADV-LU) TARGET LU + Adv - ("allaat") - ("taamaallaat") - ("imaallaat") - ("kiisa") OR LU + Pali #kiisalu altid konjunktion
+#(NEGATE *1 Abs BARRIER (*) - OBLIQUE LINK *-1 _TARGET_ + ("kiisa") LINK *-1 Abs LINK *-1 KOMMA BARRIER (*) - OBLIQUE)#Kangerlussuarmi sermersuarmukarneq, tammajuitsorsiorluni piniariarneq, sukisaarsaatigalugu aalisarneq, aneersuarneq KIISALU nalinginnaasumik qaqqakkut pisuttuarneq takornarissanik ussagartitsisarput.
 ;
 SUBSTITUTE:adv35lux (LU)(ADV-LU) TARGET Gram/Comp + LU ;
 SUBSTITUTE:adv36lux (LU)(ADV-LU) TARGET LU + CONT (NEGATE -1 CLB OR CONT OR BOS)(NEGATE *-1 VFIN BARRIER CONJ-C OR KOMMA)(NEGATE 1 VFIN) #unsafe rule. Ikke ILUARISARLUGULU sorraallisaatigilaartarpaa
@@ -2674,6 +2674,7 @@ REMOVE:0001B Prop + Sem/FirstName IF (0 Prop + Sg)(-1 N + Sg)(1 N + Sg + CONJ-LU
 SELECT:0001Z Sem/FirstName + Abs IF (1 Prop + Sur) ; #DAGMAR Jensenip piumasaa. PL 20180613  har kun været testet på en roman. Kræver yderligere tests
 REMOVE:0001Y Sem/Hum - Sem/Mask - Sem/Fem IF (0 Sem/Hum + Sem/Mask OR Sem/Hum + Sem/Fem)(NEGATE 0 ("Olseni")) 
 (NEGATE 0 ("Lynge") + Sem/Hum - Sem/Mask)#Lynge som fornavn 10 gange sjældenere end efternavn
+(NEGATE -1 FIRSTNAME)#
 ;
 
 REMOVE:0001V ("\\p{Lu}.*"r) + Prop + PROP_VS_APPELLATIV IF (-1 BOS)(0 ("([a-z].*)"r))(NEGATE **0CW (VSTR:"$1"r))(NEGATE 0 Abs LINK *1 U OR NNGUR)(NEGATE 0 ("Nuka") OR NNGUAQ or ("Minik")) ; #vælg den med lille begyndelsesbogstav hvis den samme ikke findes med stort begyndelsesbogstav i nærheden.
@@ -2926,6 +2927,14 @@ MAP:MMWE01 @N< TARGET ("ilaasortaat") + $$KASUS IF (-1 ("umiarsuaq") + $$KASUS O
 
 SELECT:inuiak ("inuiak") + Aeq (NEGATE 0 $$NUMERUS + $$KASUS LINK -1 $$NUMERUS + $$KASUS) ;
 
+################
+# Opremsninger #
+################
+
+#Type A, B, C .. CONJ D INTRANSVERB
+#MAP:M_opremsning01 @SUBJ> TARGET Abs IF (*1 KOMMA OR CONJ-C BARRIER (*) - Abs - OBLIQUE - CONT - Adv - KOMMA LINK *1 INTRANSVERB + 3Pl BARRIER (*) - Abs - OBLIQUE - CONT - Adv - KOMMA); #Kangerlussuarmi *sermersuarmukarneq, tammajuitsorsiorluni *piniariarneq, sukisaarsaatigalugu *aalisarneq, *aneersuarneq kiisalu nalinginnaasumik qaqqakkut *pisuttuarneq takornarissanik ussagartitsisarput.
+
+
 ###########################################################################################
 # Sætninger med implicit subjekt i Pl, som syntaktisk er ægte ambiguiteter                #
 # Test med <prototype> og <fs:frame> sets 20190503. Skal udvides, gerne med SELECT-regler #
@@ -3088,6 +3097,7 @@ REMOVE:0072D Imp IF (0 Rel)(*-1 VFIN) ; #sorlaasalu er ikke Imp
 #REMOVE:0072E Abs + Pl IF (
 
 REMOVE:0072X (/"nalaatsor"\ Gram/IV\ NIQ\ Der/vn\ INNAQ\ Der/nn\ N/l) + POSSESSUM IF (0 $$KASUS LINK *-1 $$KASUS BARRIER (*) - OBLIQUE - Adv);#Ad hoc regel for nalaatsornerinnaq, hvor der ikke findes nogen simpel måde at slette den umulige læsning som possessum. Den er vistnok altid @N<, i hvert fald hvis uden TAQnn: Oqatsiartarnerilli NALAATSORNERINNAAT pissutigalugit kigaatsumik ilikkariartuaalerpara.
+
 REMOVE:0072 Rel + Pl IF (NEGATE *1 3PlPoss OR i3PlPoss BARRIER KOMMA)(NEGATE *0 TRANSVERB + 3Pl BARRIER KOMMA)(NEGATE 0 CONJ-LU LINK -1 3Pl)(NEGATE 0 Num LINK -1 Pl + Rel)(NEGATE 0 Der/vn + Pl LINK -1 CONT LINK -1 Rel + Pl)(NEGATE 1 ("nuna") + POSSESSUM3 OR ("nuna") + iPOSSESSUM3)  #Må ikke slette adled til Rel til venstre
 (NEGATE 0 Rel LINK *1 ("soorlu") LINK *1 Rel BARRIER V)  #Nalunngereerpara ullorissat annerit atserneqarsimasut, soorlu nunarsuup ...
 (NEGATE 0 CONJ-LU LINK *1 TRANSVERB + 3Sg BARRIER Abs + Sg) #sideordnet subjekt kan have sg-verbum
@@ -3096,6 +3106,8 @@ REMOVE:0072 Rel + Pl IF (NEGATE *1 3PlPoss OR i3PlPoss BARRIER KOMMA)(NEGATE *0 
 (NEGATE 0 INSTITUTION LINK 1 3SgPoss) #Naalakkersuisut siulittaasua
 (NEGATE -1 ("nal.") LINK 1 _TARGET_ LINK 1 ("miss.") OR ("missaa"))#Nal. 2 miss. aggissaanga.
 (NEGATE *1 KOMMA LINK *1 KOMMA BARRIER (*) - OBLIQUE LINK 1 3PlPoss - ("Kalaallit Nunaat"))#Specialitet ved indskud (avissprog) Taakkualu ilaatigut tarnip pissusaanik ilisimasallit aamma inunnik isumaginninnermi siunnersortit, PINGAARNERTUT TASIILAMI, ikiuigasuartinneqarnerannut atorneqarput.
+(NEGATE *1 Abs + Sg BARRIER V LINK *1 3Pl + 3SgO BARRIER V)#KALAALLIT ATUAKKIORTUT atuakkiortup inuusuttup Sørine Steenholdtip atuakkiaa siulleq, Zombiet Nunaat, Nordisk Rådip atuakkanut nersornaataanut 2016-mut innersuuppaat.
+(NEGATE 1 KOMMA LINK *1 3PlPoss)# BARRIER (*) - Prop - (/"IR"\ Gram/IV\ TUQ/l))#1800-kkunni OQALUTTUARTARSIMASUT , Aalut Kangermiup Jens Kreutzmannillu Kangaamiuneersup oqaluttuaasa sumi pisarsimaneri
 ;
 
 REMOVE:0072E Abs + TIME IF (1 POSSESSUM3 - ADJEKTIVISK - Orth/Arch) ; #ikke NAAMMASSISUT nutaat (hvor nutak ikke må tage nutaaq's plads)
@@ -3325,6 +3337,8 @@ SELECT:0065_3SgPoss_possessor 3SgPoss - Num IF
         (NEGATE *1> POSSESSUM1 CBARRIER V - CONT OR POSSESSUM - POSSESSUM1) 
         (NEGATE *1> V + 1Sg BARRIER V) 
 			(NEGATE -1 Rel + LU LINK -1 Rel)#Marsip Venusillu SANIATIGUT
+(NEGATE -1 Rel + Sg LINK *-1 CONJ-C LINK *-1 Rel + Sg)#1800-kkunni oqaluttuartarsimasut , Aalut Kangermiup Jens Kreutzmannillu Kangaamiuneersup OQALUTTUAASA sumi pisarsimaneri
+
 ;
 
 SELECT:0066_3SgPoss_possessor 3SgPoss IF (-*1C Rel + Sg + 4SgPoss BARRIER (*) - CONT - Adv - Pali - OBLIQUE)(NOT 0 Adv); #Minikursusimit "anigornissat" qaqugu pissanersoq Odensemut apuunnissarpit *ilaatigut aalajangissavaa.
@@ -4308,6 +4322,7 @@ MAP:M00222B @POSS> TARGET Rel + &&POSS34_POSS& IF (*1 SPATIAL + POSSESSUM + &&PO
 
 MAP:M00222C @POSS> TARGET Rel + Prop IF (*1 POSSESSUM3UdenMWE + Prop BARRIER VFIN OR @PRED)
 (NEGATE 1 Prop LINK *1 TRANSVERB BARRIER VFIN) #LØKKEP Kalaallit Nunaat qutsavigaa.
+(NEGATE *1 Abs + Sg BARRIER V OR 3PlPoss LINK *1 3Pl + 3SgO BARRIER V)#KALAALLIT ATUAKKIORTUT atuakkiortup inuusuttup Sørine Steenholdtip atuakkiaa siulleq, Zombiet Nunaat, Nordisk Rådip atuakkanut nersornaataanut 2016-mut innersuuppaat.
  ; #Kalaallit Røde Korsiannit
 
 #Vokativer
@@ -4352,7 +4367,8 @@ MAP:M0030 @PROP> TARGET FIRSTNAME OR TITEL IF (1 Prop - GeoProp)(NEGATE 1 (§Pro
 MAP:M0031A @PROP> TARGET Prop + Abs + $$NUMERUS - Sem/Geo IF (1 Prop + Sem/Hum + $$NUMERUS)#tilføjet Sem/Hum for ikke at tagge hvis følgende Prop er en institution el. lign.
 (NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + CONJ-LU LINK *1 V + 3Pl )(NEGATE 1 Prop LINK 1 Prop)(NEGATE 0 FIRSTNAME LINK 1 FIRSTNAME)(NEGATE 1 ("Kalaallit") OR COUNTRY)(NEGATE 0 Abs + Sg LINK NOT 1 PROP LINK *1 TRANSVERB + 3SgO BARRIER V) #Mange fejlhit på Kalaallit Illuutaat og Kalaallit Nunaat
 (NEGATE 1 Sem/Geo + Lok) #Jakob Sivertsen Kangerlussuarmi politiinit arfininngormat tigusaavoq.
-(NEGATE 1 CONJ-C)(NEGATE 1 SEMIOTIC)
+#(NEGATE 1 CONJ-C)
+(NEGATE 1 SEMIOTIC)
 (NEGATE 1 POSSESSUM)
 (NEGATE 0 Fornavn LINK 1 INSTITUTION) 
 (NEGATE 0 Sem/Hum LINK 1 INSTITUTION) #Nuummiu, Per ROSING Nutserinermut Oqaluttaanermullu Immikkoortortamiit allagartartaarnermi saniatigut KNI-miit bachelorinngortuni angusarissaarnerpaatut nersornaaserneqarpoq.
@@ -5083,7 +5099,7 @@ MAP:M0699E @ADVL> TARGET OBLIQUE + $$KASUS OR Adv IF (-*1 KOMMA OR CONJ-C - Adv 
 
 #Parataktiske subjekter og adled til N er somme tider meget vanskelige at adskille, hvorfor nogle særligt irriterende listes før @N< reglerne 
 MAP:M0329_subjekt01 @SUBJ> Abs IF (*1 V + 3Pl OR V + 4Pl BARRIER VERB-NOTCONT)(*-1 LU BARRIER (*) - OBLIQUE LINK *-1 Abs BARRIER (*) - Adv)#Amigaatigineqartut suliluunniit amerlanerugaluarput, tassa peqqissaanermi isumaginninnermilu ikiortit kiisalu meeqqerinermi IKIORTIT aamma immikkut akuerineqarlutik perorsaasutut sulisarmata.
-#(NEGATE *1 3PlO BARRIER V)#
+(NEGATE *1 3PlO BARRIER V)#Ikinngutini niviaaluit ilagitillugit angutit taamatut oqaluttut Emiliellu AKISSUTIGISARTAGAI illakuluutigisartorujussuuaat.
 ;
 
 
@@ -5444,7 +5460,9 @@ MAP:M0523E @SUBJ> TARGET Abs + &&IV_SUBJ& - TIME - Num - iNum - Gram/Ord - Sem/U
 (NEGATE 0 ("tunge") LINK *-1 TIMENOUN BARRIER (*) - Adv - OBLIQUE) #Anorersuarneranit Savalimmiuni ullaap TUNGAA sarfaaruppoq.
 ;
 MAP:M0523A @SUBJ> TARGET Abs IF (*-1 Rel + CONJ-LU CBARRIER (*) - Rel LINK -1 Abs)(*1 PLURSUBJVERB OR TRANSVERB + CONT BARRIER V OR KOMMA)(NEGATE 1 Akk) ; #Paratakse ved subjekter i Abs som er possessum. 20180917 Meget bred. Skal checkes
-MAP:M0523B @SUBJ> TARGET Abs IF (*1 Rel + CONJ-LU BARRIER (*) - Rel)(*1 PLURSUBJVERB OR TRANSVERB + CONT BARRIER V OR KOMMA) ; #Paratakse ved subjekter i Abs som er possessum. 20180917 Meget bred. Skal checkes
+
+MAP:M0523B @SUBJ> TARGET Abs IF (*1 Rel + CONJ-LU LINK NOT 1 POSSESSUM3 BARRIER (*) - Rel)(*1 PLURSUBJVERB OR TRANSVERB + CONT BARRIER V OR KOMMA) ; #Paratakse ved subjekter i Abs som er possessum. 20180917 Meget bred. Skal checkes
+
 MAP:M0741 @SUBJ> TARGET N + Abs + &&IV_SUBJ& IF (*1 INTRANSVERB + &&IV_SUBJ& BARRIER V OR KOMMA LINK 0 Cau OR Con)(NEGATE *-1 Abs BARRIER V OR CONJ-C);
 
 MAP:M0742 @SUBJ> TARGET N + Abs + $$NUMERUS + &&IV_SUBJ& IF (*1 INTRANSVERB + &&IV_SUBJ& + VFIN BARRIER V)(NEGATE *-0C Abs + $$NUMERUS - @OBJ> BARRIER V - CONT OR CONJ-C)
@@ -7433,6 +7451,7 @@ SELECT:1640 ("allaat") + Part ; #Skal håndteres før 1641
 
 SELECT:1641 3SgPoss IF (0 3PlPoss)(-1 Rel + Sg)(NEGATE -1 Rel + Sg LINK *1 TRANSVERB + 3Sg BARRIER V)(NEGATE 0 3PlPoss LINK -1 Rel + Pl)  #To NEGATE tilføjet 20140824, fordi OBJ blev *POSS og fordi korrekt pluralis POSS undertiden slettet
 (NEGATE -1 Rel + LU LINK -1 Rel)#Marsip Venusillu SANIATIGUT
+(NEGATE -1 Rel + Sg LINK *-1 CONJ-C LINK *-1 Rel + Sg)#1800-kkunni oqaluttuartarsimasut , Aalut Kangermiup Jens Kreutzmannillu Kangaamiuneersup OQALUTTUAASA sumi pisarsimaneri
 ;
 SELECT 3PlPoss - Orth/Arch - Orth/Alt IF (-1C Rel + Pl)(NEGATE 0 Abs + Sg LINK *1 3SgO BARRIER V) (NEGATE 0 OLang/DAN + POSSESSUM LINK 0 (*) - POSSESSUM) ; #NEGATE da fejlagtigt hit på Politiit BIILI (="bi" OLang/DAN N Abs Pl 3PlPoss Err/Sub LI) misissuiffigaat
 #Disambiguerer  "inngili" N Rel Sg 3PlPoss fra "inngili" N Rel Sg 3SgPoss i "Naalakkap inngiliata"
@@ -8358,7 +8377,7 @@ REMOVE:8532E Gram/IV IF (0 (/"naammassi"\ Gram/TV\ Gram/Pass\ NIQ\ Der/vn\ SSAQ/
 REMOVE:8532F (/"inuaq"\ TAQ\ Der/nn/l) IF (0 ("inuartaq")) ; #tilhørende=finger usandsynlig
 REMOVE:8532G ("inuk") + IAR IF (0 ("inuiaqat")) ;
 REMOVE:8532H ("naqqoq") IF (0 ("nateq") LINK 1 ("ilu") + 3SgPoss) ;#naqqoq = pilespids
-
+REMOVE:8532I ("Jense") IF (0 ("Jensen") LINK -1 FIRSTNAME);
 #De særlige former af TUQ + Aeq på transitiver fulgt af "ippaa" slettes hvis ikke fulgt af "ippaa"
 REMOVE:8599 TUQ + Aeq - Der/vn IF (0 TUQ + Aeq + Der/vn)(NEGATE 1 ("ip")); 
 
@@ -9162,6 +9181,7 @@ REMOVE:9943 @CL-<CIT IF (0 @POSS> + Pl LINK *1 3PlPoss BARRIER (*) - Adv );#Nalu
 #Sen regel til at disambiguere 3SgPoss+Rel+Pl fra 3PlPoss+Rel+Pl fra "arnaq" N Lok Sg Aeq
 REMOVE:9939B 3PlPoss IF (0*W 3Sg)(0 3SgPoss)(NEGATE *-1 3Pl)(NEGATE -1 Pl) #Possessor 3Sg hvis 3Sg i omgivende sætninger og ingen 3Pl lige til venstre
 (NEGATE -1 Rel + LU LINK -1 Rel)#Marsip Venusillu SANIATIGUT
+(NEGATE -1 Rel + Sg LINK *-1 CONJ-C LINK *-1 Rel + Sg)#1800-kkunni oqaluttuartarsimasut , Aalut Kangermiup Jens Kreutzmannillu Kangaamiuneersup OQALUTTUAASA sumi pisarsimaneri
 ;
 REMOVE:9939C 3SgPoss IF (0 3PlPoss LINK -1 Rel + Pl) ;
 REMOVE:9939C 3PlPoss IF (-1*W 3Sg OR 3SgO)(0 3SgPoss)(NEGATE *-1 3Pl) #Possessor 3Pl hvis 3Pl i omgivende sætninger
