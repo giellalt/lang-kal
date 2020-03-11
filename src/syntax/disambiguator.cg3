@@ -1324,6 +1324,12 @@ SET 4PlCONT3Pl = INTRANSVERB + (Cont 4Pl) OR VERB-NOTCONT + 3Pl ;
 SET 4PlCONT4Pl = INTRANSVERB + (Cont 4Pl) OR CON_CAU + 4Pl ;
 SET CONT_V& = 1SgCONT1Sg | 2SgCONT2Sg | 4SgCONT3Sg | 4SgCONT4Sg | 1PlCONT1Pl | 2PlCONT2Pl | 4PlCONT3Pl | 4PlCONT4Pl ;
 
+#Unification set til CONT og objekter
+LIST ContObjSg = (Sg Abs) 3SgO ;
+LIST ContObjPl = (Pl Abs) 3PlO ;
+SET ContObj& = ContObjSg OR ContObjPl ;
+
+
 
 # Partikler
 # ---------
@@ -2932,8 +2938,13 @@ SELECT:inuiak ("inuiak") + Aeq (NEGATE 0 $$NUMERUS + $$KASUS LINK -1 $$NUMERUS +
 ################
 
 #Type A, B, C .. CONJ D INTRANSVERB
-#MAP:M_opremsning01 @SUBJ> TARGET Abs IF (*1 KOMMA OR CONJ-C BARRIER (*) - Abs - OBLIQUE - CONT - Adv - KOMMA LINK *1 INTRANSVERB + 3Pl BARRIER (*) - Abs - OBLIQUE - CONT - Adv - KOMMA); #Kangerlussuarmi *sermersuarmukarneq, tammajuitsorsiorluni *piniariarneq, sukisaarsaatigalugu *aalisarneq, *aneersuarneq kiisalu nalinginnaasumik qaqqakkut *pisuttuarneq takornarissanik ussagartitsisarput.
-
+MAP:M_opremsning01 @SUBJ> TARGET Abs IF (*1 KOMMA OR CONJ-C BARRIER (*) - Abs - OBLIQUE - CONT - Adv - KOMMA LINK *1 INTRANSVERB + 3Pl BARRIER (*) - Abs - OBLIQUE - CONT - Adv - KOMMA) #Kangerlussuarmi SERMERSUARMUKARNEQ, tammajuitsorsiorluni PINIARNEQ, sukisaarsaatigalugu AALISARNEQ, ANEERSUARNEQ kiisalu nalinginnaasumik qaqqakkut PISUTTUARNEQ takornarissanik ussagartitsisarput.
+(NEGATE 0 &&ContObj& LINK 1 CONT + &&ContObj&)#REUTERS naapertorlugu NATO-mi atorfillit nuimasut Barack Obamalu qullersaqarfianeersut Anders Fog Rasmussenimik tapersersuipput .
+(NEGATE 0 FIRSTNAME LINK 1 Sem/Hum)#Reuters naapertorlugu NATO-mi atorfillit nuimasut BARACK Obamalu qullersaqarfianeersut Anders Fog Rasmussenimik tapersersuipput .
+(NEGATE *-1 Abs + &&IV_SUBJ& LINK *1 _TARGET_ + Par + &&IV_SUBJ& LINK *1 ORATIOOBLVERB)#Kalaallit meerartaat 1.000-it missaanniittut inooqatigiinnikkut ilungersunartunik AJORNARTORSIUTEQARTUT , immikkut ilisimasallit naliliipput
+(NEGATE -1 BOS LINK 1 _TARGET_ + Pron LINK 1 Abs)#AAJUKU nukappiaraq aamma niviarsiaraq nikorfasut.
+(NEGATE 0 ADJEKTIVISK OR LIK_QAR LINK *-1 Abs BARRIER (*) - OBLIQUE)#Puiaasat imaqanngitsut IMALLILLU, arsakoorfiillu cigaretikunik imallit sumi tamaaniipput.
+;
 
 ###########################################################################################
 # Sætninger med implicit subjekt i Pl, som syntaktisk er ægte ambiguiteter                #
@@ -4384,7 +4395,8 @@ MAP:M0031D @PROP> TARGET Sem/Fem + Abs IF (1 Sem/Fem + Abs - CONJ-LU) ; #Må ikk
 #MAP:M0031A @PROP> TARGET Prop + Sem/FirstName IF (1 Prop + Sur)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + CONJ-LU LINK *1 V + 3Pl )(NEGATE 1 Prop LINK 1 Prop)(NEGATE 0 FIRSTNAME LINK 1 FIRSTNAME)(NEGATE 0 FIRSTNAME LINK 1 ("Kalaallit")); #Mange fejlhit på Kalaallit Illuutaat og Kalaallit Nunaat
 #0031A ændret ad hoc med + Sur i mangel af mulighed for at adskille for- og efternavne
 
-MAP:M0031E @PROP> TARGET Sem/Mask + Abs OR Sem/Fem + Abs IF (1 Sem/Hum - Sem/Mask - Sem/Fem - Abl - CONJ-C) 
+MAP:M0031E @PROP> TARGET Sem/Mask + Abs OR Sem/Fem + Abs IF (1 Sem/Hum - Sem/Mask - Sem/Fem - Abl)
+(NEGATE 1 CONJ-C LINK NEGATE *-1 Abs BARRIER (*) - OBLIQUE)#isolering af reglens tidligere krav om at 1 ikke må være CONJ-C. Forstår ikke kravet, men hermed udelukkes en CONJ-C, der godt må forekomme
 (NEGATE 0 FIRSTNAME LINK 1 INSTITUTION)#BIRGIT Oqaasilerinermut, Atuakkialerinermut Tusagassiuutilerinermullu Immikkoortortami pisortaavoq.
 ;
 
