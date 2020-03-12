@@ -1135,6 +1135,7 @@ SET VERBNOT3PLSUBJ = V - 3PLSUBJVERB ;
 SET COREF = (V 4Sg) | (V 4Pl) ; 
 SET 12SUBJVERB = (V 1Sg) | (V 1Du) | (V 1Pl) | (V 2Sg) | (V 2Du) | (V 2Pl) ;
 SET PLURSUBJVERB = (V 1Pl) | (V 2Pl) | (V 3Pl) | (V 4Pl) ;
+SET PLUROBJVERB = (V 1PlO) | (V 2PlO) | (V 3PlO) | (V 4PlO) ;
 #SET NONIMPVERB = (V Ind) | (V Cau) | (V Int) | (V Par) | (V IteCau) | (V Cont) | (V ContNeg) | (V Opt) | (V Con) | (V Vok) ;
 SET V-NOT-Par = V - Par ;
 SET VERB-NOTCONT = V - Cont - ContNeg;
@@ -2669,7 +2670,7 @@ REMOVE:0001Z N - FAM IF (0 Prop - Sem/Geo + Abs LINK *1 HUMVERB + INTRANSVERB OR
 (NEGATE 0 Abs + &&IV_SUBJ& LINK *1 VFIN + &&IV_SUBJ& BARRIER V)#POLITIIT KNR-ip tusagassiortuanut pisoqarfiusumiittumut ilisimatitsipput
 ;
 
-REMOVE:0001Z N IF (0 Prop - Sem/Geo + Rel - TUQ LINK *1 HUMVERB + TRANSVERB BARRIER CONJ-C OR Prop + Rel)(NEGATE 1 POSSESSUM)(NEGATE 0 $$KASUS LINK 1 $$KASUS); #Manu iserpoq. Manu er mest sandsynligt et proprium. #Ulloriaatima amerlassusii pappiliamut allariarlugit taanna pappiliaq amusartumut ileriarlugu parnaarutissara. Ulloriaatima er ikke Prop.
+REMOVE:0001Z N IF (0 Prop - Sem/Geo + Rel - TUQ + $$NUMERUS LINK *1 HUMVERB + TRANSVERB BARRIER CONJ-C OR Prop + Rel OR Rel + $$NUMERUS)(NEGATE 1 POSSESSUM)(NEGATE 0 $$KASUS LINK 1 $$KASUS) ; #Manu iserpoq. Manu er mest sandsynligt et proprium. #Ulloriaatima amerlassusii pappiliamut allariarlugit taanna pappiliaq amusartumut ileriarlugu parnaarutissara. Ulloriaatima er ikke Prop.
 REMOVE:0001Z1 Prop - Sem/Geo + Abs IF (0 N LINK *1 thingobjverb + TRANSVERB BARRIER INTRANSVERB) ;
 REMOVE:0001Z2 iProp IF (0 U) ; #Mikisuullunga ...
 # Appositional proper noun without comma
@@ -5457,13 +5458,13 @@ MAP:M0521 @<OBJ TARGET LIK + Sg + Abs OR QAR + Sg + Abs IF (*-1 TRANSVERB + 3SgO
 #De mest generelle OBJ-regler
 MAP:M0524 (@SUBJ>) TARGET N + Abs + Sg OR PRON + Abs + Sg IF (*1 INTRANSVERB BARRIER KOMMA LINK *-1 CONT + 3SgO LINK -1 Abs LINK 0 Num OR Sg LINK *-1 _TARGET_) ;
 MAP:M0522 @SUBJ> TARGET Abs + CONJ-LU IF (-1 Abs)(1 Abs + CONJ-LU OR KOMMA)(*1 V) ; 
-MAP:M0523A @SUBJ> TARGET Abs IF (1 Abs + CONJ-LU)(*1 PLURSUBJVERB BARRIER V OR KOMMA)(NEGATE *-1 ("soorlu") BARRIER VFIN) ; #Paratakse ved 0523B. 20150710 Meget bred. Skal checkes
+MAP:M0523A @SUBJ> TARGET Abs IF (1 Abs + CONJ-LU)(*1 PLURSUBJVERB BARRIER V OR KOMMA LINK NOT *1 PLUROBJVERB)(NEGATE *-1 ("soorlu") BARRIER VFIN) ; #Paratakse ved 0523B. 20150710 Meget bred. Skal checkes
 MAP:M0523A2 @SUBJ> TARGET Abs IF (1 Adv + CONJ-LU) (2 Abs) (*2 PLURSUBJVERB BARRIER V OR KOMMA)(NEGATE *-1 ("soorlu") BARRIER VFIN) ; #Paratakse ved 0523B. 20150710 Meget bred. Skal checkes
 
 MAP:M0523AB @SUBJ> TARGET Abs IF (*1 KOMMA BARRIER (*) - (Abs @N<) LINK *1 Abs + CONJ-LU)(*1 PLURSUBJVERB BARRIER V)(NEGATE *-1 ("soorlu") BARRIER VFIN) ; #Opremsning ved 0523B.
 MAP:M0523AB2 @SUBJ> TARGET Abs IF (*1 KOMMA BARRIER (*) - (Abs @N<) LINK *1 CONJ-LU BARRIER (*) - Abs LINK 1 Abs)(*2 PLURSUBJVERB BARRIER V)(NEGATE *-1 ("soorlu") BARRIER VFIN) ; #Opremsning ved 0523B.
 
-MAP:M0523B @SUBJ> TARGET Abs + CONJ-LU IF (-*1 Abs BARRIER (*) - CONT - Adv)(*1 PLURSUBJVERB BARRIER V OR KOMMA)(NEGATE -*1 @OBJ> BARRIER (*) - Abs)(NEGATE 1 Abs + Pl) ; #20140523 Meget bred. Skal checkes
+MAP:M0523B @SUBJ> TARGET Abs + CONJ-LU IF (-*1 Abs BARRIER (*) - CONT - Adv)(*1 PLURSUBJVERB BARRIER V OR KOMMA LINK NOT *1 PLUROBJVERB)(NEGATE -*1 @OBJ> BARRIER (*) - Abs)(NEGATE 1 Abs + Pl) ; #20140523 Meget bred. Skal checkes
 
 MAP:M0523C @SUBJ> TARGET Abs + CONJ-LU IF ((-1 BOS) OR (-1 Part LINK -1 BOS))(*1 PLURSUBJVERB) ; #20170408. Smal regel til parataktiske subjekt med implicit førsteled
 #Særtilfælde for at forhindre OBJ-tagging Per i Per tamanna pillugu nalusarpoq
