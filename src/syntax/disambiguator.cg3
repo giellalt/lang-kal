@@ -2859,13 +2859,19 @@ MAP:M0042A @SUBJ> TARGET (/"IR"\ Gram/IV\ TUQ\ Der/vn\ N\ Abs/l) IF (1 KOMMA LIN
 REMOVE:0043AZ U + Par IF (-1 Abs + Sg LINK -1 Gram/Dem LINK -1 BOS OR KOMMA)(*1 ORATIOOBLVERB LINK *1 Par OR Cont ) ;
 REMOVE:0043AZ U + Par IF (-1 Abs + Sg LINK -1 BOS OR KOMMA)(*1 ORATIOOBLVERB LINK *1 Par OR Cont ) ;
 
+#I or.obl. er adled til subjekt fulgt af Par vanskelige at adskille. Følgende antager, at to konsekutive CL-CIT uden konjunktion ikke er sandsynlig undtagen ifm opremsninger
+REMOVE:0042B Par - CONJ-C IF (1 Par LINK -1 Abs + Der/vn LINK *-1 ORATIOOBLVERB BARRIER V)#Nunatsinni nakorsaanerup erseqqissaatigaa, inuk ataaseq MATTUSSAAQQASOQ tunillatsissimasoq.
+(NEGATE 1 Par + CONJ-C)#Nassuiaappara baobabit ORPIGAARAANNGITSUT orpissuusulli oqaluffittut portutigisut allaalluunniit nagguaatsorpassuarnik nassaraluarpat, taakku orpik baobabi ataaseq nungussinnaanavianngikkaalluunniit.
+(NEGATE *1 Par + CONJ-C BARRIER (*) - Par - KOMMA - (/TUQ\ Der/vn\ N/l))#Atuarsinnaalerami tamanna uppernarsisoraa, aviisini atuartaramiuk kalaallit IMERAJUTTUUSUT toqutsigajuttuusut imminorajuttuusullu. Sidste minus i BARRIER fordi stadig ikke disambiguerede Abs og Rel
+;
+ 
 #Regel 0043AX virker ikke på subjekt af formen N+U+TUQ hvis fulgt af ambiguøs Par+3Sg
 REMOVE:0043AX Par IF (-1 ORATIOOBLVERB LINK 1 HUMAN + U + Abs LINK 1 Par LINK 1 EOS) ;
 
 #0043AX og 0043AXX forebygger at 0043A sletter Par i copula-konstruktioner som 'inquit NN ARNAASOQ pikkorissoq' og giver @PRED_@SUBJ>_@SUBJ>_@CL-<CIT i stedet for ønsket @PRED_@SUBJ>_@CL-<CIT_@i-N<
 SELECT:0043AX U + Par + &&IV_SUBJ& IF (*0 ORATIOOBLVERB)(*-1 &&IV_SUBJ& LINK 1 _TARGET_ LINK 1 &&IV_SUBJ&)(NEGATE *-1 BOS OR KOMMA LINK 1 &&IV_SUBJ& + $$NUMERUS LINK 1 _TARGET_ + $$NUMERUS LINK 1 &&IV_SUBJ&) 
-(NEGATE 0 Abs + &&IV_SUBJ& LINK *1 Par + &&IV_SUBJ& LINK NEGATE *0 Abs + &&IV_SUBJ& BARRIER ORATIOOBLVERB);#men ikke hvis eneste mulige subjekt for CL-CIT
-
+(NEGATE 0 Abs + &&IV_SUBJ& LINK *1 Par + &&IV_SUBJ& LINK NEGATE *0 Abs + &&IV_SUBJ& BARRIER ORATIOOBLVERB)#men ikke hvis eneste mulige subjekt for CL-CIT
+;
 
 SELECT:0043AX_LI_LU U + Par + CONJ-LI OR U + Par + CONJ-LU IF (-1C Par); #'Inquit orpigaaraanngitsut ORPISSUUSULLI'
 #SELECT:0043AXX Abs + Sg IF (*0 ORATIOOBLVERB)(-*1 Par + 3Sg LINK -*1 Abs + Sg ) ; 
@@ -2900,7 +2906,7 @@ SELECT:uløselighed0003 Abs + Pl IF (1 (/"Ukraine"\ Sem/Geo\ iProp\ MIU\ Der/nn\
 
 MAP:M_uløselighed0004 @POSS> (/"Ukraine"\ Sem/Geo\ iProp\ MIU\ Der/nn\ N\ Rel\ Pl/l) IF (1 (/"timmi"\ Gram/IV\ TAR\ Der/vv\ Gram/IV\ TUQ/l) LINK *0 ("nakkar") OR ("nakkartip"));#Iranimi inuppaaluit UKRAINEMIUT timmisartuannik nakkartitseqataasimasutut tigusarineqarsimapput
 
-MAP:M_uløselighed0005 @ADVL> TARGET OTHERTIME + Abs + Pl IF (-1 Abs + Pl - TIME - Gram/Dem LINK *1 VERB-NOTCONT + 3PlO OR VERB-NOTCONT + INTRANSVERB + 3Pl BARRIER CONT + 3PlO); #Aappaatigulli tupaallannarpallaanngilaq suliakka UKIORPASSUIT suliarisarsimagakkit. Der tages forbehold for at at TIME kan være objekt for en CONT og at TIME selv kan have en @Pron>N i -1
+MAP:M_uløselighed0005 @ADVL> TARGET OTHERTIME + Abs + Pl IF (-1 Abs + Pl - TIME - Gram/Dem LINK *1 VERB-NOTCONT + 3PlO OR VERB-NOTCONT + INTRANSVERB + 3Pl BARRIER CONT + 3PlO); #Aappaatigulli tupaallannarpallaanngilaq suliakka UKIORPASSUIT suliarisarsimagakkit. Der tages forbehold for at at TIME kan være objekt for en CONT og at TIME selv kan have en @Pron>N
 #Lok anvendt på MIK-OBJ i stedet for Ins er svær (umulig?) at håndtere. En tidlig og farlig regel, der skal følges op på
 SUBSTITUTE Lok Ins TARGET (HTR) IF (1 HTR - ("ilar")) #siunnersortit .. Tasiilami inunnik ISUMAGINNINNERMI ingerlatitsivimmi .. ikiuussimapput. Mange fejl pga. ambiguøs ilaivoĸ vs. ilauvoĸ
 (NEGATE 1 Lok + LU)#tassa PEQQISSAANERMI isumaginninnermilu ikiortit
@@ -6993,7 +6999,7 @@ MAP:M1931 @>N Gram/Coref + $$KASUS (*1 NIQ + N + $$KASUS BARRIER (*) - OBLIQUE) 
 #Rel kan være possessor. Først den sjældne Cau mellem POSS og POSSESSUM
 MAP:M1938X @POSS> TARGET Rel + Sg IF (*1 Cau + 4Sg BARRIER (*) - Hyb/1-2 LINK *1 POSSESSUM - POSSESSUM4 - CONJ-C - iN - ("Kalaallit Nunaat") BARRIER (*) - @N< - @<APPOS - @FOC>N - KOMMA - CONJ-C - @i->V - CONT_INTRANS) (NEGATE -1 POSSESSUM LINK *2 POSSESSUM3 + Pl BARRIER (*) - V - (/@i-.*/r))(NEGATE 0 POSSESSUM4 LINK -1 @POSS> LINK NEGATE *2 POSSESSUM + Pl BARRIER KOMMA);
 
-MAP:M1938 @POSS> TARGET Rel IF (*1 POSSESSUM - POSSESSUM4 - CONJ-C - iN - MWE_POSS - ("siuneq") BARRIER (*) - @N< - @<APPOS - @FOC>N - KOMMA - CONJ-C - @i->V - CONT_INTRANS - ("immi")) (NEGATE -1 POSSESSUM LINK *2 POSSESSUM3 + Pl BARRIER (*) - V - (/@i-.*/r))(NEGATE 0 POSSESSUM4 LINK -1 @POSS> LINK NEGATE *2 POSSESSUM + Pl BARRIER KOMMA)
+MAP:M1938 @POSS> TARGET Rel IF (*1 POSSESSUM - POSSESSUM4 - CONJ-C - iN - MWE_POSS - ("siuneq") BARRIER (*) - @N< - @<APPOS - @FOC>N - KOMMA - CONJ-C - @i->V - CONT_INTRANS - ("immi") - OBLIQUE) (NEGATE -1 POSSESSUM LINK *2 POSSESSUM3 + Pl BARRIER (*) - V - (/@i-.*/r))(NEGATE 0 POSSESSUM4 LINK -1 @POSS> LINK NEGATE *2 POSSESSUM + Pl BARRIER KOMMA)
 (NEGATE 0 Pl + LU OR LUUNNIIT LINK -1 Rel + Pl + @N<)#Tassami arfinilinnik ukioqartungali inersimasut titartaarusussuseerutsissimavaannga, pulateriaarsuillu ipititsisartut matoqqasut AMMASULLUUNNIIT titartarnissaat kisiat ilikkarsimavara.
 (NEGATE *1 TRANSVERB + 3Sg BARRIER VERB-NOTCONT LINK -*1 _TARGET_ + Sg BARRIER Rel + Sg LINK *-1 CON_CAU + 3Sg)#Per Rosing Nuummiinngimmat QATANNGUTAATA allagartassaa tiguaa.
 ;
