@@ -283,6 +283,7 @@ LIST %NumPossessum = %NumPossessum ; #("misse")+3PlPoss når possessum for -1 Nu
 LIST %ContHypotagme = %ContHypotagme ; #CONT når -1 Abs eller Abs når 1 CONT
 LIST %TidHypotagme = %TidHypotagme ; #possessor og possessum, når begge er TIME
 LIST %VerbalInderivering = %VerbalInderivering ; #Transitive verber med NIRAR og SURE
+LIST %AmbiguøsN = %AmbiguøsN ; #En interim-tag til kohorter med læsninger der indeholder både Rel og Abs
 
 # Derivatives #
 
@@ -1189,6 +1190,7 @@ SET POSSESSUM12 = (N 1SgPoss) | (N 2SgPoss) | (iN i1SgPoss) | (iN i2SgPoss)| (N 
 
 SET POSSESSUM = POSSESSUM12 OR POSSESSUM3 OR POSSESSUM4 ; 
 SET POSSESSUM3UdenMWE = POSSESSUM3 - ("Kalaallit Nunaat") - ("Kalaallit Illuutaat");
+SET POSSESSUM3UdenNumPossessum = POSSESSUM3 - %NumPossessum - ("misse") - ("missaq") ;
 SET NOT-POSSESSUM = N - POSSESSUM ;
 
 SET iPOSSESSUM1 = (iN i1SgPoss) | (iN i1PlPoss) | (1SgPoss Hyb/1-2) | (1PlPoss Hyb/1-2) ;
@@ -2999,6 +3001,15 @@ MAP:M_opremsning01 @SUBJ> TARGET Abs IF (*1 KOMMA OR CONJ-C BARRIER (*) - Abs - 
 ;
 #Type @PRED KOMMA CONT CONT+LU Taamaattoq pisiniarfinnguaqarput, arfinilinnik atuartulimmik ATUARFEQARLUTIK oqaluffeqarlutillu.
 MAP:M_opremsning02 @PRED TARGET CONT IF (*-1 VFIN + &&CONT_V& LINK 1 KOMMA LINK *1 CONT + &&CONT_V& BARRIER (*) - OBLIQUE LINK 1 CONT + &&CONT_V& + CONJ-C);
+
+#Possessorer med mange deltagere
+REMOVE:opremsning03 Abs + Pl IF (0 Rel + Pl LINK *1 3PlPoss - ("Kalaallit Nunaat")  BARRIER (*) - KOMMA - %AmbiguøsN - CONJ-C - OBLIQUE)#Atuarfiit, paaqqinnittarfiit, neriniartarfiit imerniartarfiillu kiisalu kulturikkut aaqqissuussat matuneqarnerisa nalaanni angerlarsimaffinni imigassamik atuineq oqartussanit qanimut malinnaaffigineqarpoq.
+(NEGATE 1 LU + 3PlPoss LINK *1 3PlO BARRIER V)#Taamaammat innuttaasut suliffeqarfiillu politiinit piumaffigineqarput ATORTUT assigisinnaasaallu isumannaatsumik inisseqqullugit anorersuarmiit tingitaaqqunagit, inunnut allanullu eqqaaniittunut navianarsinnaammat
+(NEGATE *1 3PlPoss LINK 0 NOT-POSSESSUM BARRIER 3PlPoss)#Nassuiaappara baobabit orpigaaraanngitsut orpissuusulli oqaluffittut PORTUTIGISUT allaalluunniit nagguaatsorpassuarnik nassaraluarpat, taakku orpik baobabi ataaseq nungussinnaanavianngikkaalluunniit.
+(NEGATE 1 Num LINK 1 ("misse") + 3PlPoss)#Timmisartuutileqatigiiffiulli suli naatsorsuutigaa ILAASUSSAT 900-t missaanniittut kinguaattooqqasut tamaasa apuuffissaannut sapaatip-akunnerata naanerani apuukkumaarlugit .
+(NEGATE *1 INTRANSVERB + 3Pl BARRIER POSSESSUM3UdenNumPossessum)#Tuluit Nunaanni AAPPARIIT pissiariilluunniit 40.000-it missaanniittut ilaqutariittut ataatsimuulernissaminnik qinnuteqartarput .
+(NEGATE *-1 VFIN + INTRANSVERB + 3Pl BARRIER CONJ-C OR KOMMA OR V)#Illuatungaaniipput illorsualiarujussuit Høje Gladsaxemik TAANEQARTARTUT, taakkualu arlaanni Emilie najugaqarpoq, angummini Erimmi arnaataanilu Anettemi.
+;
 
 ###########################################################################################
 # Sætninger med implicit subjekt i Pl, som syntaktisk er ægte ambiguiteter                #
@@ -9812,6 +9823,7 @@ REMOVE:9975 (/__LLUAR\ Der\/vv\ INNAR__/l) IF (0 LLUINNAR) ;
 REMOVE:9973X Prop + Gram/Abbr + Lok IF (0 OLang/DAN + Abs + Sg LINK *1 INTRANSVERB + 3Sg BARRIER Abs + Sg)(NEGATE *-1 Abs + Sg);#FILMI aappaagu takuteqqaarneqassaaq. Ikke den bibelske forkortelse
 REMOVE:9973 LOAN ; # Slet låneord, hvis ikke eneste læsning
 
+SUBSTITUTE:S0060 %AmbiguøsN (*) TARGET %AmbiguøsN ;
 
 
 ##############
