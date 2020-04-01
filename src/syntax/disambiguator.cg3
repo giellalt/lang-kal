@@ -1602,7 +1602,7 @@ LIST <cc> = "nioqqutissaq" ;
 LIST <Hprof> = ("eqqiar" HTR TUQ)("eqqartuup" HTR TUQ)("siulittar" HTR TUQ) (/\"suli\"\ Gram/IV\ TUQ/l);
 LIST <unit> = Sem/Unit ;
 
-LIST NUMHOVED = "dollar" "dollari" "euro" "franc" "grad" "gram" "hjerter" ("immikkoor" TUQ) "ini" "kapitali" "kapitel" "kiilu" "kilo" "kilometer" "km" "klasse" "kulooq" "koruuni" "krone" "m" "meter" "milliardi" "milliard" "miliuuni" "million" ("nalunaar" UTE) "niveau" "nr" "oori" "paragraf" "procent" ("qupper" NIQ) "ruder" "side" "sipaaq" ("titar" NIQ) (/".*vej/r) "øre" Sem/Unit ;
+LIST NUMHOVED = "dollar" "dollari" "euro" "franc" "grad" "gram" "hjerter" ("immikkoor" TUQ) "ini" "kapitali" "kapitel" "karsi" "kiilu" "kilo" "kilometer" "km" "klasse" "kulooq" "koruuni" "krone" "m" "meter" "milliardi" "milliard" "miliuuni" "million" ("nalunaar" UTE) "niveau" "nr" "oori" "paragraf" "procent" ("qupper" NIQ) "ruder" "side" "sipaaq" ("titar" NIQ) (/".*vej/r) "øre" Sem/Unit ;
 LIST NUMCOMP = "hundrede" "tusind" "million" "milliard" ; #anden del af sammensatte tal, famtan milliuuni
 LIST COMPOUND_N = "Windows" "Linux" "program" ;
 LIST PRENUM = "plus" "minus" ;
@@ -2960,6 +2960,7 @@ MAP:M_faste0010 @i-ADVL> TARGET ("sinner") + CONT OR ("ataap") + CONT IF (-1 Num
 MAP:M_faste0011 @i-ADVL> TARGET Trm IF (*1 (/"ataatsimiip"\ Gram/IV\ TIP\ Der/vv\ Gram/TV\ TAQ\ Der/vn\ LIAQ/l) BARRIER (*) - Trm);#aningaasaqarnermut akileraartarnermullu ataatsimiititalia
 SELECT:faste0012 (/"ammar"\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ NIQ/l) + Lok IF (1 (/"oqalugiar"\ UTE\ Der/vn/l)) ;
 MAP:M_faste0013 @i-ADVL> TARGET ("juulli") + Lok IF (1 ("qaammaqqut")); #julelys
+MAP:M_faste0014 @i-ADVL>N TARGET DRINKABLE (1 ("karsi")) ;
 
 
 #######
@@ -6141,8 +6142,9 @@ MAP:M0652K @<APPOS TARGET $$KASUS IF (*-1 @FOC>N BARRIER $$KASUS LINK *-1 $$KASU
 
 MAP:M0652L @<APPOS TARGET $$KASUS + $$NUMERUS + Prop - CONJ-C IF (*-1 $$KASUS + $$NUMERUS - CONJ-C - UNA - UKU - @PROP> - @>N BARRIER DIRTALESLUT OR (*) - KOMMA  - Prop)
 (NEGATE -1 DIRTALE)
+(NEGATE 1 ORATIOOBLVERB LINK NOT *1 @CL-<CIT)
 (NEGATE 0 Sem/Fem LINK -1 KOMMA LINK -1 Sem/Mask)(NEGATE 0 Sem/Mask LINK -1 KOMMA LINK -1 Sem/Fem)#<APPOS kræver i hvert fald overensstemmelse på køn
-(NEGATE 0 Sem/Hum OR Orth/Append LINK *-1 Sem/Hum + $$KASUS - @PROP> OR Orth/Append + $$KASUS - @PROP> BARRIER (*) - Prop - KOMMA - CONJ-C) 
+(NEGATE 0 Sem/Hum OR Orth/Append LINK *-1 Sem/Hum + $$KASUS - @PROP> - @>N OR Orth/Append + $$KASUS - @PROP> BARRIER (*) - Prop - KOMMA - CONJ-C) 
 (NEGATE -1 Rel + &&POSS34_POSS& LINK 1 Rel + &&POSS34_POSS&)#Kujataata KITAATA imartaani timmissat umiarsuarnut aporartartut 2000-it missaanniinnerat eqqoriaarujussuarluni missingiineruvoq 
 (NEGATE 0 Sem/Geo LINK -*1 TIME BARRIER (*) - ("tunge"))#Ullaap tungaani NUUMMI Nuussuarmilu inuit 18-it sukkavallaamik biilertut politiinit tigusarineqarput.
 (NEGATE 0 Sem/Hum LINK -1 Sem/Geo)#taakku Danmarkimut STATENS SERUM INSTITUTIMUT nassiunneqarput
@@ -7560,7 +7562,7 @@ REMOVE:0522B N + TUQ OR (".*(s|t)oq"r) IF (0 Par + <fn:Enter> LINK 1 ORATIOOBLVE
 
 REMOVE:0523 Par IF (0 N + @<APPOS)(1 KOMMA) ;
 
-REMOVE:0523 Par IF (0 N)(*1 @<APPOS BARRIER (*) - @PROP> - KOMMA - @i-ADVL> - @i-ADVL>N) ; 
+REMOVE:0523 Par IF (0 N + <Hprof>)(*1 @<APPOS BARRIER (*) - @PROP> - KOMMA - @i-ADVL> - @i-ADVL>N - @>N) ; #cave: Nangeqattaartup oqariartuutaa pingaaruteqartoq, Kidda Rokk isumaqarpoq:
 
 REMOVE:0549 Abs IF (0 Par + ADV-LU LINK NOT -1 Abs)(NEGATE 0 Rel)(NEGATE -1 BOS OR KOMMA) ; #Taannarsuaq imminut naalliutsinnermik kajungerisalik suli pangalilluni tatsip illua'tungaani orpiit akornannut *pulasorlu tatsip tasertaa patsisaasimanerluni nunap sajukulanera malunnarunnaarpoq. # taget højde for paratakse med LINK NOT -1 Abs
 
@@ -7581,6 +7583,8 @@ REMOVE:0549D N + TUQ - TAR IF (0 Par LINK 0 UNA OR UKU) ; #Susoqartoruna er verb
 
 REMOVE:0549E Par IF (0 N + TUQ + TRANSPORT) ;
 REMOVE:0549F Par IF (0 N + TUQ + $$NUMERUS) ((1 iOBLIQUE + Abs + $$NUMERUS) OR (*1 OBLIQUE + Hyb/1-2 LINK 1 Abs + $$NUMERUS + Hyb/2-2)) ;
+
+REMOVE:0549G Par IF (1 Gram/Dem + Pron - CONJ-C) ; #Ulloriaaraq angalasoq taanna ataasiaannarluni qinngussuarmik ungasissorsiummik takuneqarsimavoq.
 
 SECTION #Skal kun bruges til at isolere Par - reglerne
 
