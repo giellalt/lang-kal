@@ -1577,7 +1577,7 @@ LIST DISEASE = "corona" "coronavirus" "COVID" "COVID-19" "COVID19" "gigt";
 LIST PLACE = ("atuar" VIK) "etage" "illu" "imaq" "itersaq" "itersaliaq" "itersaliarsuaq" "klasse" ("mip" TAR VIK) "mittarfik" "nuna" ("oqalup" VIK) "orpippassuaq" "sakkutooqarfik" "sal" "siku" "silarsuaq" "ungaloq" "village" Sem/Geo ^Sem/Hum "lexicon" <Lh>; 
 LIST PLACE_MORE = (/\"<\\p{Lu}.*\>"/r) ^Hyb/2-2;
 SET PLACE_EXTENDED = PLACE | PLACE_MORE ;
-LIST ADJEKTIVISK = "akisooq" "akutakujooq" "akutakujuk" "angisooq" ("arlaq" LIK) "ataavartoq" "ilivitsoq" ("isertor" TUQ) "itisooq" "manissoq" "nutaaq" ("perler" TUQ) ("portu" JAAR) "takisooq" "siulleq" "tamalaaq" "tulleq" "tulliup" "tungujortoq" (NAR TUQ) (/.*tooq\"/r); #angut og arnaq medtaget lidt skummelt, men anvendes ofte adjektivisk. PL 20190806 mange fejl, så arnaq og angut fjernet igen. sakkutooq undtaget fra .*tooq
+LIST ADJEKTIVISK = "akisooq" "akutakujooq" "akutakujuk" "angisooq" (/"anneq"\ KIP\ Der/nv\ TUQ/l) ("arlaq" LIK) "ataavartoq" "ilivitsoq" ("isertor" TUQ) "itisooq" "manissoq" (/"nalaatsor"\ Gram/IV\ NIQ\ Der/vn\ INNAQ/l) "nutaaq" ("perler" TUQ) ("portu" JAAR) "takisooq" "siulleq" "tamalaaq" "tulleq" "tulliup" "tungujortoq" (NAR TUQ) (/.*tooq\"/r); #angut og arnaq medtaget lidt skummelt, men anvendes ofte adjektivisk. PL 20190806 mange fejl, så arnaq og angut fjernet igen. sakkutooq undtaget fra .*tooq
 SET NON_ADJEKTIVISK = N - ADJEKTIVISK ;
 LIST COLOUR = "aappaluttoq" ("aak" PALUP TUQ) "qaqortoq" "qaqqorik" "qernertoq" "qorsuk" "sungaartoq" "tungujortoq" ;
 SET ATTRIBUTIV = ADJEKTIVISK - ("sakkutooq") | COLOUR | (/QAR\ Der\/nv\ \(Gram\/IV\ \)?TUQ\ /l) | ("IP" TUQ) ;
@@ -3007,8 +3007,8 @@ MAP:M_opremsning01 @SUBJ> TARGET Abs IF (*1 KOMMA OR CONJ-C BARRIER (*) - Abs - 
 #Type @PRED KOMMA CONT CONT+LU Taamaattoq pisiniarfinnguaqarput, arfinilinnik atuartulimmik ATUARFEQARLUTIK oqaluffeqarlutillu.
 MAP:M_opremsning02 @PRED TARGET CONT IF (*-1 VFIN + &&CONT_V& LINK 1 KOMMA LINK *1 CONT + &&CONT_V& BARRIER (*) - OBLIQUE LINK 1 CONT + &&CONT_V& + CONJ-C);
 
-#Possessorer med mange deltagere
-REMOVE:opremsning03 Abs + Pl - Num IF (0 Rel + Pl LINK *1 3PlPoss - ("Kalaallit Nunaat") - ("nuna" 3PlPoss) BARRIER (*) - KOMMA - %AmbiguøsN - CONJ-C - OBLIQUE)#Atuarfiit, paaqqinnittarfiit, neriniartarfiit imerniartarfiillu kiisalu kulturikkut aaqqissuussat matuneqarnerisa nalaanni angerlarsimaffinni imigassamik atuineq oqartussanit qanimut malinnaaffigineqarpoq.
+#Possessorer med mange deltagere. ADJEKTIVISK undtaget fra 3PlPoss for at nedbringe antallet af fejlanalyserede tup- pluralis fx INNAQ
+REMOVE:opremsning03 Abs + Pl - Num IF (0 Rel + Pl LINK *1 3PlPoss - ("Kalaallit Nunaat") - ("nuna" 3PlPoss) - ADJEKTIVISK BARRIER (*) - KOMMA - %AmbiguøsN - CONJ-C - OBLIQUE)#Atuarfiit, paaqqinnittarfiit, neriniartarfiit imerniartarfiillu kiisalu kulturikkut aaqqissuussat matuneqarnerisa nalaanni angerlarsimaffinni imigassamik atuineq oqartussanit qanimut malinnaaffigineqarpoq.
 (NEGATE 1 LU + 3PlPoss LINK *1 3PlO BARRIER V)#Taamaammat innuttaasut suliffeqarfiillu politiinit piumaffigineqarput ATORTUT assigisinnaasaallu isumannaatsumik inisseqqullugit anorersuarmiit tingitaaqqunagit, inunnut allanullu eqqaaniittunut navianarsinnaammat
 (NEGATE *1 3PlPoss LINK 0 CONJ-C )#Nassuiaappara baobabit orpigaaraanngitsut orpissuusulli oqaluffittut PORTUTIGISUT allaalluunniit nagguaatsorpassuarnik nassaraluarpat, taakku orpik baobabi ataaseq nungussinnaanavianngikkaalluunniit.
 (NEGATE 1 Num LINK 1 ("misse") + 3PlPoss)#Timmisartuutileqatigiiffiulli suli naatsorsuutigaa ILAASUSSAT 900-t missaanniittut kinguaattooqqasut tamaasa apuuffissaannut sapaatip-akunnerata naanerani apuukkumaarlugit .
@@ -3018,6 +3018,7 @@ REMOVE:opremsning03 Abs + Pl - Num IF (0 Rel + Pl LINK *1 3PlPoss - ("Kalaallit 
 (NEGATE 0 Abs + Pl LINK *1 NIQ + 3PlPoss BARRIER V LINK *1 3PlO BARRIER Abs + Pl)#Politiit arlallit sakkulersorsimallutik arnap najugaqarfia unguaat inissiarsuarmilu NAJUGALLIT allat isersimaannarnissaannik qinnuigalugit.
 #(NEGATE 1 Abs + Pl) #Sisimiuni politiit sapaatip akunnerani kingullermi qamutit aqqanillit normuiarpaat, *tassaanerusut taxat, Sisimiut aviisiat Silleq nittartakkamini allappoq. Forstår ikke denne NEGATE. Den smadrer de fleste korrekte opremsninger og kan iøvrigt slettes uden at eksempelsætningen går i stykker
 (NEGATE -1 ("tassa.*"r)) #Sisimiuni politiit sapaatip akunnerani kingullermi qamutit aqqanillit normuiarpaat, tassaanerusut taxat, Sisimiut aviisiat Silleq nittartakkamini allappoq.
+##Snævre regler for up- bøjede som INNAQ i Tassa piffissaq annertuneq ujaasinermut atussallutigu allakkalli ANNIKITSUINNAAT pissarsiaralugit
 ;
 
 ###########################################################################################
@@ -7710,6 +7711,7 @@ SELECT:1641 3SgPoss IF (0 3PlPoss)(-1 Rel + Sg)(NEGATE -1 Rel + Sg LINK *1 TRANS
 SELECT 3PlPoss - Orth/Arch - Orth/Alt IF (-1C Rel + Pl)(NEGATE 0 Abs + Sg LINK *1 3SgO BARRIER V) (NEGATE 0 OLang/DAN + POSSESSUM LINK 0 (*) - POSSESSUM)  #NEGATE da fejlagtigt hit på Politiit BIILI (="bi" OLang/DAN N Abs Pl 3PlPoss Err/Sub LI) misissuiffigaat
 #Disambiguerer  "inngili" N Rel Sg 3PlPoss fra "inngili" N Rel Sg 3SgPoss i "Naalakkap inngiliata"
 (NEGATE 0 (/"ila"\ GE\ Der/nv\ Gram/TV\ V/l) LINK NEGATE 0* VFIN)#Japanip oqaluttuarisaanerani inuartarinninnerit sakkortunersaasa ILAGAAT.
+(NEGATE 0 Abs + Pl + INNAQ LINK -1 Abs + Pl OR %AmbiguøsN + Pl)#Tassa piffissaq annertuneq ujaasinermut atussallutigu allakkalli ANNIKITSUINNAAT pissarsiaralugit.
 ;
 SELECT:1650 Abs + 4SgPoss IF (0 Lok)(1 Abs + Der/vn)(*1 V + 3SgO)(NEGATE -1 Lok) ; #PANINI er ikke lokalis i Perip PANINI pinnersoq pulaarpaa
 
@@ -7743,6 +7745,7 @@ SELECT Abs + Sg IF (1 Cont + 3SgO)(NEGATE 0 Pali OR Conj OR Adv)
 
 SELECT Abs + Pl IF (1 Cont + 3PlO)(NEGATE 0 Adv)
 (NEGATE 0 Par + 3Pl LINK 1 ("unner") + CONT)#oqaatigaat umiarsuarmiit upanniutit AVALASSAARTUT unnerlugit.
+(NEGATE 0 Abs + Pl + INNAQ LINK -1 Abs + Pl OR %AmbiguøsN + Pl)#Tassa piffissaq annertuneq ujaasinermut atussallutigu allakkalli ANNIKITSUINNAAT pissarsiaralugit.
 ;
 SELECT:1689 Adv + ("ima") (NEGATE 0 ("imaluunniit")) ;#IF (1 ("isikku")) ; #For ikke at tagge Titartagara siullerpaaq IMA isikkoqarpoq forkert.
 
@@ -7775,6 +7778,7 @@ SELECT:1700A Rel + Pl IF (*1 Abs + Sg BARRIER V LINK *1 3SgO )(NEGATE *1 CONJ-C 
 (NEGATE 0 (/\ TAQ\ Der\/vn\ N/l)) #pinngitsaalisamik
 (NEGATE 0 Rel + Sg LINK *1 3SgPoss) #1700B må ikke selecte subjekt for transitivt verbum
 (NEGATE 0 Ins LINK *1 LIK_QAR OR HTR BARRIER V OR 3PlPoss) # ' ..namminiilivinnissamut ISUMMERNISSAMIK Siumukkormiut siunniussaqarnerat Atassutikkormiut iluarisimaarpaat.' men der tages højde for mulig possessum mellem Rel+Pl og LIK_QAR
+(NEGATE *1 CONT + 3PlO BARRIER V LINK *1 VFIN - 3Pl BARRIER V)#OQATSIARTARNERILLI nalaatsornerinnaat pissutigalugit kigaatsumik ilikkariartuaalerpara.
 ; 
 SELECT:1700B Abs + Pl IF (-*1C INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl)
 (NEGATE *1 INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl)
@@ -9320,7 +9324,9 @@ SELECT:9491D ("ila") + Sg + 3PlPoss IF (-1 ("ulloq") + Rel + Pl) ; #Ullut ilaat 
 SELECT:9491A Pl + POSSESSUM IF (0 HUM + @MIK-OBJ> OR HUM + @i-MIK-OBJ>) ; #Sing obj oftest direkte objekt. Specialitet før 9491B
 SELECT:9491C ("ila") + Pl + POSSESSUM IF (*1 3Pl OR 4Pl BARRIER N + Abs) ; #9491B må ikke slette subjektet i 'Ilaat qitipput'
 REMOVE:9492D Sg + PERCEPTIVE + POSSESSUM IF (*-1 Rel + Pl);
-REMOVE:9492A Sg IF (0 QATE)(0 Pl)(NEGATE *1 Sg + N BARRIER (*) - N - Pron - Prop) ; #Una oqaluttuarisara illit kisivit piginagu inoqatinnut oqaluttuariniariuk - immaqa silattuallaataasinnaajumaarpoq.
+REMOVE:9492A Sg IF (0 QATE)(0 Pl)(NEGATE *1 Sg + N BARRIER (*) - N - Pron - Prop) #Una oqaluttuarisara illit kisivit piginagu inoqatinnut oqaluttuariniariuk - immaqa silattuallaataasinnaajumaarpoq.
+#(NEGATE *1 KOMMA BARRIER V LINK *-1 _TARGET_ + Abs + Sg + 3PlPoss LINK *-1 INTRANSVERB + 3Sg BARRIER V) #Qanoq iliornissaq qanorluunniit oqaaseqarnissaq nalornissutigigaanni isumassarsiatsialaasinnaavoq ilaquttat ikinngutillu, kiisalu sulisut qanitarisat OQALOQATIGINISSAAT, taanna erseqqissaavoq.
+;
 REMOVE:9492B Pl + POSSESSUM IF (0 Sg + POSSESSUM)(NEGATE 0 Sg + Pl)(NEGATE 1 N + Pl)(NEGATE 0 Abs LINK *1 3PlO )(NEGATE 0 HUM LINK 1 HTR)(NEGATE NOT *1 V BARRIER ("tassa") LINK *-1 _TARGET_ + Abs LINK *-1 INTRANSVERB + 3Pl BARRIER V)(NEGATE 0 ("malip") LINK *-1 ("malip") LINK *-1 Pl - TIME - SEMIOTIC) #Første NEGATE på gr. af N*+Sg+N+Pl. Andet NEGATE for skyld kongruens. Usikker probabilistisk begrundet
 (NEGATE 0 $$KASUS LINK -1 $$KASUS) #Aqqaluartaannguup qallunaat nunaanniinnerani anaana aningaasanik PAGGATSITASSAMINIK katersisimavoq.
 
@@ -9339,7 +9345,9 @@ REMOVE:5851B Abs + Pl IF (0 Rel + Pl - Num)(1C 3PlPoss - ("Kalaallit Nunaat"))(N
 REMOVE:5851C ("(.*)"r) + TAQ + Sg IF (0 ("$1"v) + TAQ + Pl)(*0 ("$1"v) ); #Meeqqat qaqqamut majuartut malillugit ingerlalerpoq, qaqqakkoornerli sungiusimannginnamiuk malitaminit kingullinnguukkaluttuinnarpoq. #malitaq er Pl.
 
 #Possessum sing eller plur? Hvis NIQ sandsynligvis sing
-SELECT:5852 NIQ + Sg - 2SgPoss IF (0 NIQ + Pl);
+SELECT:5852 NIQ + Sg - 2SgPoss IF (0 NIQ + Pl)
+(NEGATE 0 ADJEKTIVISK + $$NUMERUS + $$KASUS LINK - $$NUMERUS + $$KASUS)#Oqatsiartarnerilli NALAATSORNERINNAAT pissutigalugit kigaatsumik ilikkariartuaalerpara.
+;
 
 #Hvilken possessor?
 SELECT:5853 2SgPoss OR 2PlPoss IF (0 Trm LINK *-1 ("quja") + Gram/Exclm);
@@ -9869,7 +9877,7 @@ REMOVE:9975 (/__LLUAR\ Der\/vv\ INNAR__/l) IF (0 LLUINNAR) ;
 REMOVE:9973X Prop + Gram/Abbr + Lok IF (0 OLang/DAN + Abs + Sg LINK *1 INTRANSVERB + 3Sg BARRIER Abs + Sg)(NEGATE *-1 Abs + Sg);#FILMI aappaagu takuteqqaarneqassaaq. Ikke den bibelske forkortelse
 REMOVE:9973 LOAN ; # Slet låneord, hvis ikke eneste læsning
 
-#SUBSTITUTE:S0060 %AmbiguøsN (*) TARGET %AmbiguøsN ;
+SUBSTITUTE:S0060 %AmbiguøsN (*) TARGET %AmbiguøsN ;
 
 
 ##############
