@@ -1947,9 +1947,13 @@ MAP:M_parentes01 @<APPOS TARGET (*) (-1 ("\(")) (1 ("\)")) ; #Narsaamanerit tara
 
 #Abs+Pl vs. Rel+Pl skal så vidt muligt disambigueres tidligt. Følgende regel bør være totalt sikker og helt generel bortset fra usikker possessorbrug ved klokken
 
-REMOVE:tidlig0020 Rel + Pl - Prop IF (0 Abs + Pl LINK NEGATE *0 3PlPoss OR i3PlPoss OR TRANSVERB + 3Pl OR TRANSVERB + 4Pl) #TAAKKUA TV-mut allamullu INGERLASUSSAT misissoqqissavakka.
+REMOVE:tidlig0020A Rel + Pl - Prop IF (0 Abs + Pl LINK NEGATE *0 3PlPoss OR i3PlPoss OR TRANSVERB + 3Pl OR TRANSVERB + 4Pl) #TAAKKUA TV-mut allamullu INGERLASUSSAT misissoqqissavakka.
 (NEGATE 1 ("misse") OR ("missaa") LINK -1 _TARGET_ + Num LINK -1 ("nalunaaqutaq"))#Måske en SELECT:tidlig0019?
 ;
+
+#En smal tidlig specialitet før tidlig0021 når der er parataktiske appositioner mellem Rel+Pl og 3PlPoss
+REMOVE:tidlig0020B Abs + Pl IF (*1 3PlPoss - ("Kalaallit Nunaat") LINK *-1 Sem/Hum + Rel + LU BARRIER (*) - Der/vn - OBLIQUE LINK -*1 Sem/Hum + Rel BARRIER (*) - FIRSTNAME LINK *-1 _TARGET_ + Rel + Pl BARRIER (*) - KOMMA - FIRSTNAME); #1800-kkunni OQALUTTUARTARSIMASUT, Aalut Kangermiup Jens Kreutzmannillu Kangaamiuneersup oqaluttuaasa sumi pisarsimaneri nassaariortorpavut, Katersugaasivimmi pisortap tullia, itsarnisarsiooq Claus Andreasen oqarpoq .
+
 
 REMOVE:tidlig0021 Rel + Pl IF (1 Num + Abs OR Gram/Cong + Akk LINK -1 _TARGET_ + SEASON + Abs)#Piitaq taamani nunatsinni ilinniarfiit annersaat, ilinniarfissuaq, aqqusaarsinnarlugu Danmarkimi UKIUT marluk ilinniaqqereerluni inerami ingerlaannangajattumik politikki ilinniartuugallarnerminili alapernaassimasani pullavigalugu landsrådimi ilaasortanngorpoq.
 (NEGATE *1 3PlPoss OR i3PlPoss OR TRANSVERB + 3Pl OR TRANSVERB + 4Pl) #UKIUT marluk taakku ilinniartippaannga.
@@ -2995,6 +2999,8 @@ MAP:M_uløselighed0008 @OBJ> TARGET Abs + Sg + <f-psych> IF (-1 Abs + <Hprof>)(1
 SUBSTITUTE Lok Ins TARGET (HTR) IF (1 HTR - ("ilar")) #siunnersortit .. Tasiilami inunnik ISUMAGINNINNERMI ingerlatitsivimmi .. ikiuussimapput. Mange fejl pga. ambiguøs ilaivoĸ vs. ilauvoĸ
 (NEGATE 1 Lok + LU)#tassa PEQQISSAANERMI isumaginninnermilu ikiortit
 ;
+
+#En meget ofte set "fejl", hvor appositioner står i absolut også når de er appositioner til relativ: 1800-kkunni oqaluttuartarsimasut, Aalut Kangermiu Jens Kreutzmannilu Kangaamiuneersoq oqaluttuaasa sumi pisarsimaneri nassaariortorpavut , Katersugaasivimmi pisortap tullia , itsarnisarsiooq , Claus Andreasen oqarpoq .
 
 #Faste fraser
 MAP:M_faste0001 @i-ADVL> TARGET ("mianersuaallior") + CONT IF (1 ("toquts.*") + N OR (/"toqup"\ Gram/TV\ HTR\ Der/vv\ /l) + TUQ); #uagtsomt manddrab
@@ -5042,7 +5048,10 @@ MAP:M0136XY @ADVL>N TARGET iAbl (1 Prop) (NEGATE -1 N OR Prop);
 MAP:M0136XZ @ADVL>N TARGET ("IR") + Hyb/2-2 (1 Prop) (NEGATE -2 N OR Prop OR Num);
 
 MAP:M0194 (@SUBJ>) TARGET Prop + Rel IF (-*1 TRANSVERB - OBJVERB LINK *-1 Rel LINK *1 Abs LINK *1 KOMMA)(*1 Abs BARRIER V)(NEGATE 1 POSSESSUM3) ; # 20101014 Opremsning uden transitive verber men må ikke tagge possessor-possessum
-MAP:M0195A (@SUBJ>) TARGET Prop + Rel IF (-*1 Rel LINK *-1 Rel LINK *1 TRANSVERB LINK *1 KOMMA)(*1 Abs BARRIER V) (NEGATE *1 POSSESSUM3 BARRIER (*) - OBLIQUE); # 20101014 Opremsning uden transitive verber men må ikke tagge possessor-possessum
+MAP:M0195A (@SUBJ>) TARGET Prop + Rel IF (-*1 Rel LINK *-1 Rel LINK *1 TRANSVERB LINK *1 KOMMA)(*1 Abs BARRIER V) (NEGATE *1 POSSESSUM3 BARRIER (*) - OBLIQUE) # 20101014 Opremsning uden transitive verber men må ikke tagge possessor-possessum
+(NEGATE 0 LU LINK -*1 Sem/Hum + Rel BARRIER (*) - FIRSTNAME LINK *-1 $$KASUS + Pl BARRIER (*) - KOMMA - FIRSTNAME); ##Appositioner!!!1800-kkunni oqaluttuartarsimasut, Aalut KANGERMIUP Jens KREUTZMANNILLU Kangaamiuneersup oqaluttuaasa sumi pisarsimaneri nassaariortorpavut, Katersugaasivimmi pisortap tullia, itsarnisarsiooq Claus Andreasen oqarpoq .
+
+;
 MAP:M0195B (@SUBJ>) TARGET N + Rel + Sg IF (1 Prop + Rel + Sg)(*1 TRANSVERB + 3Sg BARRIER V OR CONJ-C)(*1 Abs BARRIER V); #Qanormita ililluni *angaavata *Olep sumiinnera@OBJ paasisimavaa?
 
 
@@ -5302,9 +5311,9 @@ MAP:M0329_subjekt01 @SUBJ> Abs IF (*1 V + 3Pl OR V + 4Pl BARRIER VERB-NOTCONT)(*
 ;
 
 
-MAP:M0329 @N< TARGET $$KASUS + $$NUMERUS + Der/vn + TUQ IF ( *-1 $$KASUS + $$NUMERUS LINK 1 KOMMA LINK *1 _TARGET_ BARRIER (*) - CONT LINK 1 KOMMA);#Naasorlu, peqqissaangaarluni PIAREERSARSIMASOQ, aatsaajutigaluni oqarpoq:
+MAP:M0329A @N< TARGET $$KASUS + $$NUMERUS + Der/vn + TUQ IF ( *-1 $$KASUS + $$NUMERUS LINK 1 KOMMA LINK *1 _TARGET_ BARRIER (*) - CONT LINK 1 KOMMA);#Naasorlu, peqqissaangaarluni PIAREERSARSIMASOQ, aatsaajutigaluni oqarpoq:
 
-#MAP:M0329B @N< TARGET $$KASUS + $$NUMERUS + Der/vn + TAQ IF ( *-1 $$KASUS + $$NUMERUS LINK *1 _TARGET_ BARRIER (*) - CONT - OBLIQUE); #qaqqap qerrullip NAJUKKAMI ataa
+MAP:M0329B @N< TARGET $$KASUS + $$NUMERUS + Der/vn + TUQ + Hyb/2-2 IF ( -2 $$KASUS + $$NUMERUS); #1800-kkunni oqaluttuartarsimasut, Aalut Kangermiup Jens Kreutzmannillu KANGAAMIUNEERSUP oqaluttuaasa sumi pisarsimaneri nassaariortorpavut, Katersugaasivimmi pisortap tullia, itsarnisarsiooq Claus Andreasen oqarpoq .
 
 
 MAP:M0330 @N< TARGET ("qasseeq") + $$KASUS + $$NUMERUS IF (*-1 N + $$KASUS + $$NUMERUS BARRIER (*) - OBLIQUE - Adv) ; #qassiit altid adnominal evt. til underforstået kerne
@@ -6062,6 +6071,7 @@ MAP:M0608 (@POSS>) TARGET Rel + Sg - Pron IF (*1 3SgPoss - iProp - ("siuneq") - 
 (NEGATE *1 Abs BARRIER V LINK *1 Lok LINK 1 ("IP") + TUQ)#ANGUTIP imigassat nerriviup qaavaniittut paariniarsimagamigit
 (NEGATE *1 3SgO OR 3PlO LINK NEGATE *0 Rel + Sg - _TARGET_)
 (NEGATE *1 TRANSVERB + 3Pl BARRIER 3PlPoss LINK *-1 _TARGET_ LINK *-1 CONJ-C BARRIER (*) - %ContHypotagme LINK -1 Rel)#Aammattaaq aviisit nunarsuaq tamakkerlugu peqatigiiffiata aaqqissuisullu aamma nunarsuaq tamakkerlugu PEQATIGIIFFIATA ippinnartoqartippaat tusagassiornermut maalaaruteqartarfiup Naalakkersuisunut qanittumik attuumassuteqarnissaa.
+(NEGATE 0 TUQ LINK *-1 Rel + Sg BARRIER (*) - OBLIQUE)#1800-kkunni oqaluttuartarsimasut, Aalut Kangermiup Jens Kreutzmannillu KANGAAMIUNEERSUP oqaluttuaasa sumi pisarsimaneri nassaariortorpavut, Katersugaasivimmi pisortap tullia, itsarnisarsiooq Claus Andreasen oqarpoq .
 ;
 
 MAP:M0608AX @POSS> TARGET Prop + Rel IF (1 3SgPoss + Rel LINK 1 POSSESSUM3); #Arnat allakkani qulini SIUMUP partiiata allatsigisimasaa, Mikael Petersen tulleriiaartumik qasseeriarluni kinguaassiutitigut innimiilliorsimanerarpaat. Possessor, der ikke må undtages af ovenstående NEGATE 
@@ -6095,8 +6105,13 @@ MAP:M0609D @POSS> TARGET Rel + Sg - Prop IF (*1 3SgPoss - MWE_POSS BARRIER TRANS
 (NEGATE *1 Rel + Sg - @<APPOS - @N< - POSSESSUM BARRIER POSSESSUM3 OR CONJ-C LINK *1 TRANSVERB + 3Sg)
 (NEGATE *1 3SgO OR 3PlO LINK NEGATE *0 Rel + Sg - _TARGET_)
 (NEGATE *1 TRANSVERB + 3Pl BARRIER 3PlPoss LINK *-1 _TARGET_ LINK *-1 CONJ-C BARRIER (*) - %ContHypotagme LINK -1 Rel)#Aammattaaq aviisit nunarsuaq tamakkerlugu peqatigiiffiata aaqqissuisullu aamma nunarsuaq tamakkerlugu PEQATIGIIFFIATA ippinnartoqartippaat tusagassiornermut maalaaruteqartarfiup Naalakkersuisunut qanittumik attuumassuteqarnissaa.
+(NEGATE 0 TUQ LINK *-1 Rel + Sg BARRIER (*) - OBLIQUE)#1800-kkunni oqaluttuartarsimasut, Aalut Kangermiup Jens Kreutzmannillu KANGAAMIUNEERSUP oqaluttuaasa sumi pisarsimaneri nassaariortorpavut, Katersugaasivimmi pisortap tullia, itsarnisarsiooq Claus Andreasen oqarpoq .
+
 ;
-MAP:M0610 (@POSS>) TARGET Rel + Pl IF (1 Lok OR Ins OR Aeq OR CONT OR TIDSPARTIKEL)(2 3PlPoss) ; #Særtilfælde med adled til possessum. TIDSPARTIKEL tilføjet 20170407
+MAP:M0610A (@POSS>) TARGET Rel + Pl IF (1 Lok OR Ins OR Aeq OR CONT OR TIDSPARTIKEL)(2 3PlPoss) ; #Særtilfælde med adled til possessum. TIDSPARTIKEL tilføjet 20170407
+
+##En smal specialitet når der er parataktiske appositioner mellem Rel+Pl og 3PlPoss
+MAP:M0610B @POSS> TARGET Rel + Pl IF (*1 3PlPoss - ("Kalaallit Nunaat") LINK *-1 Sem/Hum + Rel + LU BARRIER (*) - Der/vn - OBLIQUE LINK -*1 Sem/Hum + Rel BARRIER (*) - FIRSTNAME LINK *-1 _TARGET_ + Rel + Pl BARRIER (*) - KOMMA - FIRSTNAME); #1800-kkunni OQALUTTUARTARSIMASUT, Aalut Kangermiup Jens Kreutzmannillu Kangaamiuneersup oqaluttuaasa sumi pisarsimaneri nassaariortorpavut, Katersugaasivimmi pisortap tullia, itsarnisarsiooq Claus Andreasen oqarpoq .
 
 #Specialitet ved indskud (avissprog) Taakkualu ilaatigut tarnip pissusaanik ilisimasallit aamma inunnik isumaginninnermi siunnersortit, PINGAARNERTUT TASIILAMI, ikiuigasuartinneqarnerannut atorneqarput.
 MAP:M0611X @POSS> TARGET Rel + Pl IF (*1 KOMMA LINK *1 KOMMA BARRIER (*) - OBLIQUE LINK 1 3PlPoss - ("Kalaallit Nunaat")) ;
@@ -6188,7 +6203,9 @@ MAP:M0631 @SUBJ> TARGET Rel + Sg IF (1 Rel LINK 1 POSSESSUM3 LINK *1 TRANSVERB +
 (NEGATE *1 3SgPoss + OBLIQUE BARRIER (*) - 3SgPoss LINK 1 Rel + Sg LINK *1 TRANSVERB + 3Sg BARRIER VERB-NOTCONT) #Malugisimavaami JANEP aallarnerata kingornagut angummi .. pisaleraani,
 ;
 MAP:M0638 (@SUBJ>) TARGET Rel + Sg IF (*1 Rel + Sg + CONJ-LU LINK *1 TRANSVERB + 3Pl OR 4Pl BARRIER POSSESSUM3) ;
-MAP:M0639 (@SUBJ>) TARGET Rel + Sg + CONJ-LU IF (*-1 Rel + Sg BARRIER POSSESSUM3 OR TRANSVERB + 3Pl OR 4Pl)(NEGATE *-1 ("soorlu") - LUSUUQ - MI CBARRIER (*) - Rel - KOMMA) ;
+MAP:M0639 (@SUBJ>) TARGET Rel + Sg + CONJ-LU IF (*-1 Rel + Sg BARRIER POSSESSUM3 OR TRANSVERB + 3Pl OR 4Pl)(NEGATE *-1 ("soorlu") - LUSUUQ - MI CBARRIER (*) - Rel - KOMMA)
+(NEGATE 0 LU LINK -*1 Sem/Hum + Rel BARRIER (*) - FIRSTNAME LINK *-1 $$KASUS + Pl BARRIER (*) - KOMMA - FIRSTNAME) ##Appositioner!!!1800-kkunni oqaluttuartarsimasut, Aalut KANGERMIUP Jens KREUTZMANNILLU Kangaamiuneersup oqaluttuaasa sumi pisarsimaneri nassaariortorpavut, Katersugaasivimmi pisortap tullia, itsarnisarsiooq Claus Andreasen oqarpoq .
+ ;
 
 MAP:M0640BX @SUBJ> TARGET Rel + Sg + 4SgPoss IF (*1 TRANSVERB - Ind + 3Sg BARRIER @SUBJ> + Rel + Sg)(NEGATE 1 POSSESSUM3) ;#Ikke 4. som subjekt for finit
 
@@ -6230,7 +6247,9 @@ MAP:M0650 @SUBJ> TARGET Rel IF (1 Rel + @SUBJ> + CONJ-C) ;
 MAP:M0651A (@<APPOS) TARGET NOMEN IF (0 $$KASUS OR Abs)(-1 ("soorlu") - @ADVL> - CONJ-C - LUSUUQ - MI LINK *-1 VFIN BARRIER (*) - KOMMA LINK -1 $$KASUS) ; #Aamma suliffeqarfiit kommunelluunniit tunuliaqutarinagit inunnik ataasiakkaanik suliniuteqartoqalerpoq, soorlu *arpattartoq tamatta nalunngisarput, Kim Godtfredsen, ikiuiniarluni tusarnaartitsisoqarnissaanik isumassarsisoq oqaluttuartorlu misigissutsit suut immini eqeersinneqarsimanersut. #Rettet fra N<PRED til @<APPOS
 
 
-MAP:M0651AA @POSS> TARGET Rel IF (*1 POSSESSUM3)(*1 TRANSVERB LINK *-1 @SUBJ> LINK *-1 _TARGET_) ;
+MAP:M0651AA @POSS> TARGET Rel IF (*1 POSSESSUM3UdenMWE)(*1 TRANSVERB LINK *-1 @SUBJ> LINK *-1 _TARGET_) 
+(NEGATE *1 Prop + LU BARRIER (*) - FIRSTNAME LINK *-1 _TARGET_ + Prop LINK *-1 Rel + Pl BARRIER (*) - KOMMA - FIRSTNAME)#1800-kkunni oqaluttuartarsimasut, Aalut KANGERMIUP Jens Kreutzmannillu Kangaamiuneersup oqaluttuaasa sumi pisarsimaneri nassaariortorpavut, Katersugaasivimmi pisortap tullia, itsarnisarsiooq Claus Andreasen oqarpoq .
+;
 
 MAP:M0651 @<APPOS TARGET Abs + $$NUMERUS IF (*-1 Prop - @PROP> + Abs + $$NUMERUS BARRIER VERB-NOTCONT)(1 KOMMA)(NEGATE 1 KOMMA LINK *1 Rel + CONJ-LU LINK 1 Abs)(NEGATE 1 KOMMA LINK 1 Abs + CONJ-LU)(NEGATE 1 KOMMA LINK *1 ("aamma") + CONJ-C BARRIER (*) - Prop) ; #må ikke tagge opremsninger
 MAP:M0651A @<APPOS TARGET LIK + Abs + $$NUMERUS IF (*-1 Prop + Abs + $$NUMERUS BARRIER VERB-NOTCONT)(NEGATE 1 KOMMA LINK *1 Rel + CONJ-LU LINK 1 Abs)(NEGATE 1 KOMMA LINK 1 Abs + CONJ-LU) ; #må ikke tagge opremsninger #angut Hans Lennertimik atlik nerivoq.
@@ -6261,6 +6280,11 @@ MAP:M0652M @<APPOS TARGET Abs + Sg IF (*-1 ("soorlu") - LUSUUQ - MI BARRIER (*) 
 
 MAP:M0652N @<APPOS TARGET $$KASUS IF (*-1 @FOC>N BARRIER (*) - KOMMA - @<APPOS LINK *-1 $$KASUS) ;
 
+MAP:M0652O @<APPOS TARGET Sem/Hum + $$KASUS IF (*1 Prop + $$KASUS + LU BARRIER (*) - FIRSTNAME LINK *-1 _TARGET_ LINK *-1 $$KASUS + Pl BARRIER (*) - KOMMA - FIRSTNAME); #1800-kkunni oqaluttuartarsimasut, Aalut KANGERMIUP Jens Kreutzmannillu Kangaamiuneersup oqaluttuaasa sumi pisarsimaneri nassaariortorpavut, Katersugaasivimmi pisortap tullia, itsarnisarsiooq Claus Andreasen oqarpoq .
+
+MAP:M0652P @<APPOS TARGET Sem/Hum + $$KASUS IF (-*1 @<APPOS + $$KASUS BARRIER (*) - FIRSTNAME); ##Appositioner!!!1800-kkunni oqaluttuartarsimasut, Aalut KANGERMIUP Jens KREUTZMANNILLU Kangaamiuneersup oqaluttuaasa sumi pisarsimaneri nassaariortorpavut, Katersugaasivimmi pisortap tullia, itsarnisarsiooq Claus Andreasen oqarpoq .
+
+
 MAP:M0517 @<APPOS TARGET Prop - OBLIQUE - Rel IF (*-1 PUNCT + LEFT BARRIER V LINK -1 N OR Prop)(*1 PUNCT + RIGHT BARRIER V) ; #Siornatigut Alata niviarsiaqqat atiannit Alatannguamit (Alatannguaq) tunngaveqartutut 	Oqaasileriffimmut saaffiginnissutigineqarnikuuvoq #ingen kasuskongruens
 MAP:M0518 @<APPOS TARGET Prop IF (*-1 KOMMA BARRIER (*) - @PROP> - @>N LINK *-1 @<APPOS LINK *-1 ("soorlu") BARRIER V) ;
 
@@ -6287,8 +6311,9 @@ MAP:M0660X (@SUBJ>) TARGET Abs + Sg - ("kinguneq") - OTHERTIME IF (*1C INTRANSVE
 (NEGATE 0 Sem/Geo + AA) #Ikke TIM+AA, men timi+3SgPoss i Timaa assoruuppalulerpoq
 ; #TRANSVERB tilføjet for at forhindre tag på obj i: SUBJ OBJ TRANSVERB INTRANSVERB. 20170425 -kinguneq for at forebygge hit på sætningsadverbialer
 
-SUBSTITUTE @N< @<APPOS TARGET N + $$KASUS IF (*-1 CONJ-C BARRIER VFIN OR $$KASUS - CONJ-C LINK -1S @<APPOS)(NEGATE -1 @<APPOS + CONJ-LU LINK -1 @<APPOS) ; #Suliffeqarfissuit soorlu Royal Arctic Line aamma Namminersornerullutik Oqartussat suleqatigiissapput.
-
+SUBSTITUTE @N< @<APPOS TARGET N + $$KASUS IF (*-1 CONJ-C BARRIER VFIN OR $$KASUS - CONJ-C LINK -1S @<APPOS)(NEGATE -1 @<APPOS + CONJ-LU LINK -1 @<APPOS) #Suliffeqarfissuit soorlu Royal Arctic Line aamma Namminersornerullutik Oqartussat suleqatigiissapput.
+(NEGATE 0 Hyb/2-2 + TUQ + $$KASUS LINK -1 Sem/Geo LINK -1 $$KASUS)#1800-kkunni oqaluttuartarsimasut, Aalut Kangermiup Jens Kreutzmannillu Kangaamiuneersup oqaluttuaasa sumi pisarsimaneri nassaariortorpavut, Katersugaasivimmi pisortap tullia, itsarnisarsiooq Claus Andreasen oqarpoq.
+;
 SUBSTITUTE (@N<) (@<APPOS) TARGET N + $$KASUS IF (**-1 $$KASUS + @<APPOS BARRIER (*) - KOMMA - @<APPOS - @N< - CONJ-C LINK -1 (@FOC>N)) ;
 
 MAP:M0660 (@SUBJ>) TARGET Abs + Sg - ("kinguneq") - OTHERTIME IF (*1C INTRANSVERB + VERB-NOTCONT + 3Sg OR INTRANSVERB + VERB-NOTCONT + 4Sg BARRIER POSSESSUM3 OR TRANSVERB OR VFIN)(NEGATE -1 ("\("))(NEGATE *1 ("(") LINK *1 INTRANSVERB + VERB-NOTCONT + 3Sg OR INTRANSVERB + VERB-NOTCONT + 4Sg BARRIER POSSESSUM3 OR TRANSVERB LINK 1* (")") LINK 1* INTRANSVERB)
@@ -6337,6 +6362,8 @@ MAP:M0690 (@SUBJ>) TARGET N IF (-1 ("\("))(1 ("\)"))(-2 @SUBJ>) ; #Parantetiske 
 MAP:M0694 (@SUBJ>) TARGET Rel IF (-*1 TRANSVERB LINK *-1 Rel LINK *1 Abs LINK *1 KOMMA)(*1 Abs BARRIER V)(NEGATE 0 Gram/Coref)(NEGATE *-1 TRANSVERB LINK *-1 @POSS>) (NEGATE 0 &&POSS34_POSS& LINK *1 POSSESSUM + &&POSS34_POSS& BARRIER (*) - Adv - OBLIQUE); # Opremsning uden transitive verber
 MAP:M0695 (@SUBJ>) TARGET Rel IF (-*1 Rel LINK *-1 Rel LINK NOT 1 POSSESSUM3 LINK *1 _TARGET_ LINK *1 TRANSVERB - OBJVERB LINK *1 KOMMA)(*1 Abs BARRIER V) 
 (NEGATE 0 Sg LINK *1 TRANSVERB + 3Pl BARRIER TRANSVERB)#Siumup siulersuisuisa Mikael PETERSENIP atorfimminit soraarnera uppernarsarpaat, taamaalilluni taanna partiimut atassuteqarunnaarluni.
+(NEGATE 0 TUQ LINK *-1 Rel + Sg BARRIER (*) - OBLIQUE)#1800-kkunni oqaluttuartarsimasut, Aalut Kangermiup Jens Kreutzmannillu KANGAAMIUNEERSUP oqaluttuaasa sumi pisarsimaneri nassaariortorpavut, Katersugaasivimmi pisortap tullia, itsarnisarsiooq Claus Andreasen oqarpoq .
+
 ; # Opremsning uden transitive verber
 MAP:M0696 (@OBJ>) TARGET Abs IF (-*1 Rel BARRIER KOMMA OR V)(-1 Abs)(0 CONJ-LU)(NEGATE *1 INTRANSVERB LINK 1 EOS) ; # Opremsning uden transitive verber
 #MAP:M0697 (@OBJ>) TARGET Abs IF (-1 Rel)(1 KOMMA OR CONJ-LU OR CONJ-LUUNNIIT OR EOS)(NEGATE *-1 TRANSVERB BARRIER (*) - @POSS> - @i->N)(NEGATE *1 INTRANSVERB LINK 1 EOS) ; # Opremsning uden transitive verber
@@ -6414,6 +6441,12 @@ MAP:M0770A @SUBJ> TARGET Abs OR Rel (1 (Gram/Conj-encl) + @SUBJ>) ;
 # =======
 #Appellativer i absolut kasus kan være element af syntagmerne subjekt, objekt, tidsangivelse, overskriftsord 
 #Vedr. subjekter se også 0324 ovenfor
+
+#Forstår ikke begrænsningen med @POSS i M9900A??
+MAP:M09900AX @i-ADVL> TARGET Lok + Num OR iNum IF (*1C Abs OR Rel - ADJEKTIVISK BARRIER (*) - ADJEKTIVISK)(*1 TUQ OR NIQ - Gram/Comp BARRIER (*) - ADJEKTIVISK) ##1800-KKUNNI oqaluttuartarsimasut, Aalut Kangermiup Jens Kreutzmannillu Kangaamiuneersup oqaluttuaasa sumi pisarsimaneri nassaariortorpavut, Katersugaasivimmi pisortap tullia, itsarnisarsiooq Claus Andreasen oqarpoq .
+
+(NEGATE 1 ADVERBIEL)(NEGATE 0 POSSESSUM - PLACE LINK -1 BOS)
+;
 
 #Tid og sted (TIME, PLACE) er typisk adverbale adled.
 MAP:M09900A @i-ADVL> TARGET Lok IF (*1C Abs OR Rel - @POSS> - ADJEKTIVISK BARRIER (*) - ADJEKTIVISK)(*1 ("illu" QAR VIK) OR TUQ OR NIQ - Gram/Comp BARRIER (*) - ADJEKTIVISK) #LANDlok BYabs
@@ -8668,6 +8701,7 @@ SELECT:8562 Abs + Sg IF (-1 ("tassa") + U + 3Sg)(NEGATE *1 INTRANSVERB + 3Sg OR 
 SELECT:8563A Abs + Pl + @OBJ> IF (*1 3PlO BARRIER V) (NEGATE 0 Part)(NEGATE 0 @SUBJ> LINK *-1 @SUBJ> BARRIER (*) - @N<)(NEGATE 0 ADJEKTIVISK)
 (NEGATE 0 $$KASUS + $$NUMERUS LINK *-1 $$KASUS + $$NUMERUS LINK *1 _TARGET_ LINK *1 OBLIQUE LINK *1 ("IP") + TUQ OR ("IR") + TUQ BARRIER (*) - Hyb/1-2)#Illersornissaqarfiup isertortumik paasiniaasartuisa FE-MEERSUT oqaatigaat.. Ad hoc regel, der skal omformuleres til BARRIER, når et teknisk problem bliver løst
 (NEGATE *-1 Lok LINK 1 VFIN LINK 1 _TARGET_ + Lok LINK *1 ("soorlu") BARRIER V) #Titartaaneq atuartitsinermini iluaqutiginiartarsimavaa ATUARTITSISSUTINI assigiinngitsuni, soorlu silamiut ingerlaasiannik oqaluttuarisani, assiliartalersortittarlugit.
+(NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER (*) - KOMMA - FIRSTNAME - @<APPOS - @i-ADVL> - @POSS>)#1800-kkunni OQALUTTUARTARSIMASUT, Aalut Kangermiup Jens Kreutzmannillu Kangaamiuneersup oqaluttuaasa sumi pisarsimaneri nassaariortorpavut, Katersugaasivimmi pisortap tullia, itsarnisarsiooq Claus Andreasen oqarpoq .
 ;
 
 SELECT:8563AA @N< + $$KASUS + ADJEKTIVISK IF (-1 $$KASUS)(0 @OBJ>); #Nalunngilaa nukappiaqqat ARLALLIT qaninniartarsimagaluaraat, soorluli
@@ -8685,6 +8719,11 @@ REMOVE:8563D Sg + ("ila") IF (0 Pl + ("ila"))(NEGATE 0 AFFINGERET)(NEGATE -1 Rel
 REMOVE:8563E Pl + ("ila") IF (0 $$KASUS LINK 1C $$KASUS + Sg)#Jørgine atuaqatimik ILAANNIK qallunaapajummik samminiagaqarpoq,
 (NEGATE 0 ("ilar") + HTR)#jf. regel 5476 nedenfor
 ;
+
+REMOVE:8563F Abs + Pl + @OBJ> IF (0 @POSS> + Pl)(*1 3PlPoss BARRIER (*) - KOMMA - Sem/Hum - @i-ADVL> - (Der/vn Rel))#1800-kkunni OQALUTTUARTARSIMASUT, Aalut Kangermiup Jens Kreutzmannillu Kangaamiuneersup oqaluttuaasa sumi pisarsimaneri nassaariortorpavut, Katersugaasivimmi pisortap tullia, itsarnisarsiooq Claus Andreasen oqarpoq .
+(NEGATE 1 @OBJ> + LU)#Taamaammat innuttaasut suliffeqarfiillu politiinit piumaffigineqarput ATORTUT assigisinnaasaallu isumannaatsumik inisseqqullugit anorersuarmiit tingitaaqqunagit, inunnut allanullu eqqaaniittunut navianarsinnaammat.
+;
+
 
 # ========================= #
 #     Final sektion         #
@@ -9458,6 +9497,7 @@ REMOVE:9500B Sg + $$KASUS IF (1 Pl + $$KASUS + @N<) ;
 REMOVE:5850 3PlPoss IF (-*1 @POSS> + 3SgPoss OR 4SgPoss BARRIER 3PlPoss)(0 3SgPoss); #vælg sing. possessor hvis sing til venstre
 REMOVE:5851 3PlPoss IF (-*1 @POSS> + Sg )(0 3SgPoss) #vælg sing. possessor hvis sing til venstre
 (NEGATE -1 Rel + LU LINK -1 Rel)#Marsip Venusillu SANIATIGUT
+(NEGATE *1 VFIN - 3Pl BARRIER V LINK -*1 Rel + Pl)#1800-kkunni oqaluttuartarsimasut, Aalut Kangermiup Jens Kreutzmannillu Kangaamiuneersup OQALUTTUAASA sumi pisarsimaneri nassaariortorpavut, Katersugaasivimmi pisortap tullia, itsarnisarsiooq Claus Andreasen oqarpoq .
 ;
 REMOVE:5851B Abs + Pl IF (0 Abs + Sg)(1C Abs + Sg - POSSESSUM3) ; #Ambigiøse possessum ud fra adled eller apposition
 REMOVE:5851B Abs + Pl IF (0 Rel + Pl - Num)(1C 3PlPossUdenMWE)(NEGATE *1 TRANSVERB + 3PlO BARRIER V) ; #Ambigiøse possessum ud fra adled eller apposition
@@ -9596,8 +9636,10 @@ REMOVE:9939B 3PlPoss IF (0*W 3Sg)(0 3SgPoss)(NEGATE *-1 3Pl)(NEGATE -1 Pl) #Poss
 (NEGATE -1 Rel + Sg LINK *-1 CONJ-C LINK *-1 Rel + Sg)#1800-kkunni oqaluttuartarsimasut , Aalut Kangermiup Jens Kreutzmannillu Kangaamiuneersup OQALUTTUAASA sumi pisarsimaneri
 (NEGATE *-1 Rel + Pl BARRIER (*) - %ContHypotagme)#Aammattaaq aviisit nunarsuaq tamakkerlugu peqatigiiffiata aaqqissuisullu nunarsuaq tamakkerlugu PEQATIGIIFFIATA ippinnartoqartippaat tusagassiornermut maalaaruteqartarfiup Naalakkersuisunut qanittumik attuumassuteqarnissaa
 ;
-REMOVE:9939C 3SgPoss IF (0 3PlPoss LINK -*1 Rel + Pl BARRIER (*) - %ContHypotagme)
+
+REMOVE:9939C 3SgPoss IF (0 3PlPoss LINK -*1 Rel + Pl BARRIER (*) - %ContHypotagme - KOMMA - FIRSTNAME)
  ;
+
 REMOVE:9939C 3PlPoss IF (-1*W 3Sg OR 3SgO)(0 3SgPoss)(NEGATE *-1 3Pl) #Possessor 3Pl hvis 3Pl i omgivende sætninger
 (NEGATE -1 Rel + LU LINK -1 Rel)#Marsip Venusillu SANIATIGUT
 #(NEGATE *-1 Rel + Pl BARRIER POSSESSUM3)#Naalakkersuisut Siulittaasuat Kim Kielsen aalajangerpoq imigassat aalakoornartortallit 2,25 procentimit kimittunerusut tamarmik Nuummi, Kapisilinni Qeqertarsuatsiaanilu TUNINIARNEQARATARNERI sassaalliutigineqartarnerilu inerteqqutigineqarallassasut.
@@ -9757,6 +9799,8 @@ REMOVE:9967H Num + @SUBJ> IF (0 Num + @POSS> LINK 1 Num + Rel + LU LINK 1 3PlPos
 MAP:M9967I @SUBJ> TARGET Abs + Sg IF (1 ("tamakker") LINK *1 INTRANSVERB + TARIAQAR + 3Sg OR NIQAR + 3Sg); #NUNA tamakkerlugu eqqarsaatigisariaqarpoq.
 
 REMOVE:9967J 3PlPoss IF (0 3SgPoss LINK *-1 V + 3Sg BARRIER Rel + Pl - ("aak") - ("aaq"));#Ataasinnguaq appikkaluarlunilu qissaserpoq ilaasali oqaluttuaraat, kikkunnit qinngasaarneqartarsimanersoq, aammalu sunaaffa ANGAJOQQAAVISA avissimanerat meeraqataasa qinngasaarutigisaraat.
+
+REMOVE:9967K @POSS> IF (0 Abs + @OBJ>)(*-1 VFIN BARRIER V LINK *1 @CL-<CIT + 3PlO BARRIER V LINK *-1 Abs + LU BARRIER (*) - OBLIQUE LINK -1 _TARGET_); #Taamaammat innuttaasut suliffeqarfiillu politiinit piumaffigineqarput ATORTUT assigisinnaasaallu isumannaatsumik inisseqqullugit anorersuarmiit tingitaaqqunagit, inunnut allanullu eqqaaniittunut navianarsinnaammat.
 
 
 ##############################
