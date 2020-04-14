@@ -2962,6 +2962,7 @@ SELECT:0043AXX Abs + $$NUMERUS + &&IV_SUBJ& - 2SgPoss IF (*0 ORATIOOBLVERB BARRI
 (NEGATE 0 ("allaat") + Adv OR ("assut") + Adv) #alla+3PlPoss usandsynlig
 (NEGATE 1 POSSESSUM) #så er det mere sandsynligt Rel
 (NEGATE 0 Par LINK 1 KOMMA LINK *1 ORATIOOBLVERB)
+(NEGATE 0 Par LINK *1 Abs + &&IV_SUBJ& BARRIER (*) - FIRSTNAME LINK *1 ORATIOOBLVERB + &&IV_SUBJ&)#Qasigiannguani aalisartuuneq piniartuunermit annertunerugaluartoq, piniartunut piaartumik ILIUUSEQARTOQARTARIAQARTOQ Jess Svane isumaqarpoq.
 ; 
 
 SELECT:0043A Abs + Sg + Der/nv - NIQ IF (-1 Prop + Abs)(*1 INTRANSVERB + 3Sg LINK NOT T:NexusHøjre)((NOT 0 MI) OR (NOT 0 Lok)) 
@@ -3613,6 +3614,8 @@ REMOVE:0158 N IF (0 Prop + INSTITUTION) (1 POSSESSUM) ; #Possessum kongrurerer i
 
 REMOVE:0160 Via IF (0 NAME + KKUT LINK *1 3Pl OR 3PlO )(NEGATE 0 ("alla") LINK -1 BOS) ;
 # Filtrerer Via fra NAME + KKUT som subjekt eller objekt
+
+REMOVE:0161 ("Svane") + Sem/Fem IF (0 Prop - FIRSTNAME LINK -1 FIRSTNAME); #Kvindenavnet bæres kun af to personer i DK, så højst usandsynlig
 
 REMOVE:0170 ("\\p{Lu}.*i"r) IF (0 ("\\p{Lu}.*[^i]"r)) ;
 #Fjerner Ruthi og vælger Ruth m.fl. NB tags er ad hoc og altså ikke listede! #OBS: fjerner også biologi for biolog
@@ -4924,7 +4927,6 @@ MAP:OrObl453 @CL-<CIT TARGET CONT IF (*-1 ORATIOOBLVERB + V - Aeq - @SUBJ> BARRI
 
 #Intransitiv ("tusar") har oo hvis den ikke har fået taama eller Ins 
 MAP:OrObl455 @CL-<CIT TARGET CONT IF (*-1 ("tusar") + INTRANSVERB - TAQ BARRIER V)(NEGATE *-1 ("tusar") + INTRANSVERB LINK *-1 Ins OR ("taama")); #Kingorna tusaramik Putugormiut toqorarneqanngitsut kingumut nunaminnut uterput.
-
 
 #GFC ved NAR. eqqarsaatigeqqajaanarpoq taalliortoq nammineq sivisuumik nappaateqarnermigut inuunerup ukiaanilusooq ISSIMAMMAT. 
 MAP:TestOqaatigaa02B @CL-<CIT TARGET Cau + &&IV_SUBJ& IF (*-1 Abs + &&IV_SUBJ& LINK *-1 (/\"eqqarsar\"\ UTE\ Der/vn\ GE/l) + NAR + 3Sg);
@@ -6281,7 +6283,7 @@ MAP:M0652K @<APPOS TARGET $$KASUS IF (*-1 @FOC>N BARRIER $$KASUS LINK *-1 $$KASU
 
 MAP:M0652L @<APPOS TARGET $$KASUS + $$NUMERUS + Prop - CONJ-C IF (*-1 $$KASUS + $$NUMERUS - CONJ-C - UNA - UKU - @PROP> - @>N BARRIER DIRTALESLUT OR (*) - KOMMA  - Prop)
 (NEGATE -1 DIRTALE)
-(NEGATE 1 ORATIOOBLVERB LINK NOT *1 @CL-<CIT)
+#(NEGATE 1 ORATIOOBLVERB LINK NOT *1 @CL-<CIT)
 (NEGATE 0 Sem/Fem LINK -1 KOMMA LINK -1 Sem/Mask)(NEGATE 0 Sem/Mask LINK -1 KOMMA LINK -1 Sem/Fem)#<APPOS kræver i hvert fald overensstemmelse på køn
 (NEGATE 0 Sem/Hum OR Orth/Append LINK *-1 Sem/Hum + $$KASUS - @PROP> - @>N OR Orth/Append + $$KASUS - @PROP> BARRIER (*) - Prop - KOMMA - CONJ-C) 
 (NEGATE -1 Rel + &&POSS34_POSS& LINK 1 Rel + &&POSS34_POSS&)#Kujataata KITAATA imartaani timmissat umiarsuarnut aporartartut 2000-it missaanniinnerat eqqoriaarujussuarluni missingiineruvoq 
@@ -8506,6 +8508,7 @@ REMOVE:8417A KASUS - $$OBLIQUE IF (0 $$OBLIQUE + CONJ-C) (-1 $$OBLIQUE - TIME - 
 
 SELECT:8418 Par + @CL-<CIT IF (*-1 ORATIOOBLVERB)(NEGATE *1 V BARRIER KOMMA) #imaassinnaavoq imminut tuppallersarniarluni qiimmassarniarlunilu imernerusimasoq, taamaassimanerpa?
 (NEGATE *-1 ("tassa") BARRIER ORATIOOBLVERB LINK *-1 ("tassa"))
+(NEGATE 0 @SUBJ> + &&IV_SUBJ& LINK NOT *-1 Abs + &&IV_SUBJ& BARRIER KOMMA LINK *1 VFIN + &&IV_SUBJ&)#.. unnugu arfineq pingasut missaanni Nuummut tikinnissaat, Air Greenlandip timmisartunik AQUTSISOQARFIANEERSOQ, Hans Baadsgård oqaluttuarpoq.
 ;
 SELECT:8419 Par + 3Sg IF (1 CONT + 4Sg + @CL-CIT> OR CONT + 4Sg + @CL-<CIT);
 
@@ -10035,13 +10038,21 @@ REMOVE Par + @CL-CIT> IF (0 N LINK *1 ORATIOOBLVERB + QAR LINK *-1 @i->N LINK *-
 
 SELECT (@CL-<CIT) IF (*-1 ORATIOOBLVERB BARRIER V-NOT-Par)(NEGATE 0 @OBJ> LINK *1 Par + 3SgO BARRIER V)
 (NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER (*) - Adv)#Nalunaarutigalugulu ANGERLARSIMAFFEQANNGITSUT qanoq amerlatiginerannik
+(NEGATE 0 @SUBJ> + &&IV_SUBJ& LINK NOT *-1 Abs + &&IV_SUBJ& BARRIER KOMMA LINK *1 VFIN + &&IV_SUBJ&)#.. unnugu arfineq pingasut missaanni Nuummut tikinnissaat, Air Greenlandip timmisartunik AQUTSISOQARFIANEERSOQ, Hans Baadsgård oqaluttuarpoq.
+
 ;
 SELECT:9969 TUQ + Abs IF (-1 V + U )(1 KOMMA OR EOS)(NEGATE -1 TEMPUSVERB + Par) ;
 REMOVE @CL-CIT> IF (1 @N<) ; # Hvis det er en CL-CIT, er der ikke et adnominalt adled til højre for det. I så fald er det et objekt, eller det ord der er tagget som @N< er CL-CIT. Naasorli ajortuusoq paasigaanni. 
-SELECT:9970 (@CL-CIT>) IF (*1 ORATIOOBLVERB + V BARRIER V-NOT-Par LINK NOT 1 ("\:") LINK NOT -2 ("taama"))(NEGATE 0 Abs + Sg + Der/nv LINK -1 Sg + Abs)(NEGATE 0 Abs + Pl + Der/nv LINK -1 Sg + Pl)#Uden NEGATE hit på adled til objekt
+SELECT:9970A (@CL-CIT>) IF (*1 ORATIOOBLVERB + V BARRIER V-NOT-Par LINK NOT 1 ("\:") LINK NOT -2 ("taama"))(NEGATE 0 Abs + Sg + Der/nv LINK -1 Sg + Abs)(NEGATE 0 Abs + Pl + Der/nv LINK -1 Sg + Pl)#Uden NEGATE hit på adled til objekt
 (NEGATE *-1 @SUBJ> + Pl LINK 1 _TARGET_ LINK *1 ORATIOOBLVERB + NIQAR ) #Ilaqutaasut ikiorneqarumasut sumut saaffiginnissinnaanerannik paasitinneqareerput. Reglen ikke helt vandtæt, men næsten jf. Lene Espersenip timmisartuani aquttut Kabul-imut missinnaanngitsut paasitinneqarput
 (NEGATE *1 ORATIOOBLVERB LINK *-1 Par + &&IV_SUBJ& LINK *-1 _TARGET_ + Abs + &&IV_SUBJ&)#Kalaallit meerartaat 1.000-it missaanni ITTUT inooqatigiinnikkut ilungersunartunik ajornartorsiuteqartut , immikkut ilisimasallit naliliipput .
 ;
+
+REMOVE:9970B Par + @CL-<CIT IF (0 @SUBJ> + &&IV_SUBJ& LINK *1 VFIN + &&IV_SUBJ&) 
+(NEGATE *-1 Abs + &&IV_SUBJ& BARRIER KOMMA)#.. unnugu arfineq pingasut missaanni Nuummut tikinnissaat, Air Greenlandip timmisartunik AQUTSISOQARFIANEERSOQ, Hans Baadsgård oqaluttuarpoq.
+(NEGATE *-1 ORATIOOBLVERB - 3Sg - 3Pl BARRIER (*) - CONT - Adv)#Nalunngilara sangiakujulluni qinngasaaraluni taamatut OQALUTTOQ, Eskild oqarpoq,
+;
+
 SELECT:9971 @CL-CIT> IF (*-1 @SUBJ> + 4SgPoss)(*1 ORATIOOBLVERB + VFIN LINK NOT -1 ("taama")) ;
 SELECT:9971A HTR - V IF (*-1 @i-MIK-OBJ> BARRIER (*) - @i-ADVL> - @N<) ;
 #Karlssons lov anden version: Vælg den mest komplette af flere ord, hvoraf ingen er hele stammer
