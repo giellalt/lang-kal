@@ -1632,7 +1632,7 @@ SET EXCLAMATION = ("tipi" N) | (SSUSIQ 3SgPoss) | (SSUSIQ Pl 3PlPoss) | WEATHER 
 LIST Mask = "Aron" "Egon" "Eri" "Erik" "Eskild" "Hans" "Jens" "Manu" "Mik" "Mikkel" "Miki" "Morten" "Niels" "Ole" "Per" "Piitaq" "Rasmus" "Sean" "Trond" Sem/Mask ;
 LIST Fem = "Anette" "Anna" "Arnaq" "Dagmar" "Emilie" "Gitte" "Hanne" "Jane" "Karen" "Kirsten" "Maliina" "Margrethe" "Meeraq" "Mette" Sem/Fem ;
 LIST Sur = "Jensen" "Jenseni" "Møller" "Olsen" "Rasmussen" "Trosterud" Sem/LastName ;
-LIST TITEL = "borgmester" "fru" "Gammel" "hr" "hotel" ("ilinniar" TIP HTR TUQ) "kunngi" "lektor" "minister" "miss" "MS" "nakorsaq" "naalagaq" (/"naalagaq"\ LIRSUR\ Der/nv\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TUQ/l) ("pisoq" TAQ) "planchef" "præsident" ("qalipap" HTR TUQ) "senator" ("siulittar" TUQ) ("siunnersor" HTR TUQ) ("siunnersuisoq") ("ulloriarsior" TUQ) "ulloriarsiortoq";
+LIST TITEL = "borgmester" "fru" "Gammel" "hr" "hotel" ("ilinniar" TIP HTR TUQ) "kunngi" "kunngissaq" "lektor" "minister" "miss" "MS" "nakorsaq" "naalagaq" (/"naalagaq"\ LIRSUR\ Der/nv\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TUQ/l) ("pisoq" TAQ) "planchef" "præsident" ("qalipap" HTR TUQ) "senator" ("siulittar" TUQ) ("siunnersor" HTR TUQ) ("siunnersuisoq") ("ulloriarsior" TUQ) "ulloriarsiortoq";
 LIST COUNTRY = "Canada" "Danmark" "Finland" "Grønland" "Island" "Kalaallit Nunaat" "Norge" "Rusland" "Sverige" "Tyskland" "USA" ; 
 LIST GeoProp = Sem/Geo "Danmark" "Finland" "Gladsaxe" "Mose" "Tåstrup" ;
 SET Fornavn = Mask | Fem ;
@@ -1971,6 +1971,7 @@ REMOVE:tidlig0022 3SgPoss IF (0 3PlPoss - Err/Sub)(*-1 Rel + Pl BARRIER (*) - %A
 
 #taamaali+CONT vist altid CL-ADVL når i position 1 og endnu mere sandsynligt altid hvis sammen med LU, men tagges ofte fejlagtigt som i-ADVL til følgende verbalnomen
 MAP:M_tidlig0030 @CL-ADVL> TARGET ("taamaali") + CONT + LU IF (-1 BOS OR KOMMA);
+
 
 #############################################
 # Et særligt afsnit til "unnerpoq/ unnerpaa #
@@ -2653,6 +2654,14 @@ REMOVE:0099Y Num + POSSESSUM IF (*-1C Rel + Sg BARRIER (*) - CONT) ;
 REMOVE:0099AA Gram/Ord IF (NEGATE *0C Gram/Ord) ;
 SELECT:0099AA Gram/Ord IF (*0C Gram/Ord) ; 
 
+#Årstal
+MAP:årstal01 @>N TARGET ("ukioq") + Abs IF (1 ("[0123456789]{4}"r))
+#(NEGATE 0 Trm LINK 2 NUMHOVED)#sillimasertinnerminut UKIUMUT 1000 kroninik akiliisarpoq.
+;
+
+#Absolutte årstalsangivelser må ikke læses som SUBJ eller OBJ
+MAP:årstal02 @ADVL> TARGET ("[0123456789]{4}"r) + Abs IF (-1 ("ukioq") + Abs LINK *-1 Abs + &&IV_SUBJ& BARRIER V LINK *1 _TARGET_ LINK *1 VFIN + &&IV_SUBJ& BARRIER CONT); #Umiartortut unnuiffissaqarnissaat isumaginiarlugu Sømandsmission UKIOQ 1905 nunatsinni aallarnerpoq, umiartortullu assigiinngitsutigut isumagineqartalerput, soorlu nerisaqartinneqartarlutik, juullikkunni tunissutissanik tunineqartarlutik, naalagiartinneqartarlutik, inuttulluunniit ajornartorsioraangamik oqaloqatigineqartarlutik.
+
 
 ### MODUS ###
 #===========#
@@ -3079,6 +3088,7 @@ REMOVE:opremsning03 Abs + Pl - Num IF (0 Rel + Pl LINK *1 3PlPoss - ("Kalaallit 
 (NEGATE -1 BOS LINK 1 _TARGET_ LINK *1 3PlO BARRIER (*) - %AmbiguøsN)#OQATSIARTARNERILLI nalaatsornerinnaat pissutigalugit kigaatsumik ilikkariartuaalerpara.
 (NEGATE *1 INTRANSVERB + VFIN + 3Pl BARRIER V )#Siunnersuut ilimagisatut akuerineqarpat , TAKORNARISSAT ukiumut 24.000-it missaanniittartut tamarmik 525 koruuninik Nunatta karsianut akiliissapput .
 (NEGATE 0 Pl + 3PlPoss LINK -1 Rel + Pl) #Sulisut ilaat 49-t suliunnaarsinneqarnissaannut pilersaarummik ilisimatippai.
+(NEGATE 0 Abs + &&ContObj& LINK 1 ADJEKTIVISK + &&ContObj& LINK 1 CONT + &&ContObj&)#Tassa piffissaq annertuneq ujaasinermut atussallutigu ALLAKKALLI annikitsuinnaat pissarsiaralugit.
 ;
 #(NEGATE 0 Abs + Pl LINK NEGATE *1 Rel + Pl BARRIER 3PlPoss LINK * NIQ + 3PlPoss BARRIER V LINK *1 3PlO BARRIER Abs + Pl)#Politiit arlallit sakkulersorsimallutik arnap najugaqarfia unguaat inissiarsuarmilu NAJUGALLIT allat isersimaannarnissaannik qinnuigalugit.
 #(NEGATE 1 Abs + Pl) #Sisimiuni politiit sapaatip akunnerani kingullermi qamutit aqqanillit normuiarpaat, *tassaanerusut taxat, Sisimiut aviisiat Silleq nittartakkamini allappoq. Forstår ikke denne NEGATE. Den smadrer de fleste korrekte opremsninger og kan iøvrigt slettes uden at eksempelsætningen går i stykker
@@ -5556,7 +5566,9 @@ MAP:M0408Dnum @>N TARGET TIME IF (1 Num + OBLIQUE - CLOCK)(NEGATE *1 ("siuneq"))
 #(NEGATE 1 POSSESSUM - NNGUR) ; #AASAQ 1989; Folketingimi arnat qinersisinnaatitaalerneranniit ukiut 100-nngornerat nalliuttorsiutigineqarpoq.
 MAP:M0408Fnum (@i-MWE>N) TARGET NUMHOVED + Abs + Pl IF (1 iNum + 3Sg) ; #20180912 skal ikke være i->N #enhed i Abs før tal er SUBJ eller OBJ
 MAP:M0408Gnum @POSS> TARGET OTHERTIME IF (1 iNum + POSSESSUM) ;
-MAP:M0408Hnum @N< TARGET Num + Abs - POSSESSUM IF (-1 SEASON) ;
+MAP:M0408Hnum @N< TARGET Num + Abs - POSSESSUM IF (-1 SEASON) 
+(NEGATE -1 ("ukioq") LINK 1 _TARGET_ + ("[0123456789]{4}"r) LINK 1 CONT + 3SgO)
+;
 MAP:M0408Inum @i-MWE>N TARGET PRENUM (1 iNum); #rettet fra i->N. #Taamaattoq SAK isertitsinikkut inissisimalluarnersaagallarpoq plus 3-qarami
 MAP:M0408Jnum @>N TARGET PRENUM (1 Num);
 MAP:M0408Knum @>N TARGET NUMHOVED + Abs IF (1 iNum - @N< - AFFINGERET);
@@ -5576,7 +5588,9 @@ MAP:M0408V @>N TARGET NUMHOVED + Abs + Sg (1 Num)(-1 BOS OR CLB OR PUNCT)
 (NEGATE 1 @N<) ; #Kapitali 1
 
 MAP:M0409A (@HNOUN) TARGET N OR Gram/Abbr OR Num IF (NEGATE *0 V - @i-ADVL> OR OCCATION) #PL 20190503 undtaget @i-ADVL> da PISARA HNOUN i inuuissiorama pisara.
-(1 ParagrafSlut)(NEGATE 0 $$KASUS LINK -1 $$KASUS LINK NOT 0 Ins + Sg - POSSESSUM); #20100827 Safe headlines
+(1 ParagrafSlut)
+(NEGATE 0 $$KASUS LINK -1 $$KASUS LINK NOT 0 Ins + Sg - POSSESSUM); #20100827 Safe headlines
+;
 MAP:M0409B @HNOUN TARGET N OR Gram/Abbr OR Num IF (0 UNA OR UKU OR UKUA) (1 EOS)(NEGATE -1C N) ; #savaanngilaq angutealanguna; qimmitit susorsuit-uku
 
 
@@ -5690,12 +5704,17 @@ MAP:M0475 @OBJ> TARGET N + Abs + Sg + CONJ-C OR Prop + Abs + Sg + CONJ-C IF (1 (
 
 MAP:M0480 (@POSS>) TARGET POSS_ABBR IF (1 POSSESSUM3); #sap. akunnera
 
-
-MAP:M0510 (@OBJ>) TARGET Abs + Sg IF (*1 Abs + Sg BARRIER V LINK 1 Cont + 3SgO OR ContNeg + 3SgO)(NEGATE *1 V + 3Sg BARRIER Abs + Sg)
-(NEGATE *1 NIQAR + 3Sg LINK *-1 Cont + 3SgO BARRIER V LINK *-1 _TARGET_ BARRIER (*) - Num - Adv - OBLIQUE) #ILLU 400.000 kronilerlugu tunineqarpoq
+MAP:M0510 @OBJ> TARGET Abs + &&ContObj& IF (*1 CONT + &&ContObj& BARRIER (*) - Der/vn - Num - ADJEKTIVISK) #Kunngissaq Frederik 9. septembarimi NUNA tamakkerlugu katersinissamik nassuiaanneqarpoq
+(NEGATE *1 VFIN + PASSIV + &&IV_SUBJ& LINK *-1 CONT + &&ContObj& LINK *-1 _TARGET_ + &&ContObj& + &&IV_SUBJ& BARRIER (*) - Num - Adv - OBLIQUE LINK NEGATE *-1 Abs)#ILLU 400.000 kronilerlugu tunineqarpoq.
 (NEGATE -1 ("E") LINK 1 Num + Abs + Sg LINK *1 VFIN + 3Sg BARRIER (*) - %ContHypotagme)#E 20 Odense killeqqullugu ingerlavoq.
+(NEGATE *1 VFIN + &&IV_SUBJ& LINK *-1 FossileredeCont + &&ContObj& LINK *-1 _TARGET_ + &&ContObj& + &&IV_SUBJ&)#NUUK 2010-mi agguaqatigiissillugu plus 2,6 gradenik kiassimavoq.
+;
+#MAP:M0510 @OBJ> TARGET Abs + &&ContObj& IF (*1 CONT + &&ContObj& BARRIER (*) - Abs) ;#Kunngissaq Frederik 9. septembarimi NUNA tamakkerlugu katersinissamik nassuiaanneqarpoq
+#MAP:M0510 (@OBJ>) TARGET Abs + Sg IF (*1 Abs + Sg BARRIER V LINK 1 Cont + 3SgO OR ContNeg + 3SgO)(NEGATE *1 V + 3Sg BARRIER Abs + Sg)
+#(NEGATE *1 NIQAR + 3Sg LINK *-1 Cont + 3SgO BARRIER V LINK *-1 _TARGET_ BARRIER (*) - Num - Adv - OBLIQUE) #ILLU 400.000 kronilerlugu tunineqarpoq
+#(NEGATE -1 ("E") LINK 1 Num + Abs + Sg LINK *1 VFIN + 3Sg BARRIER (*) - %ContHypotagme)#E 20 Odense killeqqullugu ingerlavoq.
 
-; #gjort mindre restriktiv
+#; #gjort mindre restriktiv
 
 MAP:M0510 @OBJ> TARGET Abs - TIME IF (1 Abs + CONJ-C + @OBJ>) ; #Paratakse #Aamma suliffeqarfiit kommunelluunniit tunuliaqutarinagit inunnik ataasiakkaanik suliniuteqartoqalerpoq,
 
