@@ -1486,7 +1486,7 @@ SET DIRTALE = TALE OR OQARnUSIQ ;
 
 LIST CALL = "atser" "atsiup" "naalap" ; #sandsynlighed for ateq ved disambiguering mellem ateq og ate.
 
-LIST humverb = ("eqqarsar" UTE GE) "eqqartor" "innar" (/\"inuk\"\ U\ /l) "iser" "isiginnaar" "kaap" "naalap" "nalunaar" (/"nassip"\ Gram/TV\ UTE/l) "oqqap" ("pisiaq" GE) "sana" "sinip" ("sinnattoq" GE) "suli" "uppere"; # Verb der vil ha humane subj, og ikke er i andre set
+LIST humverb = (/"attavik"\ GE\ Der/nv/l) ("eqqarsar" UTE GE) "eqqartor" "innar" (/\"inuk\"\ U\ /l) "iser" "isiginnaar" "kaap" "naalap" "nalunaar" (/"nassip"\ Gram/TV\ UTE/l) "oqqap" ("pisiaq" GE) "sana" "sinip" ("sinnattoq" GE) "suli" "uppere"; # Verb der vil ha humane subj, og ikke er i andre set
 LIST thingverb = "nalunaap" "ersip" ;
 LIST thingobjverb = ("qaammaqqut" GE) ("qaammaqqutige") ("qamip" Gram/TV) ; #transitive verb with non-human object 
 LIST humanobjverb = ("ajoqersor");
@@ -1646,7 +1646,7 @@ SET FIRSTNAME = (Sem/Mask Prop) | (Sem/Fem Prop) | Mask | Fem | ("Frederik") | (
 SET NAME = FIRSTNAME | Sur ;
 SET NOT-FIRST = WORD - FIRSTNAME ;
 
-LIST INSTITUTION = "Folketing" "Folketinget" "Inatsisartut" (/"ingerla"\ Gram/IV\ TIP\ Der/vv\ Gram/TV\ HTR\ Der/vv\ VIK/l) "Naalakkersuisut" "Nutserinermut Oqaluttaanermullu Immikkoortortaq" "Oqaasileriffik" "Oqaasilerinermut, Atuakkialerinermut Tusagassiuutilerinermullu Immikkoortortaq" "Oqaasiliortut" ;
+LIST INSTITUTION = "Folketing" "Folketinget" "Inatsisartut" (/"ingerla"\ Gram/IV\ TIP\ Der/vv\ Gram/TV\ HTR\ Der/vv\ VIK/l) "ministereqarfik" "Naalakkersuisut" "Nutserinermut Oqaluttaanermullu Immikkoortortaq" "Oqaasileriffik" "Oqaasilerinermut, Atuakkialerinermut Tusagassiuutilerinermullu Immikkoortortaq" "Oqaasiliortut" ;
 
 LIST FAM_UNIK = "ui" "nuliaq" ("angut" 3SgPoss) ("angut" 3PlPoss) ("angut" 4SgPoss) "anaana" "arnarsiaq" "ataata" "aana" "aanaq" "aanarsiaq" "ittoq" "aata" "aataq" "aataa" ;
 # betegnelser som sjældent optræder uden for sing.
@@ -2762,7 +2762,9 @@ REMOVE:0001Z N - FAM IF (0 Prop - Sem/Geo + Abs LINK *1 HUMVERB + INTRANSVERB OR
 (NEGATE 0 Abs + &&IV_SUBJ& LINK *1 VFIN + &&IV_SUBJ& BARRIER V)#POLITIIT KNR-ip tusagassiortuanut pisoqarfiusumiittumut ilisimatitsipput
 ;
 
-REMOVE:0001Z N IF (0 Prop - Sem/Geo + Rel - TUQ + $$NUMERUS LINK *1 HUMVERB + TRANSVERB BARRIER CONJ-C OR Prop + Rel OR Rel + $$NUMERUS)(NEGATE 1 POSSESSUM)(NEGATE 0 $$KASUS LINK 1 $$KASUS) ; #Manu iserpoq. Manu er mest sandsynligt et proprium. #Ulloriaatima amerlassusii pappiliamut allariarlugit taanna pappiliaq amusartumut ileriarlugu parnaarutissara. Ulloriaatima er ikke Prop.
+REMOVE:0001Z N IF (0 Prop - Sem/Geo + Rel - TUQ + $$NUMERUS LINK *1 HUMVERB + TRANSVERB BARRIER CONJ-C OR Prop + Rel OR Rel + $$NUMERUS)(NEGATE 1 POSSESSUM)(NEGATE 0 $$KASUS LINK 1 $$KASUS) #Manu iserpoq. Manu er mest sandsynligt et proprium. #Ulloriaatima amerlassusii pappiliamut allariarlugit taanna pappiliaq amusartumut ileriarlugu parnaarutissara. Ulloriaatima er ikke Prop.
+(NEGATE 0 Orth/Copy LINK 0 HUMAN + Rel + Sg LINK *1 TRANSVERB + 3Sg BARRIER V)#MINISTEREQARFIUP Nuka attaviginiarsaraa, oqaluttuunniarlugu qinnuteqaataa akuerineqarsimasoq.
+;
 REMOVE:0001Z1 Prop - Sem/Geo + Abs IF (0 N LINK *1 thingobjverb + TRANSVERB BARRIER INTRANSVERB) ;
 REMOVE:0001Z2 iProp IF (0 U) ; #Mikisuullunga ...
 # Appositional proper noun without comma
@@ -9532,7 +9534,10 @@ SELECT:5999AA ("assik") + LIUR IF (0 ("assilior"))(-1 Rel) ; #nunap@i-POSS> assi
 SELECT:5999AB ("akuere") + HTR IF (0 IR OR IRSIR) ;
 REMOVE:5999AC ("ataaseq") IF (0 ("ataatsimiip")) ;
 REMOVE:5999AD ("inuk") + U + VIK + SIUR IF (0 ("inuuissior")) ;
-REMOVE:5999AE N IF (0 INSTITUTION) ; #Naalakkersuisut
+REMOVE:5999AE N IF (0 INSTITUTION) #Naalakkersuisut
+(NEGATE 0 Prop + Orth/Copy) ; #MINISTEREQARFIUP Nuka attaviginiarsaraa, oqaluttuunniarlugu qinnuteqaataa akuerineqarsimasoq.
+
+
 #Partiklerne
 REMOVE:5860 ("taama") + Interj IF (0 ("taama") + Adv LINK 1 V) ;
 REMOVE:5861 ("alla") + POSSESSUM IF ( 0 ("allaat") + Part ) ; #
