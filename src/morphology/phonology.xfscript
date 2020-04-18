@@ -1,0 +1,478 @@
+! ==================================================== !
+! Fil for at generere de morfofonologiske reglerne til !
+!             vor grønlandske analysator               !
+! ==================================================== !
+
+! ! Innkommenter de følgende linjer dersom man vil kompilere reglerne direkte mot
+! ! leksikon-fst-en. Husk også på at endre i configure.ac:
+! ! AC_SUBST([LEXREF_IN_XFSCRIPT], ["yes"])
+!
+! ! Husk også på at kommentere inn de to første linjer i det siste regex, der
+! ! alt sættes sammen.
+!
+! ! Et slikt oppset tar længre tid, men gir en mindre og mer kompakt fst
+!
+! echo << Vi laster inn leksikonet... >>
+! 
+! load stack morphology/lexicon.&FST&
+! define Lexicon ;
+
+echo << Vi definerer vokalerne... >>
+
+define Vow [ a | e | i | i2 | o | u | u2 | í | á | ú | î | â | û | ê | ô | ĩ | ã | ũ ] ;
+! u2 er u i låneord, der ikke skal ændres til o foran r/q: Puurunen, Turunen
+
+echo << Vi definerer konsonanterne... >>
+define Cns [ c2 | c | d | f | g | g2 | g3 | g4 | h | j | ĸ | k | l | m |
+             n | p | q | r | s | t | v | v2 ]  ; !v2 er v-er i låneord, der ikke skal slettes. 
+
+! These symbols will be turned into real quotes by a separate processing step;
+! the quasi-rule here is just to silence a warning in (hfst-)xfst.
+!Trond define esc [ "«7" -> "«7" ,, "»7" -> "»7" ,, "[<]" -> "[<]" ,, "[>]" -> "[>]" ] ;
+
+echo << Vi definerer sæt af segmenter... >>
+define Segment [ Cns | Vow ] ;
+define Uvular [ q | r ] ;
+define Kra [ q | ĸ ] ; !Ny 20180813
+define NonUvular [ Cns - Uvular ] ;
+
+echo << Vi definerer Dummy-symboler >>
+define Dummy [ %> | %< | « | » | %TRUNC | %CLIT | %STRUNC | %POSSESSORTRUNC | %PRONTRUNC | %ROD | %likTRUNC | %VCTRUNC | %CVqTRUNC | %VTRUNC | %EPENT | %PROP | %ALTINF | %ProgI ] ;
+
+echo << Vi definerer de ikke fonetisk betingede allomorfer >>
+define c2slet [ c2 -> 0 || Cns _ %> ] ;
+define IndikativVu [ v -> p || [ p | r ] %> _ [ u | i | a | o ] ] ;
+define Possessortrunc [ i t -> i || [ o | u | i | e ] (Cns) %> (%TRUNC) _ %POSSESSORTRUNC ] ;
+define Assibilering1 [ t -> s || i %POSSESSORTRUNC _ ] ;
+define PossessortruncVaek [ %POSSESSORTRUNC -> 0 ] ;
+define Prontrunc [ s -> 0 || u %> %PRONTRUNC _ ] ;
+define Pronvar1 [ u -> 0 || a %ROD _ u n ] ;
+define Pronvar2 [ v -> 0 || u _ %ROD u n g ] ;
+define Pronvar3 [ v %ROD -> g g || u _ u u n a ] ;
+!define Pronvar4 [ [ k | g ] %ROD %TRUNC n n a -> n n g a ] ;
+define Pronvar5 [ v %ROD (%TRUNC) Cns -> 0 || .#. u _ ] ;
+define Pronvar6 [ s -> 0 || u %ROD %PRONTRUNC _ u ] ;
+define AltNegInf [ n -> 0 || r %> %ALTINF _ a ] ;
+
+echo << Vi definerer morfofonemiske regler >>
+echo << Nogle arkifonemer >>
+
+!g3 tilfoejet 3.juni Konsekvensretning i IngenArkefonemer, gAssimilation, qgFusion
+
+define Gaffix1 [ g3 i -> 0 || i %> _ ] ;
+define Gaffix2 [ g3 i -> j || [ u | a ] %> _ ] ;
+define Gaffix3 [ g3 -> 0 || i %> _ u ] ;
+define Gaffix4 [ g3 -> j || [ a | u ] %> _ u ] ;
+
+!g4uk introduceret 7.6. for specifikt at haandtere dobbeltformer som takuuk og takujuk
+define G4regel1 [ g4 -> 0 || [ i | u  ] %> _ ] ;
+define G4regel2 [ g4 -> j || a %> _ ] ;
+
+!u2 introduceret 30.6. for at håndtere låneord som Puurunen, der ikke skal blive Poorunen
+define U2regel [ u2 -> u ] ;
+
+
+!i2 introduceret 4.juni for at haandtere ateq, tupeq, aleq typer i samme paradigme
+define oLmetatese [ u l i2 q -> o r l || _ %> Vow ] ;
+!define Lmetatese [ l i2 q -> r l || _ %> Vow ] ;
+define Lmetatese [ l i2 q -> %> r l || _ %> Vow ] ; !morfemgrænse tilføjet 20170908
+!define Pmetatese [ u p i2 q -> o q q || _ %> Vow ] ;
+define Pmetatese [ p i2 q -> %> q q || _ %> Vow ] ; !morfemgrænse tilføjet 20170908
+define Tmetatese [ t i2 q -> %> q q || _ %> Vow ] ; !den mærkelige morfemgrænse tilføjet 20170628 for at forebygge *qiqqa
+define schwavaek [ i2 -> e ] ;
+
+define LIKtrunkering [ l i k -> 0 || _ %> %likTRUNC ] ;
+define CHtrunkering [ i c h %> %TRUNC u p -> i u p ] ; !En snæver regel til at håndtere Heinrich/ Heinriup
+define VCtrunkering [ [ e | a | o ] ( [ q | k | n | t ] ) -> 0 || _ %> %VCTRUNC ] ; !n og t 20180309 aht. Algeriet, Kroatien m.fl.
+define SEQtrunkering [ [ g | s | n | m ] [ e | a ] Kra -> 0 || _ %> %CVqTRUNC ] ; !virker ikke ved fx NIQ fordi der efterlades morfemgrænse to gange. Forsøgt rettet med følgende særregel:
+define DobbeltmorfemgraenseVaek [ %> -> 0 || %> _ ] ;
+define Vtrunkering [ Vow (Cns) -> 0 || _ %> %VTRUNC ] ;
+
+echo << Vi definerer tilhængspartiklernes lydregler >>
+define clitkgNasalering [ k %CLIT g2 (->) n n g ] ;
+define clitkgFusion [ k %CLIT g2 -> g ] ;
+define clitqgFusion [ [ r | q ] %CLIT g2 -> r ] ;
+define Tclitisg1 [ [ t | p ] -> n || _ %CLIT g2 ] ;
+define Tclitisg2 [ g2 -> n g || n %CLIT _ ] ;
+define TclitisU [ t -> n || _ %CLIT [ u | a ] ] ;
+! Tilfoejet efter 16.10. (13.11.06)
+define Pclitis [ p -> m || _ %CLIT Vow ] ;
+define clitisLAssimilation [ NonUvular -> l || _ ( %> ) %CLIT l ] ;
+define clitisMAssimilation [ NonUvular -> m || _ ( %> ) %CLIT m ] ;
+define clitisVAssimilation [ Vow -> a || a ( %> ) %CLIT _ ] ;
+define clitisQFrikativisering [ q -> r || _ ( %> ) %CLIT [ m | l ] ] ;
+define clitisNasalisering [ k -> n g || _ ( %> ) %CLIT Vow ] ;
+define clitis3cons [ NonUvular -> 0 || _ %CLIT t t ] ;
+!define clitisAass [ [ u | o | i | e ] -> a || a _ %CLIT ] ;
+!Aendret 19.5. for at forebygge at Farao+LI bliver *Faraali uden at spolere asavai+LI -> asavaali
+define clitisAass [ i -> a || a _ %CLIT ] ;
+define clitisoafRadikalisering [ o -> u || _ %CLIT [ NonUvular | i | u | a ] ] ;
+!Tilfoejet 19.5. for at goere Farao+LI -> Farauli
+define aasiit1Vokal [ a -> 0 || _ %CLIT a a s ] ; !s tilfoejet 26.6. for at forebygge tikippaa = *Int+AA
+!define aasiit1Vokal [ a -> 0 || _ %CLIT a a ] ; !s tilfoejet 26.6. for at forebygge tikippaa = *Int+AA
+define aasiit2Vokal [ a ( %> ) ( %TRUNC ) a -> a a j || _ %CLIT a a ] ;
+define Vepentese [ %EPENT -> i || [Cns | %-] _ %CLIT ] ;
+define ttaaqReduktion [ t -> 0 || Cns %CLIT _ t a a ] ;
+!Tilfoejet efter 16.10 (13.11.)
+define ttaaqAssibilering [ t t -> s s || i %CLIT _ ] ;
+
+
+! Assimilationsregler
+! - - - - - - - - - -
+
+echo << Vi definerer regressiv assimilation >>
+define mAssimilation [ NonUvular -> m || Vow _ %> m ] ; ! panik > panimmik
+define nAssimilation [ NonUvular -> n || Vow _ [ %> | %POSSESSORTRUNC ] n ] ;
+define kAssimilation [ NonUvular -> k || Vow ( %> ) _ [ %> | %ROD ] (\Segment) k ] ; !morfemgraensemulighed tilfoejet 12.6.2007
+define lAssimilation [ NonUvular -> l || Vow _ %> l ] ;
+define pAssimilation [ NonUvular -> p || Vow _ %> p ] ;
+define rAssimilation [ NonUvular -> r || Vow _ %> r ] ;
+define sAssimilation [ NonUvular -> s || Vow _ [ %> | %ROD ] (\Segment) s ] ;
+define tAssimilation [ NonUvular -> t || Vow _ %> t ] ;
+define fAssimilation [ NonUvular -> f || Vow _ %> f ] ; !Tilfoejet 5.9.2007
+define vAssimilation [ NonUvular -> p || Vow _ %> v ] ;
+define qAssimilation [ Cns -> q || Vow _ %> (\Segment) q ] ;
+define gAssimilation [ [ g | g3 ] -> k || [p | k ] %> _ ] ;
+
+echo << Vi definerer så en del andre regler >>
+
+define kgFusion [ [ p | k ] %> (%TRUNC) g2 -> g ] ;
+!define qgFusion [ [ r | q ] (\Segment) %> [ g | g2 ] -> r ] ;
+!Aendret 19.2. for at tage hoejde for *mukagitsi -> mukaritsi
+define qgFusion [ [ r | q ] %> ( %TRUNC ) [ g | g2 | g3 ] -> r ] ;
+!define frikativisering [ q -> r || Vow _ [ %> Segment | %CLIT ] ] ; !Erstattet af følgende 20180813
+define frikativisering [ Kra -> r || Vow _ [ %> Segment | %CLIT ] ] ;
+!tilfoejet Vow 4.juni for at forebygge at toqqit -> *toqrit
+!define frikativisering [ q -> r || _ %> Segment ] ;
+!Funker ikke, fordi ajoqaaq -> ajoraaq
+define trunkering [ Cns -> 0 || _ [ %> | %ROD ] %TRUNC ] ;
+define TruncVaek [ %TRUNC -> 0 ] ;
+define Qageminering [ a q -> q a ||Vow _ %> %STRUNC ] ;
+define Qogeminering [ o q -> q u ||Vow _ %> %STRUNC ] ;
+define CnsReduktion [ Cns -> 0 || _ %> ( \Segment ) s s ] ;
+
+echo << Vi definerer vokalregler >>
+!define schwaC [ [ i2 | i3 ] -> i || _ %> ( %TRUNC ) Cns ] ;
+!define schwaV [ [ i2 | i3 ] -> a || _ %> ( %TRUNC ) Vow ] ;
+!define schwaNULL [ i3 -> 0 || t _ [ .#. | %CLIT ] ] ;
+define Langradikalisering [ [ i %> e | i i | i %> ( %ProgI ) i ] -> e e, [ u %> o | u u | u %> ( Dummy ) u ] -> o o || _ ( %> ) ( \Segment ) Uvular ] ; !20100117 (pl) tilfoejet ( %ProgI ) paa venstre af hensyn til progressiv ass. ved i.
+define radikalisering [ i -> e, u -> o || _ %> ( \Segment ) Uvular ] ;
+
+!define EeafRadikalisering [ e e -> i i || _ %> ( %TRUNC ) [ NonUvular | i | u | a ] ] ;
+define EeafRadikalisering [ [ e e | e i ] -> i i || _ %> ( %TRUNC ) [ NonUvular | i | u | a ] ] ; !Aendret 12.6.2007 for fejl som *taareigaq
+define OoafRadikalisering [ o o -> u u || _ %> ( %TRUNC ) [ NonUvular | i | u | a ] ] ;
+!Ny regel 20100926 for at håndtere fejl som *naammattougaqarpoq
+define OuafRadikalisering [ o u -> u u || _ %> ( %TRUNC ) [ NonUvular | i | u | a ] ] ;
+define eafRadikalisering [ e -> i || _ %> ( [ %TRUNC | %CLIT ] ) [ NonUvular | i | u | a | o] ] ; !Tilføjet o (qimmiorusup-) 20181030
+!modificeret efter 16.10. e tilfoejet for at tage hoejde for xxsueruppoq il.il.
+define oafRadikalisering [ o -> u || _ %> ( %TRUNC ) [ NonUvular | i | e | u | a ] ] ;
+define progressivVassimilering [ [ u | o | i | e ] -> a || a [ %> | %ROD ] ( %TRUNC ) _  ( %>) ( Dummy ) Cns ] ;
+!20100117 (pl) ProgI for at haandtere allaffeeraq men viinniaraq
+define ProgressivIA [ Vow (->) e || [ e | i ] %> ( %TRUNC ) %ProgI _ Uvular ] ;
+define ProgressivIU [ u (->) i ||  i  %> ( %TRUNC ) %ProgI _ ] ;
+define ProgressivICU [ u (->) i || [ e | i ] Cns  %> %TRUNC %ProgI _] ;
+define ProgressivIrU [ u (->) i || e Uvular %> %TRUNC %ProgI _] ;
+
+define ProgIVaek [ %ProgI -> 0 ] ;
+define tAssibilering [ t -> s || t %> _ [ i | e ] ] ;
+!tilfoejet efter 16.10. for skyld innar efter langt a. Skal komme foer aVepentese
+define c2v [ c2 %> v -> p p || Vow _ Vow ] ;
+!tilfoejet efter 16.10. (17.11.06) for at bringe LIR-TAQ uden om qgFusion
+define gaqTrunkering1 [ e r %> %TRUNC g a -> i %> g a ] ; !Flyttet 11.6.2007 og samtidig er %> indføjet paa hoejre side
+define gaqTrunkering2 [ o r %> %TRUNC g a -> u %> g a ] ; !NY 12.6.2007
+define gaqTrunkering3 [ a r %> %TRUNC g a -> a %> g a ] ; !NY 12.6.2007
+
+echo << Proprier med gammel retskrivning >>
+define roĸ1 [ r o ĸ %> %VCTRUNC u p -> r ĸ u p ] ; ! Aĸajaroĸ + Rel -> Aĸajarĸup
+define roĸ2 [ r o ĸ %> %VCTRUNC u m -> r ĸ u m ] ; ! Aĸajaroĸ + Trm -> Aĸajarĸumut
+!define raĸ1 [ r a ĸ %> %VCTRUNC a p -> r ĸ a p ] ; ! Panêraĸ + Rel -> Panêrĸap
+!define raĸ2 [ r a ĸ %> %VCTRUNC  a m -> r ĸ a m ] ; ! Panêraĸ + Trm -> Panêrĸamut
+define uaĸ [ u a ĸ %> %VCTRUNC u p -> û p ] ; ! suaĸ+Rel -> sûp og nguaĸ+Rel -> ngûp
+define ssuaĸ1 [ u a ĸ %> m -> u a r m] ; ! suaĸ+Trm -> ssuarmut/ -rmi etc.
+
+echo << Epenteseregler >>
+
+define aGepentese [ a ( %> ) Vow %> i n n a -> a a g i n n a ] ;
+define uGepentese [ [ u | o ] ( %> ) [ u | o ] %> i n n a (->) u u g i n n a ] ; !NY 14.9.2007
+define iGepentese [ [ i | eTruncVaek ] ( %> ) [ i | e ] %> i n n a -> i i g i n n a ] ; !NY 14.9.2007
+
+define iVepentese [ [ i | e ] ( %> ) [ i | e ] %> -> i i v || _ [ i | e ] ] ; !fjernet \n i betingelsen (|| _ [ i | e ] \n ] -> || _ [ i | e ] ] )
+define aVepentese [ %> -> v || a a _ [ a | i ] ] ;
+!define iVepentese [ %> -> v || [ i | e ] ( %> ) [ i | e ] _ [ i | e ] ] ; !aendret 16.9.07
+!helt ny regel tilføjet 27.9. for at haandtere qallunaajuvoq og mattusuujuvoq. Skal komme foer progressivVassimilering
+define AAjEpentese1 [ [ r | q ] %> %TRUNC u -> %> j u ||  a a  _ ] ; !RETTET 8.3.2011
+define OOjEpentese1 [ [ r | q ] %> %TRUNC u -> %> j u ||  o o  _ ] ; !RETTET 8.3.2011
+define UUjEpentese  [ k %> %TRUNC u -> %> j u ||  u u  _ ] ; !NY 01.02.2015
+define AAjAAEpentese [ a %> i  a %> i -> %> a a j a a ] ; !Særlig regel til IAR+nv+HTR+vv efter a
+define AAjAEpentese [ a %> i  a  ->  a a j a  ] ; !Særlig regel til IAR+nv efter a
+define AAjUEpentese [ a Vow %> -> a a j || _ [ o | u] ] ; !NY 20181106 eqqaajortorpai ikke *eqqaaartorpai
+
+!Nyt 26.6.08 for at forebygge bugs af typen Nuuuk og Kuuup
+echo << Vi definerer meget sene reduktionsregler >>
+define TripleUReduktion [ u u -> u || _ %> u ] ;
+
+echo << Vi rydder op >>
+
+!define IngenArkefonemer [ t2 -> t, g2 -> g, g3 -> 0 ] ;
+define IngenArkefonemer [ g2 -> g, g3 -> 0, g4 -> 0 ] ;
+define DummyDeletion [ Dummy -> 0 ] ;
+define vSlet [ v -> 0 || u _ [ i | e | a ] ] ; !En rent ortografisk regel
+define jSlet [ j -> 0 || i %> _ ] ; !Tilfoejet 26.5.08
+define v2Slet [ v2 -> v ] ;
+
+echo << Vi sætter ting sammen >>
+
+read regex [
+! Lexicon ! Kommenter inn disse to linjer dersom du også læser inn leksikon-fst-en
+! .o.     ! i begynnelsen av filen. Se kommentar øverst.
+
+roĸ1 ![ r o ĸ %> %VCTRUNC u p -> r ĸ u p ] ; ! Aĸajaroĸ + Rel -> Aĸajarĸup
+.o.
+roĸ2 ![ r o ĸ %> %VCTRUNC u m -> r ĸ u m ] ; ! Aĸajaroĸ + Trm -> Aĸajarĸumut
+.o.
+!define raĸ1 ![ r a ĸ %> %VCTRUNC a p -> r ĸ a p ] ; ! Panêraĸ + Rel -> Panêrĸap
+!.o.
+!define raĸ2 ![ r a ĸ %> %VCTRUNC  a m -> r ĸ a m ] ; ! Panêraĸ + Trm -> Panêrĸamut
+!.o.
+uaĸ ![ u a ĸ %> %VCTRUNC u p -> û p ] ; ! suaĸ+Rel -> sûp og nguaĸ+Rel -> ngûp
+.o.
+ssuaĸ1 ![ u a ĸ %> m -> u a r m] ; ! suaĸ+Trm -> ssuarmut/ -rmi etc.
+.o.
+oLmetatese ![ u l i2 q -> o r l || _ %> Vow ] ;
+.o.
+Lmetatese ![ l i2 q -> r l || _ %> Vow ] ; 03-1
+.o.
+Pmetatese ![ p i2 q -> q q || _ %> Vow ] ; 03-2
+.o.
+Tmetatese ![ t i2 q -> q q || _ %> Vow ] ; 03-3
+.o.
+schwavaek ![ i2 -> e ] ; 03-4
+.o.
+AltNegInf ![ n -> 0 || r %> %ALTINF _ a ] ;
+.o.
+c2slet ![ c2 -> 0 || Cns _ %> ] 04
+.o.
+c2v ![ c2 %> v -> p p || Vow _ Vow ] 05
+.o.
+IndikativVu ![ v -> p || [ p | r ] %> _ [ u | i | a | o ] ] 06
+.o.
+Possessortrunc ![ i t -> i || [ e | u | i ] (Cns) %> (%TRUNC) _ %POSSESSORTRUNC] 07
+.o.
+Assibilering1 ![ t -> s || i %POSSESSORTRUNC _ ] 08
+.o.
+PossessortruncVaek ![ %POSSESSORTRUNC -> 0 ] 09
+.o.
+clitkgNasalering ![ k %CLIT g2 (->) n n g ] !!optionel regel til dobbeltform inunngooq før inugooq
+.o.
+kgFusion  ![ [ p | k ] %> (%TRUNC) g2 -> g ] ;
+.o.
+LIKtrunkering ![ l i k -> 0 || _ %> %likTRUNC ] 11
+.o.
+gaqTrunkering1 ![ e r %> %TRUNC g a -> i %> g a ] ; !flyttet den 11.6. fra linie 231 for at få ..likkat i stedet for *..lerkat
+.o.
+gaqTrunkering2 ! [ o r %> %TRUNC g a -> u %> g a ]
+.o.
+gaqTrunkering3 ![ a r %> %TRUNC g a -> a %> g a ] ;
+.o.
+CHtrunkering ![ i c h %> %TRUNC u p -> i u p ] ;
+.o.
+VCtrunkering ![ [ e | a | o ] ( [ q | k | n | t ] ) -> 0 || _ %> %VCTRUNC ] 12
+.o.
+SEQtrunkering ! define SEQtrunkering [ [ g | s | n | m ] [ e | a ] Kra -> 0 || _ %> %CVqTRUNC ] 13
+.o.
+DobbeltmorfemgraenseVaek ! [ %> -> 0 || %> _ ] ; !midlertidigt udkommenteret, da det blokerer for xxx-løsningen. Skal nok løses i der-infl. i stedet.
+.o.
+Vtrunkering ![ Vow (Cns) -> 0 || _ %> %VTRUNC ] 14
+.o.
+Prontrunc ![ s -> 0 || u %> %PRONTRUNC _ ] 15
+.o.
+Pronvar1 ![ u -> 0 || a %ROD _ u n ] 16
+.o.
+Pronvar2 ![ v -> 0 || u _ %ROD u n g ] 17
+.o.
+Pronvar3 ![ v %ROD -> g g || u _ u u n a ] 18
+.o.
+!Pronvar4 ! [ [ k | g ] %ROD %TRUNC n n a -> n n g a 19
+!.o.
+Pronvar5 ! [ v %ROD (%TRUNC) Cns -> 0 || .#. u _ ] 20
+.o.
+Pronvar6 ![ s -> 0 || u %ROD %PRONTRUNC _ u ] 21
+.o.
+!xOprydning ![ x -> 0 || Cns %> _ ] 22
+!.o.
+!xpAssimilation ![ x -> p || [ a | i | u ] %> _ p ] 23
+!.o.
+!xmAssimilation ![ x -> m || [ a | i | u ] %> _ m ] 24
+!.o.
+Qageminering ![ a q -> q a ||Vow _ %> %STRUNC ] ; 25
+.o.
+Qogeminering ![ o q -> q u ||Vow _ %> %STRUNC ] ; 26
+.o.
+frikativisering ![ q -> r || Vow _ [ %> Segment | %CLIT ] ] ;
+.o.
+AAjUEpentese ![ a Vow %> -> a a j || _ [ o | u] ; NY 20181106
+.o.
+AAjEpentese1 ![ [ r | q ] %> %TRUNC u -> %> j u ||  a a  _ ] ;
+.o.
+OOjEpentese1 ![ [ r | q ] %> %TRUNC u -> %> j u ||  o o  _ ] ;
+.o.
+UUjEpentese  ![ k %> %TRUNC u -> %> j u ||  u u  _ ] ;
+.o.
+ProgressivIrU ![ u (->) i || e Uvular %> %TRUNC %ProgI _] (SKAL komme før trunkering)
+.o.
+trunkering ![ Cns -> 0 || _ [ %> | %ROD ] %TRUNC ] ;
+.o.
+qgFusion ! [ [ r | q ] %> ( %TRUNC ) [ g | g2 | g3 ] -> r ]
+!rettet 060315 for at undgå Vr%>%TRUNCguk -> Vguk
+.o.
+!Impvar1 ![ g -> j || [ u | a ] %> _ u k ] ; 29
+!.o.
+!Impvar2 ![ g -> 0 || i %> _ u k ] ; 30
+!gEpentese ![ i ( %> ) i %> %TRUNC i -> i i g i ] ;
+!.o.
+ProgressivIA ! [ Vow (->) e || [ e | i ] %> ( %TRUNC ) %ProgI _ Uvular ] ;
+.o.
+ProgressivIU ! [ u (->) i ||  i  %> ( %TRUNC ) %ProgI _ ]
+.o.
+ProgressivICU ! [ u (->) i || [ e | i ] Cns  %> %TRUNC %ProgI _] ;
+.o.
+ProgIVaek ! [ %ProgI -> 0 ] ;
+.o.
+TruncVaek ! [ %TRUNC -> 0 ] ; 31
+.o.
+ttaaqAssibilering ![ t t -> s s || i %CLIT _ ] !flyttet fra linie 320 hertil  for at forbygge at
+.o. !epentetisk i bevirker assibileringen
+Vepentese ![ %EPENT -> i || Cns _ %CLIT ]
+.o.
+clitkgFusion ![ k %CLIT g2 -> g ] 32
+.o.
+clitqgFusion ![ [ r | q ] %CLIT g2 -> r ] ; 33
+.o.
+Tclitisg1 ![ [ t | p ] -> n || _ %CLIT g2 ] 34
+.o.
+Tclitisg2 ![ g2 -> n g || n %CLIT _ ] ; 35
+.o.
+clitisoafRadikalisering ![ o -> u || _ %CLIT [ NonUvular | i | u | a ] ] ;
+.o.
+vAssimilation ![ NonUvular -> p || Vow _ %> v ] 37
+.o.
+gAssimilation ![ g -> k || [p | k ] %> _ ]
+.o.
+mAssimilation ![ NonUvular -> m || Vow _ %> m ]
+.o.
+nAssimilation
+! nAssimilation [ NonUvular -> n || Vow _ [ %> | %POSSESSORTRUNC ] n ]
+.o.
+kAssimilation ! [ NonUvular -> k || Vow _ %> (\Segment) k ]
+.o.
+lAssimilation ![ NonUvular -> l || Vow _ %> l ]
+.o.
+fAssimilation
+.o.
+pAssimilation ![ NonUvular -> p || Vow _ %> p ]
+.o.
+rAssimilation ![ NonUvular -> r || Vow _ %> r ]
+.o.
+sAssimilation ![ NonUvular -> s || Vow _ [ %> | %ROD ] s ]
+.o.
+tAssimilation ![ NonUvular -> t || Vow _ %> t ]
+.o.
+qAssimilation ![ Cns -> q || Vow _ %> (\Segment) q ]
+.o.
+!schwaC ![ [ i2 | i3 ] -> i || _ %> ( %TRUNC ) Cns ]
+!.o.
+!schwaV ![ [ i2 | i3 ] -> a || _ %> ( %TRUNC ) Vow ]
+!.o.
+!schwaNULL ![ i3 -> 0 || t _ [ .#. | %CLIT ] ]
+!.o.
+Langradikalisering ![ [ i %> e | i i | i %> ( %ProgI ) i ] -> e e, [ u %> o | u u | u %> u ] -> o o || _ ( %> ) ( \Segment ) Uvular ]
+.o.
+radikalisering ![ i -> e, u -> o || _ %> ( \Segment ) Uvular ] ;
+.o.
+EeafRadikalisering ![ e e -> i i || _ %> ( %TRUNC ) [ NonUvular | i | u | a ] ]
+.o.
+OoafRadikalisering ![ o o -> u u || _ %> ( %TRUNC ) [ NonUvular | i | u | a ] ]
+.o.
+eafRadikalisering ! [ e -> i || _ %> ( [ %TRUNC | %CLIT ] ) [ NonUvular | i | u | a | o] ]
+.o.
+oafRadikalisering ![ o -> u || _  %> ( %TRUNC ) [ NonUvular | i | e | u | a ] ] ;
+.o.
+OuafRadikalisering ![ o u -> u u || _ %> ( %TRUNC ) [ NonUvular | i | u | a ] ] ;
+.o.
+aGepentese ![ a ( %> ) Vow %> i n n a -> a a g i n n a ] ;
+.o.
+uGepentese
+.o.
+iGepentese
+.o.
+aVepentese ![ %> -> v || a a _ [ a | i ] ;
+.o.
+iVepentese
+.o.
+AAjAAEpentese ![ a %> i  a %> i -> %> a a j a a ] ; !Særlig regel til IAR+nv+HTR+vv efter a
+.o.
+!define AAjAEpentese ![ a %> i  a  ->  a a j a  ] ; !Særlig regel til IAR+nv efter a
+!.o.
+progressivVassimilering ![ [ u | o | i | e ] -> a || a [ %> | %ROD ] ( %TRUNC ) _  ( %> ) Cns ] ;
+.o.
+ttaaqReduktion ![ t -> 0 || Cns %CLIT _ t a a ] ;
+.o.
+TclitisU ![ t -> n || _ %CLIT [ u | a ] ]
+.o.
+clitisLAssimilation ![ Cns -> l || _ %CLIT l ]
+.o.
+clitisMAssimilation ![ Cns -> m || _ %CLIT m ]
+.o.
+clitisVAssimilation ![ Vow -> a || a %CLIT _ ]
+.o.
+clitisQFrikativisering ![ q -> r || _ %CLIT [ m | l ] ]
+.o.
+clitis3cons ![ NonUvular -> 0 || _ %CLIT t t ]
+.o.
+clitisNasalisering ! [ k -> n g || _ %CLIT Vow ]
+.o.
+Pclitis ![ p -> m || _ %CLIT Vow ] ;
+.o.
+clitisAass ![ Vow -> a || a _ %CLIT ] ;
+.o.
+aasiit2Vokal ![ a ( %> ) ( %TRUNC ) a -> a a j || _ %CLIT a a ]
+.o.
+aasiit1Vokal ![ a -> 0 || _ %CLIT a a ]
+.o.
+!kaNasalisering ![ k %> a -> n g a ]
+!.o.
+!kiNasalisering ![ k %> i -> n g i ]
+!.o.
+G4regel1 ![ g4 -> 0 || [ i | u  ] %> _ ] ;
+.o.
+G4regel2 ![ g4 -> j || a %> _ ] ;
+.o.
+Gaffix1 ![ g3 i -> 0 || i %> _ ] ;
+.o.
+Gaffix2 ![ g3 i -> j || [ u | a ] %> _ ] ;
+.o.
+Gaffix3 ![ g3 -> 0 || i %> _ u ] ;
+.o.
+Gaffix4 ![ g3 -> j || [ a | u ] %> _ u ] ;
+.o.
+U2regel ![ u2 -> u ] ;
+.o.
+!IngenArkefonemer ![ t2 -> t, g2 -> g, g3 -> 0, g4 -> 0  ]
+!.o.
+IngenArkefonemer ![ g2 -> g, g3 -> 0, g4 -> 0  ]
+.o.
+tAssibilering ![ t -> s || t %> _ [ i | e ] ]  en rent ortografisk regel
+.o.
+CnsReduktion ! [ Cns -> 0 || _ %> ( \Segment ) s s ] ;
+.o.
+jSlet
+.o.
+TripleUReduktion ![ u u -> u || _ %> u ] ;
+.o.
+DummyDeletion ![ Dummy -> 0 ]
+.o.
+vSlet ![ v -> 0 || u _ [ i | e | a ] ] en anden rent ortografisk regel
+.o.
+v2Slet ] ;
+!.o.
+!esc ] ;
