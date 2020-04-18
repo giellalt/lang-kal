@@ -16,7 +16,7 @@
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Add language-specific flags for hfst-lexc compilation here:
-HFST_LEXC_LOCAL_FLAGS=--Werror
+#HFST_LEXC_LOCAL_FLAGS=--Werror
 
 ####### Phonology source file defs: ########
 
