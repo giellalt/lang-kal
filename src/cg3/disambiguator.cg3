@@ -1440,8 +1440,7 @@ SET FossileredeCont =
  (/"tunnga"\ Gram/IV\ VIK\ Der/vn\ QAR\ Der/nv\ Gram/IV\ V\ Cont/l) OR
  (/"tunnga"\ Gram/IV\ VIK\ Der/vn\ QAR\ Der/nv\ Gram/IV\ V\ ContNeg/l) ;
 
-SET AltidAdvlCont =
- (/"telefoner"\ Gram/IV\ V\ Cont/l);
+SET AltidAdvlCont = (/"telefoner"\ Gram/IV\ V\ Cont/l);
 
 SET DelvistFossileredeCont = FossileredeCont | AltidAdvlCont ;
 
@@ -1608,7 +1607,7 @@ LIST <Hprof> = ("eqqiar" HTR TUQ)("eqqartuup" HTR TUQ) (/"inuar"\ Gram/IV\ TUQ/l
 LIST <unit> = Sem/Unit ;
 LIST <f-psych> = (/"uppere"\ Gram/TV\ TAQ/l);
 
-LIST NUMHOVED = "dollar" "dollari" "euro" "franc" "grad" "gram" "hjerter" ("immikkoor" TUQ) "ini" "kapitali" "kapitel" "karsi" "kiilu" "kilo" "kilometer" "km" "klasse" "kulooq" "koruuni" "krone" "m" "meter" "milliardi" "milliard" "miliuuni" "million" ("nalunaar" UTE) "niveau" "nr" "oori" "paragraf" "procent" ("qupper" NIQ) "ruder" "side" "sipaaq" ("titar" NIQ) (/".*vej/r) "øre" Sem/Unit ;
+LIST NUMHOVED = "dollar" "dollari" "euro" "franc" "grad" "gram" "hjerter" ("immikkoor" TUQ) "ini" "kapitali" "kapitel" "karsi" "kiilu" "kilo" "kilometer" "km" "klasse" "kulooq" "koruuni" "krone" "m" "meter" "milliardi" "milliard" "miliuuni" "million" "millioni" ("nalunaar" UTE) "niveau" "nr" "oori" "paragraf" "procent" ("qupper" NIQ) "ruder" "side" "sipaaq" ("titar" NIQ) (/".*vej/r) "øre" Sem/Unit ;
 LIST NUMCOMP = "hundrede" "tusind" "million" "milliard" ; #anden del af sammensatte tal, famtan milliuuni
 LIST COMPOUND_N = "Windows" "Linux" "program" ;
 LIST PRENUM = "plus" "minus" ;
@@ -1864,7 +1863,9 @@ REMOVE:0001M (/Gram\/TV\ Gram\/Refl\ V\ Opt/l) ;
 REMOVE:0001N (/Gram\/TV\ Gram\/Refl\ V\ Imp/l) ;
 
 REMOVE:0001O ("akisup") IF (0 ("aki" TUQ SSAQ U VIK)) ;
-REMOVE:0001P N - AFFINGERET - POSSESSUM - ("SAS") IF (0 Num - AFFINGERET) ;
+REMOVE:0001P N - AFFINGERET - POSSESSUM - ("SAS") IF (0 Num - AFFINGERET) 
+(NEGATE 0 ("time") OR ("tii"))#sapaatip-akunneranut TIIMIT 40-t sulisarpoq.
+;
 REMOVE:0001Q ("sooq") + LU IF (0 ("soorlu")) ;
 REMOVE:0001R ("illu") OR ("illoq") IF (0 ("ip") + Cont)(-1 Aeq) ;
 REMOVE:0001S ("kimik") IF (0 ("kina") + LUUNNIIT) ;
@@ -2653,7 +2654,10 @@ SELECT:0099Q Gram/Ord IF (0 SSAQ ) ;
 SELECT:0099R Gram/Ord - Via IF (-1 MAANED OR TIME) 
 (NEGATE 0 Num + $$KASUS + $$NUMERUS LINK -1 $$KASUS + $$NUMERUS) #tiimit SISAMAT ilinniartarpoq
 ;
-SELECT:0099S iNum OR Num OR ("marlussuk") IF (-1 MAANED OR TIME)(NEGATE 0 ("SAS")) ;
+SELECT:0099S iNum OR Num OR ("marlussuk") IF (-1 MAANED OR TIME)(NEGATE 0 ("SAS"))
+(NEGATE 0 ("time") OR ("tii") OR ("teeq") )#sapaatip-akunneranut TIIMIT 40-t sulisarpoq. IKKE 'ti'
+ ;
+
 REMOVE:0099T Gram/Ord IF (NEGATE *0 MAANED OR TIME) ;
 REMOVE:0099U Gram/Ord IF (*-1 FAM OR MASK OR FEM BARRIER POSSESSUM LINK 0 Rel) ;
 REMOVE:0099V Gram/Ord IF (-1 Prop + Rel) ;
@@ -4240,6 +4244,11 @@ MAP:M0408D @i-ADVL>N TARGET Trm IF (1 INDERIVERENDE_TITEL OR Trm + LU LINK 1 IND
 MAP:M0408N1 @i-ADVL>N TARGET PILLUGU IF (1 INDERIVERENDE_SUBSTANTIV ) ;
 #MAP:M0408N2 @i-ADVL>N TARGET Ins + $$NUMERUS IF (*1 INDERIVERENDE_SUBSTANTIV - LIK_QAR BARRIER (*) - ($$NUMERUS Ins) LINK NOT 1 HVVERB )(NEGATE -1 Ins + $$NUMERUS) ;
 
+#Følgende er vist nogenlunde i orden, men regressionen knækket igen, så udkommenteret til vi igen kan køre regressionen
+#MAP:M0408O @i-ADVL> TARGET Trm IF (*1 (/TAQ\ Der/vn\ N/l) BARRIER (*) - KOMMA - Trm )
+#(NEGATE 0 ("alla") LINK -1C Trm + @i-ADVL>) #immaqa inuit tamarmik ilumioqarput inunnut ALLANUT tusartikkusunngisaminnik.
+#;#
+
 MAP:M0408O @i-ADVL>N TARGET OBLIQUE - ("<(S|s)aniatigut>"r) IF (*1 INDERIVERENDE_SUBSTANTIV - NIAR - POSSESSUM12 - ORATIOOBLVERB BARRIER (*) - CONT - Abs - @i-POSS> LINK NOT 1 HVVERB)(NEGATE 0 $$KASUS - Rel - Abs - Ins LINK 1 $$KASUS - Rel - Abs - Ins LINK NEGATE 1 Gram/Db)(NEGATE 0 CONJ-LU + $$KASUS LINK -1 $$KASUS)(NEGATE 0 $$KASUS LINK 1 $$KASUS + CONJ-LU)(NEGATE 1 VFIN LINK 1 EOS)(NEGATE *1 KOMMA BARRIER V OR INDERIVERENDE_SUBSTANTIV)(NEGATE 0 $$KASUS LINK *-1 $$KASUS BARRIER (*) - Adv - Pali - Interj - @POSS> - (/@i-.*/r))(NEGATE *0 ("isikku") - QAR - V)(NEGATE 0 Gram/Dem)(NEGATE 1 INSOBJVERB OR LIK_QAR OR LIRSUR)(NEGATE 0 Abl LINK *1 NIQAR BARRIER V)#(NEGATE 0 Lok + PLACE LINK 1 HUMAN)(NEGATE 0 Trm - Gram/Pers LINK 1 Trm) #Lok + PLACE for at hindre inderivation ved fx nunaqarfimmi inuusuttoq pikkorippoq. #Kopi af M0869 #Stjernekontekst tilføjet.
 (NEGATE 0 Ins LINK *1 HTR BARRIER (*) - OBLIQUE - Sem/Temporal - TIME)#Portørit NAPPARSIMASUMIK mittarfimmut talimanngornermi unnuttoq aallernerat Facebookkikkut siammarterneqangaatsiarpoq
 ;
@@ -4254,7 +4263,9 @@ MAP:M0408S @i-ADVL>N TARGET Ins + $$NUMERUS - FAM IF (*1 INDERIVERENDE_SUBSTANTI
 ;
 MAP:M0408T @i-ADVL>N TARGET Trm IF (*1 INDERIVERENDE_SUBSTANTIV - GE - ("isuma" QAR) - NIAR - Trm BARRIER V OR LIK_QAR OR TIME OR Interj OR @i-ADVL>N - CONJ-C)(NEGATE 0 TIME)(NEGATE -1 TIME)(NEGATE -1 Trm)(NEGATE 1 POSSESSUM + Der/vn) ;
 MAP:M0408U @i-ADVL>N TARGET Cau OR Con IF (1 INDERIVERENDE_SUBSTANTIV + N - ("qaatigooq") - POSSESSUM12) ;
+
 MAP:M0408V @i-ADVL>N TARGET Trm OR Lok IF (0 $$KASUS)(1 INDERIVERENDE_SUBSTANTIV + N - QATE - INSOBJVERB)(NEGATE NOT 0 POSSESSUM LINK -1C $$KASUS) ; #Peqqussut pineqartoq tassaavoq nunani allamiunut inatsisip nunatsinnut *atuutsinneqarneranut peqqussut.
+
 MAP:M0408X @i-ADVL>N TARGET V - VFIN IF (0 Cau OR Con OR LI)(1 FAM + POSSESSUM - AFFINGERET) ; #Efterskoleramaana arnarsiama Dorthep, kursusereeruma aaniaraanga, aperigami qaqugu qassinullu aasinnaanerlunga adresselu apeqqutigalugu. 
 MAP:M0408X @i-ADVL>N TARGET $$KASUS + CONJ-C IF (-1C $$KASUS + @i-ADVL>N) ;
 
@@ -5579,10 +5590,16 @@ MAP:M0399 @SUBJ_COMP TARGET Abs IF (-2 @FOC)(-1 OBLIQUE)(NEGATE *0 VERB-NOTCONT)
 
 MAP:M0401 @<APPOS TARGET Abs + Prop OR Orth/Append + Prop IF (-1 Abs + Pl)(*1 Abs + Prop + CONJ-LU BARRIER (*) - KOMMA);
 MAP:M0402 @<APPOS TARGET Abs + Prop + CONJ-LU OR Orth/Append + Prop + CONJ-LU IF (*-2 Abs + Pl BARRIER (*) - Prop - KOMMA)(*-1 Abs + Prop OR Orth/Append + Prop BARRIER (*) - KOMMA);
+
+#De følgende rammer lidt for bredt bl.a. fordi NUMHOVED bør splittes op i NUMHOVED_VENSTRE (qupperneq 28) og NUMHOVED_HØJRE (28 millionit)
+MAP:M0405A @i-MWE>N TARGET Num + Abs IF (1 NUMCOMP) ; 
+
 MAP:M0407Bnum @i-MWE>N TARGET Num IF (1 NUMHOVED + LIK) ; # 7 *miliuunit koruunilik. NB bør heller ikke ved QAR etc. analyseres som @i->N
 MAP:M0407Anum (@>N) TARGET Num IF (1 NUMHOVED + N); # ' .. 2 oorimoorlutik ..' specialfald før 189-190
 MAP:M0407Bnum @i-MWE>N TARGET NUMHOVED IF (-1 Num)(1 NUMHOVED + Der/nv) ; # 7 *miliuunit koruuneqarput. NB bør heller ikke ved QAR etc. analyseres som @i->N
+
 MAP:M0407Bnum @>N TARGET NUMHOVED IF (-1 Num)(1 NUMHOVED) ; # 7 miliuunit koruuneqarput. NB bør heller ikke ved QAR etc. analyseres som @i->N
+
 MAP:M0408num (@>N) TARGET NUMHOVED - Trm IF (1 Num + Abs - @N<)
 (NEGATE *1 (/\(\ |=|"\)gange\(\ |=|"\)/r) BARRIER (*) - NUM) #ini 4 gange 3 meterinik uuttuuteqarpoq.
 (NEGATE -1 NUM + @>N LINK 2 NUM + @>N) ; # ' .. kapitel 2 ..' specialfald før de følgende
@@ -5656,6 +5673,8 @@ MAP:M0415 @i-ADVL> TARGET Trm IF (1 N + Der/vn - ("pingaar" UTE ) OR (/TUQ\ Der/
 (NEGATE *1 MUT-OBJ + HTR BARRIER V)#muligt i-MIK-OBJ
 (NEGATE *1 TRMVERB + V BARRIER V OR INDERIVERENDE_SUBSTANTIV) #Ilaasortat Kalaallit Nunaaliarnerat oqaluttuarisaanermut angalanertut sivikinnerpaatut ilannguppoq.
 (NEGATE 0 (/"ataatsimiip"\ Gram/IV\ TIP\ Der/vv\ Gram/TV\ TAQ\ Der/vn\ LIAQ/l) + Trm LINK -1 @i-ADVL>)#Naalakkersuisulli aningaasaqarnermut akileraartarnermullu ATAATSIMIITITALIAMUT siunnersuummik nassiussaqarput.
+(NEGATE 0 ("alla") LINK -1C Trm + @i-ADVL>) #immaqa inuit tamarmik ilumioqarput inunnut ALLANUT tusartikkusunngisaminnik.
+
 ;
 MAP:M0420 (@<OBJ) TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (-1 TRANSVERB + 3SgO - ADVERBIEL)(*1 CLB OR EOS BARRIER 3SgO)(NEGATE *-1 ORATIOOBLVERB LINK *1 V + 3Sg LINK *1 _TARGET_)(NEGATE *1 V + 3Sg BARRIER KOMMA)(NEGATE 0 CONJ-C)(NEGATE *1 Abs + Sg + CONJ-C BARRIER (*) - (Abs Sg) - KOMMA) #20100227 Tronds tilfoejelse. 20100322 første NEGATE forebygger forkerte hit paa subjekter (PL), andet NEGATE pga. .. pillugu PER nalorsarpoq,hvor PER ikke må pege på pillugu
 (NEGATE *-1 Abs BARRIER (*) - CONT + LU LINK 1 CONT + LU LINK 1 _TARGET_ LINK *1 V + 3Pl)#aalisarneq inuussutissarsiutigalugulu PINIARNEQ ingerlalluarput
@@ -5873,7 +5892,7 @@ MAP:0754 @ADVL> TARGET Ins + ADVERBIEL IF (1 V) ;
 
 # Ins er tit adled til inkorporet objekt
 MAP @i-N< TARGET Ins - CONJ-C (-1 LIK_QAR - PLACE - iNum - Prop - 
-(/QAR\ Der/nv\ UTE\ Der/vn\ N__/l) - (/"suli"\ Gram/IV\ VIK\ Der/vn\ QAR\ Der/nv\ Gram/IV\ VIK/l) #Leksikaliseringer må undtages. ATTAVEQAATIP ajutoorneranik pissuteqarpoq
+(/QAR\ Der/nv\ UTE\ Der/vn\ N__/l) - (/"suli"\ Gram/IV\ VIK\ Der/vn\ QAR\ Der/nv\ Gram/IV\ VIK/l) - (/"aningaasaq"\ UTE\ Der/nn\ QAR\ Der/nv\ Gram/IV\ VIK/l) #Leksikaliseringer må undtages. ATTAVEQAATIP ajutoorneranik pissuteqarpoq
  LINK NOT -1 Ins)(NEGATE 1 HTR OR (/TAQ\ Der\/vn\ QAR/l)) #Inoqarpammi naasumik asasaqartumik
 (NEGATE -1 Aeq LINK 1 ("ip")) #Uangalu nalunngisaqaruma naasumik nunarsuarmi asseqanngitsumik 
 (NEGATE 1 ORATIOOBLVERB + V) #Saniatigut inatsisit attuumassutillit sukumiinerusumik nassuiarneqarput.
@@ -9824,6 +9843,7 @@ REMOVE:9945E ("(.*)[a-z]"r) IF (**1C> ("$1"v)) ; #Vælg den korte streng, hvis d
 #Man kan have en regel helt til sidst der fjerner i-versionen hvis en uden-i findes (Tinos formulering)
 REMOVE:9945F ("(.*)i"r) IF (0 ("$1"v))(NEGATE 0 (/__\"at\"\ OLang\/DAN__/l)) #Negate tilføjet 20180502 for at undgå at fjerne spatial ati for dansk at. #OBS: fjerner også biologi ved biolog
 (NEGATE 0 ("partii") LINK NOT *1 POSSESSUM3 - ("kinguneq"))#Mikael Petersen PARTIIMI atorfimminit tamatuma kingorna nammineerluni soraarpoq.
+(NEGATE 0 ("time") OR ("tii") OR ("teeq"))#Saqqummersitassat ammarneqarnerannut atatillugu TEEQASSAAQ, kaffeqassalluni mamartualoqassallunilu. Ikke 'ti'
 ;
 
 #Disambiguering af IP og IR ved trunkative morfemer
