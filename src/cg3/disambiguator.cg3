@@ -1,4 +1,4 @@
-# -*- cg-pre-pipe: ~/langtech/kal/tools/shellscripts/kal-tokenise ~/langtech/kal/tools/tokenisers/tokeniser-disamb-gt-desc.pmhfst | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/syntax/kal-pre1.cg3 | ~/langtech/kal/tools/shellscripts/kal-hybrid-split | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/syntax/kal-pre2.cg3 | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/syntax/disambiguator.cg3 --no-mappings  -*-
+# -*- cg-pre-pipe: ~/langtech/kal/tools/shellscripts/kal-tokenise ~/langtech/kal/tools/tokenisers/tokeniser-disamb-gt-desc.pmhfst | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/kal-pre1.cg3 | ~/langtech/kal/tools/shellscripts/kal-hybrid-split | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/kal-pre2.cg3 | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/disambiguator.cg3 --no-mappings  -*-
 
 # =================================================================== #
 # =================================================================== #
@@ -1309,7 +1309,7 @@ LIST SUBJ4P3PO = (Rel Pl) (4Pl 3PlO) ;
 
 SET SUBJTRANSVERB& = SUBJ1S2SO | SUBJ1S3SO | SUBJ1S4SO | SUBJ1S2PO | SUBJ1S3PO | SUBJ1S4PO | SUBJ2S1SO | SUBJ2S3SO | SUBJ2S4SO | SUBJ2S1PO | SUBJ2S3PO | SUBJ2S4PO | SUBJ3S1SO | SUBJ3S2SO | SUBJ3S3SO | SUBJ3S4SO | SUBJ3S1PO | SUBJ3S2PO | SUBJ3S3PO | SUBJ3S4PO | SUBJ4S1SO | SUBJ4S2SO | SUBJ4S3SO | SUBJ4S1PO | SUBJ4S2PO | SUBJ4S3PO | SUBJ1P2SO | SUBJ1P3SO | SUBJ1P4SO | SUBJ1P2PO | SUBJ1P3PO | SUBJ1P4PO | SUBJ2P1SO | SUBJ2P3SO | SUBJ2P4SO | SUBJ2P1PO | SUBJ2P3PO | SUBJ2P4PO | SUBJ3P1SO | SUBJ3P2SO | SUBJ3P3SO | SUBJ3P4SO | SUBJ3P1PO | SUBJ3P2PO | SUBJ3P3PO | SUBJ3P4PO | SUBJ4P1SO | SUBJ4P2SO | SUBJ4P3SO | SUBJ4P1PO | SUBJ4P2PO | SUBJ4P3PO ;
 
-LIST NÆPPE_OBJ = ("nuanner" TUQ) (/"toqqa"\ Gram/IV\ INNAR/l TUQ);
+LIST NÆPPE_OBJ = ("nuanner" TUQ) (/"toqqa"\ Gram/IV\ INNAR/l TUQ) ("isertuanngitsoq" Ins) ("isertuar" Ins);
 LIST NÆPPE_SUBJ = ("nalinginnaq") ;
 LIST AGENS_NOUN = ("katersugaq") ;
 
@@ -1388,7 +1388,7 @@ LIST INSVERB = "taa" ;
 
 SET MOVE-VERB = LOKVERB | ABLVERB | TRMVERB ;
 
-LIST MUT-OBJ = ("arpap" TIP) "asa" "akuere" "pulaar" ("siorar" SAAR) ; #"mik-objekter", som kan tage Trm i stedet for Ins.
+LIST MUT-OBJ = ("arpap" TIP) "asa" "akuere" "pulaar" (/"qajannarsi"\ Gram/IV\ TIP/l) ("siorar" SAAR) ; #"mik-objekter", som kan tage Trm i stedet for Ins.
 
 ###Testområde definitioner
 SET FossileredeCont =
@@ -8346,13 +8346,17 @@ SELECT:7490 Abs + Pl IF (*1C INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl BARRIER 3PlP
 ; 
 #Må ikke hitte på Rel + Pl fulgt JRaf ledsagemåde til TRANSVERB + 3Pl til højre. 20170425 sidste NEGATE fordi ikke sikkert at parataktisk possessum er Pl fordi verbet er det
 
+#Mådens Ins vs. MIK-OBJ vanskelige at adskille
+REMOVE:7491A @MIK-OBJ> IF (0 NÆPPE_OBJ + @ADVL>); #USA naalagaaffeqatigiinnut ISERTUANNGITSORUJUSSUARMIK qajannarsisitsiniarpoq.
 REMOVE HTR IF (0 Der/vn + QAR)
 (NEGATE 0 (/HTR\ Der/vv\ Gram/IV\ TUQ\ Der/vn\ QAR/l)) #må ikke fjerne HTR Der/vv Gram/IV TUQ Der/vn QAR fra SIULUTTAASOQARPOQ 
 ; #en skummel regel, der skal lukke op for @i->N og blokere @MIK-OBJ
 
 SELECT @i-MIK-OBJ> IF (1 HTR + Der/vn - V) ; #20091106
 SELECT @ADVL> IF (0 CLOCK)(*1 V) ;
-SELECT @MIK-OBJ> IF (*1 HTR BARRIER TAQ); #HIV-mik tunillanneqarsimasut; Aningaasanik paggatsitassaminik
+SELECT @MIK-OBJ> IF (*1 HTR BARRIER TAQ) #HIV-mik tunillanneqarsimasut; Aningaasanik paggatsitassaminik
+(NEGATE 0 NÆPPE_OBJ + @ADVL>)#USA naalagaaffeqatigiinnut ISERTUANNGITSORUJUSSUARMIK qajannarsisitsiniarpoq. Kan der laves en mere generel undtagelse for mådens Ins 
+;
 REMOVE @MIK-OBJ> IF (0 @i-ADVL>)(1 @MIK-OBJ> - CONJ-C) ;
 
 REMOVE:7495 @ALLOBJ> IF (0 Abs)(*1C VERB-NOTCONT - Par + INTRANSVERB BARRIER ("\,") OR TRANSVERB ) ; #20091105 udelukket Par og tilfoejet BARRIER
