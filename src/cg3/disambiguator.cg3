@@ -1905,6 +1905,9 @@ REMOVE:0001BH ("nuup") + V IF (0 ("Nuuk")) ;
 REMOVE:0001BI ("allanit") + OLang/DAN IF (0 ("alla") + Abl) ; #Der skal måske begrænsninger på
 REMOVE:0001BJ ("bi") + OLang/DAN IF (0 ("biili") OR ("biiler")) ;
 REMOVE:0001BK ("arfeq") (0 ("arfinillit")) ;
+REMOVE:0001BL (/"inuk"\ N\ Aeq\ Sg/l) + POSSESSUM IF (0 (/"inuk"\ N\ Aeq\ Sg/l) - POSSESSUM) ;
+REMOVE:0001BM (/"inuiaqat"\ GIIT\ Der/nn\ N\ Lok\ Pl\ 1SgPoss/l) IF (0 (/"inuiaqat"\ GIIT\ Der/nn\ N\ Lok\ Pl/l) - 1SgPoss)
+(NEGATE *1 VFIN + 1Sg BARRIER VFIN - 1Sg);
 
 #REMOVE:0001XX UGEDAGE + Gram/TV IF (0 UGEDAGE + Gram/IV) ; #NNGUR + Gram/TV utænkelig ved ugedages navne #udkommenteret og gjort listen entydig i stedet.
 
@@ -1986,6 +1989,7 @@ MAP:M_tidlig0031 @ADVL> TARGET (/"pissut"\ GE\ Der/nv\ Gram/TV\ V\ Cont\ 3SgO/l)
 #Mulig Aeq-læsning af TUQ+Pl skaber problemer i BARRIERs
 REMOVE:tidlig0035 (/Aeq\ Pl\ 3SgPoss/l) IF (0 N - Aeq + $$KASUS LINK 1 N - Aeq + $$KASUS); #Peroriartornermi ATUGARITITAASUT artornartut saniatigut imminut toqunnissamik eqqarsaatersortarnerup piviusunngortitsinissaq allisartarpaa, Cecilia Petrine Pedersen tikkuaavoq
 
+REMOVE:tidlig0036 (/"innuttaq"\ N\ Aeq\ Pl\ 3SgPoss/l) IF (0 (/"innuttaq"\ U\ Der/nv\ Gram/IV\ TUQ/l));
 
 #############################################
 # Et særligt afsnit til "unnerpoq/ unnerpaa #
@@ -2764,8 +2768,10 @@ REMOVE:0001L ("\\p{Lu}.*"r) + Prop IF (0 ("([a-z].*)"r))(**0CW (VSTR:"$1"r))(-1 
 
 REMOVE:0001X ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"%l$1"r))(-1 BOS) (NEGATE 1 Prop)(NEGATE 0 ("Nuna") + 1PlPoss) ;
 #SELECT:0001Y ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"$1"r))(-1 BOS)(NEGATE 0 Lok) ; #Må ikke vælge Abs frem for andre kasus, hvis der ikke er nogen kriterier for kasusvalg...
-REMOVE:0001Z N IF (0 PROP_VS_APPELLATIV LINK *1 HUMVERB OR humverb BARRIER Pron + Rel OR KOMMA OR VFIN - HUMVERB - humverb)(NEGATE 0 $$KASUS LINK 1 $$KASUS) (NEGATE 0 ("angut")); #Manu iserpoq. Manu er mest sandsynligt et proprium. # Må ikke vælge Prop i Angut uummassarneqarsimagaluarpoq annaanneqarsinnaasimananilu, politiit taama oqaluttuarput.
 
+REMOVE:0001Z N IF (0 PROP_VS_APPELLATIV LINK *1 HUMVERB OR humverb BARRIER Pron + Rel OR KOMMA OR VFIN - HUMVERB - humverb)(NEGATE 0 $$KASUS LINK 1 $$KASUS) (NEGATE 0 ("angut")) #Manu iserpoq. Manu er mest sandsynligt et proprium. # Må ikke vælge Prop i Angut uummassarneqarsimagaluarpoq annaanneqarsinnaasimananilu, politiit taama oqaluttuarput.
+(NEGATE 0 ("inuk") + Sg + Aeq)#inuk+Aeq er med næsten 3000 hits i corpus højfrekvent medens Inuk + Aeq for en hurtig søgning slet ikke findes (dog Inuk@PROP> efternavn+Aeq)
+;
 REMOVE:0001Z N - FAM IF (0 Prop - Sem/Geo + Abs LINK *1 HUMVERB + INTRANSVERB OR humverb + INTRANSVERB BARRIER V)(@1 _TARGET_) #Manu iserpoq. Manu er mest sandsynligt et proprium.
 (NEGATE 0 Abs + &&IV_SUBJ& LINK *1 VFIN + &&IV_SUBJ& BARRIER V)#POLITIIT KNR-ip tusagassiortuanut pisoqarfiusumiittumut ilisimatitsipput
 ;
@@ -4873,7 +4879,7 @@ MAP:OrObl0110 @CL-CIT> TARGET Par + &&IV_SUBJ& IF (*1 OQARPOQ BARRIER CON_CAU LI
 (NEGATE 0 UTIGE OR RIAR)
 (NEGATE *1 KOMMA LINK NEGATE *1 Prop + Abs LINK *1 OQARPOQ)#En tidligere formulering, (*1 OQARPOQ BARRIER KOMMA .. ) må opgives pga mulige <APPOS hvorfor reformuleres til denne NEGATE
  #Er dette mon overkill eller skal det med
-(NEGATE 0 (/"taama"\ IP\ Der/nv\ Gram/IV\ GALUAR\ Der/vv\ Gram/IV/l) LINK -1 BOS)#TAAMAAKKALUARTORLI qassutinik maannamut suli utertitsisoqanngitsoq qassutaarniartup Qalut Voninip pisortaa, Cuno Jensen, oqarpoq.
+(NEGATE 0 (/"taama"\ IP\ Der/nv\ Gram/IV\ GALUAR\ Der/vv\ Gram/IV/l) LINK -1 BOS OR KOMMA)#TAAMAAKKALUARTORLI qassutinik maannamut suli utertitsisoqanngitsoq qassutaarniartup Qalut Voninip pisortaa, Cuno Jensen, oqarpoq.
 ;
 
 MAP:OrObl0150 @CL-<CIT TARGET Par IF (-*1 OQARPOQ BARRIER KOMMA LINK NEGATE -*1 ("taama") OR ("nalinginnaq")) #oo ved oqarpoq aldrig simultan med taama
@@ -4974,6 +4980,8 @@ MAP:OrObl452 @CL-<CIT TARGET Par IF (*-1 ORATIOOBLVERB + V - Aeq - @SUBJ> BARRIE
 (NEGATE 0 GALUAR LINK -1 KOMMA LINK 1 _TARGET_ LINK *1 Par BARRIER VFIN) #Malugisimavaami .. angummi ajunnginnerusumik pisaleraani, IMAASSINNAAGALUARTOQ nammineq .. naalannerulersimasoq. Den er koncessiv
 #(NEGATE *1 ("...") + @CL-<CIT BARRIER KOMMA) #Usikker mapping til sidst for ikke-slettede participier, der ikke er tagget på anden vis. NEGATE for tilfælde af to verber, der begge kan være inquit
 (NEGATE 0 Par + Gram/Adv-encl LINK -1 TIME)
+(NEGATE 0 (/"taama"\ IP\ Der/nv\ Gram/IV\ GALUAR\ Der/vv\ Gram/IV/l) + LI LINK -1 BOS OR KOMMA)#Inuttut isumaqarpunga ernumasariaqanngitsugut, TAAMAAKKALUARTORLI inuiaqatigiinni utoqqartagut sanngiinnerusortagullu paarissavagut, Paneeraq Noahsen oqarpoq.
+
 ;
 
 
@@ -7376,6 +7384,7 @@ MAP:M1737B @CL-<CIT TARGET Par IF (*-1 ORATIOOBLVERB + V - Aeq - @SUBJ> OR OQARP
 (NEGATE *1 ("...") + @CL-<CIT BARRIER KOMMA) #Usikker mapping til sidst for ikke-slettede participier, der ikke er tagget på anden vis. NEGATE for tilfælde af to verber, der begge kan være inquit
 (NEGATE 0 GALUAR LINK -1 KOMMA LINK 1 _TARGET_ LINK *1 Par BARRIER VFIN) #Malugisimavaami .. angummi ajunnginnerusumik pisaleraani, IMAASSINNAAGALUARTOQ nammineq .. naalannerulersimasoq. Den er koncessiv
 (NEGATE 0 Par + 3Sg + Gram/Adv-encl LINK -1 TIME)
+(NEGATE 0 (/"taama"\ IP\ Der/nv\ Gram/IV\ GALUAR\ Der/vv\ Gram/IV/l) + LI LINK -1 BOS OR KOMMA)#Inuttut isumaqarpunga ernumasariaqanngitsugut, TAAMAAKKALUARTORLI inuiaqatigiinni utoqqartagut sanngiinnerusortagullu paarissavagut, Paneeraq Noahsen oqarpoq.
 ;
 
 MAP:M1738 @ADVL> TARGET Part (NEGATE *-1 (*) - @HNOUN - @INTERJ LINK *1 _TARGET_ LINK *1 (*) - @HNOUN - @INTERJ) ; #Sen tagning af partikler, der ikke er tagget med andet
