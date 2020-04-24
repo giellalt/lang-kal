@@ -451,6 +451,8 @@ LIST LIUR_UTE = LIUR\=UTE ;
 LIST LLAQQIP = LLAQQIP ;
 LIST LLAP = LLAP ;
 LIST LLAR = LLAR ;
+LIST LLATTAA = LLATTAA ;
+LIST LLATTAAR = LLATTAAR ;
 LIST LLIR = LLIR ;
 LIST LLIQ = LLIQ ;
 LIST LLIUR = LLIUR ;
@@ -1179,7 +1181,7 @@ SET OBLIQUE =  Trm | Abl | Lok | Aeq | Ins | Via ;
 SET iOBLIQUE = iTrm | iAbl | iLok | iAeq | iIns | iVia | Trm + Hyb/1-2 | Abl + Hyb/1-2 | Lok + Hyb/1-2 | Aeq + Hyb/1-2 | Ins + Hyb/1-2 | Via + Hyb/1-2 ;
 SET NUMERUS = Sg | Pl ;
 SET KONGRUENSADLED = N + $$KASUS + $$NUMERUS ;
-SET NÆPPE-POSS = (/__TUQ\ Der\/vn\ N\ Rel\ Sg\ 4PlPoss__/l) | (/__TUQ\ Der\/vn\ N\ Rel\ Pl\ 4PlPoss__/l) ; #SET til forebyggelse af uheldige sletninger af Ins. PL 20181017
+SET NÆPPE-POSS = (/TUQ\ Der\/vn\ N\ Rel\ Sg\ 4PlPoss/l) | (/TUQ\ Der\/vn\ N\ Rel\ Pl\ 4PlPoss/l) ; #SET til forebyggelse af uheldige sletninger af Ins. PL 20181017
 SET ALL_OBLIQUE = OBLIQUE | iOBLIQUE ;
 
 SET 3PlPossUdenMWE = 3PlPoss - ("Kalaallit Nunaat") - ("Kalaallit Illuutaat") - ("sapaatip-akunneq");
@@ -1486,7 +1488,7 @@ SET DIRTALE = TALE OR OQARnUSIQ ;
 
 LIST CALL = "atser" "atsiup" "naalap" ; #sandsynlighed for ateq ved disambiguering mellem ateq og ate.
 
-LIST humverb = (/"attavik"\ GE\ Der/nv/l) ("eqqarsar" UTE GE) "eqqartor" "innar" (/\"inuk\"\ U\ /l) "iser" "isiginnaar" "kaap" (/"mianersor"\ Gram/IV\ QQU/l) "naalap" "nalunaar" (/"nassip"\ Gram/TV\ UTE/l) "oqqap" ("pisiaq" GE) "sana" "sinip" ("sinnattoq" GE) "suli" "uppere"; # Verb der vil ha humane subj, og ikke er i andre set
+LIST humverb = (/"attavik"\ GE\ Der/nv/l) ("eqqarsar" UTE GE) "eqqartor" "innar" (/\"inuk\"\ U\ /l) "iser" "isiginnaar" "kaap" (/"mianersor"\ Gram/IV\ QQU/l) "naalap" "nalunaar" (/"nassip"\ Gram/TV\ UTE/l) "oqqap" ("pisiaq" GE) "sana" "sinip" ("sinnattoq" GE) "suli" "uppere" "utertip"; # Verb der vil ha humane subj, og ikke er i andre set
 LIST thingverb = "nalunaap" "ersip" ;
 LIST thingobjverb = ("qaammaqqut" GE) ("qaammaqqutige") ("qamip" Gram/TV) ; #transitive verb with non-human object 
 LIST humanobjverb = ("ajoqersor");
@@ -2888,8 +2890,9 @@ REMOVE:0039 Abs + 3SgPoss IF (0 Int + 3Sg)(1 ("?")); # .. toqua? er ikke 'hendes
 REMOVE:0040H Rel + 4PlPoss IF (0 NIRPAAQ + N + Ins) ; # ajornerpaamik
 
 # Speciel possessor-konstruktion med løst tilføjet adled til led til venstre må håndteres tidligt jf. :M0067. Må ikke slette Prop, der står som apposition eller vælge ("taama")+POSSESSUM frem for  ("taamaattumik")
-SELECT:0040N Rel IF (NEGATE *1 V)(*-1 KOMMA BARRIER V LINK *-1 Rel LINK 1 POSSESSUM3)(NEGATE 0 Prop + $$KASUS LINK -1 $$KASUS)(NEGATE 0 ("taamaattumik"))(NEGATE 0 Par LINK *-1 CONJ-C LINK *-1 Cau LINK *-1 ORATIOOBLVERB); #sidste NEGATE for at undgå hit på konjunktionelle verballed i oo. #BARRIER tilføjet 10180802 for at undgå hit på relativer som ikke har noget med syntagmet at gøre.
-
+SELECT:0040N Rel IF (NEGATE *1 V)(*-1 KOMMA BARRIER V LINK *-1 Rel LINK 1 POSSESSUM3)(NEGATE 0 Prop + $$KASUS LINK -1 $$KASUS)(NEGATE 0 ("taamaattumik"))(NEGATE 0 Par LINK *-1 CONJ-C LINK *-1 Cau LINK *-1 ORATIOOBLVERB) #sidste NEGATE for at undgå hit på konjunktionelle verballed i oo. #BARRIER tilføjet 10180802 for at undgå hit på relativer som ikke har noget med syntagmet at gøre.
+#(NEGATE NOT -1 Rel LINK 1 _TARGET_ + Pl LINK NEGATE *1 TRANSVERB + 3Pl OR 3PlPoss)#Tamakkua tassaapput saarullernat, norskit ammassassui, MAKRELIT ammassallu, tamaani naalagaaffinnut aalisarfiusunut aningaasarsiornikkut pingaaruteqartorujussuit. En OMMER. Virker kun på makrellerne, men ikke på ammassat. Prøv i stedet en REMOVE Rel før 0040N
+;
 REMOVE Pl + 1PlPoss + Orth/Alt IF (0 Par + 1Pl) 
 (NEGATE *1 3PlO BARRIER V OR Abs + Pl LINK *-1 _TARGET_ LINK NEGATE *-1 Abs + Pl)#Nuakkutta kaffillissanngilagut, taamaalioruttami ISERTUGUT tunillassinnaavagut.
 ;
@@ -3040,6 +3043,12 @@ REMOVE:uløselighed0007 Rel + Pl IF (*1 3PlO BARRIER V LINK *-1 3PlPoss + Ins BA
 
 #Strukturen SUBJ=OBJ=CONT+3SgO=V+3Sg næsten umulig at adskille fra OBJ=@N<=CONT+3SgO=V+3Sg jf. regel M0342
 MAP:M_uløselighed0008 @OBJ> TARGET Abs + Sg + <f-psych> IF (-1 Abs + <Hprof>)(1 CONT + 3SgO);#Ataatani guutipilussiortut palaserigaluaraat milutsitsisuata kristumiunngorsimasup kristumiut upperisaannik ajoqersorsimavaa, arnarlu taanna milutsitsisua UPPERISANI pillugu toqutaasimavoq.
+
+#Taassuma piffissami QANITTUMI utertitsisoqallattaalernissaa ilimagaa. Ægte ambiguitet, idet qanittumi teoretisk kunne være possessor men qanittoq anvendes ikke om mennesker og er derfor udelukket som possessor in casu
+REMOVE:uløselighed0009A (/"qanip"\ Gram/.V\ \(Gram/Refl\ \)?TUQ/l) + Rel IF (0 (/"qanip"\ Gram/IV\ TUQ/l) + Lok LINK 1 humverb);
+REMOVE:uløselighed0009B (/"qanip"\ Gram/TV\ Gram/Pass\ TUQ/l) + Rel IF (0 (/"qanip"\ Gram/IV\ TUQ/l) + Lok LINK 1 humverb);
+#A og B bør kunne skrives sammen til kun en regel
+MAP:M_uløselighed0010 @SUBJ> TARGET Pron + Rel + Sg IF (@1 _TARGET_ LINK NEGATE *1 Rel + Sg)(*1 3SgPoss LINK *1 TRANSVERB + 3Sg);#TAASSUMA piffissami qanittumi utertitsisoqallattaalernissaa ilimagaa.
 
 #Lok anvendt på MIK-OBJ i stedet for Ins er svær (umulig?) at håndtere. En tidlig og farlig regel, der skal følges op på
 SUBSTITUTE Lok Ins TARGET (HTR) IF (1 HTR - ("ilar")) #siunnersortit .. Tasiilami inunnik ISUMAGINNINNERMI ingerlatitsivimmi .. ikiuussimapput. Mange fejl pga. ambiguøs ilaivoĸ vs. ilauvoĸ
@@ -3239,6 +3248,7 @@ SELECT:0063 Rel + Pl - FAM_UNIK - Num IF (1C 3PlPossUdenMWE)(NEGATE 1 ("siuneq")
 
 SELECT:0063B Rel + Pl - FAM_UNIK - 4PlPoss - 4SgPoss IF (1C Rel + Pl - Prop LINK 1C 3PlPoss - Prop - iALL - Hyb/1-2)(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 1 ("assi") + POSSESSUM + CONJ-LU)(NEGATE -1 ("ila") LINK 2 ("ila"))(NEGATE 0 ("assut") OR ("taama")) ;
 SELECT:0063C Rel + Pl - FAM_UNIK IF (1C Rel + Pl - Prop LINK 1C Rel + Pl LINK 1 3PlPoss - Prop)(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 1 ("assi") + POSSESSUM + CONJ-LU)(NEGATE -1 ("ila") LINK 2 ("ila"))(NEGATE *1 INTRANSVERB + 3Pl + VFIN BARRIER VFIN) ;
+
 SELECT:0064 Rel + Sg - NÆPPE-POSS IF (1C 3SgPoss - MWE_POSS)(NEGATE 0 Ins LINK 1 LIK_QAR)(NEGATE 1 CONJ-LU)(NEGATE 0 ("affaq"))(NEGATE 0 PLACE + Lok)(NEGATE 0 Ins + CONJ-C LINK -1 Ins) (NEGATE 0 Prop + Lok LINK NOT -1 PUNCT OR BOS); #asanninnermik pigisaqarneranut er ikke en possessor-possessum forbindelse
 
 REMOVE:0065 N IF (1 FAM_UNIK + POSSESSUM - ("ui" Orth/Arch))(NEGATE *-1 V) ; #ui+Orth/Arch = 4SgPoss
@@ -5258,7 +5268,9 @@ MAP:M0293B @i-ADVL> TARGET OTHERTIME + Abs IF (1 NIQ + N)
 (NEGATE 1 Abs + LU) #Anaanami INUUSIMANERA toqusimaralu pissutigalugit 
 (NEGATE 1 Abs LINK *1 3SgO BARRIER (*) - Adv - OBLIQUE) #Tassa PIFFISSAQ annertuneq ujaasinermut atussallutigu allakkalli annikitsuinnaat pissarsiaralugit.
 ; #Juullip siorna akissarsisarneq
-MAP:M0294 @i-ADVL> TARGET OBLIQUE - Ins - ("<(S|s)aniatigut>"r) IF (1 HTR + (/__NIQ\ Der\/vn\ \(SSAQ\ Der\/nn\ \)?N__/l) - Gram/Db)(NEGATE 0 Trm LINK 1 MUT-OBJ + HTR) (NEGATE 0 $$KASUS + Num LINK -1 $$KASUS + TIME) ;
+MAP:M0294 @i-ADVL> TARGET OBLIQUE - Ins - ("<(S|s)aniatigut>"r) IF (1 HTR + (/__NIQ\ Der\/vn\ \(SSAQ\ Der\/nn\ \)?N__/l) - Gram/Db)(NEGATE 0 Trm LINK 1 MUT-OBJ + HTR) (NEGATE 0 $$KASUS + Num LINK -1 $$KASUS + TIME)
+(NEGATE -1 Lok LINK 1 (/"qanip"\ Gram/IV\ TUQ/l) + Lok LINK 1 3SgPoss)#uløselighed ved implicit possessor Taassuma piffissami QANITTUMI utertitsisoqallattaalernissaa ilimagaa.
+ ;
 
 MAP:opremsning1 @ADVL> TARGET OBLIQUE + $$KASUS - Adv IF (-*1 KOMMA OR CONJ-C - Adv LINK *-1 $$KASUS BARRIER (*) - OBLIQUE - Adv)(NEGATE *-1 V - CONT)(*1 VFIN) #Qiimassutsimigut, ILLARTARNERMIGUT qungujulasarnermigullu minguitsukkut anitsiarfiit nuannernerulersittarpai.
 (NEGATE *-1 ("tassa") + @FOC>N) #Aasaanerani angallaffiunerpaajunerata nalaani tassa majimi, juunimi, juulimi, aggustimi kiisalu septembarimi SAS sapaatip-akunneranut marloriarluni timmisartuussisassaaq.
@@ -9454,6 +9466,7 @@ REMOVE:5639AJ QQU IF (0 QQUSAAR) ;
 REMOVE:5639AK (/"siulittar"\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ SURE\ Der/vv\ Gram/TV\ SIMA\ Der/vv\ Gram/TV\ TAQ/l) IF (0 (/"siulittar"\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TUQ\ Der/vn\ GE\ Der/nv\ Gram/TV\ SIMA\ Der/vv\ Gram/TV\ TAQ/l));#Ad hoc regel til højfrekvent struktur, der teoretisk er en ægte disambiguitet
 REMOVE:5639AL (/TAQ\ Der/nn\ IRNIAR\ Der/nv/l) IF (0 (/TAAR\ Der/nv\ Gram/IV\ NIAR\ Der/vv/l)) ;#Masser af corpus hits på TAAR=NIAR og slet ingen på TAQ=IRNIAR
 REMOVE:5639AM (/SSAQ\ Der/nn\ U\ Der/nv\ Gram/IV\ LIR\ Der/vv\ QE/l) IF (0 (/SSAQ\ Der/nn\ ILIQI/l));
+REMOVE:5639AN LLATTAA IF (0 LLATTAAR) ; #simpel tælling i corpus
 
 # Enkelte substantiver
 REMOVE ("pineq") IF (NEGATE *0 ("kamik")) ; #20091103 pineq+QAR vs. pineqar-
