@@ -190,7 +190,22 @@ sub handle_cmdline_opts {
 
    my $cmdline = join(' | ', @cmdline);
    if (!$opts{'raw'}) {
-      $cmdline =~ s@(BIN|ETC|LEX)/(\S+)@_find_newest_cb("$1", "$2")@eg;
+      $cmdline =~ s@(BIN|LEX)/(\S+)@_find_newest_cb("$1", "$2")@eg;
+      while ($cmdline =~ m@(ETC)/(\S+)@) {
+         my ($e,$f,$nf) = ($1, $2, $2);
+         eval {
+            my $rv = _find_newest_cb($e, $f);
+            $cmdline =~ s@\Q$e/$f\E@$rv@g;
+         };
+         if ($@) {
+            $nf =~ s@\.cg3$@.bin@g;
+            if (defined $ENV{DEBUG_NEWER}) {
+               print STDERR "NEWER: $f not found - trying $nf\n";
+            }
+            my $rv = _find_newest_cb($e, $nf);
+            $cmdline =~ s@\Q$e/$f\E@$rv@g;
+         }
+      }
    }
    if (defined $opts{'regtest'} || defined $opts{'cmd'} || defined $opts{'raw'}) {
       print $cmdline."\n";
