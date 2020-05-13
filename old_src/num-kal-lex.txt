@@ -1,0 +1,174 @@
+! =================== !
+! Arabiske numeralier !
+! =================== !
+
+! Vi deler arabiske tal i to. Først dei før komma, som er
+! uavhengig av danske ordformer.
+! Deretter dei etter komma, som er avhengig av dansk.
+
+LEXICON numeralier
+ arabiskeførkomma ;   ! Ein vokaluavhengig automat
+ arabiskeefterkomma ; ! Ein vokalavhengig automat
+
+LEXICON arabiskeefterkomma
+ arabiske ;
+ naturligetal ;
+    1t9 ;   ! 1-9
+    10t99 ; ! 10-99
+
+! Før komma
+
+LEXICON arabiskeførkomma
+< [%0|1|2|3|4|5|6|7|8|9] > talkomma ;
+! en konsonantnøytral automat som går til talkomma og derfra til numeralier.
+
+LEXICON talkomma
+ arabiskeførkomma ;
+ komma ;
+
+
+LEXICON komma
+ , efterkomma ;
+ . efterkomma ;
+ / efterkomma ;
+ - efterkomma ;
+ . ordinal ;
+   efterkomma ; !Tilfoejet 20.9. for at undgaa 30.000 "fejl" i Bibelen af typen v1 v2 etc.
+
+LEXICON efterkomma
+ arabiskeførkomma ;
+ arabiskeefterkomma ;
+ 
+LEXICON ordinal
+ +Num+Ord: # ;
+
+! Efter komma  
+
+LEXICON arabiske
+< [%0|1|2|3|4|5|6|7|8|9] > loop ;
+
+
+LEXICON loop
+ arabiske ;
+ 1t9sep ;
+ 
+ 
+LEXICON naturligetal
+                         nul ; 
+< [1|2|3|4|5|6|7|8|9] >  1t9sep ;
+    
+LEXICON nul
+ %0 nul ;
+ %0 num_C ;
+
+LEXICON 1t9
+ 1567 ;
+ 23489 ;
+ 
+LEXICON 1567 
+< [1|5|6|7] >  num_C ;
+
+ 
+LEXICON 23489      
+< [2|3|4|8|9] >  num_V ;
+ 
+LEXICON 10t99    
+  1 tenC ;
+  1 tenV ; 
+< [2|3|4] >     20t40 ;
+< [5|6|7|8|9] > 50t90 ;
+
+LEXICON tenV ! 10, 11
+ %0 num_V ; 
+  1 num_V ;
+
+LEXICON tenC ! 12-19
+< [2|3|4|5|6|7|8|9] >   num_C ;
+
+
+LEXICON 20t40
+< [%0|1|2|3|4|5|6|7|8|9] >  num_V ;
+   
+
+LEXICON 50t90 
+< [%0|1|2|3|4|5|6|7|8|9] >  num_C ;
+    
+
+LEXICON 1t9sep
+ %0%0 num_V ; ! 100, 200, ..., 900
+  %0  1t9 ;   ! 101, 102, ..., 201, ...909
+      10t99 ;  
+
+
+
+LEXICON num_C
+	%%	num_C ; !tilfoejet loop 20090306 for at klare former som 83%-ii
++Num+Abs:%>-%EPENT	indholds-K ;
++Num+Abs: # ;
++Num+Abs+Pl:%>-it	K ;
++Num+Abs+Sg+3SgPoss:%>-ia	K ;
++Num+Abs+Sg+3PlPoss:%>-iat	K ;
++Num+Abs+Pl+3SgPoss:%>-ii	K_plur ;
++Num+Abs+Pl+3PlPoss:%>-ii	K_plur ;
++Num+Rel:%>-ip	K ;
++Num+Rel+Sg+3SgPoss:%>-iata	K ;
++Num+Rel+Sg+3PlPoss:%>-iata	K ;
++Num+Rel+Pl+3SgPoss:%>-iisa	K_plur ;
++Num+Rel+Pl+3PlPoss:%>-iisa	K_plur ;
++Num+Lok:%>-imi	LokVb ;
++Num+Lok:%>-ini	LokVb ;
++Num+Lok+Sg+3SgPoss:%>-iani	LokVb ;
++Num+Lok+Sg+3PlPoss:%>-ianni	LokVb ;
++Num+Lok+Pl+3SgPoss:%>-iini	LokVb ;
++Num+Lok+Pl+3PlPoss:%>-iini	LokVb ;
++Num+Ins:%>-imik	K ;
++Num+Ins:%>-inik	K_plur ;
++Num+Trm:%>-imut	TrmVb ;
++Num+Trm:%>-inut	TrmVb ;
++Num+Abl:%>-imit	AblVb ;
++Num+Abl:%>-imiit	K ;
++Num+Abl:%>-init	AblVb ;
++Num+Aeq:%>-itut	K ;
++Num+Via:%>-ikkut	ZkkutZ ;
++Num+U:%>-iu	IV_voq ;
++Num+LIR:%>-iler	HTR_GAQ ;
++Num+NNGUR:%>-inngor	IV ;
++Num+RIAR:%>-eriar	IV ;
++Num+RIAR:%>-eriar	TV ;
++Num+RIAAT:%>-eriaat	tptmorf ;
+
+LEXICON num_V
+	%%	num_C ; !tilfoejet 20090306 for at haandtere ord som 49%-ii
++Num+Abs:%>-	indholds-K ;	
++Num+Abs:	# ;	
++Num+Abs+Pl:%>-t	K ;
++Num+Abs+Sg+3SgPoss:%>-a	K ;
++Num+Abs+Sg+3PlPoss:%>-at	K ;
++Num+Abs+Pl+3SgPoss:%>-i	K_plur ;
++Num+Abs+Pl+3PlPoss:%>-i	K_plur ;
++Num+Rel:%>-p	K ;
++Num+Rel+Sg+3SgPoss:%>-ata	K ;
++Num+Rel+Sg+3PlPoss:%>-ata	K ;
++Num+Rel+Pl+3SgPoss:%>-isa	K_plur ;
++Num+Rel+Pl+3PlPoss:%>-isa	K_plur ;
++Num+Lok:%>-mi	LokVb ;
++Num+Lok:%>-ni	LokVb ;
++Num+Lok+Sg+3SgPoss:%>-ani	LokVb ;
++Num+Lok+Sg+3PlPoss:%>-anni	LokVb ;
++Num+Lok+Pl+3SgPoss:%>-ini	LokVb ;
++Num+Lok+Pl+3PlPoss:%>-ini	LokVb ;
++Num+Ins:%>-mik	K ;
++Num+Ins:%>-nik	K_plur ;
++Num+Trm:%>-mut	TrmVb ;
++Num+Trm:%>-nut	TrmVb ;
++Num+Abl:%>-mit	AblVb ;
++Num+Abl:%>-miit	K ;
++Num+Abl:%>-nit	AblVb ;
++Num+Aeq:%>-tut	K ;
++Num+Via:%>-kkut	ZkkutZ ;
++Num+U:%>-u	IV_voq ;
++Num+NNGUR:%>-nngor	IV ;
++Num+RIAR:%>-riar	IV ;
++Num+RIAR:%>-riar	TV ;
++Num+RIAAT:%>-riaat	tptmorf ;
+

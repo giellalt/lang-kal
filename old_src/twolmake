@@ -1,0 +1,170 @@
+# -*-makefile-*-
+
+# ************************************************************************* #
+# This is a makefile that builds the TWOLC Greenlandic morphological parser #
+# ************************************************************************* #
+
+
+# Inspirert av ovr
+
+M4 = m4
+M4FLAGS =
+#ALL_M4FLAGS = $(M4FLAGS) -P
+
+
+
+# Her bygger vi en analysator for vestgrønlandsk.
+
+# Here we build the final generator , an inverted transducer of the analyzer.
+# It is dependent upon kal.save
+
+ikalt.fst: ../bin/ikalt.fst
+../bin/ikalt.fst: ../bin/kalt.fst ../bin/g-kalt.fst ../bin/d-kalt.fst 
+	@echo
+	@echo "*** Building the inverse ikalt.fst ***"
+	@echo
+	@printf "load ../bin/kalt.save \n\
+	invert net \n\
+	save stack ../bin/ikalt.fst \n\
+	quit \n" > ../tmp/ikal-fst-script
+	@xfst -utf8 < ../tmp/ikal-fst-script
+	@rm -f ../tmp/ikal-fst-script
+
+
+# We want an analyzer with Danish tags. It takes the linguistic 
+# kalt.fst as input and gives us an alternate d-kalt.fst
+
+d-kalt.fst: ../bin/d-kalt.fst
+../bin/d-kalt.fst: ../bin/kalt.fst ../bin/tag-da.fst
+	@echo
+	@echo "*** Building d-kalt.fst, kalt.fst with Danish tags ***"
+	@echo
+	@printf "read regex [[@\"../bin/tag-da.fst\"] .o. \
+	[@\"../bin/kalt.fst\"]] ; \n\
+	save stack ../bin/d-kalt.fst \n\
+	quit \n" > ../tmp/d-kal-fst-script
+	@xfst < ../tmp/d-kal-fst-script
+	@rm -f ../tmp/d-kal-fst-script
+
+
+# In order to make d-kalt.fst we need a binary tag-da.fst
+# This goal depends on tag-da.regex
+
+tag-da.fst: ../bin/tag-da.fst
+../bin/tag-da.fst: tag-da.regex
+	@echo
+	@echo "*** Building tag-da.fst ***" ;
+	@echo
+	@printf "read regex < tag-da.regex \n\
+	save stack ../bin/tag-da.fst \n\
+	quit \n" > ../tmp/kal-tag-da-script
+	@xfst < ../tmp/kal-tag-da-script
+	@rm -f ../tmp/kal-tag-da-script
+
+# We also want an analyzer with Greenlandic tags. It takes the linguistic 
+# kalt.fst as input and gives us an alternate g-kalt.fst
+
+
+g-kalt.fst: ../bin/g-kalt.fst
+../bin/g-kalt.fst: ../bin/kalt.fst ../bin/tag-kalt.fst
+	@echo
+	@echo "*** Building g-kalt.fst, kalt.fst with Sami tags ***"
+	@echo
+	@printf "read regex [[@\"../bin/tag-kalt.fst\"] .o. \
+	[@\"../bin/kalt.fst\"]] ; \n\
+	save stack ../bin/g-kalt.fst \n\
+	quit \n" > ../tmp/g-kal-fst-script
+	@xfst < ../tmp/g-kal-fst-script
+	@rm -f ../tmp/g-kal-fst-script
+ 
+# In order to make g-kalt.fst we need a binary tag-kalt.fst
+# This goal depends on tag-kal.regex
+
+tag-kalt.fst: ../bin/tag-kalt.fst
+../bin/tag-kalt.fst: tag-kal.regex
+	@echo
+	@echo "*** Building tag-kalt.fst ***" ;
+	@echo
+	@printf "read regex < tag-kal.regex \n\
+	save stack ../bin/tag-kalt.fst \n\
+	quit \n" > ../tmp/tag-kal-script
+	@xfst < ../tmp/tag-kal-script
+	@rm -f ../tmp/tag-kal-script
+
+
+# This goal is to build the final analyser. It depends on all the files.
+
+kalt.fst: ../bin/kalt.fst
+../bin/kalt.fst: ../bin/kalt.save ../bin/caseconv.fst
+	@echo
+	@echo "*** Building kalt.fst ***" ;
+	@echo
+	@printf "read regex [[@\"../bin/kalt.save\"] .o. \
+	[@\"../bin/caseconv.fst\"]] ; \n\
+	save stack ../bin/kalt.fst \n\
+	quit \n" > ../tmp/kal-fst-script
+	@xfst -utf8 < ../tmp/kal-fst-script
+	@rm -f ../tmp/kal-fst-script
+
+
+
+
+# The second goal is to build the caseconv.fst file
+# This goal depends on case.regex
+
+caseconv.fst: ../bin/caseconv.fst
+../bin/caseconv.fst: case.regex
+	@echo
+	@echo "*** Building caseconv.fst ***" ;
+	@echo
+	@printf "read regex < case.regex \n\
+	save stack ../bin/caseconv.fst \n\
+	quit \n" > ../tmp/caseconv-script
+	@xfst -utf8 < ../tmp/caseconv-script
+	@rm -f ../tmp/caseconv-script
+
+
+
+
+# Then we build kalt.save, the lexicon and the mf-rules
+
+kalt.save: ../bin/kalt.save
+../bin/kalt.save: kal-lex.txt noun-kal-lex.txt prt-kal-lex.txt \
+	verb-kal-lex.txt ../bin/twol-kalt.bin
+	@echo
+	@echo "*** Building kal-lex.save ***" ;
+	@echo
+	printf "compile-source kal-lex.txt noun-kal-lex.txt \
+	prt-kal-lex.txt verb-kal-lex.txt \n\
+	read-rules ../bin/twol-kalt.bin \n\
+	compose-result \n\
+	save-result ../bin/kalt.save \n\
+	quit \n" > ../tmp/kalt-save-script
+	@lexc -utf8 < ../tmp/kalt-save-script
+	rm -f ../tmp/kal-lex-save-script
+
+
+
+# The first goal is to build twol-kalt.bin
+# This goal depends on twol-kal.txt
+
+
+twol-kalt.bin: ../bin/twol-kalt.bin
+../bin/twol-kalt.bin: twol-kal.txt
+	@echo
+	@echo "*** Building twol-kalt.bin ***" ;
+	@echo
+	$(M4) -DNORAISE -DBASE twol-kal.txt > ../../tmp/twol-kaltmp.txt
+	@printf "read-grammar ../../tmp/twol-kaltmp.txt \n\
+	compile \n\
+	save-binary ../bin/twol-kalt.bin \n\
+	quit \n" > ../../tmp/twol-kal-script
+	@twolc -utf8 < ../../tmp/twol-kal-script
+	@rm -f ../../tmp/twol-kal-script
+
+
+
+clean:
+	@rm -f ../bin/*.bin ../bin/*.fst ../bin/*.save
+
+
