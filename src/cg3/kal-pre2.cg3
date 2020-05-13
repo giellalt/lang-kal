@@ -1,0 +1,70 @@
+#cg-pre-pipe: ~/langtech/kal/tools/shellscripts/kal-tokenise ~/langtech/kal/tools/tokenisers/tokeniser-disamb-gt-desc.pmhfst | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/syntax/kal-pre1.cg3 #
+
+#ADD-reglerne bedst placeret i selvstændig CG, fordi DIRTALE.*-tags ikke er synlige i første no-mappings kørsel (i modsætning til SUBSTITUTE, der kan ses straks, men til gengæld gentages et uskønt antal gange) samt fordi de nye tags ikke kan anvendes i constraints, der peger mod højre. Sidste forbehold gælder også for SUBSTITUTE.
+
+#Der gøres (foreløbig?) ikke forskel på direkte tale modsat opremsninger o.lign. efter kolon. DIRTALE er altså lidt upræcis idet en sætning som " ... paasissutissaaleqilaarpungali: Aqqit nalinginnaarpianngitsut soorlu Agssagiaĸ suiaassuseqartinngilakka taamaammat suliassiissut manna ingerlassinnaanagu." vil få analysen " ... paasissutissaaleqilaarpungali:DIRTALESTART Aqqit nalinginnaarpianngitsut soorlu Agssagiaĸ suiaassuseqartinngilakka taamaammat suliassiissut manna ingerlassinnaanagu.DIRTALESLUT"
+ 
+
+INCLUDE STATIC disambiguator.cg3 ;
+
+#Tagging af hypotakser til brug i BARRIER. NB § kan ikke være præfix fordi §-tags slettes automatisk mellem CG-erne
+ADD:ContHypotagme1 (%ContHypotagme) TARGET Abs + Sg IF (1 CONT + 3SgO);
+ADD:ContHypotagme2 (%ContHypotagme) TARGET Abs + Pl  IF (1 CONT + 3PlO);
+ADD:ContHypotagme3 (%ContHypotagme) TARGET CONT + 3SgO IF (-1 Abs + Sg);
+ADD:ContHypotagme4 (%ContHypotagme) TARGET CONT + 3PlO IF (-1 Abs + Pl);
+ADD:ContHypotagme5 (%ContHypotagme) TARGET Num + Abs IF (1 CONT + 3PlO); #"Fejlen" 18 sinnerlugit ukiullit
+ADD:ContHypotagme6 (%ContHypotagme) TARGET CONT + 3PlO IF (-1 Num + Abs ); #"Fejlen" 18 sinnerlugit ukiullit
+
+ADD:NumPossessum (%NumPossessum) TARGET ("misse") + 3PlPoss IF (-1 Rel + Num) ;
+ADD:TidHypotagme01 (%TidHypotagme) TARGET TIME + Rel IF (1 TIME + OBLIQUE + POSSESSUM3); #aggustip qaammataani
+ADD:TidHypotagme02 (%TidHypotagme) TARGET TIME + OBLIQUE + POSSESSUM3 IF (-1 TIME + Rel); #aggustip qaammataani
+ADD:TidHypotagme03 %TidHypotagme TARGET (/"ulloq"\ N\ Rel\ Pl/l) IF (1 (/ila"\ N\ Lok\ Sg\ 3PlPoss/l));#ullut ilaanni
+ADD:TidHypotagme03 %TidHypotagme TARGET (/ila"\ N\ Lok\ Sg\ 3PlPoss/l) IF (-1 (/"ulloq"\ N\ Rel\ Pl/l));#ullut ilaanni
+
+#ADD:VerbalInderivering (%VerbalInderivering) TARGET (/Gram/TV\ V/l) IF (0 (/".*"\ Gram/IV/l) + NIRAR OR (/".*"\ Gram/IV/l) + SURE); 
+ADD:VerbalInderivering (%VerbalInderivering) TARGET (/Gram/IV.*\(NIRAR|SURE\)\ Der/vv.*\ Gram/TV\ V/l) ;
+
+#En interim-tag, der tillader enten en Abs eller en Rel i en BARRIER selv om pendanten endnu ikke er disambigueret. Skal slettes igen mellem morfologisk og syntaktisk disambiguering
+ADD:AmbiguøsN (%AmbiguøsN) TARGET Abs IF (0 Rel);
+ADD:AmbiguøsN (%AmbiguøsN) TARGET Rel IF (0 Abs);
+
+
+#Farlige interimregler importeret fra "Livs GCG" mens vi venter på at regressionen gøres kontekstsensitiv
+ADD:DIRSTART_Int1 DIRTALESTART TARGET ("-") + PUNCT OR (""") + PUNCT OR ("”") + (PUNCT RIGHT) OR ("„") + (PUNCT LEFT) IF (-1 BOS) ;
+ADD:DIRSTART_Int2 DIRTALESTART TARGET (":") IF (NEGATE 0 DIRTALESTART OR DIRTALESLUT) ; #not safe marking
+
+ADD:DIRSLUT_Int01 DIRTALESLUT TARGET CLB IF (0 ("?") OR ("!")) (*-1< DIRTALESTART OR DIRTALEMIDDLE BARRIER DIRTALESLUT)(NEGATE 0 DIRTALESLUT) (NEGATE 0 DIRTALESTART)(NEGATE *1> DIRTALESLUT OR PUNCT BARRIER DIRTALESTART OR DIRTALEMIDDLE) ; #not safe marking
+
+
+ADD:DIRSTART01 DIRTALESTART TARGET ("-") + PUNCT OR (""") + PUNCT IF (-*1W (":") + EOS BARRIER EOS);
+ADD:DIRSTART02 DIRTALESTART TARGET ("-") + PUNCT IF (-*1W (".") + EOS );#BARRIER EOS);
+ADD:DIRSTART03 DIRTALESTART TARGET (""") + PUNCT IF (-*1 VFIN + INQUIT_VERB BARRIER VFIN);
+
+
+ADD:DIRTALESLUT1 DIRTALESLUT TARGET (""") + PUNCT IF (-*1W (".") + EOS OR ("!") + EOS OR ("?") + EOS BARRIER EOS);
+
+ADD:DIRSLUT01 DIRTALESLUT TARGET ("?") + CLB OR ("!") + CLB OR (".") + CLB IF (*-1W DIRTALESTART BARRIER CLB - KOMMA)
+(NEGATE *1W (""") + PUNCT BARRIER EOS)#Ikke slut hvis anført tale i citationstegn
+(NEGATE *-1 KOMMA LINK 1 Prop OR N LINK *1 <fn:Talk> + Ind + 3Sg BARRIER VERB-NOTCONT)#men ikke kommaseparerede inquit jf. DIRSLUT02
+(NEGATE *-1 ("?") LINK 1 Prop OR N LINK *1 <fn:Talk> + Ind + 3Sg BARRIER VERB-NOTCONT)#men ikke kommaseparerede inquit jf. DIRSLUT02
+ ;
+ADD:DIRSLUT02 DIRTALESLUT TARGET KOMMA + CLB IF (*-1 DIRTALESTART)(1 Prop + Abs LINK *1 ("oqar") + Ind BARRIER VERB-NOTCONT)
+#(NEGATE # 
+;#til inquit uden citationstegn slut og uden !, ? eller .
+
+
+ADD:DIRSLUT03 DIRTALESLUT TARGET KOMMA + CLB IF (*-1 DIRTALESTART)(*1 Abs + Sg LINK *1 <fn:Talk> + 3Sg);
+
+ADD:DIRSLUT00 DIRTALESLUT TARGET ("?") + CLB OR ("!") + CLB OR (".") + CLB IF (*-1 DIRTALESTART OR DIRTALEMIDDLE BARRIER DIRTALESLUT);
+
+
+SUBSTITUTE DIRTALESLUT DIRTALEMIDDLE TARGET DIRTALESLUT IF (NEGATE *1W ("¶") + CLB BARRIER CLB)(NEGATE *1W <fn:Talk> + 3Sg BARRIER CLB - KOMMA OR DIRTALESLUT); #Ved interpunktion inde i DIRTALE: Trin 1: Gør den mediale DIRTALESLUT til en DIRTALESTART. Trin 2: Fjern de overflødige DIRTALESTART
+#SUBSTITUTE DIRTALESTART (*) TARGET DIRTALESTART IF (*-1 DIRTALESTART)(NEGATE 0 DIRTALESTART LINK -*1 DIRTALESLUT) ;
+
+#dummy-regel for at teste DIRTALE-grænser
+#MAP @X TARGET ("taama") IF (-1W DIRTALESLUT) ;
+
+#en test med tagging af særlige konstruktioner, der skal bruges tidligt i næste CG. Virker måske og måske ikke
+#MAP:M1130 (@i-ADVL>) TARGET CONT IF (*1 NIQ - ("inuk" U NIQ) - Gram/Int - Gram/Comp OR (/.*neq"\ N/l) - ("seqineq") - ("aqqusineq") - ("inuk" U NIQ) - Gram/Int - Gram/Comp BARRIER (*) - Adv - ADVERBIEL LINK NOT 1 KOMMA) #Uangalu anorip karrit aqqusaarlugit siorsunnera nuannaringaalissagaluarpara... # Mapping af ledsagemåde til inderiveret verbum
+#(NEGATE *-1 BOS LINK *1 _TARGET_ + QQU BARRIER (*) - Abs - OBLIQUE - Adv LINK 1 TIME)#Panini namminermisut inuunermik taamaattumik ATUGAQAQQUNAGU silattunnginnerani toqoqatigalugu inuunera kipiniaraluarpaa ...! 
+#;

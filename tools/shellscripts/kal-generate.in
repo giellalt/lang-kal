@@ -1,0 +1,108 @@
+#!/usr/bin/env perl
+# -*- mode: cperl; indent-tabs-mode: nil; tab-width: 3; cperl-indent-level: 3; -*-
+use strict;
+use warnings;
+use utf8;
+use FindBin qw($Bin);
+
+BEGIN {
+	$| = 1;
+	binmode(STDIN, ':encoding(UTF-8)');
+	binmode(STDOUT, ':encoding(UTF-8)');
+}
+use open qw( :encoding(UTF-8) :std );
+use feature 'unicode_strings';
+
+use Getopt::Long;
+Getopt::Long::Configure('no_ignore_case');
+my $opt_verbose = 0;
+my $rop = GetOptions(
+	'verbose|v' => \$opt_verbose,
+                    );
+
+my $prefix = '@prefix@';
+my @fsts = ('', "@datarootdir@/giella/@GTLANG@/generator-gt-desc.hfstol", '/usr/local/share/giella/@GTLANG@/generator-gt-desc.hfstol', '/usr/share/giella/@GTLANG@/generator-gt-desc.hfstol', "$Bin/../../src/generator-gt-desc.hfstol");
+if (defined $ARGV[0] && -s $ARGV[0]) {
+   $fsts[0] = $ARGV[0];
+}
+my $fst = '';
+foreach my $f (@fsts) {
+   if ($f && -s $f && -r $f) {
+      $fst = $f;
+      last;
+   }
+}
+
+if (!$fst || !-s $fst) {
+   die("No usable generator.hfstol given or found!\n");
+}
+if ($opt_verbose) {
+   print STDERR "kal-generate: Using ${fst}\n";
+}
+
+my $t = "hfst-optimized-lookup -p -u ${fst}";
+
+# Prefixes from root.lexc ca. lines 14-15
+my @p = qw(AA TA);
+
+# Main POS tags from root.lexc ca. lines 19-29
+my @m = qw(N V Pali Conj Adv Interj Pron Prop Num Symbol);
+
+# Other POS tags from root.lexc ca. lines 114-180
+my @a = qw(
+   Sg Du Pl
+   Abs Rel Trm Abl Lok Aeq Ins Via
+   Nom Akk
+   Ind Int Imp Opt Cau Con Par Cont ContNeg IteCau
+   1Sg 2Sg 3Sg 4Sg 1Pl 2Pl 3Pl 4Pl 1Du 2Du 3Du 4Du
+   1SgO 2SgO 3SgO 4SgO 1PlO 2PlO 3PlO 4PlO 1DuO 2DuO 3DuO 4DuO
+   1SgPoss 2SgPoss 3SgPoss 4SgPoss 1PlPoss 2PlPoss 3PlPoss 4PlPoss
+   );
+
+my $pp = join('|', @p);
+my $mp = join('|', @m);
+my $ap = join('|', @a);
+my $i = 'i';
+
+open(my $fh, '|-', $t) or die $!;
+binmode($fh, ':encoding(UTF-8)');
+autoflush $fh 1;
+
+while (<STDIN>) {
+   chomp;
+
+   # Skip CG wordforms
+   if (/^"<.+>"/) {
+      next;
+   }
+   # Skip empty lines
+   if (/^\s*$/) {
+      next;
+   }
+
+   # Turn CG readings into FST lines, minding that baseforms can have spaces in them
+   if (m@^\s+"([^\n]+?"?[^"]*)"@) {
+      my $b = $1;
+      # Protect baseform and outdent
+      s/^\s*"\Q$b\E"/XBASEFORMX/;
+      # Turn spaces into +
+      s/\s+/\+/g;
+      # Restore baseform
+      s/XBASEFORMX/$b/;
+   }
+
+   if (/^[^\t]+\t[^\t+]+\+/) {
+      s/^[^\t]+\t([^\t+]+\+)/$1/;
+   }
+
+   # Move Prefix/XX in front of the baseform
+   s@^(.+)\+Prefix/($pp)@$2+$1@g;
+   # Remove prefix from internal POS tags
+   while (s/\+$i($mp|$ap)(\+|$)/+$1$2/g) {}
+
+   # Remove all secondary tags
+   while (s@\+[^+/]+/[^+/]+\+@+@g) {}
+   while (s@\+[^+/]+/[^+/]+$@@g) {}
+
+   print $fh "$_\n";
+}

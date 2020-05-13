@@ -1,0 +1,395 @@
+! =================== !
+! Arabiske numeralier !
+! =================== !
+
+! Vi deler arabiske tal i to. Først dei før komma, som er
+! uavhengig av danske ordformer.
+! Deretter dei etter komma, som er avhengig av dansk.
+
+LEXICON numeralier
+ arabiskeførkomma ;   ! Ein vokaluavhengig automat
+ arabiskeefterkomma ; ! Ein vokalavhengig automat
+
+LEXICON arabiskeefterkomma
+ arabiske ;
+ naturligetal ;
+    1t9 ;   ! 1-9
+    10t99 ; ! 10-99
+
+! Før komma
+
+LEXICON arabiskeførkomma
+< [%0|1|2|3|4|5|6|7|8|9] > talkomma ;
+! en konsonantnøytral automat som går til talkomma og derfra til numeralier.
+
+LEXICON talkomma
+ arabiskeførkomma ;
+ komma ;
+ ZcitationsformZ ; ! placeholder QuotedHyphen
+
+
+LEXICON komma
+ , efterkomma ;
+ . efterkomma ;
+ %: efterkomma ;
+ %; efterkomma ;
+ / efterkomma ;
+ - efterkomma ;
+ . ordinal ;
+!   efterkomma ; !Tilfoejet 20.9. for at undgaa 30.000 "fejl" i Bibelen af typen v1 v2 etc. Udkommenteret 20190301 Virker ikke, men genererer loops og mange ukorrekte dobbeltformer. 
+
+LEXICON efterkomma
+ arabiskeførkomma ;
+ arabiskeefterkomma ;
+ 
+LEXICON ordinal
+ +Num+Gram/Ord: # ;
+
+! Efter komma  
+
+LEXICON arabiske
+< [%0|1|2|3|4|5|6|7|8|9] > loop ;
+	tusinder ; !pga skrivemåder som 150.000
+
+LEXICON tusinder !udelukkende til skrivemåder som 150.000
+	.	loop ;
+
+LEXICON loop
+ arabiske ;
+ 1t9sep ;
+ 
+ 
+LEXICON naturligetal
+                         nul ; 
+< [1|2|3|4|5|6|7|8|9] >  1t9sep ;
+    
+LEXICON nul
+ %0 nul ;
+ %0 num_C ;
+ %0 1t9 ; !foranstillet 0 som i 01
+
+LEXICON 1t9
+ 1567 ;
+ 23489 ;
+ 
+LEXICON 1567 
+< [1|5|6|7|½] >  num_C ;
+< [1|5|6|7|½] >  ord_C_der ;
+< [1|5|6|7|½] >  bogstav ;
+
+LEXICON 23489      
+< [2|3|4|8|9] >  num_V ;
+< [2|3|4|8|9] >  ord_V_der ;
+< [2|3|4|8|9] >  ord_C_der ; !sub eller korrekt?
+< [2|3|4|8|9] >  bogstav ;
+
+LEXICON bogstav
+< [a|b|c|d|e|g|h|i|k|o|p|q|u|t|v|y|æ|ø|å] >	V_connector ;
+< [f|j|l|m|n|r|s|x|z] >	C_connector ;
+
+LEXICON C_connector
++N+Abs: # ;
++N+Abs+Pl:%>-it	Krestr ;
++Err/Sub+N+Abs+Pl:%>-t	Krestr ;
++N+Abs+Sg+3SgPoss:%>-ia	Krestr ;
++Err/Sub+N+Abs+Sg+3SgPoss:%>-a	Krestr ;
++N+Abs+Sg+3PlPoss:%>-iat	Krestr ;
++Err/Sub+N+Abs+Sg+3PlPoss:%>-at	Krestr ; !1-at
++N+Abs+Pl+3SgPoss:%>-ii	K_plur ;
++Err/Sub+N+Abs+Pl+3SgPoss:%>-i	K_plur ;
++N+Abs+Pl+3PlPoss:%>-ii	K_plur ;
++Err/Sub+N+Abs+Pl+3PlPoss:%>-i	K_plur ;
++N+Rel:%>-ip	Krestr ;
++Err/Sub+N+Rel:%>-p	Krestr ;
++N+Rel+Sg+3SgPoss:%>-iata	Krestr ;
++Err/Sub+N+Rel+Sg+3SgPoss:%>-ata	Krestr ;
++N+Rel+Sg+3PlPoss:%>-iata	Krestr ;
++Err/Sub+N+Rel+Sg+3PlPoss:%>-ata	Krestr ;
++N+Rel+Pl+3SgPoss:%>-iisa	K_plur ;
++Err/Sub+N+Rel+Pl+3SgPoss:%>-isa	K_plur ;
++N+Rel+Pl+3PlPoss:%>-iisa	K_plur ;
++Err/Sub+N+Rel+Pl+3PlPoss:%>-isa	K_plur ;
++N+Lok:%>-imi	LokVb ;
++Err/Sub+N+Lok:%>-mi	LokVb ;
++N+Lok:%>-ini	LokVb ;
++Err/Sub+N+Lok:%>-ni	LokVb ;
++N+Lok+Sg+3SgPoss:%>-iani	LokVb ;
++Err/Sub+N+Lok+Sg+3SgPoss:%>-ani	LokVb ;
++N+Lok+Sg+3PlPoss:%>-ianni	LokVb ;
++Err/Sub+N+Lok+Sg+3PlPoss:%>-anni	LokVb ; !1-anni
++N+Lok+Pl+3SgPoss:%>-iini	LokVb ;
++Err/Sub+N+Lok+Pl+3SgPoss:%>-ini	LokVb ;
++N+Lok+Pl+3PlPoss:%>-iini	LokVb ;
++Err/Sub+N+Lok+Pl+3PlPoss:%>-ini	LokVb ;
++N+Ins:%>-imik	Krestr ;
++Err/Sub+N+Ins:%>-mik	Krestr ;
++N+Ins:%>-inik	K_plur ;
++Err/Sub+N+Ins:%>-nik	K_plur ;
++N+Trm:%>-imut	TrmVb ;
++Err/Sub+N+Trm:%>-mut	TrmVb ;
++N+Trm:%>-inut	TrmVb ;
++Err/Sub+N+Trm:%>-nut	TrmVb ;
++N+Trm+Sg+3SgPoss:%>-ianut	TrmVb ;
++Err/Sub+N+Trm+Sg+3SgPoss:%>-anut	TrmVb ;
++N+Trm+Sg+3PlPoss:%>-iannut   TrmVb ;
++Err/Sub+N+Trm+Sg+3PlPoss:%>-annut   TrmVb ;
++N+Trm+Pl+3SgPoss:%>-iinut    TrmVb ;
++Err/Sub+N+Trm+Pl+3SgPoss:%>-inut    TrmVb ;
++N+Trm+Pl+3PlPoss:%>-iinut    TrmVb ;
++Err/Sub+N+Trm+Pl+3PlPoss:%>-inut    TrmVb ;
++N+Abl:%>-imit	AblVb ;
++Err/Sub+N+Abl:%>-mit	AblVb ;
++N+Abl:%>-imiit	Krestr ;
++Err/Sub+N+Abl:%>-miit	Krestr ;
++N+Abl:%>-init	AblVb ;
++Err/Sub+N+Abl:%>-nit	AblVb ;
++N+Abl+Sg+3SgPoss:%>-ianit	AblVb ;
++Err/Sub+N+Abl+Sg+3SgPoss:%>-anit	AblVb ;
++N+Abl+Sg+3PlPoss:%>-iannit	AblVb ;
++Err/Sub+N+Abl+Sg+3PlPoss:%>-annit	AblVb ;
++N+Abl+Pl+3SgPoss:%>-iinit	AblVb ;
++Err/Sub+N+Abl+Pl+3SgPoss:%>-init	AblVb ;
++N+Abl+Pl+3PlPoss:%>-iinit	AblVb ;
++Err/Sub+N+Abl+Pl+3PlPoss:%>-init	AblVb ;
++N+Aeq:%>-itut	Krestr ;
++Err/Sub+N+Aeq:%>-tut	Krestr ;
++N+Via:%>-ikkut	ZkkutZ ;
++Err/Sub+N+Via:%>-kkut	ZkkutZ ;
++N+U+Gram/IV+Der/nv:%>-iu	IV_voq ;
++N+U+Gram/IV+Der/nv+Err/Sub:%>-u	IV_voq ;
++N+INNAQ+Der/nn:%>-iinnaq	tup- ;
++N+INNAQ+Der/nn+Err/Sub:%>-innaq	tup- ;
++N+KKUUTAAR+Der/nv:%>-ikkuutaar flex-iv ;
++N+KKUUTAAR+Der/nv+Err/Sub:%>-kkuutaar flex-iv ;
++N+KKUUTAAR+Der/nv:%>-ikkuutaar flex-tv ;
++N+KKUUTAAR+Der/nv+Err/Sub:%>-kkuutaar flex-tv ;
++N+KKUUTAAT+Der/nn:%>-ikkuutaat	tptmorf ;
++N+KKUUTAAT+Der/nn+Err/Sub:%>-kkuutaat	tptmorf ;
++N+LIR+Der/nv:%>-iler	HTR_ir_GAQ_i ;
++N+LIR+Der/nv+Err/Sub:%>-ler	HTR_ir_GAQ_i ;
++N+LLUINNAQ+Der/nn:%>-lluinnaq	tup- ;
++N+LLUINNAQ+Der/nn:%>-rluinnaq	tup- ;
++N+LLUINNAQ+Der/nn+NGAJAK+Der/nn:%>-lluinnangajak	tup- ;
++N+LLUINNAQ+Der/nn+NGAJAK+Der/nn:%>-rluinnangajak	tup- ;
++N+NNGUR+Der/nv:%>-inngor	IV_r ;
++N+NNGUR+Der/nv+Err/Sub:%>-nngor	IV_r ;
++N+NNGUR+Der/nv+Err/Sub:%>-ngor	IV_r ;
++N+NNGUR+Der/nv:%>-inngor	TV ;
++N+NNGUR+Der/nv+Err/Sub:%>-nngor	TV ;
++N+QAR+Der/nv:%>-eqar	IV_voq ;
++N+QAR+Der/nv+Err/Sub:%>-qar	IV_voq ;
++N+R+Der/nv:%>-er XIirXmorf ;
++N+R+Der/nv+Err/Sub:%>-r XIirXmorf ;
++N+RAAR+Der/nv:%>-eraar	IV_r ;
++N+RAAR+Der/nv+Err/Sub:%>-raar	IV_r ;
++N+RIAR+Der/nv:%>-eriar	IV_r ;
++N+RIAR+Der/nv+Err/Sub:%>-riar	IV_r ;
++N+RIAR+Der/nv:%>-eriar	TV ;
++N+RIAR+Der/nv+Err/Sub:%>-riar	TV ;
++N+RIAAT+Der/nn:%>-eriaat	tptmorf ;
++N+RIAAT+Der/nn+Err/Sub:%>-riaat	tptmorf ;
++N+VVAARIK+Der/nn:%>-iffaarik tup- ;
++N+VVAARIK+Der/nn+Err/Sub:%>-ffaarik tup- ;
+
+LEXICON V_connector
++N+Abs:	# ;	
++N+Abs+Pl:%>-t	K ;
++Err/Sub+N+Abs+Pl:%>-it	K ;
++N+Abs+Sg+3SgPoss:%>-a	Krestr ;
++Err/Sub+N+Abs+Sg+3SgPoss:%>-ia	Krestr ;
++N+Abs+Sg+3PlPoss:%>-at	Krestr ;
++Err/Sub+N+Abs+Sg+3PlPoss:%>-iat	Krestr ;
++N+Abs+Pl+3SgPoss:%>-i	K_plur ;
++Err/Sub+N+Abs+Pl+3SgPoss:%>-ii	K_plur ;
++N+Abs+Pl+3PlPoss:%>-i	K_plur ;
++Err/Sub+N+Abs+Pl+3PlPoss:%>-ii	K_plur ;
++N+Rel:%>-p	Krestr ;
++Err/Sub+N+Rel:%>-ip	Krestr ;
++N+Rel+Sg+3SgPoss:%>-ata	Krestr ;
++Err/Sub+N+Rel+Sg+3SgPoss:%>-iata	Krestr ;
++N+Rel+Sg+3PlPoss:%>-ata	Krestr ;
++Err/Sub+N+Rel+Sg+3PlPoss:%>-iata	Krestr ;
++N+Rel+Pl+3SgPoss:%>-isa	K_plur ;
++Err/Sub+N+Rel+Pl+3SgPoss:%>-iisa	K_plur ;
++N+Rel+Pl+3PlPoss:%>-isa	K_plur ;
++Err/Sub+N+Rel+Pl+3PlPoss:%>-iisa	K_plur ;
++N+Lok:%>-mi	LokVb ;
++Err/Sub+N+Lok:%>-imi	LokVb ;
++N+Lok:%>-ni	LokVb ;
++Err/Sub+N+Lok:%>-ini	LokVb ;
++N+Lok+Sg+3SgPoss:%>-ani	LokVb ;
++Err/Sub+N+Lok+Sg+3SgPoss:%>-iani	LokVb ;
++N+Lok+Sg+3PlPoss:%>-anni	LokVb ;
++Err/Sub+N+Lok+Sg+3PlPoss:%>-ianni	LokVb ;
++N+Lok+Pl+3SgPoss:%>-ini	LokVb ;
++Err/Sub+N+Lok+Pl+3SgPoss:%>-iini	LokVb ;
++N+Lok+Pl+3PlPoss:%>-ini	LokVb ;
++Err/Sub+N+Lok+Pl+3PlPoss:%>-iini	LokVb ;
++N+Ins:%>-mik	Krestr ;
++Err/Sub+N+Ins:%>-imik	Krestr ;
++N+Ins:%>-nik	K_plur ;
++Err/Sub+N+Ins:%>-inik	K_plur ;
++N+Trm:%>-mut	TrmVb ;
++Err/Sub+N+Trm:%>-imut	TrmVb ;
++N+Trm:%>-nut	TrmVb ;
++Err/Sub+N+Trm:%>-inut	TrmVb ;
++N+Trm+Sg+3SgPoss:%>-anut	TrmVb ;
++Err/Sub+N+Trm+Sg+3SgPoss:%>-ianut	TrmVb ;
++N+Trm+Sg+3PlPoss:%>-annut	TrmVb ;
++Err/Sub+N+Trm+Sg+3PlPoss:%>-iannut	TrmVb ;
++N+Trm+Pl+3SgPoss:%>-inut	TrmVb ;
++Err/Sub+N+Trm+Pl+3SgPoss:%>-iinut	TrmVb ;
++N+Trm+Pl+3PlPoss:%>-inut	TrmVb ;
++Err/Sub+N+Trm+Pl+3PlPoss:%>-iinut	TrmVb ;
++N+Abl:%>-mit	AblVb ;
++Err/Sub+N+Abl:%>-imit	AblVb ;
++N+Abl:%>-miit	Krestr ;
++Err/Sub+N+Abl:%>-imiit	Krestr ;
++N+Abl:%>-minngaanniit	Krestr ;
++Err/Sub+N+Abl:%>-iminngaanniit	Krestr ;
++N+Abl:%>-minngaannit	AblVb ;
++Err/Sub+N+Abl:%>-iminngaannit	AblVb ;
++N+Abl:%>-nit	AblVb ;
++Err/Sub+N+Abl:%>-init	AblVb ;
++N+Abl+Sg+3SgPoss:%>-anit	AblVb ;
++Err/Sub+N+Abl+Sg+3SgPoss:%>-ianit	AblVb ;
++N+Abl+Sg+3PlPoss:%>-annit	AblVb ;
++Err/Sub+N+Abl+Sg+3PlPoss:%>-iannit	AblVb ;
++N+Abl+Pl+3SgPoss:%>-init	AblVb ;
++Err/Sub+N+Abl+Pl+3SgPoss:%>-iinit	AblVb ;
++N+Abl+Pl+3PlPoss:%>-init	AblVb ;
++Err/Sub+N+Abl+Pl+3PlPoss:%>-iinit	AblVb ;
++N+Aeq:%>-tut	Krestr ;
++Err/Sub+N+Aeq:%>-itut	Krestr ;
++N+Via:%>-kkut	ZkkutZ ;
++Err/Sub+N+Via:%>-ikkut	ZkkutZ ;
++N+U+Gram/IV+Der/nv:%>-u	IV_voq ;
++N+U+Gram/IV+Der/nv+Err/Sub:%>-iu	IV_voq ;
++N+U+Gram/IV+Der/nv+Err/Sub:%>-ju	IV_voq ;
++N+INNAQ+Der/nn:%>-innaq	tup- ;
++N+INNAQ+Der/nn+Err/Sub:%>-iinnaq	tup- ;
++N+KKUUTAAR+Der/nv:%>-kkuutaar flex-iv ;
++N+KKUUTAAR+Der/nv+Err/Sub:%>-ikkuutaar flex-iv ;
++N+KKUUTAAR+Der/nv:%>-kkuutaar flex-tv ;
++N+KKUUTAAR+Der/nv+Err/Sub:%>-ikkuutaar flex-tv ;
++N+KKUUTAAT+Der/nn:%>-kkuutaat	tptmorf ;
++N+KKUUTAAT+Der/nn+Err/Sub:%>-ikkuutaat	tptmorf ;
++N+LIR+Der/nv:%>-ler	HTR_ir_GAQ_i ;
++N+LIR+Der/nv+Err/Sub:%>-iler	HTR_ir_GAQ_i ;
++N+LLUINNAQ+Der/nn:%>luinnaq	tup- ;
++N+LLUINNAQ+Der/nn:%>-rluinnaq	tup- ;
++N+LLUINNAQ+Der/nn+NGAJAK+Der/nn:%>-rluinnangajak	tup- ;
++N+NGAJAK+Der/nn:%>-ngajak	tup- ;
++N+NGAJAK+Der/nn+Err/Sub:%>-ingajak	tup- ;
++N+NNGUR+Der/nv:%>-nngor	IV_r ;
++N+NNGUR+Der/nv+Err/Sub:%>-inngor	IV_r ;
++N+NNGUR+Der/nv:%>-nngor	TV ;
++N+NNGUR+Der/nv+Err/Sub:%>-ngor	TV ;
++N+NNGUR+Der/nv+Err/Sub:%>-inngor	TV ;
++N+QAR+Der/nv:%>-qar	IV_voq ;
++N+QAR+Der/nv+Err/Sub:%>-eqar	IV_voq ;
++N+R+Der/nv:%>-r XIirXmorf ;
++N+R+Der/nv+Err/Sub:%>-er XIirXmorf ;
++N+RAAR+Der/nv:%>-raar	IV_r ;
++N+RAAR+Der/nv+Err/Sub:%>-eraar	IV_r ;
++N+RIAR+Der/nv:%>-riar	IV_r ;
++N+RIAR+Der/nv+Err/Sub:%>-eriar	IV_r ;
++N+RIAR+Der/nv:%>-riar	TV ;
++N+RIAR+Der/nv+Err/Sub:%>-eriar	TV ;
++N+RIAAT+Der/nn:%>-riaat	tptmorf ;
++N+RIAAT+Der/nn+Err/Sub:%>-eriaat	tptmorf ;
++N+VVAARIK+Der/nn:%>-ffaarik tup- ;
++N+VVAARIK+Der/nn+Err/Sub:%>-iffaarik tup- ;
+ 
+LEXICON 10t99    
+  1 tenC ;
+  1 tenV ; 
+< [2|3|4] >     20t40 ;
+4	40sub ;
+< [5|6|7|8|9] > 50t90 ;
+
+LEXICON tenV ! 10, 11
+ %0 num_V ; 
+  1 num_V ;
+%0.:%0.- ord_V ; 
+1.:1.- ord_V ;
+  
+LEXICON tenC ! 12-19
+< [2|3|4|5|6|7|8|9|½] >   num_C ;
+2:2-li	num_V_sub ;
+3:3-ni	num_V_sub ;
+4:4-ni	num_V_sub ;
+5:5-ni	num_V_sub ;
+6:6-ni	num_V_sub ;
+7:7-ni	num_V_sub ;
+8:8-ni	num_V_sub ;
+9:9-ni	num_V_sub ;
+2.+Err/Sub:2.-li	ord_V ;
+3.+Err/Sub:3.-ni	ord_V ;
+4.+Err/Sub:4.-ni	ord_V ;
+5.+Err/Sub:5.-ni	ord_V ;
+6.+Err/Sub:6.-ni	ord_V ;
+7.+Err/Sub:7.-ni	ord_V ;
+8.+Err/Sub:8.-ni	ord_V ;
+9.+Err/Sub:9.-ni	ord_V ;
+2.:2.-	ord_V ;
+3.:3.-	ord_V ;
+4.:4.-	ord_V ;
+5.:5.-	ord_V ;
+6.:6.-	ord_V ;
+7.:7.-	ord_V ;
+8.:8.-	ord_V ;
+9.:9.-	ord_V ;
+
+LEXICON 40sub
+%0:%0-rut	num_C_sub ;
+1:1-rut	num_C_sub ;
+2:2-rut	num_C_sub ;
+3:3-rut	num_C_sub ;
+4:4-rut	num_C_sub ;
+5:5-rut	num_C_sub ;
+6:6-rut	num_C_sub ;
+7:7-rut	num_C_sub ;
+8:8-rut	num_C_sub ;
+9:9-rut	num_C_sub ;
+1:1-rujut	num_C_sub ;
+2:2-rujut	num_C_sub ;
+3:3-rujut	num_C_sub ;
+4:4-rujut	num_C_sub ;
+5:5-rujut	num_C_sub ;
+6:6-rujut	num_C_sub ;
+7:7-rujut	num_C_sub ;
+8:8-rujut	num_C_sub ;
+9:9-rujut	num_C_sub ;
+
+LEXICON 20t40
+< [%0|1|2|3|4|5|6|7|8|9] >  num_V ;
+   
+
+LEXICON 50t90 
+< [%0|1|2|3|4|5|6|7|8|9|½] >  num_C ;
+%0:%0-si	num_V ;
+1:1-si	num_V_sub ;
+2:2-si	num_V_sub ;
+3:3-si  num_V_sub ;
+4:4-si	num_V_sub ;
+5:5-si	num_V_sub ;
+6:6-si	num_V_sub ;
+7:7-si	num_V_sub ;
+8:8-si	num_V_sub ;
+9:9-si	num_V_sub ;
+    
+
+LEXICON 1t9sep
+ %0%0 num_V ; ! 100, 200, ..., 900
+ %0%0:%0%0-rujut	num_C_sub ;
+ %0%0:%0%0-rut	num_C_sub ;
+  %0  1t9 ;   ! 101, 102, ..., 201, ...909
+      10t99 ;  
+      
+LEXICON ord_V_der
+.:.-	ord_V ;
+
+LEXICON ord_C_der
+.:.-	ord_C ;
+

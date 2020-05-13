@@ -1,0 +1,313 @@
+#!/usr/bin/env perl
+# -*- mode: cperl; indent-tabs-mode: nil; tab-width: 3; cperl-indent-level: 3; -*-
+use strict;
+use warnings;
+use utf8;
+use FileHandle;
+use IPC::Open2;
+use FindBin qw($Bin);
+use List::Util qw(max);
+
+BEGIN {
+	$| = 1;
+	binmode(STDIN, ':encoding(UTF-8)');
+	binmode(STDOUT, ':encoding(UTF-8)');
+}
+use open qw( :encoding(UTF-8) :std );
+use feature 'unicode_strings';
+
+if (defined $ENV{'KAL_HYBRIDS'} && !$ENV{'KAL_HYBRIDS'}) {
+   while (<>) {
+      print;
+   }
+   exit(0);
+}
+
+use Getopt::Long;
+Getopt::Long::Configure('no_ignore_case');
+my $opt_bin = '';
+my $opt_fst = 0;
+my $opt_verbose = 0;
+my $rop = GetOptions(
+	'bin|b=s' => \$opt_bin,
+	'fst|f' => \$opt_fst,
+	'verbose|v' => \$opt_verbose,
+                    );
+
+my @bins = ($opt_bin, '/usr/local/bin/hfst-optimized-lookup', '/opt/local/bin/hfst-optimized-lookup', '/usr/bin/hfst-optimized-lookup');
+my $bin = '';
+foreach my $f (@bins) {
+   if ($f && -x $f) {
+      $bin = $f;
+      last;
+   }
+}
+if (!$bin || !-x $bin) {
+   die("No usable hfst-optimized-lookup given or found!\n");
+}
+if ($opt_verbose) {
+   print STDERR "kal-hybrid-split: Using ${bin}\n";
+}
+
+my $prefix = '@prefix@';
+my @fsts = ('', "@datarootdir@/giella/@GTLANG@/generator-gt-desc.hfstol", '/usr/local/share/giella/@GTLANG@/generator-gt-desc.hfstol', '/usr/share/giella/@GTLANG@/generator-gt-desc.hfstol', "$Bin/../../src/generator-gt-desc.hfstol");
+if (defined $ARGV[0] && -s $ARGV[0]) {
+   $fsts[0] = $ARGV[0];
+}
+my $fst = '';
+foreach my $f (@fsts) {
+   if ($f && -s $f && -r $f) {
+      $fst = $f;
+      last;
+   }
+}
+
+if (!$fst || !-s $fst) {
+   die("No usable generator.hfstol given or found!\n");
+}
+if ($opt_verbose) {
+   print STDERR "kal-hybrid-split: Using ${fst}\n";
+}
+
+my $t = "${bin} -p -u ${fst}";
+
+# Prefixes from root.lexc ca. lines 14-15
+my @p = qw(AA TA);
+
+# Main POS tags from root.lexc ca. lines 19-29
+my @m = qw(N V Pali Conj Adv Interj Pron Prop Num Symbol);
+
+# Other POS tags from root.lexc ca. lines 114-180
+my @a = qw(
+   Sg Du Pl
+   Abs Rel Trm Abl Lok Aeq Ins Via
+   Nom Akk
+   Ind Int Imp Opt Cau Con Par Cont ContNeg IteCau
+   1Sg 2Sg 3Sg 4Sg 1Pl 2Pl 3Pl 4Pl 1Du 2Du 3Du 4Du
+   1SgO 2SgO 3SgO 4SgO 1PlO 2PlO 3PlO 4PlO 1DuO 2DuO 3DuO 4DuO
+   1SgPoss 2SgPoss 3SgPoss 4SgPoss 1PlPoss 2PlPoss 3PlPoss 4PlPoss
+   );
+
+my $pp = join('|', @p);
+my $mp = join('|', @m);
+my $ap = join('|', @a);
+my $i = 'i';
+
+open2(*OUT, *IN, $t) or die $!;
+binmode(OUT, ':encoding(UTF-8)');
+binmode(IN, ':encoding(UTF-8)');
+autoflush OUT 1;
+autoflush IN 1;
+
+my %cache = ();
+sub call_generator {
+   my ($in) = @_;
+
+   # Strip trailing VISL-style secondary tags
+   while ($in =~ s@\+<[^+]+>$@@g) {}
+
+   my $out = '';
+   if (defined $cache{$in}) {
+      $out = $cache{$in};
+   }
+   else {
+      my $nonce = '<nonce-'.rand().'>';
+      print IN "$in\n$nonce\n";
+      while ($out !~ /\Q$nonce\E/) {
+         $out .= <OUT>;
+      }
+      $out =~ s@\s*\Q$nonce\E.*@@sg;
+      $out =~ s@^\s+@@g;
+      $out =~ s@\s+$@@g;
+
+      if ($in !~ /\s/) {
+         $cache{$in} = $out;
+      }
+   }
+
+   return $out;
+}
+
+sub print_cohort {
+   my ($chyb, $nhyb, $wf, @rs) = @_;
+
+   my $tag = '';
+   if ($nhyb) {
+      if ($opt_fst) {
+         $tag = '+';
+      }
+      else {
+         $tag = ' ';
+      }
+      $tag .= "Hyb/$chyb-$nhyb";
+   }
+
+   if ($opt_fst) {
+      foreach my $r (sort(@rs)) {
+         print "$wf\t$r$tag\n";
+      }
+      print "\n";
+   }
+   else {
+      print "\"<$wf>\"\n";
+      foreach my $r (sort(@rs)) {
+         # Move prefixes after the baseform
+         $r =~ s@^($pp)\+([^+]+)@$2+Prefix/$1@;
+         # Turn first tag into baseform
+         $r =~ s@^([^+]+)@"$1"@;
+         # Turn + into spaces
+         $r =~ s@\+@ @g;
+         print "\t$r$tag\n";
+      }
+   }
+}
+
+sub split_cohort {
+   my ($orig, $wform, $nhyb, @rs) = @_;
+
+   my $split = $nhyb;
+   if ($split) {
+      # Ensure that all readings have the same number of Gram/Hyb
+      foreach my $r (@rs) {
+         if ($nhyb != scalar(() = ($r =~ m@\+Gram/Hyb@g))) {
+            $split = 0;
+            last;
+         }
+      }
+   }
+
+   if ($split) {
+      my %rds = ();
+      foreach my $r (@rs) {
+         my @ss = split(m@\Q+Gram/Hyb+\E@, $r);
+         for (my $i=0 ; $i<=$nhyb ; ++$i) {
+            $rds{$i}{$ss[$i]} = 1;
+         }
+      }
+
+      # Print first cohort with the verbatim input word form, so that we don't lose it
+      print_cohort(1, $nhyb+1, $wform, keys(%{$rds{0}}));
+
+      # Print subsequent cohorts with a generated word form, or first tag as word form
+      for (my $i=1 ; $i<=$nhyb ; ++$i) {
+         my @rds = sort(keys(%{$rds{$i}}));
+         my ($wf) = ($rds[0] =~ m@^([^+]+)@);
+         foreach my $r (@rds) {
+            my $gen = call_generator($r);
+            if ($gen =~ m@\t\+\?@) {
+               my $t = $r;
+               $t =~ s@^([^+]+)\+@$1+Use/Hybrid+@;
+               $gen = call_generator($t);
+            }
+            if ($gen !~ m@\t\+\?@) {
+               ($wf) = ($gen =~ m@\t([^\n]+)@);
+               last;
+            }
+         }
+
+         print_cohort($i+1, $nhyb+1, $wf, @rds);
+      }
+   }
+   else {
+      print $orig;
+   }
+}
+
+my $wform = '';
+my $nhyb = 0;
+my $orig = '';
+my @rs = ();
+
+if ($opt_fst) {
+   while (<STDIN>) {
+      chomp;
+
+      # Move Prefix/XX in front of the baseform
+      s@^(.+)\+Prefix/($pp)@$2+$1@g;
+      # Remove prefix from internal POS tags
+      while (s/\+$i($mp|$ap)(\+|$)/+$1$2/g) {}
+
+      if (m@^([^\t]+)\t([^\t]+)@) {
+         if ($wform && @rs && $1 ne $wform) {
+            split_cohort($orig, $wform, $nhyb, @rs);
+            $orig = '';
+            $nhyb = 0;
+            @rs = ();
+         }
+         $orig .= "$_\n";
+         $wform = $1;
+         push(@rs, $2);
+         $nhyb = max($nhyb, scalar(() = m@\+Gram/Hyb@g));
+      }
+      else {
+         if ($wform && @rs) {
+            split_cohort($orig, $wform, $nhyb, @rs);
+            $wform = '';
+            $orig = '';
+            $nhyb = 0;
+            @rs = ();
+         }
+         print "$_\n";
+      }
+   }
+}
+else {
+   while (<STDIN>) {
+      chomp;
+
+      if (/^"<(.+)>"/) {
+         if ($wform && @rs) {
+            split_cohort($orig, $wform, $nhyb, @rs);
+         }
+         elsif ($wform) {
+            print "\"<$wform>\"\n";
+         }
+         $wform = $1;
+         $orig = "$_\n";
+         $nhyb = 0;
+         @rs = ();
+         next;
+      }
+
+      # Turn CG readings into FST lines, minding that baseforms can have spaces in them
+      if (m@^\s+"([^\n]+?"?[^"]*)"@) {
+         $orig .= "$_\n";
+         my $b = $1;
+         # Protect baseform and outdent
+         s/^\s*"\Q$b\E"/XBASEFORMX/;
+         # Turn spaces into +
+         s/\s+/+/g;
+         # Restore baseform
+         s/XBASEFORMX/$b/;
+      }
+      else {
+         # Not a CG reading, so assume we are not inside a cohort any longer
+         if ($wform && @rs) {
+            split_cohort($orig, $wform, $nhyb, @rs);
+         }
+         elsif ($wform) {
+            print "\"<$wform>\"\n";
+         }
+         $wform = '';
+         $orig = '';
+         $nhyb = 0;
+         @rs = ();
+         print "$_\n";
+         next;
+      }
+
+      # Move Prefix/XX in front of the baseform
+      s@^(.+)\+Prefix/($pp)@$2+$1@g;
+      # Remove prefix from internal POS tags
+      while (s/\+$i($mp|$ap)(\+|$)/+$1$2/g) {}
+
+      # Store highest number of Gram/Hyb
+      $nhyb = max($nhyb, scalar(() = m@\+Gram/Hyb@g));
+
+      push(@rs, $_);
+   }
+}
+
+if ($wform && @rs) {
+   split_cohort($orig, $wform, $nhyb, @rs);
+}

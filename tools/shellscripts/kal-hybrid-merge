@@ -1,0 +1,146 @@
+#!/usr/bin/env perl
+# -*- mode: cperl; indent-tabs-mode: nil; tab-width: 3; cperl-indent-level: 3; -*-
+use strict;
+use warnings;
+use utf8;
+
+BEGIN {
+	$| = 1;
+	binmode(STDIN, ':encoding(UTF-8)');
+	binmode(STDOUT, ':encoding(UTF-8)');
+}
+use open qw( :encoding(UTF-8) :std );
+use feature 'unicode_strings';
+
+if (defined $ENV{'KAL_HYBRIDS'} && !$ENV{'KAL_HYBRIDS'}) {
+   while (<>) {
+      print;
+   }
+   exit(0);
+}
+
+# Prefixes from root.lexc ca. lines 14-15
+my @p = qw(AA TA);
+
+# Main POS tags from root.lexc ca. lines 19-29
+my @m = qw(N V Pali Conj Adv Interj Pron Prop Num Symbol);
+
+# Other POS tags from root.lexc ca. lines 114-180
+my @a = qw(
+   Sg Du Pl
+   Abs Rel Trm Abl Lok Aeq Ins Via
+   Nom Akk
+   Ind Int Imp Opt Cau Con Par Cont ContNeg IteCau
+   1Sg 2Sg 3Sg 4Sg 1Pl 2Pl 3Pl 4Pl 1Du 2Du 3Du 4Du
+   1SgO 2SgO 3SgO 4SgO 1PlO 2PlO 3PlO 4PlO 1DuO 2DuO 3DuO 4DuO
+   1SgPoss 2SgPoss 3SgPoss 4SgPoss 1PlPoss 2PlPoss 3PlPoss 4PlPoss
+   );
+
+my $pp = join('|', @p);
+my $mp = join('|', @m);
+my $ap = join('|', @a);
+my $i = 'i';
+
+my @cohorts = ();
+my $nc = 0;
+my $lc = 0;
+
+sub update_counts {
+   $nc = scalar(@cohorts);
+   $lc = 0;
+   if ($nc) {
+      $lc = scalar(@{$cohorts[$nc-1]->{'r'}});
+   }
+}
+
+sub flush_cohorts {
+   for my $r (@cohorts) {
+      print $r->{'w'};
+      for (@{$r->{'r'}}) {
+         print;
+      }
+      print $r->{'t'};
+   }
+   @cohorts = ();
+}
+
+sub merge_cohorts {
+   my ($nh) = ($cohorts[$nc-1]->{'r'}[$lc-1] =~ m@ Hyb/(\d+)-\1@);
+
+   for (my $n=1 ; $n<$nh ; ++$n) {
+      my @rs = ();
+      for my $rp (@{$cohorts[$nc-$nh]->{'r'}}) {
+         for my $lp (@{$cohorts[$nc-$nh+$n]->{'r'}}) {
+            my $r = $rp;
+            while ($r =~ s@ ($mp|$ap)( |$)@ $i$1$2@g) {}
+            $r =~ s/ \@\S+//sg;
+            $lp =~ s@\t"(.+)" @$1 @;
+            $r .= $lp;
+            $r =~ s@\s+@ @sg;
+            $r =~ s@\s+$@\n@sg;
+            $r =~ s@^\s+@\t@sg;
+            push(@rs, $r);
+         }
+      }
+
+      @{$cohorts[$nc-$nh]->{'r'}} = @rs;
+      $cohorts[$nc-$nh]->{'t'} .= $cohorts[$nc-$nh+$n]->{'t'};
+
+      update_counts();
+   }
+
+   for (@{$cohorts[$nc-$nh]->{'r'}}) {
+      s@ Hyb/(\d+)-\1@@g;
+      s@ Hyb/\d+-\d+@ Gram/Hyb@g;
+   }
+
+   splice(@cohorts, $nc-$nh+1, $nh-1);
+   flush_cohorts();
+}
+
+while (<STDIN>) {
+   update_counts();
+
+   if (/^"<(.+)>"/) {
+      if ($nc && $lc) {
+         if ($cohorts[$nc-1]->{'r'}[$lc-1] =~ m@ Hyb/(\d+)-\1@) {
+            merge_cohorts();
+         }
+         elsif ($cohorts[$nc-1]->{'r'}[$lc-1] =~ m@ Hyb/(\d+)-\d+@) {
+            # Non-trailing hybrid cohort should continue to gather cohorts
+         }
+         else {
+            flush_cohorts();
+         }
+      }
+      push(@cohorts, {'w' => $_, 'r' => [], 't' => ''});
+      next;
+   }
+
+   if (m@^\s+"([^\n]+?"?[^"]*)"@) {
+      if ($nc) {
+         push(@{$cohorts[$nc-1]->{'r'}}, $_);
+      }
+      else {
+         print;
+      }
+   }
+   else {
+      if ($nc) {
+         $cohorts[$nc-1]->{'t'} .= $_;
+      }
+      else {
+         print;
+      }
+   }
+}
+
+update_counts();
+if ($nc && $lc) {
+   if ($cohorts[$nc-1]->{'r'}[$lc-1] =~ m@ Hyb/(\d+)-\1@) {
+      merge_cohorts();
+   }
+   else {
+      flush_cohorts();
+   }
+}
