@@ -7,7 +7,7 @@ on: push
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v2
         with:
@@ -28,21 +28,21 @@ jobs:
       - name: Install dependencies
         run: |
           set -e
-          sudo apt-get update
-          sudo apt-get install -y wget build-essential autotools-dev autoconf git pkg-config gawk python3-pip zip
-          sudo pip3 install PyYAML
-          wget https://apertium.projectjj.com/apt/install-nightly.sh && sudo bash install-nightly.sh
-          sudo apt-get install -y hfst vislcg3 libdivvun divvun-gramcheck
-          sudo mkdir ~/.ssh 
-          ssh-keyscan -H github.com | sudo tee -a ~/.ssh/known_hosts
+          apt-get update
+          apt-get install -y wget build-essential autotools-dev autoconf git pkg-config gawk python3-pip zip
+          pip3 install PyYAML
+          wget https://apertium.projectjj.com/apt/install-nightly.sh && bash install-nightly.sh
+          apt-get install -y hfst vislcg3 libdivvun divvun-gramcheck
+          mkdir ~/.ssh 
+          ssh-keyscan -H github.com | tee -a ~/.ssh/known_hosts
       - name: Build
         run: |
           set -ex
           # configure and install dependencies
           cd $GITHUB_WORKSPACE/giella-core
-          ./autogen.sh && ./configure && sudo make install
+          ./autogen.sh && ./configure && make install
           cd $GITHUB_WORKSPACE/giella-shared
-          ./autogen.sh && ./configure && sudo make install
+          ./autogen.sh && ./configure && make install
 
           # build speller
           cd $GITHUB_WORKSPACE/lang
