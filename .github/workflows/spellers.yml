@@ -30,13 +30,16 @@ jobs:
         run: |
           set -e
           export LANG=C.UTF-8 LC_ALL=C.UTF-8 DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true
-          apt-get update
-          apt-get install -y wget build-essential autotools-dev autoconf git pkg-config gawk python3-pip zip
+          apt-get -qy update
+          apt-get install -qfy wget build-essential autotools-dev autoconf git pkg-config gawk python3-pip zip
           pip3 install PyYAML
-          wget https://apertium.projectjj.com/apt/install-nightly.sh && bash install-nightly.sh
-          apt-get install -y hfst vislcg3 libdivvun divvun-gramcheck
+          wget -q https://apertium.projectjj.com/apt/install-nightly.sh -O install-nightly.sh && bash install-nightly.sh
+          apt-get install -qfy foma hfst libhfst-dev cg3-dev divvun-gramcheck
           mkdir -pv ~/.ssh
-          ssh-keyscan -H github.com | tee -a ~/.ssh/known_hosts
+          # Since some state remains after the builds, don't grow known_hosts infinitely
+          ssh-keyscan github.com | tee -a ~/.ssh/known_hosts
+          cat ~/.ssh/known_hosts | sort | uniq > ~/.ssh/known_hosts.new
+          mv ~/.ssh/known_hosts.new ~/.ssh/known_hosts
       - name: Build
         run: |
           set -ex
@@ -51,7 +54,7 @@ jobs:
           cd $GITHUB_WORKSPACE/lang
           ./autogen.sh
           mkdir -p build && cd build
-          ../configure --disable-hfst-desktop-spellers --enable-spellers --enable-fst-hyphenator --enable-hfst-mobile-speller
+          ../configure --with-backend-format=foma --disable-hfst-desktop-spellers --enable-spellers --enable-fst-hyphenator --enable-hfst-mobile-speller
           make -j$(nproc)
           # fails atm
           # make check
