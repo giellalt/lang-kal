@@ -2011,6 +2011,10 @@ REMOVE:tidlig0070 FIRSTNAME + Pl - KKUT IF (0 N + Pl);#"MANNIIT arfinillit, aana
 
 REMOVE:tidlig0080 (/"\ Gram/TV\ Gram/Refl\ Gram/IV\ NIQ\ Der/vn\ QAR/l) IF (0 (/"\ Gram/TV\ NIQAR/l));
 REMOVE:tidlig0081 (/"\ Gram/TV\ [A-Z]+\ Der/vv\ Gram/Refl\ NIQ\ Der/vn\ QAR/l) IF (0 (/"\ Gram/TV\ NIQAR/l) OR (/"\ Gram/TV\ [A-Z]+\ Der/vv\NIQAR/l));
+
+#transitiv NNGUR er meget sjælden, men den findes. Det er stærkt forstyrrende. Her er en aggressiv regel, der fjerner transitive NNGUR  med enkelte undtagelser, der må suppleres efterhånden
+REMOVE:tidlig0090 (/NNGUR\ Der/nv\ Gram/TV/l) IF (0 (/NNGUR\ Der/nv\ Gram/IV/l)); 
+
 #############################################
 # Et særligt afsnit til "unnerpoq/ unnerpaa #
 #############################################
@@ -3769,13 +3773,17 @@ MAP:M0010E @PRED TARGET CONT + (/\([A-Z]*\)\ Der\/vv\ \(Gram\/..\ \)*V\ Cont\ /l
 #GAANNI, -gaanni
 SUBSTITUTE (V) (Gram/Gaanni V) TARGET GAANNI ;
 
-SELECT GAANNI IF (NEGATE *-1 KONCESSIV)(NEGATE *-1 ORATIOOBLVERB + 3Sg)
+SELECT GAANNI IF (NEGATE *-1 KONCESSIV)(NEGATE *-1 ORATIOOBLVERB + 3Sg OR ("taku") + 3Pl)
 (NEGATE 0 ("illuar") LINK 0 (/"illu"\ ARAQ\ Der/nn\ N\ Lok\ Sg\ 3PlPoss/l))#Aataakkut asimi ILLUARAANNI, ilaanni ullut arlerlugit illoqarfimmut najukkaminnut tikinnatik, asimeerujoortarput.
  ;
 
 
 MAP:M0175X @CL-ADVL> TARGET GAANNI IF (*1 VFIN BARRIER KOMMA)(NEGATE *-1 VFIN BARRIER KOMMA) ;
-MAP:M0175A @CL-<ADVL TARGET GAANNI IF (*-1 VFIN)(NEGATE 0 CONJ-C LINK 1* VFIN BARRIER KOMMA)(NEGATE *-1 ORATIOOBLVERB + 3Sg BARRIER VFIN) ; #20091109 participium på -gaanni altid neksusadverbial
+
+MAP:M0175A @CL-<ADVL TARGET GAANNI IF (*-1 VFIN)
+(NEGATE 0 CONJ-C LINK 1* VFIN BARRIER KOMMA)(NEGATE *-1 ORATIOOBLVERB + 3Sg OR ("taku") + 3Pl BARRIER VFIN)  #20091109 participium på -gaanni altid neksusadverbial
+;
+
 MAP:M0175B @CL-ADVL> TARGET GAANNI IF (-1 BOS OR KOMMA) ; #20091109 participium på -gaanni altid neksusadverbial
 MAP:M0175C @CL-ADVL> TARGET GAANNI IF (*1 VFIN BARRIER V - CONT)(NEGATE 0 Par + 4Sg + 3PlO) ; #20091109 participium på -gaanni altid neksusadverbial. De særlige Par på -gini, som erstatter ledsagemåde holdes udenfor
 MAP:M0175D @CL-ADVL> TARGET GAANNI IF (*1 ("isuma") + QAR LINK *1 Ins) ;
@@ -5005,7 +5013,7 @@ MAP:OrObl0110 @CL-CIT> TARGET Par + &&IV_SUBJ& IF (*1 OQARPOQ BARRIER @PRED OR C
 (NEGATE 0 (/"taama"\ IP\ Der/nv\ Gram/IV\ GALUAR\ Der/vv\ Gram/IV/l) LINK -1 BOS OR KOMMA)#TAAMAAKKALUARTORLI qassutinik maannamut suli utertitsisoqanngitsoq qassutaarniartup Qalut Voninip pisortaa, Cuno Jensen, oqarpoq.
 ;
 
-MAP:OrObl0150 @CL-<CIT TARGET Par IF (-*1 OQARPOQ OR ORATIOOBLVERB - N BARRIER KOMMA LINK NEGATE -*1 ("taama") OR ("nalinginnaq")) #oo ved oqarpoq aldrig simultan med taama
+MAP:OrObl0150 @CL-<CIT TARGET Par - GAANNI IF (-*1 OQARPOQ OR ORATIOOBLVERB - N BARRIER KOMMA LINK NEGATE -*1 ("taama") OR ("nalinginnaq")) #oo ved oqarpoq aldrig simultan med taama
 (NEGATE *-1 DIRTALESLUT) #aldrig oo simultan med anførende sætning
 (NEGATE  *1 ("oqar") - USIQ LINK *1 CONT) #hvis Par før og CONT efter oqarpoq er før=ADVL> og efter=CL-<CIT
 (NEGATE -1 Ins LINK 1 _TARGET_ + CONJ-LU LINK *1 Par)
@@ -5099,7 +5107,7 @@ MAP:OrObl0451 @CL-<CIT TARGET CONT IF (*-1 ORATIOOBLVERB + V - NON_INQUIT_HTR - 
 (NEGATE 0 QQU + ContNeg - LU LINK *-1 QQU + CONT BARRIER (*) - OBLIQUE - Abs - Adv)#Taamaammat innuttaasut suliffeqarfiillu politiinit piumaffigineqarput atortut assigisinnaasaallu isumannaatsumik inisseqqullugit anorersuarmiit TINGITAAQQUNAGIT ..
 ;
 
-MAP:OrObl452 @CL-<CIT TARGET Par IF (*-1 ORATIOOBLVERB + V - Aeq - @SUBJ> BARRIER ("soorlu") OR ("tassa") OR VFIN)(NEGATE *1 ORATIOOBLVERB BARRIER KOMMA)
+MAP:OrObl452 @CL-<CIT TARGET Par - GAANNI IF (*-1 ORATIOOBLVERB + V - Aeq - @SUBJ> BARRIER ("soorlu") OR ("tassa") OR VFIN)(NEGATE *1 ORATIOOBLVERB BARRIER KOMMA)
 (NEGATE 0 GALUAR LINK -1 KOMMA LINK 1 _TARGET_ LINK *1 Par BARRIER VFIN) #Malugisimavaami .. angummi ajunnginnerusumik pisaleraani, IMAASSINNAAGALUARTOQ nammineq .. naalannerulersimasoq. Den er koncessiv
 #(NEGATE *1 ("...") + @CL-<CIT BARRIER KOMMA) #Usikker mapping til sidst for ikke-slettede participier, der ikke er tagget på anden vis. NEGATE for tilfælde af to verber, der begge kan være inquit
 (NEGATE 0 Par + Gram/Adv-encl LINK -1 TIME)
@@ -7635,7 +7643,7 @@ MAP:M1737A @CL-<CIT TARGET ("...") IF (*-1 ORATIOOBLVERB - NIQAR - N - Cau BARRI
 (NEGATE -1 DIRTALE LINK -1 @SUBJ> OR KOMMA) 
 (NEGATE -1 ORATIOOBLVERB + TRANSVERB);
 
-MAP:M1737B @CL-<CIT TARGET Par IF (*-1 ORATIOOBLVERB + V - Aeq - @SUBJ> OR OQARPOQ BARRIER ("soorlu") OR ("tassa") OR VFIN)(NEGATE *1 ORATIOOBLVERB BARRIER KOMMA)#OR OQARPOQ tilføjet ad hoc medens ny struktur udvikles
+MAP:M1737B @CL-<CIT TARGET Par - GAANNI IF (*-1 ORATIOOBLVERB + V - Aeq - @SUBJ> OR OQARPOQ BARRIER ("soorlu") OR ("tassa") OR VFIN)(NEGATE *1 ORATIOOBLVERB BARRIER KOMMA)#OR OQARPOQ tilføjet ad hoc medens ny struktur udvikles
 (NEGATE *1 ("...") + @CL-<CIT BARRIER KOMMA) #Usikker mapping til sidst for ikke-slettede participier, der ikke er tagget på anden vis. NEGATE for tilfælde af to verber, der begge kan være inquit
 (NEGATE 0 GALUAR LINK -1 KOMMA LINK 1 _TARGET_ LINK *1 Par BARRIER VFIN) #Malugisimavaami .. angummi ajunnginnerusumik pisaleraani, IMAASSINNAAGALUARTOQ nammineq .. naalannerulersimasoq. Den er koncessiv
 (NEGATE 0 Par + 3Sg + Gram/Adv-encl LINK -1 TIME)
@@ -10367,6 +10375,7 @@ REMOVE:9968O GAANNI + 4Sg IF (0 3Sg OR 3SgO LINK *-1 Abs + Sg OR Gram/ACR + Abs 
 
 REMOVE:9968P Par + @CL-CIT> IF (0 Abs LINK 1 Abs + LU LINK *1 3PlO BARRIER (*) - OBLIQUE);#Kaffisortillutik nalinginnaq oqaloqatigiipput, palasip Juaap nakorsaq AALLARTOQ nulialu eqqartorneruai, nulia Sofia qallunaatut aamma oqaluttarpoq ileqqunillu kusanartunik aamma ilikkarsimalluni inuusuttuulluni qallunaani kiffaanikuugami.
 
+MAP:M9968Q @CL-ADVL> TARGET GAANNI IF (*1 @SUBJ> BARRIER (*) - Adv - OBLIQUE LINK *1 @PRED OR @CL-<CIT OR @CL-CIT> BARRIER VERB-NOTCONT); #Nukappissat namminneq takuaat TIMERSULLAMMANNGUSSAGAANNI piumasaqaatit qanoq annertutiginersut.
 #####################################
 #Mapping af resterende nominer og Num
 #####################################
