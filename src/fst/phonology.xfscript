@@ -38,7 +38,9 @@ define Kra [ q | ĸ ] ; !Ny 20180813
 define NonUvular [ Cns - Uvular ] ;
 
 echo << Vi definerer Dummy-symboler >>
-define Dummy [ %> | %< | « | » | %TRUNC | %CLIT | %STRUNC | %POSSESSORTRUNC | %PRONTRUNC | %ROD | %likTRUNC | %VCTRUNC | %CVqTRUNC | %VTRUNC | %EPENT | %PROP | %ALTINF | %ProgI ] ;
+define Border [ %> | %< ] ;
+
+define Dummy [ Border | %< | « | » | %TRUNC | %CLIT | %STRUNC | %POSSESSORTRUNC | %PRONTRUNC | %ROD | %likTRUNC | %VCTRUNC | %CVqTRUNC | %VTRUNC | %EPENT | %PROP | %ALTINF | %ProgI | %^GEMS ] ;
 
 echo << Vi definerer de ikke fonetisk betingede allomorfer >>
 define c2slet [ c2 -> 0 || Cns _ %> ] ;
@@ -56,6 +58,20 @@ define Pronvar6 [ s -> 0 || u %ROD %PRONTRUNC _ u ] ;
 define AltNegInf [ n -> 0 || r %> %ALTINF _ a ] ;
 
 echo << Vi definerer morfofonemiske regler >>
+
+echo << Vi definerer regler for geminering ved fleksion >>
+
+define geminationC g -> [ g g ], [ i a ] -> [ i s s a ], j -> [ s s ], l -> [ l l ], m -> [ m m ], n -> [ n n ], [ n g ] -> [ n n g], r -> [ r r ], v -> [ f f ] || [ Vow | %TRUNC ] _ Vow (Cns) %^GEMC %< %TRUNC [Cns - q - r] ; !geminating continuants
+define geminationC2 a -> [ s s a ] || [ i | u ] _ Cns %^GEMC %< %TRUNC [Cns - q - r] ; !geminating continuants; ulloriaq -> ullorissat, pakkaluaq -> pakkalussat
+
+define geminationS (r) g -> [ k k ], j -> [ t s ], s -> [ t s ], m -> [ m m ], n -> [ n n ], [ n g ] -> [ n n g], q -> [ q q ], r -> [ q q ], t -> [ t t ], v -> [ p p ] || [ Vow | %TRUNC ] _ Vow (Cns) %^GEMS %< %TRUNC [Cns - q - r] ; !geminating stops
+
+define geminationfusion g a q %^GEMS %> %TRUNC l -> k k || [ Segment - r - q ] _ [ e | i ] ; !fusion, e.g. naalakkersuisoq
+
+define InflBorderDel [%^GEMS | %^GEMC ] -> 0 ;
+define InflBorderDel2 %< -> %> ;
+
+
 echo << Nogle arkifonemer >>
 
 !g3 tilfoejet 3.juni Konsekvensretning i IngenArkefonemer, gAssimilation, qgFusion
@@ -87,7 +103,7 @@ define CHtrunkering [ i c h %> %TRUNC u p -> i u p ] ; !En snæver regel til at 
 define VCtrunkering [ [ e | a | o ] ( [ q | k | n | t ] ) -> 0 || _ %> %VCTRUNC ] ; !n og t 20180309 aht. Algeriet, Kroatien m.fl.
 define SEQtrunkering [ [ g | s | n | m ] [ e | a ] ( Kra ) -> 0 || _ %> %CVqTRUNC ] ; !virker ikke ved fx NIQ fordi der efterlades morfemgrænse to gange. Forsøgt rettet med følgende særregel:
 define DobbeltmorfemgraenseVaek [ %> -> 0 || %> _ ] ;
-define Vtrunkering [ Vow (Cns) -> 0 || _ %> %VTRUNC ] ;
+define Vtrunkering [ Vow (Cns) -> 0 || _ [ %> | %< ] %VTRUNC ] ;
 
 echo << Vi definerer tilhængspartiklernes lydregler >>
 define clitkgNasalering [ k %CLIT g2 (->) n n g ] ;
@@ -217,7 +233,7 @@ echo << Vi rydder op >>
 !define IngenArkefonemer [ t2 -> t, g2 -> g, g3 -> 0 ] ;
 define IngenArkefonemer [ g2 -> g, g3 -> 0, g4 -> 0 ] ;
 define DummyDeletion [ Dummy -> 0 ] ;
-define vSlet [ v -> 0 || u _ [ i | e | a ] ] ; !En rent ortografisk regel
+define vSlet [ v -> 0 || u (%>) _ [ i | e | a ] ] ; !En rent ortografisk regel
 define jSlet [ j -> 0 || i %> _ ] ; !Tilfoejet 26.5.08
 define v2Slet [ v2 -> v ] ;
 
@@ -226,6 +242,19 @@ echo << Vi sætter ting sammen >>
 read regex [
 ! Lexicon ! Kommenter inn disse to linjer dersom du også læser inn leksikon-fst-en
 ! .o.     ! i begynnelsen av filen. Se kommentar øverst.
+
+geminationC !g -> [ g g ], j -> [ s s ], l -> [ l l ], n -> [ n n ], r -> [ r r ], v -> [ f f ] || Vow _ Vow (Cns) %^GEMC %> [Cns - q] ; !geminating continuants
+.o.
+geminationC2
+.o.
+geminationS !g -> [ k k ], j -> [ t s ], s -> [ t s ], n -> [ n n ], r -> [ q q ], v -> [ p p ] || Vow _ Vow (Cns) %^GEMS %> [Cns - q] ; !geminating stops
+.o.
+geminationfusion !a q %^GEMS %> %TRUNC l -> 0 || k k _ [ e | i ] ;
+.o.
+InflBorderDel
+.o.
+InflBorderDel2
+.o.
 
 roĸ1 ![ r o ĸ %> %VCTRUNC u p -> r ĸ u p ] ; ! Aĸajaroĸ + Rel -> Aĸajarĸup
 .o.
