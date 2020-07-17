@@ -40,7 +40,7 @@ define NonUvular [ Cns - Uvular ] ;
 echo << Vi definerer Dummy-symboler >>
 define Border [ %> | %< ] ;
 
-define Dummy [ Border | « | » | %TRUNC | %CLIT | %STRUNC | %POSSESSORTRUNC | %PRONTRUNC | %ROD | %likTRUNC | %VCTRUNC | %CVqTRUNC | %VTRUNC | %EPENT | %PROP | %ALTINF | %ProgI | %^GEMS | %^GEMC | %^GEM | %^Loan ] ;
+define Dummy [ Border | « | » | %TRUNC | %CLIT | %STRUNC | %POSSESSORTRUNC | %PRONTRUNC | %ROD | %likTRUNC | %VCTRUNC | %CVqTRUNC | %VTRUNC | %EPENT | %PROP | %ALTINF | %ProgI | %^GEMS | %^GEMC | %^GEM | %^Loan | %GEMEQ ] ;
 
 echo << Vi definerer de ikke fonetisk betingede allomorfer >>
 define c2slet [ c2 -> 0 || Cns _ %> ] ;
@@ -61,6 +61,7 @@ echo << Vi definerer morfofonemiske regler >>
 
 echo << Vi definerer regler for geminering ved fleksion >>
 
+define geminationEQ l -> l l , s ->  t s  ||  [ Vow | %TRUNC ] _ Vow Cns %GEMEQ %> %TRUNC [Cns - q - r] ; !PL20200717
 define geminationC g -> [ g g ], [ i a ] -> [ i s s a ], j -> [ s s ], l -> [ l l ], m -> [ m m ], n -> [ n n ], [ n g ] -> [ n n g], r -> [ r r ], v -> [ f f ] || [ Vow | %TRUNC ] _ Vow (Cns) %^GEMC %< %TRUNC [Cns - q - r] ; !geminating continuants
 define geminationC2 a -> [ s s a ] || [ i | u ] _ Cns %^GEMC %< %TRUNC [Cns - q - r] ; !geminating continuants; ulloriaq -> ullorissat, pakkaluaq -> pakkalussat
 
@@ -73,7 +74,8 @@ echo << Vi definerer regler for geminering ved låneord >>
 define geminationLoan b -> [ b b i ], d -> [ d d i ], f -> [ f f i ], g -> [ g g i ], k -> [ k k i ], l -> [ l l i ], m -> [ m m i ], n -> [ n n i ], p -> [ p p i ], s -> [ s s i ], t -> [ t t i ] || _ %> %^Loan [ %^GEMS | %^GEMC | %^GEM ] ;
 define geminationLoan2 b %- -> [ b %- b i ], d -> [ d %- d i ], f -> [ f %- f i ], g -> [ g %- g i ], k -> [ k %- k i ], l -> [ l %- l i ], m -> [ m %- m i ], n -> [ n %- n i ], p -> [ p %- p i ], s -> [ s %- s i ], t -> [ t %- t i ] || _ %> %^Loan [ %^GEMS | %^GEMC | %^GEM ] ;
 
-define InflBorderDel [%^GEMS | %^GEMC | %^GEM | %^Loan ] -> 0 ;
+!define InflBorderDel [%^GEMS | %^GEMC | %^GEM | %^Loan ] -> 0 ;
+define InflBorderDel [%^GEMS | %^GEMC | %^GEM | %^Loan | %GEMEQ ] -> 0 ;
 define InflBorderDel2 %< -> %> ; !normalization of morpheme boundary
 
 
@@ -247,7 +249,8 @@ echo << Vi sætter ting sammen >>
 read regex [
 ! Lexicon ! Kommenter inn disse to linjer dersom du også læser inn leksikon-fst-en
 ! .o.     ! i begynnelsen av filen. Se kommentar øverst.
-
+geminationEQ ! l -> l l , s ->  t s  ||  [ Vow | %TRUNC ] _ Vow Cns %GEMEQ %> %TRUNC [Cns - q - r] ; !PL20200717
+.o.
 geminationC !g -> [ g g ], j -> [ s s ], l -> [ l l ], n -> [ n n ], r -> [ r r ], v -> [ f f ] || Vow _ Vow (Cns) %^GEMC %> [Cns - q] ; !geminating continuants
 .o.
 geminationC2
