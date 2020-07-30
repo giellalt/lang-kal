@@ -2898,6 +2898,7 @@ REMOVE:0001Prop ("(\\p{Lu}.*)"r) + Fornavn IF (0 N)#(NEGATE *0CW (VSTR:"%l$1"r))
 ; #Laver alt for mange fejl, fx Flemming<Geo> illumik piareersaavoq. Der mangler nok en betingelse? Proprier disambigueres senere.
 
 #Proprium med MI er næsten altid lokativ
+REMOVE:0042a PROP + ("nunarsuaq") (0 ("nunarsuaq") + N OR ("nuna") + SUAQ + N) ;
 REMOVE:0042 Prop + MI IF (0 Prop + Lok);
 
 #En irriterende ambiguitet med det næsten usandsynlige personnavn Seqineq i position 1
@@ -3405,7 +3406,7 @@ SELECT:0063A Rel + Pl IF (1 TIDSPARTIKEL LINK 1C 3PlPoss)(NEGATE 2 ("siuneq") + 
 
 REMOVE:0063B Rel + Pl + FAM_UNIK OR Rel + Pl + PLACE_EXTENDED IF (1C 3PlPoss - VIK - Prop)(0 CONJ-C LINK -1 Prop + Rel + Sg) ; #Nyvejip Qingartallu paarlaffianni inigisaqarpoq.
  
-SELECT:0063 Rel + Pl - FAM_UNIK - Num IF (1C 3PlPossUdenMWE) 
+SELECT:0063 Rel + Pl - FAM_UNIK - Num - POSSESSUM12 IF (1C 3PlPossUdenMWE) 
 (NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 1 ("assi") + POSSESSUM + CONJ-LU)(NEGATE -1 ("ila") LINK 2 ("ila"))(NEGATE 0 Par LINK *-1 Adv BARRIER V OR @PRED) #må ikke hitte på siornatigut og ikke på opremsede participier med assigisaallu og heller ikke på opremsninger med ilaat .. ilaat. Må ikke hitte på fx nuliami pii
 (NEGATE 1 Pl LINK 1 ADVERBIEL + TRANSVERB LINK 1 3Pl - TRANSVERB LINK NEGATE *-4 Rel)
 (NEGATE 0 (TUQ Der/vn N Ins)) 
@@ -3459,7 +3460,7 @@ SELECT $$OBLIQUE IF (*-1C $$OBLIQUE BARRIER (*) - CONJ-C LINK NOT 0 KASUS - OBLI
 SELECT:0070L Rel + FAM + POSSESSUM IF (0 FAM + Lok - POSSESSUM) #anaanami
 (NEGATE 0 PLACE) #må ikke hitte på illu/illoq
 ;
-SELECT:0070 Rel + Pl - Num IF (1C 3PlPossUdenMWE)(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 1 ("assi") + POSSESSUM + CONJ-LU)(NEGATE -1 ("ila") LINK 2 ("ila")) #må ikke hitte på siornatigut og ikke på opremsninger med assigisaallu og ilaat .. ilaat
+SELECT:0070 Rel + Pl - Num - POSSESSUM12 IF (1C 3PlPossUdenMWE)(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 1 ("assi") + POSSESSUM + CONJ-LU)(NEGATE -1 ("ila") LINK 2 ("ila")) #må ikke hitte på siornatigut og ikke på opremsninger med assigisaallu og ilaat .. ilaat
 (NEGATE 1 Pl LINK 1 ADVERBIEL + TRANSVERB LINK 1 3Pl - TRANSVERB LINK NEGATE *-4 Rel)
 (NEGATE 0 (TUQ Der/vn N Ins)) 
 (NEGATE -1 Rel + Pl LINK 1 _TARGET_ + OBLIQUE LINK 1 3PlPossUdenMWE) #Jaakuaraq 1960-ikkunni pissutsit SAKKORTUUMIK allanngulernerannit eqqorneqartunut ilaavoq.
@@ -4727,7 +4728,7 @@ MAP:M0065A @>V TARGET Gram/Comp + NIQ - POSSESSUM IF (1 ("ajor") - (/\"ajor\"\ G
 MAP:M0065C @SUBJ> TARGET Cont + 4Sg IF (*1 VFIN + 3Sg + NAR OR VFIN + 3Sg + (/.*nar\"\ Gram/IV\ V/l) OR VFIN + 3Sg + (/.*nar\"\ Gram/IV\ QE\ Der/vv\ Gram/IV\ V/l))(NEGATE *0 Abs + Sg) ; #Nanortalimmi NIUERTUULLUNI kipiluttunarpoq
 MAP:M0065D @SUBJ> TARGET Cont + 3SgO IF (*1 VFIN + 3Sg + NAR OR VFIN + 3Sg + (/.*nar\"\ Gram/IV\ V/l) OR VFIN + 3Sg + (/.*nar\"\ Gram/IV\ QE\ Der/vv\ Gram/IV\ V/l))(-1 Abs + Sg LINK NEGATE *0 Abs + Sg)(NEGATE *0 Cont);
 #Tamanna eqqarsaatigalugu eqqissisimanarpoq
-MAP:M0065E @SUBJ> TARGET Cont + 4Sg IF (*1 VFIN + 3Sg + ("nuanner") OR VFIN + 3Sg + U)(NEGATE *0 Abs + Sg) ; #Isiginnaagassiami PEQATAALLUNI misisassarujussuuvoq
+MAP:M0065E @SUBJ> TARGET Cont + 4Sg - LLIQ IF (*1 VFIN + 3Sg + ("nuanner") OR VFIN + 3Sg + U)(NEGATE *0 Abs + Sg - Num) ; #Isiginnaagassiami PEQATAALLUNI misisassarujussuuvoq
 
 # Bisætninger og indskud, der må håndteres før andre sætningsled
 # ===============================================
@@ -6118,7 +6119,8 @@ MAP:M0460B (@OBJ>) TARGET APPELLATIV + Abs + Sg IF (*-1S CONJ-LU BARRIER V)(*1 C
 MAP:M0470A @OBJ> TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (1 Abs + CONJ-LU LINK *1 TRANSVERB - 3Pl + 3PlO BARRIER INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl) ;
 MAP:M0470B @OBJ> TARGET APPELLATIV + Abs + Sg OR Prop + Abs + Sg IF (1 KOMMA LINK 1 Abs LINK 1 Abs + CONJ-LU LINK *1 TRANSVERB - 3Pl + 3PlO BARRIER INTRANSVERB + 3Pl) ;
 
-MAP:M0470 @OBJ> TARGET APPELLATIV + Abs + Pl OR Prop + Abs + Pl IF ( *1 TRANSVERB - 3Pl + 3PlO CBARRIER INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl OR PUNCT)(NEGATE *-1 Abs + Pl BARRIER V + 3PlO)(NEGATE 1 Abs + Pl LINK 1 CONT + 3PlO) #20091105 Kun sikker, naar subjekt != 3Pl. Der maa mere avancerede regler til at adskille implicit subjekt 3Pl fra objekt Pl. BARRIER fordi somme tider subjekt for cau, con etc. i stedet for objekt for et senere V. Sidste NEGATE fordi adled skal have @N< i stedet for @OBJ. Sidste NEGATE for at forebygge at subjekter tagges som objekter for en ledsagemåde til venstre, som i forevejen har et objekt
+MAP:M0470 @OBJ> TARGET APPELLATIV + Abs + Pl OR Prop + Abs + Pl IF ( *1 TRANSVERB - 3Pl + 3PlO CBARRIER INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl OR PUNCT LINK NEGATE 1 VFIN + INTRANSVERB + 3Pl)(NEGATE *-1 Abs + Pl BARRIER V + 3PlO)(NEGATE 1 Abs + Pl LINK 1 CONT + 3PlO) #20091105 Kun sikker, naar subjekt != 3Pl. Der maa mere avancerede regler til at adskille implicit subjekt 3Pl fra objekt Pl. BARRIER fordi somme tider subjekt for cau, con etc. i stedet for objekt for et senere V. Sidste NEGATE fordi adled skal have @N< i stedet for @OBJ. Sidste NEGATE for at forebygge at subjekter tagges som objekter for en ledsagemåde til venstre, som i forevejen har et objekt
+
 (NEGATE *1 Gram/Db BARRIER VFIN)
 (NEGATE -1 BOS LINK 1 _TARGET_ LINK 1 ("tamakker") + CONT LINK *1 INTRANSVERB + 3Pl + TARIAQAR OR NIQAR + 3Pl)#ILAQUTTAT tamakkerlugit eqqarsaatigisariaqarput.
 (NEGATE 0 ADJEKTIVISK + $$NUMERUS LINK -1 $$NUMERUS)
@@ -8592,6 +8594,7 @@ SELECT:1690 Abs + Sg - Sem/Unit - SUB IF (*1C INTRANSVERB + 3Sg BARRIER Cont + 3
  #novembarimi skal ikke vaere Abs+MI. NEGATE Part, der kan fejllæses som Abs
 (NEGATE 0 ("qaangiup") + Par + &&IV_SUBJ& LINK *-1 ("ukioq") + Abs + &&IV_SUBJ&)#Ukioq ataaseq QAANGIUTTOQ alloriaqqippoq.
 ;
+REMOVE (/NIQ\ Der/vn\ QAR\ Der/nv\ Gram/IV\ NIQ/l) IF (0 NIQAR) (NEGATE *-1 Ins) ;
 REMOVE N + NIQAR + NIQ + Pl IF (NEGATE *1 3PlO); # uden NEGATE fjernes .. QINNGASAARNEQALAARTARNINI pissutigiinnarlugit ..
 #SELECT N + NIQAR + NIQ + Sg; #Passivt verbalnomen i pluralis er sjaeldent
 #REMOVE N + NIQAR + TUQ + Sg; #Uforståelig regel, der genererer masser af fejl
@@ -9763,6 +9766,7 @@ REMOVE:5490B (/"sumiginnar"\ USAR/l) IF (0 (/"sumiginnaa"\ Gram/IV\ TAR/l));
 REMOVE:5490C (/"ili"\ Gram/TV\ QQAAR/l) IF (0 (/"ileqqaar"\ Gram/IV\ NIQ/l)); #Kontu illumut, ilinniagaqarnermut inuussutissarsiornermulluunniit ILEQQAAARNERMUT atorneqasaaq.
 REMOVE:5490D (/"pitup"\ Gram/IV\ SI/l) IF (0 (/"pitup"\ Gram/TV\ HTR/l) LINK -1 Ins);
 REMOVE:5490E (/"oqaq"\ U\ Der/nv\ Gram/IV\ SINNAAQ/l) IF (0 (/"oqaaseq"\ NNAAQ/l));
+REMOVE:5490F ("supip") IF (0 ("supi")); #supip- stort set archaisk bortset fra leksikaliseringen supissaat
 
 # Der/nv eller Der/vv?
 SELECT:5493 QATE + Der/vn + GE - Imp IF (0 QATE + Der/nn + GE)(NEGATE *-1 HUMAN + @OBJ>) ;
@@ -9808,7 +9812,7 @@ REMOVE:5531A ("ipip") IF (0 ("ipi"))(NEGATE *0 THING) ; #redskaber er skarpe, me
 REMOVE:5531B ("ipiip") + NAR IF (0 ("ipi") + INNAR) ; #usandsynlig kombination
 REMOVE:5580A LLAR IF (0 ("aallar"));
 REMOVE:5580B LLAP IF (0 ("aallar"));
-SELECT:5532 ("aa") IF (0 ("aap"))(-*1 Trm) ; #aavaa frem for aappaa  ved terminalis. PAS PÅ - MEGET usikker regel
+SELECT:5532 ("aa") - Err/Sub IF (0 ("aap"))(-*1 Trm) ; #aavaa frem for aappaa  ved terminalis. PAS PÅ - MEGET usikker regel
 REMOVE:5533 ("aap") + QQIP IF (0 ("aaqqip"))(NEGATE *0 ("neqi") OR ("aput"));
 REMOVE:5534 ("paaq") + SI IF (0 ("paarsi") OR ("paare") + HTR ) ;
 REMOVE:5535 ("toqu") + NGA + Der/nv IF (0 ("toqu") + NGA + Der/vv); #NGA+nv vs. NGA+Der/vv
@@ -10792,6 +10796,8 @@ REMOVE:9969Æ Rel + @SUBJ> IF (*1 TRANSVERB + 3Pl LINK *-1 _TARGET_ + @OBJ> LINK
 MAP:M9969Æ @N< TARGET Ins IF (1 HTR LINK -1 _TARGET_ + Ins LINK *-1 @MIK-OBJ> OR @i-MIK-OBJ> BARRIER (*) - @i-ADVL>) ;#Inuusuttut imarsiortutut sakkutuunngorusuttut pissanganartumik gummibådimik ANGALANERMIK misiliisinnaapput, røgdykkerit atortui misilissinnaavaat imaluunniit immaqa iluatsitsigunik helikopterimik angalanissamik eqquisinnaapput.
 
 MAP:M9969Ø @MIK-OBJ> TARGET Ins + NIQ IF (1 HTR LINK -1 _TARGET_ LINK *-1 @i-ADVL> BARRIER (*) - Ins) ;#Inuusuttut imarsiortutut sakkutuunngorusuttut pissanganartumik gummibådimik angalanermik misiliisinnaapput, røgdykkerit atortui misilissinnaavaat imaluunniit immaqa iluatsitsigunik helikopterimik ANGALANISSAMIK eqquisinnaapput.
+
+MAP:M9969Ø2 @MIK-OBJ> TARGET Ins + Pron (1 HTR) ;
 
 REMOVE:9969Å Sg + 3PlPoss + @SUBJ> IF (0 Sg + 3SgPoss + @SUBJ>)(-1  Rel + Sg + @SUBJ>);#Hans-Pavia Rosing seminariumimi ilinniartitsisuusimasup Folketingimullu ilaasortaasimasup Nikolaj Rosingip NULIATALU Marie Rosingip erneraat.
 
