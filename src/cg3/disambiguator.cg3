@@ -1768,6 +1768,9 @@ LIST @i-ADVL>N = @i-ADVL>N ; # adled der står til verbalt nomen: isuma, oqalutt
 LIST @PRENOM = @POSS> /@i-.*/r @N< ; #listen er ikke sikker og skal derfor kun bruges i barriers.
 LIST @POSS>> = @POSS>> ; #Possessor til 2. possessum til højre DANSKIT nunavissuup aariaanik MISISSUINISSAAT pillugu
 
+# Tags til numeralier
+LIST @>NUM = @>NUM ; #Tag til første led af et talområde 160.000 - 170.000
+
 # Øvrige tags
 LIST @VOK = @VOK ; #"Hej *Gitte", "aa, *ataata"
 LIST @EXCLM = @EXCLM	;		# Eksklamation som er nominal, men med verbal semantik. "kusanaq", "qujanassusia"
@@ -1996,7 +1999,6 @@ REMOVE:tidlig0022 3SgPoss IF (0 3PlPoss - Err/Sub)(*-1 Rel + Pl BARRIER (*) - %A
 (NEGATE *-1 V + 3Sg BARRIER Rel + Pl - ("aak") - ("aaq"))#Ataasinnguaq appikkaluarlunilu qissaserpoq ilaasali oqaluttuaraat, kikkunnit qinngasaarneqartarsimanersoq, aammalu sunaaffa ANGAJOQQAAVISA avissimanerat meeraqataasa qinngasaarutigisaraat.
 (NOT -1 Gram/Coref + Pron + 4Sg) #Julie Berthelsen Ekstra Bladet-imut oqarpoq, kunngikkormiut atertaavit assut tulluusimaarutigalugit, namminermi aqqisa Ivalo ilagaat angutaataalu ateqarluni Minik.
 (NEGATE 0 ("sapaatip-akunneq"))#USA-mi innuttaasut akornanni 6,6 millionit suliffitsik SAPAATIP-AKUNNERATA kingulliup ingerlanerani annaavaat, suliffeqannginnersiutinillu qinnuteqarsimallutik
-
 ;
 
 #taamaali+CONT vist altid CL-ADVL når i position 1 og endnu mere sandsynligt altid hvis sammen med LU, men tagges ofte fejlagtigt som i-ADVL til følgende verbalnomen
@@ -2011,6 +2013,12 @@ REMOVE:tidlig0035 (/Aeq\ Pl\ 3SgPoss/l) IF (0 N - Aeq + $$KASUS LINK 1 N - Aeq +
 REMOVE:tidlig0036 (/"innuttaq"\ N\ Aeq\ Pl\ 3SgPoss/l) IF (0 (/"innuttaq"\ U\ Der/nv\ Gram/IV\ TUQ/l));
 
 MAP:M_tidlig0037 @HNOUN TARGET Sem/Geo + Abs IF (-1 BOS)(1 ("-") + PUNCT); #Avisopstilling
+
+
+#En ny tag 20200818 @>NUM til første led af et talinterval. Svarer nogenlunde til @>N ved nominer
+MAP:M_tidlig0040 @>NUM TARGET Num + Abs IF (1 (/"-"\ PUNCT/l))(2 Num);#Naak 160.000 - 170.000-it missaat Inuit oqaasiinik atuisuugaluartut, illersorneqarnissaat pingaaruteqarluinnarpoq.
+
+
 
 REMOVE:tidlig0050 (/QAR\ Der/nv\ Gram/IV\ NIQ\ Der/vn\ KKUT/l) IF (0 (/QAR\ Der/nv\ Gram/IV\ NIQ\ Der/vn\ N\ Via/l)); #Usandsynlig morfemkombination
 
@@ -7399,8 +7407,9 @@ MAP:M0900 (@i-ADVL>) TARGET (Aeq) IF (*1 Der/vn - NAR - NIQAR - @AGENS BARRIER (
 MAP:M0929A @ADVL> TARGET Trm IF (1 KOMMA)(2 Trm + @ADVL>)(3 KOMMA);
 MAP:M0929B @ADVL> TARGET Trm IF (1 KOMMA)(2 Trm OR Ins)(3 Trm)(4 KOMMA);
 
-SUBSTITUTE:agens (@AGENS) (@N<) TARGET Abl + $$NUMERUS (*-1 Abl - CONJ-C + @AGENS BARRIER CONJ-C OR @PRED OR VFIN LINK NOT *0 _TARGET_ + CONJ-C) ; #tunngavigisat qulaani pineqartut assingi atuutsillugit kingunerissavaa aqqusernup ullormut qamutinit 26-init atorneqartarnissaa assigiinnarlugit akunnermut qamutit marluk missai.
-
+SUBSTITUTE:agens (@AGENS) (@N<) TARGET Abl + $$NUMERUS (*-1 Abl - CONJ-C + @AGENS BARRIER CONJ-C OR @PRED OR VFIN LINK NOT *0 _TARGET_ + CONJ-C) #tunngavigisat qulaani pineqartut assingi atuutsillugit kingunerissavaa aqqusernup ullormut qamutinit 26-init atorneqartarnissaa assigiinnarlugit akunnermut qamutit marluk missai.
+(NEGATE *-1 @AGENS LINK 1 KOMMA)#Ammasumik allagaq Inuit Ataqatigiit siulittaasuannit Múte Egedemit, Partii Naleqqap siulittaasuanit Hans ENOKSENIMIT, Atassutip siulittaasuanit Aqqalu Jerimiassenimit, Suleqatigiissitsisullu siulittaasuannit Tilli Martinussenimit atsiorneqarpoq.
+;
 #Den gamle M0930 havde uoverskueligt mange NEGATE og fejlede alligevel ca. hver anden gang. Nyt forsøg 20191017
 MAP:M0930_i-VIK_paratakse1 @i-ADVL> TARGET Trm IF (*1 Trm + CONJ-C BARRIER (*) - Adv - Pali - OBLIQUE LINK *1 VIK + N BARRIER V); #Britney Spears SEAN-IMUT marlunnik ukiulimmut Jayden-imullu ataatsimik ukiulimmut akisussaaffianik arsaarmassuk.
 MAP:M0930_i-VIK_paratakse2 @i-ADVL> TARGET Trm + CONJ-C IF (*1 Trm BARRIER (*) - Adv - Pali - OBLIQUE LINK *1 VIK + N BARRIER V); #Britney Spears Sean-imut marlunnik ukiulimmut JAYDEN-IMULLU ataatsimik ukiulimmut akisussaaffianik arsaarmassuk.
