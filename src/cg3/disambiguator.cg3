@@ -2087,7 +2087,15 @@ MAP:M_tidlig0180 @MIK-OBJ> TARGET Trm + HUMAN IF (*1 Ins + NON_HUMAN BARRIER V L
 #tidsangivelser i Abs er lidt uforudsigelige
 MAP:M_tidlig0190 @i-ADVL> TARGET MAANED + Abs IF (-1 Num)(1 NIQ LINK NEGATE *1 V); #Atorfik qinnuteqarfigisimavaa neriorsorneqarlunilu 1. APRIILI atorfininnissaminik.
 
+#Et forsøg på regler, der håndterer verbalisering af adled i stedet for kerneled ved hybrider
+SELECT:tidlig200 $$OBLIQUE + Hyb/1-2 IF (-1 $$OBLIQUE); #Aningaasaqarnermut ilisimasallit pikkorinnerpaat nunanit AVANNARLERNEersut tunniussanik naliliissapput, 2010-milu aasaanerani ajugaasoq toqqassallugu. Første trin: Disambiguer mulig Ins-Abl konflikt
+SELECT:tidlig201 $$OBLIQUE + Hyb/1-2 IF (-1 $$OBLIQUE + LU OR LI OR LUUNNIIT LINK -1 $$OBLIQUE);  #Bakteeriat neqimit NERPIMMILLUUNNIIT ooqanngitsumeersut aammattaaq assanniissinnaapput
 
+MAP:M_tidlig202 @N< TARGET $$OBLIQUE + Hyb/1-2 IF (-1 $$OBLIQUE) #Aningaasaqarnermut ilisimasallit pikkorinnerpaat nunanit AVANNARLERNEersut tunniussanik naliliissapput, 2010-milu aasaanerani ajugaasoq toqqassallugu.
+(NEGATE -1 TIME OR ("[0123456789]{4}"r) + Lok )#2001-imili INISSIISARFIMMIitilluni inooqamminut politiinullu siorasaarisimasutut toqutseriarsimasutullu ilaatigut eqqartuunneqarluni Herstedvesterimi piffissaligaanngitsumik pineqaatissinneqaqqippoq.
+(NEGATE 0 ("ma") + Lok LINK -1 Gram/Int + Lok)#Puiaasat imaqanngitsut imallillu, arsakoorfiillu cigaretikunik imallit sumi TAMAANIipput.
+;
+MAP:M_tidlig203 @i-ADVL> TARGET $$OBLIQUE IF (1 $$OBLIQUE + @N< + Hyb/1-2 LINK 1 Der/vn); #Bakteeriat neqimit NERPIMMILLUUNNIIT ooqanngitsumeersut aammattaaq assanniissinnaapput
 
 #############################################
 # Et særligt afsnit til "unnerpoq/ unnerpaa #
@@ -2221,7 +2229,9 @@ SUBSTITUTE:conj19luun (LUUNNIIT)(CONJ-LUUNNIIT) TARGET LUUNNIIT + $$OBLIQUE IF (
 #SUBSTITUTE:adv30luun (LUUNNIIT)(ADV-LUUNNIIT) TARGET LUUNNIIT (-1 CONT)(NEGATE 0 $$OBLIQUE) ; #unsafe rule
 SUBSTITUTE:adv31luun (LUUNNIIT)(ADV-LUUNNIIT) TARGET LUUNNIIT + V (-1 BOS)(NEGATE 0 V - Con - Cau - IteCau) ; #unsafe rule
 SUBSTITUTE:adv32luun (LUUNNIIT)(ADV-LUUNNIIT) TARGET LUUNNIIT  - ("allaat") (0 ("alla") OR (/su\"\ U\ /l)) ; #unsafe rule
-SUBSTITUTE:adv33luun (LUUNNIIT)(ADV-LUUNNIIT) TARGET LUUNNIIT + $$KASUS - Rel (NEGATE *-1 $$KASUS OR iOBLIQUE) ; #unsafe rule #Aalariassanani nikorfavoq, nujaaluunniit suialaami erfalanngillat, ungasissumummi isigisut utimut isigisarmata.
+SUBSTITUTE:adv33luun (LUUNNIIT)(ADV-LUUNNIIT) TARGET LUUNNIIT + $$KASUS - Rel (NEGATE *-1 $$KASUS OR iOBLIQUE) #unsafe rule #Aalariassanani nikorfavoq, nujaaluunniit suialaami erfalanngillat, ungasissumummi isigisut utimut isigisarmata.
+(NEGATE 0 Abl LINK -1 Abl)#Bakteeriat neqimit nerpimmilLUUNNIIT ooqanngitsumeersut aammattaaq assanniissinnaapput
+;
 SUBSTITUTE:adv34luun (LUUNNIIT)(ADV-LUUNNIIT) TARGET LUUNNIIT + Adv - ("allaat") OR LUUNNIIT + Pali (NEGATE 0 ("soorlu")); #NEGATE løser midlertidigt ordklasseproblem med soorlu/soorluluunniit, som ikke skal være pali.
 SUBSTITUTE:adv35luun (LUUNNIIT)(ADV-LUUNNIIT) TARGET Gram/Comp + LUUNNIIT ;
 SUBSTITUTE:adv36luun (LUUNNIIT)(ADV-LUUNNIIT) TARGET LUUNNIIT + CONT (NEGATE -1 CLB OR CONT OR BOS); #unsafe rule
@@ -9735,7 +9745,7 @@ REMOVE:8532Ø ("ip") + NIQ IF (0 ("inneq") + Ins LINK 1 LIK_QAR); #Margrethe par
 REMOVE:8532Å ("unneq") IF (0 ("unnersiut"));
 REMOVE:8533A ("periut") IF (0 ("periuseq"));
 REMOVE:8533B (/"peqqip"\ Gram/IV\ TAR\ Der/vv\ Gram/IV\ UTE/l) IF (0 ("peqqissaat"));
-
+REMOVE:8533C (/"naggor"\ Gram/IV\ VIP\ Der/vv\ Gram/IV\ QATE/l) IF (0 (/"nagguik"\ QATE/l));
 
 
 #De særlige former af TUQ + Aeq på transitiver fulgt af "ippaa" slettes hvis ikke fulgt af "ippaa"
@@ -10709,7 +10719,9 @@ REMOVE:9946C Abl + Hyb/1-2 IF (1C ("IP"));
 #Abl eller Ins? Sandsynligvis Abl ved NIQ, men med forbehold for QAR og LIK
 
 SELECT:9946C Abl + NIQ IF (NEGATE *1 QAR OR LIK);
-SELECT:9946D Ins IF (0 Abl)(NEGATE *1 NIRU OR NIQAR)(NEGATE 0 Adv)(NEGATE 1C TUQ + Abl) ;
+SELECT:9946D Ins IF (0 Abl)(NEGATE *1 NIRU OR NIQAR)(NEGATE 0 Adv)(NEGATE 1C TUQ + Abl)
+(NEGATE 0 LU OR LI OR LUUNNIIT LINK -1 Abl)#Bakteeriat neqimit NERPIMILLUUNNIIT ooqanngitsumeersut aammattaaq assanniissinnaapput
+ ;
 
 SELECT:9946E Lok + ("suna") OR iLok + ("suna") IF (0 iAbl OR iIns OR Abl OR Ins) ; #sumerpiaq er højst sandsynligt Lok
 
@@ -10953,7 +10965,10 @@ REMOVE:9969Z @POSS> + NÆPPE-POSS IF (0 Ins + Sg);#Jaakuaraq 1960-ikkunni pissut
 
 REMOVE:9969Æ Rel + @SUBJ> IF (*1 TRANSVERB + 3Pl LINK *-1 _TARGET_ + @OBJ> LINK *-1 Rel + Pl + @SUBJ>); #Umiarsualiviit akiliiffiusalerunik ingerlanneqarnerannut iluarsartuunneqartarnerannullu ANINGAASARTUUTIT matussusersinnaavaat, namminnerlu aningaasaleeqqissinnaalissallutik.
 
-MAP:M9969Æ @N< TARGET Ins IF (1 HTR LINK -1 _TARGET_ + Ins LINK *-1 @MIK-OBJ> OR @i-MIK-OBJ> BARRIER (*) - @i-ADVL>) ;#Inuusuttut imarsiortutut sakkutuunngorusuttut pissanganartumik gummibådimik ANGALANERMIK misiliisinnaapput, røgdykkerit atortui misilissinnaavaat imaluunniit immaqa iluatsitsigunik helikopterimik angalanissamik eqquisinnaapput.
+MAP:M9969Æ @N< TARGET Ins IF (1 HTR LINK -1 _TARGET_ + Ins LINK *-1 @MIK-OBJ> OR @i-MIK-OBJ> BARRIER (*) - @i-ADVL>) #Inuusuttut imarsiortutut sakkutuunngorusuttut pissanganartumik gummibådimik ANGALANERMIK misiliisinnaapput, røgdykkerit atortui misilissinnaavaat imaluunniit immaqa iluatsitsigunik helikopterimik angalanissamik eqquisinnaapput.
+(NEGATE -1 Pl LINK 1 _TARGET_ + Sg LINK 1 HTR)#Holger Ballep qallunaat ikittuinnaat assigalugit kalaallit oqaasiinik KUKKUNEQANNGILLUINNARTUMIK atuisuuvoq.
+
+;
 
 MAP:M9969Ø @MIK-OBJ> TARGET Ins + NIQ IF (1 HTR LINK -1 _TARGET_ LINK *-1 @i-ADVL> BARRIER (*) - Ins) ;#Inuusuttut imarsiortutut sakkutuunngorusuttut pissanganartumik gummibådimik angalanermik misiliisinnaapput, røgdykkerit atortui misilissinnaavaat imaluunniit immaqa iluatsitsigunik helikopterimik ANGALANISSAMIK eqquisinnaapput.
 
