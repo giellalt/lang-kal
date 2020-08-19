@@ -1652,6 +1652,7 @@ LIST TITEL = "borgmester" "fru" "Gammel" "hr" "hotel" ("ilinniar" TIP HTR TUQ) "
 LIST COUNTRY = "Canada" "Danmark" "Finland" "Grønland" "Island" "Kalaallit Nunaat" "Norge" "Rusland" "Sverige" "Tyskland" "USA" ; 
 LIST GeoProp = Sem/Geo "Danmark" "Finland" "Gladsaxe" "Mose" "Tåstrup" ;
 SET Fornavn = Mask | Fem ;
+LIST Mellemnavn = (Borup - Sem/Geo) ;
 SET Efternavn = Sem/Hum - Fornavn ;
 LIST Hmyth = "Aningaaq" "Aqissiaq" "Guuti" "Maliina" ; #Proprier, der anvendes som/med vokativ
  
@@ -2931,6 +2932,7 @@ SELECT:0001Z Sem/FirstName + Abs IF (1 Prop + Sur) ; #DAGMAR Jensenip piumasaa. 
 REMOVE:0001Y Sem/Hum - Sem/Mask - Sem/Fem IF (0 Sem/Hum + Sem/Mask OR Sem/Hum + Sem/Fem)(NEGATE 0 ("Olseni")) 
 (NEGATE 0 ("Lynge") + Sem/Hum - Sem/Mask)#Lynge som fornavn 10 gange sjældenere end efternavn
 (NEGATE -1 FIRSTNAME)#
+(NEGATE 0 ("Egede") LINK -1 ("Borup"));
 ;
 REMOVE:0001V ("\\p{Lu}.*"r) + Prop + PROP_VS_APPELLATIV IF (-1 BOS)(0 ("([a-z].*)"r))(NEGATE **0CW (VSTR:"$1"r))(NEGATE 0 Abs LINK *1 U OR NNGUR)(NEGATE 0 ("Nuka") OR NNGUAQ or ("Minik")) ; #vælg den med lille begyndelsesbogstav hvis den samme ikke findes med stort begyndelsesbogstav i nærheden.
 
@@ -3230,7 +3232,12 @@ MAP:M_uløselighed0037 @i-ADVL> TARGET (/"umiarsualivik"\ N\ Lok/l) IF (1 (/"ato
 
 #Det er næppe muligt at disambiguere pi+SSA fra pissap helt sikkert. Her er et forsøg
 REMOVE:uløselighed0038 ("pissap") + Con + 3Sg IF (0 (/"pi"\ Gram/IV\ SSA/l) + Con + 3Sg)(NEGATE *-1 Abs + Sg + HUMAN BARRIER V);  #Tamanna PISSAPPAT Namminersorneq pillugu Inatsit allanngortittariaqarpoq.
- 
+
+
+#Múte Borup Egede er ustyrlig, fordi Borup er både Sem/Geo og Sem/Hum og Egede ligeså plus FIRSTNAME
+REMOVE:uløselighed0045 Sem/Geo IF (0 Sem/Hum + ("Borup"))(1 ("Egede")); 
+SELECT:uløselighed0046 Sem/Hum - Sem/Mask IF (0 ("Egede"))(-1 ("Borup"));
+
 #Lok anvendt på MIK-OBJ i stedet for Ins er svær (umulig?) at håndtere. En tidlig og farlig regel, der skal følges op på
 SUBSTITUTE Lok Ins TARGET (HTR) IF (1 HTR - ("ilar")) #siunnersortit .. Tasiilami inunnik ISUMAGINNINNERMI ingerlatitsivimmi .. ikiuussimapput. Mange fejl pga. ambiguøs ilaivoĸ vs. ilauvoĸ
 (NEGATE 1 Lok + LU)#tassa PEQQISSAANERMI isumaginninnermilu ikiortit
@@ -5034,11 +5041,11 @@ MAP:M0031I @PROP> TARGET Sem/Hum + Abs - ORGANISATION IF (1 Sem/Hum - Sem/Mask -
 (NEGATE 0 FIRSTNAME LINK 1 INSTITUTION)#BIRGIT Oqaasilerinermut, Atuakkialerinermut Tusagassiuutilerinermullu Immikkoortortami pisortaavoq.
 ;
 
-MAP:M0031J @PROP> TARGET PROP + Abs - CONJ-C IF (1 PROP + Sem/Hum - CONJ-C - PLACE - SEMIOTIC)(-1 PROP) 
+MAP:M0031J @PROP> TARGET FIRSTNAME + Abs - CONJ-C OR Mellemnavn + Abs - CONJ-C IF (1 PROP + Sem/Hum - CONJ-C - PLACE - SEMIOTIC)(-1 PROP) 
 (NEGATE *1 Prop + CONJ-LU BARRIER (*) - Prop) #Andreas Wille Mathias Witoftilu ilanngutassiortuupput.
  #Kalaallit *Røde Korsiannit katersukkat tamarmik Dansk Røde Korsimut tunniunneqassapput.
 (NEGATE 0 Sem/Hum LINK 1 INSTITUTION OR ORGANISATION) #Nuummiu, Per ROSING Nutserinermut Oqaluttaanermullu Immikkoortortamiit allagartartaarnermi saniatigut KNI-miit bachelorinngortuni angusarissaarnerpaatut nersornaaserneqarpoq.
-
+##Hans-Pavia R Nikolaj Rosingip nuliatalu Marie Rosingip erneraat. 
 ;
 MAP:M0031M @i-PROP> TARGET Prop + Sem/Geo + Abs IF (1 (MIU)); #Amerika Kujallermiu
 MAP:M0031N @i-PROP> TARGET Prop + Sem/Geo + Abs IF (1 PLACE + iProp + iOBLIQUE) ;
@@ -8620,6 +8627,7 @@ REMOVE:0549A Par IF (0 TUQ LINK 1C ADV-LU + Par) ;
 #Er i tvivl om hvad følgende regel gør, så vil ikke slette den, men korrigerer bare for en akut fejl
 SELECT:0549B N OR Prop - Sem/Hum IF (*1 LIK BARRIER V)(NEGATE 0 Adv OR Pali OR Num)
 (NEGATE 0 Par LINK *1 (/"ilisima"\ Gram/TV\ TAQ\ Der/vn\ LIK/l) + &&IV_SUBJ& LINK *1 ORATIOOBLVERB + &&IV_SUBJ&)#Kalaallit meerartaat 1.000-it missaanniittut inooqatigiinnikkut ilungersunartunik AJORNARTORSIUTEQARTUT , immikkut ilisimasallit naliliipput skal være Par
+(NEGATE 0 Sem/Hum LINK 1 Sem/Hum)#Ammasumik allagaq Inuit Ataqatigiit siulittaasuannit Múte BORUP Egedemit, Partii Naleqqap siulittaasuanit Hans Enoksenimit, Atassutip siulittaasuanit Aqqalu Jerimiassenimit, Suleqatigiissitsisullu siulittaasuannit Tillie Martinussenimit atsiorneqarpoq.
  ;
 
 REMOVE:0549C Par + INTRANSVERB IF (0 Prop + &&IV_SUBJ& OR N + &&IV_SUBJ&)(1 ORATIOOBLVERB + INTRANSVERB + &&IV_SUBJ&) 
@@ -8687,8 +8695,9 @@ REMOVE:SemFam Prop IF (0 FAM + N LINK 1 Sem/Hum) ;
 SELECT FIRSTNAME IF (1 Prop + Sg)(NEGATE 0 Sem/Mask LINK 1 Sem/Fem) 
 (NEGATE 0 ("Lynge") + Sem/Hum - Sem/Mask)#Lynge som fornavn 10 gange sjældenere end efternavn
 (NEGATE 0 ("Avataaq") LINK 0 (/"avataaq"\ SUAQ\ Der/nn\ LIAR/l))#AVATAARSUALIARTARTUT Amerikameersut Qaammammut ukiut tallimat ingerlannginnerini uternissaat politikkikkut sulissutiginiarparput, Mike Pence, USA-mi naalagaaffeeqqami Alabamami illoqarfimmi Huntsvillemi oqalugiartilluni oqarpoq.
-; #vælger stort bogstav qua forkortelse frem for lille bogstav
-
+#vælger stort bogstav qua forkortelse frem for lille bogstav
+(NEGATE 0 HUM LINK 1 FIRSTNAME)#NIVIARSIARANNGUAQ Emilie pingasunik ukiulik sivisuumik napparsimavimmiissimalluni angerlartinniarneqalermat angutaata Eriup nuliassaatalu Lisep tigusussanngorpaat.
+;
 SELECT Abs + Prop IF (-2 Prop + Abs)(-1 ("\,"))(NEGATE 0 Rel LINK 1 POSSESSUM3); #'Enoksen, SIUMUT' 'Kleist, INUIT Ataqatigiit'
 SELECT Abs + Prop IF (-3 Prop + Abs)(-2 ("\,"))(-1 Abs)(NEGATE 0 Rel LINK 1 POSSESSUM3); #'Enoksen, SIUMUT' 'Kleist, Inuit ATAQATIGIIT'
 #REMOVE N IF (0 Prop + Sem/Geo) ; #sletter TIMAA til fordel for Tim+AA i Timaa assoruuppalulerpoq. PL 20190430
