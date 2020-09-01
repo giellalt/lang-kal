@@ -100,6 +100,7 @@ LIST Interj = Interj ;
 LIST Num = Num ("tyve") ;
 LIST iNum = iNum ;
 LIST Sem/FirstName = Sem/FirstName ;
+LIST Sem/LastName = Sem/LastName ;
 LIST Sem/Geo = Sem/Geo ;
 LIST Sem/Hum = Sem/Hum <hum> ;
 LIST Sem/Unit = Sem/Unit <unit>;
@@ -1654,7 +1655,7 @@ LIST TITEL = "borgmester" "fru" "Gammel" "hr" "hotel" ("ilinniar" TIP HTR TUQ) "
 LIST COUNTRY = "Canada" "Danmark" "Finland" "Grønland" "Island" "Kalaallit Nunaat" "Norge" "Rusland" "Sverige" "Tyskland" "USA" ; 
 LIST GeoProp = Sem/Geo "Danmark" "Finland" "Gladsaxe" "Mose" "Tåstrup" ;
 SET Fornavn = Mask | Fem ;
-LIST Mellemnavn = (Borup - Sem/Geo) ;
+LIST Mellemnavn = (Borup Sem/Hum) ;
 SET Efternavn = Sem/Hum - Fornavn ;
 LIST Hmyth = "Aningaaq" "Aqissiaq" "Guuti" "Maliina" ; #Proprier, der anvendes som/med vokativ
  
@@ -2124,6 +2125,11 @@ SELECT:tidlig0210 Abs + Pl IF (1 Abs + CONJ-C + 3PlPoss)(*1 3PlO BARRIER (*) - A
 MAP:M_tidlig0220 @i-ADVL> TARGET Trm IF (1 NIQ LINK 1 V) #Amarngivat siulersuisuini ilaasortaasimavoq akissaatikitsullu meeraasa atuanngiffeqarlutik angalanissaannut ANINGAASAATEQARFINNUT qinnuteqaasiornernut ikiuuttarsimalluni.
 (NEGATE 1 ADVERBIEL + Ins)#Taakku iluarsartuussinernut pisariaqarnerpaaginnarnut naammapput, taamaalillutillu umiarsualivinni atortuutit PITSANNGORSARNERANUT annikitsuinnarmik atorsinnaallutik.
 ;
+
+#TUQ=NIQ=SSAQ + POSSESSUM har så sjældent eksplicit possessor at det sandsynligvis er sikkert at disambiguere ægte ambiguiteter Lok+Sg vs. 4SgPoss på den baggrund
+REMOVE:tidlig0230 (/Rel\ Sg\ 4SgPoss/l) IF (0 Lok + Sg)(*1 (/TUQ\ Der/vn\ QAR\ Der/nv\ Gram/IV\ NIQ\ Der/vn\ SSAQ/l) + POSSESSUM3 BARRIER (*) - OBLIQUE - 4PlPoss) ;#Trump EQQISSISIMATITAASIMASUMI uuliamik gassimillu misissuisoqarnissaanut akuersissuteqartoq
+
+
 
 #############################################
 # Et særligt afsnit til "unnerpoq/ unnerpaa #
@@ -2959,7 +2965,7 @@ REMOVE:0001Y Sem/Hum - Sem/Mask - Sem/Fem IF (0 Sem/Hum + Sem/Mask OR Sem/Hum + 
 (NEGATE 0 ("Lynge") + Sem/Hum - Sem/Mask)#Lynge som fornavn 10 gange sjældenere end efternavn
 (NEGATE -1 FIRSTNAME)#
 (NEGATE 0 ("Egede") LINK -1 ("Borup"));
-;
+
 REMOVE:0001V ("\\p{Lu}.*"r) + Prop + PROP_VS_APPELLATIV IF (-1 BOS)(0 ("([a-z].*)"r))(NEGATE **0CW (VSTR:"$1"r))(NEGATE 0 Abs LINK *1 U OR NNGUR)(NEGATE 0 ("Nuka") OR NNGUAQ or ("Minik")) ; #vælg den med lille begyndelsesbogstav hvis den samme ikke findes med stort begyndelsesbogstav i nærheden.
 
 REMOVE:0001Prop ("(\\p{Lu}.*)"r) + Fornavn IF (0 N)#(NEGATE *0CW (VSTR:"%l$1"r)) 
@@ -5958,6 +5964,7 @@ MAP:M0069CX13 @N< TARGET Num + $$KASUS - NUMCOMP IF (-1 $$KASUS - @Pron>N)(NEGAT
 (NEGATE 0 Abs + &&ContObj& OR Num LINK 1 CONT + &&ContObj&)#Issittoq pillugu festivaalertitsineq 40-T sinnerlugit sammisassaqartitsinertalik aatsaat taamak annertutigivoq
 (NEGATE 1 NUM)
 (NEGATE 0 Pl LINK -1 Sg LINK NEGATE 0 LU)#Umiarsuarmik nutaamik 130-NIK ilaasoqarsinnaasumik sanaartorniarneq unitsinneqarpoq.
+(NEGATE 0 ("[0123456789]{4}"r) + Abs LINK -1 Num LINK 2 EOS OR PUNCT)#aggustip 26-at 2020 ·
 ;
 
 MAP:M0069CY @Pron>N TARGET (/__Gram\/Dem\ Pron__/l) + $$KASUS + $$NUMERUS IF (1C N + $$KASUS + $$NUMERUS - Gram/Comp)(NEGATE -1 N + $$KASUS)(NEGATE 1 4PlPoss OR 4SgPoss)(NEGATE 0 ("manna") + LI) #Alternativ ordstilling: taassuma karsip
@@ -11313,6 +11320,8 @@ REMOVE:9970R Rel + Pl IF (0 Abs + Pl + @N< LINK -1 Abl + 3PlPoss LINK -1 @POSS> 
 REMOVE:9970S Abs + Pl + @N< IF (0 Rel + Pl LINK -*1 Rel + Pl + @POSS> BARRIER (*) - Rel - OBLIQUE - Num) #Naalakkersuisut Siulittaasuat Kim Kielsen aalajangerpoq imigassat AALAKOORNARTORTALLIT 2,25 procentimit kimittunerusut tamarmik Nuummi, Kapisilinni Qeqertarsuatsiaanilu tuniniarneqartarneri sassaalliutigineqartarnerilu inerteqqutigineqarallassasut.
 ;
 
+MAP:M9970T @HNOUN TARGET ("[0123456789]{4}"r) + Abs IF (-1 Num LINK 2 EOS OR PUNCT LINK NEGATE *0 VFIN); #aggustip 26-at 2020 ·
+
 #Disambiguering og mapping af resterende partikler
 ##################################################
 
@@ -11594,7 +11603,10 @@ SUBSTITUTE:S0037A @SUBJ> @N< TARGET Abs + $$NUMERUS - CONJ-C - Prop IF (*-1C Abs
 SUBSTITUTE:S0037A @SUBJ> @N< TARGET Rel + $$NUMERUS IF (*-1C Rel + $$NUMERUS + @SUBJ> BARRIER V OR CLB OR POSSESSUM OR iPOSSESSUM LINK *1 _TARGET_ LINK *1 VFIN + TRANSVERB + (/.Sg\ /l) BARRIER V OR POSSESSUM OR iPOSSESSUM) ; #, Nukissiorfinni ingerlatsinermut siunnersortip Niels Christian Nielsenip qularinngilaa.
 SUBSTITUTE:S0037A @SUBJ> @N< TARGET Rel + $$NUMERUS IF (*-1C Rel + $$NUMERUS + @SUBJ> BARRIER V OR CLB - KOMMA OR POSSESSUM OR iPOSSESSUM LINK *1 _TARGET_ LINK *1 VFIN + TRANSVERB + (/.Sg\ /l) BARRIER V)(*1 @POSS> BARRIER (*) - KOMMA) ; #, Nukissiorfinni ingerlatsinermut siunnersortip Niels Christian Nielsenip qularinngilaa.
 SUBSTITUTE:S0037F (/@.*/r) (@N<) TARGET Gram/Cong + OBLIQUE + (/@\(.*\)/r) IF (0 $$KASUS LINK -1 (VSTR:/@$1/r) + OBLIQUE + $$KASUS)(NEGATE 0 1Sg OR 2Sg OR 1Pl OR 2Pl) ;
-SUBSTITUTE:S0038 @HNOUN @N< TARGET Abs - Prop IF (*-1 @HNOUN + PROP BARRIER V)(NEGATE 0 CONJ-LU)(NEGATE -1 ("aamma"))(NEGATE *-1 CONJ-LU)(NEGATE *-1 Interj) ; #Til nominalsyntagmer uden verber, men ikke til opremsninger. #Rasmusinnguaq angut pitsak, maligassaq!
+
+SUBSTITUTE:S0038 @HNOUN @N< TARGET Abs - Prop IF (*-1 @HNOUN + PROP BARRIER V)(NEGATE 0 CONJ-LU)(NEGATE -1 ("aamma"))(NEGATE *-1 CONJ-LU)(NEGATE *-1 Interj) #Til nominalsyntagmer uden verber, men ikke til opremsninger. #Rasmusinnguaq angut pitsak, maligassaq!
+(NEGATE -1 BOS OR PUNCT LINK 2 EOS OR (":"))#· NUTSERISOQ: Jaaku Lyberth
+;
 SUBSTITUTE:S0039A @ADVL> @N< TARGET ATTRIBUTIV + $$KASUS (-1 $$KASUS + N)(NEGATE 0 CONJ-C) ;
 #SUBSTITUTE:S0039B @i-ADVL> @N< TARGET N + $$KASUS + $$NUMERUS (-1 $$KASUS + $$NUMERUS)(NEGATE 0 CONJ-C) ; #unødvendig?
 SUBSTITUTE:S0040 @<OBJ @HNOUN TARGET @<OBJ + N IF (*-1 V BARRIER (*) - @PRENOM LINK *-1C @OBJ> BARRIER (*) - @N<)
