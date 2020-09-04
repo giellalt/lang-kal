@@ -5119,7 +5119,7 @@ MAP:M0031A @PROP> TARGET Prop + Abs + $$NUMERUS - Sem/Geo IF (1 Prop + Sem/Hum +
 
 #Tilføjet M0031C-E ad hoc 20180621 efter restrukturering af propernouns med køns-tags for at få regression test til at fungere.
 
-MAP:M0031B @PROP> TARGET Orth/Append + Abs - Num OR Orth/Copy + Abs OR (/<Xxx.?>/r) OR (<added-prop>) OR (<heur>) OR Sem/Hum IF ((1 Orth/Append OR Orth/Copy OR (/<Xxx.?>/r) OR (<xxx>)) OR (0 Abs + (/<Xxx.?>/r) LINK 1 PROP)) ;#(NEGATE 1 iOBLIQUE) ;
+MAP:M0031B @PROP> TARGET Orth/Append + Abs - Num OR Orth/Copy + Abs OR (/<Xxx.?>/r) OR (<added-prop>) OR (<heur>) OR Sem/Hum + Abs IF ((1 Orth/Append OR Orth/Copy OR (/<Xxx.?>/r) OR (<xxx>)) OR (0 Abs + (/<Xxx.?>/r) LINK 1 PROP)) ;#(NEGATE 1 iOBLIQUE) ;
 
 MAP:M0031C @PROP> TARGET FIRSTNAME + Abs IF (1 NAME - Sem/Fem - CONJ-C)(NEGATE *1 INTRANSVERB + 3Sg) ; #Fornavne er @PROP til efternavne eller efterfølgende fornavne. Et mandligt navn kan bruges som efternavn.
 
@@ -5915,7 +5915,7 @@ MAP:M0324 @ADVL> TARGET ("kinguneq") + Sg + POSSESSUM3 - AFFINGERET (*1 V) ;
 
 MAP:M0325 @ADVL> TARGET TIME + Via IF (*1 IteCau BARRIER V) ;
 
-MAP:M0326 @ADVL> TARGET ADVERBIEL IF (1 ORATIOOBLVERB + V OR DIRTALE + V) ; #ersarissumik oqarpoq
+MAP:M0326 @ADVL> TARGET ADVERBIEL - POSSESSUM IF (1 ORATIOOBLVERB + V OR DIRTALE + V) ; #ersarissumik oqarpoq
 
 #En særregel, der blokerer at Lok efter Lok i et helt andet syntagme ikke læses som @N< i forbindelse med atatip etc. PL20200424 kommentar til Liv: Forstår ikke dit valg af @>N i regel M0330X så jeg retter til @i-ADVL>
 MAP:M0330X @i-ADVL> TARGET Lok IF (1 Trm)(2 ("pi") + CONT OR ("ata") + CONT OR ("tunnga") + CONT) ; 
@@ -6557,7 +6557,7 @@ MAP:M0525 (@OBJ>) TARGET N + Abs + Sg OR PRON + Abs + Sg IF (*1 TRANSVERB + 3SgO
 (NEGATE 0 LU LINK 1 1PlPoss)#Siullermik siunertaagaluarpoq DRONNINGILU naapeqatigiinnissarput, uannulli immikkut nuannaajallannartumik kunngissap naapeqatigiinnermi peqataanissani toqqarsimavaa.
 (NEGATE 1 EOS OR KOMMA LINK -1 _TARGET_ + &&IV_SUBJ& LINK *-1 VFIN + &&IV_SUBJ& LINK NEGATE *-1 Abs + &&IV_SUBJ&)#Siullermik siunertaagaluarpoq dronningilu NAAPEQATIGIINNISSARPUT, uannulli immikkut nuannaajallannartumik kunngissap naapeqatigiinnermi peqataanissani toqqarsimavaa.
 (NEGATE 0 Abs + &&IV_SUBJ& LINK 1 (/"napa"\ Gram/IV\ TUQ/l) LINK 1 CONT + TRANSVERB LINK *1 V + &&IV_SUBJ& BARRIER V) #napasoq kan både være substantivisk og adjektivisk: PANDAQ napasoq aqqutigalugu qimaasinnaasimasoq uumasuusivissuup pisortaata Bengt Holstip oqaatigaa.
-
+(NEGATE -1 @NIQ_OBJ>) #Oqaaseq bilitsi eqqumiiginermik puigunnginnamiuk.
 ;
 
 MAP:M0525A (@OBJ>) TARGET Prop + Abs + Sg IF (*1 TRANSVERB + 3SgO BARRIER INTRANSVERB + 3Sg OR 4Sg)(NEGATE 1 KOMMA LINK 1 TRANSVERB)(NEGATE -1 (/__\"ateq\"\ QAR__/l) OR (/__\"ateq\"\ LIK__/l))(NEGATE *1 ("tassa"))(NEGATE -1 KOMMA OR PUNCT LINK 2 KOMMA) #Proprier tagges ikke som N. #Aqqaluartaavagooq ateqarpoq ANGERLARTOQ, kisiannigooq naalisarlugu taasarpaat Angerla. 
@@ -11224,6 +11224,10 @@ REMOVE:9968T VFIN + 3PlO IF (0 3SgO LINK *1 Abs + Sg - 2SgPoss LINK NEGATE *1 VF
 
 SELECT:9968U @PRED + TRANSVERB + 3Pl IF (*-1 @SUBJ> + Rel + Pl BARRIER TRANSVERB + 3Pl) ;#Politiit imigassartorsimalluni ajutoortoqarsimassasoq ILIMAGAAT
 
+REMOVE:9968V @HNOUN IF (0 Par LINK NEGATE *0 VFIN)#Trump eqqissisimatitaasimasumi uuliamik gassimillu misissuisoqarnissaanut AKUERSISSUTEQARTOQ
+;
+
+
 #####################################
 #Mapping af resterende nominer og Num
 #####################################
@@ -11576,7 +11580,10 @@ REMOVE:9970B Par + @CL-<CIT IF (0 @SUBJ> + &&IV_SUBJ& LINK *1 VFIN + &&IV_SUBJ&)
 ;
 
 SELECT:9971 @CL-CIT> IF (*-1 @SUBJ> + 4SgPoss)(*1 ORATIOOBLVERB + VFIN LINK NOT -1 ("taama")) ;
-SELECT:9971A HTR - V IF (*-1 @i-MIK-OBJ> BARRIER (*) - @i-ADVL> - @N<) ;
+
+SELECT:9971A HTR - V IF (*-1 @i-MIK-OBJ> BARRIER (*) - @i-ADVL> - @N<) 
+(NEGATE 0 Par LINK NEGATE *0 VFIN)#Trump eqqissisimatitaasimasumi uuliamik gassimillu misissuisoqarnissaanut AKUERSISSUTEQARTOQ
+;
 #Karlssons lov anden version: Vælg den mest komplette af flere ord, hvoraf ingen er hele stammer
 #Eckhards forslag for at forebygge at konsonantstammer automatisk sletter vokalstammer ("ersip" sletter "ersi")
 SELECT:9971B ("qaa") + Interj + MI IF (1 EOS)(-1 BOS OR DIRTALESTART); #Qaami! skal ikke være 'På panden'
