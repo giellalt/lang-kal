@@ -1586,7 +1586,7 @@ SET TIMENOUN = UGEDAGE | OTHERDAY | SEASON | MAANED | CLOCK | OTHERTIME | ("[012
 SET TIME = TEMPUSVERB | TIMEVERB | OTHERTIME | TIDSPARTIKEL ;
 SET TIME_X = TIME - ("kingulleq") ; #til alm. konstruktion som Siumup marlunngormat KINGULLERMIK ataatsimiinnera, hvor kingulleq ikke må blokere dagen fra at være i-ADVL
  
-LIST SPATIAL = "aki" "ate" "illuatunge" "ilu" "eqqaq" "killeq" "killik" "kujate" "qaaq" "qiteq" "qule" "saaq" "sani" "silate" "siu" "tunge" "tunu" "ungate" (".*kannersoq"r); #PL 20180522 slettet "arlaq". Næppe spatialt indhold og fejlhitter fx på 'Arlaqanngitsut qitipput'
+LIST SPATIAL = "aki" "ate" "avannaq" "illuatunge" "ilu" "eqqaq" "kangisip" "killeq" "killik" "kujate" "qaaq" "qiteq" "qule" "saaq" "sani" "silate" "siu" "tunge" "tunu" "ungate" (".*kannersoq"r); #PL 20180522 slettet "arlaq". Næppe spatialt indhold og fejlhitter fx på 'Arlaqanngitsut qitipput'
 LIST USPATIAL = "sanik" "ateq";
 
 LIST ORGANISATION = "Atassut" "Demokraatit" "De Konservative" "IA" "Inuit Ataqatigiit" "Inatsisartut" "KNAK" ("Naalakkersuisoq" Pl) "Naalakkersuisut" "parti" "peqatigiiffik" "S" "Siumut" "Suleqatigiissitsisut" "V";
@@ -3374,6 +3374,10 @@ MAP:M_faste0130 @N< TARGET Sem/Unit + $$KASUS + $$NUMERUS IF (*-1 $$KASUS + $$NU
 MAP:M_faste0140 @i-ADVL>N TARGET (/"najor"\ Gram/TV\ TAQ\ Der/vn\ N\ Lok\ Sg/l) IF (1 ("politik")); #Inuiaqatigiinnik soqutigisaqarnini tunngavigalugu NAJUKKAMI politikkimik aamma suliaqalerpoq - altså 'lokalpolitik'
 
 MAP:M_faste0150 @i-ADVL> TARGET ("sakkortooq") IF (1 ("nakuuser") + Der/vn); #Københavnip Politiivisa angutit taakkua marluk toqutseqataasimasutut, toqutseriaqataasimasutut SAKKORTUUMILLU nakuuseqataasimasutut pasivaat.
+
+#Sammensatte retningsangivelser
+MAP:M_faste0160 @>N TARGET SPATIAL + Trm IF (1 SPATIAL); #avannamut kangisissuani
+
 #######
 # MWE #
 #######
@@ -7154,17 +7158,18 @@ MAP:M0640D @SUBJ> TARGET Rel + Sg IF (*1 TRANSVERB - Gram/Gaanni + 3Sg BARRIER V
 #MAP:M0649 @POSS> TARGET Rel + Pl IF (*1 3PlPoss - ("Kalaallit Nunaat") OR 4PlPoss BARRIER (*) - @<APPOS - @N<) ;
 MAP:M0649 @POSS> TARGET Rel + Pl IF (*1 3PlPossUdenMWE BARRIER (*) - @<APPOS - @N<)
 (NEGATE 0 LU OR LUUNNIIT LINK -1 Rel + Pl + @N<)#Tassami arfinilinnik ukioqartungali inersimasut titartaarusussuseerutsissimavaannga, pulateriaarsuillu ipititsisartut matoqqasut AMMASULLUUNNIIT titartarnissaat kisiat ilikkarsimavara.
+(NEGATE *1 TRANSVERB + 3Pl BARRIER V)#Ullumilu INUIT 1.200-t missaat aqqut taanna ukiumut aqqutigisarpaat.
  ;
 #SIUMUKKUT Inuit Ataqatigiillu inissisimanerat. 
 MAP:M0649A @POSS> TARGET Rel + Pl IF (1 Rel + Pl + CONJ-C LINK *1 3PlPoss - ("Kalaallit Nunaat") BARRIER (*) - @<APPOS - @N< - (/@i-.*>.*/r));
 
-MAP:M0650 (@SUBJ>) TARGET Rel + Pl IF (*1 TRANSVERB + 3Pl OR TRANSVERB + 4Pl OR TRANSVERB + CONT BARRIER VFIN)
+MAP:M0650A (@SUBJ>) TARGET Rel + Pl IF (*1 TRANSVERB + 3Pl OR TRANSVERB + 4Pl OR TRANSVERB + CONT BARRIER VFIN)
 (NEGATE 0 4PlPoss LINK NEGATE *1 CON_CAU + TRANSVERB + 3Pl OR Par + TRANSVERB + 3Pl LINK *1 VFIN + 3Pl)#4PlPoss aldrig subjekt for VFIN
 (NEGATE *1 3PlPoss BARRIER (*) - @<APPOS - @N< - Hyb/1-2)
 (NEGATE 0 $$KASUS + $$NUMERUS LINK *-1 $$KASUS + $$NUMERUS LINK 1 Rel LINK 1 POSSESSUM + OBLIQUE)#meeqqat uanga NAJUKKANNEERSUT paasilluarniassammassuk. Ad hoc regel, der skal omformuleres til BARRIER, når et teknisk problem bliver løst
 (NEGATE 0 $$KASUS + $$NUMERUS LINK *-1 $$KASUS + $$NUMERUS LINK *1 OBLIQUE LINK 1 ("IP") + TUQ OR ("IR") + TUQ)#Illersornissaqarfiup isertortumik paasiniaasartuisa FE-MEERSUT oqaatigaat.. Ad hoc regel, der skal omformuleres til BARRIER, når et teknisk problem bliver løst
  ;
-MAP:M0650 @SUBJ> TARGET Rel IF (1 Rel + @SUBJ> + CONJ-C) ;
+MAP:M0650C @SUBJ> TARGET Rel IF (1 Rel + @SUBJ> + CONJ-C) ;
 
 MAP:M0651A (@<APPOS) TARGET NOMEN IF (0 $$KASUS OR Abs)(-1 ("soorlu") - @ADVL> - CONJ-C - LUSUUQ - MI LINK *-1 VFIN BARRIER (*) - KOMMA LINK -1 $$KASUS) ; #Aamma suliffeqarfiit kommunelluunniit tunuliaqutarinagit inunnik ataasiakkaanik suliniuteqartoqalerpoq, soorlu *arpattartoq tamatta nalunngisarput, Kim Godtfredsen, ikiuiniarluni tusarnaartitsisoqarnissaanik isumassarsisoq oqaluttuartorlu misigissutsit suut immini eqeersinneqarsimanersut. #Rettet fra N<PRED til @<APPOS
 
@@ -11611,8 +11616,11 @@ REMOVE:9968Ø (/"\ Gram/TV\ Gram/Pass\ TUQ/l) IF (0 (/"\ Gram/IV\ TUQ/l));
 ##################################################
 #Specifikke regler til disambiguering af Gram/TV vs. Gram/Db
 ##################################################
+REMOVE:9969B (/"pi"\ SINNAA\ Der/vv\ TIP\ Der/vv\ Gram/Db/l) IF (0 (/"pi"\ SINNAA\ Der/vv\ Gram/IV\ TIP/l));#pisinnaatitsissutinik
+
 SELECT:9969C (/"inor"\ Gram/TV\ TIP/l) IF (0 (/"inor"\ Gram/IV\ TIP/l)) ; #'være for ung' meget sjælden sml. 'ikke at nå det'
-SELECT:9969D Gram/Db IF (*-1 Trm - Num BARRIER CONJ-C OR Trm) ;
+SELECT:9969D Gram/Db IF (*-1 Trm - Num BARRIER CONJ-C OR Trm) 
+;
 REMOVE:9969E Gram/Db IF (NEGATE *-1 Trm - Num BARRIER Num)(0 (*) - Gram/Db - Gram/Refl - Orth/Arch)(NEGATE *-1 ORATIOOBLVERB + TRANSVERB)
 (NEGATE 0 ("taku") OR ("tusar") + TIP + Gram/TV LINK *-1 Abs + NON_HUMAN) #hvis underliggende objekt efter TIP er verbet Db
 (NEGATE 0 QQU LINK NOT 0 (/\".*qqup\"/r))
