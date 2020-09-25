@@ -1666,7 +1666,7 @@ SET FIRSTNAME = (Sem/Mask Prop) | (Sem/Fem Prop) | Mask | Fem | ("Frederik") | (
 SET NAME = FIRSTNAME | Sur ;
 SET NOT-FIRST = WORD - FIRSTNAME ;
 
-LIST INSTITUTION = "Albatros Travel" "Folketing" "Folketinget" "Inatsisartut" (/"ingerla"\ Gram/IV\ TIP\ Der/vv\ Gram/TV\ HTR\ Der/vv\ VIK/l) "kommune" "ministereqarfik" "Naalakkersuisut" "Nutserinermut Oqaluttaanermullu Immikkoortortaq" "Oqaasileriffik" "Oqaasilerinermut, Atuakkialerinermut Tusagassiuutilerinermullu Immikkoortortaq" "Oqaasiliortut" "Roskilde Universitet";
+LIST INSTITUTION = "Albatros Travel" (/"aqup"\ Gram/TV\ HTR\ Der/vv\ VIK\ Der/vn\ QAR\ Der/nv\ Gram/IV\ VIK/l) "Folketing" "Folketinget" "Inatsisartut" (/"ingerla"\ Gram/IV\ TIP\ Der/vv\ Gram/TV\ HTR\ Der/vv\ VIK/l) "kommune" "ministereqarfik" "Naalakkersuisut" "Nutserinermut Oqaluttaanermullu Immikkoortortaq" "Oqaasileriffik" "Oqaasilerinermut, Atuakkialerinermut Tusagassiuutilerinermullu Immikkoortortaq" "Oqaasiliortut" "Roskilde Universitet";
 
 LIST FAM_UNIK = "ui" "nuliaq" ("angut" 3SgPoss) ("angut" 3PlPoss) ("angut" 4SgPoss) "anaana" "arnarsiaq" "ataata" "aana" "aanaq" "aanarsiaq" "ittoq" "aata" "aataq" "aataa" ;
 # betegnelser som sjældent optræder uden for sing.
@@ -3129,7 +3129,9 @@ REMOVE Pl + 1PlPoss + Orth/Alt IF (0 Par + 1Pl)
 SELECT:0113A Sem/Geo + Prop IF (0 SPATIAL) (-1 BOS) (NEGATE 1 ("misse") OR ("nale")) ; #Kujataata ilaata annersaani anorersuarnissaanut politiit aarlerisaaruteqarput.
 REMOVE:0113 SPATIAL + LIR IF (0 ("ungasip")); #20120422 ("ungate")+LIR vist altid bare forkert analyse af 'ungasip'
 
-REMOVE:0114A SPATIAL - ("aki") - ("ilumoor") (NEGATE 0 ("ilu" iTrm))(NEGATE 0 POSSESSUM OR KANNIQ OR INNAQ) ;
+REMOVE:0114A SPATIAL - ("aki") - ("ilumoor") (NEGATE 0 ("ilu" iTrm))(NEGATE 0 POSSESSUM OR KANNIQ OR INNAQ) 
+(NEGATE 0 (/"angi"\ Gram/IV\ NIQ\ Der/vn\ TU/l) LINK 0 (/"angi"\ Gram/IV\ NIQ\ Der/vn\ TUR/l))#
+;
 REMOVE:0114 Abs + 4SgPoss IF (0 SPATIAL + POSSESSUM + Lok LINK -1 Rel)(NEGATE 0 ("ate") + TAQ)(NEGATE 0 ("aki") + TUQ + SSAQ ) ; # Olep saani næppe subjekt og objekt men possessor possessum. Må dog ikke hitte på atisat og ikke på "aki" i fx "akisussaassuseq"
 
 REMOVE:0114B SPATIAL + QATE IF (0 N - SPATIAL) ; #qiteqat
@@ -3346,10 +3348,16 @@ REMOVE:uløselighed0080 ("ammar") + TRANSVERB IF (0 ("amma") + VFIN LINK NEGATE 
 
 #possessor+Pl fulgt af OBJ+Pl for CONT fulgt af 3PlPoss næsten umulige at holde ude fra hinanden. Derfor følgende snævre regler
 REMOVE:uløselighed0090 Abs + Pl IF (0 Rel + Pl)(1 Abs + Pl)(2 Abs + Der/vn LINK 1 CONT + 3PlO LINK 1 3PlPoss);#KINAMIUT kalaallit nuimasut pillugit paasissutissaataat tamanut saqqummiunneqartut
-MAP:Muløselighed0090 @POSS> TARGET Rel + Pl IF (1 Abs + Pl)(2 Abs + Der/vn LINK 1 CONT + 3PlO LINK 1 3PlPoss);#KINAMIUT kalaallit nuimasut pillugit paasissutissaataat tamanut saqqummiunneqartut
+MAP:M_uløselighed0090 @POSS> TARGET Rel + Pl IF (1 Abs + Pl)(2 Abs + Der/vn LINK 1 CONT + 3PlO LINK 1 3PlPoss);#KINAMIUT kalaallit nuimasut pillugit paasissutissaataat tamanut saqqummiunneqartut
 
 #En ægte ambiguitet, der kun og kun til nøds kan håndteres med omverdensforståelse
 REMOVE:uløselighed0100 (/"aki"\ SSAQ\ Der/nn\ UTE\ Der/nn\ KIP\ Der/nv\ Gram/IV\ TUQ/l) + Rel + Sg IF (0 (/"aki"\ SSAQ\ Der/nn\ UTE\ Der/nn\ KIP\ Der/nv\ Gram/IV\ TUQ/l) + Rel + Pl LINK 1 Rel + 3PlPoss); #Amarngivat siulersuisuini ilaasortaasimavoq AKISSAATIKITSULLU meeraasa atuanngiffeqarlutik angalanissaannut aningaasaateqarfinnut qinnuteqaasiornernut ikiuuttarsimalluni.
+
+#AQUTSIVEQARFIMMI (som ligger i Nuuk) Upernavimmi qilalukkanik qernertanik pisassiinerup unioqqutinneqannginnissaa qulakkeerusullutigu immikkut iliuuseqarpugut, taanna oqarpoq. To på hinanden følgende Lok hvor nr. 2 ikke er kongruensadled
+MAP:M_uløselighed0110 @ADVL> TARGET INSTITUTION + Lok IF (1 Sem/Geo + Lok LINK *1 NIQ BARRIER V LINK *1 VFIN - 3Pl - 3Sg);
+
+MAP:M_uløselighed0111 @i-ADVL> TARGET Sem/Geo + Lok IF (-1 INSTITUTION + Lok LINK *1 NIQ BARRIER V LINK *1 VFIN - 3Pl - 3Sg);
+
 
 
 #Naalakkersuisut Siulittaasuat Kim Kielsen aalajangerpoq imigassat aalakoornartortallit 2,25 procentimit KIMITTUNERUSUT tamarmik Nuummi, Kapisilinni Qeqertarsuatsiaanilu tuniniarneqartarneri sassaalliutigineqartarnerilu inerteqqutigineqarallassasut. Det er meget svært at disambiguere Par vs. Rel vs. Abs senere. Derfor en tidlig regel til at slippe af med Par
@@ -5933,9 +5941,10 @@ MAP:M0293B @i-ADVL> TARGET OTHERTIME + Abs IF (1 NIQ + N)
 ; #Juullip siorna akissarsisarneq
 
 
-MAP:M0294 @i-ADVL> TARGET OBLIQUE - Ins - ("<(S|s)aniatigut>"r) IF (*1 HTR + (/__NIQ\ Der\/vn\ \(SSAQ\ Der\/nn\ \)?N__/l) - Gram/Db BARRIER (*) - Num)(NEGATE 0 Trm LINK 1 MUT-OBJ + HTR) (NEGATE 0 $$KASUS + Num LINK -1 $$KASUS + TIME)
+MAP:M0294 @i-ADVL> TARGET OBLIQUE - Ins - ("<(S|s)aniatigut>"r) IF (*1 HTR + (/__NIQ\ Der\/vn\ \(SSAQ\ Der\/nn\ \)?N__/l) - Gram/Db BARRIER (*) - Num - OBLIQUE)(NEGATE 0 Trm LINK 1 MUT-OBJ + HTR) (NEGATE 0 $$KASUS + Num LINK -1 $$KASUS + TIME)
 (NEGATE -1 Lok LINK 1 (/"qanip"\ Gram/IV\ TUQ/l) + Lok LINK 1 3SgPoss)#uløselighed ved implicit possessor Taassuma piffissami QANITTUMI utertitsisoqallattaalernissaa ilimagaa.
 (NEGATE -1 $$KASUS + $$NUMERUS LINK 1 $$KASUS + $$NUMERUS LINK 1 NIQ + N)#Taamaasiornikkut qulakkeerneqassaaq qalerallit 200 tonsit nunaqarfinnut tulaanneqassasut qaleralinnik tunisassiorneq taamalu nunaqarfinni MARLUNNI suliffissaqartitsineq ingerlaavarsinnaaqqullugit.
+(NEGATE 0 $$KASUS - LU LINK *-1 $$KASUS BARRIER (*) - Num - Ins)#Tatsinit TARAJUUSUNIT 1 km-imiit qaninnernut atortussanik aallernissamut qinnuteqartoqarnavianngilaq.
 ;
 
 MAP:opremsning1 @ADVL> TARGET OBLIQUE + $$KASUS - Adv IF (-*1 KOMMA OR CONJ-C - Adv LINK *-1 $$KASUS BARRIER (*) - OBLIQUE - Adv)(NEGATE *-1 V - CONT)(*1 VFIN) #Qiimassutsimigut, ILLARTARNERMIGUT qungujulasarnermigullu minguitsukkut anitsiarfiit nuannernerulersittarpai.
