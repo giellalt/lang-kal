@@ -1666,7 +1666,7 @@ SET FIRSTNAME = (Sem/Mask Prop) | (Sem/Fem Prop) | Mask | Fem | ("Frederik") | (
 SET NAME = FIRSTNAME | Sur ;
 SET NOT-FIRST = WORD - FIRSTNAME ;
 
-LIST INSTITUTION = "Albatros Travel" (/"aqup"\ Gram/TV\ HTR\ Der/vv\ VIK\ Der/vn\ QAR\ Der/nv\ Gram/IV\ VIK/l) "Folketing" "Folketinget" "Inatsisartut" (/"ingerla"\ Gram/IV\ TIP\ Der/vv\ Gram/TV\ HTR\ Der/vv\ VIK/l) "kommune" "ministereqarfik" "Naalakkersuisut" "Nutserinermut Oqaluttaanermullu Immikkoortortaq" "Oqaasileriffik" "Oqaasilerinermut, Atuakkialerinermut Tusagassiuutilerinermullu Immikkoortortaq" "Oqaasiliortut" "Roskilde Universitet";
+LIST INSTITUTION = "Albatros Travel" (/"aqup"\ Gram/TV\ HTR\ Der/vv\ VIK\ Der/vn\ QAR\ Der/nv\ Gram/IV\ VIK/l) (/"ataatsimiip"\ Gram/IV\ TIP\ Der/vv\ Gram/TV\ TAQ\ Der/vn\ LIAQ/l) "Folketing" "Folketinget" "Inatsisartut" (/"ingerla"\ Gram/IV\ TIP\ Der/vv\ Gram/TV\ HTR\ Der/vv\ VIK/l) "kommune" "ministereqarfik" "Naalakkersuisut" "Nutserinermut Oqaluttaanermullu Immikkoortortaq" "Oqaasileriffik" "Oqaasilerinermut, Atuakkialerinermut Tusagassiuutilerinermullu Immikkoortortaq" "Oqaasiliortut" "Roskilde Universitet" (/"suli"\ Gram/IV\ QATIGIIP\ Der/vv\ Gram/Reci\ TIP\ Der/vv\ Gram/TV\ TAQ/l);
 
 LIST FAM_UNIK = "ui" "nuliaq" ("angut" 3SgPoss) ("angut" 3PlPoss) ("angut" 4SgPoss) "anaana" "arnarsiaq" "ataata" "aana" "aanaq" "aanarsiaq" "ittoq" "aata" "aataq" "aataa" ;
 # betegnelser som sjældent optræder uden for sing.
@@ -2162,6 +2162,16 @@ MAP:M_tidlig0221 @ADVL> TARGET HTR + Trm IF (*1 VFIN BARRIER (*) - (HTR Trm));#T
 #TUQ=NIQ=SSAQ + POSSESSUM har så sjældent eksplicit possessor at det sandsynligvis er sikkert at disambiguere ægte ambiguiteter Lok+Sg vs. 4SgPoss på den baggrund
 REMOVE:tidlig0230 (/Rel\ Sg\ 4SgPoss/l) IF (0 Lok + Sg)(*1 (/TUQ\ Der/vn\ QAR\ Der/nv\ Gram/IV\ NIQ\ Der/vn\ SSAQ/l) + POSSESSUM3 BARRIER (*) - OBLIQUE - 4PlPoss) ;#Trump EQQISSISIMATITAASIMASUMI uuliamik gassimillu misissuisoqarnissaanut akuersissuteqartoq
 
+#En ufærdig regel, som må udbygges/supleres med en regel, der også tager højde for paratakser
+REMOVE:tidlig0231 (/Rel\ Sg\ 4SgPoss/l) IF (0 Lok + Sg LINK NEGATE *1 3Sg OR 4Sg BARRIER V) #Siunnersuut kalaallit SULEQATIGIISSITAMI ilaasortaasut akueriuminaatsippaat, tassami siunnersuutaammat isertitat nunatta Danmarkillu akornanni aveqqissaarneqassasut.
+(NEGATE *1 3SgPoss + &&TV_OBJ& LINK *1 V + &&TV_OBJ& BARRIER V LINK *1 3Sg OR 4Sg)#Qimaannarusukkaluarpaa, kisianni ANAANAMI qanoq toqusimanera tusassallugu annilaarnartikkaluarlugu tusarusuppaa.
+(NEGATE *1 3SgPoss LINK 1 3SgPoss + LU LINK *1 3PlO BARRIER V LINK *1 3Sg OR 4Sg)#ANAANAMI inuusimanera toqusimaneralu pissutigalugit angunni asalivinneq sapissavaa, isumaqaramimi pisimasupalaanut pisooqataasoq.
+(NEGATE 1 (/Rel\ Sg\ 4SgPoss/l) + LU LINK *1 CON_CAU + TRANSVERB + 3Pl BARRIER VERB-NOTCONT LINK *1 VFIN + 3Sg BARRIER V)#Taamaattumik AANAMI AATAMILU politiinit allagarsisimallutik aliasoqalutik sallaatsumik oqaloqatigimmanni qamuuna attortippoq neriorsorlugillu inuunerilikkani ajortoq soraarukkumallugu, tamannalu eqqortippaa.
+(NEGATE -1 (/Rel\ Sg\ 4SgPoss/l) LINK 1 _TARGET_ + LU LINK *1 CON_CAU + TRANSVERB + 3Pl BARRIER VERB-NOTCONT LINK *1 VFIN + 3Sg BARRIER V)#Taamaattumik AANAMI AATAMILU politiinit allagarsisimallutik aliasoqalutik sallaatsumik oqaloqatigimmanni qamuuna attortippoq neriorsorlugillu inuunerilikkani ajortoq soraarukkumallugu, tamannalu eqqortippaa.
+(NEGATE *-1 VFIN + 3Sg BARRIER VERB-NOTCONT LINK *1 _TARGET_ LINK *1 3SgPoss + &&TV_OBJ& LINK *1 V + &&TV_OBJ& LINK 1 EOS) #Ukiartoq pitsorluttorujussuanngorpoq, NIUMI napinera annertuumik gigteqarfigisalerlugu/ Naammagittaalliumminut ilanngullugu oqaatigaa allaaserisaq naqinneqartinnagu ISSUARNEQARNERMI eqqunngitsuunera aviisimut erseqqissaatigisimagaluarlugu.
+(NEGATE 1 3SgPoss + OBLIQUE LINK *1 3Sg OR 4Sg BARRIER V - CONT - Par)#Ukiuugaali INIGISAMI silataani majuartarfiit quasartut malugiitsoorlugit quaalluni nakkakattarami, naqqanut tussimavoq niumi illua nanerlugu, sunaaffa napillugu.
+(NEGATE *-1 VFIN + 3Sg BARRIER V LINK *1 _TARGET_ LINK 1 ("aappaq") + 3SgPoss + &&TV_OBJ& OR ("illu") + 3SgPoss + &&TV_OBJ& LINK *1 V + &&TV_OBJ&)#Ukiuugaali inigisami silataani majuartarfiit quasartut malugiitsoorlugit quaalluni nakkakattarami, naqqanut tussimavoq NIUMI illua nanerlugu, sunaaffa napillugu.
+;
 
 #Fjern Err/Sub-læsninger fra Num, når tilsvarende læsning uden Err/Sub
 REMOVE:tidlig0240 ("(.*)"r) + Num + Err/Sub IF (0 ("$1"v) + Num - Err/Sub) ;
@@ -3090,7 +3100,7 @@ SELECT:0035 Rel + 4SgPoss IF (*1 TRANSVERB + 3Sg + CON_CAU BARRIER V)(NEGATE 0 I
 
 SELECT:0035B Rel + Sg + 4SgPoss IF (NEGATE 0 Adv OR PLACE OR TIME OR Cau + 4Sg OR Aeq)(*1 POSSESSUM + 3SgPoss BARRIER (*) - OBLIQUE - CONT)(NEGATE *0 Lok BARRIER VFIN) 
 (NEGATE 0 (/"ammar"\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ NIQ/l) + Lok LINK 1 (/"oqalugiar"\ UTE\ Der/vn/l))
-
+(NEGATE 0 INSTITUTION LINK 1 (/"ilaa"\ Gram/IV\ TUQ\ Der/vn\ TAQ/l) )#Siunnersuut kalaallit SULEQATIGIISSITAMI ilaasortaasut akueriuminaatsippaat, tassami siunnersuutaammat isertitat nunatta Danmarkillu akornanni aveqqissaarneqassasut.
 ;
 
 #4Sg kan ikke være subjekt for et finit verbum.
@@ -9057,6 +9067,8 @@ SELECT:0501X INTRANSVERB + Par + 3Pl IF (*-1 ORATIOOBLVERB)(-*1 Abs + Pl BARRIER
 SELECT:0501AA N + Der/vn + $$KASUS IF (*-1 ORATIOOBLVERB)(-1 N + $$KASUS)(*1 Par BARRIER CONJ-C)(NEGATE 0 Part OR FAM)(NEGATE 0 TIMEVERB)
 (NEGATE -1 Rel LINK 1 _TARGET_ + Pl LINK *1 3PlO ) #Nalunaarusiami kaammattuutigineqarpoq piffissaatillugu kommunit SUMIGINNAANERIT akuleruffigisassagaat.
 (NEGATE 0 (/"amerla"\ Gram/IV\ TUQ\ Der/vn\ UTE/l) LINK 0 ("amerlasooq"))#Paasissutissat amerlasuut Peqqinnissamik nakkutilliisup pissarsiarisimasai tassaapput pissutsit pitsaaliorneqarsinnaasut.
+(NEGATE 0 INSTITUTION LINK 1 (/"ilaa"\ Gram/IV\ TUQ\ Der/vn\ TAQ/l) )#Siunnersuut kalaallit SULEQATIGIISSITAMI ilaasortaasut akueriuminaatsippaat, tassami siunnersuutaammat isertitat nunatta Danmarkillu akornanni aveqqissaarneqassasut.
+
 ; #vn-adled til subjekt i or. obl. må ikke læses som Par. En partikel med mulig N-læsning må ikke vælges på dette sted (imaaliallaannaq)
 
 MAP:M0501B @N< TARGET N + Der/vn + $$KASUS IF (*-1 ORATIOOBLVERB)(-1 N + $$KASUS)(*1 Par); #vn-adled til subjekt i or. obl. må ikke læses som Par
@@ -9514,6 +9526,8 @@ SELECT @POSS> + Pl - NÆPPE-POSS IF (*1 POSSESSUM + 3PlPossUdenMWE - CONJ-C BARR
 ;
 SELECT (@POSS> Sg) IF (*1 POSSESSUM + 3SgPoss BARRIER (*) - @i-ADVL>) 
 (NEGATE 0 (/"aki"\ SSAQ\ Der/nn\ UTE\ Der/nn\ KIP\ Der/nv\ Gram/IV\ TUQ/l) + Rel + Pl LINK 1 3PlPoss)#Amarngivat siulersuisuini ilaasortaasimavoq akissaatikitsullu MEERAASA atuanngiffeqarlutik angalanissaannut aningaasaateqarfinnut qinnuteqaasiornernut ikiuuttarsimalluni.
+(NEGATE 0 INSTITUTION LINK 1 (/"ilaa"\ Gram/IV\ TUQ\ Der/vn\ TAQ/l) )#Siunnersuut kalaallit SULEQATIGIISSITAMI ilaasortaasut akueriuminaatsippaat, tassami siunnersuutaammat isertitat nunatta Danmarkillu akornanni aveqqissaarneqassasut.
+
 ;
 
 SELECT Abl IF (*1 PASSIV BARRIER VFIN)(NEGATE 0 Ins LINK *1 QAR BARRIER V)(NEGATE *1 HTR BARRIER V)(NEGATE 0 Ins + CONJ-LUUNNIIT)(NEGATE 0 THING)
