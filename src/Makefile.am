@@ -72,11 +72,9 @@ generator-gt-desc.$(1)             \
 generator-gt-norm.$(1)             \
 generator-oahpa-gt-norm.$(1)     : \
 generator-%.$(1): generator-%.tmp.$(1) \
-				  filters/make-optional-derivation-tags.$(1) \
-				  filters/make-optional-grammatical-tags.$(1)
+				  filters/make-optional-derivation-tags.$(1)
 	$$(AM_V_XFST_TOOL)$$(PRINTF) "read regex \
 				@\"filters/make-optional-derivation-tags.$(1)\"  \
-			.o. @\"filters/make-optional-grammatical-tags.$(1)\" \
 			.o. @\"$$<\"                                         \
 			;\n\
 		 $$(INVERT_XFST)$$(INVERT_FOMA)\
