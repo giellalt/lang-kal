@@ -1360,7 +1360,7 @@ SET SIULLIULLUNI = ("siulleq") + U + CONT ;
 SET SUKISAARSAATIGALUGU = ("sukisaarsaat") + GE + CONT ;
 LIST ADVERBIUM = "ima" "qanoq" ; #20091109 tilfoejet 'qanoq', der maaske staar lidt malplaceret her
 LIST NEXUS = "asu" "sunaaffa" "soorlu" "usiuffa" "usiiffa" ; #Når verbum i underordnet modus står i underordnet funktion sammen med partikler der kan være neksusdannende, mappes verbet @PRED. OBS: kan også være koncessive
-SET ADVERBIEL = Adv | Pali | (/"angi"\ Gram/IV\ NIQ\ Der/vn\ KIP\ Der/nv\ \(Gram\/IV\ \)?TUQ/l) | ("ataaseer") + CONT | ("ataaseq") + Ins - Num - AFFINGERET | ASSERSUUTIGALUGU | ("ersarip") | NUMERAL + RIAR + Cont + INTRANSVERB | ILANNGUPnAFF | ("immikkoor") | ("isertor") + TUQ + Ins | ("isumannaap") + TUQ + Ins | ("kingulleq") | (/"miki"\ NIQ\ Der/vn\ N/l) | (/"miki"\ NIRU\ Der/vv\ Gram/IV\ TUQ/l) | ("nalinginnaq") | ("nalinginnaasoq") + Ins | ("nalinginnaq") + U + TUQ + Ins | NUSUPnAFF | TAMAKKERnAFF | (/"pi"\ NGAAR\ Der/vv\ Gram/IV\ NIRSAQ\ Der/vn\ U\ Der/nv\ Gram/IV\ GUNAR\ Der/vv\ Gram/IV\ TUQ\ Der/vn\ N\ Ins/l) | ("piffik") + SSAQ + TIP + CONT | PILLUGU | ("pinngitsaali") + HTR + UTE | ("qanip") + NIQ + Trm | QULAREnAFF | SUKISAARSAATIGALUGU | TIKILLUGU | ADVERBIAL_DERIVATIVES | ("sapinngisaq" Ins) | (/"siu"\ LLIQ\ Der/nn\ PAAQ\ Der/nn/l) | ("siulleq") | ("siulleq") + U + CONT | ("sukka" Der/vn) | (/"sukka"\ Gram/IV\ VALLAAR\ Der/vv\ Gram/IV\ TUQ/l) | ("unner") ;
+SET ADVERBIEL = Adv | Pali | (/"angi"\ Gram/IV\ NIQ\ Der/vn\ KIP\ Der/nv\ \(Gram\/IV\ \)?TUQ/l) | (/"arlaq"\ LIK/l) | ("ataaseer") + CONT | ("ataaseq") + Ins - Num - AFFINGERET | ASSERSUUTIGALUGU | ("ersarip") | NUMERAL + RIAR + Cont + INTRANSVERB | ILANNGUPnAFF | ("immikkoor") | ("isertor") + TUQ + Ins | ("isumannaap") + TUQ + Ins | ("kingulleq") | (/"miki"\ NIQ\ Der/vn\ N/l) | (/"miki"\ NIRU\ Der/vv\ Gram/IV\ TUQ/l) | ("nalinginnaq") | ("nalinginnaasoq") + Ins | ("nalinginnaq") + U + TUQ + Ins | NUSUPnAFF | TAMAKKERnAFF | (/"pi"\ NGAAR\ Der/vv\ Gram/IV\ NIRSAQ\ Der/vn\ U\ Der/nv\ Gram/IV\ GUNAR\ Der/vv\ Gram/IV\ TUQ\ Der/vn\ N\ Ins/l) | ("piffik") + SSAQ + TIP + CONT | PILLUGU | ("pinngitsaali") + HTR + UTE | ("qanip") + NIQ + Trm | QULAREnAFF | SUKISAARSAATIGALUGU | TIKILLUGU | ADVERBIAL_DERIVATIVES | ("sapinngisaq" Ins) | (/"siu"\ LLIQ\ Der/nn\ PAAQ\ Der/nn/l) | ("siulleq") | ("siulleq") + U + CONT | ("sukka" Der/vn) | (/"sukka"\ Gram/IV\ VALLAAR\ Der/vv\ Gram/IV\ TUQ/l) | ("unner") ;
 LIST FOKUSPART = ("uv" Prefix/AA) ("una" Prefix/AA) "tassa" "aali" "sunaaffa" "aajuku" "aajuna" "aaku" "aana" "naak" ; #oqaqqarniutit imal. oqaaseqatigiinni oqaluutitaqanngitsut 
 LIST KONCESSIV = "aali" "massa" "naanaak" "naak" "nanaak" "uffa" "ugga" "unni" "unniit" "unnit" ;#"sunaaffa" ; #oqaaseqatigiinni minnerni oqaluummik pisariaqartitsisut
 LIST SPØRGEPARTIKEL = "naak" "sumi" "suna" "qanoq" ; #
@@ -5848,9 +5848,23 @@ MAP:M0220B @ADVL> TARGET Gram/Abbr + Sem/Time IF (*1 V)(NEGATE -*1 V) ;
 
 
 
-# Partikler
+
+# @FOC>N på ilaatigut og pingaartumik i betydningen 'fx' og 'især' inde i NP-er. NB: Pas på, for hele strukturen er vistnok ubeskrevet i litteraturen
+# ==========
+
+MAP:M0222A @FOC>N TARGET ("ilaatigut") + Adv IF (-1 $$KASUS LINK *2 $$KASUS BARRIER (*) - Rel); #Paasissutissat taakkua inuppassuarnut ILAATIGUT Naalakkersuisut siulittaasuannut, Kim Kielsenimut Air Greenlandillu siulersuisuini ilaasortanut arlalinnut tunngapput.
+
+MAP:M0222B @N< TARGET $$KASUS - ADVERBIEL IF (-**1 $$KASUS LINK 1 @FOC>N LINK *1 _TARGET_ - @>N + $$KASUS BARRIER (*) - Rel - @>N - KOMMA - FIRSTNAME) #Paasissutissat taakkua inuppassuarnut ilaatigut Naalakkersuisut siulittaasuannut, Kim KIELSENIMUT Air Greenlandillu siulersuisuini ilaasortanut arlalinnut tunngapput. ADVERBIEL må håndteres af andre regler for ikke at forstyrre dependenserne
+(NEGATE 0 Num LINK 1 NUMHOVED)#Pingajorarterutingajaat tassalu 31 procentit isumaqarput IA sanngiillisimanngitsoq.
+;
+
+#Som M0222B men med paratakse inde i NP
+MAP:M0222C @N< TARGET $$KASUS - ADVERBIEL IF (-**1 $$KASUS LINK 1 @FOC>N LINK *1 @N< + $$KASUS BARRIER (*) - Rel - @>N - KOMMA - FIRSTNAME LINK 1 CONJ-C LINK *1 _TARGET_); #Paasissutissat taakkua inuppassuarnut ilaatigut Naalakkersuisut siulittaasuannut, Kim Kielsenimut Air Greenlandillu siulersuisuini ILAASORTANUT arlalinnut tunngapput.
+
+# Andre partikler
 # =========
 
+ 
 #"aamma" er adverbiel sammen med negation også når den står hvor en konjunktion plejer at stå. Fejlhitter på NEXUS komma aammami nalunngilaa .., hvor aamma klart er en konjunktion. Fejlhitter også på "SUBJ paasivaa ikiuuttariaqarluni. Aamma .. paasisaqarpoq." Det formodes, at aamma + MI langt oftest vil være en konjunktion derfor tilføjes - MI ligesom det formodes, at "aamma" i @1 næsten altid vil være konjunktion 
 SELECT:0225 ("aamma") + Adv - MI - CONJ-LU IF (1 NNGIT - VFIN)(NEGATE -1 BOS OR VFIN) ;
 MAP:M0225 @ADVL> TARGET ("aamma") + Adv - MI - CONJ-LU IF (1 NNGIT)(NEGATE -1 BOS) ;
@@ -6058,6 +6072,7 @@ MAP:M0302B @<SUBJ TARGET Abs IF (*-1 FOKUSPART + @FOC BARRIER (*) - N - Prop - C
 MAP:M0302C @<SUBJ TARGET Abs + Sg IF (*-1 PASSIV_ALTERNATIV + 3Sg BARRIER VFIN OR KOMMA LINK *-1 BOS OR KOMMA BARRIER (*)) #.., naatsorsuutigineqarporlu unnugu arfineq pingasut missaanni Nuummut TIKINNISSAAT, .. NB: SKAL OMSKRIVES TIL UNIFICATION
 (NEGATE *1 Par + 3Sg BARRIER ORATIOOBLVERB) #Ikke hitte @SUBJ> ved oo: Oqaatigineqarpoq IGINNEQ qajuusaasanngorlugu panertitaq iffiassanut akussiarineqarsimasoq
 ;
+
 # Nominer - De sikre MAP regler
 # =============================
 #specialitet ved NIQ+Abl på transverb - SLETTES. håndteres af M0018
@@ -10234,9 +10249,12 @@ SELECT:8540 3SgO + @PRED IF (NEGATE -*1 Abs + Pl)(-*1 Cont + 3SgO BARRIER TRANSV
 #8538 fejlhitter på fx Taakku ilagivaat niviarsiaq. Forstår ikke (*-1< PLURSUBJVERB)
 #SELECT:8538 3PlO IF (NEGATE *-1 Abs + Sg + @OBJ> BARRIER V)(*-1< PLURSUBJVERB)(NEGATE -*1 Abs + Sg BARRIER V) ;
 
-SELECT:8538 3PlO IF (NEGATE 0 ORATIOOBLVERB)(NEGATE *-1 Abs + Sg BARRIER V - (Cont 4Pl) - (ContNeg 4Pl))(*-1< PLURSUBJVERB)(NEGATE *1 Abs + Sg  BARRIER V)
+SELECT:8538 3PlO IF 
+(NEGATE 0 ORATIOOBLVERB)
+(NEGATE *-1 Abs + Sg BARRIER V - (Cont 4Pl) - (ContNeg 4Pl))(*-1< PLURSUBJVERB)(NEGATE *1 Abs + Sg  BARRIER V)
 (NEGATE 0 LU LINK *-1 3SgO BARRIER (*) - KOMMA)#Margrethe ajortumut ajugaanermi kingornatigut naalagaasumit assut naalliutsinneqalerpoq, ilami naalagaasup takujumajunnaavippaa, TOQUTASSANNGORTIPPAALU.
 (NEGATE 0 3Sg OR 3SgO LINK *-1 Abs + Sg OR Gram/ACR + Abs BARRIER (*) - Abs)#APIRB ATUSSAGAANNI radiomik atuisinnaanermut uppernarsaammik peqartariaqartoq
+(NEGATE 0 3SgO LINK *-1 Abs + Sg BARRIER 3SgO)#Siunnersuut kalaallit suleqatigiissitami ilaasortaasut AKUERIUMINATSIPPAAT, tassami siunnersuutaammat isertitat nunatta Danmarkillu akornanni aveqqissaarneqassasut.
  ;
 
 SELECT:8539 ("ila") + 3PlPoss + @SUBJ> IF (*1 @PRED + 3Pl) ;
@@ -10469,6 +10487,8 @@ REMOVE:8533E ("ulloq") + Lok IF (0 ("ullumi") + Adv);
 REMOVE:8533F ("tarnik") IF (0 ("tarneq")) ; #tarnik næsten utænkelig uden additiv possessumbøjning som ikke rammer tarneq 
 REMOVE:8533G (/"suna"\ Gram/Int\ iPron\ iLok\ iSg\ Gram/Hyb\ IP\ Gram/IV\ VIK/l) IF (0 ("sumiiffik")); #sumiiffik vist meget undtagelsesvist med inderiveret adled, så sletning af Der/vn måske OK?
 REMOVE:8533H ("nunap inoqqaavi") + 3PlPoss IF (0 ("nunap inoqqaavi") + 3SgPoss);
+REMOVE:8533I (/".*"\ MIU\ Der/nn/l) IF (0 Sem/Geo + MIU);
+
 
 #De særlige former af TUQ + Aeq på transitiver fulgt af "ippaa" slettes hvis ikke fulgt af "ippaa"
 REMOVE:8599 TUQ + Aeq - Der/vn IF (0 TUQ + Aeq + Der/vn)(NEGATE 1 ("ip")); 
@@ -12001,6 +12021,7 @@ REMOVE:9968Å (/U\ Der/nv\ Gram/IV\ TUQ\ Der/vn\ N/l) IF (0 (U Par) LINK *-1 BOS
 (1 N - Der/vn + &&IV_SUBJ& LINK *1 V + &&IV_SUBJ&)#ILAQUTAASUT ikiorneqarumasut sumut saaffiginnissinnaanerannik paasitinneqareerput, arlallillu saaffiginnereerlutik.
 ; #Suli MEERAASUT angutaat inupiluup Saqup inuartarai.
 
+REMOVE:9968AA CONT + 1SgO IF (0 CONT + 1Sg LINK *0 VFIN + 1Sg BARRIER VFIN); #Nunatta naasui atorpakka - soorlu siulivut aamma taamaaliortarsimasut - ARLALERIARLUNGALU misileraatigisimallugit.
 
 ##################################################
 #Specifikke regler til disambiguering af Gram/TV vs. Gram/Db
