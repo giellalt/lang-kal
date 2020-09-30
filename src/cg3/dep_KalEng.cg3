@@ -13,7 +13,7 @@ Mapping-Prefix = £ ;
 LIST Syn/Stop = Syn/Stop ; #Tag til steder, hvor longest match skal blokeres
 
 ADD Syn/Stop BEFORE (TUQ) TARGET (/__Gram/IV\ TUQ\ /l) IF (0 (/TUQ\ Der/vn\ QAR/l)); #misissui plus soqarnissaa
-#ADD (<tr:end>) AFTER (Der/vv) TARGET (/Gram/IV\ SIMA\ Der/vv\ /l) IF (0 (/U\ Der/nv\ Gram/IV\ SIMA\ Der/vv/l)); #Virker ikke 20200929
+ADD (<tr-end>) AFTER (Der/vn U Der/nv Gram/IV SIMA Der/vv Gram/IV) TARGET (/U\ Der/nv\ Gram/IV\ SIMA\ Der/vv/l);
 ADD (<tr:used_to>) AFTER (U Der/nv) TARGET (/U\ Der/nv\ Gram/IV\ SIMA\ Der/vv/l);
 
 #SUBSTITUTE:S0100 (/"avannaq"\ N\ Trm\ Sg /l) (*) TARGET (@>N);
@@ -75,6 +75,10 @@ TO (*1 Abs + &&IV_SUBJ& - (/VIK\ Der/vn\ N/l) LINK *1 VFIN + &&IV_SUBJ& OR CON_C
 #;
 #MAP:M_tidlig0067 @POSS>> TARGET Rel + Sg + HUMAN IF (*1 3SgPoss + humverb LINK *-1 POSSESSUM3 - humverb BARRIER Rel LINK *-1 _TARGET_ BARRIER (*) - OBLIQUE)#Ikinngutima umiatsiaa apriilip 26-ani motooriiarpoq, KNAK-LLU pisassiissutinik qaffaasoqarnissaanik qinnuteqaataa Naalakkersuisunit maajip aqqarnani suliarineqarluni. Men ikke Taamani *ANGAAMI qarnganit anaanami inuunera alianartoq qanorlu naasimanersoq tusaramiuk. Derfor barrier Rel
 #;
+#Virker ikke 20200930
+#MAP:M_tidlig0068 @POSS>> TARGET Rel + Sg IF (**1 3SgPoss - Rel - LU LINK -*1 POSSESSUM3 - Rel BARRIER (*) - OBLIQUE LINK -1 Rel LINK -1 _TARGET_ );#Tanbreezip Qaqortup eqqaani aatsitassanik piiaanissaa. Minus Rel for at forhindre hit som Silaannarmik mingutsitsisup gassip, KULDIOXID-IP seqernup qinngornerata kissassusaa tigummisarpaa, soorlu illup naatitsiviusup seqernup qinngornera tigummisaraa.
+
+
 #MAP:M_tidlig0084 @>N TARGET (/"ila"\ U\ Der/nv\ Gram/IV\ TUQ\ Der/vn\ TAQ/l) IF (-1 Prop + Trm)(1 Sem/Hum) ; #Hans-Pavia Rosing seminariami ilinniartitsisuusimasup Folketingimullu ILAASORTAASIMASUP Nikolaj Rosingip nuliatalu Marie Rosingip erneraat.
 #
 ##De følgende virker enten slet ikke eller de genererer en masse fejl andre steder
@@ -1600,9 +1604,22 @@ TO (-*1C N + $$KASUS - Prop - TIME - @>N - @VOK BARRIER (*) - KOMMA - PUNCT - (A
 #MAP:M0220B @ADVL> TARGET Gram/Abbr + Sem/Time IF (*1 V)(NEGATE -*1 V) ;
 #
 #
-#
-## Partikler
-## =========
+# @FOC>N på ilaatigut og pingaartumik i betydningen 'fx' og 'især' inde i NP-er. NB: Pas på, for hele strukturen er vistnok ubeskrevet i litteraturen
+# ==========
+
+SETPARENT:D0222A @FOC>N + ("ilaatigut") + Adv TO (-1 $$KASUS)(*2 $$KASUS BARRIER (*) - Rel); #Paasissutissat taakkua inuppassuarnut ILAATIGUT Naalakkersuisut siulittaasuannut, Kim Kielsenimut Air Greenlandillu siulersuisuini ilaasortanut arlalinnut tunngapput.
+
+#D0222B og D0222C virker ikke 20200930
+#SETPARENT:D0222B @N< + Trm - ADVERBIEL IF  #Paasissutissat taakkua inuppassuarnut ilaatigut Naalakkersuisut siulittaasuannut, Kim KIELSENIMUT Air Greenlandillu siulersuisuini ilaasortanut arlalinnut tunngapput. ADVERBIEL må håndteres af andre regler for ikke at forstyrre dependenserne
+#(NEGATE 0 Num LINK 1 NUMHOVED)#Pingajorarterutingajaat tassalu 31 procentit isumaqarput IA sanngiillisimanngitsoq.
+#TO (-**1 Trm LINK 1 @FOC>N LINK *1 _TARGET_ - @>N + Trm BARRIER (*) - Rel - @>N - KOMMA - FIRSTNAME)
+#;
+
+#Som M0222B men med paratakse inde i NP
+#SETPARENT:M0222C @N< + $$KASUS - ADVERBIEL TO (-**1 $$KASUS LINK 1 @FOC>N LINK *1 @N< + $$KASUS BARRIER (*) - Rel - @>N - KOMMA - FIRSTNAME LINK 1 CONJ-C LINK *1 _TARGET_); #Paasissutissat taakkua inuppassuarnut ilaatigut Naalakkersuisut siulittaasuannut, Kim Kielsenimut Air Greenlandillu siulersuisuini ILAASORTANUT arlalinnut tunngapput.
+
+# Andre partikler
+# =========
 #
 ##"aamma" er adverbiel sammen med negation også når den står hvor en konjunktion plejer at stå. Fejlhitter på NEXUS komma aammami nalunngilaa .., hvor aamma klart er en konjunktion. Fejlhitter også på "SUBJ paasivaa ikiuuttariaqarluni. Aamma .. paasisaqarpoq." Det formodes, at aamma + MI langt oftest vil være en konjunktion derfor tilføjes - MI ligesom det formodes, at "aamma" i @1 næsten altid vil være konjunktion 
 #MAP:M0225 @ADVL> TARGET ("aamma") + Adv - MI - CONJ-LU IF (1 NNGIT)(NEGATE -1 BOS) ;
@@ -2207,12 +2224,12 @@ TO (-*1C N + $$KASUS + $$NUMERUS - OTHERTIME )(NEGATE *1 (*) - Part - OBLIQUE LI
 #MAP:M0408X @i->N TARGET NUMHOVED (1 LIK - NUM) (-1 NUM) ; #Angut 17-init missaannik ukiulik 170-175 cm angissusilik,
 #
 #
-#MAP:M0409A (@HNOUN) TARGET N OR Gram/Abbr OR Num IF (NEGATE *0 V - @i-ADVL> OR OCCATION) #PL 20190503 undtaget @i-ADVL> da PISARA HNOUN i inuuissiorama pisara.
-#(1 ParagrafSlut) #20100827 Safe headlines
-#(NEGATE 0 $$KASUS LINK *-1 $$KASUS BARRIER (*) - (/@.*/r)) 
-#(NEGATE 0 $$KASUS LINK -1 $$KASUS LINK NOT 0 Ins + Sg - POSSESSUM)
-#(NEGATE 0 Abs + $$NUMERUS LINK *-1 Abs + $$NUMERUS BARRIER (*) - OBLIQUE)#Nuna nerleqarfiusutut nalunaarsugaq.
-#; 
+SETPARENT:D0409A (@HNOUN) + N OR Gram/Abbr OR Num IF (NEGATE *0 V - @i-ADVL> OR OCCATION) #PL 20190503 undtaget @i-ADVL> da PISARA HNOUN i inuuissiorama pisara.
+(1 ParagrafSlut) #20100827 Safe headlines
+(NEGATE 0 $$KASUS LINK *-1 $$KASUS BARRIER (*) - (/@.*/r)) 
+(NEGATE 0 $$KASUS LINK -1 $$KASUS LINK NOT 0 Ins + Sg - POSSESSUM)
+(NEGATE 0 Abs + $$NUMERUS LINK *-1 Abs + $$NUMERUS BARRIER (*) - OBLIQUE)#Nuna nerleqarfiusutut nalunaarsugaq.
+TO (@0 (*)); 
 #
 #MAP:M0409B @HNOUN TARGET N OR Gram/Abbr OR Num IF (0 UNA OR UKU OR UKUA) (1 EOS)(NEGATE -1C N) ; #savaanngilaq angutealanguna; qimmitit susorsuit-uku
 #
