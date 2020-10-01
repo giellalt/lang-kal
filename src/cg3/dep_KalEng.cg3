@@ -1,5 +1,9 @@
 # -*- cg-pre-pipe: ~/langtech/kal/tools/shellscripts/kal-tokenise ~/langtech/kal/tools/tokenisers/tokeniser-disamb-gt-desc.pmhfst | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/kal-pre1.cg3 | ~/langtech/kal/tools/shellscripts/kal-hybrid-split | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/kal-pre2.cg3 | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/disambiguator.cg3 --no-mappings | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/disambiguator.cg3  -*-
 
+
+#commandline til post-dep.pl Pers-MacBook-Pro-2:kal2eng per$ echo "Trump eqqissisimatitaasimasumi uuliamik gassimillu misissuisoqarnissaanut akuersissuteqartoq" | ./kal2eng.pl 
+
+
 # ===================================================================== #
 # ===================================================================== #
 #  Dependensgrammatik og tilføjelser specielt til kal-tul forberedelse  #
@@ -14,7 +18,8 @@ LIST Syn/Stop = Syn/Stop ; #Tag til steder, hvor longest match skal blokeres
 
 ADD Syn/Stop BEFORE (TUQ) TARGET (/__Gram/IV\ TUQ\ /l) IF (0 (/TUQ\ Der/vn\ QAR/l)); #misissui plus soqarnissaa
 ADD (<tr-end>) AFTER (Der/vn U Der/nv Gram/IV SIMA Der/vv Gram/IV) TARGET (/U\ Der/nv\ Gram/IV\ SIMA\ Der/vv/l);
-ADD (<tr:used_to>) AFTER (U Der/nv) TARGET (/U\ Der/nv\ Gram/IV\ SIMA\ Der/vv/l);
+ADD (<tr-prefix> <tr:used_to>) AFTER (U Der/nv) TARGET (/U\ Der/nv\ Gram/IV\ SIMA\ Der/vv/l);
+#ny 20201001 tr-prefix og tr-suffix er info til Perl om flytning/ ikke-flytning
 
 #SUBSTITUTE:S0100 (/"avannaq"\ N\ Trm\ Sg /l) (*) TARGET (@>N);
 
@@ -1612,10 +1617,11 @@ TO (-*1C N + $$KASUS - Prop - TIME - @>N - @VOK BARRIER (*) - KOMMA - PUNCT - (A
 SETPARENT:D0222A @FOC>N + ("ilaatigut") + Adv TO (-1 $$KASUS)(*2 $$KASUS BARRIER (*) - Rel); #Paasissutissat taakkua inuppassuarnut ILAATIGUT Naalakkersuisut siulittaasuannut, Kim Kielsenimut Air Greenlandillu siulersuisuini ilaasortanut arlalinnut tunngapput.
 
 #D0222B og D0222C virker ikke 20200930
-#SETPARENT:D0222B @N< + Trm - ADVERBIEL IF  #Paasissutissat taakkua inuppassuarnut ilaatigut Naalakkersuisut siulittaasuannut, Kim KIELSENIMUT Air Greenlandillu siulersuisuini ilaasortanut arlalinnut tunngapput. ADVERBIEL må håndteres af andre regler for ikke at forstyrre dependenserne
+SETPARENT:D0222B @N< + Trm - ADVERBIEL IF  #Paasissutissat taakkua inuppassuarnut ilaatigut Naalakkersuisut siulittaasuannut, Kim KIELSENIMUT Air Greenlandillu siulersuisuini ilaasortanut arlalinnut tunngapput. ADVERBIEL må håndteres af andre regler for ikke at forstyrre dependenserne
 #(NEGATE 0 Num LINK 1 NUMHOVED)#Pingajorarterutingajaat tassalu 31 procentit isumaqarput IA sanngiillisimanngitsoq.
 #TO (-**1 Trm LINK 1 @FOC>N LINK *1 _TARGET_ - @>N + Trm BARRIER (*) - Rel - @>N - KOMMA - FIRSTNAME)
-#;
+TO (-**1 Trm)(1 @FOC>N LINK *1 _TARGET_ - @>N + Trm BARRIER (*) - Rel - @>N - KOMMA - FIRSTNAME)
+;#Basisregel 20201001: Setparent leder efter den sidste true-betingelse i TO-sætningen. Derfor lav generelt den første parantes så snæver, at du er sikker på at det er den, der bliver ramt, og sæt resten i føglende betingelser
 
 #Som M0222B men med paratakse inde i NP
 #SETPARENT:M0222C @N< + $$KASUS - ADVERBIEL TO (-**1 $$KASUS LINK 1 @FOC>N LINK *1 @N< + $$KASUS BARRIER (*) - Rel - @>N - KOMMA - FIRSTNAME LINK 1 CONJ-C LINK *1 _TARGET_); #Paasissutissat taakkua inuppassuarnut ilaatigut Naalakkersuisut siulittaasuannut, Kim Kielsenimut Air Greenlandillu siulersuisuini ILAASORTANUT arlalinnut tunngapput.
@@ -4709,15 +4715,16 @@ TO (@0 (*));
 ##TO (*1 TRANSVERB - Gram/Gaanni + 34IV BARRIER POSSESSUM3 OR INTRANSVERB + 34IV)(NEGATE 0 VFIN LINK *-1 _TARGET_ LINK 0 4SgPoss OR 4PlPoss)
 ##;
 ##
-SUBSTITUTE:S0100 ("avannaq") ("north") TARGET (N) IF (p SPATIAL); #Dette virker i GCG, men er det også OK for glosseringen? Og hvordan flytter jeg samtidig de tags, der overflødiggøres efter substitueringen? Spurgt Tino 20200913
-SUBSTITUTE:S0101 (N Trm Sg @>N) (*) TARGET ("north") IF (p SPATIAL); 
-SUBSTITUTE:S0110 ("akunneq") ("week") TARGET (N) IF (c ("sapaat" @POSS>)) ;
-SUBSTITUTE:S0111 ("sapaat" N Rel Sg @POSS>) (nil) TARGET ("sapaat") IF (p ("week"));
+#SUBSTITUTE:S0100 ("avannaq") ("north") TARGET (N) IF (p SPATIAL); #Dette virker i GCG, men er det også OK for glosseringen? Og hvordan flytter jeg samtidig de tags, der overflødiggøres efter substitueringen? Spurgt Tino 20200913
+SUBSTITUTE:S0100 ("avannaq") ("north" <tr-done>) TARGET (N) IF (p SPATIAL); #Dette virker i GCG, men er det også OK for glosseringen? Og hvordan flytter jeg samtidig de tags, der overflødiggøres efter substitueringen? Spurgt Tino 20200913 <tr-done> altid med for at adskille engelske ord fra mulige grønlandske låneord
+SUBSTITUTE:S0101 (N Trm Sg @>N) (*) TARGET ("north" <tr-done>) IF (p SPATIAL); 
+SUBSTITUTE:S0110 ("akunneq") ("week" <tr-done>) TARGET (N) IF (c ("sapaat" @POSS>)) ;
+SUBSTITUTE:S0111 ("sapaat" N Rel Sg @POSS>) (nil) TARGET ("sapaat") IF (p ("week" <tr-done>));
 
-SUBSTITUTE:S0120 ("sinneq" QAR TUQ)("more than" "$1"v) TARGET (N) IF (-1 Num + ("(.*)"r));
-SUBSTITUTE:S0121 (".*" Num Abs Pl @N<) (nil) TARGET (Num) IF (s ("more than") );
+SUBSTITUTE:S0120 ("sinneq" QAR TUQ)("more than" "$1"v <tr-done>) TARGET (N) IF (-1 Num + ("(.*)"r));
+SUBSTITUTE:S0121 (".*" Num Abs Pl @N<) (nil) TARGET (Num) IF (s ("more than" <tr-done>));
 
-SUBSTITUTE:S0130 (TUQ Der/vn QAR Der/nv) ("there be -ing") TARGET (V) ;
+SUBSTITUTE:S0130 (TUQ Der/vn QAR Der/nv) ("there be -ing" <tr-done>) TARGET (V) ;
 
 
 
