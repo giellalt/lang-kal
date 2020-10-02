@@ -286,6 +286,8 @@ LIST %ContHypotagme = %ContHypotagme ; #CONT når -1 Abs eller Abs når 1 CONT
 LIST %TidHypotagme = %TidHypotagme ; #possessor og possessum, når begge er TIME
 LIST %VerbalInderivering = %VerbalInderivering ; #Transitive verber med NIRAR og SURE
 LIST %AmbiguøsN = %AmbiguøsN ; #En interim-tag til kohorter med læsninger der indeholder både Rel og Abs
+LIST %AmbiguøsPar = %AmbiguøaPar; #Interim-tag til ikke disambiguerede Par+Abs/Rel kohorter
+LIST %Othertime = %Othertime ; #vn-er med tidsbetydning i hypotagmer 
 
 # Derivatives #
 
@@ -1580,7 +1582,7 @@ LIST MAANED = "januar" "januaari" "februar" "februaari" "marts" "marsi" "april" 
 
 LIST MEDIER = "Atuagagdliutit" "atuagagdliutit" "Atuagalliutit" "aviisi" "Facebook" "fjernsyn" "KNR" "Qanorooq" "raatiu" "radio" "Sermitsiaq.ag" "Sermitsiaq.AG" "Twitter" "TV" ;
 
-LIST OTHERTIME = Sem/Time ("aallar" QQAAR UTE) ("aasaq") "akunneq" ("aqagu") (/\"inuk\"\ U\ .*\ NIQ/l) ("ippassaq") "juulli" ("kingulleq") ("kingu" NIQ) ("kinguneq") ("kinguninnguaq") ("kingusip") ("maanna") "minut" "naggat" ("nali") ("piffik") "poorski" ("qaammat") ("qangali") "qangangaatsiaq" ("qeqqa") ("sapaat") ("sapaatip-akunneq") (/"silattor"\ Gram/IV\ NNGIT\ Der/vv\ Gram/IV\ NIQ/l) "sivisoorsuaq" ("sivisu") "sivitsunngitsoq" ("siulleq") (/"siu"\ LLIQ\ Der/nn\ PAAQ/l) ("siuneq") ("siorna") ("taarsi") "time" "tiimi" ("ualeq") ("ukiaq") ("ukiar" TUQ) ("ukiartoq") ("ukioq")  ("ullaa") "ullaaq" "ullaaralaaq" "ullaaralaannguaq" ("ullaaq" RALAAQ NNGUAQ) "ullaaror" "ullaassaq" ("ulloq") ("unnuaq") "unnuaqeqqa" ("unnuk") ("unnup" Par) "upernaaq";
+LIST OTHERTIME = Sem/Time ("aallar" QQAAR UTE) ("aasaq") "akunneq" ("aqagu") (/\"inuk\"\ U\ .*\ NIQ/l) ("ippassaq") "juulli" ("kingulleq") ("kingu" NIQ) ("kinguneq") ("kinguninnguaq") ("kingusip") ("maanna") "minut" "naggat" ("nali") ("piffik") "poorski" ("qaammat") ("qangali") "qangangaatsiaq" ("qeqqa") ("sapaat") ("sapaatip-akunneq") ("sekund") (/"silattor"\ Gram/IV\ NNGIT\ Der/vv\ Gram/IV\ NIQ/l) "sivisoorsuaq" ("sivisu") "sivitsunngitsoq" ("siulleq") (/"siu"\ LLIQ\ Der/nn\ PAAQ/l) ("siuneq") ("siorna") ("taarsi") "time" "tiimi" ("ualeq") ("ukiaq") ("ukiar" TUQ) ("ukiartoq") ("ukioq")  ("ullaa") "ullaaq" "ullaaralaaq" "ullaaralaannguaq" ("ullaaq" RALAAQ NNGUAQ) "ullaaror" "ullaassaq" ("ulloq") ("unnuaq") "unnuaqeqqa" ("unnuk") ("unnup" Par) "upernaaq";
 
 LIST TIMEUNIT = "minut" "sekund" "time" ;
 SET CLOCK = (Num Trm) - AFFINGERET ;
@@ -10689,7 +10691,9 @@ REMOVE:5490E (/"oqaq"\ U\ Der/nv\ Gram/IV\ SINNAAQ/l) IF (0 (/"oqaaseq"\ NNAAQ/l
 REMOVE:5490F ("supip") IF (0 ("supi")); #supip- stort set archaisk bortset fra leksikaliseringen supissaat
 REMOVE:5490G (/"inuummarip"\ Gram/IV\ TIP\ Der/vv\ Gram/TV\ SIMAAR/l) IF (0 (/"inuummarissi"\ Gram/IV\ SIMAAR/l));
 REMOVE:5490H UTIGE IF (0 (/"ajuut"\ GE\ Der/nv\ Gram/TV\ TAQ/l)) ;
-REMOVE ("unior") + QQU IF (0 ("unioqqup") LINK *0 ("inatsit"));
+REMOVE:5490I ("unior") + QQU IF (0 ("unioqqup") LINK *0 ("inatsit"));
+REMOVE:5490J (/"angi"\ Gram/IV\ NIQ\ Der/vn\ TU\ Der/nv\ Gram/IV\ SAR/l); #Vælg fuldform af annertusarpaa frem for analyseret for ikke at lave uønskede inderiveringer til NIQ
+ 
 
 # Der/nv eller Der/vv?
 SELECT:5493 QATE + Der/vn + GE - Imp IF (0 QATE + Der/nn + GE)(NEGATE *-1 HUMAN + @OBJ>) ;
@@ -12050,6 +12054,13 @@ REMOVE:9968Å (/U\ Der/nv\ Gram/IV\ TUQ\ Der/vn\ N/l) IF (0 (U Par) LINK *-1 BOS
 
 REMOVE:9968AA CONT + 1SgO IF (0 CONT + 1Sg LINK *0 VFIN + 1Sg BARRIER VFIN); #Nunatta naasui atorpakka - soorlu siulivut aamma taamaaliortarsimasut - ARLALERIARLUNGALU misileraatigisimallugit.
 
+#SAR+Gram/Pass+TUQ må være meget lavfrekvent ift intransitiv+TUQ
+REMOVE:9968AB (/SAR\ Der/vv\ Gram/TV\ Gram/Pass\ TUQ/l) IF (0 (/TAR\ Der/vv\ Gram/IV\ TUQ/l));
+
+#Jf 9968AB: SAR er en ægte ambiguitet men ikke sandsynlig i transitive konstruktioner. Semantiske undtagelser må i NEGATE-sætninger
+REMOVE:9968AC (/Gram/IV\ SAR\ Der/vv\ Gram/TV/l) IF (0 (/Gram/TV\ TAR\ Der/vv\ Gram/TV/l)); #takusarpaat
+
+REMOVE:9968AD (/Gram/TV\ Gram/Refl\ Gram/IV\ SAR/l) OR (/Gram/TV\ Gram/Refl\ Gram/IV\ TAR/l) IF (0 (/Gram/TV\ TAR\ Der/vv\ Gram/Refl/l)); #Sapinngisaminnik imminnut PAARISARPUT.
 ##################################################
 #Specifikke regler til disambiguering af Gram/TV vs. Gram/Db
 ##################################################
