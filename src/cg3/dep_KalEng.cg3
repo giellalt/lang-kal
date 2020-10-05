@@ -60,7 +60,9 @@ TO (*1 Abs + &&IV_SUBJ& - (/VIK\ Der/vn\ N/l) LINK *1 VFIN + &&IV_SUBJ& OR CON_C
 ##En ny tag 20200818 @>NUM til første led af et talinterval. Svarer nogenlunde til @>N ved nominer
 #MAP:M_tidlig0040 @>NUM TARGET Num + Abs IF (1 (/"-"\ PUNCT/l))(2 Num);#Naak 160.000 - 170.000-it missaat Inuit oqaasiinik atuisuugaluartut, illersorneqarnissaat pingaaruteqarluinnarpoq.
 #
-#SETPARENT:D_tidlig0042B @>N + Abs + OTHERTIME TO (1 Num LINK 1 ("manna") + Rel LINK 1 ("kinguneq") OR ("siuneq"));#Demokraatit pilersaarut tassunga assingusoq ULLUT qulit matuma kingorna pinngitsoortippaat.
+SETPARENT:D_tidlig0042B @ADVL>N + OTHERTIME OR SEASON 
+IF (1 Num LINK 1 ("manna") + Rel )
+TO (*1 ("kinguneq") OR ("siuneq") OR ("siornatigut") BARRIER (*) - Num - ("manna"));#Demokraatit pilersaarut tassunga assingusoq ULLUT qulit matuma kingorna pinngitsoortippaat.
 
 #MAP:M_tidlig0042C @<ADVL TARGET ("kinguneq") OR ("siuneq") OR ("siornatigut") IF (*-1 V)(-1 ("manna") + Rel LINK -1 Num LINK -1 @>N)
 #(NEGATE *1 V)#Nickie aamma Rita Kalaallit Nunaannit Danmarkimut nuupput ukiut 28-it matuma SIORNATIGUT.
@@ -208,9 +210,9 @@ SETPARENT:D_tidlig0100 @i-ADVL> + Trm TO (*1 TRM_NOUN - V BARRIER (*) - Trm - KO
 #
 #### TIME ###
 ##==========#
-#MAP:M0015 @CL-ADVL> ("siuneq") + Abs + 3SgPoss IF (-1 ("manna") + Rel) #En tidlig, meget bred regel til at håndtere uforudsigelige/ manglende bøjninger af siorna
-#(*1 V)#Nickie aamma Rita Kalaallit Nunaannit Danmarkimut nuupput ukiut 28-it matuma SIORNATIGUT.
-#;
+SETPARENT:D0015 @CL-ADVL> + ("siuneq") + Abs + 3SgPoss IF (-1 ("manna") + Rel) #En tidlig, meget bred regel til at håndtere uforudsigelige/ manglende bøjninger af siorna
+TO (*1 V)#Nickie aamma Rita Kalaallit Nunaannit Danmarkimut nuupput ukiut 28-it matuma SIORNATIGUT.
+;
 #
 #### TAL ###
 ##=========#
@@ -1945,22 +1947,26 @@ SETPARENT:D0329D @N< + Gram/Dem + $$KASUS TO (-1 $$KASUS); #sumiiffimmi TASSANI
 #((0 Pl LINK -1 Pl) OR (0 Sg LINK -1 Sg) OR (0 Pl LINK (-1 CONJ-C) OR (*-2 CONJ-C)))
 #(NEGATE *-1 Gram/Dem + Pron - Trm BARRIER VFIN LINK -1 KOMMA OR BOS) #tilføjet barrier VFIN pga. Taassuma maanna pisortaq Brian Buus Pedersen pisortatut taarsissavaa, pisortatullu ukioq MANNA novembarip aallaqqaataani atorfinissalluni.
 #;
-#
-SETPARENT:M0069CX13 @N< + Num + $$KASUS - NUMCOMP IF 
-(NEGATE 1 NUMHOVED)
-(NEGATE -1 NUMHOVED OR ("nalunaaqutaq")) 
-(NEGATE *1 LIK BARRIER (*) - ("miss." Adv)) #Angutit taakku PINGASUT Coronavirusimik tunillatsissimanngitsut paasineqarpoq.
-(NEGATE 0 Rel + LU LINK -1 Num + Rel)#Ukiuni kingullerni arfinilinni kalaallit HIV-mik tunillanneqarsimasut agguaqatigiissillugu ukiumut arfineq-marluk QULINGILUALLU akornanniittarput .
-(NEGATE 0 ("[0123456789]{4}"r) + Lok LINK NEGATE -1 ("ukioq"))#Laila Kristiansen atuakkiamini "Malersortinneq"-imi 2001-IMI saqqummersinneqartumi ilaatigut taama allappoq.
-(NEGATE 0 ("[0123456789]{2}[\.:][0123456789]{2}"r) LINK -1 ("nal.*"r))
-(NEGATE -1 ("E") LINK 1 Num + Abs LINK *1 VFIN + 3Sg BARRIER (*) - %ContHypotagme)#E 20 Odense killeqqullugu ingerlavoq.
-(NEGATE -1 Num LINK 1 _TARGET_ + LU LINK 1 (/U\ Der/nv\ Gram/IV\ V\ Ind\ 3Sg/l))#additionsformelen: to TOLU fiiaraavoq.
-(NEGATE -1 Rel + MAANED)#Kitaani aasaanerani nalunaaqutaq 2019-imi oktobarip 26-ATA tungaanut atuutissaaq.
-(NEGATE 0 Abs + &&ContObj& OR Num LINK 1 CONT + &&ContObj&)#Issittoq pillugu festivaalertitsineq 40-T sinnerlugit sammisassaqartitsinertalik aatsaat taamak annertutigivoq
-(NEGATE 1 NUM - ("[0123456789]{4}"r)) #undtaget årstal pga. Nuummi Niuernermik Ilinniarfiup ilinniakkat MARLUK 2019-imi upernaakkut pilersikkaluarpai.
-(NEGATE 0 Pl LINK -1 Sg LINK NEGATE 0 LU)#Umiarsuarmik nutaamik 130-NIK ilaasoqarsinnaasumik sanaartorniarneq unitsinneqarpoq.
-(NEGATE 0 ("[0123456789]{4}"r) + Abs LINK -1 Num LINK 2 EOS OR PUNCT)#aggustip 26-at 2020 ·
-TO (-1 $$KASUS - @Pron>N);
+
+#Noget går galt i følgende, så parent bliver -2 og ikke -1
+#Her er en ad hoc regel mens jeg venter på hjælp
+
+SETPARENT:D0069_interim @N< + Num + Abs  TO (-1 ("ukioq") + Abs);
+#SETPARENT:M0069CX13 @N< + Num + $$KASUS - NUMCOMP IF 
+#(NEGATE 1 NUMHOVED)
+#(NEGATE -1 NUMHOVED OR ("nalunaaqutaq")) 
+#(NEGATE *1 LIK BARRIER (*) - ("miss." Adv)) #Angutit taakku PINGASUT Coronavirusimik tunillatsissimanngitsut paasineqarpoq.
+#(NEGATE 0 Rel + LU LINK -1 Num + Rel)#Ukiuni kingullerni arfinilinni kalaallit HIV-mik tunillanneqarsimasut agguaqatigiissillugu ukiumut arfineq-marluk QULINGILUALLU akornanniittarput .
+#(NEGATE 0 ("[0123456789]{4}"r) + Lok LINK NEGATE -1 ("ukioq"))#Laila Kristiansen atuakkiamini "Malersortinneq"-imi 2001-IMI saqqummersinneqartumi ilaatigut taama allappoq.
+#(NEGATE 0 ("[0123456789]{2}[\.:][0123456789]{2}"r) LINK -1 ("nal.*"r))
+#(NEGATE -1 ("E") LINK 1 Num + Abs LINK *1 VFIN + 3Sg BARRIER (*) - %ContHypotagme)#E 20 Odense killeqqullugu ingerlavoq.
+#(NEGATE -1 Num LINK 1 _TARGET_ + LU LINK 1 (/U\ Der/nv\ Gram/IV\ V\ Ind\ 3Sg/l))#additionsformelen: to TOLU fiiaraavoq.
+#(NEGATE -1 Rel + MAANED)#Kitaani aasaanerani nalunaaqutaq 2019-imi oktobarip 26-ATA tungaanut atuutissaaq.
+#(NEGATE 0 Abs + &&ContObj& OR Num LINK 1 CONT + &&ContObj&)#Issittoq pillugu festivaalertitsineq 40-T sinnerlugit sammisassaqartitsinertalik aatsaat taamak annertutigivoq
+#(NEGATE 1 NUM - ("[0123456789]{4}"r)) #undtaget årstal pga. Nuummi Niuernermik Ilinniarfiup ilinniakkat MARLUK 2019-imi upernaakkut pilersikkaluarpai.
+#(NEGATE 0 Pl LINK -1 Sg LINK NEGATE 0 LU)#Umiarsuarmik nutaamik 130-NIK ilaasoqarsinnaasumik sanaartorniarneq unitsinneqarpoq.
+#(NEGATE 0 ("[0123456789]{4}"r) + Abs LINK -1 Num LINK 2 EOS OR PUNCT)#aggustip 26-at 2020 ·
+#TO (-1 $$KASUS - @Pron>N);
 #
 #MAP:M0069CY @Pron>N TARGET (/__Gram\/Dem\ Pron__/l) + $$KASUS + $$NUMERUS IF (1C N + $$KASUS + $$NUMERUS - Gram/Comp)(NEGATE -1 N + $$KASUS)(NEGATE 1 4PlPoss OR 4SgPoss)(NEGATE 0 ("manna") + LI) #Alternativ ordstilling: taassuma karsip
 #(NEGATE *1 POSSESSUM + 3SgPoss - ("kinguneq") - MWE_POSS  BARRIER TRANSVERB LINK NEGATE *1 TRANSVERB) #Nuliaralu umiatsiarput ikinngutinnut attartortissimavarput, T umiatsiaata motooria nipisanniarnerup nalaani ajortissimammat.
@@ -4733,6 +4739,13 @@ SUBSTITUTE:S0111 ("sapaat" N Rel Sg @POSS>) (nil) TARGET ("sapaat") IF (p ("week
 
 SUBSTITUTE:S0120 ("sinneq" QAR TUQ)("more than" "$1"v <tr-done>) TARGET (N) IF (-1 Num + ("(.*)"r));
 SUBSTITUTE:S0121 (".*" Num Abs Pl @N<) (nil) TARGET (Num) IF (s ("more than" <tr-done>));
+
+
+#Strukturer af typen OTHERTIME=Num=manna=siorna/kingorna
+SUBSTITUTE:S0130 ("siuneq" N Abs Sg 3SgPoss)("ago" <tr-done>) TARGET (@CL-ADVL>) IF (c ("manna" Rel));
+SUBSTITUTE:S0131 ("manna" Gram/Dem Pron Rel Sg @POSS>) (nil) TARGET (Gram/Dem Pron Rel Sg @POSS>) IF (s OTHERTIME);
+
+
 
 
 #Følgende virker ikke idet bl.a. blokerer for akuersissuteqarpoq = give approval
