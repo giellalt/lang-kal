@@ -1341,9 +1341,11 @@ SET 4PlCONT4Pl = INTRANSVERB + (Cont 4Pl) OR CON_CAU + 4Pl ;
 SET CONT_V& = 1SgCONT1Sg | 2SgCONT2Sg | 4SgCONT3Sg | 4SgCONT4Sg | 1PlCONT1Pl | 2PlCONT2Pl | 4PlCONT3Pl | 4PlCONT4Pl ;
 
 #Unification set til CONT og objekter
-LIST ContObjSg = (Sg Abs) 3SgO ;
-LIST ContObjPl = (Pl Abs) 3PlO ;
-SET ContObj& = ContObjSg OR ContObjPl ;
+LIST ContObjSg = (Sg Abs) (3SgO Cont);
+LIST ContNegObjSg = (Sg Abs) (3SgO ContNeg);
+LIST ContObjPl = (Pl Abs) (3PlO Cont) ;
+LIST ContNegObjPl = (Pl Abs) (3PlO ContNeg) ;
+SET ContObj& = ContObjSg OR ContNegObjSg OR ContObjPl OR ContNegObjPl ;
 
 
 
@@ -6391,7 +6393,7 @@ MAP:M0350NZA @N< TARGET (/LIK\ Der\/nn\ N/l) + iNum + $$KASUS IF (-1 N - Num - i
 
 
 #Regel til parataktiske adled som i 'puiaasat imaqanngitsut imallillu'
-MAP:M0351NY @N< TARGET Der/vn + $$KASUS + CONJ-LU OR Num + $$KASUS + CONJ-LU OR LIK + $$KASUS + CONJ-LU IF (-*1 N + $$KASUS + @N< BARRIER (*) - OBLIQUE - Part)(NEGATE 0 Ins LINK *1 QAR OR LIK)
+MAP:M0351NY @N< TARGET Der/vn + $$KASUS + CONJ-LU OR Num + $$KASUS + CONJ-LU OR LIK + $$KASUS + CONJ-LU IF (-*1 N + $$KASUS + @N< BARRIER (*) - OBLIQUE - Part - KOMMA)(NEGATE 0 Ins LINK *1 QAR OR LIK)
 (NEGATE 1 INDERIVERENDE_SUBSTANTIV LINK -1 _TARGET_ + Trm + LU LINK -1 Trm)#nunanut allanut SILLIMANIARNERMULLU politiki eqqarsaatigaara.
 (NEGATE 0 LU + $$KASUS LINK -1 $$KASUS LINK NEGATE 0 @N<)#Taamaattoqassappat, aningaasanut inatsisitigut immikkoortinneqartartut umiarsualivinnut minnernut aningaasaleeqqinnernut ILUARSARTUUSSINERNULLU atorneqarsinnaalissapput.
 ;
@@ -8048,8 +8050,9 @@ MAP:M0934 @i-ADVL> TARGET OBLIQUE IF (*1 QQU + CONT + TRANSVERB BARRIER VERB-NOT
 
 MAP:M0935A @i-ADVL> TARGET Num - Abs IF (-1 TIME + N + Abs)(-2 CLB LINK *1 (*) - V) ;
 MAP:M0935B @i-ADVL>N TARGET OBLIQUE IF (1 LIK + N - ADVERBIEL - NUM) #Pituffiup nunat Issittumi PISSAANILISSUIT akornanni anneruniuttoqarnerani inissisimanera pillugu Aleqa Hammondip statsministerip apeqqarissaarnermi sukumiinerusumik akissuteqannginnera isornartorsiorpaa.
-
+(NEGATE 0 Ins LINK *1 ("ulikkaar") BARRIER (*) - Ins - KOMMA) #Gitteli akinani nikuipallariarluni, nerriveeqqap nalaasaarfiup saavaniittup, PUIAASSANIK imalinnik imaqanngitsunillu, imertarfinnillu ulikkaartup, qaavaniittumik cigaretimik tiguseriarluni ikitsivoq.
 ;
+
 MAP:M0936 @i-ADVL> TARGET TIME - LIK IF (*1 N)(NEGATE *1 V)(NEGATE *-1 V BARRIER KOMMA)(*1 AFFINGERET) ;
 MAP:M0937A @i-ADVL> TARGET OBLIQUE IF (1* PILLUGU CBARRIER V)(NEGATE *1 V - CONT) ;
 #PL20201006 forstår ikke følgende. Udkommenteret uden konsekvenser i regressionen
@@ -8140,6 +8143,7 @@ MAP:M0951 @<ADVL TARGET OBLIQUE - iV IF (-*1C V - ORATIOOBLVERB BARRIER @CL-ADVL
 (NEGATE 0 LU LINK *1 @SUBJ> BARRIER (*) - Adv - @POSS> LINK *1 VFIN)#EMRIP tallimanik ilaasortaqarpoq, ATAATSIMIINNERANILU Naalagaaffiit sinniisaat, nunat inuiisa sinniisaat, immikkullu ilisimasallit kattuffiillu assigiinngitsut alaatsinaatsutut oqaaseqarsinnaallutik peqataasinnaapput.
 (NEGATE *-1 PASSIV_ALTERNATIV LINK 1 KOMMA LINK *1 _TARGET_ + Ins BARRIER (*) - Adv) #Pisarineqarlutik pisiniarfinnut tunisaasimanersut nerineqareerlutillu, ilaatigut UANNIK, nalulluinnarpara. For at holde muligheden af forkert Abl åben til sent i kæden
 (NEGATE 0 Ins LINK *1 INDERIVERENDE_SUBSTANTIV BARRIER (*) - Ins - KOMMA - Conj)#Oqaluttuat ilagaat QIVITTUNIK, aliortukkanik, oqimangernernik aammalu nassuiaatissaqanngitsunik oqaluttuat, Kirstine Kreutzmann oqaluttuarpoq,-
+(NEGATE 0 Ins LINK *1 ("ulikkaar") BARRIER (*) - Ins - KOMMA) #Gitteli akinani nikuipallariarluni, nerriveeqqap nalaasaarfiup saavaniittup, PUIAASSANIK imalinnik imaqanngitsunillu, imertarfinnillu ulikkaartup, qaavaniittumik cigaretimik tiguseriarluni ikitsivoq.
 ; 
 
 #(NEGATE -*1C HTR BARRIER V) # -V for at undgå at den rammer verbalierede obliquer. #Justeret 20180707 så det ikke bliver advl til inquit.
@@ -11926,6 +11930,7 @@ MAP:M9970AD @N< TARGET Gram/Dem + Rel IF (*-1 @POSS> BARRIER (*) - @N<);#Angutit
 
 REMOVE:9970AE Abs + @SUBJ> IF (0 Rel + Pl + @POSS> LINK *1 3PlPoss LINK NEGATE 0 ("misse") LINK -1 Num BARRIER (*) - %AmbiguøsN - (Cont 4Pl));#ANGUTIT taakku pingasut peqqarniisaarniarlutik saassussinerat aviisinit allaatigineqarpoq.
 
+MAP:M9970AF @i-ADVL> TARGET Ins IF (*1 ("ulikkaar") + N BARRIER (*) - Ins - KOMMA); #Gitteli akinani nikuipallariarluni, nerriveeqqap nalaasaarfiup saavaniittup, PUIAASSANIK imalinnik imaqanngitsunillu, imertarfinnillu ulikkaartup, qaavaniittumik cigaretimik tiguseriarluni ikitsivoq.
 
 
 #Disambiguering og mapping af resterende partikler
