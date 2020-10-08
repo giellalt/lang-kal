@@ -3876,16 +3876,10 @@ REMOVE:0146 Rel + 3PlPoss IF ( 0 Rel + 3SgPoss)(*-1 CONT + 4Sg BARRIER V) ; # Si
 ### Gram/Cong til tamarmik, tamaq, kisi osv. ###
 ##=============================================#
 
-MAP:M0098 @SUBJ> TARGET Gram/Cong + Nom IF (1 Sem/Time) ;
+MAP:M0098A @SUBJ> TARGET Gram/Cong + Nom IF (1 Sem/Time) ;
 
-#LIST  34Plx = (Gram/Cong Nom 4Pl) 3Pl ; #Fungerer ikke som ønsket.
-#LIST  34Ply = (Gram/Cong Nom 4Pl) 4Pl ;
-#LIST  34Sgx = (Gram/Cong Nom 4Sg) 3Sg ;
-
-#LIST  34Sgy = (Gram/Cong Nom 4Sg) 4Sg ;
-
-#SET 34PlSg& = 34Plx OR 34Ply OR 34Sgx OR 34Sgy;
-
+#Den mest generelle adledstagging
+MAP:M0098B @N< TARGET Gram/Cong + Nom + 4Pl IF (-1 Pl);
 
 #SELECT:0099 &&34PlSg& IF (1* &&34PlSg& + V) ;
 SELECT:0099A Gram/Cong + Nom + 4Pl IF (1* 34Pl) ;
@@ -6532,7 +6526,9 @@ MAP:M0409A (@HNOUN) TARGET N OR Gram/Abbr OR Num IF (NEGATE *0 V - @i-ADVL> OR O
 
 MAP:M0409B @HNOUN TARGET N OR Gram/Abbr OR Num IF (0 UNA OR UKU OR UKUA) (1 EOS)(NEGATE -1C N) ; #savaanngilaq angutealanguna; qimmitit susorsuit-uku
 
-MAP:M0410 (@HNOUN) TARGET APPELLATIV + Abs OR Prop + Abs OR Gram/Abbr - FIRSTNAME - Rel IF (NEGATE *0 VERB-NOTCONT)(NEGATE *1 TRANSVERB + CONT)(NEGATE *-1 ("tassa") LINK *1 CONT + INTRANSVERB OR Cau + INTRANSVERB BARRIER VFIN)(NEGATE 0 Gram/Abbr OR ("nalunaaqutaq") LINK 1 Num)(NEGATE 0 $$KASUS LINK -1 $$KASUS)
+MAP:M0409C @HNOUN TARGET N + NIQ OR ("nalliuttorsiorneq") IF (-1 CONT LINK NEGATE *0 V) ;#ukiunik 50-iliilluni NALLIUTTORSIORNEQ.
+
+MAP:M0410 (@HNOUN) TARGET APPELLATIV + Abs OR Prop + Abs OR Gram/Abbr - FIRSTNAME - Rel IF (NEGATE *0 V)(NEGATE *1 TRANSVERB + CONT)(NEGATE *-1 ("tassa") LINK *1 CONT + INTRANSVERB OR Cau + INTRANSVERB BARRIER VFIN)(NEGATE 0 Gram/Abbr OR ("nalunaaqutaq") LINK 1 Num)(NEGATE 0 $$KASUS LINK -1 $$KASUS)
 (NEGATE 0 HUMAN LINK 1 MIU - Der/nv)
 (NEGATE 0 Sg LINK *1 CONT + 4Sg) 
 (NEGATE *1 NNGUARSI LINK NOT *0 VERB-NOTCONT)
@@ -8191,9 +8187,13 @@ MAP:M0969 @POSS> TARGET Gram/Pers + Pron + 2Sg IF (1 Abs + 2SgPoss) ;
 #"uanga" og "uagut" er subjekt for V i første person hvis ikke adnominalt adled til 1SgPoss eller 1PlPoss resp.
 MAP:M0970 (@SUBJ>) TARGET ("ua" 1Sg Abs) IF (*1 INTRANSVERB + (1Sg) BARRIER (1SgPoss)) ; 
 MAP:M0980 (@SUBJ>) TARGET ("ua" 1Pl Abs) IF (*1 INTRANSVERB + (1Pl) BARRIER (1PlPoss)) ; 
-MAP:M0981A (@SUBJ>) TARGET PRON + Nom + 4Pl - V IF (*1 3Pl OR 4Pl)(NEGATE 1 3PlPoss) ; #-V for at udelukke verber med IP
+MAP:M0981A (@SUBJ>) TARGET PRON + Nom + 4Pl - V IF (*1 3Pl OR 4Pl)(NEGATE 1 3PlPoss) #-V for at udelukke verber med IP
+(NEGATE *1 INTRANSVERB + 3Pl BARRIER V  LINK *-1 _TARGET_ + Gram/Cong LINK *-1 Abs + Pl)#Siunnersuut ilimagisatut akuerineqarpat , takornarissat ukiumut 24.000-it missaanniittartut TAMARMIK 525 koruuninik Nunatta karsianut akiliissapput .
+;
 MAP:M0981B @SUBJ> TARGET DivPron + Nom + 4Sg - V IF (*1 V + 3Sg OR V + 4Sg)(NEGATE -1 Lok) ;
-MAP:M0981C @SUBJ> TARGET DivPron + Nom + 4Pl - V IF (*1 V + 3Pl OR V + 4Pl) ;
+MAP:M0981C @SUBJ> TARGET DivPron + Nom + 4Pl - V IF (*1 V + 3Pl OR V + 4Pl) 
+(NEGATE *1 INTRANSVERB + 3Pl BARRIER V  LINK *-1 _TARGET_ + Gram/Cong LINK *-1 Abs + Pl)#Siunnersuut ilimagisatut akuerineqarpat , takornarissat ukiumut 24.000-it missaanniittartut TAMARMIK 525 koruuninik Nunatta karsianut akiliissapput .
+;
 MAP:M0990 (@>N) TARGET ("ua" 1Sg) IF (1 (1SgPoss)) ;
 
 MAP:M0991 @HNOUN TARGET DivPron + Nom + 4Sg IF (-1 ("tassa") LINK -1 BOS) ; #Tassa kisimi! som udbrud
@@ -10324,8 +10324,8 @@ SELECT:8551 Abs + @SUBJ> - MI IF (*1 INTRANSVERB + @PRED)(NEGATE 0 Lok LINK *-1 
 (NEGATE 0 Rel + Num LINK 1 Rel + Num + LU)#Ukiuni kingullerni arfinilinni kalaallit HIV-mik tunillanneqarsimasut agguaqatigiissillugu ukiumut ARFINEQ-MARLUK qulingiluallu akornanniittarput .
 (NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER (*) - OBLIQUE)#Kujataata Kitaata imartaani UMIARSUIT ukiukkut nalinginnaasumik angalasarnerannit paasissutissani pissarsiarisinnaasatsinni naatsorsuinermeersuupput .
 (NEGATE 0 ("qaangiup") + Par + &&IV_SUBJ& LINK *-1 ("ukioq") + Abs + &&IV_SUBJ&)#Ukioq ataaseq QAANGIUTTOQ alloriaqqippoq.
-(NEGATE 0 Rel + Pl LINK *1 3PlPoss LINK NEGATE 0 ("misse") LINK -1 Num BARRIER (*) - %AmbiguøsN - (Cont 4Pl))#ANGUTIT taakku pingasut peqqarniisaarniarlutik saassussinerat aviisinit allaatigineqarpoq.
-
+#(NEGATE 0 Rel + Pl LINK *1 3PlPoss LINK NEGATE 0 ("misse") LINK -1 Num BARRIER (*) - %AmbiguøsN - (Cont 4Pl))
+(NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER 3PlO OR INTRANSVERB + 3Pl OR POSSESSUM3 - ("misse"))#ANGUTIT taakku pingasut peqqarniisaarniarlutik saassussinerat aviisinit allaatigineqarpoq.
 
 ;
 
@@ -11338,7 +11338,7 @@ SELECT:9934A @POSS> + Pl OR @i-POSS> + Pl IF (*1 3PlPossUdenMWE BARRIER (*) - Re
 (NEGATE 0 KKUT - FAM LINK 0 Via + Sg LINK 1 NIQ)#pingaartuuvoq meeqqap TARNIKKUT ikiorserneqarnissaata qularnaarnissaa, meeqqat illersuisuat oqarpoq.
 (NEGATE 0 U LINK *-1 BOS BARRIER (*) - ("suli" Adv))#Suli MEERAASUT angutaat inupiluup Saqup inuartarai.
 (NEGATE 0 4PlPoss LINK NEGATE *1 V + 3Pl OR V + 4Pl)#Nunanut allanut unammisartut arfininngormat tikikkamilli ullormut marloriarlutik sungiusartarsimapput, unammisartullu QASUSUISSUTSIMIK misilitsinnerat naammaginartorujussuarmik ingerlasimavoq, nunanut allanut unammisartut sungiusaasuat Preben Clausen paasissutissiivoq.
-
+(NEGATE *-1 Abs + @SUBJ> LINK *1 _TARGET_ + Abs + CONJ-C LINK *1 VFIN + 3Pl BARRIER V)#Tuluit Nunaanni aappariit PISSIARIILLUUNNIIT 40.000-it missaanniittut ilaqutariittut ataatsimuulernissaminnik qinnuteqartarput .
 ;
 #Disambiguering af gamle Par+4. fra Par med objekt i 4.
 REMOVE:9934B Par + 1Sg + @CL-<CIT IF (0 Par + 4Pl + @CL-<CIT LINK *-1 ORATIOOBLVERB + 3Sg + @PRED) ;
