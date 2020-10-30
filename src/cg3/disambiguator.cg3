@@ -1642,6 +1642,7 @@ LIST f-an_SG = "qaneq" "qingaq" ;
 #Nye semantiske klasser 20190503 til forberedelse af import af prototyper. NB <fn:..>-tags ovenfor før set HUMVERB. 
 LIST <con> = "nappartaq" "pooq" "poorsuaq";
 LIST <cc> = "nioqqutissaq" "nioqqut" ;
+LIST <occ> = <occ> ; #til ord som festival direkte fra lexc
 LIST <Hprof> = (/"aaqqissor"\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TUQ/l) ("aqup" HTR TUQ) ("eqqiar" HTR TUQ)("eqqartuup" HTR TUQ) (/"inuar"\ Gram/IV\ TUQ/l) (/"milup"\ Gram/IV\ TIP\ Der/vv\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TUQ/l) ("naalagaq" LIRSUR HTR TUQ)(/"saqi"\ Gram/IV\ TUQ/l)("siulittar" HTR TUQ) (/\"suli\"\ Gram/IV\ TUQ/l) (<Hprof>) ;
 LIST <unit> = Sem/Unit "km/time" "pingajorarterut";
 LIST <f-psych> = (/"uppere"\ Gram/TV\ TAQ/l);
@@ -1652,7 +1653,7 @@ LIST NUMHOVED = "cent" "centimeter" "cm" "dollar" "dollari" "euro" "franc" "grad
 LIST NUMCOMP = "hundrede" "tusind" "million" "milliard" ; #anden del af sammensatte tal, famtan milliuuni
 LIST COMPOUND_N = "Windows" "Linux" "program" ;
 LIST PRENUM = "plus" "minus" ;
-LIST EVENT = "stafet" "marathon" "løb" "stafetløb" ; #DHL stafet, CPH Marathon
+LIST EVENT = "stafet" "marathon" "løb" "stafetløb" "Nuuk International Filmfestival"; #DHL stafet, CPH Marathon
 LIST OCCATION = ("ataatsimiip" NIQ) ;
 LIST LANDTRANSPORT = "bussi" "biili" "bil" "pisummik" <Vground> "ATV" ;
 LIST AIRTRANSPORT = "timmi" "helikopter" "helikopteri" "qulimiguulik" "timmisartoq" "zeppeliner" ;
@@ -1674,7 +1675,7 @@ SET EXCLAMATION = ("tipi" N) | (SSUSIQ 3SgPoss) | (SSUSIQ Pl 3PlPoss) | WEATHER 
 
 LIST Mask = "Aron" "Egon" "Eri" "Erik" "Eskild" "Hans" "Jens" "Manu" "Mik" "Mikkel" "Miki" "Morten" "Niels" "Ole" "Per" "Piitaq" "Rasmus" "Sean" "Trond" Sem/Mask ;
 LIST Fem = "Anette" "Anna" "Arnaq" "Dagmar" "Emilie" "Gitte" "Hanne" "Jane" "Karen" "Kirsten" "Maliina" "Margrethe" "Meeraq" "Mette" Sem/Fem ;
-LIST Sur = "Jensen" "Jenseni" "Kleist" "Møller" "Olsen" "Rasmussen" "Trosterud" Sem/LastName ;
+LIST Sur = "Jensen" "Jenseni" "Kleist" "Møller" "Olsen" "Pedersen" "Rasmussen" "Trosterud" Sem/LastName ;
 LIST TITEL = "borgmester" "fru" "Gammel" "hr" "hotel" (/"ilaa"\ Gram/IV\ TUQ\ Der/vn\ TAQ/l) ("ilinniar" TIP HTR TUQ) "kunngi" "kunngissaq" "lektor" "minister" "miss" "MS" "nakorsaq" "naalagaq" (/"naalagaq"\ LIRSUR\ Der/nv\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TUQ/l) (/"peqqip"\ Gram/IV\ SAR\ Der/vv\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TUQ/l) ("pisoq" TAQ) "pisortaq" "planchef" "præsident" ("qalipap" HTR TUQ) "senator" ("siulittar" TUQ) ("siunnersor" HTR TUQ) ("siunnersuisoq") ("ulloriarsior" TUQ) "ulloriarsiortoq";
 LIST COUNTRY = "Canada" "Danmark" "Finland" "Grønland" "Island" "Kalaallit Nunaat" "Norge" "Rusland" "Sverige" "Tyskland" "USA" ; 
 LIST GeoProp = Sem/Geo "Danmark" "Finland" "Gladsaxe" "Mose" "Tåstrup" ;
@@ -1682,6 +1683,7 @@ SET Fornavn = Mask | Fem ;
 LIST Mellemnavn = (Borup Sem/Hum) ;
 SET Efternavn = Sem/Hum - Fornavn ;
 LIST Hmyth = "Aningaaq" "Aqissiaq" "Guuti" "Maliina" ; #Proprier, der anvendes som/med vokativ
+SET NOT-PERSON = EVENT ;
  
 SET FIRSTNAME = (Sem/Mask Prop) | (Sem/Fem Prop) | Mask | Fem | ("Frederik") | ("Nuka") | ("A") | ("B") | ("C") | ("Chr") | ("D") | ("E") | ("F") | ("G") | ("H") | ("I") | ("J") | ("K") | ("Kr") | ("L") | ("M") | ("N") | ("O") | ("P") | ("Q") | ("R") | ("S") | ("T") | ("U") | ("V") | ("W") | ("X") | ("Y") | ("Z") | ("Æ") | ("Ø") | ("Å") ;
 SET NAME = FIRSTNAME | Sur ;
@@ -5330,7 +5332,7 @@ MAP:M0030 @PROP> TARGET FIRSTNAME OR TITEL IF (1 Prop - GeoProp)(NEGATE 1 (§Pro
 
 #MAP:M0031X @PROP> TARGET Prop + Sem/FirstName IF (1 Prop + Sem/FirstName)(2 humProp) ; #Til tagning af dobbeltnavne
 
-MAP:M0031A @PROP> TARGET Prop + Abs + $$NUMERUS - Sem/Geo IF (1 Prop + Sem/Hum + $$NUMERUS - MEDIER)#tilføjet Sem/Hum for ikke at tagge hvis følgende Prop er en institution el. lign.
+MAP:M0031A @PROP> TARGET Prop + Abs + $$NUMERUS - Sem/Geo - <occ> IF (1 Prop + Sem/Hum + $$NUMERUS - MEDIER - NOT-PERSON)#tilføjet Sem/Hum for ikke at tagge hvis følgende Prop er en institution el. lign.
 (NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + CONJ-LU LINK *1 V + 3Pl )(NEGATE 1 Prop LINK 1 Prop)(NEGATE 0 FIRSTNAME LINK 1 FIRSTNAME)(NEGATE 1 ("Kalaallit") OR COUNTRY)(NEGATE 0 Abs + Sg LINK NOT 1 PROP LINK *1 TRANSVERB + 3SgO BARRIER V) #Mange fejlhit på Kalaallit Illuutaat og Kalaallit Nunaat
 (NEGATE 1 Sem/Geo + Lok) #Jakob Sivertsen Kangerlussuarmi politiinit arfininngormat tigusaavoq.
 #(NEGATE 1 CONJ-C)
@@ -5359,7 +5361,7 @@ MAP:M0031F @PROP> TARGET FIRSTNAME + Abs IF (1 Sem/Mask + Rel - CONJ-C OR Gram/A
 MAP:M0031G @PROP> TARGET Sem/Mask + Abs IF (1 Sem/Mask - CONJ-C)(NEGATE 1 Abl LINK *1 NIRU OR (/"angi"\ Gram/IV\ NIQ/l) BARRIER V) ;
 MAP:M0031H @PROP> TARGET Sem/Fem + Abs IF (1 Sem/Fem + Abs - CONJ-C) ;
 
-MAP:M0031I @PROP> TARGET Sem/Hum + Abs - ORGANISATION IF (1 Sem/Hum - Sem/Mask - Sem/Fem - Abl - CONJ-C - SEMIOTIC - ORGANISATION - MEDIER OR Orth/Append + Prop) (NEGATE 1 Sem/Geo) #Beregnet til fornavn-efternavn, men usikker pga manglende kønstagging af fornavnet.
+MAP:M0031I @PROP> TARGET Sem/Hum + Abs - ORGANISATION IF (1 Sem/Hum - Sem/Mask - Sem/Fem - Abl - CONJ-C - SEMIOTIC - ORGANISATION - MEDIER - NOT-PERSON OR Orth/Append + Prop) (NEGATE 1 Sem/Geo) #Beregnet til fornavn-efternavn, men usikker pga manglende kønstagging af fornavnet.
 (NEGATE 0 FIRSTNAME LINK 1 INSTITUTION)#BIRGIT Oqaasilerinermut, Atuakkialerinermut Tusagassiuutilerinermullu Immikkoortortami pisortaavoq.
 (NEGATE 0 Sem/Hum - FIRSTNAME LINK 1 INSTITUTION)
 ;
@@ -5379,7 +5381,7 @@ MAP:M0031P @PROP> TARGET ORGANISATION IF (1 Prop LINK NEGATE 0 Sem/Hum) (NEGATE 
 MAP:M0031Q @PROP> TARGET Gram/ACR + Abs - TITEL IF (1 Prop) ;
 
 MAP:M0031R (@PROP>) TARGET Prop + Abs OR FIRSTNAME + Abs - TITEL #OR TITEL + Abs 
-IF (0 $$NUMERUS)(1 Prop + $$NUMERUS + Sem/Hum - CONJ-C - MEDIER)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + CONJ-LU LINK *1 V + 3Pl )(NEGATE 1 Prop + CONJ-LU LINK *1 V + 3PlO)(NEGATE 0 FIRSTNAME LINK 1 FIRSTNAME)(NEGATE 0 FIRSTNAME LINK 1 ("Kalaallit"))(NEGATE 1 FIRSTNAME + CONJ-LU)(NEGATE 0 Abs + Sg LINK *1 TRANSVERB + 3SgO BARRIER V)(NEGATE 1 Prop LINK 1 Prop - Abs)(NEGATE 1 Prop LINK -2 OBLIQUE)(NEGATE 1 SEMIOTIC)(NEGATE 1 POSSESSUM)
+IF (0 $$NUMERUS)(1 Prop + $$NUMERUS + Sem/Hum - CONJ-C - MEDIER - NOT-PERSON)(NEGATE 1 (§PropNexusPl) LINK *1 V + 3Sg)(NEGATE 1 Prop + CONJ-LU LINK *1 V + 3Pl )(NEGATE 1 Prop + CONJ-LU LINK *1 V + 3PlO)(NEGATE 0 FIRSTNAME LINK 1 FIRSTNAME)(NEGATE 0 FIRSTNAME LINK 1 ("Kalaallit"))(NEGATE 1 FIRSTNAME + CONJ-LU)(NEGATE 0 Abs + Sg LINK *1 TRANSVERB + 3SgO BARRIER V)(NEGATE 1 Prop LINK 1 Prop - Abs)(NEGATE 1 Prop LINK -2 OBLIQUE)(NEGATE 1 SEMIOTIC)(NEGATE 1 POSSESSUM)
 (NEGATE 1 Sem/Geo LINK NOT 1 Prop) #Geografiske navne bruges også som efternavne, men negate er bedre end ingenting...
 (NEGATE 0 Sem/Hum LINK 1 INSTITUTION OR ORGANISATION)
 (NEGATE *1 Prop + CONJ-LU BARRIER (*) - Prop) #Andreas Wille Mathias Witoftilu ilanngutassiortuupput.
