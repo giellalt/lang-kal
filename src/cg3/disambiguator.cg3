@@ -296,6 +296,7 @@ LIST %VerbalInderivering = %VerbalInderivering ; #Transitive verber med NIRAR og
 LIST %AmbiguøsN = %AmbiguøsN ; #En interim-tag til kohorter med læsninger der indeholder både Rel og Abs
 LIST %AmbiguøsPar = %AmbiguøsPar; #Interim-tag til ikke disambiguerede Par+Abs/Rel kohorter
 LIST %Othertime = %Othertime ; #vn-er med tidsbetydning i hypotagmer 
+LIST %PossOblique = %PossOblique ; #possessor til OBLIQUE possessum
 
 # Derivatives #
 
@@ -6291,7 +6292,12 @@ MAP:M0329D @N< TARGET Gram/Dem + $$KASUS IF (-1 $$KASUS) #sumiiffimmi TASSANI
 (NEGATE 0 $$KASUS LINK -1 ("suna") + $$KASUS)#sumut TAMAANGA
 (NEGATE 1 &&POSS34_POSS& - NUM LINK -1 _TARGET_ + Rel + &&POSS34_POSS&)#Uangaana paniga, uanga TAASSUMA inuunera aalajangigassaraara ...  Naalakkersuisoqarfiup NI ilinniakkat *taakkua marluk akuerineqarnissaannik qulakkeerinnissimannginnerarpaa.
 ;
-MAP:M0330 @N< TARGET ("qasseeq") + $$KASUS + $$NUMERUS IF (*-1 N + $$KASUS + $$NUMERUS BARRIER (*) - OBLIQUE - Adv) ; #qassiit altid adnominal evt. til underforstået kerne
+
+#Adled med mange OBLIQUE til kernen. Har forsøgt at lave reglen bredere med $$-tags, men måtte opgive fordi der for ofte optræder mere end et Ins+Sg mellem kerne og adled, således at det er disse Ins+Sg, der bliver ramt
+MAP:M0330A @N< TARGET Ins + Pl - CONJ-C IF (*-1 Ins + Pl BARRIER (*) - OBLIQUE - %PossOblique) #Saqqummersitaq naleqqersuutinik ineriartornermi anguniakkat sumut killinnerinut UUTTUUTAASINNAASUNIK imaqarpoq.
+#(NEGATE *-1 Ins + Pl LINK *1 CONJ-C LINK *1 _TARGET_)#Nakorsaaneqarfiup innuttaasut errortorluartarnissaannik sprittimillu assammut saligummik ATUISARNISSAANNIK siunnersuuteqarfigai.
+;
+MAP:M0330B @N< TARGET ("qasseeq") + $$KASUS + $$NUMERUS IF (*-1 N + $$KASUS + $$NUMERUS BARRIER (*) - OBLIQUE - Adv) ; #qassiit altid adnominal evt. til underforstået kerne
 
 MAP:M0331B @N< TARGET WORD - V - Pron IF (*-1 ("oqaaseq") - AFFINGERET + Abs - POSSESSUM BARRIER (*) - (\")) #Oqaaseq kateket eqqumiiginermik puigunnginnamiuk.
 (NEGATE 0 N + &&TV_OBJ& LINK *1 V + &&TV_OBJ& BARRIER V)#Ilitsoqqussaralugu oqaatsit NUNARSUAQ tamakkerlugu nalliuttorsiutigineqarput,
@@ -8302,6 +8308,7 @@ MAP:M0947 @ADVL> TARGET OBLIQUE IF (*1 V)(NEGATE *-1 V BARRIER @CONJ OR @CL-ADVL
 (NEGATE *1 HTR BARRIER (*) - Adv - OBLIQUE)#Aqqaluartaannguup qallunaat nunaanniinnerani anaana ANINGAASANIK paggatsitassaminik katersisimavoq.
 (NEGATE *1 VFIN LINK *-1 KOMMA LINK *-1 _TARGET_ LINK *-1 VFIN)#Tamanna pisinnaavoq aningaaserivik suleqatigalugu imaluunniit nammineq EQQARSAATERSORNIKKUT, Klaus Eskildsen oqarpoq.
 (NEGATE 0 Ins LINK 1 LIK_QAR)#Nanortalik Tasiilarlu nutaarluinnarmik atuarfiliornissamik pilersaaruteqarput, Kultureqarnermut, Ilinniartitaanermut, Ilisimatusarnermut Ilageeqarnermullu Pisortaqarfimmi direktøri Flemming Horsfeldt oqarpoq.
+(NEGATE 0 Trm LINK 1 Der/vn + Ins)#Saqqummersitaq naleqqersuutinik ineriartornermi anguniakkat sumut KILLINNERINUT uuttuutaasinnaasunik imaqarpoq.
 ;
 MAP:M0948A @i-ADVL> TARGET OBLIQUE + $$KASUS + $$NUMERUS - Gram/Cong (NEGATE *1C V BARRIER KOMMA)(**1C N - $$KASUS BARRIER KOMMA LINK 0 Der/vn - (/"naalagaq"\ U\ Der/nv\ Gram/IV\ VIK\ /l))#"substantiver" må undtages
 (NEGATE *-1 $$KASUS + $$NUMERUS BARRIER V);
@@ -8312,6 +8319,8 @@ MAP:M0948B @i-ADVL> TARGET OBLIQUE + $$KASUS - Gram/Cong (NEGATE *1C V BARRIER K
 MAP:M0948C @ADVL> TARGET OBLIQUE + $$KASUS + $$NUMERUS - Gram/Cong (*1 V BARRIER KOMMA)(NEGATE *-1 $$KASUS + $$NUMERUS BARRIER V)
 (NEGATE 0 Ins LINK *1 HTR BARRIER (*) - OBLIQUE)#må ikke overskrive MIK-objekt .. NIPILERSUKKANIK .. aallertarneq
 (NEGATE 0 Ins LINK *1 LIK_QAR BARRIER (*) - Ins)#Niviarsiaq taanna inuusuttunnguullunili aalajangersimavoq inuunini Guutimut tunniunniarlugu MINGUITSUMILLU inuuneqarniarluni.
+(NEGATE 0 Trm LINK 1 Der/vn + Ins)#Saqqummersitaq naleqqersuutinik ineriartornermi anguniakkat sumut KILLINNERINUT uuttuutaasinnaasunik imaqarpoq.
+
 ;
 
 MAP:M0949 @ADVL> TARGET OBLIQUE IF (*1 V BARRIER KOMMA)
@@ -8319,6 +8328,7 @@ MAP:M0949 @ADVL> TARGET OBLIQUE IF (*1 V BARRIER KOMMA)
 (NEGATE 0 %TidHypotagme LINK *1 (/NIQ\ Der/vn\ N/l) OR INDERIVERENDE_SUBSTANTIV BARRIER (*) - CONT - Adv - OBLIQUE)#Aamma eqqaavaa angummi ullut ILAANNI isumalulluinnarluni oqarnera: Skal være @i-ADVL til oqarnera
 (NEGATE 0 Ins LINK 1 LIK_QAR)#Nanortalik Tasiilarlu nutaarluinnarmik atuarfiliornissamik pilersaaruteqarput, Kultureqarnermut, Ilinniartitaanermut, Ilisimatusarnermut Ilageeqarnermullu Pisortaqarfimmi direktøri Flemming Horsfeldt oqarpoq.
 (NEGATE 0 $$KASUS + ADVERBIEL LINK -1 $$KASUS - ADVERBIEL)#Taamaattoqassappat, aningaasanut inatsisitigut immikkoortinneqartartut umiarsualivinnut MINNERNUT aningaasaleeqqinnernut iluarsartuussinernullu atorneqarsinnaalissapput.
+(NEGATE 0 Trm LINK 1 Der/vn + Ins)#Saqqummersitaq naleqqersuutinik ineriartornermi anguniakkat sumut KILLINNERINUT uuttuutaasinnaasunik imaqarpoq.
 
  ;
 MAP:M0950V @<ADVL TARGET OBLIQUE (*-1 V - ORATIOOBLVERB - ("tassa") OR V + ("imaap") BARRIER ("tassa"))(NEGATE *1 V BARRIER ("soorlu") OR ("tassa"));
@@ -12249,6 +12259,8 @@ MAP:M9970AT @OBJ> TARGET Abs IF (*1 CONJ-C LINK *1 Abs BARRIER V LINK *1 3Pl + 3
 
 MAP:M9970AU @OBJ> TARGET Abs IF (*1 3Pl + 3PlO BARRIER V LINK *-1 _TARGET_ LINK *-1 CONJ-C LINK *-1 Abs BARRIER V);#Avataarsualiartartut USA-meersut QaammammuKARTINNEQARNISSAAT, allaallumi MARSILIARTINNEQARNISSAAT, Trumpip naalakkersuisoqataasalu sulissutiginiaraat, arlaleriarluni oqaatigineqarnikuuvoq.
 
+MAP:M9970AV @i-ADVL> TARGET Trm IF (1 Ins + Der/vn + @N<); #Saqqummersitaq naleqqersuutinik ineriartornermi anguniakkat sumut KILLINNERINUT uuttuutaasinnaasunik imaqarpoq.
+
 #Disambiguering og mapping af resterende partikler
 ##################################################
 
@@ -12662,7 +12674,8 @@ SUBSTITUTE (%Othertime) (*) TARGET %Othertime (*0S (/@.*/r)) ;
 
 SUBSTITUTE (%NumPossessum) (*) TARGET %NumPossessum (*0S (/@.*/r)) ;
 
-
+SUBSTITUTE (%PossOblique) (*) TARGET %PossOblique (*0S (/@.*/r)) ;
+ 
 #SUBSTITUTE:xxx (/\(V|N|Pali|Conj|Adv|Interj|Pron|Prop|Num\)/r) (%AmbiguøsN VSTR:$1) TARGET %AmbiguøsN (*0S (/@.*/r)) ; # @ sikrer at reglen kun køres i 2. omgang.
 
 #SUBSTITUTE:S0048A (/@.*/r) (VSTR:@$1\ %AmbiguøsN) TARGET %AmbiguøsN + (/@\(.*\)/r) ;  
