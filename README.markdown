@@ -21,7 +21,7 @@ Documentation
 
 Documentation can be found at:
 
--   <https://giellalt.uit.no/lang/kaldoc/index.html>
+-   <https://giellalt.uit.no/lang/kal/index.html>
 -   <https://giellalt.uit.no/index.html>
 
 Core dependencies
