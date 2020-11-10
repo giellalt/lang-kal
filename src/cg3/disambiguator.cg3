@@ -183,6 +183,7 @@ LIST Cont  = Cont  ;
 LIST ContNeg = ContNeg ;
 LIST IteCau = IteCau  ;
 LIST Vok = Vok ; # vokativ-lignende endelser på pronominer og participium
+SET MODUS = Ind OR Int OR Imp OR Cau OR Con OR Par OR Cont OR ContNeg OR IteCau ;
 
 LIST 1Sg = 1Sg ;
 LIST 2Sg = 2Sg ;
@@ -4263,7 +4264,10 @@ SELECT GAANNI IF (NEGATE *-1 KONCESSIV)(NEGATE *-1 ORATIOOBLVERB + 3Sg OR ("taku
 (NEGATE 0 ("illuar") LINK 0 (/"illu"\ ARAQ\ Der/nn\ N\ Lok\ Sg\ 3PlPoss/l))#Aataakkut asimi ILLUARAANNI, ilaanni ullut arlerlugit illoqarfimmut najukkaminnut tikinnatik, asimeerujoortarput.
  ;
 
+REMOVE:0174A ("aamma") + Adv IF (0 Conj)(-1 $$MODUS LINK 2 $$MODUS) #Ilisimavara imaannaanngitsumut iserlunga AAMMA ilikkagassarpassuaqarlunga.
+(NEGATE -1 TIMENOUN + (/iN\ iLok\ iSg\ U/l) + Ind)#Minimmut apriilimiugunarpoq AAMMA nassiutereernikuuara, paasinialaassavara misissorsimaneraa.
 
+;
 MAP:M0175X @CL-ADVL> TARGET GAANNI IF (*1 VFIN BARRIER KOMMA)(NEGATE *-1 VFIN BARRIER KOMMA) ;
 
 MAP:M0175A @CL-<ADVL TARGET GAANNI IF (*-1 VFIN)
@@ -4952,13 +4956,22 @@ MAP:M0408T_paratakse @i-ADVL>N TARGET Trm IF (1 INDERIVERENDE_SUBSTANTIV - ("oqa
 #PL20201030 Forstår ikke følgende. Udkommenteret uden konsekvenser i regressionen
 #MAP:M0408U @i-ADVL>N TARGET Cau OR Con IF (1 INDERIVERENDE_SUBSTANTIV + N - ("qaatigooq") - POSSESSUM12 - ("aningaasartuut")) ;
 
-MAP:M0408V @i-ADVL>N TARGET Trm OR Lok IF (0 $$KASUS)(*1 INDERIVERENDE_SUBSTANTIV_BEGRÆNSET + N - QATE - INSOBJVERB  - (/"pisortaq"\ N\ Via\ Pl\ Hyb/1-2/l) BARRIER (*) - $$KASUS - KOMMA)(NEGATE NOT 0 POSSESSUM LINK -1C $$KASUS) #Peqqussut pineqartoq tassaavoq nunani allamiunut inatsisip nunatsinnut *atuutsinneqarneranut peqqussut. PL20200424 tilføjet * og BARRIER for også at tage højde for opremsninger
+MAP:M0408V @i-ADVL>N TARGET Trm OR Lok IF (0 $$KASUS)(*1 INDERIVERENDE_SUBSTANTIV_BEGRÆNSET + N - QATE - INSOBJVERB  - (/"pisortaq"\ N\ Via\ Pl\ Hyb/1-2/l) BARRIER (*) - $$KASUS - KOMMA)# OR fordi den skal hitte på ILINNIARTITAANERMUT, Kultureqarnermut Ilageeqarnermullu Naalakkersuisunngortinneqarpoq.
+(NEGATE NOT 0 POSSESSUM LINK -1C $$KASUS) #Peqqussut pineqartoq tassaavoq nunani allamiunut inatsisip nunatsinnut *atuutsinneqarneranut peqqussut. PL20200424 tilføjet * og BARRIER for også at tage højde for opremsninger
 (NEGATE 0 (/NNGIT\ Der/vv\ Gram/IV\ NIQ\ Der/vn\ N\ Lok\ Sg/l) LINK *-1 BOS BARRIER (*) - OBLIQUE)#Qaartartumik QAARTITSINNGINNERMI mittarfik inuerutitinneqariarluni mittarfimmut mittarfimmiillu angallanneq unitsinneqarallarsimavoq.
 ;
 MAP:M0408X @i-ADVL>N TARGET V - VFIN IF (0 Cau OR Con OR LI)(1 FAM + POSSESSUM - AFFINGERET) ; #Efterskoleramaana arnarsiama Dorthep, kursusereeruma aaniaraanga, aperigami qaqugu qassinullu aasinnaanerlunga adresselu apeqqutigalugu. 
 MAP:M0408X @i-ADVL>N TARGET $$KASUS + CONJ-C IF (-1C $$KASUS + @i-ADVL>N) ;
 
 MAP:M0408Y @i-ADVL> TARGET Abl IF (*1 (/"sunner"\ UTE\ Der/vn/l));#IMIKUMIT, nunap qaanit IMERMIT aamma nunap iluani IMERMIT sunniutaasinnaasunik naliliineq.
+
+#Som 0408V men tillader inderivering ved NNGUR
+MAP:M0408Z @i-ADVL>N TARGET Trm IF (0 $$KASUS)
+(*1 INDERIVERENDE_SUBSTANTIV_BEGRÆNSET - QATE - INSOBJVERB  - (/"pisortaq"\ N\ Via\ Pl\ Hyb/1-2/l) + V + NNGUR BARRIER (*) - $$KASUS - KOMMA)#  ILINNIARTITAANERMUT, Kultureqarnermut Ilageeqarnermullu Naalakkersuisunngortinneqarpoq.
+(NEGATE NOT 0 POSSESSUM LINK -1C $$KASUS) #Peqqussut pineqartoq tassaavoq nunani allamiunut inatsisip nunatsinnut *atuutsinneqarneranut peqqussut. PL20200424 tilføjet * og BARRIER for også at tage højde for opremsninger
+(NEGATE 0 (/NNGIT\ Der/vv\ Gram/IV\ NIQ\ Der/vn\ N\ Lok\ Sg/l) LINK *-1 BOS BARRIER (*) - OBLIQUE)#Qaartartumik QAARTITSINNGINNERMI mittarfik inuerutitinneqariarluni mittarfimmut mittarfimmiillu angallanneq unitsinneqarallarsimavoq.
+;
+
 MAP:M0043L @i-ADVL> TARGET Lok (1 <Hprof> + Der/vn) #fritidshjemmimi sulisoq
 (NEGATE 0 Prop + $$KASUS OR Gram/ACR + $$KASUS LINK -1 $$KASUS - FIRSTNAME)#Air Greenlandimi saqisut kattuffianni ACU-MI siulittaasoq Anders Mark Jensen paasissutissiivoq
 ;
@@ -10844,6 +10857,7 @@ REMOVE:8533J ("pissaaneq") IF (0 (/"pissaq"\ U\ Der/nv\ Gram/IV\ NIQ/l));
 REMOVE:8533K (/"malip"\ Gram/TV\ TARE\ Der/vv\ Gram/TV\ TAQ/l) IF (0 ("malittare") + TAQ); 
 REMOVE:8533L (/"malik"\ TAQ\ Der/nn\ GE\ Der/nv\ Gram/TV\ TAQ/l) IF (0 ("malittare") + TAQ); 
 REMOVE:8533M ("ilior") + Gram/Refl IF (0 (/"ilior"\ Gram/IV\ USIQ/l));#
+REMOVE:8533N (/"imaq"\ INNAQ/l) IF (0 (/"imaannaa"\ Gram/IV\ NNGIT\ Der/vv\ Gram/IV\ TUQ/l));
 
 #De særlige former af TUQ + Aeq på transitiver fulgt af "ippaa" slettes hvis ikke fulgt af "ippaa"
 REMOVE:8599 TUQ + Aeq - Der/vn IF (0 TUQ + Aeq + Der/vn)(NEGATE 1 ("ip")); 
