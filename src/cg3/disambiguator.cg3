@@ -118,6 +118,7 @@ LIST Sem/Url = Sem/Url ; #Semantisk tag til webadresser.
 LIST Sem/Concessive = Sem/Concessive ; #koncessive sætninger
 LIST Sem/Temporal = Sem/Temporal ; #måske kan den bare slås sammen med Sem/Time. #til baggrundsparticipier.
 LIST Sem/inst = Sem/inst ; #sem-tag til Sem/Hum som er NOT-PERSON fx Aarhus Universitetshospital
+LIST Sem/sem = Sem/sem ; #semiotik til dækning af både sem-r og sem-w
 LIST Gram/Abbr = Gram/Abbr ;
 LIST Gram/ACR = Gram/ACR ;
 LIST Gram/Ord = Gram/Ord Der/Ord ; # Ordinaltal #Hedder Der/Ord i den videre kæde.
@@ -4069,8 +4070,12 @@ REMOVE:0111A iOBLIQUE + i2SgPoss IF (1C i1SgPoss) ;
 REMOVE:0111B iOBLIQUE + i1SgPoss IF (1C i2SgPoss) ;
 REMOVE:0111C iOBLIQUE + iPOSSESSUM IF (0 TUQ + U - iOBLIQUE) ;
 REMOVE:0111D iOBLIQUE + (/i..*Der\/nv\ Gram\/TV/l) IF (0 Gram/IV) ;
-REMOVE:0112 OBLIQUE + 1SgPoss IF (NEGATE -1 ("uanga") + 1Sg)(NEGATE *0 VERB-NOTCONT + 1Sg)(NEGATE 0*W 1Sg OR 1SgPoss - Hyb/1-2)(NEGATE 0 FAM + POSSESSUM + Ins LINK *1 HTR); # (0*W (someset)) Sidste NEGATE forebygger sletning af possessum i mik-objekter når der er tale om familiebetegnelser
+#Ved 1SgPoss vs. 2SgPoss konflikter vil der være flest korrekte 1SgPoss blandt assimilerede endelser fordi 2SgPoss ofte(st) vil have formen rC. Derfor ændres rækkefølgen, så 0113 sletter før 0112, der oftest slet ikke vil blive aktiveret fordi resten af cohorten så er 1SgPoss
 REMOVE:0113 OBLIQUE + 2SgPoss IF (NEGATE -1 ("illit"))(NEGATE *0 VERB-NOTCONT + 2Sg)(NEGATE 1 2SgPoss)(NEGATE -*1 ("quja") + Gram/Exclm) ;
+
+REMOVE:0112 OBLIQUE + 1SgPoss IF (NEGATE -1 ("uanga") + 1Sg)(NEGATE *0 VERB-NOTCONT + 1Sg)(NEGATE 0*W 1Sg OR 1SgPoss - Hyb/1-2)(NEGATE 0 FAM + POSSESSUM + Ins LINK *1 HTR); # (0*W (someset)) Sidste NEGATE forebygger sletning af possessum i mik-objekter når der er tale om familiebetegnelser
+
+
 #REMOVE:0114 OBLIQUE + 1SgPoss IF (NEGATE *0 ("uanga") OR 1Sg);
 
 #REMOVE:0110 Abl + 1SgPoss IF (NEGATE -1 ("uanga"))(NEGATE *0 VERB-NOTCONT + 1Sg ) ;
@@ -4643,8 +4648,9 @@ SELECT:0258 Rel + Pl IF (*-1 ORATIOOBLVERB LINK *1 3Pl + 3PlO)(-3 Abs LINK 1 Abs
 SELECT:0259 Par + 3Sg IF (0 NIQ + U)(-1 NIQ)(1 3Sg + 3SgO)(NEGATE *-1 ORATIOOBLVERB) ; #En ad hoc regel, der vist kun håndterer en enkelt specifik sætning
 
 #SELECT:0260 Abs + Sg + Der/nv IF (-1C Abs + Sg - Gram/Dem)(1 TRANSVERB + 3SgO)(NEGATE *-1 ORATIOOBLVERB)(NEGATE 0 NIR) ; #Med NIR vist altid oratio obl.
-SELECT:0260 Abs + Sg + Der/nv IF (-1C Abs + Sg - Gram/Dem)(1 TRANSVERB + 3SgO)(NEGATE *0 ORATIOOBLVERB)(NEGATE 0 NIR) (NEGATE 0 TEMPUSVERB) ; #Med NIR vist altid oratio obl.
-
+SELECT:0260 Abs + Sg + Der/nv IF (-1C Abs + Sg - Gram/Dem)(1 TRANSVERB + 3SgO)(NEGATE *0 ORATIOOBLVERB)(NEGATE 0 NIR) (NEGATE 0 TEMPUSVERB) #Med NIR vist altid oratio obl.
+(NEGATE 0 (/NIQ\ Der/vn\ QAR/l) LINK 0 NIQAR)#Forstår ikke reglen, men den skal ikke slette NIQAR her Akisussaaffik angisooq 	TUNNIUNNEQARTOQ tiguara.
+;
 ############################
 # Særligt afsnit om tassa
 ############################
