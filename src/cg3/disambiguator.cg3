@@ -1331,6 +1331,7 @@ SET SUBJTRANSVERB& = SUBJ1S2SO | SUBJ1S3SO | SUBJ1S4SO | SUBJ1S2PO | SUBJ1S3PO |
 
 LIST NÆPPE_OBJ = ("nuanner" TUQ) (/"toqqa"\ Gram/IV\ INNAR/l TUQ) ("isertuanngitsoq" Ins) ("isertuar" Ins);
 LIST NÆPPE_SUBJ = ("nalinginnaq") ;
+LIST NÆPPE_KOMPARATIV = (/"eqquup"\ Gram/IV\ TIP\ Der/vv\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ NIQ/l) (/"unioqqup"\ Gram/IV\ TIP\ Der/vv\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ NIQ/l); #Leksikaliseringer som normalt analyseres som NIQ+U frem for NIRU
 LIST AGENS_NOUN = ("katersugaq") ;
 
 SET IVTVSUBJ& = IV_SUBJ& | SUBJTRANSVERB& ;
@@ -5752,7 +5753,7 @@ MAP:OrObl0100 @CL-<CIT TARGET CONT IF (-*1 OQARPOQ BARRIER VFIN LINK NEGATE -*1 
 (NEGATE 0 UTIGE OR RIAR) #Er dette mon overkill eller skal det med. Et modeksempel, hvortil bemærkes, at RIAR ikke står umiddelbart ved modusmærket. Taava allatut ikiuuteriarsinnaanani paasigamiuk pigisanik annissuisunut ikiuutilunnialerpoq.
 (NEGATE -1 Ins LINK 1 _TARGET_ + CONJ-LU LINK *1 Par)
 (NEGATE *1 (":") LINK *1W DIRTALESTART BARRIER EOS) #Ilanngaaserisumut Sakæusimut oqarpoq nikagisaasoq taanna PILLUGU:
-
+(NEGATE 0 CONJ-C LINK *-1 OQARPOQ BARRIER (*) - KOMMA)#Isumaqarpugut ingerlariaqqilerutta Naalakkersuisut akissutaat tamaasa pereerutsigit aatsaat ingerlariaqqissinnaasugut, Hermann Berthelsen oqarpoq, NANGILLUNILU:
 ;
 #MAP:Test0101 @CL-CIT> TARGET CONT IF (*1 ("oqar") - USIQ - (VIK GE) - (UTE GE) - TUQ BARRIER KOMMA LINK NEGATE -*1 ("taama") OR ("nalinginnaq")) #oo ved oqarpoq aldrig simultan med taama
 MAP:OrObl0101 @CL-CIT> TARGET CONT - ADV-LU - ("nipi" QAR) + &&CONT_V& IF (*1 OQARPOQ + &&CONT_V& BARRIER CON_CAU OR VFIN - ORATIOOBLVERB LINK NEGATE -*1 ("taama") OR ("nalinginnaq")) #oo ved oqarpoq aldrig simultan med taama
@@ -11093,6 +11094,7 @@ REMOVE:8533O (/"qajoq"\ USAQ\ Der/nn/l) IF (0 ("qajuusaq") );#for at bevare qaju
 REMOVE:8533P ("aata") + $$KASUS IF (0 ("aataq") + $$KASUS);
 REMOVE:8533Q (/"aa"\ Gram/TV\ TAQ\ Der/vn\ N\ Lok/l) IF (0 (/"aasaq"\ N\ Lok/l));
 REMOVE:8533R ("sioorasaarineq") IF (0 (/"sioorasaar"\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ NIQ/l)) ;
+REMOVE:8533S (/"akissup"\ Gram/TV\ TAQ/l) IF (0 (/"aki"\ Gram/IV\ UTE/l) + POSSESSUM3); 
 
 
 #De særlige former af TUQ + Aeq på transitiver fulgt af "ippaa" slettes hvis ikke fulgt af "ippaa"
@@ -11291,6 +11293,8 @@ REMOVE:5490O (/"tuni"\ Gram/TV\ LLAP\ Der/vv\ TIP\ Der/vv\ Gram/Refl\ TUQ/l) IF 
 REMOVE:5490P (/"tulleriip"\ Gram/IV\ JAAR/l) IF (0 ("tulleriiaar"));
 REMOVE:5490Q (/"pi"\ TARIAQAR\ Der/vv\ Gram/TV\ \(Gram/Conj-encl\ \)?V\ Ind\ 2Sg\ 3SgO/l) IF (0 (/"pi"\ TARIAQAR\ Der/vv\ Gram/IV\ \(Gram/Conj-encl\ \)?V\ Con\ 3Sg/l) LINK *0 VFIN);
 REMOVE:5490R (/"ikip"\ Gram/IV\ LIR/l) IF (0 ("ikili")); 
+REMOVE:5490S (/"eqqoq"\ U/l) IF (0 ("eqquup") + NÆPPE_KOMPARATIV); #eqquutippaa
+
 
 # Der/nv eller Der/vv?
 SELECT:5493 QATE + Der/vn + GE - Imp IF (0 QATE + Der/nn + GE)(NEGATE *-1 HUMAN + @OBJ>) ;
@@ -11402,18 +11406,19 @@ REMOVE HTR + NAR; #naeppe en mulig kombination
 REMOVE SSAQ + LIUR IF (0 HUMAN) ; #'ilassiorpoq' ikke 'ila+SSAQ=LIUR'
 REMOVE VIP IF (0 IntransTrans); #HTR mest sandsynlig
 REMOVE NIQ + U IF (0 NIRU + TIP) # nuannernerulersittarpai
-(NEGATE 0 LEKSIKALISERING + U) #Kommuneqarfik Sermersuup inissianik 2015-imili attartortitseqqiisalersimanera inatsisinik UNIQQUTITSINERUNERSOQ, Namminersorlutik Oqartussat misissuleruttorpaat.
+(NEGATE 0 LEKSIKALISERING + U OR NÆPPE_KOMPARATIV) #Kommuneqarfik Sermersuup inissianik 2015-imili attartortitseqqiisalersimanera inatsisinik UNIQQUTITSINERUNERSOQ, Namminersorlutik Oqartussat misissuleruttorpaat.
+(NEGATE 0 (/"eqquup"\ Gram/IV\ TIP\ Der/vv\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ NIQ\ Der/vn\ U/l) + VFIN + &&IV_SUBJ& LINK *-1 Abs + &&IV_SUBJ&)
 ;
 REMOVE:5568HA NIRU IF (0 TIME - ("qaama") - ("sivisu") - ("ingerla" LLUAR) OR ("ikkap" NIQ)) ; #20091109 "tallimanngor" NIRU
 REMOVE:5568HB NIRU IF (0 LEKSIKALISERING - ("angi") + U) #Kommuneqarfik Sermersuup inissianik 2015-imili attartortitseqqiisalersimanera inatsisinik UNIQQUTITSINERUNERSOQ, Namminersorlutik Oqartussat misissuleruttorpaat.
 (NEGATE -1 Abl)
 ;
 #REMOVE:5568I UGEDAGE + NIRU - ("sapaat") IF (0 UGEDAGE + NIQ + U) ; #overflødiggjort af ovenstående 5568H
-REMOVE:5568J NIQ + U IF (0 NIRU )(NEGATE 0 UGEDAGE)
+REMOVE:5568J NIQ + U IF (0 NIRU)(NEGATE 0 UGEDAGE)
 (NEGATE 0 (/"missinger"\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ NIQ/l))#missingiineq er oftest leksikaliseret. Ad hoc og alt for bred. Maa indsnævres når der viser sig eksempler
 (NEGATE -1 Abs + &&IV_SUBJ& LINK 1 _TARGET_ + &&IV_SUBJ& LINK 1 Abs + &&IV_SUBJ&)#Men NIQ+U hvis subjektsprædikat i 1
 (NEGATE *-1 Abs + &&IV_SUBJ& LINK *1 _TARGET_ + V + &&IV_SUBJ& + (/TUQ\ Der/vn\ LIUR\ Der/nv\ Gram/IV\ NIQ\ Der/vn\ U/l) BARRIER V)#USA-p præsidentiata Donald Trumpip napparsimmavimmit anilluni biiliunneqarnera AKISUSSAASSUSEQANNGITSULIORNERUSOQ, USA-mi præsidentimik paarsisut Secret Servicemeersut peqqinnissaqarfimmilu
-(NEGATE 0 LEKSIKALISERING - ("angi") + U) #Kommuneqarfik Sermersuup inissianik 2015-imili attartortitseqqiisalersimanera inatsisinik UNIQQUTITSINERUNERSOQ, Namminersorlutik Oqartussat misissuleruttorpaat.
+(NEGATE 0 NÆPPE_KOMPARATIV OR LEKSIKALISERING - ("angi") + U) #Kommuneqarfik Sermersuup inissianik 2015-imili attartortitseqqiisalersimanera inatsisinik UNIQQUTITSINERUNERSOQ, Namminersorlutik Oqartussat misissuleruttorpaat.
 
 ;
 REMOVE:5568JX1 NIRU IF (0 (/"missinger"\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ NIQ/l)); #missingiineq er oftest leksikaliseret
@@ -12369,6 +12374,8 @@ REMOVE:9968AE @PRED + Par IF (0 @N< LINK *-1 Abs - HUMAN LINK *1 _TARGET_ + HUMV
 REMOVE:9968AF @POSS> IF (0 @PRED2 LINK *-1 BOS BARRIER (*) - Adv)(*1 @OBJ> LINK *1 @SUBJ> LINK *1 VFIN);#Suli MEERAASUT angutaat inupiluup Saqup inuartarai.
 
 REMOVE:9968AG @SUBJ> + 1Pl IF (*-1 DIRTALESTART LINK *1 _TARGET_ + Par + (/[12][SP][gl]/r)); #Aa, Mosemununa PISUTTUALAARNIARTUGUT, Eskild Emilielu ataatsikkut akipput.
+
+REMOVE:9968AH NIRU IF (0 (NIQ U) + NÆPPE_KOMPARATIV); # .. bankit taamaaliornerat UNIOQQUTITSINERUNERSOQ
 
 
 ###########################################
