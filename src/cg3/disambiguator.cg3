@@ -1529,6 +1529,7 @@ LIST animalverb = "qilup" "pangalip" "pui" ; #forudsætter subjekt ANIMAL
 LIST <fn:Be> = "angi" "naap" ; #náipoĸ
 LIST <fn:CognitiveMaking> = "eqqarsar" ("qiner" Sem/CognitiveMaking HTR);
 LIST <fn:Enter> = "iki" "iser" "pula" ;
+LIST <fn:Hunt> = "eqalup" ;
 LIST <fn:Influence> = (/"periar"\ Gram/IV\ VIK\ Der/vn\ SSIP\ Der/nv\ Gram/TV/l) ;
 LIST <fn:ModeOfMovement> = "angala" "naap" "ornip" ; ##nâgpoĸ
 LIST <fn:Put> = "issorar" ;
@@ -1689,8 +1690,9 @@ SET EXCLAMATION = ("tipi" N) | (SSUSIQ 3SgPoss) | (SSUSIQ Pl 3PlPoss) | WEATHER 
 
 LIST Mask = "Aron" "Egon" "Eri" "Erik" "Eskild" "Hans" "Jens" "Manu" "Mik" "Mikkel" "Miki" "Morten" "Niels" "Ole" "Per" "Piitaq" "Rasmus" "Sean" "Trond" Sem/Mask ;
 LIST Fem = "Anette" "Anna" "Arnaq" "Dagmar" "Emilie" "Gitte" "Hanne" "Jane" "Karen" "Kirsten" "Maliina" "Margrethe" "Meeraq" "Mette" Sem/Fem ;
-LIST Sur = "Jensen" "Jenseni" "Kleist" "Møller" "Olsen" "Pedersen" "Rasmussen" "Trosterud" Sem/LastName ;
-LIST TITEL = "borgmester" "fru" "Gammel" "hr" "hotel" (/"ilaa"\ Gram/IV\ TUQ\ Der/vn\ TAQ/l) ("ilinniar" TIP HTR TUQ) "kunngi" "kunngissaq" "lektor" "minister" "miss" "MS" "nakorsaq" "naalagaq" (/"naalagaq"\ LIRSUR\ Der/nv\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TUQ/l) (/"peqqip"\ Gram/IV\ SAR\ Der/vv\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TUQ/l) ("pisoq" TAQ) "pisortaq" "planchef" "politeeq" "præsident" ("qalipap" HTR TUQ) "senator" ("siulittar" TUQ) ("siunnersor" HTR TUQ) ("siunnersuisoq") ("ulloriarsior" TUQ) "ulloriarsiortoq";
+LIST Sur = "Banke" "Jensen" "Jenseni" "Kleist" "Møller" "Olsen" "Pedersen" "Rasmussen" "Trosterud" Sem/LastName ;
+LIST TITEL = 
+(/"aalisar"\ Gram/IV\ \(TAR\ Der/vv\ Gram/IV\ \)?TUQ/l) "borgmester" "fru" "Gammel" "hr" "hotel" (/"ilaa"\ Gram/IV\ TUQ\ Der/vn\ TAQ/l) ("ilinniar" TIP HTR TUQ) "kunngi" "kunngissaq" "lektor" "minister" "miss" "MS" "nakorsaq" "naalagaq" (/"naalagaq"\ LIRSUR\ Der/nv\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TUQ/l) (/"peqqip"\ Gram/IV\ SAR\ Der/vv\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TUQ/l) ("pisoq" TAQ) "pisortaq" "planchef" "politeeq" "præsident" ("qalipap" HTR TUQ) "senator" ("siulittar" TUQ) ("siunnersor" HTR TUQ) ("siunnersuisoq") ("ulloriarsior" TUQ) "ulloriarsiortoq";
 LIST COUNTRY = "Canada" "Danmark" "Finland" "Grønland" "Island" "Kalaallit Nunaat" "Norge" "Rusland" "Sverige" "Tyskland" "USA" ; 
 LIST GeoProp = Sem/Geo "Danmark" "Finland" "Gladsaxe" "Mose" "Tåstrup" ;
 SET Fornavn = Mask | Fem ;
@@ -3934,7 +3936,10 @@ REMOVE:0069C Par IF (0 N LINK 1 ADVERBIEL + TRANSVERB - ("unner")) ; #N pillugu/
 
 REMOVE:0069D 3PlPoss + Pl IF (0 Num OR iNum)(NEGATE 1 Num + Pl) ; #pingajussaat
 
-SELECT $$OBLIQUE IF (*-1C $$OBLIQUE BARRIER (*) - CONJ-C LINK NOT 0 KASUS - OBLIQUE)(NEGATE 0 KASUS - OBLIQUE) ;
+SELECT:0069E $$OBLIQUE IF (*-1C $$OBLIQUE BARRIER (*) - CONJ-C LINK NOT 0 KASUS - OBLIQUE)(NEGATE 0 KASUS - OBLIQUE)
+(NEGATE 0 Cau + 4Sg LINK *0 VFIN + 3Sg)#Sunngiffimmi aalisartartoq Peter Banke juli-mi pisaminut tupigusulluinnarpoq Nuup kangerluani EQALUKKAMI 5 kilo-mik oqimaassusilimmik 65 centimeterinillu takissusilimmik.
+
+ ;
 
 ### Sikre possessorer ###
 #=======================#
@@ -6425,6 +6430,9 @@ MAP:M0306A @<ADVL TARGET OBLIQUE IF (-1 KOMMA)(*-1 VFIN)(NEGATE *1 V)(NEGATE *1 
 
 ; 
 MAP:M0306B @<ADVL TARGET CONJ-LU + OBLIQUE + $$KASUS + $$NUMERUS IF (-*1 KOMMA BARRIER V)(NEGATE *1 V)(NEGATE *1 LIK OR QAR)(NEGATE 1 Der/vn)(NEGATE -1 $$KASUS + $$NUMERUS) ;
+
+MAP:M0306C @<ADVL TARGET Ins + LIK IF (*-1 V + <fn:Hunt>); #Sunngiffimmi aalisartartoq Peter Banke juli-mi pisaminut tupigusulluinnarpoq Nuup kangerluani eqalukkami 5 kilo-mik OQIMAASSUSILIMMIK 65 centimeterinillu TAKISSUSILIMMIK.
+
  
 MAP:M0310 @<APPOS TARGET Prop + Lok - CONJ-LU IF (-1C Lok - Num - @PROP> - @i-ADVL>N)
 (NEGATE 0 Sem/Geo LINK -*1 TIME BARRIER (*) - ("tunge"))#Ullaap tungaani NUUMMI Nuussuarmilu inuit 18-it sukkavallaamik biilertut politiinit tigusarineqarput.
@@ -6647,8 +6655,10 @@ MAP:M0342 @N< TARGET Abs + Sg + Der/vn IF (-*1 Abs + Sg - @PROP> BARRIER VFIN OR
 ;# Men OK hvis TARGET er objektskomplement i sekvensen SUBJ+Abs : OBJ : OBJ_COMP : CONT+3SgO : INTRANSVERB+3Sg. Sidste NEGATE er en ad hoc regel for at undgå hit på @NIQ_OBJ
 
 #En tidlig regel til LIK, som næsten altid er adnominal
-MAP:M0349A @N< TARGET LIK + $$KASUS + $$NUMERUS IF (*-1 $$KASUS + $$NUMERUS BARRIER (*) - OBLIQUE - Part - Gram/Dem - %ContHypotagme) ;#Issittoq pillugu festivaalertitsineq 40-t sinnerlugit SAMMiSASSAQARTITSIMERTALIK aatsaat taamak annertutigivoq
+MAP:M0349A @N< TARGET LIK + $$KASUS + $$NUMERUS IF (*-1 $$KASUS + $$NUMERUS BARRIER (*) - OBLIQUE - Part - Gram/Dem - %ContHypotagme) #Issittoq pillugu festivaalertitsineq 40-t sinnerlugit SAMMiSASSAQARTITSIMERTALIK aatsaat taamak annertutigivoq
+(NEGATE 0 Ins LINK *-1 V + <fn:Hunt>)#Sunngiffimmi aalisartartoq Peter Banke juli-mi pisaminut tupigusulluinnarpoq Nuup kangerluani eqalukkami 5 kilo-mik OQIMAASSUSILIMMIK 65 centimeterinillu TAKISSUSILIMMIK.
 
+;
 #En specialitet, hvis der står en Gram/Cong i Akk eller Nom imellem
 MAP:M0349B @N< TARGET LIK + Abs + $$NUMERUS IF (*-1 Abs + $$NUMERUS BARRIER (*) - OBLIQUE - Part - Gram/Dem - %ContHypotagme - Akk) ;#ilinniartulli tamaasa 18 sinnerlugit UKIULLIT ikiorpai.
 
@@ -7310,6 +7320,7 @@ MAP:M0750A (@i->N) TARGET Ins - NÆPPE_OBJ - ADVERBIEL OR ("imatut") IF (*1 RSUR
 (NEGATE -1 Ins - ADJEKTIVISK LINK 1 _TARGET_ + ADJEKTIVISK LINK *1 LIK_QAR BARRIER (*) - Ins - Adv)#Savissivimmi aalisarneq ukiuunerani ingerlaannarsinnaaqqullugu qerititsivimmik ANNERUSUMIK aamma pilersitsisoqassaaq.
 (NEGATE 1 NIQ + N - LIK_QAR - LU LINK NOT -1 NIQ)#KNI-p RCM atuleramiuk ajornartorsiortorujussuanngorpoq, tamannalu quersuarmiittuutit ingerlatsinerullu nalingisa KUKKUSUMIK naatsorsornerannik ilaatigut kinguneqarpoq.
 (NEGATE 0 Ins - NUM LINK *1 HTR - LEKSIKALISERING BARRIER V OR LIK_QAR - LEKSIKALISERING OR RSUR)#Ilulissani Kommunalbestyrelsi aalajangerpoq CONTAINERINIK kiassarsimasunik illoqarfimmi angerlarsimaffeqanngitsunut allanullu inissaaleqisunut atugassaqartitsiniarluni, taamatut AG allappoq.
+(NEGATE 0 Ins LINK *-1 V + <fn:Hunt>)#Sunngiffimmi aalisartartoq Peter Banke juli-mi pisaminut tupigusulluinnarpoq Nuup kangerluani eqalukkami 5 kilo-mik OQIMAASSUSILIMMIK 65 centimeterinillu TAKISSUSILIMMIK.
 
 ;
 MAP:M0750B (@i->N) TARGET Ins - NÆPPE_OBJ OR ("imatut") IF (*1 INSOBJVERB BARRIER V LINK NOT *1 HTR BARRIER CONJ-C OR VFIN) 
@@ -8022,6 +8033,8 @@ MAP:M0660 (@SUBJ>) TARGET Abs + Sg - ("kinguneq") - OTHERTIME IF (*1C INTRANSVER
 (NEGATE 0 FIRSTNAME LINK *1 Sem/Hum - FIRSTNAME BARRIER (*) - FIRSTNAME)#NUKA Carmen Bisgaardimik ullumikkut ateqarpoq.
 (NEGATE -1 ("nalunaaqutaq"))
 (NEGATE 0 Num LINK -1 Num)
+(NEGATE 0 Sur + $$KASUS LINK *-1 @SUBJ> + $$KASUS BARRIER (*) - KOMMA - FIRSTNAME)#Sunngiffimmi aalisartartoq Peter Banke juli-mi pisaminut tupigusulluinnarpoq Nuup kangerluani eqalukkami 5 kilo-mik oqimaassusilimmik 65 centimeterinillu takissusilimmik.
+
 ;
 #MAP:M0661 (@SUBJ>) TARGET Gram/Pers + Pron + Abs + 1Sg IF (*1 INTRANSVERB + VERB-NOTCONT + 1Sg OR INTRANSVERB + VERB-NOTCONT + 1Sg BARRIER POSSESSUM3 OR TRANSVERB)(NEGATE -1 ("\(")) ; #TRANSVERB tilføjet for at forhindre tag på obj i: SUBJ OBJ TRANSVERB INTRANSVERB
 
@@ -9864,12 +9877,13 @@ REMOVE:0549 Abs IF (0 Par + ADV-LU LINK NOT -1 Abs)(NEGATE 0 Rel)(NEGATE -1 BOS 
 REMOVE:0549A Par IF (0 TUQ LINK 1C ADV-LU + Par) ;
 
 #Er i tvivl om hvad følgende regel gør, så vil ikke slette den, men korrigerer bare for en akut fejl
-SELECT:0549B N OR Prop - Sem/Hum IF (*1 LIK BARRIER V)(NEGATE 0 Adv OR Pali OR Num)
+SELECT:0549B N OR Prop - Sem/Hum IF (*1 LIK BARRIER V)
+(NEGATE 0 Adv OR Pali OR Num)
 (NEGATE 0 Par LINK *1 (/"ilisima"\ Gram/TV\ TAQ\ Der/vn\ LIK/l) + &&IV_SUBJ& LINK *1 ORATIOOBLVERB + &&IV_SUBJ&)#Kalaallit meerartaat 1.000-it missaanniittut inooqatigiinnikkut ilungersunartunik AJORNARTORSIUTEQARTUT , immikkut ilisimasallit naliliipput skal være Par
 (NEGATE 0 Sem/Hum LINK 1 Sem/Hum)#Ammasumik allagaq Inuit Ataqatigiit siulittaasuannit Múte BORUP Egedemit, Partii Naleqqap siulittaasuanit Hans Enoksenimit, Atassutip siulittaasuanit Aqqalu Jerimiassenimit, Suleqatigiissitsisullu siulittaasuannit Tillie Martinussenimit atsiorneqarpoq.
 (NEGATE *-1 Abs + &&IV_SUBJ& BARRIER V LINK *1 _TARGET_ + Par + &&IV_SUBJ& LINK *1 ORATIOOBLVERB BARRIER V)#Nunatsinnut tikinnermit ullut tallimassaani misissorteqqittup tunillatsissimanera PAASINEQARTOQ, Naalakkersuisut siulittaasuata, Kim Kielsenip (S) oqaatigaa.
 (NEGATE 0 (/"oqaaseq"\ LIRI\ Der/nv\ Gram/IV\ VIK/l) LINK 0 ("Oqaasileriffik") + Prop)#OQAASILERIFFIMMI atorfillit Oqaasiliortut ataatsimiinnerini oqaluuserisalluunniit ataasiakkaat oqaluuserineqarnerini taasisinnaatitaanatik najuussinnaapput.
-
+(NEGATE 0 Cau + 4Sg LINK *0 VFIN + 3Sg)#Sunngiffimmi aalisartartoq Peter Banke juli-mi pisaminut tupigusulluinnarpoq Nuup kangerluani EQALUKKAMI 5 kilo-mik oqimaassusilimmik 65 centimeterinillu takissusilimmik.
  ;
 
 REMOVE:0549C Par + INTRANSVERB IF (0 Prop + &&IV_SUBJ& OR N + &&IV_SUBJ&)(1 ORATIOOBLVERB + INTRANSVERB + &&IV_SUBJ&) 
@@ -10295,6 +10309,7 @@ SELECT:1850A @N< + $$KASUS + $$NUMERUS - FAM - HUM - TIMEVERB IF (-1C $$KASUS + 
 (NEGATE 0 Par + &&IV_SUBJ& LINK *-1 Abs + &&IV_SUBJ& LINK *-1 ORATIOOBLVERB BARRIER VERB-NOTCONT)#Isumaqarpunga innuttaasunut malunnaatilimmik angusaqarniarsarinata inatsisilerinermut nukippassuarnik atuinerput ERLOQONARTOQ.
 (NEGATE 0 @>N LINK 1 Sem/Unit)#
 (NEGATE -1 Rel + Pl LINK 1 _TARGET_ + LEKSIKALISERING + Abs LINK 1 TRANSVERB + 3Pl)#Tassa imaappoq, kukkunersiuisut NAATSORSUUTIT akueraat, naatsorsuutilli ilaa akisussaaffiginngikkitsik erseqqissaatigalugu.
+(NEGATE 0 Cau + 4Sg LINK *0 VFIN + 3Sg)#Sunngiffimmi aalisartartoq Peter Banke juli-mi pisaminut tupigusulluinnarpoq Nuup kangerluani EQALUKKAMI 5 kilo-mik oqimaassusilimmik 65 centimeterinillu takissusilimmik.
 
 ;
 
@@ -10308,6 +10323,7 @@ SELECT:1850B @N< + $$KASUS + $$NUMERUS - FAM - HUM IF (*-1C $$KASUS + $$NUMERUS 
 (NEGATE 0 Par + &&IV_SUBJ& LINK *-1 Abs + &&IV_SUBJ& LINK *-1 ORATIOOBLVERB BARRIER VERB-NOTCONT)#Isumaqarpunga innuttaasunut malunnaatilimmik angusaqarniarsarinata inatsisilerinermut nukippassuarnik atuinerput ERLOQONARTOQ.
 (NEGATE 0 @>N LINK 1 Sem/Unit)#
 (NEGATE -1 Rel + Pl LINK 1 _TARGET_ + LEKSIKALISERING + Abs LINK 1 TRANSVERB + 3Pl)#Tassa imaappoq, kukkunersiuisut NAATSORSUUTIT akueraat, naatsorsuutilli ilaa akisussaaffiginngikkitsik erseqqissaatigalugu.
+(NEGATE 0 Cau + 4Sg LINK *0 VFIN + 3Sg)#Sunngiffimmi aalisartartoq Peter Banke juli-mi pisaminut tupigusulluinnarpoq Nuup kangerluani EQALUKKAMI 5 kilo-mik oqimaassusilimmik 65 centimeterinillu takissusilimmik.
  
 ;
 REMOVE @ADVL> IF (0 @N< + LIK OR @N< + TUQ OR @N< + ADJEKTIVISK) ; #Arnat Danmarkimit *pisut pinnerput.
@@ -12512,7 +12528,9 @@ REMOVE:9968AG @SUBJ> + 1Pl IF (*-1 DIRTALESTART LINK *1 _TARGET_ + Par + (/[12][
 
 REMOVE:9968AH NIRU IF (0 (NIQ U) + NÆPPE_KOMPARATIV); # .. bankit taamaaliornerat UNIOQQUTITSINERUNERSOQ
 
-REMOVE Par + 4PlO IF (0 Par + 4Pl + 3SgO LINK *-1 VFIN + 3Pl); #Tassa imaappoq, kukkunersiuisut naatsorsuutit akueraat, naatsorsuutilli ilaat AKISUSSAAFFIGINNGIKKITSIK erseqqissaatigalugu.
+REMOVE:9968AI Par + 4PlO IF (0 Par + 4Pl + 3SgO LINK *-1 VFIN + 3Pl); #Tassa imaappoq, kukkunersiuisut naatsorsuutit akueraat, naatsorsuutilli ilaat AKISUSSAAFFIGINNGIKKITSIK erseqqissaatigalugu.
+
+REMOVE:9968AJ ("eqalugaq") + Lok IF (0 ("eqalup") + Cau + 4Sg LINK *0 VFIN + 3Sg); #Sunngiffimmi aalisartartoq Peter Banke juli-mi pisaminut tupigusulluinnarpoq Nuup kangerluani EQALUKKAMI 5 kilo-mik oqimaassusilimmik 65 centimeterinillu takissusilimmik.
 
 
 ###########################################
