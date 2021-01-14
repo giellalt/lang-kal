@@ -2335,6 +2335,9 @@ MAP:M_tidlig0340 @i->N TARGET LIK + Ins IF (1 INSOBJVERB + V);
 #parantetiske indskud som .., pingaarnertut Tasiilami, ..
 MAP:M_tidlig0350 @i-ADVL>N TARGET (/"pi"\ NGAAR/l) + Aeq OR Ins IF (1 Sem/Geo + Lok LINK 1 KOMMA OR PUNCT)(-1 KOMMA OR PUNCT);
 
+#vanskeligt at adskille Par og kongruensadled ved inuusuttoq
+REMOVE:tidlig0360 Par IF (0 (/"inuusup"\ Gram/IV\ TUQ/l) + $$KASUS LINK -1 HUM + $$KASUS OR TITEL + $$KASUS); #Ataasinngormat ullaakkut arnap 30-ikkunni ukiullip nukappiaraq 15-inik ukiulik pinngitsaaliisimasutut politiinut nalunaarutigaa, tamatumalu kingorna angut INUUSUTTOQ Sisimiuni politiinit tigusarineqarpoq pinngitsaaliisimasutullu tigummigallagassanngortinneqarluni.
+
 #############################################
 # Et særligt afsnit til "unnerpoq/ unnerpaa #
 #############################################
@@ -4017,7 +4020,7 @@ SELECT:0063 Rel + Pl - FAM_UNIK - Num - POSSESSUM12 IF (*1C 3PlPossUdenMWE - %Ot
 (NEGATE 0 4PlPoss LINK NOT 1 3PlPoss)#Matumani inuit illoqarfinnut QAJASSUUSSAMIK, silatusaartumik nuutsinneqarnerannut qulakkeereqataassaagut, pitsaanerusumillu atugassarissaarnissaannik qulakkeerillutalu neriorsuissaagut
 (NEGATE 0 Abs + Pl LINK *1 CONT + 4Pl OR V + 3Pl)#FN-ip nunarsuarmi piujuaannartitsinissamut anguniagai 17-iusut pillugit SULIFFEQARFIIT, kattuffiit pisortallu suliffeqarfiutaat arlallit suliniaqataallutik periuusissanut pilersaarutinik suliaqarput.
 (NEGATE 0 Abs + Pl + Der/vn LINK *-1 Abs + Pl BARRIER (*) - OBLIQUE - NUM - (Abs Pl) - %AmbiguøsN)#Timmisartuutileqatigiiffiulli suli naatsorsuutigaa ilaasussat 900-t missaanniittut KINGUAATTOOQQASUT tamaasa apuuffissaannut sapaatip-akunnerata naanerani apuukkumaarlugit .
-
+(NEGATE 0 Par LINK *-1 Abs + Pl BARRIER (*) - Abs - OBLIQUE - Adv LINK *-1 ORATIOOBLVERB BARRIER V)#Nalunngilai kikkut KATITTUT, kikkut avittut, kikkut asaqatigiilersut assigisaallu.
 (NEGATE -1 Rel + Sg LINK 1 _TARGET_ + Sg + CONJ-C)#Danmarkip nunattalu akornanni juullip UKIORTAALLU akornanni angalasussat aarlerinarnerpaapput.
 ;
 
@@ -5988,6 +5991,7 @@ MAP:OrObl0110 @CL-CIT> TARGET Par + &&IV_SUBJ& IF (*1 OQARPOQ BARRIER @PRED OR C
 (NEGATE *1 KOMMA LINK NEGATE *1 Prop + Abs LINK *1 OQARPOQ)#En tidligere formulering, (*1 OQARPOQ BARRIER KOMMA .. ) må opgives pga mulige <APPOS hvorfor reformuleres til denne NEGATE
  #Er dette mon overkill eller skal det med
 (NEGATE 0 (/"taama"\ IP\ Der/nv\ Gram/IV\ GALUAR\ Der/vv\ Gram/IV/l) LINK -1 BOS OR KOMMA)#TAAMAAKKALUARTORLI qassutinik maannamut suli utertitsisoqanngitsoq qassutaarniartup Qalut Voninip pisortaa, Cuno Jensen, oqarpoq.
+(NEGATE *-1 ORATIOOBLVERB OR OQARPOQ BARRIER V)#Assigiinngitsunik oqaluuserisassaqassaagut, qularutiginngilaralu Kalaallit Nunaat Issittorlu eqqartorneqartussanut ILAASUT, Mette Frederiksen, NATO-p Londonimi ataatsimeersuarneranut peqataasoq oqarpoq.
 ;
 
 #En formodning om at NIR+Par undtagelsesløst er CL-CIT uagtet kendt inquit eller ej
@@ -11569,8 +11573,15 @@ REMOVE:8498 ("illoq") + QAR + VIK IF ( 0 ("illu") + QAR + VIK) ;
 SELECT:8499A ("ip") + TUQ IF (-1 ("qanoq"))(NEGATE 0 ("ili") + USIQ ) ; # fjerner ittuk og ittoq, men bevarer iliuseq
 REMOVE:8499B ("illoq") IF (0 ("illu") LINK 1 <fn:Be>); #Taamaalillunga pingaarutilimmik paasisaqaqqippunga, paasivaralu ulloriaaraq ataqqinartuaqqap najugaqarfigisaa ILLUMIT anginerungaarunanngitsoq.
 SELECT:Se_illuHnoun ("illu") IF (0 (@HNOUN)); # "illoq" er usandsynlig i absolut form
-SELECT:SeHumHum HUMAN - V IF (-*1 HUMVERB)(NEGATE 0 ("ilaanni") + Adv )(Negate 0 ("illu") + 3PlPoss LINK -1 ("kalaaleq") + Rel + Pl OR ("utoqqaq") + Rel + Pl)(NEGATE 0 ("illu") + SUAQ)(NEGATE 0 ("ilaa") + Interj) # ikke "illu" før HUMVERB. NEGATE kun statistisk begrundet idet ilaanni oftest betyder Part. -V for at udelukke verber med incorporeret HUMAN
+SELECT:SeHumHum HUMAN - V IF (-*1 HUMVERB)
+(NEGATE 0 ("ilaanni") + Adv )
+(NEGATE 0 ("illu") + 3PlPoss LINK -1 ("kalaaleq") + Rel + Pl OR ("utoqqaq") + Rel + Pl)
+(NEGATE 0 ("illu") + SUAQ)
+(NEGATE 0 ("ilaa") + Interj) # ikke "illu" før HUMVERB. NEGATE kun statistisk begrundet idet ilaanni oftest betyder Part. -V for at udelukke verber med incorporeret HUMAN
 (NEGATE 0 U LINK *-1 BOS BARRIER (*) - ("suli" Adv))#Suli MEERAASUT angutaat inupiluup Saqup inuartarai.
+(NEGATE 0 Par + 3Pl LINK *-1 Abs + CONJ-C BARRIER (*) - OBLIQUE - Adv LINK *-1 Abs LINK *-1 ORATIOOBLVERB BARRIER V)#Assigiinngitsunik oqaluuserisassaqassaagut, qularutiginngilaralu Kalaallit Nunaat Issittorlu eqqartorneqartussanut ILAASUT, Mette Frederiksen, NATO-p Londonimi ataatsimeersuarneranut peqataasoq oqarpoq.
+(NEGATE 0 Par + &&IV_SUBJ& LINK *-1 Abs + &&IV_SUBJ& BARRIER (*) - OBLIQUE - Adv LINK *-1 ORATIOOBLVERB BARRIER V)#som foranstående NEGATE men uden paratakse
+
 ;
 
 SELECT:Se_illuNot_illoq ("illu") OR ("Illu") ; # "illu" mere sandsynlig end "illoq"
@@ -13017,6 +13028,11 @@ REMOVE:9968AJ ("eqalugaq") + Lok IF (0 ("eqalup") + Cau + 4Sg LINK *0 VFIN + 3Sg
 REMOVE:9968AK VFIN + 3SgO IF (0 3PlO LINK *-1 BOS LINK 1 Abs + Pl LINK *1 Rel + Pl LINK *1 _TARGET_ BARRIER (*) - Rel - OBLIQUE - %AmbiguøsN - %AmbiguøsPar)#Tamakkuli tamaasa ikinngutigiit tikerlaat sinnartoorsimasut isiginngitsutut IPPPAAT.
 ;
 
+REMOVE:9968AL Abs + Pl IF (0 Par + 3Pl LINK *-1 Abs + CONJ-C BARRIER (*) - OBLIQUE - Adv LINK *-1 Abs LINK *-1 ORATIOOBLVERB BARRIER V); #Assigiinngitsunik oqaluuserisassaqassaagut, qularutiginngilaralu Kalaallit Nunaat Issittorlu eqqartorneqartussanut ILAASUT, Mette Frederiksen, NATO-p Londonimi ataatsimeersuarneranut peqataasoq oqarpoq.
+REMOVE:9968AM Abs IF (0 Par + &&IV_SUBJ& LINK *-1 Abs + &&IV_SUBJ& BARRIER (*) - OBLIQUE - Adv LINK *-1 ORATIOOBLVERB BARRIER V) #som foranstående NEGATE men uden paratakse
+(NEGATE 0 Abs + &&TV_OBJ& LINK *1 V + &&TV_OBJ& BARRIER V)#Timmisartuutileqatigiiffiulli suli naatsorsuutigaa ilaasussat 900-t missaanniittut KINGUAATTOOQQASUT tamaasa apuuffissaannut sapaatip-akunnerata naanerani apuukkumaarlugit .
+;
+
 ###########################################
 #Mapping af resterende nominer, Num og Prop
 ###########################################
@@ -13652,6 +13668,8 @@ REMOVE:9972B ("([^<]...*).."r) + (/Der\/.*/r) IF (0 (VSTR:"$1...+"r) - (/Der\/.*
 REMOVE:9972C (/@.*>.*/r) IF (0 (/@.*<.*/r)) (1 CLB)
 (NEGATE 0 @CL-CIT> LINK *1 @SUBJ> + &&IV_SUBJ& LINK *1 ORATIOOBLVERB + &&IV_SUBJ&)#Kalaallit Nunaalli EQQARSARLUARTARIAQARTOQ, nunanut allanut tunngasunut ministeriusimasoq, Martin Lidegaard mianersoqqusivoq.
 (NEGATE *-1 Abs + &&IV_SUBJ& BARRIER V LINK *1 _TARGET_ + Par + &&IV_SUBJ& LINK *1 ORATIOOBLVERB OR OQARPOQ)#Tunillatsittut amerlassusaannut atatillugu tunillaassuuttoqarnerata annikillinissaa pissutigalugu sukkasuumik sunniuteqarluartumillu iliuuseqartoqarnissaa PINGAARUTEQARTOQ, Aarhus Universitetshospitalimi nakorsaaneq, Lars Østergaard oqarpoq.
+(NEGATE 0 Par + 3Pl LINK *-1 Abs + CONJ-C BARRIER (*) - OBLIQUE - Adv LINK *-1 Abs LINK *-1 ORATIOOBLVERB BARRIER V)#Assigiinngitsunik oqaluuserisassaqassaagut, qularutiginngilaralu Kalaallit Nunaat Issittorlu eqqartorneqartussanut ILAASUT, Mette Frederiksen, NATO-p Londonimi ataatsimeersuarneranut peqataasoq oqarpoq.
+(NEGATE 0 Par + &&IV_SUBJ& LINK *-1 Abs + &&IV_SUBJ& BARRIER (*) - OBLIQUE - Adv LINK *-1 ORATIOOBLVERB BARRIER V)#som foranstående NEGATE men uden paratakse
 
  ;
 REMOVE:9972C (/@.*<.*/r) IF (0 (/@.*>.*/r)) (-1 CLB) ;
