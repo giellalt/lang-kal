@@ -1716,7 +1716,7 @@ LIST NÆPPE-SING = (/"naatsorsor"\ UTE/l);
 
 LIST Mask = "Aron" "Egon" "Eri" "Erik" "Eskild" "Hans" "Jens" "Manu" "Mik" "Mikkel" "Miki" "Morten" "Niels" "Ole" "Per" "Piitaq" "Rasmus" "Sean" "Trond" Sem/Mask ;
 LIST Fem = "Anette" "Anna" "Arnaq" "Dagmar" "Emilie" "Gitte" "Hanne" "Jane" "Karen" "Kirsten" "Maliina" "Margrethe" "Meeraq" "Mette" Sem/Fem ;
-LIST Sur = "Banke" "Dalloni" "Jensen" "Jenseni" "Kleist" "Møller" "Olsen" "Pedersen" "Rasmussen" "Trosterud" Sem/LastName ;
+LIST Sur = "Banke" "Dalloni" "Jensen" "Jenseni" "Kleist" "Møller" "Nielsen" "Olsen" "Pedersen" "Rasmussen" "Trosterud" Sem/LastName ;
 LIST TITEL = (/"aalisar"\ Gram/IV\ \(TAR\ Der/vv\ Gram/IV\ \)?TUQ/l) "ajoqi" "allatsi" (/"assi"\ LIR\ Der/nv\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TUQ/l)
 "borgmester" "fru" "Gammel" "hr" "hotel" (/"ilaa"\ Gram/IV\ TUQ\ Der/vn\ TAQ/l) ("ilinniar" TIP HTR TUQ) "kunngi" "kunngissaq" "lektor" "minister" "miss" "MS" "nakorsaq" "naalagaq" (/"naalagaq"\ LIRSUR\ Der/nv\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TUQ/l) "oqalutsi" (/"peqqip"\ Gram/IV\ SAR\ Der/vv\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TUQ/l) ("pisoq" TAQ) "pisortaq" "planchef" "politeeq" "præsident" ("qalipap" HTR TUQ) "senator" ("siulittar" TUQ) ("siunnersor" HTR TUQ) ("siunnersuisoq") ("ulloriarsior" TUQ) "ulloriarsiortoq";
 LIST COUNTRY = "Canada" "Danmark" "Finland" "Grønland" "Island" "Kalaallit Nunaat" "Norge" "Rusland" "Sverige" "Tyskland" "USA" ; 
@@ -2341,6 +2341,9 @@ MAP:M_tidlig0350 @i-ADVL>N TARGET (/"pi"\ NGAAR/l) + Aeq OR Ins IF (1 Sem/Geo + 
 REMOVE:tidlig0360 Par IF (0 (/"inuusup"\ Gram/IV\ TUQ/l) + $$KASUS LINK -1 HUM + $$KASUS OR TITEL + $$KASUS); #Ataasinngormat ullaakkut arnap 30-ikkunni ukiullip nukappiaraq 15-inik ukiulik pinngitsaaliisimasutut politiinut nalunaarutigaa, tamatumalu kingorna angut INUUSUTTOQ Sisimiuni politiinit tigusarineqarpoq pinngitsaaliisimasutullu tigummigallagassanngortinneqarluni.
 
 MAP:M_tidlig0370 @N< TARGET ("arnaq") + $$KASUS + $$NUMERUS OR ("angut") + $$KASUS + $$NUMERUS IF (-1 <Hprof> + $$KASUS + $$NUMERUS); #Qatanngutigiit Ivik aamma Aqqalu Nielsen nerrivimmi arsaarartut ANGUTIT iligiikkaarneranni kuultinnapput.
+
+MAP:M_tidlig0380 @>N TARGET (/"qatanngut"\ GIIT/l) IF (1 Sem/Hum + Pl); #QATANNGUTIGIIT Nielsenikkut, Ivik aamma Aqqalu angutit iligiikkaarneranni finalissapput.
+MAP:M_tidlig0381 @>N TARGET (/"qatanngut"\ GIIT/l) IF (1 Sem/Hum + Sg LINK *1 Sem/Hum + Sg BARRIER (*) - Conj); #QATANNGUTIGIIT Ivik aamma Aqqalu angutit iligiikkaarneranni finalissapput.
 
 
 #############################################
@@ -5784,6 +5787,8 @@ MAP:M0032X @POSS> TARGET Rel + Sg IF (-2 $$KASUS + OBLIQUE LINK 1 KOMMA LINK 1 _
 
 MAP:M0010F @i-ADVL>N TARGET ("Kalaallit Nunaat") + OBLIQUE (1 Prop - CONJ-C - @PROP> - @>N - @POSS> - Sem/Geo) ; #Kalaallit Nunaanni Politiini aqutsisoq
 
+#Ivik aamma Aqqalu NIELSEN har sing. i efternavnet. For at lave kongruens til verbet ændres taggen til plur
+SUBSTITUTE Sg Pl TARGET Sur IF (*-1 FIRSTNAME BARRIER (*) - KOMMA LINK -1 Conj LINK -1 FIRSTNAME);  
 
 #Forsøg på en mere generel regel for Prop der er @<APPOS til noget ikke-Prop
 MAP:M0032A @<APPOS TARGET PROP + $$KASUS - CONJ-LU OR PLACE_MORE - PLACE + $$KASUS - CONJ-LU OR Gram/ACR + $$KASUS IF (-*1C N + $$KASUS - Prop - TIME - @>N - @VOK BARRIER (*) - KOMMA - PUNCT - (Abs Prop) - (Hyb/1-2) - $$KASUS)(NEGATE 1 KOMMA LINK 1 $$KASUS)
@@ -5825,6 +5830,8 @@ MAP:M0032F @<APPOS TARGET PROP + $$KASUS IF (-*1 Abs + Pl + $$KASUS LINK *1 _TAR
 #Apoositioner til specifikke ord, hvor kasusoverensstemmelse er usikker
 MAP:M0032G @<APPOS TARGET Prop IF (-1 KOMMA LINK -1 ("qulequtaq")); #Saqqummersitsinerup qulequtaa, ISSITTUP QULLII, marloqiusamik isumaqarnera Kunngip oqaatsinik pinnguallaqqinneranit pilersinneqarpoq. Der kan tilføjes OR andre enkeltord
 
+MAP:M0032H @<APPOS TARGET FIRSTNAME IF (-1 Conj LINK -1 FIRSTNAME LINK *-1 Sem/Hum + Pl BARRIER (*) - KOMMA);#Qatanngutigiit Nielsenikkut, Ivik aamma AQQALU angutit iligiikkaarneranni finalissapput.
+
 MAP:M0033C1 @<APPOS TARGET PROP + Abs + Sg - CONJ-LU - iOBLIQUE IF (-1 N + Abs + Sg - TIME - POSSESSUM12 LINK NOT 0 V)#Minus TIME pga #Inuup allap coronavirusimik tunillatsissimanerata pingasunngornermi tusarliutigineqarnerata kingorna NUUK pingasunngornermi nalunaaqutaq 16.00 matuvoq.
 (NEGATE -1C @PROP>)(NEGATE 1 Prop - Sem/Fem)(NEGATE -1 TITEL) # N Per (Men ikke N Per Lennert)
 #første NEGATE for at forhindre hit på fx (Royal Arctic Line)@SUBJ> VERBUM og -LU for ikke at hitte på Danmark Islandilu og andet NEGATE for at blokere PISORTAQ Per Langgård oqarpoq
@@ -5835,12 +5842,14 @@ MAP:M0033C1 @<APPOS TARGET PROP + Abs + Sg - CONJ-LU - iOBLIQUE IF (-1 N + Abs +
 MAP:M0033C2 @<APPOS TARGET PROP + Abs + $$NUMERUS - CONJ-LU - iOBLIQUE IF (-1 N + Abs + $$NUMERUS - TIME - POSSESSUM12 LINK NOT 0 V)(NEGATE -1C @PROP>)(NEGATE 1 Prop - Sem/Fem)(NEGATE -1 TITEL)  # N Per (Men ikke N Per Lennert)
 #første NEGATE for at forhindre hit på fx (Royal Arctic Line)@SUBJ> VERBUM og -LU for ikke at hitte på Danmark Islandilu og andet NEGATE for at blokere PISORTAQ Per Langgård oqarpoq
 (NEGATE *-1 @i-ADVL>N BARRIER (*) - FIRSTNAME LINK *-1 BOS BARRIER (*) - Hyb/1-2)
-
+(NEGATE -1 @>N LINK 1 Abs + &&IV_SUBJ& LINK *1 VFIN + &&IV_SUBJ&)#Qatanngutigiit NIELSENIKKUT, Ivik aamma Aqqalu angutit iligiikkaarneranni finalissapput.
 ;
 MAP:M0033C3 @<APPOS TARGET PROP + $$OBLIQUE - CONJ-LU - OBLIQUE IF (-*1 N + $$OBLIQUE BARRIER V - CONT OR Abs OR Rel LINK NOT 0 V)(NEGATE -1 TITEL) # N Per (Men ikke N Per Lennert)
 ;
 
-MAP:M0033D @<APPOS TARGET PROP + Abs + Sg - CONJ-LU IF (*-1 Conj BARRIER (*) - @PROP> - TITEL - PUNCT LINK *-1 PROP + Abs + Sg - CONJ-LU BARRIER (*) - @PROP> - TITEL - PUNCT LINK *-1 N + Abs + Pl BARRIER (*) - PUNCT) ;
+MAP:M0033D @<APPOS TARGET PROP + Abs + Sg - CONJ-LU IF (*-1 Conj BARRIER (*) - @PROP> - TITEL - PUNCT LINK *-1 PROP + Abs + Sg - CONJ-LU BARRIER (*) - @PROP> - TITEL - PUNCT LINK *-1 N + Abs + Pl BARRIER (*) - PUNCT) 
+(NEGATE *-1 @>N BARRIER (*) - FIRSTNAME - Conj LINK *1 _TARGET_ - FIRSTNAME + &&IV_SUBJ& LINK *1 VFIN + &&IV_SUBJ& BARRIER V)#Qatanngutigiit Ivik aamma Aqqalu NIELSEN nerrivimmi arsaarartut angutit iligiikkaarneranni kuultinnapput.
+;
 MAP:M0033E @<APPOS TARGET PLACE_MORE + Abs + Sg - CONJ-LU IF (*-1 Conj BARRIER (*) - @PROP> - TITEL - PUNCT LINK *-1 PROP + Abs + Sg - CONJ-LU OR PLACE_MORE + Abs + Sg - CONJ-LU BARRIER (*) - @PROP> - TITEL - PUNCT LINK *-1 N + Abs + Pl BARRIER (*) - PUNCT) ;
 
 MAP:M0033F @<APPOS TARGET PROP + $$KASUS IF (*-1 TITEL + POSSESSUM + $$KASUS - @PROP> - @>N BARRIER (*) - KOMMA - PROP) 
@@ -12496,6 +12505,7 @@ REMOVE:6000E ("Björn") IF (0 ("Bjørn"));
 REMOVE:6000F ("Atuagagdliutit") IF (0 ("AG"));
 REMOVE:6000G ("Aqqa") + LU IF (0 ("Aqqalu") LINK -1 Conj);#Qatanngutigiit Ivik aamma AQQALU Nielsen nerrivimmi arsaarartut angutit iligiikkaarneranni kuultinnapput.
 REMOVE:6000H ("Ivik") + Sem/Fem IF (0 ("Ivik") + Sem/Mask LINK *1 ("Nielsen") BARRIER (*) - Conj - FIRSTNAME); #en ofte omtalt bordtennisstjerne af hankøn
+REMOVE:6000I ("Ivik") + Sem/Fem IF (0 ("Ivik") + Sem/Mask LINK *0 ("Nielsen") BARRIER V); 
 
 #Partiklerne
 REMOVE:5860 ("taama") + Interj IF (0 ("taama") + Adv LINK 1 V) ;
