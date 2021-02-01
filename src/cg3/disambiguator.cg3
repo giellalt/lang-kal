@@ -2053,7 +2053,7 @@ REMOVE:tidlig0010 ("DM") + Orth/Alt IF (0 ("DMI") );
 
 REMOVE:tidlig0014 ("kiisa" Adv LU) IF (0 ("kiisalu")); #En radikal regel baseret på den antagelse, at kiisa kun er adverbiel når uden LU
 
-MAP:M_parentes01 @<APPOS TARGET (*) (-1 ("\(")) (1 ("\)")) ; #Narsaamanerit tarajuusut Brajasømi (saamerl.) Hundesømilu (talerperl.).
+MAP:M_parentes01 @<APPOS TARGET (*) (-1 ("\(")) (1 ("\)")) ; #Narsaamanerit tarajuusut Brayasømi (saamerl.) Hundesømilu (talerperl.).
 REMOVE:tidlig0015 (/"ili"\ Gram/TV\ QQU/l) IF (0 ("ileqqoq"));
 
 #Abs+Pl vs. Rel+Pl skal så vidt muligt disambigueres tidligt. Følgende regel bør være totalt sikker og helt generel bortset fra usikker possessorbrug ved klokken
@@ -3842,6 +3842,10 @@ MAP:M_faste0430 @i-ADVL> TARGET ("nerrivik") + Lok IF (1 ("arsaarar") + N);
 
 #juledagene
 REMOVE:faste0440 ("juulli") + Via IF (0 KKUT LINK 1 3PlPoss); #Juullip inuata meeqqat nunarsuup kianneruleriartornera pillugu JUULLIKKUT nalaanni ilinniartissavai
+
+#saltsø og saltslette
+REMOVE:faste0450 (/"tarajoq"\ U\ Der/nv\ Gram/IV\ V\ Par/l) IF (0 (/"tarajoq"\ U\ Der/nv\ Gram/IV\ TUQ/l) + $$NUMERUS + $$KASUS LINK -1 ("narsaamaneq") + $$NUMERUS + $$KASUS OR ("taseq") + $$NUMERUS + $$KASUS );
+MAP:faste0451 @N< TARGET (/"tarajoq"\ U\ Der/nv\ Gram/IV\ TUQ/l) + $$NUMERUS + $$KASUS IF (-1 ("narsaameneq") + $$NUMERUS + $$KASUS OR ("taseq") + $$NUMERUS + $$KASUS );
 
 
 #######
@@ -9281,8 +9285,10 @@ MAP:M0952 @N< TARGET N IF (0 $$KASUS + $$NUMERUS LINK -*1 $$KASUS + $$NUMERUS - 
 (NEGATE -2 Abs LINK 1 CONT + TRANSVERB LINK 1 _TARGET_ + Abs)#Nunatsinni qanoq pisoqarnera pillugu ILISIMATINNEQARTARNISSARPUT Nunatta Qitornaanit pingaartitaraarput
 ;
 
-MAP:M0955A @ADVL>N TARGET $$OBLIQUE IF (NEGATE *0 V OR @PRED OR INDERIVERENDE_SUBSTANTIV OR LIK_QAR OR Interj BARRIER CONJ-C)(*1 NOMEN - $$OBLIQUE - CONJ-C) ; #Bosniap qulaani* silaannaq 
+MAP:M0955A @ADVL>N TARGET $$OBLIQUE IF (*1 NOMEN - $$OBLIQUE - CONJ-C BARRIER ("(")) #Bosniap qulaani* silaannaq men undtag parentetiske indskud Tatsit tarajuusut BRAYASØMI (saamerl.) Hundesømilu (talerperl.).
 
+(NEGATE *0 V OR @PRED OR INDERIVERENDE_SUBSTANTIV OR LIK_QAR OR Interj BARRIER CONJ-C)
+;
 # Pronominer - De sikre MAP regler
 # ================================
 MAP:M0960 @SUBJ> TARGET DivPron + Nom + $$PERSON - V IF (*1 INTRANSVERB + $$PERSON BARRIER KOMMA) ; #-V for at forebygge hit på Lok+IP konstruktioner
@@ -13578,6 +13584,9 @@ REMOVE:9970BØ ("nalunaarsor") + @PRED2 IF (0 ("nalunaarsor") + Abs + &&IV_SUBJ&
 
 MAP:M9970BÅ @i-ADVL> TARGET Lok IF (1 Der/vn + N)#Periaatsimut immikkoortumi nassuiaat malillugu inuusuttut ilinniakkamik ingerlatsisutut nalunaarsorsimasut, ILINNIAGAQARNERSIUTEQARTITSIVIMMILI nalunaarsorsimanngitsut, inuusuttunut sullinniakkanut ilanngunneqarput.
 ;
+
+MAP:M9970CA @i-<ADVL TARGET OBLIQUE IF (*-1 @HNOUN LINK NEGATE *0 V); #Narsaamanerit tarajuusut BRAYASØMI (saamerl.) HUNDESØMILU (talerperl.).
+
 
 #Disambiguering og mapping af resterende partikler
 ##################################################
