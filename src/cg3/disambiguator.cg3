@@ -2053,6 +2053,9 @@ MAP:DanskSyntaks @>N TARGET Gram/Adj + Abs - Prop IF (1 OLang/DAN - Gram/Adj + A
 #Appositioner til overbegreb i form af artsbetegnelser. Første eksempel er fugle, men bør kunne udvides til også at dække andre arter vha $$
 MAP:M_specie01 @<APPOS TARGET BIRDS + Sg IF (*-1 ("timmiaq") + Pl BARRIER (*) - BIRDS - KOMMA) ;#Timmissat TUULLIK KIINAALEERARLU Kalaallit Nunaanniinnerat eqqarsaatigalugu piffimmi siamasinngitsumi amerlapput.
 
+#ad hoc
+#REMOVE ("amerla") + 3PlPoss;
+
 #Ambiguitet mellem DMI og *DMi+Orth/Alt. Reglen er ad hoc og må kunne gøres mere generel 
 REMOVE:tidlig0010 ("DM") + Orth/Alt IF (0 ("DMI") );
 
@@ -8275,6 +8278,9 @@ MAP:M0612G @POSS> TARGET Rel IF (1 KOMMA LINK 1 Rel LINK *1 POSSESSUM LINK NOT *
 
  ;
 
+MAP:M0612H @POSS> TARGET Rel IF (*-1 @POSS> BARRIER (*) - KOMMA)(*1 Rel + CONJ-C OR Conj LINK *1 Rel ) #Atuarfiit, paaqqinnittarfiit, NERINIARTARFIIT imerniartarfiillu kiisalu kulturikkut aaqqissuussat matuneqarnerisa nalaanni angerlarsimaffinni imigassamik atuineq oqartussanit qanimut malinnaaffigineqarpoq.
+
+;
 MAP:M0612 @POSS> TARGET Rel IF (*1 Rel + CONJ-C + @POSS> BARRIER (*) - @N<) 
 (NEGATE 1 Rel + &&POSS34_POSS& + LU LINK *1 &&POSS34_POSS& BARRIER (*) - %ContHypotagme LINK *1 VFIN + 3Pl BARRIER VERB-NOTCONT)#Aammattaaq aviisit nunarsuaq tamakkerlugu PEQATIGIIFFIATA aaqqissuisullu nunarsuaq tamakkerlugu peqatigiiffiata ippinnartoqartippaat tusagassiornermut maalaaruteqartarfiup Naalakkersuisunut qanittumik attuumassuteqarnissaa. For så er det et subjekt
 ;
@@ -12914,7 +12920,10 @@ REMOVE:5851 3PlPoss IF (-*1 @POSS> + Sg )(0 3SgPoss) #vælg sing. possessor hvis
 (NEGATE -1 (/"aki"\ SSAQ\ Der/nn\ UTE\ Der/nn\ KIP\ Der/nv\ Gram/IV\ TUQ/l) + Rel + Pl)#Amarngivat siulersuisuini ilaasortaasimavoq akissaatikitsullu MEERAASA atuanngiffeqarlutik angalanissaannut aningaasaateqarfinnut qinnuteqaasiornernut ikiuuttarsimalluni.
 ;
 REMOVE:5851B Abs + Pl IF (0 Abs + Sg)(1C Abs + Sg - POSSESSUM3) ; #Ambigiøse possessum ud fra adled eller apposition
-REMOVE:5851B Abs + Pl IF (0 Rel + Pl - Num)(1C 3PlPossUdenMWE)(NEGATE *1 TRANSVERB + 3PlO BARRIER V) ; #Ambigiøse possessum ud fra adled eller apposition
+REMOVE:5851B Abs + Pl IF (0 Rel + Pl - Num)(1C 3PlPossUdenMWE)(NEGATE *1 TRANSVERB + 3PlO BARRIER V)  #Ambigiøse possessum ud fra adled eller apposition
+(NEGATE 0 Abs + Hyb/2-2 LINK *1 Abs + Hyb/2-2 + CONJ-C BARRIER (*) - Hyb/1-2 LINK *1 VFIN + 3Pl BARRIER V OR 3PlPoss)#Allagaatinik katersuivimmi ujarliutip nanisaani ujagaq qiterliulluni inissisimasassaaq, oqaatsillu siuliiniITTUT kinguliiniittullu amerlanngitsuinnaat aamma nuisinneqartassapput.
+
+;
 REMOVE:5851C ("(.*)"r) + TAQ + Sg IF (0 ("$1"v) + TAQ + Pl)(*0 ("$1"v) ); #Meeqqat qaqqamut majuartut malillugit ingerlalerpoq, qaqqakkoornerli sungiusimannginnamiuk malitaminit kingullinnguukkaluttuinnarpoq. #malitaq er Pl.
 
 #Possessum sing eller plur? Hvis NIQ sandsynligvis sing
@@ -13850,7 +13859,9 @@ REMOVE:9970CG Rel + Pl + CONJ-C IF (*1 POSSESSUM3 + Pl BARRIER (*) - @i-ADVL>)(-
 
 MAP:M_9970CH @N< TARGET Rel + Pl IF (*-1 Sem/Hum + Rel + Pl BARRIER (*) - TIMENOUN) ;#Timarit.is-imit pissarsiarineqartut ilaat katersuinermi aallarniutigineqarsimapput, ukiunilu siullerni marlunni Atuagagdliutit 1952-ip 1955-illu akornanni SAQQUMMERSARTUT oqaasertaat Oqaasileriffiup allattaasitaamut nuutsissutaa atorlugu katersorneqarsimapput.
 
-REMOVE:9970CI @N< + Rel IF (0 Abs + @N< LINK -1 Abs);#Filmit Hollandimeersut , Indiameersut , Danmarkimeersut , Tysklandimeersut , Estlandimeersut , Sverigemeersut , Canadameersut kiisalu Letlandimeersut katillugit filmeeqqat filmillu SIVISUNERUMAAT qulit missaanniittut takutinneqarput .
+REMOVE:9970CI @N< + Rel IF (0 Abs + @N< + $$NUMERUS LINK -1 Abs + $$NUMERUS)#Filmit Hollandimeersut , Indiameersut , Danmarkimeersut , Tysklandimeersut , Estlandimeersut , Sverigemeersut , Canadameersut kiisalu Letlandimeersut katillugit filmeeqqat filmillu SIVISUNERUMAAT qulit missaanniittut takutinneqarput .
+(NEGATE -*1 Rel + Pl BARRIER (*) - Rel LINK *1 3PlPoss - ("misse") BARRIER (*) - Num - OBLIQUE - KOMMA - (Gram/Cong Nom) - %AmbiguøsN )#Naalakkersuisut Siulittaasuat Kim Kielsen aalajangerpoq imigassat AALAKOORNARTORTALLIT 2,25 procentimit kimittunerusut tamarmik Nuummi, Kapisilinni Qeqertarsuatsiaanilu tuniniarneqartarneri sassaalliutigineqartarnerilu inerteqqutigineqarallassasut. "misse" undtaget for ikke at konflikte med film-sætningen
+;
 
 MAP:M_9970CJ @POSS> TARGET Rel + 3SgPoss IF (1 3PlPoss LINK -2 @POSS> + CONJ-C LINK -1 @POSS>) ;#Atuakkiortoqarpoq atuagarpassuarnik allassimasunik inuunerup inuunerullu TULLIATA akornanni inuit qanoq pisarnersut.
 
@@ -13864,7 +13875,13 @@ MAP:M_9970CM @POSS> TARGET Rel IF (*1 3PlPoss BARRIER (*) - Conj - Rel - KOMMA L
 
 MAP:M_9970CN @N< TARGET Abs + Der/vn + CONJ-C IF (*-1 Abs + Der/vn BARRIER (*) - Hyb/1-2 LINK *-1 Abs BARRIER (*) - Hyb/1-2);#Nunat tamat suliniaqatigiiffiinit Laurent Gbagbo annertuumik akerlilerneqarpoq , nunamit aallaqqusaajunnaartinneqarluni , pigisaalu nalillit USA-miittut Tuluit NunaanniITTULLU atorneqarsinnaajunnaartinneqarput .
 
-REMOVE:9970CO Rel + Hyb/2-2 IF (0 Abs LINK *1 Abs BARRIER (*) - Hyb/1-2); #Nunat tamat suliniaqatigiiffiinit Laurent Gbagbo annertuumik akerlilerneqarpoq , nunamit aallaqqusaajunnaartinneqarluni , pigisaalu nalillit USA-miITTUT Tuluit Nunaanniittullu atorneqarsinnaajunnaartinneqarput .
+REMOVE:9970CO Rel + Hyb/2-2 IF (0 Abs LINK *1 Abs BARRIER (*) - Hyb/1-2) #Nunat tamat suliniaqatigiiffiinit Laurent Gbagbo annertuumik akerlilerneqarpoq , nunamit aallaqqusaajunnaartinneqarluni , pigisaalu nalillit USA-miITTUT Tuluit Nunaanniittullu atorneqarsinnaajunnaartinneqarput .
+(NEGATE *1C Prop + Rel BARRIER (*) - FIRSTNAME) #DemokraatineERSUMMI Nivi Olsenip nittartakkatigut oqallinnerit pissusilersuutillu kusanaatsut eqqumaffigineqarnerulernissaannut paasisitsiniaanissamullu siunnersuutaa Inatsisartut taperserpaat.
+;
+
+REMOVE:9970CP Abs + Pl IF (0 Rel + $$NUMERUS + LIK LINK -1 Rel + $$NUMERUS LINK *1 3PlPoss - ("misse" 3PlPoss) LINK NOT -1 Num + Rel)#Naalakkersuisut Siulittaasuat Kim Kielsen aalajangerpoq imigassat AALAKOORNARTORTALLIT 2,25 procentimit kimittunerusut tamarmik Nuummi, Kapisilinni Qeqertarsuatsiaanilu tuniniarneqartarneri sassaalliutigineqartarnerilu inerteqqutigineqarallassasut. "misse" undtaget for ikke at konflikte med film-sætningen
+
+;
 
 #Disambiguering og mapping af resterende partikler
 ##################################################
