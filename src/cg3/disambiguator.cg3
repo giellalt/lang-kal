@@ -1054,6 +1054,8 @@ LIST TUUR = TUUR ;
 LIST TUUR_QINA = TUUR\=QINA ;
 LIST U = U ;
 LIST U_NIRAR = U\=NIRAR ;
+LIST UMMI = UMMI ;
+LIST UMMIR = UMMIR ;
 LIST UR = UR ;
 LIST URL = URL ;
 LIST USAAQ = USAAQ ;
@@ -5009,7 +5011,11 @@ SELECT:0388 Ind + 3Pl + 3PlO IF (NEGATE *0 VFIN)(*-1 Rel + Pl LINK *1C Abs + Pl 
 (NEGATE 0 INTRANSVERB + &&IV_SUBJ& LINK *-1 Abs + &&IV_SUBJ&) #må ikke slette Meeqqat UMIARSUAARTULEQAAT
 ;
 
-SELECT:0389 CON_CAU + 1Sg IF (*1 V + 1Sg) ; # Disambiguerer 1Sg fra 2Sg som subjekt for transitiv
+# Disambiguerer 1Sg fra 2Sg som subjekt for transitiv IKKE
+REMOVE:0389A CON_CAU + 1Sg IF (*1 V + 2Sg) 
+(NEGATE 0 2SgO LINK *1 Gram/Cong + 2Sg OR V + 2Sg)#- Taavami nalaatsornerusimanngilaq ulloq taanna sapaatip-akunnera qaangiummat ILISARISIMALERAKKIT maani kiserrappit pisorujoortutit, miilit tuusintilippassuit nunaqarfinninngaanniit ungasitsigisumi.
+; 
+REMOVE:0389B CON_CAU + 2Sg IF (*1 V + 1Sg) ; # Disambiguerer 1Sg fra 2Sg som subjekt for transitiv
 
 
 ################################################################
@@ -5558,10 +5564,20 @@ MAP:M0005D @PRED TARGET CONT + &&Cont& IF (*-1 Abs + &&Cont& BARRIER VERB-NOTCON
 MAP:M0005E @PRED TARGET CONT + LU + 4Sg IF (*1 VFIN + 3Sg BARRIER (*) - OBLIQUE); #Nuummiu taanna folketingimut inatsisartunullu ilaasortaasimasoq ullumikkut nammineq suliffiuteqarluni NUTSERISUULLUNILU ataatsimeersuarnissanik aaqqissuussisarpoq.
 
 # Nyt afsnit 20210302: @CAU skal udfases og erstattes hhv. @<CAU og @CAU>
-MAP:M0006A @<CAU TARGET Cau IF (*-1 Par OR VFIN)
+MAP:M0006A1 @<CAU TARGET Cau IF (*-1 Par LINK *-1 ORATIOOBLVERB BARRIER VERB-NOTCONT ) #Særlig opmærksomhed på or.obl. hvor @<CAU skal kunne tagges selv om sætningen er uden VFIN: Aali oqaatigineqartoq, illersornissamut aamma tunngatillugu uagut tusarniartassagaatigut, uagut nunarput PINEQARTARMAT.
+(NEGATE *1 V)
+;
+MAP:M0006A2 @<CAU TARGET Cau IF (*-1 BOS OR DIRTALEMIDDLE LINK 1 Adv + UNA OR KONCESSIV LINK *1 Par BARRIER VERB-NOTCONT ) #Særlig opmærksomhed på UNA-konstruktioner og koncessivsætninger hvor @<CAU skal kunne tagges selv om sætningen er uden VFIN: Asuliinnaruna akisunga, pingaaruteqarnerusunik SAMMISAQARAMA!
+(NEGATE *1 V)
+;
+
+MAP:M0006B @<CAU TARGET Cau IF (*-1 Par OR VFIN)
 (NEGATE *1 Par OR VFIN)#Aali oqaatigineqartoq, illersornissamut aamma tunngatillugu uagut tusarniartassagaatigut, uagut nunarput PINEQARTARMAT.
 (NEGATE *-1 VFIN LINK *1 _TARGET_ + CONJ-C LINK *1 CONT)#Ilinniartitsisuisali naalannera unneqqarinneralu pissutigalugit niviarsiaraq taanna nuannarisarilluarpaat, NAAMMASSIMMALLU siunnersorlugu Aasianni juumuussatut ilinniartunngoqqullugu.
 (NEGATE *-1 Rel + &&POSS34_POSS& LINK *1 _TARGET_ + (/4[SP][gl]/r) LINK *1 Der/vn + &&POSS34_POSS& BARRIER (*))#Katrine imilerpoq ataatavit Kalaallit NunaannuKAQQIKKAMI arnaateqalersimanera tusaramiuk, uffalu aappariikkaluarlutik.
+(NEGATE *1 Cau BARRIER V LINK 1 EOS)#- Ulloq taanna seqineq tarrittoq fiiarafoororiarlugu TAKUGAKKU aliasuttorujussuugavit? Ataqqinartuararli akinngilaq.
+(NEGATE 1 EOS LINK -1 Cau LINK NOT *0 VFIN)#- Ulloq taanna seqineq tarrittoq fiiarafoororiarlugu takugakku ALIASUTTORUJUSSUUGAVIT? Ataqqinartuararli akinngilaq.
+(NEGATE *-1 ORATIOOBLVERB + 3Pl LINK *1 _TARGET_ + 4Pl BARRIER V LINK *1 CONT + 4Pl OR CONT + TRANSVERB BARRIER V)#Isumaqarput KAPINARTOQARAMIK qununarpasingaarlutik...
 ; 
 MAP:M0006A_udfases (@CAU) TARGET CONT + CONJ-LU IF (1 Cau)(*-1 CLB OR PUNCT OR KOMMA BARRIER V) ;
 MAP:M0006B @CON TARGET CONT + &&Cont& IF (*-1 Abs + &&Cont& BARRIER V LINK *-1 CONJ-C LINK *-1 Con BARRIER V) #Innarliineq pereersimappat, assillu kanngunarsaasut SIAMMAATEREERSIMALLUTIK, pingaartuuvoq meeqqap tarnikkut ikiorserneqarnissaata qularnaarnissaa, meeqqat illersuisuat oqarpoq.
@@ -12783,7 +12799,7 @@ REMOVE:5639BP (/SUNNI\ Der/nn\ NNGIR\ Der/nv/l) IF (0 (/SUNNIP\ Der/nv\ Gram/IV\
 REMOVE:5639BQ PIAQ + Pl + POSSESSUM3 IF (0 PIAQ + Pl - POSSESSUM3); #Lidt tilfældig, men en ide om at PIAQ kun sjældent vil være possessum
 REMOVE:5639BR (/"kajumip"\ Gram/IV\ TAAR/l) IF (0 (/"kajumip"\ Gram/IV\ SAAR/l));
 REMOVE:5639BS (/"kajumip"\ Gram/IV\ SSAAR/l) IF (0 (/"kajumip"\ Gram/IV\ SAAR/l));
-
+REMOVE:5639BT UMMI IF (0 UMMIR); #Lidt tilfældigt. Enten kan jeg ikke se distributionen eller også er der tale om varianter af identiske derivativer
 
 # Enkelte substantiver
 REMOVE ("pineq") IF (NEGATE *0 ("kamik")) ; #20091103 pineq+QAR vs. pineqar-
@@ -14029,6 +14045,8 @@ MAP:M9970CU @i-ADVL> TARGET Trm + INSTITUTION IF (1 INSTITUTION); #Ajutoortoqass
 
 REMOVE:9970CV ("uanga") + Rel + 1Pl IF (*1 1PlO BARRIER V); #Aali oqaatigineqartoq, illersornissamut aamma tunngatillugu UAGUT tusarniartassagaatigut, uagut nunarput pineqartarmat.
 MAP:M9970CV @OBJ> TARGET ("uanga") + Abs + 1Pl IF (*1 1PlO BARRIER V); #Aali oqaatigineqartoq, illersornissamut aamma tunngatillugu UAGUT tusarniartassagaatigut, uagut nunarput pineqartarmat.
+
+MAP:M9970CW @HNOUN TARGET Sem/Unit + Pl IF (*-1 BOS BARRIER (*) - Num)(NEGATE *1 V + 3Pl OR V + 4Pl);#30 GRADER, sivisulaartumik seqinermiissinnaanngilanga kiangaarmat.
 
 #Disambiguering og mapping af resterende partikler
 ##################################################
