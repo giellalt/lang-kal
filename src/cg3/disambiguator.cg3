@@ -1684,7 +1684,7 @@ SET NÆPPE-POSS = (/"iluaqut"\ U\ Der/nv\ Gram/IV\ TUQ/l) | (/TUQ\ Der/vn\ N\ Re
 
 LIST COLOUR = "aappaluttoq" ("aak" PALUP TUQ) "qaqortoq" "qaqqorik" "qernertoq" "qorsuk" "sungaartoq" "tungujortoq" ;
 SET ATTRIBUTIV = ADJEKTIVISK - ("sakkutooq") | COLOUR | (/QAR\ Der\/nv\ \(Gram\/IV\ \)?TUQ\ /l) | ("IP" TUQ) ;
-LIST NATIONALITY = "dansk" "grønlænder" "kalaaleq" "qallunaaq" "tuluk" ;
+LIST NATIONALITY = "dansk" "grønlænder" "kalaaleq" "norskeq" "qallunaaq" "tuluk" ;
 SET LANGUAGE = NATIONALITY + Aeq | NATIONALITY + iAeq  | ("kalaallisooq") | ("kalaallisut") | ("inuktitut") | ("tuluttooq");
 
 LIST EDIBLE = "iffiaq" "issingigassaq" "kaagi" "kaffe" "kaffi" "kalorie" "kissartoq" "mamartoq" "naatitaq" "neqi" "nutaaq" "orsoq" "panertoq" "siku" "sukku" "tarajoq" ;
@@ -4040,6 +4040,9 @@ MAP:M_opremsning02 @SUBJ> TARGET Abs + CONJ-LU OR Abs + CONJ-LI OR Abs + CONJ-LU
 #Type @PRED KOMMA CONT CONT+LU Taamaattoq pisiniarfinnguaqarput, arfinilinnik atuartulimmik ATUARFEQARLUTIK oqaluffeqarlutillu.
 MAP:M_opremsning03 @PRED TARGET CONT IF (*-1 VFIN + &&CONT_V& LINK 1 KOMMA LINK *1 CONT + &&CONT_V& BARRIER (*) - OBLIQUE LINK 1 CONT + &&CONT_V& + CONJ-C);
 
+#Fjern først teoretisk mulige, men usandsynlige 2SgPoss fra opremsninger
+REMOVE:opremsning03 Abs + 2SgPoss IF (*-1 (/"tassa"\ U/l) + 3Pl LINK *1 _TARGET_ + Abs + Pl LINK NEGATE *0 2Sg OR ("illit")); # Allagaatinik katersuiviup imarisai ilaatigut tassaapput *atuakkiat, *taalliat, *aviisit, *atuagassiat, *nittartakkat inatsisillu oqaasertaat.
+
 #Possessorer med mange deltagere. ADJEKTIVISK undtaget fra 3PlPoss for at nedbringe antallet af fejlanalyserede tup- pluralis fx INNAQ
 REMOVE:opremsning04 Abs + Pl - Num IF (0 Rel + Pl LINK *1 3PlPoss - ("Kalaallit Nunaat") - ("nuna" 3PlPoss) - Orth/Arch BARRIER (*) - KOMMA - %AmbiguøsN - CONJ-C - OBLIQUE)#Atuarfiit, paaqqinnittarfiit, neriniartarfiit imerniartarfiillu kiisalu kulturikkut aaqqissuussat matuneqarnerisa nalaanni angerlarsimaffinni imigassamik atuineq oqartussanit qanimut malinnaaffigineqarpoq.
 (NEGATE 1 LU + 3PlPoss LINK *1 3PlO BARRIER V)#Taamaammat innuttaasut suliffeqarfiillu politiinit piumaffigineqarput ATORTUT assigisinnaasaallu isumannaatsumik inisseqqullugit anorersuarmiit tingitaaqqunagit, inunnut allanullu eqqaaniittunut navianarsinnaammat
@@ -4068,7 +4071,8 @@ REMOVE:opremsning04 Abs + Pl - Num IF (0 Rel + Pl LINK *1 3PlPoss - ("Kalaallit 
 #MAP:M_opremsning04 @POSS> TARGET Rel + Pl - Num IF (0 Rel + Pl LINK *1 3PlPoss - ("Kalaallit Nunaat") - ("nuna" 3PlPoss) - Orth/Arch BARRIER (*) - KOMMA - %AmbiguøsN - CONJ-C - OBLIQUE); #Atuarfiit, paaqqinnittarfiit, neriniartarfiit imerniartarfiillu kiisalu kulturikkut aaqqissuussat matuneqarnerisa nalaanni angerlarsimaffinni imigassamik atuineq oqartussanit qanimut malinnaaffigineqarpoq.
 
 REMOVE:opremsning05 Rel IF (0 Abs LINK *-1 (/"tassa"\ U\ Der/nv\ Gram/IV\ V\ Ind\ 3Pl/l) BARRIER (*) - KOMMA - OBLIQUE - %AmbiguøsN - Abs)
-(NEGATE 1 POSSESSUM3);
+(NEGATE *1 POSSESSUM3 BARRIER (*) - Rel - %AmbiguøsN - KOMMA)
+;
 
 #Opremsede objekter som i Taakkua saniatigut politikkikkut aalajangikkanik aamma suliaqartoqarpoq, taakkua ilagaat qarasaasiaq atorlugu oqaasilerinermi ATORTUSSIORNEQ, NUTSERUSIORNEQ kiisalu tusagassiutinut toqqaannartumik oqaatsitigut KIFFARTUUSSINEQ.
 MAP:M_opremsning06 @<OBJ TARGET Abs - %ContHypotagme IF (*-1 VFIN + GE + 3PlO BARRIER VERB-NOTCONT LINK *1 Abs - %ContHypotagme + Pl OR Abs - %ContHypotagme LINK *1 CONJ-C LINK *1 Abs)
@@ -8692,7 +8696,7 @@ MAP:M0652K @<APPOS TARGET $$KASUS IF (*-1 @FOC>N BARRIER $$KASUS LINK *-1 $$KASU
 (NEGATE 0 Abs + &&IV_SUBJ& LINK *-1 @FOC>N + &&IV_SUBJ& BARRIER (*) - Adv - OBLIQUE)#Saamiatungaani takuneqarsinnaavoq Hundesøen, tassaasoq TASEQ tarajuusoq.
 ;
 
-MAP:M0652L @<APPOS TARGET $$KASUS + $$NUMERUS + Prop - CONJ-C IF (*-1 $$KASUS + $$NUMERUS - CONJ-C - UNA - UKU - @PROP> - @>N - Num BARRIER DIRTALESLUT OR (*) - KOMMA  - Prop)
+MAP:M0652L @<APPOS TARGET $$KASUS + $$NUMERUS + Prop - CONJ-C IF (*-1 $$KASUS + $$NUMERUS - CONJ-C - UNA - UKU - @PROP> - @>N - Num BARRIER DIRTALESLUT OR (*) - KOMMA  - Prop )
 (NEGATE -1 DIRTALE)
 #(NEGATE 1 ORATIOOBLVERB LINK NOT *1 @CL-<CIT)
 (NEGATE 0 Sem/Fem LINK -1 KOMMA LINK -1 Sem/Mask)(NEGATE 0 Sem/Mask LINK -1 KOMMA LINK -1 Sem/Fem)#<APPOS kræver i hvert fald overensstemmelse på køn
@@ -8705,7 +8709,7 @@ MAP:M0652L @<APPOS TARGET $$KASUS + $$NUMERUS + Prop - CONJ-C IF (*-1 $$KASUS + 
 (NEGATE *-1 @i-ADVL>N BARRIER (*) - FIRSTNAME LINK *-1 BOS BARRIER (*) - Hyb/1-2)
 (NEGATE 0 Sem/Geo + Lok LINK 1 HUM)#Saqqummersitami matumani KALAALLIT NUNAANNI inuusuttut suliffeqarnerat ilinniarnerallu sammineqarpoq.
 (NEGATE 0 Sem/Hum LINK -1 Sem/Geo OR TIMENOUN)#1980-imi INUIT CIRCUMPOLAR CONFERENCE-IMI siullersaalluni præsidentiuvoq, tassanilu 1986 tikillugu siuttuulluni.
-
+(NEGATE 0 Rel + &&POSS34_POSS& LINK 1 &&POSS34_POSS& + &&IV_SUBJ& LINK *1 V + &&IV_SUBJ&)#Sisimiuni politiit sapaatip akunnerani kingullermi qamutit aqqanillit normuiarpaat, tassaanerusut taxat, SISIMIUT aviisiat Silleq nittartakkamini allappoq.
 ; 
 
 MAP:M0652M @<APPOS TARGET Abs + Sg IF (*-1 ("soorlu") - LUSUUQ - MI BARRIER (*) - @PROP> LINK *-1 Abs + Pl LINK *1 _TARGET_ LINK *1 INTRANSVERB BARRIER V);
@@ -11223,6 +11227,8 @@ SELECT:1700B Abs + Pl IF (-*1C INTRANSVERB + 3Pl OR INTRANSVERB + 4Pl)
 (NEGATE -1 Par LINK 1 _TARGET_ + CONJ-C LINK *1 ORATIOOBLVERB BARRIER V)#Ilinniakkammi taakkua aningaasaliiffigineqarsimanngitsut AKUERINEQARSIMANNGITSULLU paasinarsivoq.
 (NEGATE *1 ORATIOOBLVERB BARRIER V LINK *-1 _TARGET_ + Par + 3Pl LINK *-1 CONJ-C LINK *-1 Par LINK *-1 Abs + &&IV_SUBJ&)#Trump sulisullu illersorniarlugit qanoq-iliuuseqartoqartoq illersuutinillu ilaatigut ATUGAQARTUT, præsidentip illorsuata Det Hvide Husip oqaaseqartartuata Judd Deerep oqaatigaa.
 (NEGATE 0 Abs + Sg LINK *1 3SgO BARRIER (*) - (Der/vn Abs))#Taamaattumik aanami aatamilu politiinit allagarsisimallutik aliasoqalutik sallaatsumik oqaloqatigimmanni qamuuna attortippoq neriorsorlugillu INUUNERILIKKANI ajortoq soraarukkumallugu, tamannalu eqqortippaa.
+(NEGATE *1 POSSESSUM3 BARRIER (*) - Rel - %AmbiguøsN - KOMMA)
+
 ;
 
 SELECT:1701 Abl + CONJ-LU IF (-1 Abl);
@@ -12068,6 +12074,8 @@ REMOVE:8465 @CL-<CIT IF (*-1 ("tassa") BARRIER ORATIOOBLVERB LINK *-1 ("tassa"))
 
 SELECT:8466A @i-N< IF (*-1 ("tassa") OR U - (/"ila"\ U\ Der/nv\ Gram/IV\ TUQ/l) OR NNGUR) 
 (NEGATE 0 @PRED LINK NEGATE *0 VFIN)#Trump eqqissisimatitaasimasumi uuliamik gassimillu misissuisoqarnissaanut AKUERSISSUTEQARTOQ.
+(NEGATE 0 @POSS> LINK *1 POSSESSUM3 BARRIER (*) - Rel - %AmbiguøsN - KOMMA)
+
 ;
 
 #===============
@@ -14245,6 +14253,16 @@ REMOVE:9970CZ 3SgPoss IF (0 3PlPoss LINK *-1 @POSS> + Pl BARRIER (*) - Ins - ("'
 
 MAP:M9970CÆ @i->N TARGET Ins + Pl IF (1 LIK_QAR + V); #Arnaq taanna, aqqalu eqqarsaatimigut taassanagu, nammineq NUANNERSUNIK takutitaqarfigisimanerlugu?
 
+REMOVE:9970CØ Abs + @i-N< IF (0 @POSS> LINK *1 POSSESSUM3 BARRIER (*) - Rel - %AmbiguøsN - KOMMA) # Allagaatinik katersuiviup imarisai ilaatigut tassaapput ATUAKKIAT, taalliat, aviisit, atuagassiat, nittartakkat inatsisillu oqaasertaat.
+(NEGATE 1 KOMMA LINK 1 NATIONALITY + Rel + &&POSS34_POSS& LINK 1 &&POSS34_POSS&)#Tamakkua tassaapput SAARULLERNAT, norskit ammassassui, makrelit ammassallu, tamaani naalagaaffinnut aalisarfiusunut aningaasarsiornikkut pingaaruteqartorujussuit.
+;
+REMOVE:9970CÅ Rel + Pl + @POSS> IF (0 Abs + Pl + @N< LINK *-1 Abs + Pl BARRIER (*) - Ins)#Illuatungaaniipput illorsualiarujussuit Høje Gladsaxemik TAANEQARTARTUT, taakkualu arlaanni Emilie najugaqarpoq, angummini Erimmi arnaataanilu Anettemi.
+(NEGATE *1 3PlPoss BARRIER (*) - Ins)
+;
+
+REMOVE:9970DA Rel + Pl + @POSS> IF (0 Abs + Pl + @i-N< LINK NEGATE 1 3PlPoss); #Tamakkua tassaapput SAARULLERNAT, norskit ammassassui, makrelit ammassallu, tamaani naalagaaffinnut aalisarfiusunut aningaasarsiornikkut pingaaruteqartorujussuit.
+
+
 SUBSTITUTE:S9970A @i-ADVL> @ADVL> TARGET Hyb/1-2 IF (1 Hyb/2-2 + Par + @PRED2);
 
 
@@ -14577,6 +14595,7 @@ REMOVE:9972C (/@.*>.*/r) IF (0 (/@.*<.*/r)) (1 CLB)
 (NEGATE *-1 Abs + &&IV_SUBJ& BARRIER V LINK *1 _TARGET_ + Par + &&IV_SUBJ& LINK *1 ORATIOOBLVERB OR OQARPOQ)#Tunillatsittut amerlassusaannut atatillugu tunillaassuuttoqarnerata annikillinissaa pissutigalugu sukkasuumik sunniuteqarluartumillu iliuuseqartoqarnissaa PINGAARUTEQARTOQ, Aarhus Universitetshospitalimi nakorsaaneq, Lars Østergaard oqarpoq.
 (NEGATE 0 Par + 3Pl LINK *-1 Abs + CONJ-C BARRIER (*) - OBLIQUE - Adv LINK *-1 Abs LINK *-1 ORATIOOBLVERB BARRIER V)#Assigiinngitsunik oqaluuserisassaqassaagut, qularutiginngilaralu Kalaallit Nunaat Issittorlu eqqartorneqartussanut ILAASUT, Mette Frederiksen, NATO-p Londonimi ataatsimeersuarneranut peqataasoq oqarpoq.
 (NEGATE 0 Par + &&IV_SUBJ& LINK *-1 Abs + &&IV_SUBJ& BARRIER (*) - OBLIQUE - Adv LINK *-1 ORATIOOBLVERB BARRIER V)#som foranstående NEGATE men uden paratakse
+(NEGATE 0 @POSS> LINK *1 POSSESSUM3 BARRIER (*) - Rel - %AmbiguøsN - KOMMA)
 
  ;
 REMOVE:9972C (/@.*<.*/r) IF (0 (/@.*>.*/r)) (-1 CLB) ;
