@@ -1614,7 +1614,8 @@ SET INDERIVERENDE_SUBSTANTIV = INDERIVERENDE_SUBSTANTIV_X | TUNNGAVIKnTUQ | ("in
 SET INDERIVERENDE_SUBSTANTIV_BEGRÆNSET = INDERIVERENDE_SUBSTANTIV - INDERIVERENDE_UNDTAGELSE ;
 LIST INDERIVERENDE_TITEL = "adjunkt" "bachelor" "lektor" "minister" "naalakkersuisoq" (/"oqaaseq"\ QAR\ Der/nv\ Gram/IV\ TAR\ Der/vv\ Gram/IV\ TUQ/l) "professor";
 #LIST VERBALNOMEN = "isuma" "oqaluttuaq" "naapeqatigiinneq" ;
-LIST INSOBJVERB = LIUR (/".*nior"/r) RAAR (/\ SI\ Der\/nv/l) SSIP TAAR SIUR (/\ TUR\ Der\/nv/l) (/__LIR\ Der\/nv__/l) ;
+LIST INSOBJVERB = LIUR (/".*nior"/r) RAAR (/\ SI\ Der\/nv/l) SSIP TAAR SIUR (/\ TUR\ Der\/nv/l);# (/__LIR\ Der\/nv__/l) udkommenteret PL20210314
+
 LIST NOTSPLIT = ("neri" TAQ SSAQ) ; # cannot take i- -arguments.
 LIST NIQABL = (/NIQ\ Der\/vn\ N\ Abl/l) ;
 LIST NIQINS = (/NIQ\ Der\/vn\ N\ Ins/l) ;
@@ -3779,11 +3780,17 @@ MAP:M_uløselighed0266 @N< TARGET Ins - ADVERBIEL - CONJ-C IF (*-1 @i-MIK-OBJ> B
 (NEGATE 0 HTR + Der/vn OR Gram/HV + Der/vn)#Akit appariartornerat pisisartukinnerulerneralu nunatsinni aalisarnermik inuussutissarsiortunut unammillernartoqartitsingaatsiarput, pisaminnik TUNISINIARNERMIK ajornartorsiormata.
 ;
 
-MAP:M_uløselighed @MIK-OBJ> TARGET <Hprof> + Ins IF (1 (/QAR\ Der/nv\ Gram/IV\ TIP\ Der/vv\ Gram/TV\ HTR/l));#Ambiguøs i->N vs. MIK-OBJ men MIK-OBJ nok mest sandsynlig. Danskit naalakkersuisui ajornartorsiutaasut iluarsineqarnissaannut aningaasaliillutillu immikkut ILISIMASALINNIK suliaqartitsissapput.
+MAP:M_uløselighed0270 @MIK-OBJ> TARGET <Hprof> + Ins IF (1 (/QAR\ Der/nv\ Gram/IV\ TIP\ Der/vv\ Gram/TV\ HTR/l));#Ambiguøs i->N vs. MIK-OBJ men MIK-OBJ nok mest sandsynlig. Danskit naalakkersuisui ajornartorsiutaasut iluarsineqarnissaannut aningaasaliillutillu immikkut ILISIMASALINNIK suliaqartitsissapput.
 
-#Flyttes forsøgvist fra linie 3765 til før uløselighederne
-#REMOVE Par + 3Pl IF (0 N + Pl + (/NIRU\ Der/vv\ Gram/IV\ TUQ/l) + $$KASUS LINK -1 Abl LINK *-1 N + Pl + $$KASUS BARRIER (*) - Num);
+#En ikke særligt velformuleret sætning med mange oblique
+MAP:M_uløselighed0280 @i-ADVL> TARGET NIQ + Trm IF (*1 INSTITUTION BARRIER (*) - Sem/Geo); #Danskit naalakkersuisui ilaatigut illersornissaqarfimmi SULINERMUT Kangerlussuarmi ilinniarfissamut timmisartuaqqanillu ungasianiit aquttakkanik pisinissamut atugassanik 1,5 milliardit koruuninik aningaasaleeqqammerput.
 
+MAP:M_uløselighed0281 @i-ADVL> TARGET SSAQ + Trm IF (1 CONJ-C LINK *1 Trm BARRIER (*) - OBLIQUE LINK 1 (/TAQ\ Der/vn\ SSAQ\ Der/nn\ N\ Ins/l) LINK *1 HTR BARRIER V); #Danskit naalakkersuisui ilaatigut illersornissaqarfimmi sulinermut Kangerlussuarmi ILINNIARFISSAMUT timmisartuaqqanillu ungasianiit aquttakkanik pisinissamut atugassanik 1,5 milliardit koruuninik aningaasaleeqqammerput.
+
+MAP:M_uløselighed0282 @i-ADVL> TARGET SSAQ + Trm IF (*-1 Trm LINK 1 CONJ-C LINK *1 _TARGET_ BARRIER (*) - OBLIQUE LINK 1 (/TAQ\ Der/vn\ SSAQ\ Der/nn\ N\ Ins/l) LINK *1 HTR BARRIER V); #Danskit naalakkersuisui ilaatigut illersornissaqarfimmi sulinermut Kangerlussuarmi ilinniarfissamut timmisartuaqqanillu ungasianiit aquttakkanik PISINISSAMUT atugassanik 1,5 milliardit koruuninik aningaasaleeqqammerput.
+
+MAP:M_uløselighed0282 @MIK-OBJ> TARGET (/TAQ\ Der/vn\ SSAQ\ Der/nn\ N\ Ins/l) IF (-1 (Trm NIQ SSAQ) LINK *2 HTR BARRIER V); #Danskit naalakkersuisui ilaatigut illersornissaqarfimmi sulinermut Kangerlussuarmi ilinniarfissamut timmisartuaqqanillu ungasianiit aquttakkanik pisinissamut ATUGASSANIK 1,5 milliardit koruuninik aningaasaleeqqammerput.
+  
 #Lok anvendt på MIK-OBJ i stedet for Ins er svær (umulig?) at håndtere. En tidlig og farlig regel, der skal følges op på
 SUBSTITUTE Lok Ins TARGET (HTR) IF (1 HTR - ("ilar")) #siunnersortit .. Tasiilami inunnik ISUMAGINNINNERMI ingerlatitsivimmi .. ikiuussimapput. Mange fejl pga. ambiguøs ilaivoĸ vs. ilauvoĸ
 (NEGATE 1 Lok + LU)#tassa PEQQISSAANERMI isumaginninnermilu ikiortit
@@ -5628,7 +5635,16 @@ MAP:VerbalInd0004 @i-ADVL> TARGET Adv IF (*1 %VerbalInderivering BARRIER V) ;#Na
 
 MAP:M00000 @>N TARGET ("nalunaaqutaq") + &&IV_SUBJ& IF (1 Num + Trm OR Num + Abl OR Num + Abs OR Num + Rel LINK NEGATE 1 Trm LINK *1 V + &&IV_SUBJ&) ; #NEGATE  tamannalu pillugu unnugu *nalunaaqutaq qulinit aqqanermut siuartinneqassaaq.
 MAP:M0000a @>N TARGET ("nalunaaqutaq") IF (1 Num LINK 1 ("miss." Adv)) ;
-MAP:M00001 @>N TARGET ("ukioq") IF (1 Num OR iNum LINK NEGATE 1 ("misse"))(NEGATE 0 $$KASUS LINK 1 (*) + $$KASUS - AFFINGERET)(NEGATE 1 POSSESSUM)(NEGATE 1 INSOBJVERB OR U OR NNGUR)(NEGATE -1 Num)(NEGATE NOT 0 Ins LINK 1 LIK)(NEGATE 2 Sem/Unit)  ;
+
+MAP:M00001 @>N TARGET ("ukioq") IF (1 Num OR iNum - V LINK NEGATE 1 ("misse"))
+(NEGATE 0 $$KASUS LINK 1 (*) + $$KASUS - AFFINGERET)
+(NEGATE 1 POSSESSUM)
+(NEGATE 1 INSOBJVERB OR U OR NNGUR)
+(NEGATE -1 Num)
+(NEGATE NOT 0 Ins LINK 1 LIK)
+(NEGATE 2 Sem/Unit) 
+ ;
+
 MAP:M0000 (@PRED) TARGET VFIN (NEGATE 0 Gram/Exclm LINK -1* ("una") BARRIER (*) - Abs - Conj)(NEGATE -1 ("\"") LINK 1 _TARGET_ LINK 1 ("\"")) #Et finit verbum er altid prædikat #Negate fordi et verbum i anførselstegn fungerer som et nomen.
 #(NEGATE 0 (*) - CONJ-C - KONJUNKTION LINK *-1C VFIN - CONJ-C - Gram/Exclm BARRIER CONJ-C OR KONJUNKTION OR KOMMA OR CLB OR PUNCT) 
 (NEGATE *-1 Opt + ORATIOOBLVERB) #Til alternativ (overordnet) modusbrug i fx oratio obliqua. Aamma ugguunaatigut ilisimatitsissutigeriiginnarlara kalaallisut bloggerimik nassaarnikuuvunga # 
@@ -7424,7 +7440,7 @@ MAP:M0407Bnum @i-MWE>N TARGET Num IF (1 NUMHOVED + LIK) ; # 7 *miliuunit koruuni
 MAP:M0407Anum (@>N) TARGET Num IF (1 NUMHOVED + N); # ' .. 2 oorimoorlutik ..' specialfald før 189-190
 MAP:M0407Bnum @i-MWE>N TARGET NUMHOVED IF (-1 Num)(1 NUMHOVED + Der/nv) ; # 7 *miliuunit koruuneqarput. NB bør heller ikke ved QAR etc. analyseres som @i->N
 
-MAP:M0407Bnum @>N TARGET NUMHOVED IF (-1 Num)(1 NUMHOVED) ; # 7 miliuunit koruuneqarput. NB bør heller ikke ved QAR etc. analyseres som @i->N
+MAP:M0407Cnum @>N TARGET NUMHOVED IF (-1 Num)(1 NUMHOVED) ; # 7 miliuunit koruuneqarput. NB bør heller ikke ved QAR etc. analyseres som @i->N
 
 MAP:M0408num (@>N) TARGET NUMHOVED - Trm IF (1 Num + Abs - @N<)
 (NEGATE *1 (/\(\ |=|"\)gange\(\ |=|"\)/r) BARRIER (*) - NUM) #ini 4 gange 3 meterinik uuttuuteqarpoq.
@@ -8566,7 +8582,7 @@ ADD:M0620 (@MIK-OBJ>) TARGET Ins - ADVERBIEL IF (*1 HTR + V BARRIER V) #Ikke MAP
 (NEGATE 0 NUM LINK NOT -1 Ins LINK *1 LIK_QAR BARRIER HTR)#Tassa MARLUNNIK innermik anitsisartuuteqarami suli maannamut anitsisartunik.
 (NEGATE 0 ADVERBIEL + Ins + Sg LINK 1 Ins + POSSESSUM)#Matumani inuit illoqarfinnut qajassuussamik, silatusaartumik nuutsinneqarnerannut qulakkeereqataassaagut, PITSAANERUSUMILLU atugassarissaarnissaannik qulakkeerillutalu neriorsuissaagut.
 (NEGATE 1 <fn:Socialize> + NIQ)#Partiimi allattaanerusup kinguaassiutitigut innimiilliorsimaneragaanera kinguaassiuutitigut KANNGUTTAATSULIORTOQARTARNERANNIK oqallinnersuarmik aallartitsivoq.
-
+(NEGATE *-1 @MIK-OBJ> + $$NUMERUS BARRIER (*) - Num - NUMHOVED LINK *1 _TARGET_ + Der/vn OR Sem/Unit)#Danskit naalakkersuisui ilaatigut illersornissaqarfimmi sulinermut Kangerlussuarmi ilinniarfissamut timmisartuaqqanillu ungasianiit aquttakkanik pisinissamut atugassanik 1,5 milliardit KORUUNINIK aningaasaleeqqammerput.
 ;
 ADD:M0620X (@MIK-OBJ>) TARGET Trm - ADVERBIEL IF (*1 MUT-OBJ + HTR + V BARRIER V OR (/HTR\ Der/vv\ Gram/IV\ UTE\ Der/vn N/l)) #Ikke MAP fordi ogsaa ADVL> mulig
 (NEGATE 1 HTR + N)#Donald Trump Alaskap avannamut kangisinnerusortaani, The Arctic National Wildlife Refugemi uuliamik gassimillu MISISSUINISSAANUT pisinnaatitsissutinik sapaatip akunnerata aallartinnerani akuersivoq.
@@ -9278,6 +9294,7 @@ MAP:M0839 @ADVL> TARGET Ins - Der/vn IF (*1 ("tuni") + TRANSVERB BARRIER (*) - A
 MAP:M0840 @ADVL> TARGET Ins IF (*1C V - DOTR BARRIER Der/vn OR INDERIVERENDE_SUBSTANTIV)(NEGATE *1 ("quleriilik") OR V + QAR OR V + LIK )(NEGATE 1 KOMMA) #OR Der/vn fjernet og BARRIER tilfoejet 20091109. OR i første constraint tilføjet for ikke at tagge fx amermik qaatigooq
 (NEGATE 1 HTR LINK -1 _TARGET_ LINK -1 Ins) #Aqqaluartaannguup qallunaat nunaanniinnerani anaana aningaasanik PAGGATITASSAMINIK katersisimavoq.
 (NEGATE 1 ("suliaq") + N)
+(NEGATE *-1 Ins + $$NUMERUS LINK *1 _TARGET_ - ADVERBIEL BARRIER (*) - @>N)#Danskit naalakkersuisui ilaatigut illersornissaqarfimmi sulinermut Kangerlussuarmi ilinniarfissamut timmisartuaqqanillu ungasianiit aquttakkanik pisinissamut atugassanik 1,5 milliardit KORUUNINIK aningaasaleeqqammerput.
 ;
 MAP:M0841 @ADVL> TARGET Aeq IF (*1 V - ("ip") - QQU BARRIER (*) - Aeq)
 (NEGATE *1 Der/vn + N - (/"angi"\ Gram/IV\ NIQ\ Der/vn\ TUUQ/l) - Aeq BARRIER V)#Periaatsimut immikkoortumi nassuiaat malillugu inuusuttut ilinniakkamik INGERLATSISUTUT nalunaarsorsimasut, Ilinniagaqarnersiuteqartitsivimmili nalunaarsorsimanngitsut, inuusuttunut sullinniakkanut ilanngunneqarput.
@@ -14343,6 +14360,9 @@ REMOVE:9970DD N - %TaqPossPoss IF (0 %TaqPossPoss + $$NUMERUS + $$KASUS LINK *-1
 MAP:M9970DE @SUBJ> TARGET Rel + POSSESSUM3 IF (*1 TRANSVERB + 3Pl LINK -*1 _TARGET_ LINK -1 Rel + CONJ-C LINK -1 @SUBJ>); #Coronamik tunillatsittoqarnerata kingunerisaanik nakorsaanerup Naalakkersuisullu SIULITTAASUATA corona pillugu malittarisassat uteqqittariaqarpaat.
 
 REMOVE:9970DF NUMERAL + U + iNum IF (0 NUMERAL + U - iNum); #ataasiinnaanngitsut
+
+MAP:M9970DG @N< TARGET Ins + $$NUMERUS - ADVERBIEL IF (*-1 Ins + $$NUMERUS BARRIER (*) - @>N); #Danskit naalakkersuisui ilaatigut illersornissaqarfimmi sulinermut Kangerlussuarmi ilinniarfissamut timmisartuaqqanillu ungasianiit aquttakkanik pisinissamut atugassanik 1,5 milliardit KORUUNINIK aningaasaleeqqammerput.
+
 
 SUBSTITUTE:S9970A @i-ADVL> @ADVL> TARGET Hyb/1-2 IF (1 Hyb/2-2 + Par + @PRED2);
 
