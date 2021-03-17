@@ -297,15 +297,17 @@ LIST KOMMA = "," ;
 LIST ParagrafSlut = "¶" "." ; #To be added in all corpora in order to deal efficiently with headlines
 
 #Diverse tags defineret i kal-pre2
-LIST %NumPossessum = %NumPossessum ; #("misse")+3PlPoss når possessum for -1 Num 
-LIST %ContHypotagme = %ContHypotagme ; #CONT når -1 Abs eller Abs når 1 CONT
-LIST %TidHypotagme = %TidHypotagme ; #possessor og possessum, når begge er TIME
-LIST %VerbalInderivering = %VerbalInderivering ; #Transitive verber med NIRAR og SURE
 LIST %AmbiguøsN = %AmbiguøsN ; #En interim-tag til kohorter med læsninger der indeholder både Rel og Abs
 LIST %AmbiguøsPar = %AmbiguøsPar; #Interim-tag til ikke disambiguerede Par+Abs/Rel kohorter
+LIST %ContHypotagme = %ContHypotagme ; #CONT når -1 Abs eller Abs når 1 CONT
+LIST %NumPossessum = %NumPossessum ; #("misse")+3PlPoss når possessum for -1 Num 
 LIST %Othertime = %Othertime ; #vn-er med tidsbetydning i hypotagmer 
+LIST %ParataktiskNP = %ParataktiskNP ; #NP-er med CONT som første led og LIK som andet
 LIST %PossOblique = %PossOblique ; #possessor til OBLIQUE possessum
 LIST %TaqPossPoss = %TaqPossPoss ; #possessor til og possessum selv, der er kongruensadled
+LIST %TidHypotagme = %TidHypotagme ; #possessor og possessum, når begge er TIME
+LIST %VerbalInderivering = %VerbalInderivering ; #Transitive verber med NIRAR og SURE
+
 
 # Derivatives #
 
@@ -4003,6 +4005,9 @@ MAP:M_faste0480 @>N TARGET ("kalaallisut") + Pali IF (1 ("oqaaseq"));
 #psykolog
 MAP:M_faste0490 @i-ADVL>N TARGET (/"pi"\ SSUSIQ/l) + POSSESSUM3 IF (-1 ("tarni") + Rel)(1 (/"ilisima"\ Gram/TV\ TAQ\ Der/vn\ LIK/l));
 
+#såvel .. som
+MAP:M_faste0500 @i-ADVL>N TARGET (QAR Cont 4Pl) + CONJ-C IF (1 (LIK N Pl)); #Nunat qaarsortarasaat UJARAARAQARLUTILLU ujaraalullit aamma piffiussapput atortussat amerlanerpaartaannik piiaaffissat, aqqusinniassamut atugassanik.
+
 
 #######
 # MWE #
@@ -7107,6 +7112,7 @@ MAP:M0329_subjekt01 @SUBJ> Abs IF (*1 V + 3Pl OR V + 4Pl BARRIER VERB-NOTCONT)(*
 (NEGATE **-1 @SUBJ> + $$NUMERUS LINK *1 Abs + $$NUMERUS LINK 1 Conj LINK *1 _TARGET_ + $$NUMERUS BARRIER V )#Inuusuttut ilinniakkamik ingerlatsinngitsut imaluunniit SULIFFEQANNGITSUT inuusuttunik sullinniakkanik taaneqarput.
 (NEGATE *-1 Abs + $$NUMERUS + &&IV_SUBJ& LINK *1 _TARGET_ + ADJEKTIVISK + $$NUMERUS OR Abs + LIK + $$NUMERUS BARRIER (*) - Num - OBLIQUE LINK *1 VFIN + &&IV_SUBJ& BARRIER V)#2019-ip naanerani Kalaallit Nunaanni INUUSUTTUT 16-it 25-llu akornanni ukiullit 5.268-it imaluunniit 67 pct.-ii ilinniarfinnut suliffeqarfinnulluunniit atassuteqarput
 (NEGATE *1 TRANSVERB + 3Pl BARRIER (*) - OBLIQUE - Adv)#Aleqa Hammondilli Pele Brobergillu nunarput qaaqquneqanngippallaarsoraat.
+(NEGATE 0 LIK + $$KASUS LINK *-1 $$KASUS BARRIER (*) - $$KASUS - (Cont QAR %ParataktiskNP))#Nunat qaarsortarasaat ujaraaraqarlutillu UJARAALULLIT aamma piffiussapput atortussat amerlanerpaartaannik piiaaffissat, aqqusinniassamut atugassanik.
 ;
 
 MAP:M0329_subjekt01X @SUBJ> Abs IF (*1 V + 3Pl OR V + 4Pl BARRIER VERB-NOTCONT)(*-1 CONJ-C BARRIER (*) - OBLIQUE LINK *-1 Abs + @SUBJ> BARRIER (*) - Adv)#Amigaatigineqartut suliluunniit amerlanerugaluarput, tassa peqqissaanermi isumaginninnermilu ikiortit kiisalu meeqqerinermi IKIORTIT aamma immikkut akuerineqarlutik perorsaasutut sulisarmata.
@@ -7843,6 +7849,8 @@ MAP:M0523E @SUBJ> TARGET Abs + &&IV_SUBJ& - TIME - Num - iNum - Gram/Ord - Sem/U
 (NEGATE 0 $$NUMERUS LINK -1 KOMMA LINK -1 Abs + $$NUMERUS)#Timmisartoq minnermini ajutoorpoq, immikkullu ilisimasallit, EKSPERTIT oqarsimapput timmisartoq minnermini sukkavallaartumik ingerlasimasoq, miffigisaminilu unissinnaasimanani.
 (NEGATE *1 Par + &&IV_SUBJ& LINK *1 ORATIOOBLVERB + VFIN)#Nunalli immikkoortuani pineqartumi uuliamik gassimillu misissuisoqalissappat sumiiffimmi tassani TUTTUT 200.000-it sinneqartut eqqorneqassasut, nunap inoqqaavi sumiiffimmi pineqartumi najugaqartut isumaqarput.
 (NEGATE *-1 @SUBJ> + Abs LINK *1 @FOC>N + Abs BARRIER (*) - KOMMA - Abs - OBLIQUE)#niuertoruseq, tassaasoq ATAATAGA nappaja Danmarkimi ilinniarsimasoq, taakkununnga ilaavoq
+(NEGATE 0 LIK + $$KASUS LINK *-1 $$KASUS BARRIER (*) - $$KASUS - (Cont QAR %ParataktiskNP))#Nunat qaarsortarasaat ujaraaraqarlutillu UJARAALULLIT aamma piffiussapput atortussat amerlanerpaartaannik piiaaffissat, aqqusinniassamut atugassanik.
+(NEGATE 0 $$KASUS + $$NUMERUS LINK -1 $$KASUS + $$NUMERUS)#Nunat QAARSORTARASAAT ujaraaraqarlutillu ujaraalullit aamma piffiussapput atortussat amerlanerpaartaannik piiaaffissat, aqqusinniassamut atugassanik.
 ;
 
 #LIK-struktur som kerne i bestemte kontekster: 29-nik UKIULIK Nuka Bisgaard inuunermini pingaaruteqarluinnartumik angusaqarpoq.
@@ -7873,8 +7881,14 @@ MAP:M0742 @SUBJ> TARGET N + Abs + $$NUMERUS + &&IV_SUBJ& IF (*1 INTRANSVERB + &&
 ;
 
 #Parataktiske subjekter med LU på CONT: AALISARNEQ inuussutissarsiutigalugulu PINIARNEQ ingerlalluarput
-MAP:M0742B @SUBJ> TARGET N + Abs IF (1 CONT + LU LINK 1 Abs LINK *1 V + 3Pl BARRIER CONT + 3PlO) ;
-MAP:M0742C @SUBJ> TARGET N + Abs IF (-*1 Abs BARRIER (*) - CONT - Adv LINK 1 CONT + LU LINK 1 _TARGET_ LINK *1 V + 3Pl BARRIER CONT + 3PlO) ;
+MAP:M0742B @SUBJ> TARGET N + Abs IF (1 CONT + LU LINK 1 Abs LINK *1 V + 3Pl BARRIER CONT + 3PlO) 
+(NEGATE 0 $$KASUS + $$NUMERUS LINK -1 $$KASUS + $$NUMERUS)#Nunat QAARSORTARASAAT ujaraaraqarlutillu ujaraalullit aamma piffiussapput atortussat amerlanerpaartaannik piiaaffissat, aqqusinniassamut atugassanik.
+
+;
+MAP:M0742C @SUBJ> TARGET N + Abs IF (-*1 Abs BARRIER (*) - CONT - Adv LINK 1 CONT + LU LINK 1 _TARGET_ LINK *1 V + 3Pl BARRIER CONT + 3PlO)
+(NEGATE 0 LIK + $$KASUS LINK *-1 $$KASUS BARRIER (*) - $$KASUS - (Cont QAR %ParataktiskNP))#Nunat qaarsortarasaat ujaraaraqarlutillu UJARAALULLIT aamma piffiussapput atortussat amerlanerpaartaannik piiaaffissat, aqqusinniassamut atugassanik.
+
+ ;
 
 SUBSTITUTE:S0529 @SUBJ> @N< TARGET $$KASUS + $$NUMERUS - CONJ-C IF (*-1C @SUBJ> + $$KASUS + $$NUMERUS BARRIER CONJ-C OR LU OR LI OR LUUNNIIT OR @CONJ OR KOMMA OR V) (NEGATE 1 $$KASUS + $$NUMERUS + Gram/Dem OR Prop) 
 (NEGATE 0 ("sila") + Abs LINK *1 Cau + 3Sg BARRIER (*) - Adv - OBLIQUE - Abs)#Eqqartuussineq sapaatip-akunnerani matumani marlunngornermi aallartittussaagaluarpoq, eqqartuussissuserinermili illersorti Maniitsumut eqqartuussiffiusussamut SILA ajormat tikissinnaanngilaq.
@@ -14010,6 +14024,7 @@ MAP:M9969O @SUBJ> TARGET Abs + &&IV_SUBJ& IF (*1 VFIN + &&IV_SUBJ& - (/..O/r) BA
 (NEGATE *-1 Abs + $$NUMERUS + &&IV_SUBJ& LINK *1 _TARGET_ + ADJEKTIVISK + $$NUMERUS OR Abs + LIK + $$NUMERUS BARRIER (*) - Num - OBLIQUE LINK *1 VFIN + &&IV_SUBJ& BARRIER V)#2019-ip naanerani Kalaallit Nunaanni INUUSUTTUT 16-it 25-llu akornanni ukiullit 5.268-it imaluunniit 67 pct.-ii ilinniarfinnut suliffeqarfinnulluunniit atassuteqarput
 (NEGATE **-1 Abs + Pl LINK *1 Num + Abs LINK *1 ("ima" LUUNNIIT) OR Conj LINK *1 _TARGET_ + PROCENT + Abs BARRIER (*) - Num LINK *1 VFIN + &&IV_SUBJ& BARRIER V)#2019-ip naanerani Kalaallit Nunaanni inuusuttut 16-it 25-llu akornanni ukiullit 5.268-it imaluunniit 67 PCT.-II ilinniarfinnut suliffeqarfinnulluunniit atassuteqarput
 (NEGATE 0 Abs + Der/vn + CONJ-C LINK *-1 Abs + Der/vn BARRIER (*) - Hyb/1-2 LINK *-1 Abs BARRIER (*) - Hyb/1-2)#Nunat tamat suliniaqatigiiffiinit Laurent Gbagbo annertuumik akerlilerneqarpoq , nunamit aallaqqusaajunnaartinneqarluni , pigisaalu nalillit USA-miittut Tuluit NunaanniITTULLU atorneqarsinnaajunnaartinneqarput .
+(NEGATE 0 $$KASUS + $$NUMERUS LINK -1 $$KASUS + $$NUMERUS)#Nunat QAARSORTARASAAT ujaraaraqarlutillu ujaraalullit aamma piffiussapput atortussat amerlanerpaartaannik piiaaffissat, aqqusinniassamut atugassanik.
 
 ;
 #overflødig efter at (/..O/r) er tilføjet i første IF:
@@ -14071,6 +14086,7 @@ MAP:M9970C @SUBJ> TARGET Abs + &&IV_SUBJ& IF (*1 V + &&IV_SUBJ& BARRIER (*) - %C
 (NEGATE 0 Der/nv + &&POSS34_POSS& + $$KASUS LINK -1 Rel + &&POSS34_POSS& LINK *-1 $$KASUS BARRIER (*) - Rel)#Margrethe qanoq kusanarluinnartigisoq takugamiuk kusanangaarsuseq inuup taassuma PIGISAA tupigusuutigaa.
 (NEGATE **-1 Abs + Pl LINK *1 Num + Abs LINK *1 ("ima" LUUNNIIT) OR Conj LINK *1 _TARGET_ + PROCENT + Abs BARRIER (*) - Num LINK *1 VFIN + &&IV_SUBJ& BARRIER V)#2019-ip naanerani Kalaallit Nunaanni inuusuttut 16-it 25-llu akornanni ukiullit 5.268-it imaluunniit 67 PCT.-II ilinniarfinnut suliffeqarfinnulluunniit atassuteqarput
 (NEGATE 0 Abs + Der/vn + CONJ-C LINK *-1 Abs + Der/vn BARRIER (*) - Hyb/1-2 LINK *-1 Abs BARRIER (*) - Hyb/1-2)#Nunat tamat suliniaqatigiiffiinit Laurent Gbagbo annertuumik akerlilerneqarpoq , nunamit aallaqqusaajunnaartinneqarluni , pigisaalu nalillit USA-miittut Tuluit NunaanniITTULLU atorneqarsinnaajunnaartinneqarput .
+(NEGATE 0 $$KASUS + $$NUMERUS LINK -1 $$KASUS + $$NUMERUS)#Nunat QAARSORTARASAAT ujaraaraqarlutillu ujaraalullit aamma piffiussapput atortussat amerlanerpaartaannik piiaaffissat, aqqusinniassamut atugassanik.
 
 ;
 MAP:M9970D @SUBJ> TARGET Rel + Sg IF (*1 TRANSVERB + 3Sg BARRIER 3SgPoss - TIME)#Siumup siulittaasuata Kim KIELSENIP Siumumi siulittaasunngorniuttoqalerpat sassaqqissanani aggustip qaammataani oqaatigigaluarpaa.
@@ -14436,6 +14452,11 @@ REMOVE:9970DJ Lok + POSSESSUM + Sg IF (-1 Lok + Pl) #Inuittaaq quiminni, pilivim
 (NEGATE 0 Lok - TIME LINK *-1 TIME BARRIER (*) - Num)#Ukiuni pingasuni ARNARSIAMINI najugaqarnermini ilinniartinneqarsimagami ullaakkut unnukkullu qinusassasoq, aamma tamatumuunakkut assani paarlappai qinulerlunilu.
 ;
 MAP:M9970DK @N< TARGET Lok + (/"pi"\ GE\ Der/nv\ Gram/TV\ TAQ/l) IF (-1 ("alla") + Lok); #Meget snæver semantisk betinget regel: Inuittaaq quiminni, pilivimminni, naqqup-ataani, umiatsianilu allanilu PIGISAMINNI misissuinissaannik kaammattorneqarput.
+
+MAP:M9970DL @N< TARGET $$KASUS + $$NUMERUS IF (-1 $$KASUS + $$NUMERUS) #Nunat QAARSORTARASAAT ujaraaraqarlutillu ujaraalullit aamma piffiussapput atortussat amerlanerpaartaannik piiaaffissat, aqqusinniassamut atugassanik.
+(NEGATE 0 FIRSTNAME LINK 1 Sem/Hum)#Uggornaraluaqisoq poorski tamaat oqaluffiit matoqqanissaat aalajangiussimajuartariaqarparput, taamaalillutalu naalagiarnerit ilagiinnut upperisarsioqatigiinnullu allanut pingaaruteqaqisut pinngitsoortariaqarlugit, Ilageeqarnermut naalakkersuisoq ANE Lone Bagger oqarpoq.
+(NEGATE *1 EOS LINK -1 ("aamma") LINK -1 _TARGET_ + Abs + CONJ-C LINK -1 Abs LINK *-1 3PlO BARRIER (*) - KOMMA)#Kaataq kikiassuarlu soqutigiunnaavippakka, qilalerneq TOQULU aamma.
+;
 
 
 SUBSTITUTE:S9970A @i-ADVL> @ADVL> TARGET Hyb/1-2 IF (1 Hyb/2-2 + Par + @PRED2);
@@ -14915,6 +14936,8 @@ SUBSTITUTE (%PossOblique) (*) TARGET %PossOblique (*0S (/@.*/r)) ;
 SUBSTITUTE (%ContHypotagme) (*) TARGET %ContHypotagme (*0S (/@.*/r)) ;
 
 SUBSTITUTE (%TaqPossPoss) (*) TARGET %TaqPossPoss (*0S (/@.*/r)) ;
+
+SUBSTITUTE (%ParataktiskNP) (*) TARGET %ParataktiskNP (*0S (/@.*/r)) ;
 
  
 #SUBSTITUTE:xxx (/\(V|N|Pali|Conj|Adv|Interj|Pron|Prop|Num\)/r) (%AmbiguøsN VSTR:$1) TARGET %AmbiguøsN (*0S (/@.*/r)) ; # @ sikrer at reglen kun køres i 2. omgang.
