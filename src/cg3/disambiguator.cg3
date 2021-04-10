@@ -1572,7 +1572,7 @@ LIST <fn:Talk> = /"eqqaa"\ Gram/TV\ TIP/l "kalerrisaar" "naggaser" "nangip" "nas
 SET INQUIT_VERB = <fn:Talk> | <fn:CognitiveMaking> ; 
 
 #Nye semantiske klasser 20190503 til forberedelse af import af prototyper. NB <fn:..>-tags ovenfor før set HUMVERB. 
-LIST <ac> = (/"inuk"\ U\ Der/nv\ Gram/IV\ NIQ/l) "kultur" "pissut" ;
+LIST <ac> = (/"inuk"\ U\ Der/nv\ Gram/IV\ NIQ/l) "kultur" "peqqut" "pissut" ;
 LIST <act> = (/"angala"\ Gram/IV\ NIQ/l) ;
 LIST <cc> = (/"akiuup"\ Gram/IV\ UTE/l) "nioqqutissaq" "nioqqut" (/"tuni"\ Gram/TV\ TAQ\ Der/vn\ SSAQ\ Der/nn\ LIAQ/l) ;
 LIST <coll> = "gruppe" ;
@@ -1618,6 +1618,7 @@ SET HUMVERB = humverb OR ORATIOOBLVERB OR <fn:Remove> OR <fn:Take/Bring> OR <fn:
 LIST PLAY = "arsar" ("arsar" UTE); #often plural and reciprocal
 
 LIST HVVERB = Gram/HV "neri" "naammattoorsi" "pulaar";
+SET HVVERB_UdenLeksikalisering = HVVERB - (/"allap"\ Gram/HV\ Gram/IV\ USIQ\ Der/vn\ GE\ Der/nv\ Gram/TV\ TAQ/l) - (/"atuar"\ Gram/HV\ Gram/IV\ TUQ/l); #forebygger hit på ikke-HV, hvori HV-stammer indgår som i allaaserisaqarpoq
 
 LIST IntransTrans = "neri" "ilassior" Gram/HV ; #Set til disambiguering af Ins, VIP vs. HTR mv.
 
@@ -2220,6 +2221,7 @@ MAP:M_tidlig0067 @POSS>> TARGET Rel + Sg + HUMAN IF (*1 3SgPoss + humverb LINK *
 (NEGATE 1 POSSESSUM3 + Rel LINK *1 3SgPoss BARRIER Rel)#Mikael Petersenip innimiilliorsimaneragaanini ilisarinngilaa, SIUMULLI siulersuisuunerisa suliffianiit soraarsissimagaanngooq tusarsaalermat partiip allattaatut atorfimminit nammineq tunuarluni.
 ;
 MAP:M_tidlig0068 @POSS>> TARGET Rel + Sg IF (**1 3SgPoss - Rel - LU - (/TUQ\ Der/vn\ QAR\ Der/nv\ Gram/IV\ NIQ/l) LINK -*1 POSSESSUM3 - Rel BARRIER (*) - OBLIQUE LINK -1 Rel LINK -1 _TARGET_ )#Tanbreezip Qaqortup eqqaani aatsitassanik piiaanissaa. Minus Rel for at forhindre hit som Silaannarmik mingutsitsisup gassip, KULDIOXID-IP seqernup qinngornerata kissassusaa tigummisarpaa, soorlu illup naatitsiviusup seqernup qinngornera tigummisaraa. Minus LU pga Nunap ILAATA tamatuma atuuffii sannaalu attatiinnarneqassapput. Men må ikke hitte ved upersonlige som Ulloq APRIILIP ulluisa arfernat qinersisoqarnissaanut siunnersuummi aamma allassimavoq.
+(NEGATE 0 ("ulloq") + Rel LINK 1 ("qiteq") + Rel LINK 1 3SgPoss LINK 1 POSSESSUM3)#Specialitet, når ullo'qeqqa skrevet i to ord. Andet possessum-led er upersonligt
 ;
 MAP:M_tidlig0069 @POSS>> TARGET Rel + Sg IF (**1 3SgPoss - Rel - CONJ-C LINK *-1 3SgPoss - Rel BARRIER (*) - CONT LINK -1 Rel - POSSESSUM3 LINK -1 _TARGET_); #KOMMUNILLU sapaatip akunneranut marloriarluni aggersittagaanik eqqiaasumik inigisaminni ikiorteqartarpoq.
 
@@ -2925,7 +2927,11 @@ REMOVE:0039F ("allak") IF (0 ("alla"))(NEGATE *0W SEMIOTIC) ; #den er måske for
 SELECT:0023 ("illuttut") + ADVERBIEL IF (*1 LIK OR QAR BARRIER V); #Næppe sneblinde, men tosidet N
 
 #TAQ vs. GE skaber problemer. Vælg altid GE, hvis mulig sammenblanding med TAQ og hvis ikke andre finitte verber i sætningen
-SELECT:0024 GE + TRANSVERB IF (0 TAQ)(NEGATE *0 VFIN)(NEGATE 0 ("paare") OR ("malip" TARE));
+SELECT:0024 GE + TRANSVERB IF (0 TAQ)
+(NEGATE *0 VFIN)
+(NEGATE 0 ("paare") OR ("malip" TARE))
+(NEGATE 0 <ac> + U + SURE)#Tamatumanilu allakkatigut qinersinissamik kaammattuivissorneq, ullup qeqqata siornani silarlunnera taavalu qinersiartortut siuleriiaartariaqarsimanerat, taamaalillunilu qinersinerup nalunaaquttap akunneranik sivitsorneqartariaqarnera PEQQUTAASORAI: En meget farlig regel, men jeg kan ikke lige finde noget, der kan begrænse den til noget fornuftigt
+;
 
 #siornatigut sjældent possessum, oftest i-ADVL> til adled
 SELECT:0017 ("siornatigut") + ADVERBIEL IF (1 Der/vn) ;
@@ -7211,9 +7217,11 @@ MAP:M0311 @<APPOS TARGET Gram/ACR + $$KASUS (-1 N + $$KASUS) ;
 #MAP:M0311 @<APPOS TARGET $$KASUS + Hyb/2-2 (-1 Gram/ACR + Hyb/1-2) (-2 N + $$KASUS) ; # ..., Illersornissaqarfiup isertortumik paasiniaasartuisa *FE-meersut oqaatigaat. PL udkommenteret 20200407: Den samlede hybrid er IKKE apposition til ACR/Prop men derimod @N< til efterretningsfolkene/ paasiniaasartuisa
 
 # Appositions without comma including parataxis må ikke overskrive i-ADVL
-MAP:M0316 (@ADVL>) TARGET TIME + Abs + Sg IF (NEGATE *1 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO)(*1 V)(NEGATE 1 KOMMA)
+MAP:M0316 (@ADVL>) TARGET TIME + Abs + Sg IF (*1 V)
+(NEGATE *1 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO)(NEGATE 1 KOMMA)
 (NEGATE *-1 Abs BARRIER (*) - CONT + LU LINK 1 CONT + LU LINK 1 _TARGET_ LINK *1 V + 3Pl)#aalisarneq inuussutissarsiutigalugulu PINIARNEQ ingerlalluarput
 (NEGATE *-1 VFIN LINK *1 LU LINK *1 _TARGET_ LINK *1 CONT + 4Sg BARRIER (*) - OBLIQUE - Adv)#suliniut qulingiluanik inuttalerneqarpoq, 2021-llu naanerani NAAMMASSINISSAA naatsorsuutigineqarluni.
+(NEGATE 0 ("sivitsor") LINK 1 VFIN + TRANSVERB)#Tamatumanilu allakkatigut qinersinissamik kaammattuivissorneq, ullup qeqqata siornani silarlunnera taavalu qinersiartortut siuleriiaartariaqarsimanerat, taamaalillunilu qinersinerup nalunaaquttap akunneranik SIVITSORNEQARTARIAQARNERA peqqutaasorai: TIME må genovervejes. Bør i hvert fald ikke ramme sivitsor+NIQ
  ; 
 
 MAP:M0318 (@ADVL>) TARGET Lok + TIME - ("akunneq") IF (*1 V BARRIER NIQ + POSSESSUM + OBLIQUE OR ("nalunaaqutaq")) 
@@ -8221,25 +8229,14 @@ MAP:0613S @i-MIK-OBJ> TARGET Ins - ADVERBIEL IF (*1 HTR + Der/vn + N BARRIER (*)
 (NEGATE 0 ADJEKTIVISK OR ("alla") LINK -1 Ins - ADVERBIEL)#Siullermik Anette assut ajornasaaraluarpoq, nammineq maanna meerassaqalerami, meeqqamik ALLAMIK tigusinissani merseralugu.
 
 ;
-MAP:M0615A @MIK-OBJ> TARGET Ins - ADVERBIEL IF (*1 HVVERB + V BARRIER V OR VERBALNOMEN - Ins - (/"inuk"\ U\ Der/nv\ Gram/IV\ NIQ/l) OR LIK_QAR) (NEGATE -1 @MIK-OBJ>) #Ikke MAP fordi ogsaa ADVL> mulig. PL 20181017 tilføjet VERBALNOMEN for at forebygge hit på 'qanoq sukkatigisumik ingerlaarsinnaaneranut TAKUSSUTISSAALLUARPOQ'
+MAP:M0615A @MIK-OBJ> TARGET Ins - ADVERBIEL IF (*1 HVVERB_UdenLeksikalisering + V BARRIER V OR VERBALNOMEN - Ins - (/"inuk"\ U\ Der/nv\ Gram/IV\ NIQ/l) OR LIK_QAR) (NEGATE -1 @MIK-OBJ>) #Ikke MAP fordi ogsaa ADVL> mulig. PL 20181017 tilføjet VERBALNOMEN for at forebygge hit på 'qanoq sukkatigisumik ingerlaarsinnaaneranut TAKUSSUTISSAALLUARPOQ'
 (NEGATE *-1 VFIN + HTR LINK NOT *-1 Ins LINK *1 Ins + Pl LINK *1 _TARGET_ + Pl BARRIER (*) - OBLIQUE - %ContHypotagme - Adv)#Kommunit paasiniaaqquneqalerput ilaqutariinnik aalisartukkormiunik ukiorluunera pissutigalugu aningaasatigut ima AJORNARTORSIORTIGISUNIK, allaat meeqqaminnut iluamik ISUMAGINNISSINNAAJUNNAARTUNIK, soorlu nerisassaqartitsinatik.
 (NEGATE *-1 VFIN + HTR LINK NOT *-1 Ins LINK *1 Ins + Pl LINK **1 Ins + Pl BARRIER (*) - OBLIQUE - %ContHypotagme - Adv LINK *1 _TARGET_ + Pl)#Kommunit paasiniaaqquneqalerput ilaqutariinnik aalisartukkormiunik ukiorluunera pissutigalugu aningaasatigut ima AJORNARTORSIORTIGISUNIK, allaat meeqqaminnut iluamik ISUMAGINNISSINNAAJUNNAARTUNIK, soorlu nerisassaqartitsinatik.
-
-#Følgende fjernes hvis flytning virker
-(NEGATE *1 VFIN + LIK_QAR + &&IV_SUBJ& BARRIER (*) - Abs + &&IV_SUBJ&)#Meeqqanik kinguaassiutitigut atornerluisimasut eqqartuunneqarnerannut TUNNGASUNIK Sermitsiaq allaaserisaqarsimavoq, allaaserisalli taakku eqqortumik suliarineqarsimasut nalilerneqarpoq.
-#Følgende fjernes hvis flytning virker
-(NEGATE *1 HVVERB + HUM BARRIER V)#sunaaffa naluat Kangaamiuni QALLUNAAQQANIK tallimanik atuartoqarmat.
 ;
-MAP:M0615B @MIK-OBJ> TARGET Trm IF (*1 HVVERB + MUT-OBJ + V BARRIER V OR VERBALNOMEN - Ins) (NEGATE -1 @MIK-OBJ>) ; #Ikke MAP fordi ogsaa ADVL> mulig. PL 20181017 tilføjet VERBALNOMEN for at forebygge hit på 'qanoq sukkatigisumik ingerlaarsinnaaneranut TAKUSSUTISSAALLUARPOQ'
+MAP:M0615B @MIK-OBJ> TARGET Trm IF (*1 HVVERB_UdenLeksikalisering + MUT-OBJ + V BARRIER V OR VERBALNOMEN - Ins) (NEGATE -1 @MIK-OBJ>) ; #Ikke MAP fordi ogsaa ADVL> mulig. PL 20181017 tilføjet VERBALNOMEN for at forebygge hit på 'qanoq sukkatigisumik ingerlaarsinnaaneranut TAKUSSUTISSAALLUARPOQ'
 
-MAP:M_0615C @MIK-OBJ> TARGET Ins - ADVERBIEL IF (*1 HVVERB + V - (/Gram/HV\ UTE\ Der/vn/l) - (/Gram/HV\ Gram/IV\ UTE\ Der/vn/l) BARRIER V OR Der/vn OR LIK_QAR) #ANORERSUARMIK kaavittuliortumik taama sakkortutigisumik inuuninni takunikuunngilanga.
+MAP:M_0615C @MIK-OBJ> TARGET Ins - ADVERBIEL IF (*1 HVVERB_UdenLeksikalisering + V - (/Gram/HV\ UTE\ Der/vn/l) - (/Gram/HV\ Gram/IV\ UTE\ Der/vn/l) BARRIER V OR Der/vn OR LIK_QAR) #ANORERSUARMIK kaavittuliortumik taama sakkortutigisumik inuuninni takunikuunngilanga.
 (NEGATE *-1 VFIN + HTR LINK NOT *-1 Ins LINK *1 Ins + Pl LINK **1 Ins + Pl BARRIER (*) - OBLIQUE - %ContHypotagme - Adv LINK *1 _TARGET_ + Pl)#Kommunit paasiniaaqquneqalerput ilaqutariinnik aalisartukkormiunik ukiorluunera pissutigalugu aningaasatigut ima AJORNARTORSIORTIGISUNIK, allaat meeqqaminnut iluamik ISUMAGINNISSINNAAJUNNAARTUNIK, soorlu nerisassaqartitsinatik.
-
-#Følgende fjernes hvis flytning virker
-(NEGATE *1 VFIN + LIK_QAR + &&IV_SUBJ& BARRIER (*) - Abs + &&IV_SUBJ&)#Meeqqanik kinguaassiutitigut atornerluisimasut eqqartuunneqarnerannut TUNNGASUNIK Sermitsiaq allaaserisaqarsimavoq, allaaserisalli taakku eqqortumik suliarineqarsimasut nalilerneqarpoq.
-#Følgende fjernes hvis flytning virker
-(NEGATE *1 HVVERB + HUM BARRIER V)#sunaaffa naluat Kangaamiuni QALLUNAAQQANIK tallimanik atuartoqarmat.
-
 ;
 MAP:M0615D @MIK-OBJ> TARGET Ins - ADVERBIEL IF (1 HTR + V) #HS Analysep Sermitsiaq.AG sinnerlugu isumasiuinera upperissagaanni, Inatsisartunut qinersisut pingajorarterutaannit amerlanerit INUIT ATAQATIGIINNIK qinersissapput.
 (NEGATE -1 Ins + $$NUMERUS LINK 1 _TARGET_ + $$NUMERUS)
@@ -8344,8 +8341,7 @@ MAP:M0750A (@i->N) TARGET Ins - NÆPPE_OBJ  OR ("imatut") IF (*1 RSUR OR LIK_QAR
 (NEGATE 0 NIQ LINK 1 (/UTE\ Der/vn\ N\ Ins/l) LINK *1 LIK_QAR BARRIER (*) - Ins )#Ukioq 2019 aallarnerfigalugu Oqaasileriffik taaguutinik SULIAQARNERMIK atortorissaarummik nutaamik atugaqalerpoq.
 (NEGATE 1 CONJ-C + Ins LINK *1 HTR BARRIER (*) - Adv)#Upernaamulli sanilliullugu maanna amerlanerungaatsiartut misissorneqartarput, taamaammallu TUNILLATSISSIMASUNIK ersiuteqanngitsunillu maanna aamma uppernarsaasoqarnerulerluni.
 (NEGATE 0 Num OR NUMERAL LINK 1 NIRU)#IA marlunngorpat qinersisussat 36 procentiisa taaguutissagaat, apersuinerup takutippaa, taamaalippallu IA Inatsisartuni SISAMANIK amerlanerusunik ilaasortaqalissaaq, aqqaneq marlunnik ilaasortaqalerluni nunatsinnilu partiini annerpaalissalluni.
-#Følgende fjernes hvis flytning virker
-(NEGATE *1 Gram/HV BARRIER LIK_QAR OR RSUR OR LIRSUR OR V)#ANGALLAMMIK nutaamik pisineq arlalitsigut iluaqutissartaqarpoq.
+(NEGATE 0 3SgPoss LINK *-1 Rel BARRIER (*) - OBLIQUE LINK -*1 Ins BARRIER (*) - KOMMA)#Allamik, Eriup nuliaminit siullermit ERNERANIK ernutaqaraluarpoq.
 ;
 
 
@@ -8369,8 +8365,6 @@ MAP:M0750D @i->N TARGET Ins - NÆPPE_OBJ - ADVERBIEL OR ("imatut") IF (1 KOMMA L
 #Særligt når parataktiske @i->N som ikke er kongruensadled til foregående @i->N
 MAP:M0750E @i->N TARGET Ins IF (*-1 @i->N LINK *1 CONJ-C LINK *1 _TARGET_ LINK *1 LIK_QAR + V)#Oqaasiliortunut aamma Nunat Aqqinik Aalajangiisartunut sullissineq Oqaasiliortunut inatsimmik aammalu Nunat Aqqinik Aalajangiisartunut INATSIMMIK tunngaveqarpoq.
 (NEGATE -1 LIK_QAR + V)#Imaakkamimi ataqqinartuaqqap ulloriaani angalasumi naasunik ajunngitsunik ajortunillu naasoqarpoq, taamaattumillu naasuni ajunngitsuni naatsiiassaqarluni AJUNNGITSUNIK aamma naasuni ajortuni naatsiiassaqarluni ajortunik
-#Følgende fjernes hvis flytning virker
-(NEGATE *1 Gram/HV OR HTR BARRIER V OR Der/vn)#Nuup Kommuneata meeqqanut, inuusuttunut, inersimasunut utoqqarnullu sunngiffimmi neqeroorutit nutarterniarpai innuttaasullu ataatsimiisinniarlugit, tassani killiffiliisoqassalluni, nutaanik isumassarsiortoqassalluni aammalu sunngiffimmi neqeroorutinut SULEQATIGIINNERMIK pilersitsisoqassalluni.
 ;
 
 MAP:M0750F @i->N TARGET Ins IF (1 Conj LINK *1 Ins BARRIER (*) - Trm LINK *1 LIK_QAR BARRIER V);#Oqaasiliortunut aamma Nunat Aqqinik Aalajangiisartunut sullissineq Oqaasiliortunut INATSIMMIK aammalu Nunat Aqqinik Aalajangiisartunut inatsimmik tunngaveqarpoq.
@@ -8652,8 +8646,6 @@ MAP:M0514B @N< TARGET Ins + Pl - CONJ-C IF (*-1 Ins + Pl - Num - TIME - Prop BAR
 (NEGATE -1 LU LINK -1 BOS)#Ilinniartuutigisimasaminillu EQQAAMIUMINNIK marlunnik ukiumikkut taamaaqatingajaannik ilassarsivai
 (NEGATE *1 HTR BARRIER (*) - OBLIQUE)#taavalu umiarsualivippassuit aalisakkanik tunisinissamut, ANGALLATINIK pitussinissamut usinillu assartuinermut pitsaanngitsumik atugassaqartut, nalunaarummi allaqqavoq.
 (NEGATE 0 INDERIVERENDE_SUBSTANTIV_BEGRÆNSET)#Perleøreringit sapangaaqqanik IVERUSIANIK taaneqarsinnaapput.
-#Følgende fjernes hvis flytning virker
-(NEGATE *1 VFIN + LIK_QAR + &&IV_SUBJ& BARRIER (*) - Abs + &&IV_SUBJ&)#Meeqqanik kinguaassiutitigut atornerluisimasut eqqartuunneqarnerannut TUNNGASUNIK Sermitsiaq allaaserisaqarsimavoq, allaaserisalli taakku eqqortumik suliarineqarsimasut nalilerneqarpoq.
 ;
 
 MAP:M0514C @N< TARGET Rel - TIME - Num - POSSESSUM3 - FAM - HUM IF (0 $$NUMERUS)(*-1 Rel + $$NUMERUS - Num - TIME - Gram/ACR BARRIER CONJ-C OR V OR KOMMA OR DIRTALESTART OR Rel OR TIME OR SEASON LINK NOT 0 (/@.*>/r) - @POSS> LINK NOT 1 POSSESSUM3)
@@ -9782,9 +9774,6 @@ MAP:M0910A (@i-ADVL>) TARGET (Ins) IF (*1 Der/vn - NAR - LEKSIKALISERING BARRIER
 (NEGATE *1 Par BARRIER Der/vn OR V LINK *1 ORATIOOBLVERB BARRIER V)#CORONAVIRUSIMILLU tunillatsissimanngitsut paasineqarpoq
 (NEGATE *-1 HTR BARRIER V LINK *1 _TARGET_ LINK 1 Der/vn + Ins) #Kommunit paasiniaaqquneqalerput ILAQUTARIINNIK aalisartukkormiunik ukiorluunera pissutigalugu aningaasatigut ima ajornartorsiortigisunik, allaat meeqqaminnut iluamik isumaginnissinnaajunnaartunik, soorlu nerisassaqartitsinatik.
 (NEGATE 1 LIK_QAR)
-#Følgende fjernes hvis flytning virker
-(NEGATE *1 HVVERB + HUM BARRIER V)#sunaaffa naluat Kangaamiuni QALLUNAAQQANIK tallimanik atuartoqarmat.
-
 ; 
 
 MAP:M0910B @i-ADVL> TARGET ADJEKTIVISK + Ins IF (1 (/NIQ\ Der/vn\ \(SSAQ\ Der/nn\)?\ N/l)); #Nanortalik Tasiilarlu NUTAARLUINNARMIK atuarfiliornissamik pilersaaruteqarput, ...mi direktøri Flemming Horsfeldt oqarpoq. (skal nemlig være @i-ADVL>)
@@ -10045,7 +10034,6 @@ MAP:M0947 @ADVL> TARGET OBLIQUE IF (0 $$KASUS LINK *1 V BARRIER (Der/vn N) - $$K
 (NEGATE 1 Der/vn + N )#Ulloq uannut inuttut ANNERTUUMIK alloriarfiusoq.
 (NEGATE 0 $$KASUS LINK *1 FossileredeCont BARRIER (*) - Abs LINK *1 $$KASUS + CONJ-C LINK *1 VFIN)#Taamaammat peqqinnissamut OQARTUSSANUT Corona pillugu allattoqarfimmulluunniit nammineerlutit saaffiginnissanngilatit.
 (NEGATE 0 <conv> LINK 1 <sem-r>)#Angallannermut INATSIMMI paragraffi 118 naapertorlugu angut taanna unioqqutitsisimasutut aamma unnerluutigineqalerpoq.
-#Følgende fjernes hvis flytning virker
 (NEGATE 0 Ins LINK NOT -1 Ins LINK *1 VFIN + LIK_QAR + &&IV_SUBJ& BARRIER (*) - Abs + &&IV_SUBJ&)#Meeqqanik kinguaassiutitigut atornerluisimasut eqqartuunneqarnerannut TUNNGASUNIK Sermitsiaq allaaserisaqarsimavoq, allaaserisalli taakku eqqortumik suliarineqarsimasut nalilerneqarpoq.
 ;
 
@@ -10105,11 +10093,6 @@ MAP:M0949A @ADVL> TARGET OBLIQUE IF (*1 V BARRIER KOMMA)
 (NEGATE 0 $$KASUS LINK *1 FossileredeCont BARRIER (*) - Abs LINK *1 $$KASUS + CONJ-C LINK *1 VFIN)#Taamaammat peqqinnissamut OQARTUSSANUT Corona pillugu allattoqarfimmulluunniit nammineerlutit saaffiginnissanngilatit.
 (NEGATE 0 Trm LINK 1 CONT + INTRANSVERB + $$PERSON LINK *1 VFIN + $$PERSON)#Taamaammat peqqinnissamut oqartussanut Corona pillugu ALLATTOQARFIMMULLUUNNIIT nammineerlutit saaffiginnissanngilatit.
 (NEGATE 0 <conv> LINK 1 <sem-r>)#Angallannermut INATSIMMI paragraffi 118 naapertorlugu angut taanna unioqqutitsisimasutut aamma unnerluutigineqalerpoq.
-#Følgende fjernes hvis flytning virker
-(NEGATE 0 Ins LINK NOT -1 Ins LINK *1 VFIN + LIK_QAR + &&IV_SUBJ& BARRIER (*) - Abs + &&IV_SUBJ&)#Meeqqanik kinguaassiutitigut atornerluisimasut eqqartuunneqarnerannut TUNNGASUNIK Sermitsiaq allaaserisaqarsimavoq, allaaserisalli taakku eqqortumik suliarineqarsimasut nalilerneqarpoq.
-#Følgende fjernes hvis flytning virker
-(NEGATE *1 HVVERB + HUM BARRIER V)#sunaaffa naluat Kangaamiuni QALLUNAAQQANIK tallimanik atuartoqarmat.
-
  ;
 
 #Følgende 2 for at forebygge dependensfejl i tidligere regler pga CONT
@@ -10179,8 +10162,6 @@ MAP:M0952 @N< TARGET N IF (0 $$KASUS + $$NUMERUS LINK -*1 $$KASUS + $$NUMERUS - 
 (NEGATE 0 ("[0123456789]{4}"r) LINK NEGATE *0 V)#aggustip 26-at 2020
 (NEGATE -2 Abs LINK 1 CONT + TRANSVERB LINK 1 _TARGET_ + Abs)#Nunatsinni qanoq pisoqarnera pillugu ILISIMATINNEQARTARNISSARPUT Nunatta Qitornaanit pingaartitaraarput
 (NEGATE 0 TIMENOUN - LIK LINK 1 Num OR ("nalunaaqutaq"))#Avannaata Kommuniani upalungaarsimanermut pisortaq, Jens Dahl ULLAAQ nal. tallimat missaata tungaanut aamma sulivoq. Men må ikke blokere A: Angut 17-init missaannik UKIULIK 170-175 cm angissusilik, tuattoq, sakiaani allannertalimmik nasartalimmik tujuululik, koorpunik qarlilik.
-#Følgende fjernes hvis flytning virker
-(NEGATE 0 Ins LINK NOT -1 Ins LINK *1 VFIN + LIK_QAR + &&IV_SUBJ& BARRIER (*) - Abs + &&IV_SUBJ&)#Meeqqanik kinguaassiutitigut atornerluisimasut eqqartuunneqarnerannut TUNNGASUNIK Sermitsiaq allaaserisaqarsimavoq, allaaserisalli taakku eqqortumik suliarineqarsimasut nalilerneqarpoq.
 ;
 
 MAP:M0955A @ADVL>N TARGET $$OBLIQUE IF (*1 NOMEN - $$OBLIQUE - CONJ-C BARRIER ("(")) #Bosniap qulaani* silaannaq men undtag parentetiske indskud Tatsit tarajuusut BRAYASØMI (saamerl.) Hundesømilu (talerperl.).
@@ -10695,11 +10676,6 @@ MAP:M1430 (@CL-<CIT) TARGET Par + INTRANSVERB + 3Pl IF (*-1 ORATIOOBLVERB + V)(*
 #MAP:M1440 @OBJ-DOTR> TARGET Trm IF (*1 DOTR); #ændret fra (@i-SUBJ>) af hensyn til den videre kæde
 
 ADD:M1460 (@OBJ>) TARGET Ins IF (*1 IntransTrans)
-#Følgende fjernes hvis flytning virker
-(NEGATE 0 Ins LINK NOT -1 Ins LINK *1 VFIN + LIK_QAR + &&IV_SUBJ& BARRIER (*) - Abs + &&IV_SUBJ&)#Meeqqanik kinguaassiutitigut atornerluisimasut eqqartuunneqarnerannut TUNNGASUNIK Sermitsiaq allaaserisaqarsimavoq, allaaserisalli taakku eqqortumik suliarineqarsimasut nalilerneqarpoq.
-#Følgende fjernes hvis flytning virker
-(NEGATE *1 HVVERB + HUM BARRIER V)#sunaaffa naluat Kangaamiuni QALLUNAAQQANIK tallimanik atuartoqarmat.
-
 ;
 MAP:M1470 (@ADVL> @<ADVL) TARGET Ins 
 (NEGATE 0 Ins LINK *1 HTR BARRIER (*) - OBLIQUE)#må ikke overskrive MIK-objekt .. NIPILERSUKKANIK .. aallertarneq
@@ -10710,10 +10686,7 @@ MAP:M1470 (@ADVL> @<ADVL) TARGET Ins
 (NEGATE 0 Ins LINK 1 ("suliaq") + N)#Taamaammat illoqarfiup Nuup tunngavilerneqarnerata 2024-mi nalliuttorsiutigineqarnissaanut atatillugu illoqarfiup nuannersarnissaanut kulturitsinnullu TUNNGASUNIK sulianut atorneqassapput, Kommuneqarfik Sermersuup borgmesteria Charlotte Ludvigsen (IA) nassuiaavoq.
 (NEGATE 0 Ins LINK 1 Der/vn + N LINK NEGATE *0 VFIN)#Ulloq uannut inuttut ANNERTUUMIK alloriarfiusoq.
 (NEGATE 0 Ins LINK *1 CONJ-C BARRIER V OR (Der/vn N) - Ins LINK *1 Ins BARRIER (*) - TIMENOUN LINK *1 NIQ + N - Ins)#Må ikke blokere i-ADVL: Tassa Kalaallit Airports International A/S (KAIR), naalakkersuisoqatigiikkunnaaqqammertut AKUERISAANNIK, Nuummi 2023-imi naammassineqartussamik Ilulissanilu 2023-mi naammassineqartussamik mittarfissualiornernut 900 millionit koruuninik attartugassarsiorsinnaanissamut kissaateqarput.
-#Følgende fjernes hvis flytning virker
 (NEGATE 0 Ins LINK NOT -1 Ins LINK *1 VFIN + LIK_QAR + &&IV_SUBJ& BARRIER (*) - Abs + &&IV_SUBJ&)#Meeqqanik kinguaassiutitigut atornerluisimasut eqqartuunneqarnerannut TUNNGASUNIK Sermitsiaq allaaserisaqarsimavoq, allaaserisalli taakku eqqortumik suliarineqarsimasut nalilerneqarpoq.
-#Følgende fjernes hvis flytning virker
-(NEGATE *1 HVVERB + HUM BARRIER V)#sunaaffa naluat Kangaamiuni QALLUNAAQQANIK tallimanik atuartoqarmat.
 ;
 REMOVE @<ADVL (NEGATE *-1 V OR @PRED OR @FOC) ;
 REMOVE @ADVL> (NEGATE *1 V OR @PRED OR @FOC OR NNGUARSI) ; 
@@ -10981,6 +10954,7 @@ MAP:M1940C @ADVL> TARGET TIME - UTE - V - ("siuneq" SSAQ) IF (*1 VFIN - TIMEVERB
 (NEGATE 0 Ins LINK 1 CONJ-C LINK *1 Ins BARRIER (*) - TIMENOUN LINK *1 NIQ + N - Ins)#Må ikke blokere i-ADVL: Tassa Kalaallit Airports International A/S (KAIR), naalakkersuisoqatigiikkunnaaqqammertut akuerisaannik, Nuummi 2023-imi NAAMMASSINEQARTUSSAMIK Ilulissanilu 2023-mi naammassineqartussamik mittarfissualiornernut 900 millionit koruuninik attartugassarsiorsinnaanissamut kissaateqarput.
 (NEGATE 0 Abs + &&IV_SUBJ& LINK *1 VFIN + &&IV_SUBJ& LINK NEGATE *0 Abs + &&IV_SUBJ& - _TARGET_ - ADJEKTIVISK)#Ulloq aalajangerneqarpoq:
 (NEGATE 0 Abs + &&IV_SUBJ& LINK *1 VFIN + &&IV_SUBJ& LINK NEGATE *0 Abs + &&IV_SUBJ& - _TARGET_ - Num)#ULLOQ apriilip ulluisa arfernat qinersisoqarnissaanut siunnersuummi aamma allassimavoq.
+(NEGATE 0 ("sivitsor") LINK 1 VFIN + TRANSVERB)#Tamatumanilu allakkatigut qinersinissamik kaammattuivissorneq, ullup qeqqata siornani silarlunnera taavalu qinersiartortut siuleriiaartariaqarsimanerat, taamaalillunilu qinersinerup nalunaaquttap akunneranik SIVITSORNEQARTARIAQARNERA peqqutaasorai: TIME må genovervejes. Bør i hvert fald ikke ramme sivitsor+NIQ
 
 
 ;
@@ -13558,7 +13532,7 @@ REMOVE (/__IP\ .*\ NIQ\ .*\ KUQ__/l) ; # Canadamiinnikoq - en der engang har væ
 REMOVE (/__<Gram/TV>\ TIGE__/l) IF (0 (/__<Gram/IV>\ TIGE__/l)) ; # qanoq ajortigiva - hvor dårlig er den?
 REMOVE (/__TE\ vn\ GE__/l) (0 (TIGE)) ; # qanoq ajortigiva - hvor dårlig er den?
 REMOVE (/__U\ .*\ TIP\ .*\ TAQ__/l) (0 (/__UTE\ .*\ TAAR__/l)) ; # Savaatitaarusuppunga
-
+REMOVE (/U\ Der/nv\ Gram/IV\ TUQ\ Der/vn\ GE/l) IF (0 (/U\ Der/nv\ Gram/IV\ SURE/l)); #Kun baseret på en fornemmelse af sandsynlighed: peqqutaasorai
 
 # Enkelte substantiver
 REMOVE ("pineq") IF (NEGATE *0 ("kamik")) ; #20091103 pineq+QAR vs. pineqar-
@@ -14865,8 +14839,6 @@ REMOVE:9970CY @POSS> + 4SgPoss IF (*-1 Rel + &&POSS34_POSS& LINK 1 Lok + &&POSS3
 REMOVE:9970CZ 3SgPoss IF (0 3PlPoss LINK *-1 @POSS> + Pl BARRIER (*) - Ins - ("'") - ("""));#Taannali aatsaat 'savalimmiormiut kalaallillu oqartussaasuisa' imarisaanik AKUERSINERISIGUT atuutilissasoq, isumaqatigiissummi allassimavoq.
 
 MAP:M9970CÆ @i->N TARGET Ins + Pl IF (1 LIK_QAR + V) #Arnaq taanna, aqqalu eqqarsaatimigut taassanagu, nammineq NUANNERSUNIK takutitaqarfigisimanerlugu?
-#Følgende fjernes hvis flytning virker
-(NEGATE *-1 @i->N BARRIER (*) - OBLIQUE - Rel)#Saqqummersitaq naleqqersuutinik ineriartornermi anguniakkat sumut killinnerinut UUTTUUTAASINNAASUNIK imaqarpoq.
 ;
 REMOVE:9970CØ Abs + @i-N< IF (0 @POSS> LINK *1 POSSESSUM3 BARRIER (*) - Rel - %AmbiguøsN - KOMMA) # Allagaatinik katersuiviup imarisai ilaatigut tassaapput ATUAKKIAT, taalliat, aviisit, atuagassiat, nittartakkat inatsisillu oqaasertaat.
 (NEGATE 1 KOMMA LINK 1 NATIONALITY + Rel + &&POSS34_POSS& LINK 1 &&POSS34_POSS&)#Tamakkua tassaapput SAARULLERNAT, norskit ammassassui, makrelit ammassallu, tamaani naalagaaffinnut aalisarfiusunut aningaasarsiornikkut pingaaruteqartorujussuit.
@@ -14931,24 +14903,13 @@ MAP:M9970DV @ADVL> TARGET Trm IF (*1 V BARRIER (*) - ADVERBIEL)#Qasigiannguani a
 (NEGATE -1 Trm)
 ;
 
-#Følgende fjernes hvis flytning virker
-MAP:M9970DU @i->N TARGET Ins IF (*1 VFIN + LIK_QAR + &&IV_SUBJ& BARRIER (*) - Abs + &&IV_SUBJ&)#Meeqqanik kinguaassiutitigut atornerluisimasut eqqartuunneqarnerannut TUNNGASUNIK Sermitsiaq allaaserisaqarsimavoq, allaaserisalli taakku eqqortumik suliarineqarsimasut nalilerneqarpoq.
-(NEGATE -1 Ins)
-#Følgende fjernes hvis flytning virker
-(NEGATE *-1 @i->N BARRIER (*) - OBLIQUE - Rel)#Saqqummersitaq naleqqersuutinik ineriartornermi anguniakkat sumut killinnerinut UUTTUUTAASINNAASUNIK imaqarpoq.
-#Følgende fjernes hvis flytning virker
-(NEGATE *1 VFIN + HTR OR Gram/HV - <sem-r>)#Savissivimmi aalisarneq ukiuunerani ingerlaannarsinnaaqqullugu QERITITSIVIMMIK annerusumik aamma pilersitsisoqassaaq.
+MAP:M9970DW @N< TARGET Ins + 3SgPoss IF (*-1 Rel BARRIER (*) - OBLIQUE LINK -*1 Ins BARRIER (*) - KOMMA)(*1 V + QAR BARRIER V OR Der/vn);#Allamik, Eriup nuliaminit siullermit ERNERANIK ernutaqaraluarpoq.
 
+MAP:M9970DX @i->N TARGET Ins IF (*1 VFIN + LIK_QAR + &&IV_SUBJ& BARRIER (*) - Abs + &&IV_SUBJ&)#Meeqqanik kinguaassiutitigut atornerluisimasut eqqartuunneqarnerannut TUNNGASUNIK Sermitsiaq allaaserisaqarsimavoq, allaaserisalli taakku eqqortumik suliarineqarsimasut nalilerneqarpoq.
+(NEGATE -1 Ins)
+(NEGATE 0 3SgPoss LINK *-1 Rel BARRIER (*) - OBLIQUE LINK -*1 Ins BARRIER (*) - KOMMA)#Allamik, Eriup nuliaminit siullermit ERNERANIK ernutaqaraluarpoq.
 ;
 
-#Følgende fjernes hvis flytning virker
-MAP:M9970DV @N< TARGET Ins + Pl IF (*-1 @i->N BARRIER (*) - OBLIQUE - Rel)(*1 VFIN + LIK_QAR BARRIER V OR Der/vn);#Saqqummersitaq naleqqersuutinik ineriartornermi anguniakkat sumut killinnerinut UUTTUUTAASINNAASUNIK imaqarpoq.
-
-#Følgende fjernes hvis flytning virker
-MAP:M9970DW @i->N TARGET Ins IF (*1 V + LIK_QAR BARRIER (*) - Num);#sunaaffa naluat Kangaamiuni QALLUNAAQQANIK tallimanik atuartoqarmat.
-
-#Følgende fjernes hvis flytning virker
-MAP:M9970DX @ADVL> TARGET Trm IF (1 CONJ-C + Trm + @ADVL> LINK 1 VFIN); #Manup Miu sinnattoriualerpaa, tamatigullu sinnattuni eqqaamalluartangaaramigit ILAMINUT atuaqatiminullu oqaluttuareqqissaartuarpai.
 SUBSTITUTE:S9970A @i-ADVL> @ADVL> TARGET Hyb/1-2 IF (1 Hyb/2-2 + Par + @PRED2);
 
 
@@ -15277,6 +15238,7 @@ REMOVE:9972B ("([^<].*)"r) IF
 (NEGATE 0 (/"taama"\ IP\ Der/nv\ Gram/IV\ TUQ/l) + Ins LINK -1 Ins + Sg)#Panini namminermisut inuunermik TAAMAATTUMIK atugaqaqqunagu silattunnginnerani toqoqatigalugu inuunera kipiniaraluarpaa
 (NEGATE 0 Abs + LIK + Pl LINK -1 Pl + Abs)#Nunat tamat suliniaqatigiiffiinit Laurent Gbagbo annertuumik akerlilerneqarpoq , nunamit aallaqqusaajunnaartinneqarluni , pigisaalu NALILLIT USA-miittut Tuluit Nunaanniittullu atorneqarsinnaajunnaartinneqarput 
 (NEGATE *-1 Abs + &&IV_SUBJ& LINK *1 Par + &&IV_SUBJ& LINK *1 ORATIOOBLVERB BARRIER VERB-NOTCONT)#Taamali isumaqatigiinniarsimaneq "KANNGUNARTOQ", Enhedslistenip Nunat Avannarliit, Issittoq, nunarput aamma Savalimmiut pillugit oqaaseqartartua, Christian Juhl, isumaqarpoq.#
+(NEGATE 0 <ac> + U + SURE)#Tamatumanilu allakkatigut qinersinissamik kaammattuivissorneq, ullup qeqqata siornani silarlunnera taavalu qinersiartortut siuleriiaartariaqarsimanerat, taamaalillunilu qinersinerup nalunaaquttap akunneranik sivitsorneqartariaqarnera PEQQUTAASORAI: En meget farlig regel, men jeg kan ikke lige finde noget, der kan begrænse den til noget fornuftigt
 
 ; 
 
