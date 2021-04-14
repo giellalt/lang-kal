@@ -40,4 +40,4 @@ MD_PAGES=root-morphology.md \
 # adjectives-affixes.md       \
 # verbs-affixes.md
 
-include $(top_srcdir)/../giella-core/am-shared/doc-dir-include.am
+include $(top_srcdir)/../giella-core/am-shared/docs-dir-include.am
