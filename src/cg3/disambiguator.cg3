@@ -1976,8 +1976,15 @@ REMOVE:MIUQ2 ("(.*)mioq"r) IF (0 (VSTR:"$1miu.*"r) + N );
 #####################################
 # Cleaning special constructions that complicate the rest #
 #####################################
-COPY ("$1"v) EXCEPT Gram/Pass TARGET ("(.*)"r) + (/Gram\/Pass\ NIQ\ Der\/vn\ N\ Abl/l); # transitiv -nermit #nunap piniagassarsui tusaamanermit nuussimavugut.
-
+COPY ("$1"v) EXCEPT Gram/Pass TARGET ("(.*)"r) + (/Gram/Pass\ NIQ\ Der/vn\ N\ Abl/l); # transitiv -nermit #nunap piniagassarsui tusaamanermit nuussimavugut.
+REMOVE:0000AX1 (/Gram/TV\ NIQ\ Der/vn/l) #transitive NIQ undtagen de få meget specifikke fjernes igen
+(NEGATE 0 Abl + Sg LINK -1 Abs)
+(NEGATE 0 Gram/Comp LINK 1 ("ajor") OR ("saper"))
+(NEGATE 0 Gram/Pass);
+REMOVE:0000AX2 (/Gram/TV\ NIQ\ Der/vn\ \(SSAQ\ Der/vn\ \)?N/l) IF (0 Gram/Pass) #Børnehaviliartalerpat tassunga ingerlassinnaavaa aallugulu, kisianni tamatuma saniatigut qanoq ILIUUSEQARFIGINISSAA nalunerartarpaa, akornutissatullu isigalugu
+(NEGATE 0 Gram/Comp LINK 1 ("ajor") OR ("saper"))
+(NEGATE -1 Abs LINK 1 _TARGET_ + Abl LINK NEGATE *0 V + 3Pl OR V + 3Sg)#nunap piniagassarsui TUSAAMANERMIT nuussimavugut.
+;
 REMOVE:00000A (Gram/Hyb) IF (0 (/\"ataatsim.*\"/r)) ; #ataatsimiippoq, ataatsimoorpoq osv. er aldrig hybrider
 REMOVE:00000 (URL) IF (0 Sem/Url) ; #dobbeltgenerering fra FST'ens url.lexc
 #Arnaq Meeraq m.fl. i første position er et reelt problem
@@ -5941,24 +5948,29 @@ MAP:M0017B @PRED2 TARGET INTRANSVERB + Par + 3Sg + (/__TUQ\ Der/vn\ QAR\ Der/nv\
 #De vanskeligt isolerbare absolutte konstruktioner med objekter til NIQ+Abl (NIQ+Ins). De må i hvert fald ikke være possessum. Hvis der ikke er andre Abs + Sg og intrans til venstre, er der nok tale om et subjekt. Og hvis intet andet Abs + Sg mellem 0 og 3SgO, er det nok et normalt objekt
 #Passiv kan næppe tage objekt, så (/Gram/TV\ \(Gram\/Pass\ \)?NIQ__/l) rettet til ikke at have optionen
 MAP:M0018A @NIQ_OBJ> TARGET Abs - TIME IF (*1 (/Gram/TV\ NIQ__/l) + NIRMIT - Hyb/1-2 - @i-ADVL>N BARRIER (/@.*/r) - @N< OR V - CONT OR Gram/Db OR INDERIVERENDE_SUBSTANTIV LINK NEGATE *1 HTR BARRIER (*) - Ins)#tilføjet minus @i-ADVL>N pga APUISOQ angallannermut inatsimmi paragraffi 118 naapertorlugu unioqqutitsisimasutut aamma unnerluutigineqalerpoq
+(NEGATE 1 POSSESSUM)
+(NEGATE *1 INTRANSVERB + 3Sg BARRIER Abs + Sg)(NEGATE *1 3SgO BARRIER Abs + Sg) #nunap piniagassarsui tusaamanermit nuussimavugut.
+(NEGATE *1 LIK BARRIER (*) - Ins ) #inatsisileritooq aningaasaqarnermik akileraartarnermillu soqutigisalik.
+;
+
+MAP:M0018B @NIQ_OBJ> TARGET Abs IF (*1 (/Gram\/TV\ NIQ__/l) + Ins - Hyb/1-2 BARRIER (/@.*/r) - @N< OR V - CONT OR Gram/Db OR INDERIVERENDE_SUBSTANTIV LINK NEGATE *1 HTR BARRIER (*) - Ins)
 (NEGATE 1 POSSESSUM)(NEGATE *1 INTRANSVERB + 3Sg BARRIER Abs + Sg)(NEGATE *1 3SgO BARRIER Abs + Sg) #nunap piniagassarsui tusaamanermit nuussimavugut.
 (NEGATE *1 LIK BARRIER (*) - Ins ) #inatsisileritooq aningaasaqarnermik akileraartarnermillu soqutigisalik.
 ;
 
-MAP:M0018AX @NIQ_OBJ> TARGET Abs IF (*1 (/Gram\/TV\ NIQ__/l) + Ins - Hyb/1-2 BARRIER (/@.*/r) - @N< OR V - CONT OR Gram/Db OR INDERIVERENDE_SUBSTANTIV LINK NEGATE *1 HTR BARRIER (*) - Ins)(NEGATE 1 POSSESSUM)(NEGATE *1 INTRANSVERB + 3Sg BARRIER Abs + Sg)(NEGATE *1 3SgO BARRIER Abs + Sg) #nunap piniagassarsui tusaamanermit nuussimavugut.
-(NEGATE *1 LIK BARRIER (*) - Ins ) #inatsisileritooq aningaasaqarnermik akileraartarnermillu soqutigisalik.
-;
 
-
-MAP:M0018B @NIQ_OBJ> TARGET Abs - CONJ-C IF (1*C (/Gram\/TV\ NIQ\ Der\/vn\ N__/l) + NIRMIT - @N< - Hyb/1-2 BARRIER (/@.*/r) - @N< OR V - NIRMIT) ;
+MAP:M0018C @NIQ_OBJ> TARGET Abs - CONJ-C IF (1*C (/Gram\/TV\ NIQ\ Der\/vn\ N__/l) + NIRMIT - @N< - Hyb/1-2 BARRIER (/@.*/r) - @N< OR V - NIRMIT) ;
 
 SUBSTITUTE:Sub0019 @NIQ_OBJ> @N< TARGET Abs IF (NEGATE 0 CONJ-C) (-1 @NIQ_OBJ> + Abs) ;
 SUBSTITUTE:Sub0020 @NIQ_OBJ> @N< TARGET Abs IF (NEGATE 0 CONJ-C) (-1 @N< LINK -1 @NIQ_OBJ> + Abs) ; #sideordnede adled
 
-MAP:M0018C (@NIQ_SUBJ>) TARGET Rel - Gram/Pers IF (*1 (/Gram\/TV\ NIQ\ Der\/vn\ N__/l) + NIRMIT - Hyb/1-2 BARRIER V OR (/@.*/r) - @NIQ_OBJ> - @N< OR KOMMA LINK NEGATE *1 HTR BARRIER (*) - Ins)(NEGATE 1 POSSESSUM)(NEGATE *1 INTRANSVERB + 3Sg BARRIER Abs + Sg)(NEGATE *1 3SgO BARRIER Abs + Sg) #nunap piniagassarsui tusaamanermit nuussimavugut.
+MAP:M0018H (@NIQ_SUBJ>) TARGET Rel - Gram/Pers IF (*1 (/Gram\/TV\ NIQ\ Der\/vn\ N__/l) + NIRMIT - Hyb/1-2 BARRIER V OR (/@.*/r) - @NIQ_OBJ> - @N< OR KOMMA LINK NEGATE *1 HTR BARRIER (*) - Ins)(NEGATE 1 POSSESSUM)(NEGATE *1 INTRANSVERB + 3Sg BARRIER Abs + Sg)(NEGATE *1 3SgO BARRIER Abs + Sg) #nunap piniagassarsui tusaamanermit nuussimavugut.
 ; #til transitive neq-konstruktioner #*Panimmaana nutella mamarinermut.
 
-MAP:M0018D (@NIQ_SUBJ>) TARGET Abs - Gram/Pers + &&IV_SUBJ& IF (*1 (/Gram\/IV\ NIQ\ Der\/vn\ N\__/l) + NIRMIT - Hyb/1-2 BARRIER V OR (/@.*/r) - @N< OR KOMMA LINK NEGATE *1 HTR BARRIER (*) - Ins)(NEGATE 1 POSSESSUM)(NEGATE *1 INTRANSVERB + &&IV_SUBJ& BARRIER Abs + Sg)(NEGATE *1 3SgO BARRIER Abs + Sg)(NEGATE *1 NIRMIT + Trm LINK *1 TRMVERB BARRIER @PRED OR VFIN) #nunap piniagassarsui tusaamanermit nuussimavugut.
+MAP:M0018I (@NIQ_SUBJ>) TARGET Abs - Gram/Pers + &&IV_SUBJ& IF (*1 (/Gram\/IV\ NIQ\ Der\/vn\ N\__/l) + NIRMIT - Hyb/1-2 BARRIER V OR (/@.*/r) - @N< OR KOMMA LINK NEGATE *1 HTR BARRIER (*) - Ins)
+(NEGATE 1 POSSESSUM)
+(NEGATE *1 INTRANSVERB + &&IV_SUBJ& BARRIER Abs + Sg)
+(NEGATE *1 3SgO BARRIER Abs + Sg)(NEGATE *1 NIRMIT + Trm LINK *1 TRMVERB BARRIER @PRED OR VFIN) #nunap piniagassarsui tusaamanermit nuussimavugut.
 (NEGATE 0 Sg LINK *1 3SgO BARRIER V)#forbehold for OBJ>
 (NEGATE 0 Pl LINK *1 3PlO BARRIER V)#forbehold for OBJ>: APEQQUTIT ilisimatusarnermut tunngasut tusarnikuuakka
 (NEGATE *1 Ins + NIRMIT BARRIER VFIN LINK 1 INSOBJVERB OR LIK_QAR ) #Dagmar Jensen aatsaat ernutaqarnermik misigisaqalerpoq.
@@ -5968,10 +5980,11 @@ MAP:M0018D (@NIQ_SUBJ>) TARGET Abs - Gram/Pers + &&IV_SUBJ& IF (*1 (/Gram\/IV\ N
 (NEGATE *1 NIQ + Abl BARRIER NIQ LINK *1 NIRU)#må ikke tagges pga 2. sammenligningsled Canadami SILA ukiaq pisarnermit kiannerusimavoq
 (NEGATE 0 FIRSTNAME LINK 1 Prop)#PER Rosing nutserinermut oqaluttaanermullu bacheloritut allagartartaarpoq. Bør måske tilføjes fx  - OBLIQUE  pga muligheder som Per INSTITUTION-mi NIQ SUBJ V
 (NEGATE 0 NIQ LINK 1 ("pingaartumik") LINK *1 ("tunnga") + Via BARRIER (*) - KOMMA - Trm - Conj)#Inatsisiliornermut SUNNIUTEQARNIARNISSAQ pingaartumik suliffeqarnermut, isumaginninnermut, peqqinnissamut aammalu suliffissaarusimanersiutinut soraarnerussutisiaqarnermullu tunngasutigut.
+(NEGATE *1 VFIN - 3Sg BARRIER V)#nunap PINIAGASSARSUI tusaamanermit nuussimavugut.
 ;
 
 #Særregel når Abl er Ins
-MAP:M0018AX (@NIQ_SUBJ>) TARGET Abs - Gram/Pers IF (*1 (/Gram\/IV\ NIQ\ Der\/vn\ N\__/l) + Ins - Hyb/1-2 BARRIER V OR (/@.*/r) - @N< OR KOMMA LINK NEGATE *1 HTR BARRIER (*) - Ins)(NEGATE 1 POSSESSUM)(NEGATE *1 INTRANSVERB + 3Sg BARRIER Abs + Sg)(NEGATE *1 3SgO BARRIER Abs + Sg)(NEGATE *1 NIRMIT + Trm LINK *1 TRMVERB BARRIER @PRED OR VFIN) #nunap piniagassarsui tusaamanermit nuussimavugut.
+MAP:M0018J (@NIQ_SUBJ>) TARGET Abs - Gram/Pers IF (*1 (/Gram\/IV\ NIQ\ Der\/vn\ N\__/l) + Ins - Hyb/1-2 BARRIER V OR (/@.*/r) - @N< OR KOMMA LINK NEGATE *1 HTR BARRIER (*) - Ins)(NEGATE 1 POSSESSUM)(NEGATE *1 INTRANSVERB + 3Sg BARRIER Abs + Sg)(NEGATE *1 3SgO BARRIER Abs + Sg)(NEGATE *1 NIRMIT + Trm LINK *1 TRMVERB BARRIER @PRED OR VFIN) #nunap piniagassarsui tusaamanermit nuussimavugut.
 (NEGATE *1 Ins + (/Gram\/IV\ NIQ\ Der\/vn\ N\__/l) - POSSESSUM BARRIER VFIN LINK 1 INSOBJVERB OR LIK_QAR ) #Dagmar Jensen aatsaat ernutaqarnermik misigisaqalerpoq.
 (NEGATE *1 LIK BARRIER (*) - Ins ) #inatsisileritooq aningaasaqarnermik akileraartarnermillu soqutigisalik.
 (NEGATE -1 Abs)
@@ -12852,7 +12865,7 @@ REMOVE:5200E ("pinnguaq") + QATIGIIP IF (0 ("pinnguar") + QATIGIIP);
 REMOVE:5200F ("illaq") + QATIGIIP IF (0 ("illar") + QATIGIIP); #impressionistisk valg: fælles om at le vist bedre end fælles om en latter
 REMOVE:5200G (/"imeq"\ LIR/l) IF (0 (/"imer"\ Gram/IV\ LIR/l) + V + &&IV_SUBJ& LINK *0 Abs + &&IV_SUBJ& + HUM); 
 REMOVE:5200H (/"angi"\ NIRPAAQ\ Der/vn\ LIR\ Der/nv/l) IF (0 ("annerpaa") + V);
-
+REMOVE:5200I (/"amerlasoor"\ Gram/IV\ RIAR/l) IF (0 (/"amerlasooq"\ RIAR\ Der/nv/l));
 
 # Verbum eller verbum?
 SELECT:Sel0083 (INNAR NNGIT) IF (*1 ("aamma") ) ; #+INNAR=NNGIT aamma Vb fremfor NAR) 
@@ -14748,6 +14761,8 @@ MAP:M9970DX @i->N TARGET Ins IF (*1 VFIN + LIK_QAR + &&IV_SUBJ& BARRIER (*) - Ab
 (NEGATE -1 Ins)
 (NEGATE 0 3SgPoss LINK *-1 Rel BARRIER (*) - OBLIQUE LINK -*1 Ins BARRIER (*) - KOMMA)#Allamik, Eriup nuliaminit siullermit ERNERANIK ernutaqaraluarpoq.
 ;
+
+REMOVE:9970DY (/Gram/TV\ TUU\ Der/vv\ Gram/Refl\ Gram/IV\ NIQ/l) IF (0 (/Gram/IV\ TUQ\ Der/vn\ U\ Der/nv\ Gram/IV\ NIQ/l)); #Qasigiannguani aalisartuuneq PINIARTUUNERMIT annertunerugaluartoq, piniartunut piaartumik iliuuseqartoqartariaqartoq Jess Svane isumaqarpoq.
 
 SUBSTITUTE:S9970A @i-ADVL> @ADVL> TARGET Hyb/1-2 IF (1 Hyb/2-2 + Par + @PRED2);
 
