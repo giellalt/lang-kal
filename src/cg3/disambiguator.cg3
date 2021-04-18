@@ -100,6 +100,7 @@ LIST Gram/Hyb = Gram/Hyb ;
 LIST Gram/Pers = Gram/Pers ;
 LIST Gram/Coref = Gram/Coref ;
 LIST Gram/Dem = Gram/Dem ;
+LIST Gram/TransverbNIQ = Gram/TransverbNIQ ; #PL20210417 kun til NIQ, der kan tage direkte objekt
 LIST Adj = Adj ;
 LIST Adv = Adv ;
 LIST iAdv = iAdv ;
@@ -1976,12 +1977,20 @@ REMOVE:MIUQ2 ("(.*)mioq"r) IF (0 (VSTR:"$1miu.*"r) + N );
 #####################################
 # Cleaning special constructions that complicate the rest #
 #####################################
-COPY ("$1"v) EXCEPT Gram/Pass TARGET ("(.*)"r) + (/Gram/Pass\ NIQ\ Der/vn\ N\ Abl/l); # transitiv -nermit #nunap piniagassarsui tusaamanermit nuussimavugut.
-REMOVE:0000AX1 (/Gram/TV\ NIQ\ Der/vn/l) #transitive NIQ undtagen de få meget specifikke fjernes igen
+#COPY ("$1"v) EXCEPT Gram/Pass TARGET ("(.*)"r) + (/Gram/Pass\ NIQ\ Der/vn\ N\ Abl/l); # transitiv -nermit #nunap piniagassarsui tusaamanermit nuussimavugut.
+# Opfind en model der sletter COPY og i stedet tager højde for +NIQ+Der/vn+Gram/TransverbNIQ. Testcase 'tusaamanermit'
+
+#REMOVE:0000AX1 (/Gram/TV\ NIQ\ Der/vn/l) #transitive NIQ undtagen de få meget specifikke fjernes igen
+REMOVE:0000AX1 Gram/TransverbNIQ #transitive NIQ undtagen de få meget specifikke fjernes igen
 (NEGATE 0 Abl + Sg LINK -1 Abs)
 (NEGATE 0 Gram/Comp LINK 1 ("ajor") OR ("saper"))
-(NEGATE 0 Gram/Pass);
-REMOVE:0000AX2 (/Gram/TV\ NIQ\ Der/vn\ \(SSAQ\ Der/vn\ \)?N/l) IF (0 Gram/Pass) #Børnehaviliartalerpat tassunga ingerlassinnaavaa aallugulu, kisianni tamatuma saniatigut qanoq ILIUUSEQARFIGINISSAA nalunerartarpaa, akornutissatullu isigalugu
+(NEGATE 0 Gram/Pass)
+;
+#Bliver ikke slettet hvis kohorten indeholder endnu ikke disambiguerede Gram/Pass. Derfor følgende snævre specifikke regel
+REMOVE:0000AX2 Gram/TransverbNIQ IF (0 POSSESSUM3 LINK *0 3Sg);#Atuarfiit, paaqqinnittarfiit, neriniartarfiit imerniartarfiillu kiisalu kulturikkut aaqqissuussat MATUNEQARNERISA nalaanni angerlarsimaffinni imigassamik atuineq oqartussanit qanimut malinnaaffigineqarpoq.
+
+REMOVE:0000AX3 Gram/TransverbNIQ IF (0 NIQAR);
+REMOVE:0000AX4 (/Gram/TV\ NIQ\ Der/vn\ \(SSAQ\ Der/vn\ \)?N/l) IF (0 Gram/Pass) #Børnehaviliartalerpat tassunga ingerlassinnaavaa aallugulu, kisianni tamatuma saniatigut qanoq ILIUUSEQARFIGINISSAA nalunerartarpaa, akornutissatullu isigalugu
 (NEGATE 0 Gram/Comp LINK 1 ("ajor") OR ("saper"))
 (NEGATE -1 Abs LINK 1 _TARGET_ + Abl LINK NEGATE *0 V + 3Pl OR V + 3Sg)#nunap piniagassarsui TUSAAMANERMIT nuussimavugut.
 ;
@@ -4060,6 +4069,9 @@ MAP:M_faste0530 @N< TARGET ("qinersivik") OR (/"qiner"\ Sem/CognitiveMaking\ Gra
 #uvildig
 MAP:M_faste0540 @i-ADVL> TARGET (/"arlaq"\ N\ Gram/Cong\ Trm\ Sg\ 3PlPoss/l) IF (1 (/"attuuma"\ Gram/IV\ UTE\ Der/vn\ QAR\ Der/nv\ Gram/IV\ NNGIT\ Der/vv\ Gram/IV\ TUQ/l));
 
+#indenrigs
+MAP:M_faste0550 @N< TARGET ("immi") + $$KASUS IF (-1 ("nuna") + $$KASUS); # Aningaasaqarnermut Nunamullu IMMINERMUT Naalakkersuisoq
+
 #######
 # MWE #
 #######
@@ -5947,7 +5959,9 @@ MAP:M0017B @PRED2 TARGET INTRANSVERB + Par + 3Sg + (/__TUQ\ Der/vn\ QAR\ Der/nv\
 
 #De vanskeligt isolerbare absolutte konstruktioner med objekter til NIQ+Abl (NIQ+Ins). De må i hvert fald ikke være possessum. Hvis der ikke er andre Abs + Sg og intrans til venstre, er der nok tale om et subjekt. Og hvis intet andet Abs + Sg mellem 0 og 3SgO, er det nok et normalt objekt
 #Passiv kan næppe tage objekt, så (/Gram/TV\ \(Gram\/Pass\ \)?NIQ__/l) rettet til ikke at have optionen
-MAP:M0018A @NIQ_OBJ> TARGET Abs - TIME IF (*1 (/Gram/TV\ NIQ__/l) + NIRMIT - Hyb/1-2 - @i-ADVL>N BARRIER (/@.*/r) - @N< OR V - CONT OR Gram/Db OR INDERIVERENDE_SUBSTANTIV LINK NEGATE *1 HTR BARRIER (*) - Ins)#tilføjet minus @i-ADVL>N pga APUISOQ angallannermut inatsimmi paragraffi 118 naapertorlugu unioqqutitsisimasutut aamma unnerluutigineqalerpoq
+MAP:M0018A @NIQ_OBJ> TARGET Abs - TIME IF (*1 Gram/TransverbNIQ + Abl - Hyb/1-2 - @i-ADVL>N BARRIER (/@.*/r) - @N< OR V - CONT OR Gram/Db OR INDERIVERENDE_SUBSTANTIV LINK NEGATE *1 HTR BARRIER (*) - Ins)#tilføjet minus @i-ADVL>N pga APUISOQ angallannermut inatsimmi paragraffi 118 naapertorlugu unioqqutitsisimasutut aamma unnerluutigineqalerpoq
+
+#MAP:M0018A @NIQ_OBJ> TARGET Abs - TIME IF (*1 (/Gram/TV\ NIQ__/l) + NIRMIT - Hyb/1-2 - @i-ADVL>N BARRIER (/@.*/r) - @N< OR V - CONT OR Gram/Db OR INDERIVERENDE_SUBSTANTIV LINK NEGATE *1 HTR BARRIER (*) - Ins)#tilføjet minus @i-ADVL>N pga APUISOQ angallannermut inatsimmi paragraffi 118 naapertorlugu unioqqutitsisimasutut aamma unnerluutigineqalerpoq
 (NEGATE 1 POSSESSUM)
 (NEGATE *1 INTRANSVERB + 3Sg BARRIER Abs + Sg)(NEGATE *1 3SgO BARRIER Abs + Sg) #nunap piniagassarsui tusaamanermit nuussimavugut.
 (NEGATE *1 LIK BARRIER (*) - Ins ) #inatsisileritooq aningaasaqarnermik akileraartarnermillu soqutigisalik.
@@ -6307,15 +6321,9 @@ MAP:M0044CX @CL-<ADVL TARGET (/NIQ\ Der/vn\ N\ Ins\ Sg/l) IF (-*1 VFIN) (NEGATE 
 
 MAP:M0044D @CL-<ADVL TARGET NIRMIT + CONJ-C IF (-*1 NIRMIT + @CL-<ADVL) ;
 
-#Nedenstående to bliver for upræcise. Skal måske forsøges længere nede.
-#MAP:M0044H @CL-ADVL> TARGET NIQ + POSSESSUM - TIME (0 Lok - Aeq OR Trm)(*1 V - CONT - TRMVERB - UTE - (".*uup"r) - ADVERBIEL BARRIER CONT OR VFIN)(NEGATE -1 Rel)(NEGATE 1 ("pi")); # giver ofte sætningsadverbial: Baobabit aallaqqaammut mikisuusarput - allinnginnerminni.
-#MAP:M0044I @CL-<ADVL TARGET NIQ + OBLIQUE - Via - Aeq + POSSESSUM - TIME (*-1 V - CONT - TRMVERB - UTE - (".*uup"r) - ADVERBIEL BARRIER CONJ-C)(NEGATE -1 Rel)(NEGATE 1 ("pi")); # giver ofte sætningsadverbial: Baobabit aallaqqaammut mikisuusarput - allinnginnerminni.
-
-#MAP:M0045 (@CL-<ADVL) TARGET Par + 3Pl + 4SgO OR Par + INTRANSVERB + 4Sg IF (*-1 VFIN)(NEGATE 0 CONJ-C LINK 1* VFIN BARRIER KOMMA) ; #20091109 participium på -gaanni altid neksusadverbial
-#MAP:M0046 (@CL-ADVL>) TARGET Par + 3Pl + 4SgO OR Par + 4Sg IF (-1 BOS OR KOMMA) ; #20091109 participium på -gaanni altid neksusadverbial
-#MAP:M0047 (@CL-ADVL>) TARGET Par + 3Pl + 4SgO OR Par + 4Sg IF (*1 VFIN BARRIER V)(NEGATE 0 Par + 4Sg + 3PlO) ; #20091109 participium på -gaanni altid neksusadverbial. De særlige Par på -gini, som erstatter ledsagemåde holdes udenfor
-#M0045-M0047 flyttet opad 20180804
-
+MAP:0044E @CL-ADVL> TARGET Gram/TransverbNIQ + Abl OR Gram/TransverbNIQ + Ins IF (-1 Abs)
+(NEGATE *0 V + 3Sg)
+;
 MAP:M0048 @i-ADVL> TARGET CONT (1 DOTR)(NEGATE (0 4Sg LINK 1 3Sg OR 4Sg) OR (0 4Pl LINK 1 3Pl OR 4Pl))(NEGATE 0 4Sg LINK -*1 VFIN + 3Sg BARRIER CLB OR VFIN)(NEGATE 1 ("pilluar") + QQU OR ("ingerla") + TIP) 
 (NEGATE 1 ("paasi" TIP NIQAR))#usus ved paasitip er inkonsekvent
  #Til trivalente verber hvor det inderiverede subjekt har et underordnet verbum i Cont lige foran sig. #NEGATE fordi trivalent pilluaqqu- og ingerlatip- er usandsynlige. Inersimasut siunnersorpaannga pulateriaarsunnik ipititsisartunik titartaasarnera unitsissagiga, ammasunik matoqqasunilluunniit, TAARSIULLUGULI aalluteqquaat nunalerutit, oqaluttuarisaaneq, kisitsisilerineq oqaasilerinerlu. 
@@ -6503,7 +6511,7 @@ MAP:OrObl0450 @CL-CIT> TARGET CONT IF (*1 ORATIOOBLVERB + V - NON_INQUIT_HTR - N
 (NEGATE 0 GALUAR LINK *1 Aeq BARRIER V LINK 1 <fn:CognitiveMaking>) #Qaqortumi sila qulisimagaluarluni silagissutut oqaatigineqarsinnaavoq.
 ;
 #En specialitet, når GUUQ er en slags konjunktion
-MAP:OrObl0450X @CL-CIT> TARGET CONT + GUUQ IF (*1 ORATIOOBLVERB + V - NON_INQUIT_HTR - NON_ORATIOOBBLVERB BARRIER VERB-NOTCONT OR KOMMA LINK NEGATE *1 Par)(NEGATE *1 DIRTALESTART BARRIER CLB - KOMMA) #aldrig oo simultan med anførende sætning og HTR sjælden eller aldrig inquit
+MAP:OrObl0450X1 @CL-CIT> TARGET CONT + GUUQ IF (*1 ORATIOOBLVERB + V - NON_INQUIT_HTR - NON_ORATIOOBBLVERB BARRIER VERB-NOTCONT OR KOMMA LINK NEGATE *1 Par)(NEGATE *1 DIRTALESTART BARRIER CLB - KOMMA) #aldrig oo simultan med anførende sætning og HTR sjælden eller aldrig inquit
 (NEGATE 0 GALUAR LINK *-1 CONT + @CL-CIT>)#Qimaannarusukkaluarpaa, kisianni anaanami qanoq toqusimanera tusassallugu ANNILAARNARTIKKALUARLUGU tusarusuppaa.
 (NEGATE 0 DelvistFossileredeCont)
 (NEGATE 1 NIQ + N) #så er det i-ADVL>
@@ -6515,6 +6523,9 @@ MAP:OrObl0450X @CL-CIT> TARGET CONT + GUUQ IF (*1 ORATIOOBLVERB + V - NON_INQUIT
 (NEGATE *1 NIQ + Ins BARRIER V LINK *1 ORATIOOBLVERB + INTRANSVERB)# atuaqatigiit arlallit NANGAAJUNNAARLUTIK aamma namminneq qanoq pineqartarnerminnik oqaluttuaqattaalerput.
 ;
 
+#Smal specialitet for at få taggingen til at virke også ved tvivlsom kommatering
+MAP:OrObl0450X2 @CL-CIT> CONT IF (*1 ORATIOOBLVERB + V - NON_INQUIT_HTR - NON_ORATIOOBBLVERB BARRIER VERB-NOTCONT)(1 KOMMA LINK *1 Rel + Sg BARRIER (*) - Rel LINK 1 ORATIOOBLVERB + TRANSVERB + 3Sg)#Naalakkersuisoqatigiit patajaatsut ukiuni sisamani issiasussat PILERSIKKUSULLUGIT, Inuit Ataqatigiit siulittaasuata oqaatigaa. 
+;
 MAP:OrObl0451 @CL-<CIT TARGET CONT IF (*-1 ORATIOOBLVERB + V - NON_INQUIT_HTR - NON_ORATIOOBBLVERB BARRIER VFIN OR KOMMA LINK NEGATE *1 Par)
 (NEGATE *1 DIRTALESTART BARRIER CLB - KOMMA) #aldrig oo simultan med anførende sætning og HTR sjælden eller aldrig inquit
 (NEGATE 0 GALUAR LINK *-1 CONT + @CL-CIT>)#Qimaannarusukkaluarpaa, kisianni anaanami qanoq toqusimanera tusassallugu ANNILAARNARTIKKALUARLUGU tusarusuppaa.
@@ -7869,7 +7880,7 @@ MAP:M0510A @OBJ> TARGET Abs + &&ContObj& IF (*1 CONT + &&ContObj& BARRIER (*) - 
 (NEGATE 0 &&IV_SUBJ& LINK 1 CONT + 3PlO LINK 1 NUM + NNGUR + &&IV_SUBJ&)#Coronavirusimillu toqquteqartutut nalunaarsorneqartut pingasunik ilapput, coronavirusimik TOQQUTEQARTUT katillugit 697-inngorlutik.
 #napasoq kan både være substantivisk og adjektivisk: PANDAQ napasoq aqqutigalugu qimaasinnaasimasoq uumasuusivissuup pisortaata Bengt Holstip oqaatigaa.
 (NEGATE *-1 @OBJ> + $$NUMERUS LINK *1 _TARGET_ + $$NUMERUS + Hyb/2-2 BARRIER (*) - NUM - MAANED - Hyb/1-2)#KNR-ip paasisai naapertorlugit Ukrainemiup Nunatsinnukarnissaa Danmarkimi nunani allamiunut aqutsisoqarfiup aalajangigaraa, nunani allamiunut inatsimmi peqqussut 150 februaarip 23-ani 2001-imeERSOQ innersuussutigalugu.
-
+##
 ;
 
 
@@ -11606,7 +11617,10 @@ SELECT:1690 Abs + Sg - 2SgPoss - Sem/Unit - SUB IF (*1C INTRANSVERB + 3Sg BARRIE
 (NEGATE 0 (/Gram/TV\ Gram/Pass\ TUQ/l) LINK 0 (/Gram/IV\ TUQ/l)) #atulertoq skal ikke være passiv
 ;
 REMOVE:Int0196 (/NIQ\ Der/vn\ QAR\ Der/nv\ Gram/IV\ NIQ/l) IF (0 NIQAR) (NEGATE *-1 Ins) ;
-REMOVE:Int0197 N + NIQAR + NIQ + Pl IF (NEGATE *1 3PlO); # uden NEGATE fjernes .. QINNGASAARNEQALAARTARNINI pissutigiinnarlugit ..
+REMOVE:Int0197 N + NIQAR + NIQ + Pl IF 
+(NEGATE *1 3PlO) # uden NEGATE fjernes .. QINNGASAARNEQALAARTARNINI pissutigiinnarlugit ..
+(NEGATE 1 3PlPoss LINK -1 _TARGET_ + Rel + 3PlPoss + Pl LINK -1 Rel + Pl)#Atuarfiit, paaqqinnittarfiit, neriniartarfiit imerniartarfiillu kiisalu kulturikkut aaqqissuussat MATUNEQARNERISA nalaanni angerlarsimaffinni imigassamik atuineq oqartussanit qanimut malinnaaffigineqarpoq.
+;
 REMOVE:Int0198 N + NIQAR + NIRSAQ; 
 SELECT:Sel0020 N + NIQAR + NIRSAQ; #Passivt verbalnomen i pluralis er sjaeldent
 REMOVE:Int0199 (/__NNGUR\ Der\/nv\ Gram\/TV\ Gram\/Pass\ NIQ__/l) IF (0 (/__NNGUR\ Der\/nv\ Gram\/IV\ NIQ__/l)) ;
@@ -14169,7 +14183,7 @@ MAP:M9968Å @PRED TARGET CONT + 4Sg IF (1 EOS)(*-1 Abs + Sg BARRIER VERB-NOTCONT
 
 REMOVE:9968AA Abs + @N< IF (*-1 Abs + &&IV_SUBJ& BARRIER V LINK *1 _TARGET_ + Par + &&IV_SUBJ& LINK *1 ORATIOOBLVERB - OBLIQUE OR OQARPOQ) #Tunillatsittut amerlassusaannut atatillugu tunillaassuuttoqarnerata annikillinissaa pissutigalugu sukkasuumik sunniuteqarluartumillu iliuuseqartoqarnissaa PINGAARUTEQARTOQ, Aarhus Universitetshospitalimi nakorsaaneq, Lars Østergaard oqarpoq. Men ikke Uulia NASSAARINEQARTOQ ilimagisamit annertuneruvoq.
 (NEGATE *-1 $$KASUS + &&IV_SUBJ& LINK *1 _TARGET_ + Der/vn + $$KASUS LINK *1 V + &&IV_SUBJ& BARRIER V)#Kalaallit meerartaat 1.000-it missaanniITTUT inooqatigiinnikkut ilungersunartunik ajornartorsiuteqartut , immikkut ilisimasallit naliliipput .
-
+(NEGATE -1 Pl LINK 1 _TARGET_ + Pl LINK * 3Pl OR 3PlO BARRIER (*) - (Abs Pl) - OBLIQUE )#Naalakkersuisoqatigiit PATAJAATSUT ukiuni sisamani issiasussat pilersikkusullugit, Inuit Ataqatigiit siulittaasuata oqaatigaa.  Inuit Ataqatigiit siulittaasuata oqaatigaa.
 ;
 MAP:M9968AB @PRED TARGET CONT + NUM + NNGUR IF ( -1 CONT + 3PlO LINK -1 Abs + Pl LINK *-1 CONJ-C OR KOMMA); #Coronavirusimillu toqquteqartutut nalunaarsorneqartut pingasunik ilapput, coronavirusimik toqquteqartut katillugit 697-INNGORLUTIK.
 
@@ -14987,6 +15001,8 @@ REMOVE:9968AK (/"aki"\ Gram/IV\ SAR/l) + Gram/Gaanni IF (0 (/"aki"\ Gram/IV\ TAR
 REMOVE:9968AL (/IRUTE\ Der/nv\ Gram/TV/l) IF (0 (/IRUTE\ Der/nv\ Gram/IV/l) LINK 0 INTRANSVERB); #.. pisimasut eqqaaleraangamigit SINISSAARUTTARTUNNGUAKASIUGAMI.
 
 REMOVE:9968AM (/"upalungaar"\ Gram/TV/l) + NIQ IF (0 (/upalungaar"\ Gram/IV/l) + NIQ);
+
+REMOVE:9968AN (/Gram/IV\ NIQ/l) IF (0 Gram/TransverbNIQ LINK *-1 Abs + Pl LINK NEGATE *0 3Pl OR 3PlO);#Nunap piniagassarsui tusaamanermit nuuppugut
 
 ##################################################
 #Specifikke regler til disambiguering af Gram/TV vs. Gram/Db
