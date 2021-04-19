@@ -1963,24 +1963,23 @@ REMOVE:MIUQ2 ("(.*)mioq"r) IF (0 (VSTR:"$1miu.*"r) + N );
 #COPY ("$1"v) EXCEPT Gram/Pass TARGET ("(.*)"r) + (/Gram/Pass\ NIQ\ Der/vn\ N\ Abl/l); # transitiv -nermit #nunap piniagassarsui tusaamanermit nuussimavugut.
 # Opfind en model der sletter COPY og i stedet tager højde for +NIQ+Der/vn+Gram/TransverbNIQ. Testcase 'tusaamanermit'
 
-#REMOVE:0000AX1 (/Gram/TV\ NIQ\ Der/vn/l) #transitive NIQ undtagen de få meget specifikke fjernes igen
-REMOVE:0000AX1 Gram/TransverbNIQ #transitive NIQ undtagen de få meget specifikke fjernes igen
-(NEGATE 0 Abl + Sg LINK -1 Abs)
-(NEGATE 0 Gram/Comp LINK 1 ("ajor") OR ("saper"))
-(NEGATE 0 Gram/Pass)
-;
+#REMOVE:0000AX1 Gram/TransverbNIQ #transitive NIQ undtagen de få meget specifikke fjernes igen
+#(NEGATE 0 Abl + Sg LINK -1 Abs)
+#(NEGATE 0 Gram/Comp LINK 1 ("ajor") OR ("saper"))
+#(NEGATE 0 Gram/Pass)
+#;
 #Bliver ikke slettet hvis kohorten indeholder endnu ikke disambiguerede Gram/Pass. Derfor følgende snævre specifikke regel
-REMOVE:0000AX2 Gram/TransverbNIQ IF (0 POSSESSUM3 LINK *0 3Sg);#Atuarfiit, paaqqinnittarfiit, neriniartarfiit imerniartarfiillu kiisalu kulturikkut aaqqissuussat MATUNEQARNERISA nalaanni angerlarsimaffinni imigassamik atuineq oqartussanit qanimut malinnaaffigineqarpoq.
+#REMOVE:0000AX2 Gram/TransverbNIQ IF (0 POSSESSUM3 LINK *0 3Sg);#Atuarfiit, paaqqinnittarfiit, neriniartarfiit imerniartarfiillu kiisalu kulturikkut aaqqissuussat MATUNEQARNERISA nalaanni angerlarsimaffinni imigassamik atuineq oqartussanit qanimut malinnaaffigineqarpoq.
 
 REMOVE:0000AX3 Gram/TransverbNIQ IF (0 NIQAR);
-REMOVE:0000AX4 (/Gram/TV\ NIQ\ Der/vn\ \(SSAQ\ Der/vn\ \)?N/l) IF (0 Gram/Pass) #Børnehaviliartalerpat tassunga ingerlassinnaavaa aallugulu, kisianni tamatuma saniatigut qanoq ILIUUSEQARFIGINISSAA nalunerartarpaa, akornutissatullu isigalugu
-(NEGATE 0 Gram/Comp LINK 1 ("ajor") OR ("saper"))
-(NEGATE -1 Abs LINK 1 _TARGET_ + Abl LINK NEGATE *0 V + 3Pl OR V + 3Sg)#nunap piniagassarsui TUSAAMANERMIT nuussimavugut.
-;
+#REMOVE:0000AX4 (/Gram/TV\ NIQ\ Der/vn\ \(SSAQ\ Der/vn\ \)?N/l) IF (0 Gram/Pass) #Børnehaviliartalerpat tassunga ingerlassinnaavaa aallugulu, kisianni tamatuma saniatigut qanoq ILIUUSEQARFIGINISSAA nalunerartarpaa, akornutissatullu isigalugu
+#(NEGATE 0 Gram/Comp LINK 1 ("ajor") OR ("saper"))
+#(NEGATE -1 Abs LINK 1 _TARGET_ + Abl LINK NEGATE *0 V + 3Pl OR V + 3Sg)#nunap piniagassarsui TUSAAMANERMIT nuussimavugut.
+#;
 REMOVE:00000A (Gram/Hyb) IF (0 (/\"ataatsim.*\"/r)) ; #ataatsimiippoq, ataatsimoorpoq osv. er aldrig hybrider
 REMOVE:00000 (URL) IF (0 Sem/Url) ; #dobbeltgenerering fra FST'ens url.lexc
 #Arnaq Meeraq m.fl. i første position er et reelt problem
-REMOVE:0001X ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"%l$1"r))(NEGATE 0 ("Nuna") + Prop + 1PlPoss) ;
+#REMOVE:0001X ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"%l$1"r))(NEGATE 0 ("Nuna") + Prop + 1PlPoss) ;
 #PL genaktiveret 20190430. Har været testet på minicorpus men må ikke slette Nunarput
 
 SELECT:0001PropX ("Aqissiaq") + Ins IF (1 ("oqaluttuaq")) ; #MWE-lignende særtilfælde
@@ -2224,6 +2223,7 @@ MAP:M_tidlig0072 @POSS>> TARGET Rel + Pl IF (1 Rel + Pl LINK *1 3PlPossUdenMWE B
 (NEGATE -1 Num LINK 1 NUMHOVED LINK 1 NUMHOVED )#Timmisartuutileqatigiiffiit ukiut marluk taakku ingerlaneranni 630 MILLIARDIT koruunit missaannik annaasaqarnissaat IATA-p aasaq manna eqqoriarpaa, kisitsilli taanna maanna qaffanneqarluni.
 (NEGATE -1 TIMENOUN LINK 1 _TARGET_ + Num)#Timmisartuutileqatigiiffiit ukiut MARLUK taakku ingerlaneranni 630 milliardit koruunit missaannik annaasaqarnissaat IATA-p aasaq manna eqqoriarpaa, kisitsilli taanna maanna qaffanneqarluni.
 (NEGATE 0 TIMENOUN LINK *1 3PlPossUdenMWE BARRIER (*) - Num)#Avataarsualiartartut Amerikameersut Qaammammut UKIUT tallimat ingerlannginnerini uternissaat politikkikkut sulissutiginiarparput, Mike Pence, USA-mi naalagaaffeeqqami Alabamami illoqarfimmi Huntsvillemi oqalugiartilluni oqarpoq.
+(NEGATE 0 Abs + Pl LINK 1 (Num Rel) LINK 1 ("misse") LINK *1 3PlPossUdenMWE BARRIER (*) - (Abs Pl) - Akk LINK *1 3PlO BARRIER (Abs Pl))#Timmisartuutileqatigiiffiulli suli naatsorsuutigaa ILAASUSSAT 900-t missaanniittut kinguaattooqqasut tamaasa apuuffissaannut sapaatip-akunnerata naanerani apuukkumaarlugit .
 ;
 
 MAP:M_tidlig0073 @POSS>> TARGET Rel + Pl IF (1 Rel + Pl LINK 1 3PlPoss - Rel LINK 1 3PlPoss ) #MITTARFISSUALIORNERIT innuttaasut aningaasaqarnerannut iluaqutaanerat isigigaanni, mittarfissualiornerit iluatsilluarput, Justus Hansen oqarpoq.
@@ -4291,6 +4291,8 @@ SELECT:0063 Rel + Pl - FAM_UNIK - Num - POSSESSUM12 IF (*1C 3PlPossUdenMWE - %Ot
 (NEGATE -1 Rel + Sg LINK 1 _TARGET_ + Sg + CONJ-C)#Danmarkip nunattalu akornanni juullip UKIORTAALLU akornanni angalasussat aarlerinarnerpaapput.
 (NEGATE 0 Abs LINK *1 3PlO BARRIER (Abs Pl) OR TRANSVERB + 3Pl)#Juullip inuata MEEQQAT nunarsuup kianneruleriartornera pillugu juullikkut nalaanni ilinniartissavai.
 (NEGATE 1 KOMMA)
+(NEGATE 0 Abs + Pl LINK *1 3PlO LINK 1 KOMMA BARRIER 3PlPossUdenMWE)
+
 ;
 
 SELECT:0063B Rel + Pl - FAM_UNIK - 4PlPoss - 4SgPoss IF (1C Rel + Pl - Prop LINK 1C 3PlPoss - Prop - iALL - Hyb/1-2)(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 1 ("assi") + POSSESSUM + CONJ-LU)(NEGATE -1 ("ila") LINK 2 ("ila"))(NEGATE 0 ("assut") OR ("taama"))
