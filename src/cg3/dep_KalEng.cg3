@@ -1,4 +1,4 @@
-# -*- cg-pre-pipe: ~/langtech/kal/tools/shellscripts/kal-tokenise ~/langtech/kal/tools/tokenisers/tokeniser-disamb-gt-desc.pmhfst | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/kal-pre1.cg3 | ~/langtech/kal/tools/shellscripts/kal-hybrid-split | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/kal-pre2.cg3 | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/disambiguator.cg3 --no-mappings | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/disambiguator.cg3  -*-
+# -*- cg-pre-pipe: ~/langtech/kal/tools/shellscripts/kal-tokenise ~/langtech/kal/tools/tokenisers/tokeniser-disamb-gt-desc.pmhfst | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/kal-pre1.cg3 | ~/langtech/kal/tools/shellscripts/kal-hybrid-split | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/kal-pre2.cg3 | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/disambiguator.cg3 | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/functions.cg3  -*-
 
 
 #commandline til post-dep.pl Pers-MacBook-Pro-2:kal2eng per$ echo "Trump eqqissisimatitaasimasumi uuliamik gassimillu misissuisoqarnissaanut akuersissuteqartoq" | ./kal2eng.pl 
@@ -598,8 +598,9 @@ SETPARENT:M_uløselighed0283 @MIK-OBJ> + (/TAQ\ Der/vn\ SSAQ\ Der/nn\ N\ Ins/l) 
 #MAP:M_faste0040 @i-ADVL> TARGET TRANSPORT + Ins IF (1 <fn:ModeOfMovement> + N); #gummibådimik angalaneq
 #MAP:M_faste0041 @i->N TARGET ("nasaq") + TAQ + LIK (1 CLOTHES LINK 0 QAR OR LIK OR LIR OR LIRSUR) ; #nasartalimmik tujuululik = med hættetrøje
 #
-#MAP @i->N TARGET Num OR (<unit>) OR NUMHOVED (*1 LIK - NUM BARRIER (*) - ("miss." Adv)) (NEGATE -1 ("nalunaaqutaq")) ; #uden eller med forkert kasusmarkering
-#
+#MAP:M_faste0042 @i->N TARGET Num OR (<unit>) OR NUMHOVED (*1 LIK - NUM BARRIER (*) - ("miss." Adv)) 
+#(NEGATE -1 ("nalunaaqutaq")) ; #uden eller med forkert kasusmarkering
+#;
 #MAP:M_faste0045 @i-MIK-OBJ> TARGET ("inneq") + Ins IF (1 ("anip") + HTR + N OR ("anip") + HTR + Der/vn + QAR) ; #også inkorporeret objekt som anitsisartuuteqarami
 
 #MAP:M_faste0046 @MIK-OBJ> TARGET ("inneq") + Ins IF (1 ("anip") + HTR + V) ; #Specifikt til innermik anitsisartoq.
@@ -1622,7 +1623,6 @@ TO (1 Sem/Hum - Sem/Mask - Sem/Fem - Abl - MEDIER);
 
 # ;
 
- ;
 #MAP:M0031Q @PROP> TARGET Gram/ACR + Abs - TITEL IF (1 Prop) ;
 #
 #MAP:M0031R (@PROP>) TARGET Prop + Abs OR FIRSTNAME + Abs - TITEL #OR TITEL + Abs 
@@ -2935,7 +2935,7 @@ TO (-1 Prop - Sem/Geo + $$KASUS + $$NUMERUS);
 #;
 #
 ##kongruensadled af typen Der/vn må mappes tidligt for at undgå at kerneleddet tagges som inderiveret adverbial. Possessorer må ikke tagges som kongruensadled. Næstsidste NEGATE for at forebygge at objekt til V til højre tagges som adled sidste for skyld indskudt transitiv ledsagemåde mellem subjekt og V
-SETPARENT:M0351 @N< + Der/vn + $$KASUS + $$NUMERUS - CONJ-C - iALL - SEASON OR Num + $$KASUS + $$NUMERUS - CONJ-C - ("[0123456789]{4}"r) OR ADJEKTIVISK + $$KASUS + $$NUMERUS - CONJ-C OR ("pullartaq") + $$KASUS + $$NUMERUS - CONJ-C IF 
+SETPARENT:M0351A @N< + Der/vn + $$KASUS + $$NUMERUS - CONJ-C - iALL - SEASON OR Num + $$KASUS + $$NUMERUS - CONJ-C - ("[0123456789]{4}"r) OR ADJEKTIVISK + $$KASUS + $$NUMERUS - CONJ-C OR ("pullartaq") + $$KASUS + $$NUMERUS - CONJ-C IF 
 (NEGATE 0 Rel + Sg LINK 1 3SgPoss)
 (NEGATE 0 Rel + Pl LINK 1 3PlPoss OR 4PlPoss)
 ((NOT 0 POSSESSUM) OR (0 $$POSSESSUM LINK -1 $$POSSESSUM))
@@ -2973,6 +2973,20 @@ SETPARENT:M0351 @N< + Der/vn + $$KASUS + $$NUMERUS - CONJ-C - iALL - SEASON OR N
 
 TO (-*1C N + $$KASUS + $$NUMERUS - OTHERTIME )(NEGATE *1 (*) - Part - OBLIQUE LINK *1 _TARGET_ - LIK_QAR) #inoqarpammi naasumik asasaqartumik
 ;
+
+#MAP:M0351B @N< TARGET Abs + Pl IF (*-1 (Abs Pl) - 4SgPoss - @>N BARRIER (*) - (Abs Pl) - OBLIQUE)(*1 3Pl OR 3PlO BARRIER V)#Naalakkersuisoqatigiit patajaatsut ukiuni sisamani ISSIASUSSAT pilersikkusullugit, Inuit Ataqatigiit siulittaasuata oqaatigaa. Undtaget @>N pga. tidligere tagginger som Qatanngutigiit NIELSENIKKUT
+#(NEGATE 0 CONJ-C)#Taamaammat innuttaasut suliffeqarfiillu politiinit piumaffigineqarput atortut ASSIGISINNAASAALLU isumannaatsumik inisseqqullugit anorersuarmiit tingitaaqqunagit, inunnut allanullu eqqaaniittunut navianarsinnaammat.
+#(NEGATE -1 OBLIQUE + CONJ-C LINK -1 (Abs Pl)) #Air Greenlandimi timmisartumi saqisut akissarsiatik sulinermilu ATUGASSARITINNEQARTUT naammaginngilaat, Air Greenlandimi saqisut kattuffianni ACU-mi siulittaasoq Anders Mark Jensen paasissutissiivoq, tamannalu peqatigalugu suleqatini kajumissaarlugit sulinertik nangeqqeqqullugu.
+#(NEGATE 0 NUMHOVED LINK NEGATE *-1 Abs + Pl - Num - NUMHOVED)#Umiarsualivinnut aningaasaleeqqinnernut ukiumut 25,2 millionit KORUUNIT aningaasanut inatsisitigut maanna immikkoortinneqartarput.
+#(NEGATE @1 Abs + Pl LINK *1 _TARGET_ LINK *1 3PlO BARRIER (*) - ADJEKTIVISK + Abs + Pl LINK *1 3Pl OR 4Pl BARRIER VERB-NOTCONT)#Inatsisartut nunarsuarmi NUNAT ikittuinnaat assigalugit oqaatsit pillugit inatsimmik aalajangersaasimapput.
+#(NEGATE 0 TIME LINK 1 CONT + 3PlO)#taakkununnga ataatsimiititalianut ilaasortat Kultureqarnermut Naalakkersuisumit UKIUT sisamakkaarlugit inuttalertakkat Oqaasileriffiup ulluinnarni allatseqarnikkut isumagalugillu sullitarai.
+#(NEGATE 1 FossileredeCont + 3PlO)#Nuup Paamiullu akornanni timmisartuussinissat PILERSAARUTIT malillugit nal. 14.15 ingerlanneqassapput.
+#(NEGATE 1 Abs + Pl + CONJ-C LINK 1 3PlO LINK *1 3Pl OR 4Pl BARRIER VERB-NOTCONT)#Taamaammat nunatsinnut tikittut ILAQUTTATIK ikinngutitillu peqatigalugit juullisiussagunik decembarip ulluisa 19-ianni tikinnissaat periarfissaq kingulliuvoq.
+#(NEGATE -1 Rel + Pl LINK NOT *-1 Abs + Pl LINK *1 _TARGET_ LINK 1 3Pl + 3PlO)#Nalunaarusiami kaammattuutigineqarpoq piffissaatillugu kommunit SUMIGINNAANERIT akuleruffigisassagaat.
+#(NEGATE -1 Gram/Dem + Abs + Pl LINK NOT *-1 Abs + Pl)#Taava taakku MINUTSIT triahalfiarsit sumut atorneqartarpat?
+#(NEGATE -1 TIME LINK 1 _TARGET_ - Der/vn)#Aappaatigulli tupaallannarpallaanngilaq ukiorpassuit SULIAKKA suliarisarsimagakkit.
+#;
+
 #MAP:M0351X @N< TARGET Rel + $$NUMERUS + LU OR LUUNNIIT IF (-1 Rel + $$NUMERUS + @N<);#Tassami arfinilinnik ukioqartungali inersimasut titartaarusussuseerutsissimavaannga, pulateriaarsuillu ipititsisartut matoqqasut AMMASULLUUNNIIT titartarnissaat kisiat ilikkarsimavara.
 #
 #MAP:M0351H @N< TARGET Der/vn + $$KASUS + $$NUMERUS + CONJ-LU (*-1 $$KASUS + $$NUMERUS - CONJ-LU + @N< BARRIER (*) - @N<) #Adnominale adled i paratakse: naasunik ajunngitsunik ajortunillu naasoqarpoq
