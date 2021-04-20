@@ -10,7 +10,8 @@ authors named in the AUTHORS file are available to grant other licencing
 choices.
 
 [![GitHub issues](https://img.shields.io/github/issues-raw/giellalt/lang-kal)](https://github.com/giellalt/lang-kal/issues)
- [![Build Status](https://github.com/giellalt/lang-kal/workflows/Build%20Speller%20Archives%20and%20Bundles/badge.svg)](https://github.com/giellalt/lang-kal/actions)
+[![Build Status](https://github.com/giellalt/lang-kal/workflows/Build%20Speller%20Archives%20and%20Bundles/badge.svg)](https://github.com/giellalt/lang-kal/actions)
+[![License](https://img.shields.io/github/license/giellalt/template-lang-kal)](https://raw.githubusercontent.com/giellalt/lang-kal/develop/LICENSE)
 
 Install proofing tools and [keyboards](https://github.com/giellalt/keyboard-kal)
 for the Kalaallisut language by using the [Divvun Installer](http://divvun.no)
