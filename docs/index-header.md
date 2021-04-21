@@ -1,7 +1,7 @@
 # Kalaallisut documentation
 
 [![Maturity: Experiment](https://img.shields.io/badge/Maturity-Experiment-black.svg)](https://giellalt.github.io/MaturityClassification.html)
-[![License](https://img.shields.io/github/license/giellalt/template-lang-kal)](https://raw.githubusercontent.com/giellalt/lang-kal/develop/LICENSE)
+[![License](https://img.shields.io/github/license/giellalt/lang-kal)](https://raw.githubusercontent.com/giellalt/lang-kal/develop/LICENSE)
 [![Issues](https://img.shields.io/github/issues/giellalt/lang-kal)](https://github.com/giellalt/lang-kal/issues)
 [![Build status](https://github.com/giellalt/lang-kal/workflows/Speller%20CI+CD/badge.svg)](https://github.com/giellalt/lang-kal/actions)
 
