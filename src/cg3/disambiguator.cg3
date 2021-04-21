@@ -1759,7 +1759,7 @@ LIST NÆPPE-SING = (/"naatsorsor"\ UTE/l);
 
 LIST Mask = "Aron" "Egon" "Eri" "Erik" "Eskild" "Hans" "Jens" "Manu" "Mik" "Mikkel" "Miki" "Morten" "Niels" "Ole" "Per" "Piitaq" "Rasmus" "Sean" "Trond" Sem/Mask ;
 LIST Fem = "Anette" "Anna" "Arnaq" "Dagmar" "Emilie" "Gitte" "Hanne" "Jane" "Karen" "Kirsten" "Maliina" "Margrethe" "Meeraq" "Mette" Sem/Fem ;
-LIST Sur = "Banke" "Dalloni" "Jensen" "Jenseni" "Kleist" "Møller" "Nielsen" "Olsen" "Pedersen" "Rasmussen" "Trosterud" Sem/LastName ;
+LIST Sur = "Banke" "Dalloni" "Jensen" "Jenseni" "Kleist" "Møller" "Nathanielsen" "Nielsen" "Olsen" "Pedersen" "Rasmussen" "Trosterud" Sem/LastName ;
 LIST TITEL = (/"aalisar"\ Gram/IV\ \(TAR\ Der/vv\ Gram/IV\ \)?TUQ/l) "ajoqi" (/"aki"\ Gram/IV\ TUQ\ Der/vn\ SSAQ\ Der/nn\ U\ Der/nv\ Gram/IV\ TUQ/l) "allatsi" (/"assi"\ LIR\ Der/nv\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TUQ/l) ("bachelor")
 "borgmester" "fru" "Gammel" "hr" "hotel" (/"ilaa"\ Gram/IV\ TUQ\ Der/vn\ TAQ/l) ("ilinniar" TIP HTR TUQ) "kunngi" "kunngissaq" "lektor" "minister" "miss" "MS" "nakorsaq" "naalagaq" (/"naalagaq"\ LIRSUR\ Der/nv\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TUQ/l) "oqalutsi" (/"peqqip"\ Gram/IV\ SAR\ Der/vv\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TUQ/l) (/"pi"\ Gram/IV\ TUQ\ Der/vn\ TAQ/l) ("pisoq" TAQ) "pisortaq" "planchef" "politeeq" "præsident" ("qalipap" HTR TUQ) "senator" (/"sinner"\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TUQ/l)
 (/"siu"\ LIK\ Der/nn\ TAQ\ Der/nn\ U\ Der/nv\ Gram/IV\ TUQ/l) ("siulittar" TUQ) ("siunnersor" HTR TUQ) ("siunnersuisoq") (/"suli"\ Gram/IV\ TUQ/l) ("tullersorti") ("ulloriarsior" TUQ) "ulloriarsiortoq";
@@ -2495,6 +2495,9 @@ REMOVE:tidlig0510 (/"siu"\ LIK\ Der/nn\ TAQ\ Der/nn\ U\ Der/nv\ Gram/IV\ SURE/l)
 
 #Mars eller marts?
 REMOVE:tidlig0525 ("Mars") + Sem/Geo IF (0 ("marsi") LINK 1 OTHERTIME);
+
+#parti possessum eller ej?
+REMOVE:tidlig0530 ("parti") + POSSESSUM3 IF (0 ("parti") - POSSESSUM3 + $$OBLIQUE LINK 1 ("tamaq") + $$OBLIQUE);
 
 ##########################################################################################################
 ## Underafdeling af tidlig til løsning af/ forberedelse af løsning af koncessivsætninger uden KONCESSIV ##
@@ -3337,6 +3340,7 @@ REMOVE:0001Prop ("(\\p{Lu}.*)"r) + Fornavn IF (0 N)#(NEGATE *0CW (VSTR:"%l$1"r))
 (-1 BOS) (NEGATE 1 Prop)(NEGATE 0 Hmyth LINK *1 2Sg) #Kun personnavne, ikke institutioner som Pinngortitaleriffik. Forbehold for vokativer
 (NEGATE 0 GUUQ) #Alliarooruna arnaq silatoorsuaq sullerissorsuarlu, (Alliaq, ikke Als LIAQ)
 (NEGATE 0 ("Mikkel") OR ("Anna") OR ("Manu") OR ("Minik") OR ("Nuka") OR ("Najannguaq") OR ("Aani") ) #Ad hoc for ikke at slette Mikkel til fordel for bynavnet Mikkeli eller Anna for pron anna samt et par meget frekvente
+(NEGATE 0 FIRSTNAME LINK *1 Sem/Hum + Sur BARRIER (*) - FIRSTNAME - Gram/Abbr)
 ; #Laver alt for mange fejl, fx Flemming<Geo> illumik piareersaavoq. Der mangler nok en betingelse? Proprier disambigueres senere.
 
 #Proprium med MI er næsten altid lokativ
@@ -13350,6 +13354,7 @@ REMOVE:5846C ("pilersuisoq") + N OR (/"pilersor"\ Gram/TV\ HTR\ Der/vv\ Gram/IV\
 REMOVE:5846D ("Anore") + Sem/Mask IF (0 ("anori") OR ("anorersuaq"));
 REMOVE:5846E (/"ilisimatusar"\ Gram/IV\ VIK/l) IF (0 ("Ilisimatusarfik") + Prop);
 REMOVE:5846F ("manu") + N IF (0 ("Manu") + Sem/Hum); #skal nok have nogle betingelser
+REMOVE:5846G N - FIRSTNAME IF (0 FIRSTNAME LINK *1 Sem/Hum + Sur BARRIER (*) - FIRSTNAME - Gram/Abbr); #NAAJA H. Nathanielsen
 
 #Verbum eller nomen
 REMOVE:5850 ("erner") + 4SgO IF (0 ("erneq") + Lok) ;
@@ -13710,6 +13715,7 @@ REMOVE:9945F Rel + Pl IF (0 Abs + Pl LINK *1 3PlPoss BARRIER (*) - (Rel Pl) - (A
 (NEGATE *1 3PlPoss BARRIER (*))#MEEQQAT pornoliarineqarneri tamarmik politiinut nalunaarutigineqartassapput, meerarlu tarnikkut ikiorserneqartariaqarluni, meeqqat pisinnaatitaaffiinik sullissivik MIO kajumissaarivoq
 (NEGATE 0 %Othertime LINK *1 %Othertime + POSSESSUM3 BARRIER (*) - NUM)#Timmisartuutileqatigiiffiit coronap ajornartoortitsinera pissutigalugu UKIUT marluk ingerlanerini 980 milliardit koruunit missaannik annaasaqassangatinneqarput.
 (NEGATE *1 3PlPoss BARRIER (*) - Rel - %AmbiguøsN)#Filmit Hollandimeersut , ... Canadameersut kiisalu Letlandimeersut katillugit FILMEEQQAT filmillu sivisunerumaat qulit missaanniittut takutinneqarput .
+(NEGATE *1 3PlPoss BARRIER (*) - OBLIQUE - (Rel Pl) - Orth/Append - Hyb/2-2)#Inatsisartunilu ILAASORTAT partiinit tamaneersut siunnersuutaasa affaat itigartinneqarput.
 ;
 REMOVE:Int0605 Orth/Youth ; #Ny PL 20190503
 
