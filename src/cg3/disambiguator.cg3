@@ -1951,7 +1951,7 @@ SET i-CONT = CONT + @i-ADVL> ;
 
 BEFORE-SECTIONS
 
-DELIMIT ("<">") IF (-1W _S_DELIMITERS_) ; #virker tilsyneladende ikke
+#DELIMIT ("<">") IF (-1W _S_DELIMITERS_) ; #virker tilsyneladende ikke
 
 SUBSTITUTE:S0001 ("/" PUNCT) ("/" Gram/Conj-encl Conj) TARGET ("</>") - Conj ;
 
@@ -1965,20 +1965,23 @@ REMOVE:MIUQ2 ("(.*)mioq"r) IF (0 (VSTR:"$1miu.*"r) + N );
 #COPY ("$1"v) EXCEPT Gram/Pass TARGET ("(.*)"r) + (/Gram/Pass\ NIQ\ Der/vn\ N\ Abl/l); # transitiv -nermit #nunap piniagassarsui tusaamanermit nuussimavugut.
 # Opfind en model der sletter COPY og i stedet tager højde for +NIQ+Der/vn+Gram/TransverbNIQ. Testcase 'tusaamanermit'
 
-#REMOVE:0000AX1 (/Gram/TV\ NIQ\ Der/vn/l) #transitive NIQ undtagen de få meget specifikke fjernes igen
-REMOVE:0000AX1 Gram/TransverbNIQ #transitive NIQ undtagen de få meget specifikke fjernes igen
-(NEGATE 0 Abl + Sg LINK -1 Abs)
-(NEGATE 0 Gram/Comp LINK 1 ("ajor") OR ("saper"))
-(NEGATE 0 Gram/Pass)
-;
-#Bliver ikke slettet hvis kohorten indeholder endnu ikke disambiguerede Gram/Pass. Derfor følgende snævre specifikke regel
-REMOVE:0000AX2 Gram/TransverbNIQ IF (0 POSSESSUM3 LINK *0 3Sg);#Atuarfiit, paaqqinnittarfiit, neriniartarfiit imerniartarfiillu kiisalu kulturikkut aaqqissuussat MATUNEQARNERISA nalaanni angerlarsimaffinni imigassamik atuineq oqartussanit qanimut malinnaaffigineqarpoq.
+#Flyttet til linie 5380 i SECTIONS
 
-REMOVE:0000AX3 Gram/TransverbNIQ IF (0 NIQAR);
-REMOVE:0000AX4 (/Gram/TV\ NIQ\ Der/vn\ \(SSAQ\ Der/vn\ \)?N/l) IF (0 Gram/Pass) #Børnehaviliartalerpat tassunga ingerlassinnaavaa aallugulu, kisianni tamatuma saniatigut qanoq ILIUUSEQARFIGINISSAA nalunerartarpaa, akornutissatullu isigalugu
-(NEGATE 0 Gram/Comp LINK 1 ("ajor") OR ("saper"))
-(NEGATE -1 Abs LINK 1 _TARGET_ + Abl LINK NEGATE *0 V + 3Pl OR V + 3Sg)#nunap piniagassarsui TUSAAMANERMIT nuussimavugut.
-;
+#REMOVE:0000AX1 Gram/TransverbNIQ #transitive NIQ undtagen de få meget specifikke fjernes igen
+#(NEGATE 0 Abl + Sg LINK -1 Abs)
+#(NEGATE 0 Gram/Comp LINK 1 ("ajor") OR ("saper"))
+#(NEGATE 0 Gram/Pass)
+#;
+#Bliver ikke slettet hvis kohorten indeholder endnu ikke disambiguerede Gram/Pass. Derfor følgende snævre specifikke regel
+#REMOVE:0000AX2 Gram/TransverbNIQ IF (0 POSSESSUM3 LINK *0 3Sg);#Atuarfiit, paaqqinnittarfiit, neriniartarfiit imerniartarfiillu kiisalu kulturikkut aaqqissuussat MATUNEQARNERISA nalaanni angerlarsimaffinni imigassamik atuineq oqartussanit qanimut malinnaaffigineqarpoq.
+
+#REMOVE:0000AX3 Gram/TransverbNIQ IF (0 NIQAR);
+#REMOVE:0000AX4 (/Gram/TV\ NIQ\ Der/vn\ \(SSAQ\ Der/vn\ \)?N/l) IF (0 Gram/Pass) #Børnehaviliartalerpat tassunga ingerlassinnaavaa aallugulu, kisianni tamatuma saniatigut qanoq ILIUUSEQARFIGINISSAA nalunerartarpaa, akornutissatullu isigalugu
+#(NEGATE 0 Gram/Comp LINK 1 ("ajor") OR ("saper"))
+#(NEGATE -1 Abs LINK 1 _TARGET_ + Abl LINK NEGATE *0 V + 3Pl OR V + 3Sg)#nunap piniagassarsui TUSAAMANERMIT nuussimavugut.
+#;
+
+
 REMOVE:00000A (Gram/Hyb) IF (0 (/\"ataatsim.*\"/r)) ; #ataatsimiippoq, ataatsimoorpoq osv. er aldrig hybrider
 REMOVE:00000 (URL) IF (0 Sem/Url) ; #dobbeltgenerering fra FST'ens url.lexc
 #Arnaq Meeraq m.fl. i første position er et reelt problem
@@ -2077,9 +2080,10 @@ REMOVE:0003D NIQ + 3SgPoss IF (-1 CONT + 1Sg) ;
 #Næsten sikker disambiguering af 1SgPoss og 3SgPoss ved visse paratakser
 REMOVE:0003E 3SgPoss IF (0 1SgPoss + LU LINK -1C 1SgPoss); #Timera TARNERALU ..
 
-ADDCOHORT ("<->" "-" PUNCT DIRTALESTART) BEFORE (*) (0 @INTERJ OR @VOK OR Interj - ("tassa") - ("tass") - ("qanoq") - ("ima") - ("taamaattoq") - ("imaattoq") - ("imaap") LINK NOT 0 Adv LINK NOT 0 Conj) (-1 BOS) (NEGATE 0 DIRTALESTART OR DIRTALEMIDDLE OR DIRTALESLUT) (NEGATE *-1W PUNCT - ("-") - (".") - KOMMA)
+ADDCOHORT ("<->" "-" PUNCT DIRTALESTART) BEFORE (*) (0 @INTERJ OR @VOK OR Interj - ("tassa") - ("tass") - ("qanoq") - ("ima") - ("taamaattoq") - ("imaattoq") - ("imaap") LINK NOT 0 Adv LINK NOT 0 Conj) (-1 BOS)
+(NEGATE 0 DIRTALESTART OR DIRTALEMIDDLE OR DIRTALESLUT) (NEGATE *-1W PUNCT - ("-") - (".") - KOMMA)
 (NEGATE -*1W CLB + DIRTALEMIDDLE OR CLB + DIRTALESLUT BARRIER EOS)# -Ilami ... ASSISSAQANNGILAQ. ASUMIAA Norgep nunataata maniinnera sungiusimanngikkaa.
- ;
+;
 
 #Nal. betyder Nalunaarsuutit og Nal. betyder nalunaaqutaq
 REMOVE:miss ("miss.*"r) + Abs (0 (Lok|Ins|Abl|Trm|Aeq|Via)) (1 ("miss.*"r Adv)) ;
@@ -5373,7 +5377,21 @@ SUBSTITUTE:Sub0018 3SgPoss 3PlPoss TARGET ("kommune") + 3SgPoss IF (-1 Sem/Geo +
 #########
 #SECTION#
 ########
+#Flyttet fra linie 1967 i BEFORE-SECTIONS
 
+REMOVE:0000AX1 Gram/TransverbNIQ #transitive NIQ undtagen de få meget specifikke fjernes igen
+(NEGATE 0 Abl + Sg LINK -1 Abs)
+(NEGATE 0 Gram/Comp LINK 1 ("ajor") OR ("saper"))
+(NEGATE 0 Gram/Pass)
+;
+#Bliver ikke slettet hvis kohorten indeholder endnu ikke disambiguerede Gram/Pass. Derfor følgende snævre specifikke regel
+REMOVE:0000AX2 Gram/TransverbNIQ IF (0 POSSESSUM3 LINK *0 3Sg);#Atuarfiit, paaqqinnittarfiit, neriniartarfiit imerniartarfiillu kiisalu kulturikkut aaqqissuussat MATUNEQARNERISA nalaanni angerlarsimaffinni imigassamik atuineq oqartussanit qanimut malinnaaffigineqarpoq.
+
+REMOVE:0000AX3 Gram/TransverbNIQ IF (0 NIQAR);
+REMOVE:0000AX4 (/Gram/TV\ NIQ\ Der/vn\ \(SSAQ\ Der/vn\ \)?N/l) IF (0 Gram/Pass) #Børnehaviliartalerpat tassunga ingerlassinnaavaa aallugulu, kisianni tamatuma saniatigut qanoq ILIUUSEQARFIGINISSAA nalunerartarpaa, akornutissatullu isigalugu
+(NEGATE 0 Gram/Comp LINK 1 ("ajor") OR ("saper"))
+(NEGATE -1 Abs LINK 1 _TARGET_ + Abl LINK NEGATE *0 V + 3Pl OR V + 3Sg)#nunap piniagassarsui TUSAAMANERMIT nuussimavugut.
+;
 
 
 
@@ -13229,6 +13247,7 @@ REMOVE:Int0472 (/__<Gram/TV>\ TIGE__/l) IF (0 (/__<Gram/IV>\ TIGE__/l)) ; # qano
 REMOVE:Int0473 (/__TE\ vn\ GE__/l) (0 (TIGE)) ; # qanoq ajortigiva - hvor dårlig er den?
 REMOVE:Int0474 (/__U\ .*\ TIP\ .*\ TAQ__/l) (0 (/__UTE\ .*\ TAAR__/l)) ; # Savaatitaarusuppunga
 REMOVE:Int0475 (/U\ Der/nv\ Gram/IV\ TUQ\ Der/vn\ GE/l) IF (0 (/U\ Der/nv\ Gram/IV\ SURE/l)); #Kun baseret på en fornemmelse af sandsynlighed: peqqutaasorai
+REMOVE:5639CA (/Gram/TV\ NIKUQ/l) IF (0 (/Gram/IV\ NIKUQ/l) ); #Ilulissat TIPINIKUT imissanngortut
 
 # Enkelte substantiver
 REMOVE:Int0476 ("pineq") IF (NEGATE *0 ("kamik")) ; #20091103 pineq+QAR vs. pineqar-
