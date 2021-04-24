@@ -13,7 +13,7 @@ a full-sized Greenlandic analyser.
 
 Central developers have been:
 Per Langgård, Liv Molich, Nani Nilsen, Trond Trosterud, Paneeraq Nielsen,
-Anna Karina Madsen Beatrine Heilman and Sjur Moshagen.
+Anna Karina Madsen Beatrine Heilman, Tino Didriksen and Sjur Moshagen.
 
 It is in use in a Greenlandic spellchecker and in a set
 of pedagogical programs for Greenlandic.
