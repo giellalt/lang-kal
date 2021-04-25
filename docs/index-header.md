@@ -39,6 +39,7 @@ documentation can be found at [the Sámi project
 documentation](https://giellalt.uit.no/index.html).
 
 -   [The lexicon structure](lex.html)
+-   [Morphology issues](morph.md)
 
 # General information for web users
 
