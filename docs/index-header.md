@@ -40,6 +40,7 @@ documentation](https://giellalt.uit.no/index.html).
 
 -   [The lexicon structure](lex.html)
 -   [Morphology issues](morph.md)
+-   [Issues in Greenlandic](IssuesInGreenlandic.md)
 
 # General information for web users
 
