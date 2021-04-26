@@ -72,19 +72,19 @@ Fil for at generere de centrale morfologiske processer i vor grønlandske analys
  ***+Gram/PlurTant** = plurale tantum noun: ilaqutariit
  ***+Gram/SingTant** = singulare tantum noun: sila
  * **+Gram/Ord** = Ordinal number !pingajuat
- ***+Gram/Hyb	** = Følger hybriderne for at bestemme stederne hvor strengene kan klippes i to ord ved hybriderne
+ ***+Gram/Hyb** = Følger hybriderne for at bestemme stederne hvor strengene kan klippes i to ord ved hybriderne
  *__ +Gram/TransverbNIQ __ = NIQ-former med transitivt verbale egenskaber. PL20210417
 
 ### Derivation
  * **+Der/Vok** = Vocative
  ***+Der/Guess** = Guessed lemma and inflection which are not listed in the FST
- ***+Der/Loan	** = Guessed stems which are not listed in the FST and contain non-Greenlandic characters or non-Greenlandic final character
- ***+Der/Unk	** = Ukendt morfem !Ukendte morfemer i ellers analyserede stammer for at få rigtig lemmaanalyse, som orsoq+NNAP+nv+UNK+vn:orsunnattaaq
+ ***+Der/Loan** = Guessed stems which are not listed in the FST and contain non-Greenlandic characters or non-Greenlandic final character
+ ***+Der/Unk** = Ukendt morfem !Ukendte morfemer i ellers analyserede stammer for at få rigtig lemmaanalyse, som orsoq+NNAP+nv+UNK+vn:orsunnattaaq
  ***+Der/vv** = verb to verb
  ***+Der/nn** = noun to noun
  ***+Der/nv** = noun to verb
  ***+Der/vn** = verb to noun
- ***+Der/xx 	** = Follows the enclitic suffix TUQ to be able to distinguish TUQ+xx from the derivational morpheme TUQ+vn in CG: qanortoq
+ ***+Der/xx** = Follows the enclitic suffix TUQ to be able to distinguish TUQ+xx from the derivational morpheme TUQ+vn in CG: qanortoq
 Citerede ordformer  jf. Kleinschmidt ^rpoĸ
 
 ### Dialect
@@ -1132,9 +1132,6 @@ I Num2 til Num10 er flagging af NNGUR C-et pga. klokken
  * LEXICON HTR_longV_GAQ_si   til lange vokaler som -naar (ikinaarsivoq)
 
  * LEXICON HTR_longi_GAQ_nnip   20101125 særligt leksikon til lange vokaler som -saar (arsaarinnippoq)
-
-
- * LEXICON HTR_r_GAQ_addi   
 
  flex-tv ;
 
