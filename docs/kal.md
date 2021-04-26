@@ -1132,9 +1132,6 @@ I Num2 til Num10 er flagging af NNGUR C-et pga. klokken
 
  * LEXICON HTR_longi_GAQ_nnip   20101125 særligt leksikon til lange vokaler som -saar (arsaarinnippoq)
 
-
- * LEXICON HTR_r_GAQ_addi   
-
  flex-tv ;
 
  * LEXICON HTR_k_GAQ_i  til de faa stammer med fusionerende passivt nomen som atornerlugaq, atornerluppaa, atornerluivoq
