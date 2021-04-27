@@ -1,5 +1,1 @@
-* [root-morphology.md](root-morphology.md)
-* [derivations-inflections-affixes.md](derivations-inflections-affixes.md)
-* [nouns-stems.md](nouns-stems.md)
-* [numerals-affixes.md](numerals-affixes.md)
-* [propernouns-affixes.md](propernouns-affixes.md)
+* []()
