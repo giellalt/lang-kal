@@ -73,6 +73,7 @@ Fil for at generere de centrale morfologiske processer i vor grønlandske analys
  ***+Gram/SingTant** = singulare tantum noun: sila
  * **+Gram/Ord** = Ordinal number !pingajuat
  ***+Gram/Hyb	** = Følger hybriderne for at bestemme stederne hvor strengene kan klippes i to ord ved hybriderne
+ *__ +Gram/TransverbNIQ __ = NIQ-former med transitivt verbale egenskaber. PL20210417
 
 ### Derivation
  * **+Der/Vok** = Vocative
