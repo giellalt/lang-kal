@@ -850,6 +850,9 @@ $(srcdir)/%-syntax.md: $(top_srcdir)/src/cg3/%.cg3
 $(srcdir)/%-morphology.md: $(top_srcdir)/src/fst/%.lexc
 	$(AM_V_AWK)"$(GAWK)" -f $(DOCC2MDWIKI) < $< > $@
 
+$(srcdir)/%.md: $(top_srcdir)/src/fst/oahpa-filer/%.lexc
+	$(AM_V_AWK)"$(GAWK)" -f $(DOCC2MDWIKI) < $< > $@
+
 $(srcdir)/%-morphology.md: $(top_srcdir)/src/fst/%.twolc
 	$(AM_V_AWK)"$(GAWK)" -f $(DOCC2MDWIKI) < $< > $@
 
@@ -876,7 +879,7 @@ generated-markdowns.sources:
 
 generated-markdowns.targets: generated-markdowns.sources
 	$(AM_V_GEN)for f in `cat $<` ; do \
-		x=`basename $$f | sed -e 's/\.\(lexc\|twolc\|cg3\)$$//'` ; \
+		x=`basename $$f | sed -E -e 's/\.(lexc|twolc|cg3)$$//'` ; \
 		case $$f in \
 		*fst/stems*) echo $$x-stems.md;;\
 		*fst/affixes*) echo $$x-affixes.md;;\
@@ -894,8 +897,8 @@ generate-markdown: generated-markdowns.targets
 		$(MAKE) $(srcdir)/$$f;\
 	done
 
-$(ALL_IN_ONE): generate-markdown generated-markdowns.targets
-	$(AM_V_GEN)cat `cat generated-markdowns.targets` > $@
+$(ALLINONE_MD_PAGE): generate-markdown generated-markdowns.targets
+	$(AM_V_GEN)cat `cat generated-markdowns.targets | sed -e 's@^@$(srcdir)/@'` > $@
 
 $(LINKS): generate-markdown generated-markdowns.targets
 	$(AM_V_GEN)cat generated-markdowns.targets |\
