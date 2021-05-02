@@ -1,3 +1,88 @@
+# Grønlandske nomener 
+
+## Dokumentasjon for leksikonnavne:
+
+* Z = nomen
+* 1 = svag bøjning, p-bøjning
+* 2 = sterk bøjning, up-bøjning
+* P = plurale tantum
+* S = singularis
+* - = sterk bøjing som trunkerer (2-)
+* a, q, ... = gemineringer ved konsonantiske flexiver
+* Z = nomen
+* morf = går til derivationsleksika
+*      = går til flexivleksika
+* tpt  =  
+* tup  = 
+* K    = Direkte til finale klitika
+
+
+...ƒ
+
+ * LEXICON Nomen  Nominalstammer
+
+Leksikonet Nomen inneholder nomenerne.
+
+xxx 20170522 til former, som ikke kan læses men som har brug for en analyse i cg'en. Pluralis og singularis-kataloger er ikke medtaget.
+
+
+
+
+
+ * aaffaffak Z2-Zmorf ;              
+ * aaffaffak+N+Abs+Sg:aaffaffaq Krestr ; 
+ * aaffaq Z2-qZmorf ;                 
+aaffattaq Z1Zmorf ;                 * ...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+xxx 20170524 til verbalstammer, som ikke kan læses men som har brug for en analyse i cg'en. Pluralis tantum-kataloger er ikke medtaget. !er det nødvendigt også at medtage stammer fra derivationsleksika?
+
+
+
+
+
+
+xxx 20170522 til former, som ikke kan læses men som har brug for en analyse i cg'en..
+
+
+
+
 # Greenlandic morphological analyser
 
 Fil for at generere de centrale morfologiske processer i vor grønlandske analysator
@@ -1361,71 +1446,9 @@ Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers
 
 
 
-# Grønlandske nomener 
-
-## Dokumentasjon for leksikonnavne:
-
-* Z = nomen
-* 1 = svag bøjning, p-bøjning
-* 2 = sterk bøjning, up-bøjning
-* P = plurale tantum
-* S = singularis
-* - = sterk bøjing som trunkerer (2-)
-* a, q, ... = gemineringer ved konsonantiske flexiver
-* Z = nomen
-* morf = går til derivationsleksika
-*      = går til flexivleksika
-* tpt  =  
-* tup  = 
-* K    = Direkte til finale klitika
 
 
-...ƒ
-
- * LEXICON Nomen  Nominalstammer
-
-Leksikonet Nomen inneholder nomenerne.
-
-xxx 20170522 til former, som ikke kan læses men som har brug for en analyse i cg'en. Pluralis og singularis-kataloger er ikke medtaget.
-
-
-
-
-
- * aaffaffak Z2-Zmorf ;              
- * aaffaffak+N+Abs+Sg:aaffaffaq Krestr ; 
- * aaffaq Z2-qZmorf ;                 
-aaffattaq Z1Zmorf ;                 * ...
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# Symbol affixes
 
 
 
@@ -1718,4 +1741,119 @@ Nyt lexicon 20180615 Z2suaq_ateqZmorf
 
 
 
+
+
+!!!Punctuation symbols
+
+ * __LEXICON Punctuation   __ contains the list
+of punctuation symbols:
+* Symbols like .,: are tagged with __+CLB__
+* other symbols like +.& are tagged with __+PUNCT__, and
+* paired symbols like ()«» are tagged with __+PUNCT+LEFT__
+  and __+PUNCT+RIGHT__, respectively.
+
+* Clause boundary symbols:
+
+* Single punctuation marks
+
+
+* Paired punctuation marks
+
+
+
+
+
+ * __LEXICON PunctEnd   __ leads to # only.
+
+!!!Symbols
+Symbols are single character special signs typically denoting whole nouns. They are different from
+abbreviations and acronyms by not consisting of regular, alphabetic letters.
+
+Symbols are syntactic constituents, and thus part of the sentence analysis. That is, they are
+different from punctuation: punctuation express syntactic boundaries of various kinds, symbols
+are syntactic constituents.
+
+ __LEXICON Symbols__ contains symbols of two types: those that inflect, and those that don't.
+
+Miscellaneous symbols
+
+
+Symbols from Mari OCR reading
+
+
+
+
+
+Smileys
+
+Emojies
+
+
+
+We describe here how abbreviations are in Kalaallisut are read out, e.g.
+for text-to-speech systems.
+
+For example:
+
+ * s.:syntynyt # ;  
+ * os.:omaa% sukua # ;  
+ * v.:vuosi # ;  
+ * v.:vuonna # ;  
+ * esim.:esimerkki # ; 
+ * esim.:esimerkiksi # ; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% komma% :,      Root ;
+% tjuohkkis% :%. Root ;
+% kolon% :%:     Root ;
+% sárggis% :%-   Root ; 
+% násti% :%*     Root ; 
 
