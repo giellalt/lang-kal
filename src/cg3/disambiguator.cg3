@@ -55,7 +55,7 @@
 # Delimiters #
 # ========== #
 
-DELIMITERS = "<.>" "<!>" "<?>" "<:>" "<...>" "<¶>" "<\;>" ; #tilføjet semikolon den 6.4.
+DELIMITERS = "<.>" "<!>" "<?>" "<:>" "<...>" "<¶>" "<\;>" "<·>" ; #tilføjet semikolon den 6.4. Tilføjet bullit 20210503
 OPTIONS += ordered ;
 
 # ========= #
@@ -113,6 +113,7 @@ LIST Sem/event = Sem/event ;
 LIST Sem/Fem = Sem/Fem ; #Introduceret som test 20180613. Skal måske ud igen
 LIST Sem/FirstName = Sem/FirstName ;
 LIST Sem/Geo = Sem/Geo ;
+LIST Sem/HH = Sem/HH ; #organisationer mv.
 LIST Sem/Hum = Sem/Hum <hum> ;
 LIST Sem/Hunt = Sem/Hunt; #qinerlerpoq i modsætning til qinersivoq
 LIST Sem/inst = Sem/inst ; #sem-tag til Sem/Hum som er NOT-PERSON fx Aarhus Universitetshospital
@@ -2505,6 +2506,13 @@ REMOVE:tidlig0525 ("Mars") + Sem/Geo IF (0 ("marsi") LINK 1 OTHERTIME);
 #parti possessum eller ej?
 REMOVE:tidlig0530 ("parti") + POSSESSUM3 IF (0 ("parti") - POSSESSUM3 + $$OBLIQUE LINK 1 ("tamaq") + $$OBLIQUE);
 
+#HNOUN vs. Par
+REMOVE:tidlig0540 Par IF (-1 BOS LINK 1 _TARGET_ + Abs LINK 1 (":") );#Nutserisoq:
+
+
+#("<\\p{Lu}.*>"r));
+
+
 ##########################################################################################################
 ## Underafdeling af tidlig til løsning af/ forberedelse af løsning af koncessivsætninger uden KONCESSIV ##
 ##########################################################################################################
@@ -3028,7 +3036,7 @@ REMOVE:9974 Orth/Append IF (0 WORD - (<heur> <f:[0-9]+>r) - MI)(NEGATE -1 ("aapp
 #========================================#
 LIST ROMANNUMBER = "I" "II" "III" "IV" "V" "VI" "VII" "VIII" "IX" "X" "XI" "XII" "XIII" "XIV" "XV" "XVI" "XVII" "XVIII" "XIX" "XX" "XXI" "XXII" "XXIII" "XXIV" "XXV" "XXVI" "XXVII" "XXVIII";
 
-COPY ("%u$1"v Orth/Copy) EXCEPT (".*"r) TARGET ("<[A-Z][a-z].*>"r "([^<].*)"r) IF (0 N OR iN)(NEGATE 0 Prop OR iProp OR Pali OR Adv)(NEGATE 0 Gram/Abbr - Orth/Append) (NEGATE 0 Symbol) (NEGATE -1 ROMANNUMBER)(NEGATE 0 MIU OR TITEL);
+#COPY ("%u$1"v Orth/Copy) EXCEPT (".*"r) TARGET ("<[A-Z][a-z].*>"r "([^<].*)"r) IF (0 N OR iN)(NEGATE 0 Prop OR iProp OR Pali OR Adv)(NEGATE 0 Gram/Abbr - Orth/Append) (NEGATE 0 Symbol) (NEGATE -1 ROMANNUMBER)(NEGATE 0 MIU OR TITEL);
 SUBSTITUTE:Sub0003 iN (Orth/Copy iN iProp) TARGET (Orth/Copy)(NEGATE 0 iProp) ;
 SUBSTITUTE:Sub0004 N (Orth/Copy N Prop) TARGET (Orth/Copy)(NEGATE 0 Prop OR iProp OR MIU) ;
 SUBSTITUTE:Sub0005 MIU (Orth/Copy iProp MIU) TARGET (Orth/Copy)(NEGATE 0 iProp) ;
@@ -3271,6 +3279,7 @@ SELECT:0013 Par IF (0 N + Abs OR Rel)(*-1 BOS BARRIER (*) - Adv - OBLIQUE)(1 EOS
 (NEGATE 0 (/"ila"\ U\ Der/nv\ Gram/IV\ TUQ\ Der/vn\ N/l) OR ("timmisartoq") OR (/"timmi"\ Gram/IV\ TAR\ Der/vv\ Gram/IV\ TUQ\ Der/vn\ N/l))#"substantiver" må undtages
 (NEGATE 0 <Hprof>)
 (NEGATE 0 Prop + &&IV_SUBJ& LINK *1 VFIN + &&IV_SUBJ& BARRIER V )#Mette Frederiksen Folketingimi ammaanersiornermi: ISSITTOQ soqutigineqaleraluttuinnarpoq
+(NEGATE -1 BOS LINK 2 (":") )#Nutserisoq:
 ;
 
 #Vokativ meget sjælden uden proprium
@@ -11002,7 +11011,7 @@ SELECT:0439 Par + 3Sg IF (-*1 Abs + Sg BARRIER VFIN OR CONJ-C)(NEGATE *0 VFIN)(N
 (NEGATE *-1 N + $$KASUS + $$NUMERUS BARRIER (*) - Adv LINK *1 _TARGET_ + &&IV_SUBJ& LINK *1 V + &&IV_SUBJ& BARRIER VERB-NOTCONT) #må ikke ramme @N< i Niviarsiaraq MIKISOQ illumi .. najugaqartoq
 (NEGATE *-1 Abs - HUMAN LINK *1 _TARGET_ + HUMVERB BARRIER V)#Ulloq uannut inuttut annertuumik ALLORIARFIUSOQ.
 (NEGATE 0 Abs LINK *1 CONJ-C LINK *1 Abs LINK NEGATE *0 VFIN)#Kattuffiunissaq nukittooq ilaasortani pillugit ATASOQ ilaasortaminullu pitsaanerpaamik sullissisoq. #Verbal læsning kun mulig hvis ATASOQ er verbal og _TARGET_ Cont
-
+##aggustip 26-at 2020 · 13:16 Uannga: Marianne Stenbæk, Montreal, Canada · Nutserisoq: Jaaku Lyberth.
 ;
 #Participium i overskrifter. Anden NEGATE pga. VnIkkePar til venstre for en overskrifts-Par
 
