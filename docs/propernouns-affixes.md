@@ -255,15 +255,15 @@ Nyt lexicon 20180615 Z2suaq_ateqZmorf
 
 
 
+ * LEXICON ZpossessumZ   !Kalaallit% Nunaat flyttet til ZgeopossessumSZ
 
- * LEXICON ZpossessumZ   Kalaallit% Nunaat
-
- * LEXICON ZpossessumSZ   
+ * LEXICON ZpossessumSZ   Nuup Kommunea
 
  * LEXICON ZpossessumPZ   
 
- * LEXICON ZgeopossessumSZ   Kalaallit% Nunaat
+ * LEXICON ZgeopossessumSZ   !Kalaallit% Nunaat flyttet til ZgeopossessumPZ
 
+ * LEXICON ZgeopossessumPZ   Kalaallit% Nunaat
 
  * LEXICON ZPropKKUTZ  kopieret fra ZkkutZ. Det meste af derivation udkommenteret, da usandsynlig ved proprier
 
