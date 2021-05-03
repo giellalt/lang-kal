@@ -1373,15 +1373,15 @@ Nyt lexicon 20180615 Z2suaq_ateqZmorf
 
 
 
+ * LEXICON ZpossessumZ   !Kalaallit% Nunaat flyttet til ZgeopossessumSZ
 
- * LEXICON ZpossessumZ   Kalaallit% Nunaat
-
- * LEXICON ZpossessumSZ   
+ * LEXICON ZpossessumSZ   Nuup Kommunea
 
  * LEXICON ZpossessumPZ   
 
- * LEXICON ZgeopossessumSZ   Kalaallit% Nunaat
+ * LEXICON ZgeopossessumSZ   !Kalaallit% Nunaat flyttet til ZgeopossessumPZ
 
+ * LEXICON ZgeopossessumPZ   Kalaallit% Nunaat
 
  * LEXICON ZPropKKUTZ  kopieret fra ZkkutZ. Det meste af derivation udkommenteret, da usandsynlig ved proprier
 
@@ -1468,6 +1468,7 @@ Fil for at generere de centrale morfologiske processer i vor grønlandske analys
  ***+Sem/Fem** Forsøg med femininum sml. Sem/Mask
  * **+Sem/FirstName** = Attributive
  * **+Sem/Geo** = Geographical Propernoun
+ * ** +Sem/HH     ** = Organisationer
  * **+Sem/Hum** = Non-geographical Propernoun
  ***+Sem/LastName**  Efternavne
  ***+Sem/Mailadresse** tag til adresser af typen cccc@cccc.cc
