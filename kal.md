@@ -494,10 +494,14 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 
  * LEXICON tp  obs 20200623: fleksionsmorfemgrænse er %< og ikke %>
 | --- 
+
+
 | --- 
 | --- 
 | --- 
 | --- 
+
+
 
 
 | --- 
@@ -1616,6 +1620,8 @@ Ad hoc til test af alternativ flag diacritics ved præfikser. Husk også den udk
 
 Test af P- og D-flag til forebyggelse af rekusivitet ved TIP
 og blokeres af 
+
+Test 20210504 af P- og R-flag for at generere både takornariat og takornarissat+Err/Sub
 
 Flags for loan words, which must not go to N+Abs+Sg without derivation.
 

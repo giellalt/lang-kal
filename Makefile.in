@@ -850,10 +850,16 @@ $(srcdir)/%-syntax.md: $(top_srcdir)/src/cg3/%.cg3
 $(srcdir)/%-morphology.md: $(top_srcdir)/src/fst/%.lexc
 	$(AM_V_AWK)"$(GAWK)" -f $(DOCC2MDWIKI) < $< > $@
 
+# lang-smn
 $(srcdir)/%.md: $(top_srcdir)/src/fst/oahpa-filer/%.lexc
 	$(AM_V_AWK)"$(GAWK)" -f $(DOCC2MDWIKI) < $< > $@
 
-$(srcdir)/mansi-lexicon.md: $(top_srcdir)/src/fst/mansi-lexicon.lexc
+# lang-crk
+$(srcdir)/%.md: $(top_srcdir)/src/derivation/%.lexc
+	$(AM_V_AWK)"$(GAWK)" -f $(DOCC2MDWIKI) < $< > $@
+
+# XXX: needed for custom lexc's but may overlap with few standard targets...
+$(srcdir)/%.md: $(top_srcdir)/src/fst/%.lexc
 	$(AM_V_AWK)"$(GAWK)" -f $(DOCC2MDWIKI) < $< > $@
 
 $(srcdir)/%-morphology.md: $(top_srcdir)/src/fst/%.twolc
@@ -878,7 +884,8 @@ generated-markdowns.sources:
 	$(AM_V_GEN)fgrep -rl --include '*.lexc' --include '*.twolc' --include '*.twolc' \
 		--exclude 'Makefile*' --exclude '*.pmscript' --exclude '*.xfscript'\
 		--exclude lexicon.tmp.lexc \
-		'!! ' $(top_srcdir)/src/* $(top_srcdir)/tools/* > $@
+		'!! ' $(top_srcdir)/src/* $(top_srcdir)/tools/* |\
+		fgrep -v incoming/ > $@
 
 generated-markdowns.targets: generated-markdowns.sources
 	$(AM_V_GEN)for f in `cat $<` ; do \
