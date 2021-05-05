@@ -910,6 +910,8 @@ I Num2 til Num10 er flagging af NNGUR C-et pga. klokken
 
  * LEXICON N_Loan_Num  som bør have bindestreg *omega% 3*
 
+ * LEXICON N_Loan_GEM_s  test på ordet 'gas'
+
  * LEXICON N_Loan_GEM  nominal loanwords with geminating consonant
 
  * LEXICON N_Loan_t  nominal loanwords ending in -t
