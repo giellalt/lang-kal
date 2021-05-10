@@ -1498,7 +1498,6 @@ Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers
 
 
 
-
 # Greenlandic morphological analyser
 
 Fil for at generere de centrale morfologiske processer i vor grønlandske analysator
