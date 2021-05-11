@@ -28,7 +28,6 @@ xxx 20170522 til former, som ikke kan læses men som har brug for en analyse i c
 
 
 
-
  * aaffaffak Z2-Zmorf ;              
  * aaffaffak+N+Abs+Sg:aaffaffaq Krestr ; 
  * aaffaq Z2-qZmorf ;                 
@@ -1563,6 +1562,8 @@ Fil for at generere de centrale morfologiske processer i vor grønlandske analys
  * **+Sem/Time** = Temporal particle !The random adverbial 'phrases' like -riutaa -isaa etc.
  ***+Sem/Unit** = Unit !Til besværlige låneord som 'time' etc., der optræder absolut
  ***+Sem/Url** tag til adresser af typen www.ccc.cc
+ *** +Sem/misse ** tag til at markere usikker possessor for misse
+
 
 ### Grammar
  ***+Gram/Comp** = Composita !Særlig tag til NIQ ajor/saper/artor/nalu- konstruktioner ved transitive verber
