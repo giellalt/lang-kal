@@ -119,6 +119,7 @@ LIST Sem/Hunt = Sem/Hunt; #qinerlerpoq i modsætning til qinersivoq
 LIST Sem/inst = Sem/inst ; #sem-tag til Sem/Hum som er NOT-PERSON fx Aarhus Universitetshospital
 LIST Sem/LastName = Sem/LastName ;
 LIST Sem/Mask = Sem/Mask ; #Introduceret som test 20180613. Skal måske ud igen
+LIST Sem/misse = Sem/misse ; #Tag til tilfældig possessornumerus ved misse
 LIST Sem/sem = Sem/sem ; #semiotik til dækning af både sem-r og sem-w
 LIST Sem/Temporal = Sem/Temporal ; #måske kan den bare slås sammen med Sem/Time. #til baggrundsparticipier.
 LIST Sem/Time = Sem/Time ;
@@ -2127,6 +2128,7 @@ REMOVE:tidlig0020A Rel + Pl - Prop - KKUT IF (0 Abs + Pl LINK NEGATE *0 3PlPoss 
 (NEGATE 1 ("misse") OR ("missaa") OR ("miss." Adv) LINK -1 _TARGET_ + Num LINK -1 ("nalunaaqutaq"))#Måske en SELECT:tidlig0019?
 (NEGATE 0 Num LINK 1 ("qiteq") + POSSESSUM3)#Skal acceptere både 3SgPoss og 3PlPoss: Ministeriuneq nunatta nalunaaqutaa malillugu ualimut PINGASUT qeqqanut tusagassiortunik katersortitsinissamut qaaqqusivoq;
 (NEGATE *-1 ("ima") LINK 1 TIGE + VFIN LINK 1 _TARGET_ + Rel LINK *1 CONT + TRANSVERB BARRIER V LINK 1 EOS)#En meget snæver "at-sætning": Sammisallu ima pingaaruteqartigaat ILAQUTARIIPPASSUIT aningaasat sulinermikkut pissarsiarisimasatik piniarnermut, aallaaniarnermut aalisarnermullu atorusuttarlugit.
+(NEGATE 0 Rel + Pl LINK 1 ("misse"))#USA-mi inuit suliffeeruttut marsimili maanna 7 MILLIONIT missaaniilerput. POSSESSUM3 ved misse har sing- og plur-possessor nrmest tilfældigt
 ;
 
 REMOVE:tidlig0020B Abs IF (*-1 ("ima") LINK 1 TIGE + VFIN LINK 1 _TARGET_ + Rel LINK *1 CONT + TRANSVERB BARRIER V LINK 1 EOS);#En meget snæver "at-sætning": Sammisallu ima pingaaruteqartigaat ILAQUTARIIPPASSUIT aningaasat sulinermikkut pissarsiarisimasatik piniarnermut, aallaaniarnermut aalisarnermullu atorusuttarlugit.
@@ -2145,6 +2147,7 @@ REMOVE:tidlig0022 3SgPoss IF (0 3PlPoss - Err/Sub)(*-1 Rel + Pl BARRIER (*) - %A
 (NEGATE *-1 V + 3Sg BARRIER Rel + Pl - ("aak") - ("aaq"))#Ataasinnguaq appikkaluarlunilu qissaserpoq ilaasali oqaluttuaraat, kikkunnit qinngasaarneqartarsimanersoq, aammalu sunaaffa ANGAJOQQAAVISA avissimanerat meeraqataasa qinngasaarutigisaraat.
 (NOT -1 Gram/Coref + Pron + 4Sg) #Julie Berthelsen Ekstra Bladet-imut oqarpoq, kunngikkormiut atertaavit assut tulluusimaarutigalugit, namminermi aqqisa Ivalo ilagaat angutaataalu ateqarluni Minik.
 (NEGATE 0 ("sapaatip-akunneq"))#USA-mi innuttaasut akornanni 6,6 millionit suliffitsik SAPAATIP-AKUNNERATA kingulliup ingerlanerani annaavaat, suliffeqannginnersiutinillu qinnuteqarsimallutik
+(NEGATE 0 Sem/misse)#tassa ataasinngorpat unnuakkut 01 MISS. apuullutit.
 ;
 
 
@@ -2520,6 +2523,14 @@ REMOVE:tidlig0540 Par IF (-1 BOS LINK 1 _TARGET_ + Abs LINK 1 (":") );#Nutseriso
 REMOVE:tidlig0550 (/"siumor"\ Gram/TV\ Gram/Refl\ INNAQ/l) IF (0 ("siumuinnaq") + Adv);
 
 REMOVE:tidlig0560 Prop + LU IF (0 Prop + (".*lu"r) LINK -1 Conj);  #Qatanngutigiit Nielsenikkut, Ivik aamma AQQALU angutit iligiikkaarneranni finalissapput.
+
+SELECT:tidlig0570 Sem/misse + Rel + Pl IF (1 ("misse") + 3PlPoss); #B: Angut 18-it missaannik ukiulik, 175-180 CM missaanni angissusilik, tuattoq sakiaatigut allannertalimmik nasartalimmik tujuululik.
+
+SELECT:tidlig0571 Sem/Unit + Rel + Pl IF (1 Sem/misse + 3PlPoss); #Attavik 130 km-it MISSAANIK isorartussuseqassaaq.
+
+SUBSTITUTE:tidlig0580 (Abs) (Rel) TARGET (/"ataaseq"\ Num\ Abs/l) OR (/"01"\ Num\ Abs\ Sg/l) IF (1 ("misse") + POSSESSUM3); #Nal. ATAASEQ miss.
+SUBSTITUTE:tidlig0581 (Abs) (Ins Orht/Alt) TARGET (/"cm"\ OLang/DAN\ N\ Abs/l) IF (-1 Num LINK 2 LIK_QAR); #Angut 17-init missaannik ukiulik 170-175 CM angissusilik, tuattoq, sakiaani allannertalimmik nasartalimmik tujuululik, koorpunik qarlilik.
+SUBSTITUTE:tidlig0582 (3SgPoss) (3PlPoss) TARGET (/"misse"\ N\ Ins\ Sg\ 3SgPoss/l) IF (-1 Sem/Unit + Rel + Pl); #Attavik 130 km-it MISSAANIK isorartussuseqassaaq.
 
 ##########################################################################################################
 ## Underafdeling af tidlig til løsning af/ forberedelse af løsning af koncessivsætninger uden KONCESSIV ##
@@ -2935,106 +2946,106 @@ REMOVE:Int0104 POSSESSUM + ("tamalaaq") ;
 LIST <heur> = <heur>  ;
 LIST <f:[0-9]+> = <f:[0-9]+> ;
 
-APPEND ("$1"v Orth/Append OLang/DAN N Gram/ACR Abs Sg) TARGET ("<(\\p{Lu}{2,}[b|c|d|e|f|g|h|j|l|m|n|o|r|s|x|y|z|æ|ø|å])>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # HK
-APPEND ("$1"v Orth/Append OLang/DAN Prop Gram/ACR Abs Sg) TARGET ("<(\\p{Lu}{2,}.*[b|c|d|e|f|g|h|j|l|m|n|o|r|s|x|y|z|æ|ø|å])>"r) (NOT 0 WORD - Gram/ACR - (<heur> <f:[0-9]+>r))(0 (\?)) ; # CBS
-APPEND ("$1"v Orth/Append OLang/DAN Prop Abs Sg) TARGET ("<(\\p{Lu}.*[b|c|d|e|f|g|h|j|l|m|n|o|r|s|x|y|z|æ|ø|å])>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # Pisiffik
-APPEND ("$1"v Orth/Append OLang/DAN Prop Abs Sg) TARGET ("<(\\p{Lu}.*[b|c|d|e|f|g|h|j|l|m|n|o|r|s|x|y|z|æ|ø|å])>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # Qeqertarsiaq
-APPEND ("$1"v Orth/Append OLang/DAN Prop Abs Sg) TARGET ("<(\\p{Lu}\\p{Ll}*[b|c|d|e|f|g|h|j|l|m|n|o|r|s|x|y|z|æ|ø|å])>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # Liv
-APPEND ("$1"v Orth/Append OLang/DAN N Abs Sg) TARGET ("<(\\p{Lu}?\\p{Ll}*[b|c|d|e|f|g|h|j|l|m|n|o|r|s|x|y|z|æ|ø|å])>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)); # fst, bananasplit
+#APPEND ("$1"v Orth/Append OLang/DAN N Gram/ACR Abs Sg) TARGET ("<(\\p{Lu}{2,}[b|c|d|e|f|g|h|j|l|m|n|o|r|s|x|y|z|æ|ø|å])>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # HK
+#APPEND ("$1"v Orth/Append OLang/DAN Prop Gram/ACR Abs Sg) TARGET ("<(\\p{Lu}{2,}.*[b|c|d|e|f|g|h|j|l|m|n|o|r|s|x|y|z|æ|ø|å])>"r) (NOT 0 WORD - Gram/ACR - (<heur> <f:[0-9]+>r))(0 (\?)) ; # CBS
+#APPEND ("$1"v Orth/Append OLang/DAN Prop Abs Sg) TARGET ("<(\\p{Lu}.*[b|c|d|e|f|g|h|j|l|m|n|o|r|s|x|y|z|æ|ø|å])>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # Pisiffik
+#APPEND ("$1"v Orth/Append OLang/DAN Prop Abs Sg) TARGET ("<(\\p{Lu}.*[b|c|d|e|f|g|h|j|l|m|n|o|r|s|x|y|z|æ|ø|å])>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # Qeqertarsiaq
+#APPEND ("$1"v Orth/Append OLang/DAN Prop Abs Sg) TARGET ("<(\\p{Lu}\\p{Ll}*[b|c|d|e|f|g|h|j|l|m|n|o|r|s|x|y|z|æ|ø|å])>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # Liv
+#APPEND ("$1"v Orth/Append OLang/DAN N Abs Sg) TARGET ("<(\\p{Lu}?\\p{Ll}*[b|c|d|e|f|g|h|j|l|m|n|o|r|s|x|y|z|æ|ø|å])>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)); # fst, bananasplit
+#
+#APPEND ("$1"v Orth/Append N Gram/ACR Rel Sg) TARGET ("<(\\p{Lu}{2,})-?i?u?p>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # HK
+#APPEND ("$1"v Orth/Append Prop Gram/ACR Rel Sg) TARGET ("<(\\p{Lu}{2,}.*)-i?u?p>"r) (NOT 0 WORD - Gram/ACR - (<heur> <f:[0-9]+>r))(0 (\?)) ; # CBS
+#APPEND ("$1k"v Orth/Append Prop Rel Sg) TARGET ("<(\\p{Lu}.*)-?up>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # Pisiffik
+#APPEND ("$1uaq"v Orth/Append Prop Rel Sg) TARGET ("<(\\p{Lu}.*)-?uup>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # Qeqertarsiaq
+#APPEND ("$1"v Orth/Append Prop Rel Sg) TARGET ("<(\\p{Lu}\\p{Ll}*)-?i?u?p>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # Liv
+#APPEND ("$1k"v Orth/Append N Rel Sg) TARGET ("<(\\p{L}+)-?up>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)); # atuarfik
+#APPEND ("$1lik"v Orth/Append N Rel Sg) TARGET ("<(\\p{L}+)-?llip>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)); # nattoralik
+#APPEND ("$1uaq"v Orth/Append N Rel Sg) TARGET ("<(\\p{L}+)-?uup>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)); # illunnguaq
+#APPEND ("$1"v Orth/Append N Rel Sg) TARGET ("<(\\p{L}+)-?i?u?p>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)); # fst, bananasplit
+#
+#APPEND ("$1"v Orth/Append N Gram/ACR Lok Sg) TARGET ("<(\\p{Lu}{2,})-?i?mi>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # HK
+#APPEND ("$1"v Orth/Append Prop Gram/ACR Lok Sg) TARGET ("<(\\p{Lu}{2,}.*)-?i?mi>"r) (NOT 0 WORD - Gram/ACR - (<heur> <f:[0-9]+>r))(0 (\?)) ; # CBS
+#APPEND ("$1uaq"v Orth/Append Prop Lok Sg) TARGET ("<(\\p{Lu}\\p{Ll}*)uami>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # Qeqertarsuamit
+#APPEND ("$1"v Orth/Append Prop Lok Sg) TARGET ("<(\\p{Lu}\\p{Ll}*)-?i?mi>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # Liv
+#APPEND ("$1"v Orth/Append N Lok Sg) TARGET ("<(\\p{L}+)-?i?mi>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)); # fst, bananasplit
+#
+#APPEND ("$1"v Orth/Append N Gram/ACR Trm Sg) TARGET ("<(\\p{Lu}{2,})-?i?mut>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # HK
+#APPEND ("$1"v Orth/Append Prop Gram/ACR Trm Sg) TARGET ("<(\\p{Lu}{2,}.*)-i?mut>"r) (NOT 0 WORD - Gram/ACR - (<heur> <f:[0-9]+>r))(0 (\?)) ; # CBS
+#APPEND ("$1uaq"v Orth/Append Prop Trm Sg) TARGET ("<(\\p{Lu}\\p{Ll}*)-?uamut>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # Qeqertarsuaq
+#APPEND ("$1"v Orth/Append Prop Trm Sg) TARGET ("<(\\p{Lu}\\p{Ll}*)-?i?mut>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # Liv
+#APPEND ("$1ik"v Orth/Append N Trm Sg) TARGET ("<(\\p{L}+)-?limmut>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # illunnguaq
+#APPEND ("$1uaq"v Orth/Append N Trm Sg) TARGET ("<(\\p{L}+)-?uamut>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # illunnguaq
+#APPEND ("$1"v Orth/Append N Trm Sg) TARGET ("<(\\p{L}+)-?i?mut>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)); # fst, bananasplit
+#
+#APPEND ("$1"v Orth/Append N Gram/ACR Abl Sg) TARGET ("<(\\p{Lu}{2,})-?i?mi(nngaanni)?i?t>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # HK
+#APPEND ("$1"v Orth/Append Prop Gram/ACR Abl Sg) TARGET ("<(\\p{Lu}{2,}.*)-?i?mi(nngaanni)?i?t>"r) (NOT 0 WORD - Gram/ACR - (<heur> <f:[0-9]+>r))(0 (\?)) ; # CBS
+#APPEND ("$1uaq"v Orth/Append Prop Abl Sg) TARGET ("<(\\p{Lu}\\p{Ll}*)uami(nngaanni)?i?t>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # Qeqertarsuamit
+#APPEND ("$1"v Orth/Append Prop Abl Sg) TARGET ("<(\\p{Lu}\\p{Ll}*)-?i?mi(nngaanni)?i?t>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # Liv
+#APPEND ("$1"v Orth/Append N Abl Sg) TARGET ("<(\\p{L}+)-?i?mi(nngaanni)?i?t>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)); # fst, bananasplit
+#
+#APPEND ("$1"v Orth/Append N Gram/ACR Ins Pl) TARGET ("<(\\p{Lu}{2,})-?i?nik>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # HK
+#APPEND ("$1"v Orth/Append Prop Gram/ACR Ins Pl) TARGET ("<(\\p{Lu}{2,}.*)-?i?nik>"r) (NOT 0 WORD - Gram/ACR - (<heur> <f:[0-9]+>r))(0 (\?)) ; # CBS
+#APPEND ("$1oq"v Orth/Append Prop Ins Pl) TARGET ("<(\\p{Lu}\\p{Ll}*[t|s])unik>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # Qeqertarsuamit
+#APPEND ("$1"v Orth/Append Prop Ins Pl) TARGET ("<(\\p{Lu}\\p{Ll}*)-?i?nik>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # Liv
+#APPEND ("$1oq"v Orth/Append N Ins Pl) TARGET ("<(\\p{Lu}?\\p{Ll}+)unik>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)); # fst, bananasplit
+#APPEND ("$1"v Orth/Append N Ins Pl) TARGET ("<(\\p{L}+)-?i?nik>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)); # fst, bananasplit
+#
+#APPEND ("$1"v Orth/Append V Cont 4Sg) TARGET ("<(.*)lung?i>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # ....luni
+#APPEND ("$1"v Orth/Append V Cont 4Pl) TARGET ("<(.*)lutik>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # ....lutik
+#APPEND ("$1"v Orth/Append V Cont 3SgO) TARGET ("<(.*)lun?gu>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # ....lugu
+#APPEND ("$1"v Orth/Append V Cont 3PlO) TARGET ("<(.*)lun?git>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # ....lugit
+#
+#APPEND ("$1"v V Orth/Append Ind 3Sg) TARGET ("<(.*)[p|v]oq>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # ....voq
+#APPEND ("$1t"v V Orth/Append Ind 3Sg) TARGET ("<(.*nngi)laq>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # ....voq
+#APPEND ("$1"v V Orth/Append Ind 3Sg) TARGET ("<(.*)ssaaq>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # ....voq
+#
+#APPEND ("$1"v V Orth/Append Ind 1Pl) TARGET ("<(.*)[p|v]ugut>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # ....vugut
+#APPEND ("$1"v V Orth/Append Ind 1Sg 3SgO) TARGET ("<(.*)[u|v|p]ara>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # ...vara
+#
+#APPEND ("$1"v V Orth/Append Par 3Sg) TARGET ("<(.*)[t|s]oq>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # ....toq
+#
+#APPEND ("$1"v N Orth/Append Abs Sg) TARGET ("<(.*)[t|s]oq>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r) - (Orth/Append Par)) ; # ....toq
 
-APPEND ("$1"v Orth/Append N Gram/ACR Rel Sg) TARGET ("<(\\p{Lu}{2,})-?i?u?p>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # HK
-APPEND ("$1"v Orth/Append Prop Gram/ACR Rel Sg) TARGET ("<(\\p{Lu}{2,}.*)-i?u?p>"r) (NOT 0 WORD - Gram/ACR - (<heur> <f:[0-9]+>r))(0 (\?)) ; # CBS
-APPEND ("$1k"v Orth/Append Prop Rel Sg) TARGET ("<(\\p{Lu}.*)-?up>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # Pisiffik
-APPEND ("$1uaq"v Orth/Append Prop Rel Sg) TARGET ("<(\\p{Lu}.*)-?uup>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # Qeqertarsiaq
-APPEND ("$1"v Orth/Append Prop Rel Sg) TARGET ("<(\\p{Lu}\\p{Ll}*)-?i?u?p>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # Liv
-APPEND ("$1k"v Orth/Append N Rel Sg) TARGET ("<(\\p{L}+)-?up>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)); # atuarfik
-APPEND ("$1lik"v Orth/Append N Rel Sg) TARGET ("<(\\p{L}+)-?llip>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)); # nattoralik
-APPEND ("$1uaq"v Orth/Append N Rel Sg) TARGET ("<(\\p{L}+)-?uup>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)); # illunnguaq
-APPEND ("$1"v Orth/Append N Rel Sg) TARGET ("<(\\p{L}+)-?i?u?p>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)); # fst, bananasplit
+#APPEND ("$1"v Orth/Append N Via) TARGET ("<(.*)tigut>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # ....tigut
 
-APPEND ("$1"v Orth/Append N Gram/ACR Lok Sg) TARGET ("<(\\p{Lu}{2,})-?i?mi>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # HK
-APPEND ("$1"v Orth/Append Prop Gram/ACR Lok Sg) TARGET ("<(\\p{Lu}{2,}.*)-?i?mi>"r) (NOT 0 WORD - Gram/ACR - (<heur> <f:[0-9]+>r))(0 (\?)) ; # CBS
-APPEND ("$1uaq"v Orth/Append Prop Lok Sg) TARGET ("<(\\p{Lu}\\p{Ll}*)uami>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # Qeqertarsuamit
-APPEND ("$1"v Orth/Append Prop Lok Sg) TARGET ("<(\\p{Lu}\\p{Ll}*)-?i?mi>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # Liv
-APPEND ("$1"v Orth/Append N Lok Sg) TARGET ("<(\\p{L}+)-?i?mi>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)); # fst, bananasplit
+#APPEND ("$1ssa"v Orth/Append V Int 3Sg) TARGET ("<(.*)ssava>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # ....ssava
 
-APPEND ("$1"v Orth/Append N Gram/ACR Trm Sg) TARGET ("<(\\p{Lu}{2,})-?i?mut>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # HK
-APPEND ("$1"v Orth/Append Prop Gram/ACR Trm Sg) TARGET ("<(\\p{Lu}{2,}.*)-i?mut>"r) (NOT 0 WORD - Gram/ACR - (<heur> <f:[0-9]+>r))(0 (\?)) ; # CBS
-APPEND ("$1uaq"v Orth/Append Prop Trm Sg) TARGET ("<(\\p{Lu}\\p{Ll}*)-?uamut>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # Qeqertarsuaq
-APPEND ("$1"v Orth/Append Prop Trm Sg) TARGET ("<(\\p{Lu}\\p{Ll}*)-?i?mut>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # Liv
-APPEND ("$1ik"v Orth/Append N Trm Sg) TARGET ("<(\\p{L}+)-?limmut>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # illunnguaq
-APPEND ("$1uaq"v Orth/Append N Trm Sg) TARGET ("<(\\p{L}+)-?uamut>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # illunnguaq
-APPEND ("$1"v Orth/Append N Trm Sg) TARGET ("<(\\p{L}+)-?i?mut>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)); # fst, bananasplit
-
-APPEND ("$1"v Orth/Append N Gram/ACR Abl Sg) TARGET ("<(\\p{Lu}{2,})-?i?mi(nngaanni)?i?t>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # HK
-APPEND ("$1"v Orth/Append Prop Gram/ACR Abl Sg) TARGET ("<(\\p{Lu}{2,}.*)-?i?mi(nngaanni)?i?t>"r) (NOT 0 WORD - Gram/ACR - (<heur> <f:[0-9]+>r))(0 (\?)) ; # CBS
-APPEND ("$1uaq"v Orth/Append Prop Abl Sg) TARGET ("<(\\p{Lu}\\p{Ll}*)uami(nngaanni)?i?t>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # Qeqertarsuamit
-APPEND ("$1"v Orth/Append Prop Abl Sg) TARGET ("<(\\p{Lu}\\p{Ll}*)-?i?mi(nngaanni)?i?t>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # Liv
-APPEND ("$1"v Orth/Append N Abl Sg) TARGET ("<(\\p{L}+)-?i?mi(nngaanni)?i?t>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)); # fst, bananasplit
-
-APPEND ("$1"v Orth/Append N Gram/ACR Ins Pl) TARGET ("<(\\p{Lu}{2,})-?i?nik>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # HK
-APPEND ("$1"v Orth/Append Prop Gram/ACR Ins Pl) TARGET ("<(\\p{Lu}{2,}.*)-?i?nik>"r) (NOT 0 WORD - Gram/ACR - (<heur> <f:[0-9]+>r))(0 (\?)) ; # CBS
-APPEND ("$1oq"v Orth/Append Prop Ins Pl) TARGET ("<(\\p{Lu}\\p{Ll}*[t|s])unik>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # Qeqertarsuamit
-APPEND ("$1"v Orth/Append Prop Ins Pl) TARGET ("<(\\p{Lu}\\p{Ll}*)-?i?nik>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # Liv
-APPEND ("$1oq"v Orth/Append N Ins Pl) TARGET ("<(\\p{Lu}?\\p{Ll}+)unik>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)); # fst, bananasplit
-APPEND ("$1"v Orth/Append N Ins Pl) TARGET ("<(\\p{L}+)-?i?nik>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)); # fst, bananasplit
-
-APPEND ("$1"v Orth/Append V Cont 4Sg) TARGET ("<(.*)lung?i>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # ....luni
-APPEND ("$1"v Orth/Append V Cont 4Pl) TARGET ("<(.*)lutik>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # ....lutik
-APPEND ("$1"v Orth/Append V Cont 3SgO) TARGET ("<(.*)lun?gu>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # ....lugu
-APPEND ("$1"v Orth/Append V Cont 3PlO) TARGET ("<(.*)lun?git>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # ....lugit
-
-APPEND ("$1"v V Orth/Append Ind 3Sg) TARGET ("<(.*)[p|v]oq>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # ....voq
-APPEND ("$1t"v V Orth/Append Ind 3Sg) TARGET ("<(.*nngi)laq>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # ....voq
-APPEND ("$1"v V Orth/Append Ind 3Sg) TARGET ("<(.*)ssaaq>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # ....voq
-
-APPEND ("$1"v V Orth/Append Ind 1Pl) TARGET ("<(.*)[p|v]ugut>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # ....vugut
-APPEND ("$1"v V Orth/Append Ind 1Sg 3SgO) TARGET ("<(.*)[u|v|p]ara>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # ...vara
-
-APPEND ("$1"v V Orth/Append Par 3Sg) TARGET ("<(.*)[t|s]oq>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # ....toq
-
-APPEND ("$1"v N Orth/Append Abs Sg) TARGET ("<(.*)[t|s]oq>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r) - (Orth/Append Par)) ; # ....toq
-
-APPEND ("$1"v Orth/Append N Via) TARGET ("<(.*)tigut>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # ....tigut
-
-APPEND ("$1ssa"v Orth/Append V Int 3Sg) TARGET ("<(.*)ssava>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # ....ssava
-
-APPEND ("$1"v Orth/Append U Der/nv V Cont 4Sg) TARGET N + Abs - MI + ("<([a-z]*)>"r)(**-1 ("aappaq") + POSSESSUM3 LINK 1 U + V LINK *1 ("aappaq") + POSSESSUM LINK 1 _TARGET_)(NOT 0 V + U) ; # aappaa qaqortuuvoq, aappaa qernertoq (underforstået qernertuulluni)(NEGATE 0 (Orth/Append).
+#APPEND ("$1"v Orth/Append U Der/nv V Cont 4Sg) TARGET N + Abs - MI + ("<([a-z]*)>"r)(**-1 ("aappaq") + POSSESSUM3 LINK 1 U + V LINK *1 ("aappaq") + POSSESSUM LINK 1 _TARGET_)(NOT 0 V + U) ; # aappaa qaqortuuvoq, aappaa qernertoq (underforstået qernertuulluni)(NEGATE 0 (Orth/Append).
 
 ### USIKRE TAGGINGS AF ULÆSELIGE ORD ###
 #======================================#
-APPEND ("$1"v Orth/Append N Gram/ACR Lok Pl) TARGET ("<(\\p{Lu}{2,})-i?ni>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # HK
-APPEND ("$1"v Orth/Append Prop Gram/ACR Lok Pl) TARGET ("<(\\p{Lu}{2,}.*)-i?ni>"r) (NOT 0 WORD - Gram/ACR - (<heur> <f:[0-9]+>r))(0 (\?)) ; # CBS
-APPEND ("$1"v Orth/Append N Lok Pl) TARGET ("<(\\p{L}+)ni>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)); # nattoralik
-APPEND ("$1"v Orth/Append N Lok Pl) TARGET ("<(\\p{L}+)ini>"r) (NOT 0 WORD - N - (<heur> <f:[0-9]+>r)); # nattoralik
-APPEND ("$1"v Orth/Append Prop Abs Sg) TARGET ("<(\\p{Lu}.*)i?ni>"r) (NOT 0 WORD - N - (<heur> <f:[0-9]+>r)) ; # Tysklandi
-
-APPEND ("$1"v Orth/Append N Gram/ACR Abs Sg) TARGET ("<(\\p{Lu}{2,}[k|q|u])>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # HK
-APPEND ("$1"v Orth/Append Prop Gram/ACR Abs Sg) TARGET ("<(\\p{Lu}{2,}.*[k|q|u])>"r) (NOT 0 WORD - Gram/ACR - (<heur> <f:[0-9]+>r))(0 (\?)) ; # CBS
-APPEND ("$1"v Orth/Append N Abs Sg) TARGET ("<(\\p{Lu}?\\p{Ll}*l(i|u)k)>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)); # nattoralik
-APPEND ("$1"v Orth/Append N Abs Sg) TARGET ("<(\\p{Lu}.*)i>"r) (NOT 0 WORD - Prop - N - (<heur> <f:[0-9]+>r)) ; # Dependensi
-APPEND ("$1"v Orth/Append Prop Abs Sg) TARGET ("<(\\p{Lu}.*[q|u])>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # Pisiffik
-APPEND ("$1"v Orth/Append Prop Abs Sg) TARGET ("<(\\p{Lu}.*)i>"r) (NOT 0 WORD - Prop - N - (<heur> <f:[0-9]+>r)) ; # Tysklandi
-APPEND ("$1"v Orth/Append N Abs Sg) TARGET ("<(\\p{Lu}?\\p{Ll}*aq)>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)); # nuliaq
-
-APPEND ("$1"v Prop Gram/ACR Ins Sg) TARGET ("<(\\p{Lu}{2,}.*)-?i?mik>"r) (NOT 0 WORD) ; # CBS
-APPEND ("$1"v Prop Ins Sg) TARGET ("<(\\p{Lu}\\p{Ll}*)-?i?mik>"r) (NOT 0 WORD) ; # Liv
-APPEND ("$1"v Prop Ins Sg) TARGET ("<(\\p{Lu}.*)mik>"r) (NOT 0 WORD) ; # Liv
-APPEND ("$1"v N Ins Sg) TARGET ("<(.*)-?imik>"r) (NOT 0 WORD) ; # fst, bananasplit
-APPEND ("$1"v N Ins Sg) TARGET ("<(.*)-?mik>"r) (NOT 0 WORD) ; # fst, bananasplit
-
-APPEND ("$1"v Prop Gram/ACR Abs Sg) TARGET ("<(\\p{Lu}{2,}.*)-?i?vik>"r) (NOT 0 WORD) ; # CBS
-APPEND ("$1"v Prop Abs Sg) TARGET ("<(\\p{Lu}.*)-?i?vik>"r) (NOT 0 WORD) ; # Liv
-APPEND ("$1"v N Abs Sg) TARGET ("<(.*k)>"r) (NOT 0 WORD) ; # sukkulivik
-
-APPEND ("$1"v Orth/Append V Par 2Sg) TARGET ("<(.*)[s|t]utit>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # ....sutit
-
-APPEND ("$1"v OLang/DAN N Ins Sg) TARGET ("<(.*[b|c|d|h|w|x|y|z|æ|ø|å].*)-i[m|n]ik>"r) (0 (\?)) ; # kamæleonimik
-APPEND ("$1"v OLang/DAN N Ins Sg) TARGET ("<(.*[b|c|d|h|w|x|y|z|æ|ø|å].*)imik>"r) (NOT 0 WORD) ; # kamæleonimik
-
-APPEND ("$1"v OLang/DAN N Abs Sg) TARGET ("<(.*[b|c|d|f|h|j|m|n|w|x|y|z|æ|ø|å].*)imik>"r) (NOT 0 WORD) ; # kamæleonimik
-
-APPEND ("$1"v Orth/Append Prop Abs Sg) TARGET ("<(\\p{Lu}.*)>"r) - MIU (NEGATE *-1 BOS BARRIER (*) - PUNCT)(NEGATE 0 Prop OR iProp) ;
+#APPEND ("$1"v Orth/Append N Gram/ACR Lok Pl) TARGET ("<(\\p{Lu}{2,})-i?ni>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # HK
+#APPEND ("$1"v Orth/Append Prop Gram/ACR Lok Pl) TARGET ("<(\\p{Lu}{2,}.*)-i?ni>"r) (NOT 0 WORD - Gram/ACR - (<heur> <f:[0-9]+>r))(0 (\?)) ; # CBS
+#APPEND ("$1"v Orth/Append N Lok Pl) TARGET ("<(\\p{L}+)ni>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)); # nattoralik
+#APPEND ("$1"v Orth/Append N Lok Pl) TARGET ("<(\\p{L}+)ini>"r) (NOT 0 WORD - N - (<heur> <f:[0-9]+>r)); # nattoralik
+#APPEND ("$1"v Orth/Append Prop Abs Sg) TARGET ("<(\\p{Lu}.*)i?ni>"r) (NOT 0 WORD - N - (<heur> <f:[0-9]+>r)) ; # Tysklandi
+#
+#APPEND ("$1"v Orth/Append N Gram/ACR Abs Sg) TARGET ("<(\\p{Lu}{2,}[k|q|u])>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # HK
+#APPEND ("$1"v Orth/Append Prop Gram/ACR Abs Sg) TARGET ("<(\\p{Lu}{2,}.*[k|q|u])>"r) (NOT 0 WORD - Gram/ACR - (<heur> <f:[0-9]+>r))(0 (\?)) ; # CBS
+#APPEND ("$1"v Orth/Append N Abs Sg) TARGET ("<(\\p{Lu}?\\p{Ll}*l(i|u)k)>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)); # nattoralik
+#APPEND ("$1"v Orth/Append N Abs Sg) TARGET ("<(\\p{Lu}.*)i>"r) (NOT 0 WORD - Prop - N - (<heur> <f:[0-9]+>r)) ; # Dependensi
+#APPEND ("$1"v Orth/Append Prop Abs Sg) TARGET ("<(\\p{Lu}.*[q|u])>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # Pisiffik
+#APPEND ("$1"v Orth/Append Prop Abs Sg) TARGET ("<(\\p{Lu}.*)i>"r) (NOT 0 WORD - Prop - N - (<heur> <f:[0-9]+>r)) ; # Tysklandi
+#APPEND ("$1"v Orth/Append N Abs Sg) TARGET ("<(\\p{Lu}?\\p{Ll}*aq)>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)); # nuliaq
+#
+#APPEND ("$1"v Prop Gram/ACR Ins Sg) TARGET ("<(\\p{Lu}{2,}.*)-?i?mik>"r) (NOT 0 WORD) ; # CBS
+#APPEND ("$1"v Prop Ins Sg) TARGET ("<(\\p{Lu}\\p{Ll}*)-?i?mik>"r) (NOT 0 WORD) ; # Liv
+#APPEND ("$1"v Prop Ins Sg) TARGET ("<(\\p{Lu}.*)mik>"r) (NOT 0 WORD) ; # Liv
+#APPEND ("$1"v N Ins Sg) TARGET ("<(.*)-?imik>"r) (NOT 0 WORD) ; # fst, bananasplit
+#APPEND ("$1"v N Ins Sg) TARGET ("<(.*)-?mik>"r) (NOT 0 WORD) ; # fst, bananasplit
+#
+#APPEND ("$1"v Prop Gram/ACR Abs Sg) TARGET ("<(\\p{Lu}{2,}.*)-?i?vik>"r) (NOT 0 WORD) ; # CBS
+#APPEND ("$1"v Prop Abs Sg) TARGET ("<(\\p{Lu}.*)-?i?vik>"r) (NOT 0 WORD) ; # Liv
+#APPEND ("$1"v N Abs Sg) TARGET ("<(.*k)>"r) (NOT 0 WORD) ; # sukkulivik
+#
+#APPEND ("$1"v Orth/Append V Par 2Sg) TARGET ("<(.*)[s|t]utit>"r) (NOT 0 WORD - (<heur> <f:[0-9]+>r)) ; # ....sutit
+#
+#APPEND ("$1"v OLang/DAN N Ins Sg) TARGET ("<(.*[b|c|d|h|w|x|y|z|æ|ø|å].*)-i[m|n]ik>"r) (0 (\?)) ; # kamæleonimik
+#APPEND ("$1"v OLang/DAN N Ins Sg) TARGET ("<(.*[b|c|d|h|w|x|y|z|æ|ø|å].*)imik>"r) (NOT 0 WORD) ; # kamæleonimik
+#
+#APPEND ("$1"v OLang/DAN N Abs Sg) TARGET ("<(.*[b|c|d|f|h|j|m|n|w|x|y|z|æ|ø|å].*)imik>"r) (NOT 0 WORD) ; # kamæleonimik
+#
+#APPEND ("$1"v Orth/Append Prop Abs Sg) TARGET ("<(\\p{Lu}.*)>"r) - MIU (NEGATE *-1 BOS BARRIER (*) - PUNCT)(NEGATE 0 Prop OR iProp) ;
 
 REMOVE:Int0105 (\?) IF (0 WORD) ;
 REMOVE:9974 Orth/Append IF (0 WORD - (<heur> <f:[0-9]+>r) - MI)(NEGATE -1 ("aappaq") + POSSESSUM) ; #Slet gættede former, hvis ikke eneste læsning
@@ -3167,25 +3178,25 @@ SELECT:0099 Con OR Cau IF (0 UGEDAGE) ;
 REMOVE:0099 UGEDAGE + TUQ + N IF (0 UGEDAGE + V) ; #Nalunaaqutaq ataasinngoriartortoq iluatsippaa.
 
 #Ofte set fejl ved marluk, at der anvendes 3SgPoss
-APPEND ("misse" Orth/Append N Lok Sg 3PlPoss) TARGET ("<miss.>"r) (-1 ("marluk"))(NEGATE 0 Orth/Append + N + Lok + Sg) (NEGATE 0 ("miss." Adv)) ; #missaani
+#APPEND ("misse" Orth/Append N Lok Sg 3PlPoss) TARGET ("<miss.>"r) (-1 ("marluk"))(NEGATE 0 Orth/Append + N + Lok + Sg) (NEGATE 0 ("miss." Adv)) ; #missaani
 
-APPEND ("misse" Orth/Append N Lok Sg 3SgPoss) TARGET ("<miss.>"r) (*-1 Num OR ("affaq"))(NEGATE 0 Orth/Append + N + Lok + Sg) (NEGATE 0 ("miss." Adv)); #missaani
-APPEND ("misse" Orth/Append N Lok Sg 3PlPoss) TARGET ("<miss.>"r) (*-1 Num + Pl)(NEGATE 0 Orth/Append + N + Lok + Sg); #missaanni
+#APPEND ("misse" Orth/Append N Lok Sg 3SgPoss) TARGET ("<miss.>"r) (*-1 Num OR ("affaq"))(NEGATE 0 Orth/Append + N + Lok + Sg) (NEGATE 0 ("miss." Adv)); #missaani
+#APPEND ("misse" Orth/Append N Lok Sg 3PlPoss) TARGET ("<miss.>"r) (*-1 Num + Pl)(NEGATE 0 Orth/Append + N + Lok + Sg); #missaanni
 SELECT:Sel0001 Num IF (*1 ("misse") OR ("miss." Adv)) (NEGATE 0 ("miss." Adv)) ;
 
-APPEND ("$1"v Orth/Append Num Rel Sg) TARGET ("(0?[0-1]*)"r) (NOT 0 Rel + Sg) (*1 ("misse") BARRIER NUMHOVED LINK NOT 0 ("miss." Adv))(NEGATE 0 Pl) ; #nal. 01 miss.
-APPEND ("$1"v Orth/Append Num Rel Sg) TARGET ("([a-z]*)"r) + Num (NOT 0 Rel + Sg OR Num + Rel + Pl) (*1 ("misse") BARRIER NUMHOVED LINK NOT 0 ("miss." Adv)) ; #nal. ataaseq miss.
-APPEND ("$1"v Orth/Append Num Rel Pl) TARGET ("([0-9]*)"r) + Num (NOT 0 Rel + Sg OR Rel + Pl + Orth/Append) (*1 ("misse") BARRIER NUMHOVED LINK NOT 0 ("miss." Adv))
-(NEGATE 0 Num + Rel + Pl)#Timmisartuutileqatigiiffiulli suli naatsorsuutigaa ilaasussat 900-T missaanniittut kinguaattooqqasut tamaasa apuuffissaannut sapaatip-akunnerata naanerani apuukkumaarlugit .
- ; #nal 2 miss.
-APPEND ("$1"v Orth/Append Num Rel Pl) TARGET ("([a-z]*)"r) + Num (NOT 0 Rel + Sg OR Num + Rel + Pl) (*1 ("misse") BARRIER NUMHOVED LINK NOT 0 ("miss." Adv)) ; #nal. marluk miss.
+#APPEND ("$1"v Orth/Append Num Rel Sg) TARGET ("(0?[0-1]*)"r) (NOT 0 Rel + Sg) (*1 ("misse") BARRIER NUMHOVED LINK NOT 0 ("miss." Adv))(NEGATE 0 Pl) ; #nal. 01 miss.
+#APPEND ("$1"v Orth/Append Num Rel Sg) TARGET ("([a-z]*)"r) + Num (NOT 0 Rel + Sg OR Num + Rel + Pl) (*1 ("misse") BARRIER NUMHOVED LINK NOT 0 ("miss." Adv)) ; #nal. ataaseq miss.
+#APPEND ("$1"v Orth/Append Num Rel Pl) TARGET ("([0-9]*)"r) + Num (NOT 0 Rel + Sg OR Rel + Pl + Orth/Append) (*1 ("misse") BARRIER NUMHOVED LINK NOT 0 ("miss." Adv))
+#(NEGATE 0 Num + Rel + Pl)#Timmisartuutileqatigiiffiulli suli naatsorsuutigaa ilaasussat 900-T missaanniittut kinguaattooqqasut tamaasa apuuffissaannut sapaatip-akunnerata naanerani apuukkumaarlugit .
+ #; #nal 2 miss.
+#APPEND ("$1"v Orth/Append Num Rel Pl) TARGET ("([a-z]*)"r) + Num (NOT 0 Rel + Sg OR Num + Rel + Pl) (*1 ("misse") BARRIER NUMHOVED LINK NOT 0 ("miss." Adv)) ; #nal. marluk miss.
 REMOVE:Int0115 Num + Rel IF (*1 ("miss." Adv) BARRIER (*) - NUMHOVED - NUM) ;
 REMOVE:Int0116 Num + Abs IF (*1 ("misse") OR ("miss." Adv) BARRIER NUMHOVED OR NUM) ;
 REMOVE:Int0117 Rel IF (*1 ("miss." Adv) BARRIER (*) - NUMHOVED - NUM LINK NEGATE 0 Rel) ;
 
-APPEND ("$1"v Orth/Append Sem/Unit N Rel Sg) TARGET ("([a-z].*)"r) (0 NUMHOVED) (NOT 0 Rel + Sg) (*-1 Num )(*1 ("misse") OR ("miss.") + Adv)
-(NEGATE 0 ("million") OR ("milliard") OR ("krone"))
-;
+#APPEND ("$1"v Orth/Append Sem/Unit N Rel Sg) TARGET ("([a-z].*)"r) (0 NUMHOVED) (NOT 0 Rel + Sg) (*-1 Num )(*1 ("misse") OR ("miss.") + Adv)
+#(NEGATE 0 ("million") OR ("milliard") OR ("krone"))
+#;
 
 ### TAL ###
 #=========#
@@ -12611,7 +12622,9 @@ SELECT:8532A UGEDAGE IF (0 NIRMIT) ; #marlunngornermut er ikke NIRMIT
 REMOVE:8532B ("tasersuk") IF (0 ("taseq") + SUAQ) ; #tasersuk findes ikke i corpus. Er måske archaisk
 REMOVE:8532C ("avatangiiseq") IF (0 ("avatangiisi"));
 REMOVE:8532Da ("(.*)"r) - OBLIQUE - Rel IF (0 (VSTR:"$1"v) + OBLIQUE LINK 0 Gram/Abbr OR Sem/Unit) (NEGATE 0 ("timi")) ;
-REMOVE:8532D ("(.*)"r) - Sem/Unit IF (0 (VSTR:"$1"v) + Sem/Unit LINK -1 Num); #fx grad+<unit> vs. grad+<ac>
+REMOVE:8532D ("(.*)"r) - Sem/Unit IF (0 (VSTR:"$1"v) + Sem/Unit LINK -1 Num) #fx grad+<unit> vs. grad+<ac>
+(NEGATE -1 Num LINK 1 _TARGET_ + Ins LINK 1 LIK_QAR)#Angut 17-init missaannik ukiulik 170-175 CM angissusilik,
+;
 REMOVE:8532E Gram/IV IF (0 (/"naammassi"\ Gram/TV\ Gram/Pass\ NIQ\ Der/vn\ SSAQ/l) + POSSESSUM );
 REMOVE:8532F (/"inuaq"\ TAQ\ Der/nn/l) IF (0 ("inuartaq")) ; #tilhørende=finger usandsynlig
 REMOVE:8532G ("inuk") + IAR IF (0 ("inuiaqat")) ;
@@ -14987,6 +15000,7 @@ REMOVE:9972B ("([^<].*)"r) IF
 (NEGATE *-1 Abs + &&IV_SUBJ& LINK *1 Par + &&IV_SUBJ& LINK *1 ORATIOOBLVERB BARRIER VERB-NOTCONT)#Taamali isumaqatigiinniarsimaneq "KANNGUNARTOQ", Enhedslistenip Nunat Avannarliit, Issittoq, nunarput aamma Savalimmiut pillugit oqaaseqartartua, Christian Juhl, isumaqarpoq.#
 (NEGATE 0 <ac> + U + SURE)#Tamatumanilu allakkatigut qinersinissamik kaammattuivissorneq, ullup qeqqata siornani silarlunnera taavalu qinersiartortut siuleriiaartariaqarsimanerat, taamaalillunilu qinersinerup nalunaaquttap akunneranik sivitsorneqartariaqarnera PEQQUTAASORAI: En meget farlig regel, men jeg kan ikke lige finde noget, der kan begrænse den til noget fornuftigt
 (NEGATE -1 Rel + Sg LINK 1 _TARGET_ + 3SgPoss LINK *1 3SgO BARRIER V)#kaagip ILAA nerivara.
+##Aappaa qaqortuuvoq, aappaa QERNERTOQ.
 ;
 
 REMOVE:9972B ("([^<]...*).."r) + (/Der\/.*/r) IF (0 (VSTR:"$1...+"r) - (/Der\/.*/r)) #En mere farlig regel end 9972A, men kræver til gengæld derivation. Skrevet til ord som 'aqerluusaq'.
