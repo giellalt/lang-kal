@@ -868,6 +868,8 @@ I Num2 til Num10 er flagging af NNGUR C-et pga. klokken
 
  * LEXICON UDEN_HTR_k_TAQ   20180722 konsonantstammer som sorsup uden HTR
 
+ * LEXICON UDEN_HTR_C_TAQ   konsonantstammer som alapernaap
+
  * LEXICON UDEN_HTR_k_GAQ   PL20210201 allappaa
 
  * LEXICON UDEN_HTR_V_SAQ    vokalstammer som nakkaavaa uden HTR
