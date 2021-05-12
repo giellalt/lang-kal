@@ -998,6 +998,8 @@ Gennemgangsleksikon for TAR m. fl. !tilføjet 20190530
 
 
 
+
+
 efter GUMALLIR GUNNAIR LIR QQAMMIR RIIR UMMIR etc. !Ny default + post_-lexica PL 20180416
 
 TIR og TITIR
