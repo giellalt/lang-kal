@@ -5,7 +5,7 @@
 [![Issues](https://img.shields.io/github/issues/giellalt/lang-kal)](https://github.com/giellalt/lang-kal/issues)
 [![Build status](https://github.com/giellalt/lang-kal/workflows/Speller%20CI+CD/badge.svg)](https://github.com/giellalt/lang-kal/actions)
 
-This page documents the work on the **Kalaallisut language model**. 
+This page documents the work on the [Kalaallisut language model](http://github.com/giellalt/lang-kal). 
 
 Based upon a cooperation between Oqaasileriffik (Grønlands
 sprogsekretariat) and Divvun & Giellatekno, Oqaasileriffik has built
