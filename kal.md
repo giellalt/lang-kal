@@ -5585,7 +5585,11 @@ I Num2 til Num10 er flagging af NNGUR C-et pga. klokken
 
  * LEXICON Num2  
 
+
  * LEXICON Num3  
+
+
+
 
  * LEXICON Num4  
 
