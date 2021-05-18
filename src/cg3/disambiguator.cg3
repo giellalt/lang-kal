@@ -2009,7 +2009,9 @@ REMOVE:0001B ("pitsap") + Gram/Exclm ;
 REMOVE:0001C (/__\"ili\"\ Gram\/IV__/l) - SAR IF (NEGATE *-1 ("qanoq"))(NEGATE 0 Orth/Arch) ; #Accepter kun 'qanoq ililluni/ isilluni' etc. Ellers nok ilivaa/iserpoq/isigivaa etc.
 REMOVE:0001D (/__\"isi\"\ Gram\/IV__/l) IF (NEGATE *-1 ("qanoq")) ;
 REMOVE:0001E ("to") + VIK IF (0 ("tui")) ;
-REMOVE:0001F ("ip") IF (NEGATE -1 Aeq OR ("qanoq") OR ("taama") OR ("ima") OR ("immi") + Via )(NEGATE 0 ("ittoq") OR ("ittuk"))(NEGATE 1 ("soorlu"));
+REMOVE:0001F ("ip") IF 
+(NEGATE -1 Aeq OR ("qanoq") OR ("taama") OR ("ima") OR ("immi") + Via )(NEGATE 0 ("ittoq") OR ("ittuk"))(NEGATE 1 ("soorlu"))
+(NEGATE 0 ("IP"));
 REMOVE:0001G ("illip") + Gram/Exclm IF (0 ("illit")) ;
 REMOVE:0001H ("ata") + USIQ IF (0 ("ataaseq")) ;
 REMOVE:0001I ("tulleq") + GIIP + JAAR IF (0 ("tulleriiaar")) ;
@@ -2117,7 +2119,8 @@ REMOVE:0003F Par + 3Pl + Orth/Arch IF (0 NIQ + Aeq);
 #ilaatigut blokerer mange regler, fordi såvel ila+3SgPoss og ila+3PlPoss. Forsøger en tidlig sletning
 REMOVE:tidlig0005 ("ila") + Via + POSSESSUM3 IF (0 ("ilaatigut") + Adv);#Taakkualu ILAATIGUT tarnip pissusaanik ilisimasallit aamma inunnik isumaginninnermi siunnersortit, pingaarnertut Tasiilami, ikiuigasuartinneqarnerannut atorneqarput.
 
-
+#"IP" skaber mange problemer
+REMOVE:tidlig0006 ("IP") - Hyb/2-2 ;
 
 
 #Ambiguitet mellem DMI og *DMi+Orth/Alt. Reglen er ad hoc og må kunne gøres mere generel
@@ -3438,8 +3441,9 @@ SELECT:0040I VFIN IF (*-1 PUNCT)(*1 PUNCT)
 SELECT:0054B Prop + Sg + 3PlPoss OR iProp + iSg + i3PlPoss IF (-1 Prop + Rel + Pl);
 SELECT:0057 Prop + Rel - ("nuna") IF (1 Prop + POSSESSUM OR ("Nunaat") OR iProp + iPOSSESSUM) ;
 
-REMOVE:Int0120 V - Hyb/2-2 IF (0 ("\\p{Lu}.*"r) - (Der/nv)) (-1 (".*")) ; #Inuit Ataqatigiit, Partii Naleraq, Atassut *Suleqatigiissitsisullu ataatsimoorlutik Naalakkersuisunut nalunaaruteqarput: ....
-
+REMOVE:Int0120 V - Hyb/2-2 IF (0 ("\\p{Lu}.*"r) - (Der/nv)) (-1 (".*"))  #Inuit Ataqatigiit, Partii Naleraq, Atassut *Suleqatigiissitsisullu ataatsimoorlutik Naalakkersuisunut nalunaaruteqarput: ....
+(NEGATE 0 ("IP"))#Naluara qanoq innersoq.
+;
 ### Aeq vs. Par vs. Abs vs. Rel ###
 #=================================#
 SELECT:0060A Aeq IF (*1 TIGE BARRIER (*) - Aeq)
@@ -4652,8 +4656,12 @@ REMOVE:0101 Abs + 2SgPoss IF (NEGATE *0C ("illit") OR Imp + 2Sg) (NEGATE *1 3SgO
 REMOVE:0102 Abs + 2SgPoss + TUQ IF (NEGATE *0 ("illit") OR 2Sg); #1.4. Evt. elaboreres med TAQ og UTE
 REMOVE:0103 Rel + Pl + 2SgPoss IF (NEGATE *0 ("illit"));
 
-REMOVE:0104 Abs + 2SgPoss IF (NEGATE *1 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO BARRIER V OR KOMMA)(NEGATE -*1 TRANSVERB + 3SgO BARRIER (",") OR V)(NEGATE 1 ("tassa") LINK 1C Sg); #Sidste NEGATE for skyld "Soraluannguit tassa niviarsiaq .." #Lenes reformuleres igen
-
+REMOVE:0104 Abs + 2SgPoss IF 
+(NEGATE *1 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO BARRIER V OR KOMMA)
+(NEGATE -*1 TRANSVERB + 3SgO BARRIER (",") OR V)
+(NEGATE 1 ("tassa") LINK 1C Sg) #Soraluannguit tassa niviarsiaq .." #Lenes reformuleres igen
+(NEGATE 0 Abs + &&TV_OBJ& LINK *1 V + &&TV_OBJ& BARRIER V - (Opt 3Pl) - Gram/Exclm )#Ullorissanik PIGINNINNERIT illit sumut iluaqutigaajuk?
+;
 REMOVE:0104B Abs + 2SgPoss IF (0 Rel)(*1 TRANSVERB - OBJVERB BARRIER V)
 (NEGATE 0 Abs + Sg LINK *1 3SgO BARRIER (*) - Abs)#Piffissaq AGGERFISSAT nalunngikkutsigu bussit unittarfiannut naapigiarsinnaavatsigit, Eriup ilaanni pulaarlutik arni oqarfigaa.
 
@@ -11655,7 +11663,9 @@ REMOVE:1803 ("matu") + Rel IF (0 Pron LINK 1 ("siuneq")); # sandsynligvis tidlig
 SELECT:Sel0023 Cont + Gram/Refl IF (-1 ("immi")) ;
 SELECT:Sel0024 Cont + 4Sg IF (1 Ins)(2C Der/vn + Abs + Sg)(*1 V + 3Sg); #OBJ pillugu Ins vn+subjekt verbum
 SELECT:Sel0025 Cont + 4Sg IF (1C Der/vn + Abs + Sg)(*1 V + 3Sg); #OBJ pillugu vn+subjekt verbum
-SELECT:Sel0026 Cont + 4Sg IF (*1 VFIN + 3Sg) ;
+SELECT:Sel0026 Cont + 4Sg IF (*1 VFIN + 3Sg) 
+(NEGATE *-1 Rel LINK *1 _TARGET_ + Abs + Sg LINK *1 3SgO BARRIER Abs - Der/vn)#Andap illuni takuaa
+;
 SELECT:Sel0027 Cont + 1Pl IF (*1 VFIN + 1Pl) ;
 SELECT:Sel0028 Cont + 1Sg IF (*1 VFIN + 1Sg LINK NEGATE 0 1SgO)(NEGATE -1 Rel) ; #en rel til venstre for må være subjekt for det transitive verbum
 SELECT:Sel0029 ContNeg + 1Sg IF (*1 VFIN + 1Sg) ; #20091108 -
@@ -11677,7 +11687,10 @@ SECTION #dette er kun til testbrug
 
 # De underordnede modi
 
-SELECT:Sel0034 INTRANSVERB + (Cont) + (4Sg) IF (NEGATE -1 ("immi")) ;
+SELECT:Sel0034 INTRANSVERB + (Cont) + (4Sg) IF (NEGATE -1 ("immi")) 
+(NEGATE *-1 Rel LINK *1 _TARGET_ + Abs + Sg LINK *1 3SgO BARRIER Abs - Der/vn)#Andap illuni takuaa
+;
+
 REMOVE:Int0211 TRANSVERB IF (-1 Gram/Comp - Gram/TV) ;
 
 REMOVE:Int0213 (/__Gram\/IV\ NIQ\ Der\/vn\ N__/l) + Gram/Comp IF (1 TRANSVERB ) ;
@@ -12982,6 +12995,10 @@ REMOVE:5490AM (/"pisup"\ Gram/TV/l) IF (0 (/"pisup"\ Gram/IV/l) LINK NEGATE -1 T
 REMOVE:5490AN ("nipip") (0 ("nipi")) ; #nipilersoqatigiit
 REMOVE:5490AO (/"qule"\ U\ Der/nv\ Gram/IV\ JA/l) IF (0 (/"qule"\ IAR/l));
 REMOVE:5490AP (/"aki"\ LIR\ Der/nv/l) IF (0 ("akiler"));
+REMOVE:5490AQ (/"IP"\ Gram/IV\ LIR\ Der/vv\ QQAAR/l) IF (0 ("ileqqaar"));
+REMOVE:5490AR (/"IP"\ Gram/IV\ LLAP/l) IF (0 ("illar"));
+REMOVE:5490AS (/"IP"\ Gram/IV\ LLAR/l) IF (0 ("illar"));
+REMOVE:5490AT ("IP") - Hyb/1-2 IF (0 ("ip"));
 
 # Der/nv eller Der/vv?
 SELECT:5493 QATE + Der/vn + GE - Imp IF (0 QATE + Der/nn + GE)(NEGATE *-1 HUMAN + @OBJ>) ;
