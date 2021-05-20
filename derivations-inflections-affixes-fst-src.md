@@ -82,6 +82,8 @@ Nogle af dem er dokumenterede, andre ikke.
 
  * LEXICON Z1iqZmorf  derivationsmorfemer til nominer med strong i som qimmeq
 
+ * LEXICON Z1+tZmorf  derivationsmorfemer til nominer som pisataq og nivaataq !PL20210519 retableret og stammer fjernet fra GEMS
+
  * LEXICON tptmorf  
 
  * LEXICON ZtiZmorf  taggit
@@ -508,6 +510,9 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 | --- 
 | --- 
 | --- 
+
+ * LEXICON Z1+tZ   !PL20210519 retableret og stammer fjernet fra GEMS
+
 
  * LEXICON tp_possessum3   Til "stammer" som inuup-normu
 
@@ -1077,7 +1082,6 @@ Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers
 
 | --- 
 | --- 
-
 
 
 
