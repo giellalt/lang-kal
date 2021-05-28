@@ -1,4 +1,5 @@
 
+# Fil for at generere de centrale morfologiske processer i vor grønlandske analysator               
 
 ## Dokumentasjon for leksikonnavne:
 
@@ -17,6 +18,40 @@
 * K    = Direkte til finale klitika
 
 
+## Specielle lexica 
+
+## KAPITLER TIL fst-DOKUMENTATION
+
+TARIAQAR på transitiver kan både danne transitive, refleksive og passive verber. Derfor bliver
+alle forekomster af TARIAQAR ved transitiver startende fra juni 2020 både sendt videre normalt til 
+(i) TV-mod_r og tilføjet taggen Gram/Pass og sendt som ny stamme til (ii) IV_r
+På den måde vil turen via (i) producere
+misissortariaqarpaa	misissor+Gram/TV+TARIAQAR+Der/vv+Gram/TV+V+Ind+3Sg+3Sg, samt
+misissortariaqarpoq	misissor+Gram/TV+TARIAQAR+Der/vv+Gram/Refl+V+Ind+3Sg
+og turen via IV_r vil generere
+misissortariaqarpoq	misissor+Gram/TV+TARIAQAR+Der/vv+Gram/Pass+Gram/IV+Gram/IV+V+Ind+3Sg
+
+BLOKERING AF REKURSIV TIP VED TRANSITIVER
+PL20200709
+Forkerte læsninger, når IV med TIP viderederiveres i HTR-lexicon, hvor yderligere TIP kan tilføjes som ingerlatitseqqinneq
+ingerla+Gram/IV+TIP+Der/vv+Gram/TV+TIP+Der/vv+Gram/Db+Gram/Refl+QQIP+Der/vv+Gram/IV+NIQ+Der/vn
+blokeres vha. flaget @P.TIP.ON@ i IV-lexicon og blokeres af flaget @D.TIP@ i transitiv derivation.
+Ex
+ingerla via IV_voq_stem og får i LEXICON IV_voq2 tilføjet linien
++TIP@P.TIP.ON@+Der/vv:%>tip@P.TIP.ON@ HTR_C_TAQ_tsi ; 
+I HTR_C_TAQ_tsi tilføjes der yderligere TIP.
+For at forebygge dette tagges derivativkæder med TIP som første element med @D.TIP@
+
+Bemærk at D-flaget principielt kun skal anvendes når TIP er første derivativ i kæden. Det kan nemlig ikke udelukkes, at der på et senere
+tidspunkt kan tilføjes yderligere TIP-er 
+
+SURE er sjældent Db, men  hos Ole Brandt finder vi eksempler som ".. sunaaffa Pikiulinnguarmiut pasillerai (implicit Pikiulinnguarmiunut 
+nukani] pilerngullugu nakkartissimasoralugu.
+
+PLEONASTISKE HTR VED NIAR OG QQIP
+medtages i IV-lexica med taggen +HTR+Err/Sub og en bemærkning efter !
+Fx i LEXICON IVschwa2
++QQIP+Der/vv+HTR+Der/vv+Err/Sub:%>eqqii IV-mod_V ; !Fejl af typen ingerlatitseqqiineq
 
 
 
@@ -27,16 +62,15 @@
 
 
 
-
-
-
-
-# Tronds afdeling for debugging.
+## Tronds afdeling for debugging.
 
 Følgende leksika var ikke defineret andetsteds (liste), men her
 definert ad hoc for at få koden til at kompilere. De bør alle
 bli erstattet af de korrekte leksika (eller fjernet).:
 
+ - LEXICON Z1PZmorf # ;
+ - LEXICON Z1nnguaqPZ # ;
+ - LEXICON Z2+rPZ # ;
 
 Det kan være flere grunder hertil:
 * de er simpelthen ikke definerede
@@ -44,23 +78,29 @@ Det kan være flere grunder hertil:
 * det er en skrivefejl i leksikonnavnet
 
 
-# DERIVATIONSMORFEMERNES LEKSIKA
+## DERIVATIONSMORFEMERNES LEKSIKA
 
 Her kommer en liste over de ulike leksika.
 Nogle af dem er dokumenterede, andre ikke.
 
- * LEXICON GEMS  Gennemgangsleksikon til nominer der geminerer til stop-lyd ved fleksion, fx meeqqap
+ * LEXICON GEMS  = Gennemgangsleksikon til nominer der geminerer til stop-lyd ved fleksion, fx meeqqap
+ * 0:^GEMS Z1Zmorf ; 
 
- * LEXICON GEMC  Gennemgangsleksikon til nominer der geminerer til kontinuant-lyd ved fleksion, fx nannup
+ * LEXICON GEMC  = Gennemgangsleksikon til nominer der geminerer til kontinuant-lyd ved fleksion, fx nannup
+ * 0:^GEMC Z1Zmorf ; 
 
- * LEXICON Z1Zmorf  Derivationsmorfemer til nominer
+ * LEXICON Z1Zmorf  Derivationsmorfemer til nominer, viser til **tp** og giver derefter nn-derivationer
+ 	*  tp ; 
+ 	* +ALUK+Der/nn+INNAQ+Der/nn:%>%TRUNCaluinnaq tup- ; 
 
-
- * LEXICON Z1VZmorf  Derivationsmorfemer til nominer, der ender med vokal a, i, u 20200916 NN
+ - LEXICON Z1VZmorf  Derivationsmorfemer til nominer, der ender med vokal a, i, u 20200916 NN
+ 	 -  tp ;  
 
 
 
  * LEXICON Z1eqZmorf  Derivationsmorfemer til nominer på seq og leq
+ 	  * Z1eqZ ; 
+... osv.
 
  * LEXICON nuliaqmorf  derivationsmorfemer til typen *nuliaq*
 
