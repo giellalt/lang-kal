@@ -376,10 +376,13 @@ PL 20180718. Følgende er et særligt lexicon til ip i stedet for tidligere LEXI
 
  * LEXICON flex-tv  
 
+ * LEXICON flex-tv_ute  !pga. titartaaTInnga
+
  * LEXICON flex-itv  !!Ny gennemgang 20200106 til assibilerende refl. som ikioqqoreersut
 
  * LEXICON flex-tv2  
 
+ * LEXICON flex-tv2_ute  !PL20210528 kopi af flex-tv2 bortset fra Imp pga. titartaaTInnga 
 
  * LEXICON flex-tv_fleksiver 
 
@@ -1016,6 +1019,7 @@ Gennemgangsleksikon for TAR m. fl. !tilføjet 20190530
 efter GUMALLIR GUNNAIR LIR QQAMMIR RIIR UMMIR etc. !Ny default + post_-lexica PL 20180416
 
 TIR og TITIR
+
 
 
 
