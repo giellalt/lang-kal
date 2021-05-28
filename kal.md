@@ -13276,6 +13276,7 @@ Nyt lexicon 20180615 Z2suaq_ateqZmorf
 
 
 
+
 # Tronds afdeling for debugging.
 
 Følgende leksika var ikke defineret andetsteds (liste), men her
@@ -13605,6 +13606,7 @@ PL 20180718. Følgende er et særligt lexicon til ip i stedet for tidligere LEXI
 
  * LEXICON XIgujoqX  
 
+
  * LEXICON XIgujoqX3  
 
  * LEXICON XImioqX  narratologisk stil som i *nikutsinnguarsinnarmioq*
@@ -13729,7 +13731,9 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 
  * LEXICON XTgujaaX  
 
+
  * LEXICON XTgujaaX2  
+
 
 
 
