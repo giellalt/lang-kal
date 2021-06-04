@@ -11955,8 +11955,8 @@ Jeg kan ikke løse problemet fornuftigt, så hermed en alt for snæver ad hoc-re
 
 
 
-
 #Vistnok overflødig. Må skulle mappes @CONT->N i stedet, parataksen giver jo sig selv.
+
 
 
 
@@ -14504,6 +14504,8 @@ xxx 20170522 til former, som ikke kan læses men som har brug for en analyse i c
 Leksikonet Nomen inneholder nomenerne.
 
 xxx 20170522 til former, som ikke kan læses men som har brug for en analyse i cg'en. Pluralis og singularis-kataloger er ikke medtaget.
+
+
 
 
 

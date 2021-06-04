@@ -28,6 +28,8 @@ xxx 20170522 til former, som ikke kan læses men som har brug for en analyse i c
 
 
 
+
+
  * aaffaffak Z2-Zmorf ;              
  * aaffaffak+N+Abs+Sg:aaffaffaq Krestr ; 
  * aaffaq Z2-qZmorf ;                 
