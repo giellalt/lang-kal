@@ -5982,6 +5982,9 @@ MAP:M0012G @PRED TARGET ContNeg + $$PERSON IF (*1 Imp + $$PERSON + LU BARRIER V 
 #Ledsagemåde som erstatning for VFIN i konstruktionen aappaa-aappaa
 MAP:M0012H @PRED TARGET CONT IF (-1 ("aappaq") + POSSESSUM3 LINK *-1 ("aappaq") + POSSESSUM3) ;
 
+#Cau som erstatningsform for finit. Sikker kontekst uden hverken Par eller CONT
+MAP:M0012I @PRED TARGET Cau IF (0 Cau LINK NEGATE *0 V); #Tassanngaannaq OQARTOQARAMI pigisanik poortueqqusisumik nuunnissamullu piareersaqqusisumik.
+
 #Hybridverber
 MAP:M0065 @>V TARGET Abs + NIQ - POSSESSUM + Gram/Comp IF (1 ("ajor") - (/\"ajor\"\ Gram\/TV\ TAQ\ /l) - NAR OR ("saper"))
 (NEGATE 0 (NIQ SSAQ)) #Paasiuminaatsumik sunnertikkaanni akuersinnginnissaq ajornartarpoq.
@@ -6453,6 +6456,9 @@ MAP:M0051 (@PRED) TARGET Par OR CONT IF (*-1 NEXUS BARRIER V LINK NOT -*1 V BARR
 ### BEGYND Testområde for nye or.obl. - regler ###
 #oqarpoq holdes uden for ORATIOOBLVERB#
 
+#Den "sære" brug af i->N frem for oratio obliqua ved upersonlige konstruktioner
+MAP:M0052A @i-N< TARGET (/QQU\ Der/vv\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TUQ\ Der/vn\ N\ Ins\ Sg/l) OR (/QQU\ Der/vv\ Gram/Db\ HTR\ Der/vv\ Gram/IV\ TUQ\ Der/vn\ N\ Ins\ Sg/l) IF (*-1 (/"oqar"\ Gram/IV\ TUQ\ Der/vn\ QAR/l) BARRIER V); #Tassanngaannaq oqartoqarami pigisanik POORTUEQQUSISUMIK nuunnissamullu piareersaqqusisumik. 
+
 #Disambiguerer først et par sikre Par vs. TUQ. Jf. de tilsvarende MAP-regler
 SELECT:OrObl0100 Par IF (-*1 OQARPOQ BARRIER VFIN LINK NEGATE -*1 ("taama") OR ("nalinginnaq")) #oo ved oqarpoq aldrig simultan med taama
 (NEGATE *-1 DIRTALESLUT) #aldrig oo simultan med anførende sætning
@@ -6888,10 +6894,16 @@ REMOVE:0229D Adv IF (-1 $$KASUS LINK 1 KONJUNKTION LINK NOT 1 ("soorlu") OR ("ta
 #Konjunktioner er konjunktioner, når de indleder en sætning, ellers er de adverbier
 MAP:M0230 (@CONJ) TARGET KONJUNKTION - Adv IF (-1 BOS OR KOMMA)
 (NEGATE *-1W ("¶") BARRIER (V)); # Hvis det står lige efter linjeskift er det sandsynligvis adverbielt.
+
 #Flyttet fra 1168 forebygge konflikt med @ADVL>
 MAP:M0231 (@CONJ) TARGET ("aammalu" Conj) OR ("taamatut") + LU; #vistnok undtagelsesløs
 
-MAP:M0232 (@CONJ) TARGET Conj (NEGATE 0 ("soorlu")) #Konjunktioner skal tagges som konjunktioner
+MAP:M0232A (@CONJ) TARGET Conj + KONCESSIV IF (*1 CONT - FossileredeCont OR Par BARRIER V - FossileredeCont)
+(NEGATE 0 ("soorlu")) #Konjunktioner skal tagges som konjunktioner
+(NEGATE 0 ("aamma") LINK -1 ("soorlu"))
+;
+MAP:M0232B (@CONJ) TARGET Conj 
+(NEGATE 0 ("soorlu")) #Konjunktioner skal tagges som konjunktioner
 (NEGATE 0 ("aamma") LINK -1 ("soorlu"))
 ;
 MAP:M0233 @CONJ TARGET Adv + CONJ-C IF (NEGATE *0 V OR INDERIVERENDE_SUBSTANTIV OR Der/vn OR LIK_QAR)(NEGATE 0 Conj)(NEGATE -1 UNA OR UKU) ; #qanoq taavalu qaqugu
@@ -10989,6 +11001,7 @@ MAP:M0352 @N< TARGET GIIT IF (*-1 @SUBJ> + 1Pl CBARRIER (*) - @ADVL> - @i-ADVL>)
 #######################
 MAP:M1895 @N< Gram/Coref + $$KASUS IF (-1 N + $$KASUS OR Pron + $$KASUS) ; #Illit NAMMINEQ pisuusimavutit
 
+MAP:M1899D @SUBJ> TARGET Gram/Coref + Pron + Abs + 4Sg IF (*1 4Sg + INTRANSVERB BARRIER V);#Nammineq illumut ileqqaarniaraanni Kalaallit Nunaanni ileqqaarnermut kontumik Naalagaaffeqatigiinni pitsaanerpaamik peqarpugut.
 MAP:M1899F @SUBJ> TARGET Gram/Coref + Pron + Rel + 4Sg IF (*1 4Sg + TRANSVERB BARRIER VFIN) ; #Nunaminut uterusussimagaluarpoq, namminerlu Danmarkiliarnera akilersimagamiuk oqarfigisimavaa uterniaruni nammineq akilertariaqaraa.
 
 MAP:M1899A @POSS> TARGET Gram/Coref + Pron + Rel + 4Sg IF (1 POSSESSUM3 OR POSSESSUM4) ;
@@ -15389,7 +15402,10 @@ SUBSTITUTE:S0041B @OBJ> @N< TARGET N OR PROP IF (*-1 N + @OBJ> BARRIER (*) - @>N
 ;
 SUBSTITUTE:S0041C @OBJ> @N< TARGET Hyb/2-2 + N IF (*-1 N + @OBJ> BARRIER (*) - @>N - @N< - @PROP> - @POSS> - Hyb/1-2) ;
 SUBSTITUTE:S0042 @INTERJ @ADVL> TARGET ("qam") + Interj IF (-1 BOS)(*1 VFIN + PALLAP OR VFIN + PALUP); #Talesprogsnær brug af interjektion adverbielt: Taqqama angerpallappoq er helt identisk med Taqqamani el. Taqqamannga
-SUBSTITUTE:S0043 @i-N< @N< TARGET N + $$KASUS IF (*-1 @i-N< + $$KASUS BARRIER KOMMA OR CONJ-C OR @CONJ)(NEGATE 0 CONJ-C)(NEGATE 0 POSSESSUM LINK NOT *-1 @POSS> LINK *-1 N + $$KASUS + $$NUMERUS) ;
+SUBSTITUTE:S0043 @i-N< @N< TARGET N + $$KASUS IF (*-1 @i-N< + $$KASUS BARRIER KOMMA OR CONJ-C OR @CONJ)(NEGATE 0 CONJ-C)(NEGATE 0 POSSESSUM LINK NOT *-1 @POSS> LINK *-1 N + $$KASUS + $$NUMERUS) 
+(NEGATE 0 (/QQU\ Der/vv\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TUQ\ Der/vn\ N\ Ins\ Sg/l) OR (/QQU\ Der/vv\ Gram/Db\ HTR\ Der/vv\ Gram/IV\ TUQ\ Der/vn\ N\ Ins\ Sg/l) LINK *-1 (/"oqar"\ Gram/IV\ TUQ\ Der/vn\ QAR/l) BARRIER V) #Tassanngaannaq oqartoqarami pigisanik POORTUEQQUSISUMIK nuunnissamullu piareersaqqusisumik. 
+;
+
 #SUBSTITUTE:S0044 (/@.*/r) (@N<) TARGET (/__TUQ\ Der\/vn\ N__/l) + $$KASUS + Pl + (/@\(<?SUBJ>?|<?OBJ>?|SUBJ_COMP|<?MIK-OBJ>?\)/r) (**-1 N + $$KASUS BARRIER (*) - @i-ADVL> - @i-MIK-OBJ> - @N< LINK 0 (VSTR:/@$1/r) LINK **-1 N + $$KASUS LINK 0 (VSTR:/@$1/r))(NEGATE 0 CONJ-C) ; #aajuku nukappiaraq aamma niviarsiaraq nikorfasut.
 SUBSTITUTE:S0044 (/@.*/r) (@N<) TARGET (/__TUQ\ Der\/vn\ N__/l) + $$KASUS + (/@\(<?SUBJ>?|<?OBJ>?|SUBJ_COMP|<?MIK-OBJ>?\)/r) - CONJ-C (**-1 N + $$KASUS BARRIER (*) - @i-ADVL> - @i-MIK-OBJ> - @i-POSS> - @N< - KOMMA LINK 0 (VSTR:/@$1/r))(NEGATE 0 @OBJ> LINK *-1 OBJVERB LINK *-1 @OBJ>)
 (NEGATE 0 @SUBJ> LINK 1 @PRED LINK 1 @PRED + LU LINK 1 EOS)#Ad hoc betingelse for at forhindre substitute af SUBJ i sætningen .. , imerajuttoq naggasiivoq nipaarutivillunilu. Reglen gør sære ting og skal checkes
