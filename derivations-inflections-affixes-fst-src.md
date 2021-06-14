@@ -930,6 +930,9 @@ I Num2 til Num10 er flagging af NNGUR C-et pga. klokken
 
  * LEXICON UDEN_HTR_V_SAQ    vokalstammer som nakkaavaa uden HTR
 
+ * LEXICON UDEN_HTR_iV_SAQ    vokalstammer som nakkaavaa uden HTR
+
+
  * LEXICON UDEN_HTR_schwa_SAQ    schwastammer som anneraa - amigaraa uden HTR
 
  * LEXICON HTR_r_GAQ_i   201000630 konsonantstammer som arsaartorpaa med HTR på I (arsaartuivoq)

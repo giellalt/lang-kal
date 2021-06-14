@@ -11975,8 +11975,6 @@ Jeg kan ikke løse problemet fornuftigt, så hermed en alt for snæver ad hoc-re
 
 
 
-
-
 #Vistnok overflødig. Må skulle mappes @CONT->N i stedet, parataksen giver jo sig selv.
 
 
@@ -14218,6 +14216,9 @@ I Num2 til Num10 er flagging af NNGUR C-et pga. klokken
  * LEXICON UDEN_HTR_k_GAQ   PL20210201 allappaa
 
  * LEXICON UDEN_HTR_V_SAQ    vokalstammer som nakkaavaa uden HTR
+
+ * LEXICON UDEN_HTR_iV_SAQ    vokalstammer som nakkaavaa uden HTR
+
 
  * LEXICON UDEN_HTR_schwa_SAQ    schwastammer som anneraa - amigaraa uden HTR
 
