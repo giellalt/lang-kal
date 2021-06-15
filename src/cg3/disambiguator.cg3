@@ -1621,6 +1621,7 @@ LIST <inst> = "Brugseneeraq" "Pisiffik"
 (/"suli"\ Gram/IV\ VIK\ Der/vn\ QAR\ Der/nv\ Gram/IV\ VIK/l) "umiarsualivik" "universitet" ;
 LIST <L> = "sumiiffik" "ulloriaq";
 LIST <Lciv> = "Avannaata Kommunia" "kommune" ("Nuuk" Prop) ("Sisimiut" Prop);
+LIST <Lh> = "umiarsualivik" ;
 LIST <Lpath> = "aqqut" "aqqusineq" ;
 LIST <Ltown> = "Sisimiut" ; #liste til brug for usikker numerus i possessor og subjektsperson
 LIST <mon> = "aningaasaq" (/"iser"\ Gram/IV\ TIP\ Der/vv\ Gram/TV\ TAQ/l) ;
@@ -2019,7 +2020,7 @@ ADD:1121 Gram/2sml BEFORE (N) TARGET Abl (1 NIRU + N - NIQAR) #Issittup Danmarki
 ;
 ADD:1122 Gram/2sml BEFORE (N) TARGET Abl (1 (/"qanip"\ Gram/IV\ NIQ/l) OR (/NIQ\ Der/vn\ RUJUK\ Der/nn\ SUAQ\ Der/nn\ U/l) OR (/"amerla"\ Gram/IV\ NIQ\ Der/vn\ N/l));
 
-
+REMOVE:AdHoc ("arnaaq") ; #fejl som er ved at blive fjernet fra fst
 REMOVE:00000A (Gram/Hyb) IF (0 (/\"ataatsim.*\"/r)) ; #ataatsimiippoq, ataatsimoorpoq osv. er aldrig hybrider
 REMOVE:00000 (URL) IF (0 Sem/Url) ; #dobbeltgenerering fra FST'ens url.lexc
 #Arnaq Meeraq m.fl. i første position er et reelt problem
@@ -2391,9 +2392,11 @@ REMOVE:tidlig0139 4SgPoss + Abs IF (-1 Abs LINK 1 _TARGET_ + Lok LINK 1 Abs LINK
 REMOVE:tidlig0140 4SgPoss + Abs IF (0 (/"ip"\ Gram/IV\ TUQ/l) + $$OBLIQUE LINK -1 ("taama") LINK *-1 $$OBLIQUE); #Ullaaralaamiit unnussuarmut suleruluttarneq, aaqqissuussinerni taama ITTUNI pinngitsoornani ingerlanneqartariaqartoq, unitsilerpara. 
 
 
-
-
-
+REMOVE:tidlig0141 4SgPoss + Abs IF (*1 VFIN + INTRANSVERB - (Int MI) BARRIER (/3[SP][gl]O/r) OR CON_CAU + INTRANSVERB + 3Sg)#Nuna tamakkerlugu isigissagaanni Martha Lund Olsen Siumumit POLITIKERINI taaguunneqarnerpaat tulliuvoq, (NB Int+MI = VIK+Lok)
+(NEGATE 0 CONJ-C LINK -1 HUMAN OR Sem/Hum)#Emiliekkut QATANNGUTISIANILU Jane kamaattarlutillu nuannaartarlutillu pinnguaqatigiittarput.
+(NEGATE *1 3Sg + (/3[SP][gl]O/r) BARRIER V - (/RUJUP\ Der/vv\ SUAR\ Der/vv\ Gram/IV\ V\ Par/l))#Kaalip ERNINI oqarfigaa imertaqqullugu. OBS: sivisoorujussuaq+Aeq også Par før disambiguering
+(NEGATE *-1 ORATIOOBLVERB + 3Sg LINK *1 _TARGET_ + Abs + &&IV_SUBJ& LINK *1 Par + &&IV_SUBJ& BARRIER V)#Nalunngilaa ATAATANI aamma imertartoq aalakoortarlunilu, kisiannili toqutsisanngilaq, aamma Gråbrødretorvimiinneq ajorpoq Christianshavnstorvimiluunniit.
+;
 
 
 
@@ -2608,6 +2611,11 @@ REMOVE:tidlig0612 Abs + Pl IF (0 (/"imer"\ Gram/TV\ TAQ\ Der/vn\ SSAQ/l) + Rel +
 
 REMOVE:tidlig0620 ("ittoq") IF (-1 ("taama")); #Ullaaralaamiit unnussuarmut suleruluttarneq, aaqqissuussinerni taama ITTUNI pinngitsoornani ingerlanneqartariaqartoq, unitsilerpara.
 
+#Regler for possessum inderiveret uden fleksiv 
+REMOVE:tidlig0630A Abs + Pl IF (0 Rel + Pl LINK 1 (/"tulleq"\ U/l)); #Nuna tamakkerlugu isigissagaanni Martha Lund Olsen Siumumit politikerini TAAGUUNNEQARNERPAAT tulliuvoq,
+REMOVE:tidlig0630B Abs + 2SgPoss IF (0 Rel + Pl LINK 1 (/"tulleq"\ U/l)); #Nuna tamakkerlugu isigissagaanni Martha Lund Olsen Siumumit politikerini TAAGUUNNEQARNERPAAT tulliuvoq,
+
+REMOVE:tidlig0635 Abs + Sg IF (0 TEMPUSVERB + Par LINK -1 Num + Trm); #Kuummiuni umiatsiamik ajutoortoqartoq Politiit ippassaq unnulersoq arfinermut QITEQQUTTOQ nalunaarfigineqarput.
 
 SUBSTITUTE:tidlig0580 (Abs) (Rel) TARGET (/"ataaseq"\ Num\ Abs/l) OR (/"01"\ Num\ Abs\ Sg/l) IF (1 ("misse") + POSSESSUM3); #Nal. ATAASEQ miss.
 SUBSTITUTE:tidlig0581 (Abs) (Ins Orht/Alt) TARGET (/"cm"\ OLang/DAN\ N\ Abs/l) IF (-1 Num LINK 2 LIK_QAR); #Angut 17-init missaannik ukiulik 170-175 CM angissusilik, tuattoq, sakiaani allannertalimmik nasartalimmik tujuululik, koorpunik qarlilik.
@@ -2879,6 +2887,7 @@ SUBSTITUTE:adv6lix LI ADV-LI TARGET LI IF (0 Aeq) #Titartagarali kingulleq ILAAT
 ;
 SELECT:conj Conj IF (*1 ("([a-z].*)"r) - CLB + $$KASUS)(*-1 ("$1"v) + $$KASUS) #Vælg Conj hvis samme stamme findes på begge sider af den. #tassa nukappiaqqat marluk angisuut, aamma nukappiaraq ataaseq mikisoq.
 (NEGATE 0 Adv LINK 1 VFIN)#Atuagaarniarfinnguaq meeqqat inuusuttullu AAMMA katersuuffigisalerpaat inuusuttullu arlaqartut allaffimmiutut ilinniartuuffigisarsimallugu.
+(NEGATE -2 $$KASUS LINK 1 KOMMA LINK 1 _TARGET_ + ("soorlu") LINK 1 $$KASUS LINK *1 Par BARRIER V)#Imaakkamimi ataqqinartuaqqap ulloriaani angalasumi, SOORLU ullorissani tamani taamaattoq, naasunik ajunngitsunik ajortunillu naasoqarpoq, taamaattumillu naasuni ajunngitsuni naatsiiassaqarluni ajunngitsunik aamma naasuni ajortuni naatsiiassaqarluni ajortunik.
 ;
 SELECT:VconjCont Conj + ("aamma") IF (*-1 N + &&IV_SUBJ& LINK *1 V + &&IV_SUBJ&) ( *1 N + Pl LINK *1 CONT + 4Pl) ; #PL 20190410 aamma er en konjunktion mellem en nexus og en Cont-nexus. Kan måske raffineres med unification. Dog ikke med eksisterende Cont&, da her vikar for Cau og derfor med 3. subjekt
 
@@ -11155,6 +11164,8 @@ SELECT:0435A Par + INTRANSVERB IF (*-1 ORATIOOBLVERB LINK *1 Abs)(NEGATE -*1 VFI
 (NEGATE *-1 ORATIOOBLVERB LINK *1 Par - CONJ-C LINK *1 _TARGET_ BARRIER CONJ-C)
 ##Kattuffiunissaq nukittooq ilaasortani pillugit atasoq ilaasortaminullu pitsaanerpaamik SULLISSISOQ. Kan kun være nominal. Alternativt ville atasoq skulle være verbal og _TARGET_ Cont
 ;
+
+REMOVE:0435B N + Abs IF (0 (/TUQ\ Der/vn\ QAR\ Der/nv\ Gram/IV\ V\ Par/l) LINK *1 ORATIOOBLVERB BARRIER V - TEMPUSVERB); #Kuummiuni umiatsiamik ajutoortoqartoq Politiit ippassaq unnulersoq arfinermut qiteqquttoq nalunaarfigineqarput.
 
 SELECT:0437 Der/vn + Sg IF (-*1 N + Sg)(1 Der/vn + Sg + CONJ-LU LINK *1C Par) ;
 #Specialfald til foelgende hvor Der/vn vn+LU foelges af Par
