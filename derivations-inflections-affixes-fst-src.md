@@ -953,7 +953,7 @@ I Num2 til Num10 er flagging af NNGUR C-et pga. klokken
 
  * LEXICON HTR_longi_GAQ_nnip   20101125 særligt leksikon til lange vokaler som -saar (arsaarinnippoq)
 
- flex-tv ;
+flex-tv ;
 
  * LEXICON HTR_k_GAQ_i  til de faa stammer med fusionerende passivt nomen som atornerlugaq, atornerluppaa, atornerluivoq
 
@@ -1186,3 +1186,5 @@ Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers
 
 
 
+* * *
+<small>This (part of) documentation was generated from [../src/fst/affixes/derivations-inflections.lexc](http://github.com/giellalt/lang-kal/blob/main/../src/fst/affixes/derivations-inflections.lexc)</small>

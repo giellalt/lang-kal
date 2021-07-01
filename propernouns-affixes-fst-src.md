@@ -275,3 +275,5 @@ Nyt lexicon 20180615 Z2suaq_ateqZmorf
 
 
 
+* * *
+<small>This (part of) documentation was generated from [../src/fst/affixes/propernouns.lexc](http://github.com/giellalt/lang-kal/blob/main/../src/fst/affixes/propernouns.lexc)</small>

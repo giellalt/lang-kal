@@ -7,3 +7,5 @@ xxx 20170524 til verbalstammer, som ikke kan læses men som har brug for en anal
 
 
 
+* * *
+<small>This (part of) documentation was generated from [../src/fst/stems/verbs.lexc](http://github.com/giellalt/lang-kal/blob/main/../src/fst/stems/verbs.lexc)</small>
