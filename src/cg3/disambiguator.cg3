@@ -2028,9 +2028,12 @@ ADD:1121 Gram/2sml BEFORE (N) TARGET Abl (1 NIRU + N - NIQAR) #Issittup Danmarki
 ;
 ADD:1122 Gram/2sml BEFORE (N) TARGET Abl (1 (/"qanip"\ Gram/IV\ NIQ/l) OR (/NIQ\ Der/vn\ RUJUK\ Der/nn\ SUAQ\ Der/nn\ U/l) OR (/"amerla"\ Gram/IV\ NIQ\ Der/vn\ N/l));
 
-REMOVE:AdHoc ("arnaaq") ; #fejl som er ved at blive fjernet fra fst
 REMOVE:00000A (Gram/Hyb) IF (0 (/\"ataatsim.*\"/r)) ; #ataatsimiippoq, ataatsimoorpoq osv. er aldrig hybrider
-REMOVE:00000 (URL) IF (0 Sem/Url) ; #dobbeltgenerering fra FST'ens url.lexc
+REMOVE:00000B (URL) IF (0 Sem/Url) ; #dobbeltgenerering fra FST'ens url.lexc
+REMOVE:0000C (/"ip"\ Gram/[IT]V\ \(Gram/Pass\ \)?NIQ\ Der/vn\ N\ Ins\ Sg/l) - POSSESSUM3 IF (0 ("inneq") + Ins)
+(NEGATE -1 ("qanoq") OR ("taama"))
+;
+
 #Arnaq Meeraq m.fl. i første position er et reelt problem
 REMOVE:0001X ("(\\p{Lu}.*)"r) + Prop + Abs IF (*0CW (VSTR:"%l$1"r))(NEGATE 0 ("Nuna") + Prop + 1PlPoss) ;
 #PL genaktiveret 20190430. Har været testet på minicorpus men må ikke slette Nunarput
@@ -2136,10 +2139,11 @@ ADDCOHORT ("<->" "-" PUNCT DIRTALESTART) BEFORE (*) (0 @INTERJ OR @VOK OR Interj
 (NEGATE -*1W CLB + DIRTALEMIDDLE OR CLB + DIRTALESLUT BARRIER EOS)# -Ilami ... ASSISSAQANNGILAQ. ASUMIAA Norgep nunataata maniinnera sungiusimanngikkaa.
 ;
 
-#Nal. betyder Nalunaarsuutit og Nal. betyder nalunaaqutaq
+#Nal. betyder Nalunaarsuutit og Nal. betyder nalunaaqutaq. Men først en Rel-læsning af Num før misse
+SUBSTITUTE:tidlig0580 (Abs) (Rel) TARGET (/"ataaseq"\ Num\ Abs/l) OR (/"01"\ Num\ Abs\ Sg/l) IF (1 ("misse") + POSSESSUM3); #Nal. ATAASEQ miss. #Flyttet fra tidlig-afsnit
+
 REMOVE:miss ("miss.*"r) + Abs (0 (Lok|Ins|Abl|Trm|Aeq|Via)) (1 ("miss.*"r Adv)) ;
 REMOVE:Nal ("Nal") + Prop + Gram/Abbr IF (0 ("nalunaaqutaq") LINK 1 Num + Rel LINK 1 ("misse") OR ("missaa") OR ("miss." Adv)) ;
-
 
 
 
@@ -2437,7 +2441,7 @@ REMOVE:tidlig0141 4SgPoss + Abs IF (*1 VFIN + INTRANSVERB - (Int MI) BARRIER (/3
 
 
 
-
+#Meeqqat angerlarsimaffiat er en MWE-lignende størrelse, hvor possessor skaber bunker af problemer
 
 #Et forsøg på regler, der håndterer verbalisering af adled i stedet for kerneled ved hybrider
 SELECT:tidlig200 $$OBLIQUE + Hyb/1-2 IF (-1 $$OBLIQUE); #Aningaasaqarnermut ilisimasallit pikkorinnerpaat nunanit AVANNARLERNEersut tunniussanik naliliissapput, 2010-milu aasaanerani ajugaasoq toqqassallugu. Første trin: Disambiguer mulig Ins-Abl konflikt
@@ -2639,7 +2643,8 @@ REMOVE:tidlig0630B Abs + 2SgPoss IF (0 Rel + Pl LINK 1 (/"tulleq"\ U/l)); #Nuna 
 
 REMOVE:tidlig0635 Abs + Sg IF (0 TEMPUSVERB + Par LINK -1 Num + Trm); #Kuummiuni umiatsiamik ajutoortoqartoq Politiit ippassaq unnulersoq arfinermut QITEQQUTTOQ nalunaarfigineqarput.
 
-SUBSTITUTE:tidlig0580 (Abs) (Rel) TARGET (/"ataaseq"\ Num\ Abs/l) OR (/"01"\ Num\ Abs\ Sg/l) IF (1 ("misse") + POSSESSUM3); #Nal. ATAASEQ miss.
+#Følgende flyttet før REMOVE:nal lj. 2141
+#SUBSTITUTE:tidlig0580 (Abs) (Rel) TARGET (/"ataaseq"\ Num\ Abs/l) OR (/"01"\ Num\ Abs\ Sg/l) IF (1 ("misse") + POSSESSUM3); #Nal. ATAASEQ miss.
 SUBSTITUTE:tidlig0581 (Abs) (Ins Orht/Alt) TARGET (/"cm"\ OLang/DAN\ N\ Abs/l) IF (-1 Num LINK 2 LIK_QAR); #Angut 17-init missaannik ukiulik 170-175 CM angissusilik, tuattoq, sakiaani allannertalimmik nasartalimmik tujuululik, koorpunik qarlilik.
 SUBSTITUTE:tidlig0582 (3SgPoss) (3PlPoss) TARGET (/"misse"\ N\ Ins\ Sg\ 3SgPoss/l) IF (-1 Sem/Unit + Rel + Pl); #Attavik 130 km-it MISSAANIK isorartussuseqassaaq.
 
@@ -4298,6 +4303,7 @@ REMOVE:opremsning04 Abs + Pl - Num IF (0 Rel + Pl LINK *1 3PlPoss - ("Kalaallit 
 (NEGATE *1 VFIN + 3Pl BARRIER (*) - KOMMA - 2SgPoss - (Abs Pl) - %AmbiguøsN - (Cont 4Pl) - OBLIQUE - (Abs Sg 3PlPoss))#FN-ip nunarsuarmi piujuaannartitsinissamut anguniagai 17-iusut pillugit SULIFFEQARFIIT, kattuffiit pisortallu suliffeqarfiutaat arlallit suliniaqataallutik periuusissanut pilersaarutinik suliaqarput.
 (NEGATE 0 Abs + Pl LINK *1 CONJ-C + Abs + Pl BARRIER (*) - Hyb/1-2 LINK *1 VFIN + 3Pl BARRIER V)#Allagaatinik katersuivimmi ujarliutip nanisaani ujagaq qiterliulluni inissisimasassaaq, oqaatsillu siuliiniITTUT kinguliiniittullu amerlanngitsuinnaat aamma nuisinneqartassapput
 (NEGATE -1 BOS LINK 1 _TARGET_ LINK *1 (Par 4Sg 3PlO) BARRIER V LINK *1 VFIN + (/TUQ\ Der/vn\ QAR/l) + 3Sg) #ILEQQAAKKAT siunertat tamakkua arlaannut ATORAANNI ernianik akileraaruteqanngitsunik 4 procentinik pissarsisoqassaaq aammalu Namminersornerullutik Oqartussanit ernianut tapiissutinik 8 procentinik akileraaruteqanngitsunik pissarsisoqassalluni.
+(NEGATE 0 Abs + Pl LINK 1 ("meeraq") + Pl + Rel LINK 1 (/"angerlar"\ Gram/IV\ SIMA\ Der/vv\ Gram/IV\ VIK/l) LINK *1 3PlO BARRIER (*) - (%AmbiguøsN Pl) - %AmbiguøsPar)#MEEQQAT meeqqat angerlarsimaffiiniittut ilisimasaqarfiginerulerpavut
 
 ;
 
@@ -4957,6 +4963,9 @@ SELECT:0136B Rel + Pl - FAM_UNIK - Num IF #(*1 (*) - Rel - Num)
 (NEGATE 0 Abs + Pl LINK *1 4PlPoss + Rel LINK 1 3PlPoss LINK *1 V + INTRANSVERB + 3Pl OR 4Pl )#Sooq-una KALAALLIT inuusuttut siuaasamik oqaluttuarisaanerannik taama ilisimasakitsigisut?
 (NEGATE 0 Abs + Pl LINK *1 INTRANSVERB + VFIN + 3Pl LINK NEGATE *0 Abs + Pl - _TARGET_)#INUITTAAQ quiminni, pilivimminni, naqqup-ataani, umiatsianilu allanilu pigisaminni misissuinissaannik kaammattorneqarput.
 (NEGATE 0 Abs + Pl LINK *1 Par + 3Pl LINK *1 ORATIOOBLVERB)#INUIAQATIGIIT suliniummut atatillugu naammattunik ilisimasaqanngitsut, partiip siulittaasuata tullersortaata, Vivian Motzfeldtip oqaatigaa, naak Siumut aatsitassarsiornermut suliniummut tapersersuisuugaluartoq.
+(NEGATE 0 Abs + Pl LINK 1 %PossOblique LINK 1 %PossOblique LINK *1 3PlO BARRIER V)#MEEQQAT meeqqat angerlarsimaffiiniittut ilisimasaqarfiginerulerpavut
+(NEGATE 0 Abs + Pl LINK 1 ("meeraq") + Pl + Rel LINK 1 (/"angerlar"\ Gram/IV\ SIMA\ Der/vv\ Gram/IV\ VIK/l) LINK *1 3PlO BARRIER (*) - (%AmbiguøsN Pl) - %AmbiguøsPar)#MEEQQAT meeqqat angerlarsimaffiiniittut ilisimasaqarfiginerulerpavut
+
 ;
 
 REMOVE:0140 Via + 3PlPoss IF (0 3SgPoss)(NEGATE -1 Pl + Rel)
