@@ -3525,6 +3525,9 @@
 
 
 
+
+
+
 #Vistnok overflødig. Må skulle mappes @CONT->N i stedet, parataksen giver jo sig selv.
 
 
@@ -4561,7 +4564,6 @@
 
 * * *
 <small>This (part of) documentation was generated from [../src/cg3/functions.cg3](http://github.com/giellalt/lang-kal/blob/main/../src/cg3/functions.cg3)</small>
-
 
 
 
@@ -13625,6 +13627,9 @@ PLEONASTISKE HTR VED NIAR OG QQIP
 medtages i IV-lexica med taggen +HTR+Err/Sub og en bemærkning efter !
 Fx i LEXICON IVschwa2
 +QQIP+Der/vv+HTR+Der/vv+Err/Sub:%>eqqii IV-mod_V ; !Fejl af typen ingerlatitseqqiineq
+
+
+
 
 
 
