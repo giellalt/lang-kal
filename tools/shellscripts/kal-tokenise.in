@@ -430,6 +430,16 @@ sub analyze {
                }
             }
 
+            # Split around hyphens and dashes
+            if ($f =~ /^([\pL\pN\pM]+)([-\p{Pd}]+)(.+)$/) {
+               my ($f1,$f2,$f3) = ($1, $2, $3);
+               my $m = call_tokenizer($f1).call_tokenizer($f2).call_tokenizer($f3);
+               if ($m =~ /\t"[^\n]*"[^?\n]+\n/) {
+                  $merge_ncs->($m);
+                  last;
+               }
+            }
+
             # If input doesn't have lower-case letters, try it as first-upper
             if ($f =~ /^[\pL\pN]/ && $f =~ /\p{Lu}/ && $f !~ /\p{Ll}/) {
                $orig = $orig || $f;
