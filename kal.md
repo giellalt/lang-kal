@@ -3534,6 +3534,8 @@
 
 
 
+
+
 #Vistnok overflødig. Må skulle mappes @CONT->N i stedet, parataksen giver jo sig selv.
 
 
@@ -4570,7 +4572,6 @@
 
 * * *
 <small>This (part of) documentation was generated from [../src/cg3/functions.cg3](http://github.com/giellalt/lang-kal/blob/main/../src/cg3/functions.cg3)</small>
-
 
 
 
