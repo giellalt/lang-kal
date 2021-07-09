@@ -1025,6 +1025,8 @@ Nye gennemgangsleksika for TAR med følgende morfemer
 
 Gennemgangsleksikon for TAR m. fl.
 
+Kopi af IV-mod_C bortset fra default 
+
 Gennemgangsleksikon for TAR m. fl.
 
 Gennemgangsleksikon for TAR m. fl. efter /i/ f.eks. GUMALLIR GUNNAIR LIR LLAQQIP PASIP QQAMMIR QQIP RIIR UMMIR VIP
@@ -1056,9 +1058,6 @@ Gennemgangsleksikon RUJUUR+Der/vv
 Gennemgangsleksikon RUJUUR+Der/vv
 
 Gennemgangsleksikon for TAR m. fl. !tilføjet 20170501
-
-
-Gennemgangsleksikon for TAR m. fl. !tilføjet 20190530
 
 
 
