@@ -54,7 +54,9 @@ Fil for at generere de centrale morfologiske processer i vor grønlandske analys
  ***+Sem/Fem** Forsøg med femininum sml. Sem/Mask
  * **+Sem/FirstName** = Attributive
  * **+Sem/Geo** = Geographical Propernoun
+ *** +Sem/H        ** = Menneske
  * ** +Sem/HH     ** = Organisationer
+ *** +Sem/Hprof ** = Menneske erhverv
  * **+Sem/Hum** = Non-geographical Propernoun
  ***+Sem/LastName**  Efternavne
  ***+Sem/Mailadresse** tag til adresser af typen cccc@cccc.cc
