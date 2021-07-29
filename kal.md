@@ -13894,6 +13894,11 @@ PL 20180718. Følgende er et særligt lexicon til ip i stedet for tidligere LEXI
 
 
 
+ * LEXICON flex-tv_ssa  !pl20210729 nyt LEX for at tillade -ssua- isf. -ssava-
+
+ * LEXICON flex-tv_ssa2  
+
+
 
  * LEXICON flex-tvP_vaa  
 
