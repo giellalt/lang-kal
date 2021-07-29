@@ -13063,7 +13063,96 @@ Jeg kan ikke løse problemet fornuftigt, så hermed en alt for snæver ad hoc-re
 
 
 * * *
-<small>This (part of) documentation was generated from [../src/cg3/disambiguator.cg3](http://github.com/giellalt/lang-kal/blob/main/../src/cg3/disambiguator.cg3)</small># Greenlandic morphological analyser
+<small>This (part of) documentation was generated from [../src/cg3/disambiguator.cg3](http://github.com/giellalt/lang-kal/blob/main/../src/cg3/disambiguator.cg3)</small>
+
+
+
+
+xxx 20170524 til verbalstammer, som ikke kan læses men som har brug for en analyse i cg'en. Pluralis tantum-kataloger er ikke medtaget. !er det nødvendigt også at medtage stammer fra derivationsleksika?
+
+
+
+* * *
+<small>This (part of) documentation was generated from [../src/fst/stems/verbs.lexc](http://github.com/giellalt/lang-kal/blob/main/../src/fst/stems/verbs.lexc)</small>
+
+
+xxx 20170522 til former, som ikke kan læses men som har brug for en analyse i cg'en..
+
+
+
+
+* * *
+<small>This (part of) documentation was generated from [../src/fst/stems/propernouns.lexc](http://github.com/giellalt/lang-kal/blob/main/../src/fst/stems/propernouns.lexc)</small># Grønlandske nomener 
+
+## Dokumentasjon for leksikonnavne:
+
+* Z = nomen
+* 1 = svag bøjning, p-bøjning
+* 2 = sterk bøjning, up-bøjning
+* P = plurale tantum
+* S = singularis
+* - = sterk bøjing som trunkerer (2-)
+* a, q, ... = gemineringer ved konsonantiske flexiver
+* Z = nomen
+* morf = går til derivationsleksika
+*      = går til flexivleksika
+* tpt  =  
+* tup  = 
+* K    = Direkte til finale klitika
+
+
+...ƒ
+
+ * LEXICON Nomen  Nominalstammer
+
+Leksikonet Nomen inneholder nomenerne.
+
+xxx 20170522 til former, som ikke kan læses men som har brug for en analyse i cg'en. Pluralis og singularis-kataloger er ikke medtaget.
+
+
+
+
+
+
+ * aaffaffak Z2-Zmorf ;              
+ * aaffaffak+N+Abs+Sg:aaffaffaq Krestr ; 
+ * aaffaq Z2-qZmorf ;                 
+aaffattaq Z1Zmorf ;                 * ...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+* * *
+<small>This (part of) documentation was generated from [../src/fst/stems/nouns.lexc](http://github.com/giellalt/lang-kal/blob/main/../src/fst/stems/nouns.lexc)</small># Greenlandic morphological analyser
 
 Fil for at generere de centrale morfologiske processer i vor grønlandske analysator
 
@@ -13316,285 +13405,7 @@ given the proper use of these flags.
  |  @U.Cap.Opt@ | Allowing downcasing of derived names: København > københavner.
 
 * * *
-<small>This (part of) documentation was generated from [../src/fst/root.lexc](http://github.com/giellalt/lang-kal/blob/main/../src/fst/root.lexc)</small># Propriernes morfologi i grønlandsk
-
-
-
-
- * LEXICON ZxxxV   steder og navne på vokal som ikke er i FST'en
-
-
-
-
- * LEXICON ZxxxC   steder og navne på konsonant som ikke er i FST'en
-
-
-
-
-
-
-
-
-
-Navnelexikon er i ateq-kal-lex.txt.
-
- * LEXICON Z1geoSZ   Igaliku og Narsaq
- * LEXICON Z1geoSZ-suf   SUB
-
- * LEXICON Z1geoPZ   Paamiut
-
-*Sisimiut examples:*
-* *Sisimiut:* `Sisimiut+Prop+Abs+Pl`
-* *Sisimiut:* `Sisimiut+Prop+Rel+Pl`
-* *Sisimiunut:* `Sisimiut+Prop+Trm+Pl`
-* *Sisimiunit:* `Sisimiut+Prop+Abl+Pl`
-* *Sisimiuniit:* `Sisimiut+Prop+Abl+Pl`
-* *Sisimiuni:* `Sisimiut+Prop+Lok+Pl`
-
-
- * LEXICON Z1geo_nnguaqPZ   Kangilinnguit NY 20100319 (PL)
-
- * LEXICON Z1geo_nnguaqZ    Quassunnguaq NY 20100410 (PL)
-
- * LEXICON Z1geo_tsSmorf  Kangerluarsoruseq
-
- * LEXICON Z1geo+ssPZ   Ilulissat
-
- * LEXICON Z1geo_oqsZ   Finland
-
-
-
- * LEXICON Z1geo_oqseZ   Thule
-
- * LEXICON Z2-geoSZ   Ikerasaarsuk
-
- * LEXICON Z2-geoSZ_TUQAQ   Nuutoqaq
-
- * LEXICON Z2+lgeoSZ   Nanortalik:Nanorta
-
-
- * LEXICON Z2-geo_uukSZ   Nuuk
-
- * LEXICON Z2-geo_specielSZ   Qinngorput – Qinngorpummi, Qinngorpumi
-
-
- * LEXICON Z2-geoPZ   Iqaluit Ny 20150129. Erstatter Z1geo_lukPZ
-
- * LEXICON Z2-geoqPZ   Saqqarliit
-
- * LEXICON Z2-geolikPZ   Kapisillit:Kapisi
-
- * LEXICON Z2geo_aqSZ   Nuussuaq
-
- * LEXICON Z2geo_aqPZ   livm 20170822 Illorsuit:Illorsuaq
-
-Et særligt lexicon til literals i citationstegn med placeholder QuotedHyphen (står i acronyms.lexc)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-:- Z2-ateqZ-suf ;     !SUB
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Tidligere Z2-ateqZmorf
-
-
-
-Nyt lexicon 20180615 Z2suaq_ateqZmorf
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- * LEXICON ZpossessumZ   !Kalaallit% Nunaat flyttet til ZgeopossessumSZ
-
- * LEXICON ZpossessumSZ   Nuup Kommunea
-
- * LEXICON ZpossessumPZ   
-
- * LEXICON ZgeopossessumSZ   !Kalaallit% Nunaat flyttet til ZgeopossessumPZ
-
- * LEXICON ZgeopossessumPZ   Kalaallit% Nunaat
-
- * LEXICON ZPropKKUTZ  kopieret fra ZkkutZ. Det meste af derivation udkommenteret, da usandsynlig ved proprier
-
- * LEXICON Z1Prop+qaZ  kopieret ind fra Z1+qaZ (tp), hvis størstedel er slettet her
-
- * LEXICON Proptp  
-
-
-
-
-
-
-
-
-
-* * *
-<small>This (part of) documentation was generated from [../src/fst/affixes/propernouns.lexc](http://github.com/giellalt/lang-kal/blob/main/../src/fst/affixes/propernouns.lexc)</small>
+<small>This (part of) documentation was generated from [../src/fst/root.lexc](http://github.com/giellalt/lang-kal/blob/main/../src/fst/root.lexc)</small>
 
 # Symbol affixes
 
@@ -13602,6 +13413,16 @@ Nyt lexicon 20180615 Z2suaq_ateqZmorf
 
 * * *
 <small>This (part of) documentation was generated from [../src/fst/affixes/symbols.lexc](http://github.com/giellalt/lang-kal/blob/main/../src/fst/affixes/symbols.lexc)</small>
+Inflection and derivation.
+
+
+
+
+
+
+
+* * *
+<small>This (part of) documentation was generated from [../src/fst/affixes/numerals.lexc](http://github.com/giellalt/lang-kal/blob/main/../src/fst/affixes/numerals.lexc)</small>
 # Fil for at generere de centrale morfologiske processer i vor grønlandske analysator               
 
 ## Dokumentasjon for leksikonnavne:
@@ -14792,8 +14613,276 @@ Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers
 
 
 * * *
-<small>This (part of) documentation was generated from [../src/fst/affixes/derivations-inflections.lexc](http://github.com/giellalt/lang-kal/blob/main/../src/fst/affixes/derivations-inflections.lexc)</small>
-Inflection and derivation.
+<small>This (part of) documentation was generated from [../src/fst/affixes/derivations-inflections.lexc](http://github.com/giellalt/lang-kal/blob/main/../src/fst/affixes/derivations-inflections.lexc)</small># Propriernes morfologi i grønlandsk
+
+
+
+
+ * LEXICON ZxxxV   steder og navne på vokal som ikke er i FST'en
+
+
+
+
+ * LEXICON ZxxxC   steder og navne på konsonant som ikke er i FST'en
+
+
+
+
+
+
+
+
+
+Navnelexikon er i ateq-kal-lex.txt.
+
+ * LEXICON Z1geoSZ   Igaliku og Narsaq
+ * LEXICON Z1geoSZ-suf   SUB
+
+ * LEXICON Z1geoPZ   Paamiut
+
+*Sisimiut examples:*
+* *Sisimiut:* `Sisimiut+Prop+Abs+Pl`
+* *Sisimiut:* `Sisimiut+Prop+Rel+Pl`
+* *Sisimiunut:* `Sisimiut+Prop+Trm+Pl`
+* *Sisimiunit:* `Sisimiut+Prop+Abl+Pl`
+* *Sisimiuniit:* `Sisimiut+Prop+Abl+Pl`
+* *Sisimiuni:* `Sisimiut+Prop+Lok+Pl`
+
+
+ * LEXICON Z1geo_nnguaqPZ   Kangilinnguit NY 20100319 (PL)
+
+ * LEXICON Z1geo_nnguaqZ    Quassunnguaq NY 20100410 (PL)
+
+ * LEXICON Z1geo_tsSmorf  Kangerluarsoruseq
+
+ * LEXICON Z1geo+ssPZ   Ilulissat
+
+ * LEXICON Z1geo_oqsZ   Finland
+
+
+
+ * LEXICON Z1geo_oqseZ   Thule
+
+ * LEXICON Z2-geoSZ   Ikerasaarsuk
+
+ * LEXICON Z2-geoSZ_TUQAQ   Nuutoqaq
+
+ * LEXICON Z2+lgeoSZ   Nanortalik:Nanorta
+
+
+ * LEXICON Z2-geo_uukSZ   Nuuk
+
+ * LEXICON Z2-geo_specielSZ   Qinngorput – Qinngorpummi, Qinngorpumi
+
+
+ * LEXICON Z2-geoPZ   Iqaluit Ny 20150129. Erstatter Z1geo_lukPZ
+
+ * LEXICON Z2-geoqPZ   Saqqarliit
+
+ * LEXICON Z2-geolikPZ   Kapisillit:Kapisi
+
+ * LEXICON Z2geo_aqSZ   Nuussuaq
+
+ * LEXICON Z2geo_aqPZ   livm 20170822 Illorsuit:Illorsuaq
+
+Et særligt lexicon til literals i citationstegn med placeholder QuotedHyphen (står i acronyms.lexc)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+:- Z2-ateqZ-suf ;     !SUB
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Tidligere Z2-ateqZmorf
+
+
+
+Nyt lexicon 20180615 Z2suaq_ateqZmorf
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ * LEXICON ZpossessumZ   !Kalaallit% Nunaat flyttet til ZgeopossessumSZ
+
+ * LEXICON ZpossessumSZ   Nuup Kommunea
+
+ * LEXICON ZpossessumPZ   
+
+ * LEXICON ZgeopossessumSZ   !Kalaallit% Nunaat flyttet til ZgeopossessumPZ
+
+ * LEXICON ZgeopossessumPZ   Kalaallit% Nunaat
+
+ * LEXICON ZPropKKUTZ  kopieret fra ZkkutZ. Det meste af derivation udkommenteret, da usandsynlig ved proprier
+
+ * LEXICON Z1Prop+qaZ  kopieret ind fra Z1+qaZ (tp), hvis størstedel er slettet her
+
+ * LEXICON Proptp  
+
+
 
 
 
@@ -14802,96 +14891,7 @@ Inflection and derivation.
 
 
 * * *
-<small>This (part of) documentation was generated from [../src/fst/affixes/numerals.lexc](http://github.com/giellalt/lang-kal/blob/main/../src/fst/affixes/numerals.lexc)</small>
-
-
-xxx 20170522 til former, som ikke kan læses men som har brug for en analyse i cg'en..
-
-
-
-
-* * *
-<small>This (part of) documentation was generated from [../src/fst/stems/propernouns.lexc](http://github.com/giellalt/lang-kal/blob/main/../src/fst/stems/propernouns.lexc)</small># Grønlandske nomener 
-
-## Dokumentasjon for leksikonnavne:
-
-* Z = nomen
-* 1 = svag bøjning, p-bøjning
-* 2 = sterk bøjning, up-bøjning
-* P = plurale tantum
-* S = singularis
-* - = sterk bøjing som trunkerer (2-)
-* a, q, ... = gemineringer ved konsonantiske flexiver
-* Z = nomen
-* morf = går til derivationsleksika
-*      = går til flexivleksika
-* tpt  =  
-* tup  = 
-* K    = Direkte til finale klitika
-
-
-...ƒ
-
- * LEXICON Nomen  Nominalstammer
-
-Leksikonet Nomen inneholder nomenerne.
-
-xxx 20170522 til former, som ikke kan læses men som har brug for en analyse i cg'en. Pluralis og singularis-kataloger er ikke medtaget.
-
-
-
-
-
-
- * aaffaffak Z2-Zmorf ;              
- * aaffaffak+N+Abs+Sg:aaffaffaq Krestr ; 
- * aaffaq Z2-qZmorf ;                 
-aaffattaq Z1Zmorf ;                 * ...
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-* * *
-<small>This (part of) documentation was generated from [../src/fst/stems/nouns.lexc](http://github.com/giellalt/lang-kal/blob/main/../src/fst/stems/nouns.lexc)</small>
-
-
-
-
-xxx 20170524 til verbalstammer, som ikke kan læses men som har brug for en analyse i cg'en. Pluralis tantum-kataloger er ikke medtaget. !er det nødvendigt også at medtage stammer fra derivationsleksika?
-
-
-
-* * *
-<small>This (part of) documentation was generated from [../src/fst/stems/verbs.lexc](http://github.com/giellalt/lang-kal/blob/main/../src/fst/stems/verbs.lexc)</small>
+<small>This (part of) documentation was generated from [../src/fst/affixes/propernouns.lexc](http://github.com/giellalt/lang-kal/blob/main/../src/fst/affixes/propernouns.lexc)</small>
 
 
 
