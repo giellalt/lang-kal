@@ -198,32 +198,39 @@ sub call_tokenizer {
    }
 
    if (!$opt_noquote_raw) {
+      # If there is exactly one quote pair of a type, then we dare try handling it
+
+      my $cnt_double = () = ($in =~ m@$ps_double@g);
+      if ($cnt_double == 2) {
+         # Turn "double-quoted without hyphen suffix" into placeholders
+         while ($in =~ m@(^|\s|\pP)($ps_double)((?:\S+?\s+?){0,6}?\S[\pL\pN\pM]*?)($ps_double)(\s|\pP|$)@) {
+            my ($pre,$pq,$q,$sq,$suf) = ($1,$2,$3,$4,$5);
+            my $n = scalar(@qhyphs);
+            $in =~ s@\Q$pq$q$sq\E@ QuotedHyphen$n @g;
+            push(@qhyphs, ["$pq$q$sq", '', '']);
+            #print STDERR "DQUOTE $qhyphs[$n]->[0]\n";
+         }
+      }
+
+      my $cnt_single = () = ($in =~ m@[$ps_single_r]@g);
+      if ($cnt_single == 2) {
+         # Turn 'single-quoted without hyphen suffix' into placeholders
+         while ($in =~ m@(^|\s|\pP)($ps_single)((?:\S+?\s+?){0,6}?\S[\pL\pN\pM]*?)($ps_single)(\s|\pP|$)@) {
+            my ($pre,$pq,$q,$sq,$suf) = ($1,$2,$3,$4,$5);
+            my $n = scalar(@qhyphs);
+            $in =~ s@\Q$pq$q$sq\E@ QuotedHyphen$n @g;
+            push(@qhyphs, ["$pq$q$sq", '', '']);
+            #print STDERR "SQUOTE $qhyphs[$n]->[0]\n";
+         }
+      }
 =pod
-      # Turn "double-quoted without hyphen suffix" into placeholders
-      while ($in =~ m@(^|\s|\pP)($ps_double)((?:\S+?\s+?){0,6}?\S[\pL\pN\pM]*?)($ps_double)(\s|\pP|$)@) {
-         my ($pre,$pq,$q,$sq,$suf) = ($1,$2,$3,$4,$5);
-         my $n = scalar(@qhyphs);
-         $in =~ s@\Q$pq$q$sq\E@ QuotedHyphen$n @g;
-         push(@qhyphs, ["$pq$q$sq", '', '']);
-         #print STDERR "DQUOTE $qhyphs[$n]->[0]\n";
-      }
-
-      # Turn 'single-quoted without hyphen suffix' into placeholders
-      while ($in =~ m@(^|\s|\pP)($ps_single)((?:\S+?\s+?){0,6}?\S[\pL\pN\pM]*?)($ps_single)(\s|\pP|$)@) {
-         my ($pre,$pq,$q,$sq,$suf) = ($1,$2,$3,$4,$5);
-         my $n = scalar(@qhyphs);
-         $in =~ s@\Q$pq$q$sq\E@ QuotedHyphen$n @g;
-         push(@qhyphs, ["$pq$q$sq", '', '']);
-         #print STDERR "SQUOTE $qhyphs[$n]->[0]\n";
-      }
-
       # Turn (parentheticals) into placeholders
       while ($in =~ m@(^|\s|\pP)([(])((?:\S+?\s+?){0,6}?\S[\pL\pN\pM]*?)([)])(\s|\pP|$)@) {
          my ($pre,$pq,$q,$sq,$suf) = ($1,$2,$3,$4,$5);
          my $n = scalar(@qhyphs);
          $in =~ s@\Q$pq$q$sq\E@ QuotedHyphen$n @g;
          push(@qhyphs, ["$pq$q$sq", '', '']);
-         print STDERR "PQUOTE $qhyphs[$n]->[0]\n";
+         #print STDERR "PQUOTE $qhyphs[$n]->[0]\n";
       }
 =cut
    }
