@@ -3,7 +3,7 @@ The Kalaallisut morphology and tools
 
 [![GitHub issues](https://img.shields.io/github/issues-raw/giellalt/lang-kal)](https://github.com/giellalt/lang-kal/issues)
 [![Build Status](https://github.com/giellalt/lang-kal/workflows/Speller%20CI+CD/badge.svg)](https://github.com/giellalt/lang-kal/actions)
-[![License](https://img.shields.io/github/license/giellalt/lang-kal)](https://raw.githubusercontent.com/giellalt/lang-kal/main/LICENSE)
+[![License](https://img.shields.io/github/license/giellalt/lang-kal)](https://github.com/giellalt/lang-kal/blob/main/LICENSE)
 
 This repository contains finite state source files for the Kalaallisut language,
 for building morphological analysers, proofing tools
