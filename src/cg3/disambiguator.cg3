@@ -1543,7 +1543,7 @@ SET NON_ORATIOOBBLVERB = (/"nalu"\ Gram/TV\ NNGIT\ Der/vv\ Gram/TV\ TAQ\ Der/vn\
 LIST TID_CONT = (/Gram/IV\ TIP\ Der/vv\ Gram/TV\ Gram/Refl\ V\ Cont/l) (/TIP\ Der/vv\ Gram/TV\ Gram/Refl\ V\ ContNeg/l) ;
 
 # 20190616 Begyndelsen af en ny LIST med de forholdsvis få inquit, der kan styre or. obl. med causativ
-LIST ORATIOOBLVERB_CAU = "eqqaama" ("eqquma" Gram/IV VIK Der/vn GE) "erseqqissar" (/"erseqqip"\ Gram/IV\ SAR/l) (/"ilisima"\ Gram/IV\ TIP/l) ("ilisimatitsi" UTE 3SgO) (/"iluaqut"\ GE/l) (/"iner"\ Gram/IV\ NIQ\ Der/vn\ GE/l) "nalu" (/"pissut"\ U\ Der/nv\ Gram/IV\ NIRAR/l) "puigor" "puior" (/"quja"\ Gram/IV\ NAR/l) "qujamasuutige";
+LIST ORATIOOBLVERB_CAU = "eqqaama" ("eqquma" Gram/IV VIK Der/vn GE) "erseqqissar" (/"erseqqip"\ Gram/IV\ SAR/l) (/"ilisima"\ Gram/IV\ TIP/l) ("ilisimatitsi" UTE 3SgO) (/"iluaqut"\ GE/l) (/"iner"\ Gram/IV\ NIQ\ Der/vn\ GE/l) "nalu" "nuannare" (/"pissut"\ U\ Der/nv\ Gram/IV\ NIRAR/l) "puigor" "puior" (/"quja"\ Gram/IV\ NAR/l) "qujamasuutige";
 
 SET ATUARnTAQ_x = ("atuar") + TRANSVERB - TAQ - VIK - QATE ;
 SET ATUARnTAQ = ATUARnTAQ_x OR ("atuar" NIQAR); #vist aldrig intrans som inquit
@@ -4761,13 +4761,10 @@ SELECT:0090 ("ila") + 3PlPoss IF (-1 BOS)(-1*< VFIN + 3Pl)(NEGATE -1*< ("ilaaq")
 #'Ilaat' først i en sætning er partitiv, hvis subjektet i foregående sætning er 3. plur. Og hvis vi der ikke har været snakket om lapper i sætningen før.
 REMOVE:0091 (Orth/Arch) IF (0 ("ila") + N + Lok + 3PlPoss) ;
 
-#0091 udkommenteret 20140522. Gør vist ingenting, som andre regler ikke kan klare
-#REMOVE:0091 Abs + Sg IF (*1C VFIN + INTRANSVERB + 3Pl BARRIER TRANSVERB +  3SgO)(NEGATE 0 CONJ-LU LINK *-1 Abs)(NEGATE *-1 CONJ-LU LINK *-1 Abs)(NEGATE 1 Prop LINK 1 CONJ-LU);
-#Sidste NEGATE forebygger a (navn) b-lu fulgt af verbum i plur
-
 SELECT:0092 TAQ + Abs + Pl + 3PlPoss IF (-1 BOS)(1-*< VFIN + 3Pl)(*1 VFIN + INTRANSVERB + 3Pl);
 #REMOVE:0093 3PlPoss + Abs + Pl IF (*1 VFIN + INTRANSVERB + 3Pl)(NEGATE 1 Num + Abs)(NEGATE -1 Rel + Pl LINK -1 Abs + Pl)(NEGATE 0 ("ila"))(NEGATE 1 INTRANSVERB + VFIN + 3Pl OR 3PlO)(NEGATE 1 Abs + Pl); #Fjern possessumlaesning trods mulig possessor, hvis der ikke staar et adnominalt adled og der tidligere staar et subjekt #Mangler for mange barriers til at den kan gøre noget rigtigt...
 
+REMOVE:0093 Abs IF (0 Rel + &&POSS34_POSS& LINK *1 Abs + &&POSS34_POSS& + &&IV_SUBJ& BARRIER (*) - Rel - ADJEKTIVISK LINK *1 V + &&IV_SUBJ& BARRIER V);#%AmbiguøsN - %AmbiguøsPar#MALITTARISASSAT nutaat ilaat qasukkarneqarput. 
 REMOVE:0146 Rel + 3PlPoss IF ( 0 Rel + 3SgPoss)(*-1 CONT + 4Sg BARRIER V) ; # Sikker singularis possessor
 
 ### Gram/Cong til tamarmik, tamaq, kisi osv. ###
@@ -5191,8 +5188,9 @@ SELECT:0197X DivPron + &&DivPronOBJ IF (*1 &&DivPronOBJ) ;
 SELECT:0197 DivPron + Nom + $$PERSON IF (*1C INTRANSVERB + $$PERSON BARRIER KOMMA) ;
 
 SELECT:0198 Gram/Pers + Pron + Rel IF (1 Abs LINK 1 POSSESSUM12) ;
-SELECT:0199 Gram/Pers + Pron + Rel IF (*1 POSSESSUM12 BARRIER (*) - OBLIQUE)(NEGATE 1 ("aak") + Rel + 1SgPoss) ; #mange forkerte hits på aamma
-
+SELECT:0199 Gram/Pers + Pron + Rel IF (*1 POSSESSUM12 BARRIER (*) - OBLIQUE)(NEGATE 1 ("aak") + Rel + 1SgPoss)  #mange forkerte hits på aamma
+(NEGATE 0 Abs LINK 1 OBLIQUE + CONJ-C LINK 1 Abs + 1PlPoss BARRIER V LINK *1 INTRANSVERB + 3Pl OR TRANSVERB + 1PlO)#Nuannareqaarput UAGUT suliniutissamillu siunnersuusiarput piffissaqartissinnaagatsigut
+;
 REMOVE:0200 Gram/Int IF ( 0 Gram/Indef ) (NEGATE *1 ("\?")) ;
 SELECT:0201 Gram/Pers + Pron + Abs + 1Sg IF (*1 INTRANSVERB + 1Sg)(NEGATE 1 1SgPoss); #vælg uanga+Abs for uanga+Rel
 SELECT:0202 Gram/Pers + Pron + 1Sg IF (*1 V + 1Sg OR V + 1SgO); #sletter DemAdv-læsningen
@@ -15348,6 +15346,8 @@ REMOVE:9969AP (/"ilior"\ Gram/TV/l) IF (0 (/"ilior"\ Gram/IV/l));
 REMOVE:9969AQ (/"iser"\ Gram/TV/l) IF (0 (/"iser"\ Gram/IV\ NIQ/l)); 
 
 REMOVE:9969AR (/NNGUR\ Der/nv\ Gram/Refl\ TUQ/l) IF (0 (/NNGUR\ Der/nv\ Gram/IV\ TUQ/l));
+
+REMOVE (/Gram/TV\ QQU\ Der/vv\ Gram/Db\ TAQ\ Der/vn\ U/l) IF (0 (/Gram/IV\ QQU\ Der/vv\ Gram/TV\ TAQ\ Der/vn\ U/l));
 
 ##################################################
 #Specifikke regler til disambiguering af Gram/TV vs. Gram/Db
