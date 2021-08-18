@@ -14610,6 +14610,7 @@ Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers
 
 
 
+ * LEXICON Z1+maZmorf  derivationsmorfemer til nominer som isuma
 
 
 
@@ -14629,6 +14630,7 @@ Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers
 
 
 
+ * LEXICON Z1+maZ  
 
 
 
