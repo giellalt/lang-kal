@@ -299,6 +299,7 @@ LIST ParagrafSlut = "¶" "." ; #To be added in all corpora in order to deal effi
 LIST %AmbiguøsN = %AmbiguøsN ; #En interim-tag til kohorter med læsninger der indeholder både Rel og Abs
 LIST %AmbiguøsPar = %AmbiguøsPar; #Interim-tag til ikke disambiguerede Par+Abs/Rel kohorter
 LIST %ContHypotagme = %ContHypotagme ; #CONT når -1 Abs eller Abs når 1 CONT
+LIST %MWE = %MWE ; #mwe-er som Nunat Avannarliit, der skaber problemer i hybriderne
 LIST %NumPossessum = %NumPossessum ; #("misse")+3PlPoss når possessum for -1 Num
 LIST %Othertime = %Othertime ; #vn-er med tidsbetydning i hypotagmer
 LIST %ParataktiskNP = %ParataktiskNP ; #NP-er med CONT som første led og LIK som andet
@@ -2038,6 +2039,11 @@ REMOVE:MIUQ2 ("(.*)mioq"r) IF (0 (VSTR:"$1miu.*"r) + N );
 ADD:1121 Gram/2sml BEFORE (N) TARGET Abl (1 NIRU + N - NIQAR) #Issittup Danmarkip NAALAGAAFFIANIT ukkatarineqarnerulernissaa kissaatigineqartoq Frederiksenip ilaatigut saqqummiunniarpaa.
 ;
 ADD:1122 Gram/2sml BEFORE (N) TARGET Abl (1 (/"qanip"\ Gram/IV\ NIQ/l) OR (/NIQ\ Der/vn\ RUJUK\ Der/nn\ SUAQ\ Der/nn\ U/l) OR (/"amerla"\ Gram/IV\ NIQ\ Der/vn\ N/l));
+
+#MWE, der især i hybrider skaber problemer for tagging. Kasus som hhv. i og ikke-i må håndteres, så $$KASUS kan anvendes i stedet. Virker ikke tilsyneladende pga. konflikt med hybrid-handlingen??
+#De tagges godt nok i pre2, men er igen borte i disambiguator. Forsøgt flyttet til starten af disambiguator
+ADD:%MWE01 (%MWE) TARGET ("nuna") + $$KASUS OR ("Nuna") + $$KASUS IF (1 ("avannarleq") + $$KASUS OR ("Avannarleq") + $$KASUS);
+ADD:%MWE02 (%MWE) TARGET ("avannarleq") + $$KASUS OR ("Avannarleq") + $$KASUS IF (-1 ("nuna") + $$KASUS OR ("Nuna") + $$KASUS);
 
 REMOVE:00000A (Gram/Hyb) IF (0 (/\"ataatsim.*\"/r)) ; #ataatsimiippoq, ataatsimoorpoq osv. er aldrig hybrider
 REMOVE:00000B (URL) IF (0 Sem/Url) ; #dobbeltgenerering fra FST'ens url.lexc
