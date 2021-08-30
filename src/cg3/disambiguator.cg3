@@ -295,7 +295,8 @@ SET Refl_Reci = Gram/Refl OR Gram/Reci ; #til disambiguering af begge klasser me
 LIST KOMMA = "," ;
 LIST ParagrafSlut = "¶" "." ; #To be added in all corpora in order to deal efficiently with headlines
 
-#Diverse tags defineret i kal-pre2
+#Diverse tags defineret i kal-pre2 (dog et par hybrider her i disambiguator)
+LIST %AdverbielHyb = %AdverbielHyb ; #hybrider på to kohorter, der tilsammen er ADVERBIEL (pisortatigoortumik)
 LIST %AmbiguøsN = %AmbiguøsN ; #En interim-tag til kohorter med læsninger der indeholder både Rel og Abs
 LIST %AmbiguøsPar = %AmbiguøsPar; #Interim-tag til ikke disambiguerede Par+Abs/Rel kohorter
 LIST %ContHypotagme = %ContHypotagme ; #CONT når -1 Abs eller Abs når 1 CONT
@@ -1383,7 +1384,8 @@ SET SIULLIULLUNI = ("siulleq") + U + CONT ;
 SET SUKISAARSAATIGALUGU = ("sukisaarsaat") + GE + CONT ;
 LIST ADVERBIUM = "ima" "qanoq" ; #20091109 tilfoejet 'qanoq', der maaske staar lidt malplaceret her
 LIST NEXUS = "asu" "sunaaffa" "soorlu" "usiuffa" "usiiffa" ; #Når verbum i underordnet modus står i underordnet funktion sammen med partikler der kan være neksusdannende, mappes verbet @PRED. OBS: kan også være koncessive
-SET ADVERBIEL = Adv | Pali | (/NIQ\ Der/vn\ TAQ\ Der/nn\ LIK\ Der/nn\ N\ Ins\ Sg/l) |
+SET ADVERBIEL = Adv | Pali | %AdverbielHyb |
+(/NIQ\ Der/vn\ TAQ\ Der/nn\ LIK\ Der/nn\ N\ Ins\ Sg/l) |
 (/"akuttu"\ Gram/IV\ \(NIRU\ Der/vv\ Gram/IV\ \)?TUQ\ Der/vn\ N\ Ins\ Sg/l) |
 (/"amma"\ Gram/IV\ TUQ\ Der/vn\ N\ Ins\ Sg/l) |
 (/"angi"\ Gram/IV\ NIQ\ Der/vn\ KIP\ Der/nv\ \(Gram\/IV\ \)?TUQ/l) | (/"arlaq"\ LIK/l) | ("ataaseer") + CONT | ("ataaseq") + Ins - Num - AFFINGERET | (/"ataavartoq"\ N\ Ins\ Sg/l) |
@@ -1405,7 +1407,9 @@ ASSERSUUTIGALUGU |
 ("nalinginnaq") | ("nalinginnaasoq") + Ins | ("nalinginnaq") + U + TUQ + Ins | NUSUPnAFF | TAMAKKERnAFF |
 (/"piaar"\ Gram/IV\ TUQ\ Der/vn\ N\ Ins\ Sg/l) |
 (/"pi"\ NGAAR\ Der/vv\ Gram/IV\ NIRSAQ\ Der/vn\ U\ Der/nv\ Gram/IV\ GUNAR\ Der/vv\ Gram/IV\ TUQ\ Der/vn\ N\ Ins/l) |
-("piffik") + SSAQ + TIP + CONT | PILLUGU | ("pinngitsaali") + HTR + UTE | ("pissusissamisoortoq") |
+("piffik") + SSAQ + TIP + CONT | PILLUGU | ("pinngitsaali") + HTR + UTE | 
+(/"pisortaq"\ N\ Via\ Pl\ Hyb/1-2/l) |
+("pissusissamisoortoq") |
 (/"pitsak"\ U\ Der/nv\ Gram/IV\ NIRPAAQ\ Der/vn\ N\ Ins\ Sg/l) |
 (/"pitsak"\ U\ Der/nv\ Gram/IV\ \(NIRU\ Der/vv\ Gram/IV\ \)?TUQ\ Der/vn\ N\ Ins\ Sg/l) | ("qanip") + NIQ + Trm | (/"qanip"\ Gram/IV\ NIRU\ Der/vv\ Gram/IV\ TUQ\ Der/vn\ N\ Ins\ Sg/l) |
 (/"quja"\ Gram/IV\ NAR\ Der/vv\ Gram/IV\ TUQ\ Der/vn\ N\ Ins\ Sg/l)  |
@@ -2044,6 +2048,11 @@ ADD:1122 Gram/2sml BEFORE (N) TARGET Abl (1 (/"qanip"\ Gram/IV\ NIQ/l) OR (/NIQ\
 #De tagges godt nok i pre2, men er igen borte i disambiguator. Forsøgt flyttet til starten af disambiguator
 ADD:%MWE01 (%MWE) TARGET ("nuna") + $$KASUS OR ("Nuna") + $$KASUS IF (1 ("avannarleq") + $$KASUS OR ("Avannarleq") + $$KASUS);
 ADD:%MWE02 (%MWE) TARGET ("avannarleq") + $$KASUS OR ("Avannarleq") + $$KASUS IF (-1 ("nuna") + $$KASUS OR ("Nuna") + $$KASUS);
+
+#En hybrid, der skal erkendes som ADVERBIEL
+ADD:AdvHyb1 (%AdverbielHyb) TARGET (/"pisortaq"\ N\ Via\ Pl\ Hyb/1-2/l) IF (1 (/"UR"\ Gram/IV\ TUQ\ Der/vn\ N\ Ins\ Sg/l));
+ADD:AdvHyb2 (%AdverbielHyb) TARGET (/"UR"\ Gram/IV\ TUQ\ Der/vn\ N\ Ins\ Sg/l) IF (-1 (/"pisortaq"\ N\ Via\ Pl\ Hyb/1-2/l));
+
 
 REMOVE:00000A (Gram/Hyb) IF (0 (/\"ataatsim.*\"/r)) ; #ataatsimiippoq, ataatsimoorpoq osv. er aldrig hybrider
 REMOVE:00000B (URL) IF (0 Sem/Url) ; #dobbeltgenerering fra FST'ens url.lexc
