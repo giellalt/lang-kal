@@ -1616,6 +1616,7 @@ LIST <Hprof> =
 (/"aaqqissor"\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TUQ/l)
 (/"aqup"\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TUQ/l)
 (/"arsaarar"\ Gram/IV\ TUQ/l)
+(/"attartor"\ Gram/IV\ TUQ/l)
 (/"atuakkior"\ Gram/IV\ TUQ/l)
 ("eqqiar" HTR TUQ)
 ("eqqartuup" HTR TUQ)
@@ -1639,7 +1640,7 @@ LIST <inst> = "Brugseneeraq" "Pisiffik"
 (/"suli"\ Gram/IV\ VIK\ Der/vn\ QAR\ Der/nv\ Gram/IV\ VIK/l) "umiarsualivik" "universitet" ;
 LIST <L> = "sumiiffik" "ulloriaq";
 LIST <Lciv> = "Avannaata Kommunia" "kommune" ("Nuuk" Prop) ("Sisimiut" Prop);
-LIST <Lh> = "umiarsualivik" ;
+LIST <Lh> = "inissiaq" "umiarsualivik" ;
 LIST <Lpath> = "aqqut" "aqqusineq" ;
 LIST <Ltown> = "Sisimiut" ; #liste til brug for usikker numerus i possessor og subjektsperson
 LIST <mat> = "kuulti" "sølvi" ;
@@ -3010,7 +3011,10 @@ SUBSTITUTE:adv8lix LI ADV-LI TARGET LI IF (0 TIMENOUN + OBLIQUE);
 SELECT:conjA Conj IF (*1 ("([a-z].*)"r) - CLB + $$KASUS)(*-1 ("$1"v) + $$KASUS) #Vælg Conj hvis samme stamme findes på begge sider af den. #tassa nukappiaqqat marluk angisuut, aamma nukappiaraq ataaseq mikisoq.
 (NEGATE 0 Adv LINK 1 VFIN)#Atuagaarniarfinnguaq meeqqat inuusuttullu AAMMA katersuuffigisalerpaat inuusuttullu arlaqartut allaffimmiutut ilinniartuuffigisarsimallugu.
 (NEGATE -2 $$KASUS LINK 1 KOMMA LINK 1 _TARGET_ + ("soorlu") LINK 1 $$KASUS LINK *1 Par BARRIER V)#Imaakkamimi ataqqinartuaqqap ulloriaani angalasumi, SOORLU ullorissani tamani taamaattoq, naasunik ajunngitsunik ajortunillu naasoqarpoq, taamaattumillu naasuni ajunngitsuni naatsiiassaqarluni ajunngitsunik aamma naasuni ajortuni naatsiiassaqarluni ajortunik.
+(NEGATE *-1 VFIN BARRIER (*) - KOMMA LINK *1 _TARGET_ + ("soorlu") LINK *1 VFIN)#Kalaallit Nunaanni qaqqat Uummannamik atillit ikittuunngillat, SOORLU Thulep qaqqaa Uummannamik ateqarpoq.
+
 ;
+
 SELECT:VconjCont Conj + ("aamma") IF (*-1 N + &&IV_SUBJ& LINK *1 V + &&IV_SUBJ&) ( *1 N + Pl LINK *1 CONT + 4Pl) ; #PL 20190410 aamma er en konjunktion mellem en nexus og en Cont-nexus. Kan måske raffineres med unification. Dog ikke med eksisterende Cont&, da her vikar for Cau og derfor med 3. subjekt
 
 SELECT:conjB ("aamma") + Conj IF (-1* Prop BARRIER (*) - TITEL - PUNCT LINK *1 _TARGET_ LINK *1 Prop BARRIER (*) - TITEL - PUNCT) ; #Aviaq aamma Kunuk
@@ -5191,17 +5195,22 @@ SELECT:0181 (/__\"taama\"\ IP\ Der\/nv\ Gram\/IV\ GALUAR__/l) IF (-1 BOS) ;
 SELECT:0182A Part + ("ilaatigut") IF (NEGATE -1C Rel)(NEGATE 1 VFIN);
 #Regel 29.3. Formoder ilaatigut som possessum altid i umiddelbar forbindelse med V. Skal checkes grundigt
 
-REMOVE:0182B ("soorlu") + Pali IF (0 ("soorlu") + Conj LINK *1 Par - %AmbiguøsPar BARRIER V - %AmbiguøsPar LINK 1 TTAAQ LINK *1 VFIN); #SOORLU isigisat qalipagassaqqissut tappiffigisaqigai taamattaaq pinngortitat nipaannut tutsarilluinnarpoq. 
+REMOVE:0182B ("soorlu") + Adv IF (0 ("soorlu") + Conj LINK *1 Par - %AmbiguøsPar BARRIER V - %AmbiguøsPar LINK 1 TTAAQ LINK *1 VFIN); #SOORLU isigisat qalipagassaqqissut tappiffigisaqigai taamattaaq pinngortitat nipaannut tutsarilluinnarpoq. 
+
+REMOVE:0182C ("soorlu") + Adv IF (-1 BOS OR KOMMA)(*1 Par BARRIER V LINK NEGATE *1 VFIN);
 
 SELECT:0183A Part OR Interj IF (-1 BOS)
 (NEGATE 0 DivPron + 4Pl LINK *1 V + 3Pl OR 4Pl)#Vælger "taama" Part frem for "taaq" N Rel Pl 1SgPoss o.lign.
 (NEGATE 0 OBLIQUE LINK *1 VFIN BARRIER (*) - OBLIQUE)#KALAALLISUT oqaatsimik ataatsimilluunniit oqalussinnaanngikkaluarpoq
 (NEGATE 0 (/"taama"\ IP\ Der/nv\ Gram/IV\ V\ Par\ 3Sg/l) LINK NOT *1 VFIN + 3Sg BARRIER V)#TAAMAATTOQ piffissani sulinngiffeqarfiunerpaasartuni juunimi, juulimi, aggustimi decembarimilu Kalaallit Nunaanni najugaqartunit akunnittarfinni unnuinerit amerleriarsimasut naatsorsuutini takuneqarsinnaapput.
 (NEGATE 0 ("siuneq") + Abs + &&IV_SUBJ& LINK *1 VFIN + U + &&IV_SUBJ&)#SIORNA ukiuuvoq nuanninngitsoq.
-(NEGATE 0 ("soorlu") + Conj LINK *1 Par BARRIER V LINK 1 TTAAQ LINK *1 VFIN)#SOORLU isigisat qalipagassaqqissut tappiffigisaqigai taamattaaq pinngortitat nipaannut tutsarilluinnarpoq.
+(NEGATE 0 ("soorlu") + Conj LINK **1 Par BARRIER V - %AmbiguøsPar LINK 1 TTAAQ LINK *1 VFIN)#SOORLU isigisat qalipagassaqqissut tappiffigisaqigai taamattaaq pinngortitat nipaannut tutsarilluinnarpoq.
 ;
 
-SELECT:0185 ("soorlu") - UNA - UKU IF (*1 Par OR Cont OR  ContNeg BARRIER V ) ;
+SELECT:0185A ("soorlu") - UNA - UKU IF (*1 Par OR Cont OR  ContNeg BARRIER V ) ;
+REMOVE:0185B ("soorlu") + Conj IF (-1 $$KASUS LINK 1 _TARGET_ + Adv LINK 1 $$KASUS);#Suliffeqarfissuit SOORLU Royal Arctic Line aamma Namminersornerullutik Oqartussat suleqatigiissapput.
+REMOVE:0185C ("soorlu") + Conj IF (-1 V LINK 1 _TARGET_ LINK 1 N LINK 1 EOS OR KOMMA);
+
 
 REMOVE:0186 ("una") + (/__Gram\/Dem\ Interj__/l)	IF (0 ("tassa") + Interj) ;
 
@@ -11727,13 +11736,15 @@ SELECT:0553C ("aammalu" Adv) IF (NEGATE *0S V BARRIER DIRTALE)
 #SELECT:0553 ("tassa") + Pali IF (-1 BOS)(NEGATE *1 VFIN)(*1 Par)(NEGATE *1 VFIN BARRIER KOMMA ) ; #Kan evt. præciseres med et N + Par unification
 SELECT:0554 KONJUNKTION - ("aamma") IF (-1 BOS);
 REMOVE:0554B Adv + ("aamma") IF (-1 KOMMA LINK -1 VFIN LINK *1 VFIN) ;
-SELECT:0555 Part OR Interj IF (-1 BOS OR (","))(*1C VFIN)(NEGATE 0 DivPron + 4Pl LINK *1 3Pl OR 4Pl)
+SELECT:0555A Part OR Interj IF (-1 BOS OR (","))(*1C VFIN)(NEGATE 0 DivPron + 4Pl LINK *1 3Pl OR 4Pl)
 (NEGATE *-1 VFIN LINK *1 _TARGET_ + CONJ-LU LINK *1 VFIN) #Ataasinnguaq appikkaluarlunilu qissaserpoq ilaasali oqaluttuaraat, kikkunnit qinngasaarneqartarsimanersoq, AAMMALU sunaaffa angajoqqaavisa avissimanerat meeraqataasa qinngasaarutigisaraat.
 (NEGATE 0 OBLIQUE LINK *1 VFIN BARRIER (*) - OBLIQUE)#KALAALLISUT oqaatsimik ataatsimilluunniit oqalussinnaanngikkaluarpoq
 (NEGATE 0 (/"taama"\ IP\ Der/nv\ Gram/IV\ V\ Par\ 3Sg/l) LINK NOT *1 VFIN + 3Sg BARRIER V)#TAAMAATTOQ piffissani sulinngiffeqarfiunerpaasartuni juunimi, juulimi, aggustimi decembarimilu Kalaallit Nunaanni najugaqartunit akunnittarfinni unnuinerit amerleriarsimasut naatsorsuutini takuneqarsinnaapput.
 (NEGATE 0 ("siuneq") + Abs + &&IV_SUBJ& LINK *1 VFIN + U + &&IV_SUBJ&)#SIORNA ukiuuvoq nuanninngitsoq.
-
+(NEGATE 0 ("soorlu") + Conj LINK **1 Par BARRIER V - %AmbiguøsPar LINK 1 TTAAQ LINK *1 VFIN)#SOORLU isigisat qalipagassaqqissut tappiffigisaqigai taamattaaq pinngortitat nipaannut tutsarilluinnarpoq.
 ;
+
+REMOVE:0555B Adv + ("soorlu") IF (0 ("soorlu") + Conj LINK *1 Par BARRIER V - %AmbiguøsPar LINK 1 TTAAQ LINK *1 VFIN); #SOORLU isigisat qalipagassaqqissut tappiffigisaqigai taamattaaq pinngortitat nipaannut tutsarilluinnarpoq.
 
 #Nominer med tilhængspartikler
 REMOVE:Int0188 Prop + MI + Abs IF (*0 Abs)
@@ -12269,7 +12280,7 @@ REMOVE:7271B Rel + Pl IF (1 Der/vn + Abs + Pl LINK 1 Rel + Pl LINK 1 3PlPoss LIN
 
 REMOVE:Int0250 Conj IF (0 Adv) (*-1 TIME BARRIER (*) - Pron) ; #Ukioq manna aamma korpus tamanut atortunngortussatut siunniuttariaavoq.
 
-REMOVE:Int0251 Adv IF (0 Conj)(1 $$KASUS) (-1 $$KASUS) ;
+REMOVE:Int0251C Adv IF (0 Conj)(1 $$KASUS) (-1 $$KASUS) ;
 REMOVE:Int0252 Conj IF (0 Adv) (*-1C $$KASUS BARRIER (*)) (NEGATE *1 $$KASUS) ; #Ajutoorneq taamaattoq nunamik mingutsitsisinnaavoq.
 #Specialitet at Aeq + pi ikke må vælge refl selv om der står "immi" til venstre
 REMOVE:7486A ("pi") + Gram/Refl IF (0  ("pi") - Gram/Refl)(-1 Aeq) ;
@@ -13402,6 +13413,7 @@ REMOVE:5490BE2 SAAR IF (0 (/QQU\ Der/vv\ Gram/Db\ TAQ\ Der/vn\ U/l));
 REMOVE:5490BF (/"tusarner"\ Gram/IV\ JAAR/l) IF (0 (/"tusar"\ Gram/TV\ NIAR\ Der/vv\ HTR/l));
 REMOVE:5490BG (/"eqqoq"\ SSAQ/l) IF (0 (/"eqqup"\ Gram/TV\ TAQ/l)); #"futurisk bagdel" for usandsynlig
 REMOVE:5490BH ("silaap") + NAR IF (0 ("sila") + INNAQ);
+REMOVE:5490BI (/"piiaap"\ Gram/IV\ VIK/l) IF (0 (/"piiar"\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ VIK/l));
 
 # Der/nv eller Der/vv?
 SELECT:5493 QATE + Der/vn + GE - Imp IF (0 QATE + Der/nn + GE)(NEGATE *-1 HUMAN + @OBJ>) ;
@@ -15167,7 +15179,8 @@ REMOVE:9970DÅ ("kinguneq") + Pl + 3SgPoss IF (0 ("kinguneq") + Sg + 3SgPoss LIN
 REMOVE:9970EA Abs IF (-1 ("–") + PUNCT LINK 1 _TARGET_ + iTrm + UR + Par + 3Sg LINK 1 EOS); #Quersorniaraanni tangajorniaraanniluunnit kakkissarfimminut talimulluunniit tangajortoqartassaaq – ASSANNUUNNGITSOQ.
 #
 
-
+REMOVE:9970EB 3PlPoss + OBLIQUE IF (0 (/[12]SgPoss/r) LINK *1 V + (/[12]Sg/r))
+(NEGATE *-1 Rel + Pl);
 
 
 #Disambiguering og mapping af resterende partikler
