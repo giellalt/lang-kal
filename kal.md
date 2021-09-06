@@ -8474,6 +8474,9 @@ Jeg kan ikke løse problemet fornuftigt, så hermed en alt for snæver ad hoc-re
 
 
 
+
+
+
 * * *
 <small>This (part of) documentation was generated from [../src/cg3/disambiguator.cg3](http://github.com/giellalt/lang-kal/blob/main/../src/cg3/disambiguator.cg3)</small>
 
@@ -14408,6 +14411,8 @@ flex-tv ;
  * LEXICON N_Loan_e  nominal loanwords ending in e
 
  * LEXICON N_Loan_o  nominal loanwords ending in o
+
+ * LEXICON N_Loan_é  café
 
  * LEXICON N_Loan_V  nominal loanwords ending in a, u, y, æ, ø, å
 

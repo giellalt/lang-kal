@@ -995,6 +995,8 @@ flex-tv ;
 
  * LEXICON N_Loan_o  nominal loanwords ending in o
 
+ * LEXICON N_Loan_é  café
+
  * LEXICON N_Loan_V  nominal loanwords ending in a, u, y, æ, ø, å
 
  * LEXICON N_Loan_i  nominal loanwords ending in i
