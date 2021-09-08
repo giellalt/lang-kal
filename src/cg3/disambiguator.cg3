@@ -1777,6 +1777,17 @@ SET ATTRIBUTIV = ADJEKTIVISK - ("sakkutooq") | COLOUR | (/QAR\ Der\/nv\ \(Gram\/
 LIST NATIONALITY = "dansk" "grønlænder" "kalaaleq" "norskeq" "qallunaaq" "tuluk" ;
 SET LANGUAGE = ("avannaamiusut") | NATIONALITY + Aeq | NATIONALITY + iAeq  | ("kalaallisooq") | ("kalaallisut") | ("inuktitut") | ("kitaamiusut") | ("tuluttooq") | ("tunumiusut") ;
 
+#Ny LIST 20210908 når skolefag skal opfattes som substantiver og ikke som oblique eller verbalnominer (NIQ)
+LIST SKOLEFAG_LIST =
+(/"inuiaqat"\ GIIT\ Der/nn\ LIRI\ Der/nv\ Gram/IV\ NIQ/l)
+(/"isuma"\ LIUR\ Der/nv\ Gram/IV\ QQISSAAR\ Der/vv\ Gram/IV\ NIQ/l)
+"matematik"
+(/"pinngor"\ Gram/IV\ TIP\ Der/vv\ Gram/TV\ TAQ\ Der/vn\ LIRI\ Der/nv\ Gram/IV\ NIQ/l)
+(/"uppere"\ Gram/TV\ TAQ\ Der/vn\ LIRI\ Der/nv\ Gram/IV\ NIQ/l)
+;
+
+SET SKOLEFAG = SKOLEFAG_LIST | LANGUAGE ;
+
 LIST EDIBLE = "iffiaq" "issingigassaq" "kaagi" "kaffe" "kaffi" "kalorie" "kissartoq" "mamartoq" "naatitaq" "neqi" "nutaaq" "orsoq" "panertoq" "siku" "sukku" "tarajoq" ;
 LIST TUR-ABLE = "cigaret" "tupa" ;
 SET FOOD = EDIBLE | <drink> | <food> | TUR-ABLE;
@@ -4900,7 +4911,7 @@ REMOVE:Int0140 (Pl) - Prop (0 $$KASUS + (N Sg)) (*-1 (Pron Sg) + $$KASUS BARRIER
 
 REMOVE:Int0141 Pl IF (0 Sg - POSSESSUM LINK *-1C Gram/Dem + Pron + Sg BARRIER (*) - PUNCT)(NEGATE *1 Pl BARRIER (*) - PUNCT) ;
 REMOVE:0101 Abs + 2SgPoss IF 
-(NEGATE *0C ("illit") OR Imp + 2Sg) 
+(NEGATE *0 ("illit") OR Imp + 2Sg) 
 (NEGATE *1 3SgO)(NEGATE *1 INTRANSVERB + 3Sg BARRIER Abs + Sg)
 (NEGATE 1 ("tassa") LINK 1C Sg) #Sidste NEGATE for skyld "Soraluannguit tassa niviarsiaq .."
 (NEGATE *0 VFIN + 3Sg LINK NEGATE *0 Abs + Sg - _TARGET_)#Tunngaviusumik inassutigineqarpoq inissiami immikkoortumi ANGERLARSIMAANNARNISSAT.
@@ -4914,12 +4925,17 @@ REMOVE:0104 Abs + 2SgPoss IF
 (NEGATE 1 ("tassa") LINK 1C Sg) #Soraluannguit tassa niviarsiaq .." #Lenes reformuleres igen
 (NEGATE 0 Abs + &&TV_OBJ& LINK *1 V + &&TV_OBJ& BARRIER V - (Opt 3Pl) - Gram/Exclm )#Ullorissanik PIGINNINNERIT illit sumut iluaqutigaajuk?
 (NEGATE *0 VFIN + 3Sg LINK NEGATE *0 Abs + Sg - _TARGET_)#Tunngaviusumik inassutigineqarpoq inissiami immikkoortumi ANGERLARSIMAANNARNISSAT.
-
+(NEGATE *0 ("illit"))
 ;
 REMOVE:0104B Abs + 2SgPoss IF (0 Rel)(*1 TRANSVERB - OBJVERB BARRIER V)
 (NEGATE 0 Abs + Sg LINK *1 3SgO BARRIER (*) - Abs)#Piffissaq AGGERFISSAT nalunngikkutsigu bussit unittarfiannut naapigiarsinnaavatsigit, Eriup ilaanni pulaarlutik arni oqarfigaa.
 (NEGATE 0 &&TV_OBJ& LINK *1 V + 2Sg + &&TV_OBJ& BARRIER (*) - Pali)#Upernavimmi, Upernaviup nunaqarfiini Aasianniluunniit najugaqanngikkuit tamakkiisumik AKIUUSSUTISSERNEQARSIMANERIT arfininngorpamit uppernarsaqqaartassavat.
  ;
+REMOVE:0104C Pl IF (0 2SgPoss LINK -1 ("illit"))
+(NEGATE -2 Pl + $$KASUS LINK 1 ("illit" Aeq) LINK 1 ("ip" Der/vn) + $$KASUS)#Assorsuaq qutsavigaatsigit qitornannguagut sapiissutsikkut annaassimagakkit, ilumullimi inuusuttut ilittut ITTUT nunaqarfitsinni amerlanerugaluarpata navianartut aamma ikinnerusimassagaluarput.
+;
+
+REMOVE:0104D ("ilip" TUQ) OR ("ilip" Par) OR ("ilik" Aeq) IF (0 ("illit" Aeq) LINK *0 2Sg OR 2SgO OR ("illit"));
 
 REMOVE:0105 Abs + 3PlPoss + Pl IF (NEGATE -*1 Rel + Pl)(NEGATE 0 ("ila"))
 (NEGATE -*1 VFIN + 3Pl LINK *1 V + 3Pl OR 4Pl)
@@ -11859,8 +11875,12 @@ REMOVE:1671 2SgPoss IF (0 (Num))(*1 QAR OR LIK BARRIER V) ;
 
 REMOVE:1671A POSSESSUM IF (0 iNum + LIK) ;
 
-REMOVE:1678 2SgPoss IF (*1 V + 1Sg BARRIER V)(NEGATE *1 2SgPoss OR 2Sg)(NEGATE *-1 2SgPoss OR 2Sg CBARRIER V)
+REMOVE:1678A 2SgPoss IF (*1 V + 1Sg BARRIER V)(NEGATE *1 2SgPoss OR 2Sg)(NEGATE *-1 2SgPoss OR 2Sg CBARRIER V)
 (NEGATE *1 V + 3SgO BARRIER V); #20180405 REMOVE i stedet for SELECT for at bibeholde pluralislæsning som ikke er poss efter k-stammer. Reglen er sikrere og forkaster ikke de mange korrekte læsninger som SELECT-reglen.
+
+REMOVE:1678B Via - (2SgPoss Sg) IF (*0 ("illit") OR 2Sg OR 2SgO) #Assorsuaq qutsavigaatsigit qitornannguagut SAPIISSUTSIKKUT annaassimagakkit, ilumullimi inuusuttut ilittut ittut nunaqarfitsinni amerlanerugaluarpata navianartut aamma ikinnerusimassagaluarput.
+(NEGATE 0 (/"suna"\ Gram/Int\ Pron\ Via\ Sg/l))#SUKKUT tilluppaatit?
+;
 REMOVE:1679 1SgPoss IF (*1C V + 2Sg BARRIER V) ;
 #SELECT:1680 1SgPoss IF (*1C V + 1Sg BARRIER V ) ;    #disambiguerer 1SgPoss fra 2SgPoss
 #SELECT:1681 2SgPoss IF (*1 V + 2Sg BARRIER V ) ;
@@ -14008,7 +14028,7 @@ SELECT:Sel0091 ("uv") + Prefix/TA + Pron ; #Den hyppigste, taanna
 # Spatial med eller uden possessor?
 SELECT:Sel0092 Via - POSSESSUM IF (NEGATE -1 Rel)(NEGATE 0 Prop + KKUT) #sidste NEGATE for ikke at få Via på proprierne
 (NEGATE 0 ("juulli") + Abs LINK 1 3PlO)#Nunarsuarmi tamarmi immikkut ilisimasallit tamarmik JUULLIKKUT eqqarsarnartoqartingaatsiarpaat.
-
+(NEGATE 0 2SgPoss LINK *0 ("illit") OR 2Sg OR 2SgO)#Assorsuaq qutsavigaatsigit qitornannguagut SAPIISSUTSIKKUT annaassimagakkit, ilumullimi inuusuttut ilittut ittut nunaqarfitsinni amerlanerugaluarpata navianartut aamma ikinnerusimassagaluarput.
 ;
 #"qaaq" N Via Sg 3PlPoss @i-ADVL> eller "qaaq" N Via Pl @i-ADVL>
 
@@ -14424,7 +14444,10 @@ SELECT:99661 $$POS IF (1 CONJ-C - V LINK 1 $$POS)
  ;
 
 #Disambiguering af 1SgPoss og 2SgPoss rent stochastisk
-REMOVE:9967A 2SgPoss IF (0 1SgPoss) (NEGATE *-1 2Sg BARRIER 1Sg);
+REMOVE:9967A 2SgPoss IF (0 1SgPoss) (NEGATE *-1 2Sg BARRIER 1Sg)
+(NEGATE 0 2SgPoss LINK *0 ("illit") OR 2Sg OR 2SgO)#Assorsuaq qutsavigaatsigit qitornannguagut SAPIISSUTSIKKUT annaassimagakkit, ilumullimi inuusuttut ilittut ittut nunaqarfitsinni amerlanerugaluarpata navianartut aamma ikinnerusimassagaluarput.
+
+;
 REMOVE:9967B i2SgPoss IF (0 i1SgPoss) ;
 REMOVE:9967C 1SgPoss + Pl IF (0 1SgPoss + Sg)(NEGATE -1 ("una") + Pl) ;
 REMOVE:9967D i1SgPoss + iPl IF (0 i1SgPoss + iSg)(NEGATE -1 ("una") + Pl) ;
