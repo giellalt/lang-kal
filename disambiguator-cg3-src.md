@@ -499,7 +499,6 @@
 
 
 
-
 Jeg kan ikke løse problemet fornuftigt, så hermed en alt for snæver ad hoc-regel
 
 
