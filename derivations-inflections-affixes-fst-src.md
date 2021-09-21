@@ -37,7 +37,7 @@ Forkerte læsninger, når IV med TIP viderederiveres i HTR-lexicon, hvor yderlig
 ingerla+Gram/IV+TIP+Der/vv+Gram/TV+TIP+Der/vv+Gram/Db+Gram/Refl+QQIP+Der/vv+Gram/IV+NIQ+Der/vn
 blokeres vha. flaget @P.TIP.ON@ i IV-lexicon og blokeres af flaget @D.TIP@ i transitiv derivation.
 Ex
-ingerla via IV_voq_stem og får i LEXICON IV_voq2 tilføjet linien
+ingerla via IV_voq_stem og får i LEXICON  tilføjet linien
 +TIP@P.TIP.ON@+Der/vv:%>tip@P.TIP.ON@ HTR_C_TAQ_tsi ; 
 I HTR_C_TAQ_tsi tilføjes der yderligere TIP.
 For at forebygge dette tagges derivativkæder med TIP som første element med @D.TIP@
