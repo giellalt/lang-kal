@@ -1627,6 +1627,7 @@ LIST <Hprof> =
 (/"malinnaa"\ Gram/HV\ Gram/IV\ TUQ/l) # OBS kun Hprof når -1 politikkikkut
 (/"milup"\ Gram/IV\ TIP\ Der/vv\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TUQ/l)
 ("naalagaq" LIRSUR HTR TUQ)
+(/"nalu"\ Gram/TV\ NNGIT\ Der/vv\ Gram/TV\ TAQ/l)
 (/nuannisar"\ Gram/IV\ TIP\ Der/vv\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ LLAMMAK/l)
 (/"oqaaseq"\ QAR\ Der/nv\ Gram/IV\ TAR\ Der/vv\ Gram/IV\ TUQ/l)
 "politeeq"
@@ -1641,7 +1642,7 @@ LIST <inst> = "Brugseneeraq" "Pisiffik"
 (/"suli"\ Gram/IV\ VIK\ Der/vn\ QAR\ Der/nv\ Gram/IV\ VIK/l) "umiarsualivik" "universitet" ;
 LIST <L> = "sumiiffik" "ulloriaq";
 LIST <Lciv> = "Avannaata Kommunia" "kommune" ("Nuuk" Prop) ("Sisimiut" Prop);
-LIST <Lh> = "inissiaq" "umiarsualivik" ;
+LIST <Lh> = "inissiaq" (/"sakku"\ TUUQ\ Der/nn\ QAR\ Der/nv\ Gram/IV\ VIK/l) "umiarsualivik" ;
 LIST <Lpath> = "aqqut" "aqqusineq" ;
 LIST <Ltown> = "Sisimiut" ; #liste til brug for usikker numerus i possessor og subjektsperson
 LIST <mat> = "kuulti" "sølvi" ;
@@ -1809,7 +1810,7 @@ LIST TOOLTHING = "kikiak" "kikiassuaq" "qinnilik" ;
 
 LIST f-an_SG = "qaneq" "qingaq" ;
 
-LIST NUMHOVED = "cent" "centimeter" "cm" "dollar" "dollari" "euro" "franc" "grad" "gram" "hjerter" ("immikkoor" TUQ) "ini" "kapitali" "kapitel" "karsi" "kiilu" "kilo" "kilometer" "km" "klasse" "kulooq" "koruuni" "kr" "kr." "krone" "liter" "m" "meter" "milliardi" "milliard" "miliuuni" "mio" "mio." "million" "millioni" ("nalunaar" UTE) "niveau" "nr" "oori" "paragraf" "%" "procent" "procentpoint" "pct" "pct." ("qupper" NIQ) "ruder" "side" "sipaaq" ("titar" NIQ) (/".*vej/r) "øre" Sem/Unit ;
+LIST NUMHOVED = "cent" "centimeter" "cm" "dollar" "dollari" "euro" "fase" "franc" "grad" "gram" "hjerter" ("immikkoor" TUQ) "ini" "kapitali" "kapitel" "karsi" "kiilu" "kilo" "kilometer" "km" "klasse" "kulooq" "koruuni" "kr" "kr." "krone" "liter" "m" "meter" "milliardi" "milliard" "miliuuni" "mio" "mio." "million" "millioni" ("nalunaar" UTE) "niveau" "nr" "oori" "paragraf" "%" "procent" "procentpoint" "pct" "pct." ("qupper" NIQ) "ruder" "side" "sipaaq" ("titar" NIQ) (/".*vej/r) "øre" Sem/Unit ;
 LIST PROCENT = "%" "procent" "pct" "pct.";
 LIST NUMCOMP = "hundrede" "tusind" "million" "milliard" ; #anden del af sammensatte tal, famtan milliuuni
 LIST COMPOUND_N = "Windows" "Linux" "program" ;
@@ -4779,7 +4780,11 @@ SELECT:0073B Rel + Pl + 4SgPoss IF (1 3PlPoss)(*0 3Sg BARRIER VERB-NOTCONT)#Ikke
 (NEGATE *-1 Rel + Pl BARRIER (*) - Rel LINK *1 _TARGET_ + OBLIQUE LINK 1 3PlPoss)#Nunat killiit ISSITTUMI sakkutuuliinerat Ruslandimit ernummatigineqarpoq
 ;
 
-REMOVE:0073 Rel + 4SgPoss + Pl IF (NEGATE 1 3PlPoss)(NEGATE *1 TRANSVERB + Par + 3Pl OR TRANSVERB + Cau + 3Pl OR TRANSVERB + Con + 3Pl OR TRANSVERB + IteCau + 3Pl) ;
+REMOVE:0073C Rel + 4SgPoss + Pl IF (NEGATE 1 3PlPoss)(NEGATE *1 TRANSVERB + Par + 3Pl OR TRANSVERB + Cau + 3Pl OR TRANSVERB + Con + 3Pl OR TRANSVERB + IteCau + 3Pl) ;
+
+REMOVE:0073D Rel + 4SgPoss + <Lh> IF (-1 Sem/Geo + Lok LINK 1 _TARGET_ + Lok) #Pituffimmi SAKKUTOOQARFIMMI Danmarkshavn-imilu aasaanerani nalunaaquttap atuutsinneqarnissaanut tunngasumik aalajangersaasoqarneq ajorpoq.
+(NEGATE 1 POSSESSUM3);
+
 #En forebyggelse af fejlagtige removes ved possessor med apposition
 SELECT:0074A FAM + Rel + 4PlPoss + Sg IF (1C Prop + Rel LINK 1 3SgPoss);
 
@@ -5244,11 +5249,13 @@ REMOVE:0182B ("soorlu") + Adv IF (1 ("aamma") LINK *1 Par BARRIER VERB-NOTCONT L
 REMOVE:0182C ("soorlu") + Conj IF (*1 Par BARRIER VERB-NOTCONT LINK NEGATE *1 VFIN) 
 (NEGATE 0 Conj LINK NEGATE *0 VFIN)#soorlu eqiasuttunga.
 ;
-REMOVE:0182D ("soorlu") + Adv IF (0 ("soorlu") + Conj LINK *1 Par - %AmbiguøsPar BARRIER V - %AmbiguøsPar LINK 1 TTAAQ LINK *1 VFIN); #SOORLU isigisat qalipagassaqqissut tappiffigisaqigai taamattaaq pinngortitat nipaannut tutsarilluinnarpoq. 
-REMOVE:0182E ("soorlu") + Adv IF (-1 BOS OR KOMMA)(*1 Par BARRIER V LINK NEGATE *1 VFIN);
-REMOVE:0182F ("soorlu") + Conj IF (0 Adv LINK -*1W ("ip") + VFIN)(1 Abs); #paaratiisi ikkumaarpoq SOORLU nunaqarfik pinngorsarfiga.
-REMOVE:0182G ("soorlu") + Adv IF (0 Conj LINK *1 Par - %AmbiguøsPar BARRIER VERB-NOTCONT); #SOORLU ajoqersoraatit taama iliussaatit.
-REMOVE:0182H ("soorlu") + Conj IF (*-1 N BARRIER (*) - KOMMA LINK *1 _TARGET_ + Adv LINK *1 N LINK NEGATE *1 VERB-NOTCONT); #Apeqquteqaatit aallaavigalugit oqaluuserisassat siunnersuutillu saniatigut aamma oqaluuserineqassapput naalakkersuisut nassuiaataat, SOORLU nunanut allanut kiisalu 2005-imi aningaasaqarnikkut ingerlatsineq pillugu nassuiaatit.
+
+REMOVE:0182D ("soorlu") + Conj IF (*-1 LIK_QAR + VFIN BARRIER (*) - KOMMA LINK *1 ("soorlu" Adv) LINK *1 Abs LINK NEGATE *1 V); #Inunnik ataasiakkaanik suliniuteqartoqalerpoq, SOORLU tamatta nalunngisarput, Kim Godtfredsen.
+REMOVE:0182E ("soorlu") + Adv IF (0 ("soorlu") + Conj LINK *1 Par - %AmbiguøsPar BARRIER V - %AmbiguøsPar LINK 1 TTAAQ LINK *1 VFIN); #SOORLU isigisat qalipagassaqqissut tappiffigisaqigai taamattaaq pinngortitat nipaannut tutsarilluinnarpoq. 
+REMOVE:0182F ("soorlu") + Adv IF (-1 BOS OR KOMMA)(*1 Par BARRIER V LINK NEGATE *1 VFIN);
+REMOVE:0182G ("soorlu") + Conj IF (0 Adv LINK -*1W ("ip") + VFIN)(1 Abs); #paaratiisi ikkumaarpoq SOORLU nunaqarfik pinngorsarfiga.
+REMOVE:0182H ("soorlu") + Adv IF (0 Conj LINK *1 Par - %AmbiguøsPar BARRIER VERB-NOTCONT); #SOORLU ajoqersoraatit taama iliussaatit.
+REMOVE:0182I ("soorlu") + Conj IF (*-1 N BARRIER (*) - KOMMA LINK *1 _TARGET_ + Adv LINK *1 N LINK NEGATE *1 VERB-NOTCONT); #Apeqquteqaatit aallaavigalugit oqaluuserisassat siunnersuutillu saniatigut aamma oqaluuserineqassapput naalakkersuisut nassuiaataat, SOORLU nunanut allanut kiisalu 2005-imi aningaasaqarnikkut ingerlatsineq pillugu nassuiaatit.
 
 
 SELECT:0183A Part OR Interj IF (-1 BOS)
