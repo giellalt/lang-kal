@@ -191,6 +191,8 @@ Flag diacritics til verber med kun pluralis i objekterne
 
 Test af boolsk variabel til ad hoc blokeringer
 
+Test af boolsk variabel til ad hoc blokering af Gram/Exclm. stems sættes Off og derivation On
+
 Off-flag sættes i verbs på transitive verber med usandsynlig Refl. On-flag på taggen Gram/Refl i gennemgangslexica
 
 
