@@ -495,9 +495,7 @@
 
 
 
-
 Jeg kan ikke løse problemet fornuftigt, så hermed en alt for snæver ad hoc-regel
-
 
 
 
@@ -8487,6 +8485,7 @@ Jeg kan ikke løse problemet fornuftigt, så hermed en alt for snæver ad hoc-re
 
 * * *
 <small>This (part of) documentation was generated from [../src/cg3/disambiguator.cg3](http://github.com/giellalt/lang-kal/blob/main/../src/cg3/disambiguator.cg3)</small>
+
 
 
 
