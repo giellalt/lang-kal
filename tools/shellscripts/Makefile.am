@@ -12,5 +12,6 @@ bin_SCRIPTS=ukal-gt.sh \
 	kal-generate \
 	kal-hybrid-split \
 	kal-hybrid-merge \
+	kal-lu-prefix \
 	kal-tokenise \
 	# Let this line end the definition
