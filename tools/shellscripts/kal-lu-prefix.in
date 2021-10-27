@@ -16,7 +16,7 @@ BEGIN {
 use open qw( :encoding(UTF-8) :std );
 use feature 'unicode_strings';
 
-if (defined $ENV{'KAL_HYBRIDS'} && !$ENV{'KAL_HYBRIDS'}) {
+if (!defined $ENV{'KAL_LU_PREFIX'} || !$ENV{'KAL_LU_PREFIX'}) {
    while (<STDIN>) {
       print;
    }
@@ -46,7 +46,7 @@ if (!$bin || !-x $bin) {
    die("No usable hfst-optimized-lookup given or found!\n");
 }
 if ($opt_verbose) {
-   print STDERR "kal-hybrid-split: Using ${bin}\n";
+   print STDERR "kal-lu-prefix: Using ${bin}\n";
 }
 
 my $prefix = '@prefix@';
@@ -66,7 +66,7 @@ if (!$fst || !-s $fst) {
    die("No usable generator.hfstol given or found!\n");
 }
 if ($opt_verbose) {
-   print STDERR "kal-hybrid-split: Using ${fst}\n";
+   print STDERR "kal-lu-prefix: Using ${fst}\n";
 }
 
 my $t = "${bin} -p -u ${fst}";
@@ -129,22 +129,11 @@ sub call_generator {
 }
 
 sub print_cohort {
-   my ($chyb, $nhyb, $wf, @rs) = @_;
-
-   my $tag = '';
-   if ($nhyb) {
-      if ($opt_fst) {
-         $tag = '+';
-      }
-      else {
-         $tag = ' ';
-      }
-      $tag .= "Hyb/$chyb-$nhyb";
-   }
+   my ($wf, @rs) = @_;
 
    if ($opt_fst) {
       foreach my $r (sort(@rs)) {
-         print "$wf\t$r$tag\n";
+         print "$wf\t$r\n";
       }
       print "\n";
    }
@@ -157,56 +146,45 @@ sub print_cohort {
          $r =~ s@^([^+]+)@"$1"@;
          # Turn + into spaces
          $r =~ s@\+@ @g;
-         print "\t$r$tag\n";
+         print "\t$r\n";
       }
    }
 }
 
-sub split_cohort {
-   my ($orig, $wform, $nhyb, @rs) = @_;
+my %splits = (
+   'CONJ-LU' => ['aamma', ('aamma+Conj')],
+   'CONJ-LI' => ['kisianni', ('kisianni+Conj')],
+   'CONJ-LUUNNIIT' => ['imaluunniit', ('imaluunniit+Conj')],
+   );
 
-   my $split = $nhyb;
-   if ($split) {
-      # Ensure that all readings have the same number of Gram/Hyb
+sub split_cohort {
+   my ($orig, $wform, @rs) = @_;
+
+   my $conj = '';
+   if ($orig =~ / (CONJ-(?:LU|LI|LUUNNIIT))\b/) {
+      $conj = $1;
+      # Ensure that all readings have the same conj
       foreach my $r (@rs) {
-         if ($nhyb != scalar(() = ($r =~ m@\+Gram/Hyb@g))) {
-            $split = 0;
+         if ($r !~ /\b\Q$conj\E\b/) {
+            $conj = '';
             last;
          }
       }
    }
 
-   if ($split) {
-      my %rds = ();
-      foreach my $r (@rs) {
-         my @ss = split(m@\Q+Gram/Hyb+\E@, $r);
-         for (my $i=0 ; $i<=$nhyb ; ++$i) {
-            $rds{$i}{$ss[$i]} = 1;
-         }
+   if ($conj) {
+      # Print the split off conjunction before the current cohort
+      print_cohort($splits{$conj}[0], $splits{$conj}[1]);
+
+      # Regenerate wordform of the current cohort without the conjunction
+      foreach (@rs) {
+         s/\+\b\Q$conj\E\b//;
       }
-
-      # Print first cohort with the verbatim input word form, so that we don't lose it
-      print_cohort(1, $nhyb+1, $wform, keys(%{$rds{0}}));
-
-      # Print subsequent cohorts with a generated word form, or first tag as word form
-      for (my $i=1 ; $i<=$nhyb ; ++$i) {
-         my @rds = sort(keys(%{$rds{$i}}));
-         my ($wf) = ($rds[0] =~ m@^([^+]+)@);
-         foreach my $r (@rds) {
-            my $gen = call_generator($r);
-            if ($gen =~ m@\t\+\?@) {
-               my $t = $r;
-               $t =~ s@^([^+]+)\+@$1+Use/Hybrid+@;
-               $gen = call_generator($t);
-            }
-            if ($gen !~ m@\t\+\?@) {
-               ($wf) = ($gen =~ m@\t([^\n]+)@);
-               last;
-            }
-         }
-
-         print_cohort($i+1, $nhyb+1, $wf, @rds);
+      my $gen = call_generator($rs[0]);
+      if ($gen !~ m@\t\+\?@) {
+         ($wform) = ($gen =~ m@\t([^\n]+)@);
       }
+      print_cohort($wform, @rs);
    }
    else {
       print $orig;
@@ -214,7 +192,6 @@ sub split_cohort {
 }
 
 my $wform = '';
-my $nhyb = 0;
 my $orig = '';
 my @rs = ();
 
@@ -229,22 +206,19 @@ if ($opt_fst) {
 
       if (m@^([^\t]+)\t([^\t]+)@) {
          if ($wform && @rs && $1 ne $wform) {
-            split_cohort($orig, $wform, $nhyb, @rs);
+            split_cohort($orig, $wform, @rs);
             $orig = '';
-            $nhyb = 0;
             @rs = ();
          }
          $orig .= "$_\n";
          $wform = $1;
          push(@rs, $2);
-         $nhyb = max($nhyb, scalar(() = m@\+Gram/Hyb@g));
       }
       else {
          if ($wform && @rs) {
-            split_cohort($orig, $wform, $nhyb, @rs);
+            split_cohort($orig, $wform, @rs);
             $wform = '';
             $orig = '';
-            $nhyb = 0;
             @rs = ();
          }
          print "$_\n";
@@ -257,14 +231,13 @@ else {
 
       if (/^"<(.+)>"/) {
          if ($wform && @rs) {
-            split_cohort($orig, $wform, $nhyb, @rs);
+            split_cohort($orig, $wform, @rs);
          }
          elsif ($wform) {
             print "\"<$wform>\"\n";
          }
          $wform = $1;
          $orig = "$_\n";
-         $nhyb = 0;
          @rs = ();
          next;
       }
@@ -283,14 +256,13 @@ else {
       else {
          # Not a CG reading, so assume we are not inside a cohort any longer
          if ($wform && @rs) {
-            split_cohort($orig, $wform, $nhyb, @rs);
+            split_cohort($orig, $wform, @rs);
          }
          elsif ($wform) {
             print "\"<$wform>\"\n";
          }
          $wform = '';
          $orig = '';
-         $nhyb = 0;
          @rs = ();
          print "$_\n";
          next;
@@ -301,13 +273,10 @@ else {
       # Remove prefix from internal POS tags
       while (s/\+$i($mp|$ap)(\+|$)/+$1$2/g) {}
 
-      # Store highest number of Gram/Hyb
-      $nhyb = max($nhyb, scalar(() = m@\+Gram/Hyb@g));
-
       push(@rs, $_);
    }
 }
 
 if ($wform && @rs) {
-   split_cohort($orig, $wform, $nhyb, @rs);
+   split_cohort($orig, $wform, @rs);
 }
