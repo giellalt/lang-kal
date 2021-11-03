@@ -1373,7 +1373,7 @@ SET ContObj& = ContObjSg OR ContNegObjSg OR ContObjPl OR ContNegObjPl ;
 # Partikler
 # ---------
 LIST KONJUNKTION = ("aamma" Conj) "kisianni" "imaluunniit" ("immaqa" CONJ-LUUNNIIT ) ("kiisa") ("kiisalu") ;#"taava" ; Taava er normalt adverbiel.
-SET CONJ-C = LU | LUUNNIIT | LI | KONJUNKTION | CONJ-LUUNNIIT | Gram/Conj-encl | CONJ-LU | ("aammalu") | ("kiisa") | ("kiisalu"); #Sideordnende konjunktioner, alenestående og efterhængte partikler
+SET CONJ-C = LU | LUUNNIIT | LI | KONJUNKTION | CONJ-LUUNNIIT | Gram/Conj-encl | CONJ-LU | ("aammalu") | ("aamma" Conj) | ("imaluunniit" Conj) | ("kiisa") | ("kiisalu"); #Sideordnende konjunktioner, alenestående og efterhængte partikler
 SET CONJ-S = Conj - CONJ-C ; #Underordnende konjunktioner
 SET ASSERSUUTIGALUGU = ("assersor") + UTE + GE + CONT ;
 SET ILANNGUPnAFF = ("ilanngup") - AFFINGERET + CONT ;
@@ -5330,8 +5330,10 @@ SELECT:0197X DivPron + &&DivPronOBJ IF (*1 &&DivPronOBJ) ;
 SELECT:0197 DivPron + Nom + $$PERSON IF (*1C INTRANSVERB + $$PERSON BARRIER KOMMA) ;
 
 SELECT:0198 Gram/Pers + Pron + Rel IF (1 Abs LINK 1 POSSESSUM12) ;
-SELECT:0199 Gram/Pers + Pron + Rel IF (*1 POSSESSUM12 BARRIER (*) - OBLIQUE)(NEGATE 1 ("aak") + Rel + 1SgPoss)  #mange forkerte hits på aamma
+SELECT:0199 Gram/Pers + Pron + Rel IF (*1 POSSESSUM12 BARRIER (*) - OBLIQUE)
+(NEGATE 1 ("aak") + Rel + 1SgPoss)  #mange forkerte hits på aamma
 (NEGATE 0 Abs LINK 1 OBLIQUE + CONJ-C LINK 1 Abs + 1PlPoss LINK *1 INTRANSVERB + 3Pl OR TRANSVERB + 1PlO)#Nuannareqaarput UAGUT suliniutissamillu siunnersuusiarput piffissaqartissinnaagatsigut
+(NEGATE 0 Gram/Pers - CONJ-C LINK 1 CONJ-C)#UANGA nuliaralu aallassaagut.
 ;
 REMOVE:0200 Gram/Int IF ( 0 Gram/Indef ) (NEGATE *1 ("\?")) ;
 SELECT:0201 Gram/Pers + Pron + Abs + 1Sg IF (*1 INTRANSVERB + 1Sg)(NEGATE 1 1SgPoss); #vælg uanga+Abs for uanga+Rel
@@ -5358,7 +5360,11 @@ SELECT:0211A Gram/Pers + Pron + Rel + $$PN + &&PN& IF (-1 BOS) (*1 VFIN BARRIER 
 
 
 
-SELECT:0212 Gram/Pers + Pron + Abs IF (*1 INTRANSVERB OR 1SgO OR 2SgO BARRIER V);
+SELECT:0212 Gram/Pers + Pron + Abs IF (*1 INTRANSVERB OR 1SgO OR 2SgO BARRIER V)
+(NEGATE 0 Rel LINK 1 Rel + CONJ-C LINK 1 1PlPoss)#Tillinniartoqareernerata aqaguani namminersorlutik oqartussat allaffissuata silataani qimmeralu misissuivugut, UANGA qimmimalu misissuiffipput titartagaanut naapertuuppoq.
+(NEGATE 0 Rel LINK 1 CONJ-C LINK 1 Rel LINK 1 1PlPoss)#Som NEGATE ovenfor men med konjunktion i stedet for tilhængspartikel
+
+;
 SELECT:0213 Gram/Int + Pron + U + Int + 3Pl IF (0 ("qassi") + U); #Næppe forsamlingshus eller bjergkedel
 
 REMOVE:0213 Gram/Pers + Pron + Abs + 1Sg IF (*1 1SgPoss BARRIER V OR CONJ-C) ;
