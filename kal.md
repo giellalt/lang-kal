@@ -3643,7 +3643,6 @@
 
 
 
-
 #Vistnok overflødig. Må skulle mappes @CONT->N i stedet, parataksen giver jo sig selv.
 
 
@@ -5196,6 +5195,8 @@
 
 
 Jeg kan ikke løse problemet fornuftigt, så hermed en alt for snæver ad hoc-regel
+
+
 
 
 
