@@ -62,7 +62,8 @@ Fil for at generere de centrale morfologiske processer i vor grønlandske analys
  ***+Sem/Mailadresse** tag til adresser af typen cccc@cccc.cc
  ***+Sem/Mask** Forsøg med en ny tag til fornavne af maskulinum
  ***+Sem/ModeOfMovement** <fn:ModeOfmovement> !#nâgpoĸ
- * **+Sem/Time** = Temporal particle !The random adverbial 'phrases' like -riutaa -isaa etc.
+ *** +Sem/Remove	** = atserivoq mods. atsiivoq
+ ***+Sem/Time** = Temporal particle !The random adverbial 'phrases' like -riutaa -isaa etc.
  ***+Sem/Unit** = Unit !Til besværlige låneord som 'time' etc., der optræder absolut
  ***+Sem/Url** tag til adresser af typen www.ccc.cc
  *** +Sem/misse ** tag til at markere usikker possessor for misse
