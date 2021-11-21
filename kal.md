@@ -13284,6 +13284,11 @@ For at forebygge dette tagges derivativkæder med TIP som første element med @D
 Bemærk at D-flaget principielt kun skal anvendes når TIP er første derivativ i kæden. Det kan nemlig ikke udelukkes, at der på et senere
 tidspunkt kan tilføjes yderligere TIP-er 
 
+
+SÆRLIGT OM Gram/Refl VED TRANSITIVERNE (PL20211121 forsøg)
+Foranlediget af ord som 'attorteqqassutigaara', hvor Refl skaber problemer for både oversættelserne
+og videre affingering introduceres strengen +TIP+Der/vv+Gram/Db+Gram/Refl som går til XItX ;
+
 SURE er sjældent Db, men  hos Ole Brandt finder vi eksempler som ".. sunaaffa Pikiulinnguarmiut pasillerai (implicit Pikiulinnguarmiunut 
 nukani] pilerngullugu nakkartissimasoralugu.
 
