@@ -257,6 +257,8 @@ gennemgangskatalog for up-stammer, der kræver replaciv sandhi
 
  * LEXICON XIiXmorf2   skal få 200 medl.
 
+ * LEXICON XIiXmorf_UdenTIP   som XIiXmorf, men uden TIP for at blokere rekursive TIP
+
  * LEXICON XIirXmorf_stem   type taseqqerpoq
 
  * LEXICON XIirXmorf   til iR såsom *er*

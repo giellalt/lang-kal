@@ -8521,8 +8521,13 @@ Jeg kan ikke løse problemet fornuftigt, så hermed en alt for snæver ad hoc-re
 
 
 
+
+
+
+
 * * *
 <small>This (part of) documentation was generated from [../src/cg3/disambiguator.cg3](http://github.com/giellalt/lang-kal/blob/main/../src/cg3/disambiguator.cg3)</small>
+
 
 
 
@@ -13497,6 +13502,8 @@ gennemgangskatalog for up-stammer, der kræver replaciv sandhi
  * LEXICON XIiXmorf 
 
  * LEXICON XIiXmorf2   skal få 200 medl.
+
+ * LEXICON XIiXmorf_UdenTIP   som XIiXmorf, men uden TIP for at blokere rekursive TIP
 
  * LEXICON XIirXmorf_stem   type taseqqerpoq
 
