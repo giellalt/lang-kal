@@ -12186,6 +12186,7 @@ Jeg kan ikke løse problemet fornuftigt, så hermed en alt for snæver ad hoc-re
 
 
 
+
 #Vistnok overflødig. Må skulle mappes @CONT->N i stedet, parataksen giver jo sig selv.
 
 
@@ -13540,6 +13541,8 @@ PL 20180718. Følgende er et særligt lexicon til ip i stedet for tidligere LEXI
 
 
  * LEXICON TV  Forudsættes tagget via HTR
+
+ * LEXICON TV_UdenTIP  Forudsættes tagget via HTR
 
  * LEXICON TV_vaa  Forudsættes tagget via HTR
 

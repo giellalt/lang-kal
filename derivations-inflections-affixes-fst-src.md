@@ -295,6 +295,8 @@ PL 20180718. Følgende er et særligt lexicon til ip i stedet for tidligere LEXI
 
  * LEXICON TV  Forudsættes tagget via HTR
 
+ * LEXICON TV_UdenTIP  Forudsættes tagget via HTR
+
  * LEXICON TV_vaa  Forudsættes tagget via HTR
 
  * LEXICON XTuteXmorf  type oqalungusiuppaa. Forudsættes tagget via HTR
