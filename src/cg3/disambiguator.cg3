@@ -1757,11 +1757,11 @@ LIST MEDIER = "Atuagagdliutit" "atuagagdliutit" "Atuagalliutit" "aviisi" "Facebo
 LIST OTHERTIME = #(Num Lok Sg 3PlPoss)
 Sem/Time %Othertime ("aallar" QQAAR UTE) ("aasaq") "akunneq" ("aqagu") (/"atuup"\ Gram/IV\ LIR\ Der/vv\ Gram/IV\ NIQ/l) 
 (/"inuk"\ U\ .*\ NIQ/l) # blokerer uønsket forsøgt udkommenteret 20210602
-("ippassaq") "juulli" ("kingulleq") ("kingu" NIQ) ("kinguneq") ("kinguninnguaq") ("kingusip") "kvartal" ("maanna") "minut"
+("ippassaq") "juulli" ("kingulleq") ("kingu" NIQ) ("kinguneq") ("kinguninnguaq") ("kingusip") "kvartal" ("maanna") "minut" "min."
 #(/"naa"\ Gram/IV\ NIQ/l)
   "naggat" ("nali") (/"piffik"\ SSAQ/l) "poorski" ("qaammat") ("qangali") "qangangaatsiaq" ("qeqqa") ("sapaat") ("sapaatip-akunneq") ("sekund") (/"silattor"\ Gram/IV\ NNGIT\ Der/vv\ Gram/IV\ NIQ/l) "sivisoorsuaq" ("sivisu") "sivitsunngitsoq" ("siulleq") (/"siu"\ LLIQ\ Der/nn\ PAAQ/l) ("siuneq") ("siorna") "siornatigut" (/"suli"\ Gram/IV\ NNGIT\ Der/vv\ Gram/IV\ VIK/l) ("taarsi") "time" "tiimi" ("ualeq") ("ukiaq") "ukiaru" ("ukiar" TUQ) ("ukiartoq") ("ukioq")  ("ullaa") "ullaaq" "ullaaralaaq" "ullaaralaannguaq" ("ullaaq" RALAAQ NNGUAQ) "ullaaror" "ullaassaq" ("ulloq") ("ullumi") ("unnuaq") "unnuaqeqqa" ("unnuk") ("unnup" Par) "upernaaq";
 
-LIST TIMEUNIT = "minut" "sekund" "time" ;
+LIST TIMEUNIT = "minut" "min." "sekund" "time" ;
 SET CLOCK = (Num Trm) - AFFINGERET | ("qiteq" Trm 3SgPoss) ;
 SET TIMENOUN = UGEDAGE | OTHERDAY | SEASON | HOLIDAY | MAANED | CLOCK | OTHERTIME | ("[0123456789]{4}"r);
 SET TIME = TEMPUSVERB | TIMEVERB | OTHERTIME | TIDSPARTIKEL ;
@@ -2816,6 +2816,10 @@ REMOVE:tidlig0700 (Rel Pl) IF (0 (Abs Pl) LINK *1 VFIN + 3Pl BARRIER VERB-NOTCON
 REMOVE:tidlig0705 ("[0123456789]{4}"r) + Num + Pl + $$KASUS IF (0 ("[0123456789]{4}"r) + Num + Sg + $$KASUS)
 (NEGATE 1 NUMHOVED)
 ;
+
+REMOVE:tidlig0710 Par IF (*-1 BOS LINK 1 Sem/Hum + Abs + $$NUMERUS LINK *1 _TARGET_ + Der/vn + Abs + $$NUMERUS BARRIER (*) - KOMMA - Num)(1 EOS) #Ane, 43, ANGERLARSIMAANNARTOQ.
+(NEGATE 0 PASSIV OR LIR OR NIR)#Qulequtaq: Homo Sapienne ISIGINNAARTITSISSUTIGINEQALERSOQ.
+;
 #SUBSTITUTE:tidlig0580 (Abs) (Rel) TARGET (/"ataaseq"\ Num\ Abs/l) OR (/"01"\ Num\ Abs\ Sg/l) IF (1 ("misse") + POSSESSUM3); #Nal. ATAASEQ miss.
 SUBSTITUTE:tidlig0581 (Abs) (Ins Orht/Alt) TARGET (/"cm"\ OLang/DAN\ N\ Abs/l) IF (-1 Num LINK 2 LIK_QAR); #Angut 17-init missaannik ukiulik 170-175 CM angissusilik, tuattoq, sakiaani allannertalimmik nasartalimmik tujuululik, koorpunik qarlilik.
 SUBSTITUTE:tidlig0582 (3SgPoss) (3PlPoss) TARGET (/"misse"\ N\ Ins\ Sg\ 3SgPoss/l) IF (-1 Sem/Unit + Rel + Pl); #Attavik 130 km-it MISSAANIK isorartussuseqassaaq.
@@ -3083,7 +3087,6 @@ SUBSTITUTE:adv39lux (LU)(ADV-LU) TARGET LU + Par IF (NEGATE *0C Par) ;
 
 SUBSTITUTE:adv40lux (LU)(ADV-LU) TARGET LU + CONT + <fn:Take/Bring> IF (1 V + <fn:Talk>); #Rasmus atuaqatigiit qiimasortaat, sanianut ingilluni taliatigut TIGULLUGULU oqarpoq.
 
-
 SUBSTITUTE:conj1li (LI)(CONJ-LI) TARGET LI + $$MOOD IF (-*1 $$MOOD BARRIER (*) - KOMMA);
 SUBSTITUTE:conj2li_1 (LI)(CONJ-LI) TARGET LI IF (0 Sem/Hum) (-*1 BOS BARRIER (*) - FIRSTNAME);
 #Lars ØSTERGAARDILI oqarpoq taamaanngitsoq.
@@ -3138,6 +3141,7 @@ REMOVE:conjJ ("aamma") + Conj IF (*-1 VFIN BARRIER VERB-NOTCONT LINK *1 _TARGET_
 ;
 REMOVE:conjK ("aamma") + Conj IF (-1 CONJ-C LINK *-1 VFIN BARRIER (*) - KOMMA); #Taamali Biina eqqarsariarami kiinanngua inequnartoq aappillerpoq, uummataalu AAMMA soorlu sumik kapineqartoq.
 
+REMOVE:conjL ("aamma") + Conj IF (0 Adv LINK 1 ("illit") LINK NEGATE *1 2Pl BARRIER V);   #Uanga kaffi, Jaaku AAMMA illit?
 REMOVE:7254 Adv + ("kisianni") IF (-1 BOS) ; #Kisianni aramaannarniarit piffissaatillugu.
 
 SUBSTITUTE:Sub0001 (LU) (CONJ-LU) TARGET (*) ;
@@ -3748,12 +3752,15 @@ REMOVE:0001P ("\\p{Lu}.*"r) + Prop + PROP_VS_APPELLATIV IF (-1 BOS)(0 ("([a-z].*
 ; 
 
 REMOVE:0001Q ("(\\p{Lu}.*)"r) + Fornavn IF (0 N)#(NEGATE *0CW (VSTR:"%l$1"r))
-(-1 BOS) (NEGATE 1 Prop)(NEGATE 0 Hmyth LINK *1 2Sg) #Kun personnavne, ikke institutioner som Pinngortitaleriffik. Forbehold for vokativer
+(-1 BOS) 
+(NEGATE 1 Prop)
+(NEGATE 0 Hmyth LINK *1 2Sg) #Kun personnavne, ikke institutioner som Pinngortitaleriffik. Forbehold for vokativer
 (NEGATE 0 GUUQ) #Alliarooruna arnaq silatoorsuaq sullerissorsuarlu, (Alliaq, ikke Als LIAQ)
 (NEGATE 0 ("Mikkel") OR ("Anna") OR ("Manu") OR ("Minik") OR ("Nuka") OR ("Najannguaq") OR ("Aani") ) #Ad hoc for ikke at slette Mikkel til fordel for bynavnet Mikkeli eller Anna for pron anna samt et par meget frekvente
 (NEGATE 0 FIRSTNAME LINK *1 Sem/Hum + Sur BARRIER (*) - FIRSTNAME - Gram/Abbr)
 (NEGATE 0 ("Naja") - POSSESSUM)#Naja er meget frekvent
 (NEGATE 0 ("Nuunu") - POSSESSUM) #nuunu uden poss. i første position usandsynlig og Nuunu alm. pigenavn
+(NEGATE 0 (Prop Abs Sg) LINK *1 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO BARRIER V )#AANEERAQ oqaluutilaarlara
 ; #Laver alt for mange fejl, fx Flemming<Geo> illumik piareersaavoq. Der mangler nok en betingelse? Proprier disambigueres senere.
 
 REMOVE:0001QA ("nuunu") + N - POSSESSUM IF (0 ("Nuunu") + Sem/Fem + Prop);
@@ -3773,6 +3780,9 @@ REMOVE:0001T ("Seqineq") + Sem/Hum IF (0 ("seqineq") + N)(-*1 BOS BARRIER (*) - 
 #;
 
 SELECT:0001U TITEL + $$NUMERUS + $$KASUS IF (0 Par)(1 Prop + $$NUMERUS + $$KASUS) ; #ILINNIARTITSISOQ Jensen ilaaqatigaa
+
+REMOVE:0001V1 ("aaneq") IF (0 (Prop Abs Sg) LINK *1 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO BARRIER V ); #AANEERAQ oqaluutilaarlara
+REMOVE:0001V2 (/"aa"\ Gram/[IT]V\ \(Gram/Pass\ \)?NIQ/l) IF (0 (Prop Abs Sg) LINK *1 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO BARRIER V ); #AANEERAQ oqaluutilaarlara
 
 #HNOUN NP i citationstegn med og uden komma
 SELECT:0040GX Abs IF (1 Abs)(2 KOMMA)(3 ("”"))(*1 ORATIOOBLVERB) ;
@@ -12513,7 +12523,9 @@ REMOVE:7271B Rel + Pl IF (1 Der/vn + Abs + Pl LINK 1 Rel + Pl LINK 1 3PlPoss LIN
 REMOVE:Int0250 Conj IF (0 Adv) (*-1 TIME BARRIER (*) - Pron) #Ukioq manna aamma korpus tamanut atortunngortussatut siunniuttariaavoq.
 (NEGATE *1 Par BARRIER V OR KOMMA LINK NEGATE *1 VFIN BARRIER KOMMA)#Tamanna 1950-ikkunnili pimoorunneqaleraluartoq namminersornerulernerup kingorna SOORLU pingaartinneqarunnaariartortoq.
 ;
-REMOVE:Int0251C Adv IF (0 Conj)(1 $$KASUS) (-1 $$KASUS) ;
+REMOVE:Int0251C Adv IF (0 Conj)(1 $$KASUS) (-1 $$KASUS)
+(NEGATE 0 ("aamma") LINK 1 Gram/Pers LINK NEGATE *0 V)
+ ;
 REMOVE:Int0252 Conj IF (0 Adv) (*-1C $$KASUS BARRIER (*)) (NEGATE *1 $$KASUS) #Ajutoorneq taamaattoq nunamik mingutsitsisinnaavoq.
 (NEGATE *1 Par BARRIER V OR KOMMA LINK NEGATE *1 VFIN BARRIER KOMMA)#Tamanna 1950-ikkunnili pimoorunneqaleraluartoq namminersornerulernerup kingorna SOORLU pingaartinneqarunnaariartortoq.
 ;
@@ -15518,7 +15530,9 @@ REMOVE:9969H ("soorlu") + Pali IF (0 ("soorlu") + Conj)(1 ("aamma"));#Apeqqutit 
 
 
 
-REMOVE:9969J ("aamma") + Adv IF (0 Conj LINK -1 Abs LINK 1 _TARGET_ LINK *1 Abs BARRIER (*) - OBLIQUE);
+REMOVE:9969J ("aamma") + Adv IF (0 Conj LINK -1 Abs LINK 1 _TARGET_ LINK *1 Abs BARRIER (*) - OBLIQUE)
+(NEGATE 1 Gram/Pers LINK NEGATE *0 V)
+;
 
 
 
