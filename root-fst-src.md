@@ -199,6 +199,9 @@ Off-flag sættes i verbs på transitive verber med usandsynlig Refl. On-flag på
 
 Off-flag på verber som akuaa, der ikke må lave metatese på NIQ
 
+Nyt flag 20211214 for at forebygge *taakkuunngitsoq og *taannaanngitsut
+
+
 Off-flag på nominer, der SKAL opføre sig replacive som pilersaarusiorpoq og aqqusinniorpoq
 
 Off-flag i nouns og Off-flag i der-inf  når TUR og TUGAQ ikke må assibileres og On-flag, når de skal assibileres. Også for at forebygge assibilering efter HTR på nnip
