@@ -62,7 +62,11 @@ LIST Syn/Stop = Syn/Stop ; #Tag til steder, hvor longest match skal blokeres
 #MAP:M_specie01 @<APPOS TARGET BIRDS + Sg IF (*-1 ("timmiaq") + Pl BARRIER (*) - BIRDS - KOMMA) ;#Timmissat TUULLIK KIINAALEERARLU Kalaallit Nunaanniinnerat eqqarsaatigalugu piffimmi siamasinngitsumi amerlapput.
 #
 
-SETPARENT:M_parentes01 @<APPOS + (*) IF
+#En særlig regel til parentes til komplekse klokkeslet for at sikre korrekt dependenser
+SETPARENT:M_parentes01A @<APPOS + Num + Abs IF (1 (")"))
+TO (-1 ("(") LINK *-1A Num + Trm BARRIER (*) - (Num Abs) - ("tanneq"));#Unnuaq ataaseq hotelimi sinippoq aqaguanilu nal. qulinut tanneq qulit (09.50) helikopterimut ilaalluni Sisimiunut aallarpoq.
+
+SETPARENT:M_parentes01B @<APPOS + (*) IF
 (NOT p (*))
 (-1 ("\("))
 (1 ("\)")) 
@@ -2882,14 +2886,17 @@ TO (*1 VFIN);
 #MAP:M0080AX @CL-ADVL> TARGET ("kingu" NIQ) + 3SgPoss + Abs IF (-1 Rel) ; #20170425 skummel regel, der måske skal begrænses
 #MAP:M0080AY @CL-ADVL> TARGET ("taava") + MI IF (*1 VFIN OR ("...")) ;
 #MAP:M0080AZ @CL-ADVL> TARGET ("taava") IF (*1 V OR FOKUSPART + Adv) ; #Taava(lu) er vist altid sætningsadverbiel.
-#MAP:0080AVX @CL-ADVL> TARGET TIME + Abs - VERBALNOMEN - POSSESSUM IF (-1 Trm LINK -1 ("sapaat") + Rel LINK -1 BOS) 
-#(NEGATE *1 TIMEVERB OR TRANSVERB)(NEGATE *1 OBJVERB) ;#Sap. akunneranut TIIMIT sisamat ilinniartarpoq nås ikke af M0080AV
-#MAP:M0080AV @CL-ADVL> TARGET TIME + Abs + $$NUMERUS - VERBALNOMEN - POSSESSUM - ("piffik") IF (@1 _TARGET_) (NEGATE *1 TIMEVERB OR TRANSVERB)(NEGATE *1 OBJVERB)
-#(NEGATE 0 $$KASUS LINK *1 Par + 3Sg BARRIER (*) - $$KASUS LINK *1 VFIN - 3Sg)# BARRIER VERB-NOTCONT)#kan være subjekt i en tidsbisætning UNNUK naanngitsoq assigiinngitsut eqqartugai amerleriivipput
-#(NEGATE 1 $$KASUS + $$NUMERUS + TUQ) #Ukioq atuarfiusoq kingulleq naammassimmat, ...
-#(NEGATE 0 Abs + &&IV_SUBJ& LINK *1 VFIN + &&IV_SUBJ& LINK NEGATE *0 Abs + &&IV_SUBJ& - _TARGET_ - Num)#ULLOQ apriilip ulluisa arfernat qinersisoqarnissaanut siunnersuummi aamma allassimavoq.
+SETPARENT:0080AVX @CL-ADVL> + TIME + Abs - VERBALNOMEN - POSSESSUM IF (-1 Trm LINK -1 ("sapaat") + Rel LINK -1 BOS) 
+(NEGATE *1 TIMEVERB OR TRANSVERB)(NEGATE *1 OBJVERB) 
+TO (*1 VFIN);#Sap. akunneranut TIIMIT sisamat ilinniartarpoq nås ikke af M0080AV
 
-# ;
+SETPARENT:M0080AV @CL-ADVL> + TIME + Abs + $$NUMERUS - VERBALNOMEN - POSSESSUM - ("piffik") IF 
+(@1 _TARGET_) (NEGATE *1 TIMEVERB OR TRANSVERB)(NEGATE *1 OBJVERB)
+(NEGATE 0 $$KASUS LINK *1 Par + 3Sg BARRIER (*) - $$KASUS LINK *1 VFIN - 3Sg)# BARRIER VERB-NOTCONT)#kan være subjekt i en tidsbisætning UNNUK naanngitsoq assigiinngitsut eqqartugai amerleriivipput
+(NEGATE 1 $$KASUS + $$NUMERUS + TUQ) #Ukioq atuarfiusoq kingulleq naammassimmat, ...
+(NEGATE 0 Abs + &&IV_SUBJ& LINK *1 VFIN + &&IV_SUBJ& LINK NEGATE *0 Abs + &&IV_SUBJ& - _TARGET_ - Num)#ULLOQ apriilip ulluisa arfernat qinersisoqarnissaanut siunnersuummi aamma allassimavoq.
+
+TO (*1 VFIN);
 #
 #MAP:M0080AB @CL-ADVL> TARGET ("ajor") + GALUAR + TUQ + Ins (-1 BOS OR CLB OR DIRTALESTART);
 
