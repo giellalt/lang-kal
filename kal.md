@@ -1718,6 +1718,7 @@
 
 
 
+
 #Vistnok overflødig. Må skulle mappes @CONT->N i stedet, parataksen giver jo sig selv.
 
 
@@ -2781,6 +2782,10 @@
 
 * * *
 <small>This (part of) documentation was generated from [../src/cg3/functions.cg3](http://github.com/giellalt/lang-kal/blob/main/../src/cg3/functions.cg3)</small>
+
+
+
+
 
 
 
@@ -11329,96 +11334,7 @@ Jeg kan ikke løse problemet fornuftigt, så hermed en alt for snæver ad hoc-re
 
 
 * * *
-<small>This (part of) documentation was generated from [../src/cg3/disambiguator.cg3](http://github.com/giellalt/lang-kal/blob/main/../src/cg3/disambiguator.cg3)</small># Grønlandske nomener 
-
-## Dokumentasjon for leksikonnavne:
-
-* Z = nomen
-* 1 = svag bøjning, p-bøjning
-* 2 = sterk bøjning, up-bøjning
-* P = plurale tantum
-* S = singularis
-* - = sterk bøjing som trunkerer (2-)
-* a, q, ... = gemineringer ved konsonantiske flexiver
-* Z = nomen
-* morf = går til derivationsleksika
-*      = går til flexivleksika
-* tpt  =  
-* tup  = 
-* K    = Direkte til finale klitika
-
-
-...ƒ
-
- * LEXICON Nomen  Nominalstammer
-
-Leksikonet Nomen inneholder nomenerne.
-
-xxx 20170522 til former, som ikke kan læses men som har brug for en analyse i cg'en. Pluralis og singularis-kataloger er ikke medtaget.
-
-
-
-
-
-
- * aaffaffak Z2-Zmorf ;              
- * aaffaffak+N+Abs+Sg:aaffaffaq Krestr ; 
- * aaffaq Z2-qZmorf ;                 
-aaffattaq Z1Zmorf ;                 * ...
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-* * *
-<small>This (part of) documentation was generated from [../src/fst/stems/nouns.lexc](http://github.com/giellalt/lang-kal/blob/main/../src/fst/stems/nouns.lexc)</small>
-
-
-
-
-xxx 20170524 til verbalstammer, som ikke kan læses men som har brug for en analyse i cg'en. Pluralis tantum-kataloger er ikke medtaget. !er det nødvendigt også at medtage stammer fra derivationsleksika?
-
-
-
-* * *
-<small>This (part of) documentation was generated from [../src/fst/stems/verbs.lexc](http://github.com/giellalt/lang-kal/blob/main/../src/fst/stems/verbs.lexc)</small>
-
-
-xxx 20170522 til former, som ikke kan læses men som har brug for en analyse i cg'en..
-
-
-
-
-* * *
-<small>This (part of) documentation was generated from [../src/fst/stems/propernouns.lexc](http://github.com/giellalt/lang-kal/blob/main/../src/fst/stems/propernouns.lexc)</small># Greenlandic morphological analyser
+<small>This (part of) documentation was generated from [../src/cg3/disambiguator.cg3](http://github.com/giellalt/lang-kal/blob/main/../src/cg3/disambiguator.cg3)</small># Greenlandic morphological analyser
 
 Fil for at generere de centrale morfologiske processer i vor grønlandske analysator
 
@@ -11678,13 +11594,6 @@ given the proper use of these flags.
 
 * * *
 <small>This (part of) documentation was generated from [../src/fst/root.lexc](http://github.com/giellalt/lang-kal/blob/main/../src/fst/root.lexc)</small>
-
-# Symbol affixes
-
-
-
-* * *
-<small>This (part of) documentation was generated from [../src/fst/affixes/symbols.lexc](http://github.com/giellalt/lang-kal/blob/main/../src/fst/affixes/symbols.lexc)</small>
 # Fil for at generere de centrale morfologiske processer i vor grønlandske analysator               
 
 ## Dokumentasjon for leksikonnavne:
@@ -12896,6 +12805,13 @@ Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers
 
 * * *
 <small>This (part of) documentation was generated from [../src/fst/affixes/derivations-inflections.lexc](http://github.com/giellalt/lang-kal/blob/main/../src/fst/affixes/derivations-inflections.lexc)</small>
+
+# Symbol affixes
+
+
+
+* * *
+<small>This (part of) documentation was generated from [../src/fst/affixes/symbols.lexc](http://github.com/giellalt/lang-kal/blob/main/../src/fst/affixes/symbols.lexc)</small>
 Inflection and derivation.
 
 
@@ -13183,7 +13099,96 @@ Nyt lexicon 20180615 Z2suaq_ateqZmorf
 
 
 * * *
-<small>This (part of) documentation was generated from [../src/fst/affixes/propernouns.lexc](http://github.com/giellalt/lang-kal/blob/main/../src/fst/affixes/propernouns.lexc)</small>
+<small>This (part of) documentation was generated from [../src/fst/affixes/propernouns.lexc](http://github.com/giellalt/lang-kal/blob/main/../src/fst/affixes/propernouns.lexc)</small># Grønlandske nomener 
+
+## Dokumentasjon for leksikonnavne:
+
+* Z = nomen
+* 1 = svag bøjning, p-bøjning
+* 2 = sterk bøjning, up-bøjning
+* P = plurale tantum
+* S = singularis
+* - = sterk bøjing som trunkerer (2-)
+* a, q, ... = gemineringer ved konsonantiske flexiver
+* Z = nomen
+* morf = går til derivationsleksika
+*      = går til flexivleksika
+* tpt  =  
+* tup  = 
+* K    = Direkte til finale klitika
+
+
+...ƒ
+
+ * LEXICON Nomen  Nominalstammer
+
+Leksikonet Nomen inneholder nomenerne.
+
+xxx 20170522 til former, som ikke kan læses men som har brug for en analyse i cg'en. Pluralis og singularis-kataloger er ikke medtaget.
+
+
+
+
+
+
+ * aaffaffak Z2-Zmorf ;              
+ * aaffaffak+N+Abs+Sg:aaffaffaq Krestr ; 
+ * aaffaq Z2-qZmorf ;                 
+aaffattaq Z1Zmorf ;                 * ...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+* * *
+<small>This (part of) documentation was generated from [../src/fst/stems/nouns.lexc](http://github.com/giellalt/lang-kal/blob/main/../src/fst/stems/nouns.lexc)</small>
+
+
+
+
+xxx 20170524 til verbalstammer, som ikke kan læses men som har brug for en analyse i cg'en. Pluralis tantum-kataloger er ikke medtaget. !er det nødvendigt også at medtage stammer fra derivationsleksika?
+
+
+
+* * *
+<small>This (part of) documentation was generated from [../src/fst/stems/verbs.lexc](http://github.com/giellalt/lang-kal/blob/main/../src/fst/stems/verbs.lexc)</small>
+
+
+xxx 20170522 til former, som ikke kan læses men som har brug for en analyse i cg'en..
+
+
+
+
+* * *
+<small>This (part of) documentation was generated from [../src/fst/stems/propernouns.lexc](http://github.com/giellalt/lang-kal/blob/main/../src/fst/stems/propernouns.lexc)</small>
 
 
 We describe here how abbreviations are in Kalaallisut are read out, e.g.
