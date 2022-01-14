@@ -4979,7 +4979,9 @@ SELECT:0074A FAM + Rel + 4PlPoss + Sg IF (1C Prop + Rel LINK 1 3SgPoss);
 
 REMOVE:0074 Rel + 4PlPoss + Sg IF (NEGATE 1 3SgPoss)(NEGATE *1 TRANSVERB + Par + 3Sg OR TRANSVERB + Cau + 3Sg OR TRANSVERB + Con + 3Sg CBARRIER Rel + Sg)(NEGATE 0 Ins) ;
 
-SELECT:0075A $$KASUS + Pl - POSSESSUM4 IF (1 $$KASUS + (/__Gram\/Dem\ Pron__/l) + Pl) #Tilføjet mulighed for Abs: #QIMMIT ikkua kiivaannga.
+REMOVE:0075A (/".*\.gl"\ Sem/Url\ Err/Sub/l) IF (0 (/".*\.gl"\ Sem/Hum\ Prop/l)); #URL vælges fra propernouns om muligt
+
+SELECT:0075B $$KASUS + Pl - POSSESSUM4 IF (1 $$KASUS + (/__Gram\/Dem\ Pron__/l) + Pl) #Tilføjet mulighed for Abs: #QIMMIT ikkua kiivaannga.
 (NEGATE 0 HUM LINK *1 TRANSVERB) #Arnat meerannguit taakku paasitinniaraluarpaat
 ;
 
@@ -5107,8 +5109,13 @@ REMOVE:qujanaq POSSESSUM1 IF (0 POSSESSUM2 LINK -1 ("quja") OR ("qujanaq")) ;
 
 #Vanskelige sammenfald mellem plur. og 2SgPoss i absolutte konstruktioner håndteres før SELECT:0100
 REMOVE:0100X 2SgPoss IF (NEGATE @0 (*) LINK -1*W Abs + 2Sg BARRIER BOS) (T:alone) ;
-REMOVE:0100Z 2SgPoss IF (NEGATE *0SWC 2Sg OR 2SgO OR 2SgPoss)(NEGATE *0W ("illit") OR 2Sg + Par)(NEGATE *1 EXCLMARK)(NEGATE *0 Gram/Exclm)(*0 V + 3Pl OR V + 3PlO OR 3PlPoss) ;
-
+REMOVE:0100Z 2SgPoss IF (*0 V + 3Pl OR V + 3PlO OR 3PlPoss)
+(NEGATE *0SWC 2Sg OR 2SgO OR 2SgPoss)
+(NEGATE *0W ("illit") OR 2Sg + Par)
+(NEGATE *1 EXCLMARK)
+(NEGATE *0 Gram/Exclm)
+(NEGATE 0 NIQ LINK *1 2SgPoss + $$KASUS BARRIER (*) - $$KASUS)#Oqaasiliortuni ilaasortatut SUILNINNI paasissutissat pisariaqartikkumaakkatit ataani takussutissiaraakka najoqqutassallu kakkiullugit.
+;
 REMOVE:0100V 2SgPoss IF (0 Aeq LINK 1 ("ip")) ; #Imigassaq aalakoornartortalik immuttut inngilaq.
 
 REMOVE:0100W 2SgPoss IF (NEGATE *0S V OR ("quja"))(NEGATE 0 NNAAQ)(NEGATE -1 ("illit")) ;
@@ -6217,6 +6224,7 @@ SELECT:0409B Abs + Sg + 4SgPoss - Orth/Arch IF (0 Lok + Pl)(*1C Abs + Sg BARRIER
 
 SELECT:0409C Abs + Sg + Der/vn IF (-*1 Abs + Sg BARRIER V)(*1 VERB-NOTCONT + 3SgO BARRIER KOMMA OR PUNCT)(NEGATE *-1 Abs + Sg LINK *1 Par + 3Sg LINK *1 ORATIOOBLVERB)(NEGATE -*1 Abs + Prop BARRIER Abs + Sg LINK 1 Prop + Rel)(NEGATE 0 Pl LINK *1 3Pl - ("nalinginnaq"))(NEGATE 0 $$OBLIQUE LINK *-1 $$OBLIQUE BARRIER V) (NEGATE 0 Par + ("qaangiup") LINK *1 (*) - V BARRIER KOMMA OR CONJ-C) #Må ikke tagge Subj or Par som hhv. OBJ og OBJ_COMP. Næstsidste NEGATE for at forhindre hit på fx fornavn til subjekts proprium i Rel. Sidste for ikke at slette nuannequtit+Rel+Pl i Tamanna nuannequtit ilagaat
 (NEGATE 0 (/"aa"\ Gram/TV\ TAQ/l) LINK 0 ("aasaq"))#må ikke slette aasaq for aa+TAQ
+(NEGATE 0 INNAQ + Pl + Abs LINK -1 Abs + Pl)#Oqatsiartarnerilli NALAATSORNERINNAAT pissutigalugit kigaatsumik ilikkariartuaalerpara.
  ;
 #Følgende kopier af 409B men med pluralisobjekter
 SELECT:0409D Abs + Pl + 4SgPoss - Orth/Arch IF (*1 Abs + Pl BARRIER 3SgO LINK *1 3PlO BARRIER KOMMA)
