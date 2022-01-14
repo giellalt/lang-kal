@@ -1605,8 +1605,9 @@ LIST <fn:Remove> = "nioor" "nioorar" "usingiar" ;
 LIST <fn:Socialize> = "asa" "oqallip" "siumor" "unammi" ;
 LIST <fn:Take/Bring> = "ikaap" "ikaassor" "tigu";
 LIST <fn:Talk> = /"eqqaa"\ Gram/TV\ TIP/l "kalerrisaar" "naggaser" "nalunaar" "nangip" "nassuer" "oqalup" "oqar"; #nangippoq medtaget trods anden sem. role
+LIST <fn:Want> = "neriup" ;
 
-SET INQUIT_VERB = <fn:Talk> | <fn:CognitiveMaking> ;
+SET INQUIT_VERB = <fn:Talk> | <fn:CognitiveMaking> | <fn:Want> ;
 
 #Nye semantiske klasser 20190503 til forberedelse af import af prototyper. NB <fn:..>-tags ovenfor før set HUMVERB.
 LIST <ac> = (/"ajor"\ Gram/IV\ NAR\ Der/vv\ Gram/IV\ TUQ\ Der/vn\ SIUT/l) (/"inuk"\ U\ Der/nv\ Gram/IV\ NIQ/l) "kultur" "peqqut" "pissut" ;
@@ -2252,6 +2253,9 @@ REMOVE:0003E ("nalinginnaq") + 4PlPoss IF (0 ("nalinginnaq") + Ins) ;
 REMOVE:0003F Par + 3Pl + Orth/Arch IF (0 NIQ + Aeq);
 
 REMOVE:0003G (/R\ Der/nv\ Gram/IV\ V\ Ind\ 3Pl\ Gram/Exclm/l) IF (*0 VFIN);
+
+#sivisooq)+4PlPoss næppe eksisterende
+REMOVE:0003H ("sivisooq") + 4PlPoss IF (0 ("sivisooq") + Ins) ;
 
 #ilaatigut blokerer mange regler, fordi såvel ila+3SgPoss og ila+3PlPoss. Forsøger en tidlig sletning
 REMOVE:tidlig0005 ("ila") + Via + POSSESSUM3 IF (0 ("ilaatigut") + Adv);#Taakkualu ILAATIGUT tarnip pissusaanik ilisimasallit aamma inunnik isumaginninnermi siunnersortit, pingaarnertut Tasiilami, ikiuigasuartinneqarnerannut atorneqarput.
@@ -4313,6 +4317,9 @@ REMOVE:uløselighed0375 ("kisianni") + Adv IF (-2 BOS LINK 1 Adv LINK 1 _TARGET_
 
 #Overskrift uden kontekst
 REMOVE:uløselighed0380 Abs + Sg + MI IF (-1 BOS LINK 1 _TARGET_ + Lok + Sg LINK 1 EOS);
+
+#Ægte disambiguitet 
+REMOVE:uløselighed0385 1SgPoss IF (-1 <fn:Want> + 1Sg LINK 1 _TARGET_ + ("suliaq") + 2SgPoss LINK 1 (/U\ Der/nv\ Gram/IV\ \(SIMA\ Der/vv\ Gram/IV\ \)?V\ \(ContNeg|Cont\)\ 1Sg/l)); #Neriuppunga SULIANNUT arriillisaataasimananga.
 
 #Lok anvendt på MIK-OBJ i stedet for Ins er svær (umulig?) at håndtere. En tidlig og farlig regel, der skal følges op på
 SUBSTITUTE:Sub0008 Lok Ins TARGET (HTR) IF (1 HTR - ("ilar")) #siunnersortit .. Tasiilami inunnik ISUMAGINNINNERMI ingerlatitsivimmi .. ikiuussimapput. Mange fejl pga. ambiguøs ilaivoĸ vs. ilauvoĸ
@@ -12105,10 +12112,14 @@ SELECT:Sel0012 FIRSTNAME IF (1 Prop + Sg - Sem/Geo)(NEGATE 0 Sem/Mask LINK 1 Sem
 ;
 SELECT:Sel0013 Abs + Prop IF (-2 Prop + Abs)(-1 ("\,"))(NEGATE 0 Rel LINK 1 POSSESSUM3); #'Enoksen, SIUMUT' 'Kleist, INUIT Ataqatigiit'
 SELECT:Sel0014 Abs + Prop IF (-3 Prop + Abs)(-2 ("\,"))(-1 Abs)(NEGATE 0 Rel LINK 1 POSSESSUM3); #'Enoksen, SIUMUT' 'Kleist, Inuit ATAQATIGIIT'
-REMOVE:Int0195 N IF (0 Prop + Sem/Geo - AA)
+REMOVE:Int0195A N IF (0 Prop + Sem/Geo - AA)
 (NEGATE 0 ("marsi") + Rel LINK 1 ("ulloq") OR Num)#MARSIP ulluisa 28-annit apriilip ulluisa 15-iata tungaanut sulissaanga
 (NEGATE 0 ("Qaammat") + Prop LINK 0 ("qaammat") + N LINK (1 Num) OR (0 Lok))#QAAMMAT ataaseq affarlu nassaanngiivissimagutta aatsaat ammaqqissinnaavugut.
+(NEGATE 0 ("kangerluk") LINK *1 (/"qinngoq"\ PASIP/l))#KANGERLUMMI 17 km-inik qinngorpasinnerusumiittut uuttortarneqarsimanngillat.
+(NEGATE 0 (/"napa"\ Gram/IV\ TUQ/l) LINK *0 ("pitup") BARRIER V)#NAPASUMIK pituffissaanik.
  ;
+
+REMOVE:Int0195B Prop + ("Kangerluk") IF (0 ("kangerluk") LINK *1 (/"qinngoq"\ PASIP/l));#KANGERLUMMI 17 km-inik qinngorpasinnerusumiittut uuttortarneqarsimanngillat.
 
 REMOVE:2221 N - Prop - iProp - Der/vv - ANIMAL IF (0 ("<\\p{Lu}.*>"r) LINK NOT 0 Orth/Arch)(*0C ("<\\p{Lu}.*>"r) - (Hyb/2-2))(NEGATE 0 FAM_UNIK OR TITEL OR HUM OR WEATHER OR NON-PROP)(NEGATE 0 Rel)(NEGATE 0 V)(NEGATE 0 ("ateq") LINK 1 Prop)# Select Prop hvis Wordform starter med stort, og der også er et andet Prop i sætningen.
 (NEGATE 0 (/.*neq>"/r)) #Saassussineq
