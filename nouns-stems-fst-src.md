@@ -19,7 +19,7 @@
 
 ...ƒ
 
- * LEXICON Nomen  Nominalstammer
+* LEXICON Nomen  Nominalstammer
 
 Leksikonet Nomen inneholder nomenerne.
 
@@ -30,10 +30,10 @@ xxx 20170522 til former, som ikke kan læses men som har brug for en analyse i c
 
 
 
- * aaffaffak Z2-Zmorf ;              
- * aaffaffak+N+Abs+Sg:aaffaffaq Krestr ; 
- * aaffaq Z2-qZmorf ;                 
-aaffattaq Z1Zmorf ;                 * ...
+* aaffaffak Z2-Zmorf ;              
+* aaffaffak+N+Abs+Sg:aaffaffaq Krestr ; 
+* aaffaq Z2-qZmorf ;                 
+aaffattaq Z1Zmorf ;                * ...
 
 
 
