@@ -396,12 +396,13 @@ sub analyze {
             my ($m) = @_;
             my @ncs = parse_cohorts($m);
             my $h = join(' ', sort(keys(%heur)));
-            foreach my $n (@ncs) {
-               if ($orig) {
-                  $n->[0] =~ s/^("<.*>")/"<$orig>"/;
+            my @origs = split(/\x{e002}/, $orig);
+            for (my $ni=0 ; $ni<scalar(@ncs) ; ++$ni) {
+               if ($origs[$ni]) {
+                  $ncs[$ni][0] =~ s/^("<.*>")/"<$origs[$ni]>"/;
                }
                if ($h) {
-                  $n->[1] =~ s/(\t".*"[^\n]+)/$1 $h/g;
+                  $ncs[$ni][1] =~ s/(\t".*"[^\n]+)/$1 $h/g;
                }
             }
             splice(@cs, $i, 1, @ncs);
@@ -441,6 +442,10 @@ sub analyze {
 
             # Split around hyphens and dashes
             if ($f =~ /^([\pL\pN\pM]+)([-\p{Pd}]+)(.+)$/) {
+               $orig = $orig || $f;
+               if ($orig =~ /^([\pL\pN\pM]+)([-\p{Pd}]+)(.+)$/) {
+                  $orig = "$1\x{e002}$2\x{e002}$3";
+               }
                my ($f1,$f2,$f3) = ($1, $2, $3);
                my ($m1,$m2,$m3) = (call_tokenizer($f1), call_tokenizer($f2), call_tokenizer($f3));
                if ($m1 =~ /\t"[^\n]*"[^?\n]+\n/ || $m3 =~ /\t"[^\n]*"[^?\n]+\n/) {
