@@ -502,7 +502,10 @@
 
 
 
+
 Jeg kan ikke løse problemet fornuftigt, så hermed en alt for snæver ad hoc-regel
+
+
 
 
 
@@ -12258,6 +12261,7 @@ PL 20180718. Følgende er et særligt lexicon til ip i stedet for tidligere LEXI
 * LEXICON flex-iv  
 
 * LEXICON flex-iv2  
+
 
 
 
