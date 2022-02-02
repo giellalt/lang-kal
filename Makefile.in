@@ -414,48 +414,36 @@ doc_DATA = $(INDEX) $(LINKS) $(ALLINONE_MD_PAGE)
 DOCC2MDWIKI = $(GTCORE)/scripts/doccomments2ghpages.awk
 GRAPHPLOTTER = $(GTCORE)/scripts/plot-speller-progress.R
 
-# tree
-# .
-# ├── src												 y
-# │   ├── cg3											 y
-# │   ├── filters										 n
-# │   ├── fst											 y
-# │   │   ├── affixes									 y
-# │   │   ├── generated_files							 n
-# │   │   ├── incoming									 n
-# │   │   └── stems										 y
-# │   ├── hyphenation									 ?
-# │   ├── orthography									 ?
-# │   ├── phonetics										 Y
-# │   │   └── tests										 N
-# │   ├── tagsets										 N?
-# │   └── transcriptions								 Y
-# ├── test												 N
-# └── tool												 Y
-#     ├── analysers										 ?
-#     ├── grammarcheckers								 Y
-#     │   ├── filters									 N
-#     │   └── tests										 N
-#     ├── hyphenators									 ?
-#     │   └── filters									 N
-#     ├── mt											 Y
-#     │   ├── apertium									 Y
-#     │   │   ├── filters								 N
-#     │   │   └── tagsets								 N
-#     │   ├── cgbased									 N
-#     │   └── filters									 N
-#     ├── shellscripts									 N
-#     ├── spellcheckers									 ?
-#     │   ├── filters									 N
-#     │   └── weights									 N
-#     ├── tokenisers									 Y
-#     │   ├── filters									 N
-#     │   └── tests										 N
-#     └── tts											 Y
-#         └── test										 N
-L3DIRS = fst cg3 transcriptions phonetics
-L4DIRS = affixes stems
-L5DIRS = grammarcheckers tokenisers tts mt
+# Define all source files in a variable:
+DOCSRC := $(shell fgrep -rl \
+		--include '*.lexc' \
+		--include '*.twolc' \
+		--include '*.cg3' \
+		--exclude '*.pmscript' \
+		--exclude '*.xfscript'\
+		--exclude 'Makefile*' \
+		--exclude 'lexicon.tmp.lexc' \
+		--exclude-dir 'generated_files' \
+		--exclude-dir 'orig' \
+		--exclude-dir 'incoming' \
+		'!! ' $(top_srcdir)/src/* $(top_srcdir)/tools/* |\
+		fgrep -v incoming/ )
+
+
+# Remove vpath prefix for nested list construction:
+BARE_DOCSRC := $(subst $(top_srcdir)/,,$(DOCSRC))
+
+# Create actual list of MD files:
+MDFILES = $(call src2md,$(DOCSRC))
+# Append vpath prefix - for now, the files are stored in the source tree:
+VPATH_MDFILES = $(addprefix $(top_srcdir)/docs/,$(MDFILES))
+
+# Construct source file and md file pairs of the following format:
+# src/fst/root.lexc@src-fst-root.lexc.md
+DOCSRC_MDFILES = $(shell echo $(BARE_DOCSRC) | tr ' ' '\n' > docsrc.tmp; \
+					   echo $(MDFILES) | tr ' ' '\n' > mdfiles.tmp; \
+					   paste -d '@' docsrc.tmp mdfiles.tmp; )
+
 
 # hfst-compose:
 AM_V_COMPOSE = $(AM_V_COMPOSE_@AM_V@)
@@ -877,121 +865,61 @@ regenerate-markdown: generate-markdown
 @WANT_SPELLERS_FALSE@	@echo need to configure --enable-spellers to generate statistics
 @WANT_SPELLERS_FALSE@	touch $@
 
-define register_docsygenated_dir_2
-$(srcdir)/%-$(2)-$(1).md: $(top_srcdir)/$(1)/$(2)/%.cg3
-	$(AM_V_AWK)"$(GAWK)" -v GLANG=$(GLANG) -f $(DOCC2MDWIKI) $$< > $$@
-
-$(srcdir)/%-$(2)-$(1).md: $(top_srcdir)/$(1)/$(2)/%.lexc
-	$(AM_V_AWK)"$(GAWK)" -v GLANG=$(GLANG) -f $(DOCC2MDWIKI) $$< > $$@
-
-$(srcdir)/%-$(2)-$(1).md: $(top_srcdir)/$(1)/$(2)/%.xfscript
-	$(AM_V_AWK)"$(GAWK)" -v GLANG=$(GLANG) -f $(DOCC2MDWIKI) $$< > $$@
-
-$(srcdir)/%-$(2)-$(1).md: $(top_srcdir)/$(1)/$(2)/%.pmscript
-	$(AM_V_AWK)"$(GAWK)" -v GLANG=$(GLANG) -f $(DOCC2MDWIKI) $$< > $$@
-
-$(srcdir)/%-$(2)-$(1).md: $(top_srcdir)/$(1)/$(2)/%.twolc
-	$(AM_V_AWK)"$(GAWK)" -v GLANG=$(GLANG) -f $(DOCC2MDWIKI) $$< > $$@
+# Convert source filenames to extracted documentation filenames, VPATH safe:
+# ../../../src/fst/stems/adverbs.lexc => src-fst-stems-adverbs.lexc.md
+define src2md
+$(addsuffix .md,$(subst /,-,$(subst $(top_srcdir)/,,$(1))))
 endef
 
-define register_docsygenated_dir_3
-$(srcdir)/%-$(3)-$(2)-$(1).md: $(top_srcdir)/$(1)/$(2)/$(3)/%.cg3
-	$(AM_V_AWK)"$(GAWK)" -v GLANG=$(GLANG) -f $(DOCC2MDWIKI) $$< > $$@
-
-$(srcdir)/%-$(3)-$(2)-$(1).md: $(top_srcdir)/$(1)/$(2)/$(3)/%.lexc
-	$(AM_V_AWK)"$(GAWK)" -v GLANG=$(GLANG) -f $(DOCC2MDWIKI) $$< > $$@
-
-$(srcdir)/%-$(3)-$(2)-$(1).md: $(top_srcdir)/$(1)/$(2)/$(3)/%.xfscript
-	$(AM_V_AWK)"$(GAWK)" -v GLANG=$(GLANG) -f $(DOCC2MDWIKI) $$< > $$@
-
-$(srcdir)/%-$(3)-$(2)-$(1).md: $(top_srcdir)/$(1)/$(2)/$(3)/%.pmscript
-	$(AM_V_AWK)"$(GAWK)" -v GLANG=$(GLANG) -f $(DOCC2MDWIKI) $$< > $$@
-
-$(srcdir)/%-$(3)-$(2)-$(1).md: $(top_srcdir)/$(1)/$(2)/$(3)/%.twolc
-	$(AM_V_AWK)"$(GAWK)" -v GLANG=$(GLANG) -f $(DOCC2MDWIKI) $$< > $$@
+# Extract Markdown doccomments:
+define make_md_files
+$$(top_srcdir)/docs/$$(call src2md,$(1)): $(1)
+	$$(AM_V_AWK)"$(GAWK)" -v GLANG=$(GLANG) -f $(DOCC2MDWIKI) $$< > $$@
 endef
-$(foreach L3D,$(L3DIRS),$(eval $(call register_docsygenated_dir_2,src,$(L3D))))
-$(foreach L4D,$(L4DIRS),$(eval $(call register_docsygenated_dir_3,src,fst,$(L4D))))
-$(foreach L5D,$(L5DIRS),$(eval $(call register_docsygenated_dir_2,tools,$(L5D))))
-$(foreach L6D,apertium,$(eval $(call register_docsygenated_dir_3,tools,mt,$(L6D))))
 
-# lang-crk
-$(srcdir)/%-derivation-src.md: $(top_srcdir)/src/derivation/%.lexc
-	$(AM_V_AWK)"$(GAWK)" -v GLANG=$(GLANG) -f $(DOCC2MDWIKI) $< > $@
+# Build each MD file:
+$(foreach f,$(DOCSRC),$(eval $(call make_md_files,$(f))))
 
-# lang-smn
-$(srcdir)/%-oahpa-filer-fst-src.md: $(top_srcdir)/src/fst/oahpa-filer/%.lexc
-	$(AM_V_AWK)"$(GAWK)" -v GLANG=$(GLANG) -f $(DOCC2MDWIKI) $< > $@
+# The variable DOCSRC_MDFILES contains a list of all source files and the
+# corresponding md file in the following format:
+#
+# src/fst/root.lexc@src-fst-root.lexc.md
+#
+# From this we want to construct a nested Markdown bullet list as follows
+# - src
+#     - fst
+#         - [root.lexc](src-fst-root.lexc.md)
+#
+# The resulting list should be the content in the $(LINKS) file.
 
-generated-markdowns.sources:
-	$(AM_V_GEN)fgrep -rl \
-		--include '*.lexc' \
-		--include '*.twolc' \
-		--include '*.cg3' \
-		--exclude '*.pmscript' \
-		--exclude '*.xfscript'\
-		--exclude 'Makefile*' \
-		--exclude 'lexicon.tmp.lexc' \
-		--exclude-dir 'generated_files' \
-		--exclude-dir 'orig' \
-		--exclude-dir 'incoming' \
-		'!! ' $(top_srcdir)/src/* $(top_srcdir)/tools/* |\
-		fgrep -v incoming/ > $@
+# Generate list of targets:
+generated-markdowns.targets: $(VPATH_MDFILES)
+	$(AM_V_GEN)echo $(MDFILES) | tr ' ' '\n' > $@
 
-# ../src/fst/incoming/affixes/nouns.lexc
-generated-markdowns.targets: generated-markdowns.sources
-	$(AM_V_GEN)for f in `cat $<` ; do \
-		case $$f in \
-		*.lexc) x=`basename $$f .lexc` ;; \
-		*.cg3) x=`basename $$f .cg3` ;; \
-		*.twolc) x=`basename $$f .twolc` ;; \
-		*.xfscript) x=`basename $$f .xfscript` ;; \
-		*.pmscript) x=`basename $$f .pmscript` ;; \
-		*) x=`basename $$f` ;; \
-		esac ;\
-		d=`dirname $$f` ;\
-		p=`basename $$d xxx` ;\
-		dd=`dirname $$d` ;\
-		gp=`basename $$dd xxx` ;\
-		ddd=`dirname $$dd` ;\
-		ggp=`basename $$ddd xxx` ;\
-		dddd=`dirname $$ddd`;\
-		gggp=`basename $$dddd xxx`;\
-		if test x$$gggp = xsrc -o x$$gggp = xtools ; then \
-			echo $$x-$$p-$$gp-$$ggp-$$gggp.md;\
-		elif test x$$ggp = xsrc -o x$$ggp = xtools ; then \
-			echo $$x-$$p-$$gp-$$ggp.md;\
-		elif test x$$gp = xsrc -o x$$gp = xtools ; then \
-			echo $$x-$$p-$$gp.md ;\
-		else \
-			echo $$x-$$p.md ;\
-		fi ;\
-	done > $@
-
-generate-markdown: generated-markdowns.targets
-	$(AM_V_GEN)for f in `cat $<` ; do \
-		$(MAKE) $(srcdir)/$$f;\
-	done
-
-$(ALLINONE_MD_PAGE): generate-markdown generated-markdowns.targets
+# Collect all target files into one big MD file:
+$(ALLINONE_MD_PAGE): generated-markdowns.targets
 	$(AM_V_GEN)cat `cat generated-markdowns.targets | sed -e 's@^@$(srcdir)/@'` > $@
 
-$(LINKS): generate-markdown generated-markdowns.targets
+$(LINKS): generated-markdowns.targets
 	$(AM_V_GEN)cat generated-markdowns.targets |\
 				LC_COLLATE=C sed 's/[a-zA-Z0-9._-]*/* [&]\(&\)/g' \
 				> $@
 
+empty.md:
+	$(AM_V_GEN)echo > $@
+
 # FIXME: some temporary stuff to have index page
-$(INDEX): $(HEADER) $(LINKS)
+$(INDEX): $(HEADER) empty.md $(LINKS)
 	$(AM_V_GEN)cat $^ > $@
 
 clean-local:
 	$(AM_V_at)-rm -rf $(builddir)/build
 	$(AM_V_at)-rm -rf $(srcdir)/build
 	$(AM_V_at)-rm -f $(doc_DATA)
-	$(AM_V_at)-rm -f *-src.md
-	$(AM_V_at)-rm -f *-tools.md
+	$(AM_V_at)-rm -f *-src.md src-*.md $(srcdir)/*-src.md $(srcdir)/src-*.md
+	$(AM_V_at)-rm -f *-tools.md tools-*.md $(srcdir)/*-tools.md $(srcdir)/tools-*.md
 	$(AM_V_at)-rm -f generated-markdowns.*
+	$(AM_V_at)-rm -f docsrc.tmp mdfiles.tmp empty.md
 
 # vim: set ft=automake:
 
