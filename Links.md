@@ -11,3 +11,5 @@
 * [src-transcriptions-transcriptor-numbers-digit2text.lexc.md](src-transcriptions-transcriptor-numbers-digit2text.lexc.md)
 * [src-transcriptions-transcriptor-abbrevs2text.lexc.md](src-transcriptions-transcriptor-abbrevs2text.lexc.md)
 * [tools-grammarcheckers-grammarchecker.cg3.md](tools-grammarcheckers-grammarchecker.cg3.md)
+* [tools-tokenisers-tokeniser-gramcheck-gt-desc.pmscript.md](tools-tokenisers-tokeniser-gramcheck-gt-desc.pmscript.md)
+* [tools-tokenisers-tokeniser-disamb-gt-desc.pmscript.md](tools-tokenisers-tokeniser-disamb-gt-desc.pmscript.md)
