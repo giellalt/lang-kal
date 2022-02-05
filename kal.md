@@ -10318,7 +10318,6 @@ Jeg kan ikke løse problemet fornuftigt, så hermed en alt for snæver ad hoc-re
 
 
 
-
 #Vistnok overflødig. Må skulle mappes @CONT->N i stedet, parataksen giver jo sig selv.
 
 
@@ -12595,6 +12594,7 @@ I Num2 til Num10 er flagging af NNGUR C-et pga. klokken
 * LEXICON Naalsuf  livm 20171211 tilføjet pluralisbøjning
 
 * LEXICON web  
+
 
 
 
