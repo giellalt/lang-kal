@@ -1,22 +1,8 @@
 # Propriernes morfologi i grønlandsk
 
-
-
-
 * LEXICON ZxxxV   steder og navne på vokal som ikke er i FST'en
 
-
-
-
 * LEXICON ZxxxC   steder og navne på konsonant som ikke er i FST'en
-
-
-
-
-
-
-
-
 
 Navnelexikon er i ateq-kal-lex.txt.
 
@@ -33,7 +19,6 @@ Navnelexikon er i ateq-kal-lex.txt.
 * *Sisimiuniit:* `Sisimiut+Prop+Abl+Pl`
 * *Sisimiuni:* `Sisimiut+Prop+Lok+Pl`
 
-
 * LEXICON Z1geo_nnguaqPZ   Kangilinnguit NY 20100319 (PL)
 
 * LEXICON Z1geo_nnguaqZ    Quassunnguaq NY 20100410 (PL)
@@ -44,8 +29,6 @@ Navnelexikon er i ateq-kal-lex.txt.
 
 * LEXICON Z1geo_oqsZ   Finland
 
-
-
 * LEXICON Z1geo_oqseZ   Thule
 
 * LEXICON Z2-geoSZ   Ikerasaarsuk
@@ -54,11 +37,9 @@ Navnelexikon er i ateq-kal-lex.txt.
 
 * LEXICON Z2+lgeoSZ   Nanortalik:Nanorta
 
-
 * LEXICON Z2-geo_uukSZ   Nuuk
 
 * LEXICON Z2-geo_specielSZ   Qinngorput – Qinngorpummi, Qinngorpumi
-
 
 * LEXICON Z2-geoPZ   Iqaluit Ny 20150129. Erstatter Z1geo_lukPZ
 
@@ -72,185 +53,11 @@ Navnelexikon er i ateq-kal-lex.txt.
 
 Et særligt lexicon til literals i citationstegn med placeholder QuotedHyphen (står i acronyms.lexc)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 :- Z2-ateqZ-suf ;     !SUB
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 Tidligere Z2-ateqZmorf
 
-
-
 Nyt lexicon 20180615 Z2suaq_ateqZmorf
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 * LEXICON ZpossessumZ   !Kalaallit% Nunaat flyttet til ZgeopossessumSZ
 
@@ -267,14 +74,6 @@ Nyt lexicon 20180615 Z2suaq_ateqZmorf
 * LEXICON Z1Prop+qaZ  kopieret ind fra Z1+qaZ (tp), hvis størstedel er slettet her
 
 * LEXICON Proptp  
-
-
-
-
-
-
-
-
 
 * * *
 <small>This (part of) documentation was generated from [../src/fst/affixes/propernouns.lexc](http://github.com/giellalt/lang-kal/blob/main/../src/fst/affixes/propernouns.lexc)</small>

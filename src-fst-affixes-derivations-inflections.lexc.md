@@ -17,7 +17,6 @@
 * tup  = 
 * K    = Direkte til finale klitika
 
-
 ## Specielle lexica 
 
 ## KAPITLER TIL fst-DOKUMENTATION
@@ -45,7 +44,6 @@ For at forebygge dette tagges derivativkæder med TIP som første element med @D
 Bemærk at D-flaget principielt kun skal anvendes når TIP er første derivativ i kæden. Det kan nemlig ikke udelukkes, at der på et senere
 tidspunkt kan tilføjes yderligere TIP-er 
 
-
 SÆRLIGT OM Gram/Refl VED TRANSITIVERNE (PL20211121 forsøg)
 Foranlediget af ord som 'attorteqqassutigaara', hvor Refl skaber problemer for både oversættelserne
 og videre affingering introduceres strengen +TIP+Der/vv+Gram/Db+Gram/Refl som går til XItX ;
@@ -57,18 +55,6 @@ PLEONASTISKE HTR VED NIAR OG QQIP
 medtages i IV-lexica med taggen +HTR+Err/Sub og en bemærkning efter !
 Fx i LEXICON IVschwa2
 +QQIP+Der/vv+HTR+Der/vv+Err/Sub:%>eqqii IV-mod_V ; !Fejl af typen ingerlatitseqqiineq
-
-
-
-
-
-
-
-
-
-
-
-
 
 ## Tronds afdeling for debugging.
 
@@ -84,7 +70,6 @@ Det kan være flere grunder hertil:
 * de er simpelthen ikke definerede
 * det korrekte leksikon er ikke tilføjet, og lexc tar suffikset istedenfor
 * det er en skrivefejl i leksikonnavnet
-
 
 ## DERIVATIONSMORFEMERNES LEKSIKA
 
@@ -104,8 +89,6 @@ Nogle af dem er dokumenterede, andre ikke.
 - LEXICON Z1VZmorf  Derivationsmorfemer til nominer, der ender med vokal a, i, u 20200916 NN
 	 -  tp ;  
 
-
-
 * LEXICON Z1eqZmorf  Derivationsmorfemer til nominer på seq og leq
 	  * Z1eqZ ; 
 ... osv.
@@ -119,7 +102,6 @@ Nogle af dem er dokumenterede, andre ikke.
 * LEXICON SIKgemin  derivationsmorfemer til nominer som ikusik:iku
 
 * LEXICON Z1+le_UdenPossessumZmorf  derivationsmorfemer til nominer som kalaaleq, der ikke kan tage possessum
-
 
 * LEXICON Z1eZmorf  derivationsmorfemer til nominer på udlydende schwa
 
@@ -141,7 +123,6 @@ Nogle af dem er dokumenterede, andre ikke.
 
 * LEXICON Z2Zmorf  nominer som erneq
 
-
 * LEXICON Z2kZmorf  nominer som eqik
 
 * LEXICON Z2veqZmorf  derivationsmorfemer til aaveq-typen
@@ -153,7 +134,6 @@ Nogle af dem er dokumenterede, andre ikke.
 * LEXICON Z2-Zmorf  derivationsmorfemer til tup- paa K. Jf. Z2-qZmorf
 
 * LEXICON Z2-uukZmorf  derivationsmorfemer til tup- paa K. Jf. Z2-qZmorf
-
 
 * LEXICON Z2-qZmorf  Nyt leksikon til tup- paa Q 7.9.2007 for at haandtere forskelle som ..fiksuaq vs. ..aqsuaq
 
@@ -168,7 +148,6 @@ gennemgangskatalog for up-stammer, der kræver replaciv sandhi
 * LEXICON Z2+rZmorf  derivationsmorfemer til nominer
 
 * LEXICON Z2-PZmorf  derivationsmorfemer til tup-nominer pluralis tantum
-
 
 * LEXICON ZoqsZmorf2  
 
@@ -201,10 +180,6 @@ gennemgangskatalog for up-stammer, der kræver replaciv sandhi
 * LEXICON NumCmorf  nyt katalog livm 20170917
 
 * LEXICON Numtmorf  foorut
-
-
-
-
 
 * LEXICON IVschwa_stem  angeqi
 
@@ -252,7 +227,6 @@ gennemgangskatalog for up-stammer, der kræver replaciv sandhi
 
 * LEXICON XIiXmorf_stem   type tarrarippoq
 
-
 * LEXICON XIiXmorf 
 
 * LEXICON XIiXmorf2   skal få 200 medl.
@@ -285,13 +259,11 @@ gennemgangskatalog for up-stammer, der kræver replaciv sandhi
 
 * LEXICON XItsXmorf_stem   type ippajaappoq
 
-
 * LEXICON XItsXmorf  
 
 * LEXICON XItsXmorf2  
 
 PL 20180718. Følgende er et særligt lexicon til ip i stedet for tidligere LEXICON IV_k_stem med default flex-iv, der producerede enorm overgenerering. Samtidig er transitiv ip flyttet fra TV til flex-tv, men der skal nok tilføjes enkelte transitive ip som upper-under efterhånden som de dokumenteres.
-
 
 * LEXICON TV  Forudsættes tagget via HTR
 
@@ -301,21 +273,7 @@ PL 20180718. Følgende er et særligt lexicon til ip i stedet for tidligere LEXI
 
 * LEXICON XTuteXmorf  type oqalungusiuppaa. Forudsættes tagget via HTR
 
-
-
-
-
-
-
-
 * LEXICON XTiuteXmorf  type annippaa, pitsippaa Forudsættes tagget via HTR
-
-
-
-
-
-
-
 
 * LEXICON XTirXmorf   til stammer med ir
 
@@ -325,21 +283,15 @@ PL 20180718. Følgende er et særligt lexicon til ip i stedet for tidligere LEXI
 
 * LEXICON XTtX  nakappaa nunguppaa anippaa Forudsætter Gram-tag fra HTR
 
-
-
 * LEXICON flex-iv  
 
 * LEXICON flex-iv2  
-
-
-
 
 * LEXICON flex-iv_long  
 
 * LEXICON flex-iv_long2  
 
 * LEXICON flex-iv_voq  
-
 
 * LEXICON flex-iv_voq2  
 
@@ -348,7 +300,6 @@ PL 20180718. Følgende er et særligt lexicon til ip i stedet for tidligere LEXI
 * LEXICON pi_flex-iv_voq  et saerligt lexicon til dummy-pi, som ikke får derivationer
 
 * LEXICON pi_flex-iv_voq3  et saerligt lexicon til dummy-pi, som ikke får derivationer
-
 
 * LEXICON su_flex-iv_voq  et saerligt lexicon til dummy-su, som ikke får derivationer
 
@@ -386,18 +337,13 @@ PL 20180718. Følgende er et særligt lexicon til ip i stedet for tidligere LEXI
 
 * LEXICON gallar-iv3  
 
-
-
 * LEXICON flex-iv_ssa  
 
 * LEXICON flex-iv_ssa2  
 
-
-
 * LEXICON flex-iv_qina 
 
 * LEXICON flex-iv_qina2  nyt liv 20170428. Kan ikke viderederiveres og kan danne sammentrukne former.
-
 
 * LEXICON flex-iv_nngit_stem   
 
@@ -413,7 +359,6 @@ PL 20180718. Følgende er et særligt lexicon til ip i stedet for tidligere LEXI
 
 * LEXICON XIgujoqX  
 
-
 * LEXICON XIgujoqX3  
 
 * LEXICON XImioqX  narratologisk stil som i *nikutsinnguarsinnarmioq*
@@ -423,9 +368,6 @@ PL 20180718. Følgende er et særligt lexicon til ip i stedet for tidligere LEXI
 * LEXICON flex-iv_ledsagemaade  
 
 * LEXICON flex-iv_ledsagemaade2  
-
-
-
 
 * LEXICON flex-tv  
 
@@ -461,75 +403,41 @@ PL 20180718. Følgende er et særligt lexicon til ip i stedet for tidligere LEXI
 
 * LEXICON pi_flex-tv_vaa2  fleksiver helt uden derivativer specielt til pi-
 
-
-
-
 * LEXICON su_flex-tv_vaa 
 
 * LEXICON su_flex-tv_vaa2  fleksiver helt uden derivativer specielt til pi-
-
-
-
-
-
-
 
 * LEXICON flex-tv_vaa  
 
 * LEXICON flex-tv_vaa2  
 
-
-
 * LEXICON flex-tv_ssa  !pl20210729 nyt LEX for at tillade -ssua- isf. -ssava-
 
 * LEXICON flex-tv_ssa2  
-
-
 
 * LEXICON flex-tvP_vaa  
 
 * LEXICON flex-tvP_vaa2  
 
-
-
-
 * LEXICON XTPX  
 
 * LEXICON XTPX2  
 
-
 * LEXICON XTuteX  
 
-
-
 * LEXICON XTuteX2  
-
 
 * LEXICON XTutePX  
 
 * LEXICON XTutePX2  
 
-
 * LEXICON flex-tv_nngit  
 
 * LEXICON flex-tv_nngit2  
 
-
-
-
-
-
-
 * LEXICON flex-tv_schwa  
 
 * LEXICON flex-tv_schwa2  
-
-
-
-
-
-
-
 
 * LEXICON XTPX_nngit  
 
@@ -539,19 +447,11 @@ PL 20180718. Følgende er et særligt lexicon til ip i stedet for tidligere LEXI
 
 * LEXICON XTPX_schwa2  
 
-
-
-
 Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 
 * LEXICON XTgujaaX  
 
-
 * LEXICON XTgujaaX2  
-
-
-
-
 
 * LEXICON tp_uden_derivativer  
 | --- 
@@ -562,14 +462,10 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 * LEXICON tp  obs 20200623: fleksionsmorfemgrænse er %< og ikke %>
 | --- 
 
-
 | --- 
 | --- 
 | --- 
 | --- 
-
-
-
 
 | --- 
 | --- 
@@ -578,7 +474,6 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 
 * LEXICON Z1+tZ   !PL20210519 retableret og stammer fjernet fra GEMS
 
-
 * LEXICON tp_possessum3   Til "stammer" som inuup-normu
 
 * LEXICON nuliaq  
@@ -586,7 +481,6 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 | --- 
 | --- 
 | --- 
-
 
 * LEXICON tp_speciel  specialitet for at haandtere diatese ved NIQ=SSAQ
 | --- 
@@ -623,9 +517,7 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 
 * LEXICON Z1iZ  taggit
 
-
 * LEXICON ZsikZ  170306 til ikusik og kiasik
-
 
 * LEXICON Z1+le_UdenPossessumZ  
 
@@ -727,7 +619,6 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 
 * LEXICON Zappellativ_possessumZ   ulloqeqqa
 
-
 * LEXICON LokVb  
 
 * LEXICON LokAeq  
@@ -788,11 +679,7 @@ I Num2 til Num10 er flagging af NNGUR C-et pga. klokken
 
 * LEXICON Num2  
 
-
 * LEXICON Num3  
-
-
-
 
 * LEXICON Num4  
 
@@ -816,16 +703,11 @@ I Num2 til Num10 er flagging af NNGUR C-et pga. klokken
 
 * LEXICON Num2Ord  
 
-
 * LEXICON Num3Ord  
 
 * LEXICON Num6Ord  
 
 * LEXICON Num10Ord  
-
-
-
-
 
 * LEXICON Naal  
 
@@ -833,23 +715,11 @@ I Num2 til Num10 er flagging af NNGUR C-et pga. klokken
 
 * LEXICON web  
 
-
-
-
-
-
-
-
-
-
-
-
 * LEXICON Gaq  transitive stammer med a, u og schwa som stammevokal
 
 * LEXICON iGaq  transitive r-stammer med i som stammevokal NY PL 20180416
 
 * LEXICON GaqP  
-
 
 * LEXICON Taq  passivt nomen af transitive stammer på k
 
@@ -857,29 +727,21 @@ I Num2 til Num10 er flagging af NNGUR C-et pga. klokken
 
 * LEXICON TaqP  
 
-
 * LEXICON Saq   passivt nomen af transitive stammer på vokal PL revision 20180409
 
 * LEXICON iSaq  passivt nomen af transitive stammer på vokal med strong i 
 
-
 * LEXICON SaqP  
-
 
 * LEXICON Saq_schwa  gennemgangsleksikon for schwa-stammer uden derivativer
 
 * LEXICON Saq_schwaP  gennemgangsleksikon for schwa-stammer uden derivativer - pluralis tantum
 
-
-
 * LEXICON uteSaqP   passivt nomen af transitive stammer med UTE
-
 
 * LEXICON nngisaq   passivt nomen af transitive stammer på NNGIT
 
 * LEXICON nngisaqP   passivt nomen af transitive pluralis tantum stammer på NNGITLEXICON prae understreg
-
-
 
 * LEXICON HTR_V_SAQ_nnip  20100630 vokalstammer som asavaa med HTR på NNIP (asannippoq, takunnippoq)
 
@@ -895,22 +757,17 @@ I Num2 til Num10 er flagging af NNGUR C-et pga. klokken
 
 * LEXICON HTR_i_SAQ_si  20100630 vokalstammer på i med HTR på SI (tunivaa - tunisaq - tunisivoq)
 
-
 * LEXICON HTR_UTE_SSAQ_ssi   201000929 gennemgangsleksikon for ute stammer.(kingornuppaa - kingornussivoq - kingornussaq)
 
 * LEXICON HTR_UTE_SSAQ_tsi   20190309 ute-stammer på HTR=tsi som sioqquppaa
 
 * LEXICON HTR_iUTE_SSAQ_ssi   201000929 gennemgangsleksikon for fusionerede ute stammer med assibilering.(pitsippaa, annippaa). Den morfologiske usikkerhed meget generel ved disse stammer, så såvel t-stammers struktur som ute-stammers ditto medtaget
 
-
 * LEXICON HTR_schwa_SAQ_nnip   201000929 gennemgangsleksikon for schwa stammer.
 
 * LEXICON HTR_schwa_SAQ_nnip_P   201000929 gennemgangsleksikon for schwa stammer.
 
-
 * LEXICON HTR_schwa_SAQ_si   gennemgangsleksikon for schwa stammer. (ilisarsivoq)
-
-
 
 * LEXICON HTR_C_TAQ_si   (dvs. konsonantstammer men ikke med *r* (kingornuppaa - kingornussivoq - kingornutaq)
 
@@ -922,10 +779,7 @@ I Num2 til Num10 er flagging af NNGUR C-et pga. klokken
 
 * LEXICON HTR_C_TAQ_nnip   (malippaa --> malinnippoq)
 
-
-
 * LEXICON HTR_C_TAQ_i   20100406 gennemgangsleksikon for t-stammer og k-stammer
-
 
 * LEXICON HTR_C_TAQ_tsi  20101203 t-stammer som toqup med HTR på TSI (nipangersippaa - nipangersitaq - nipangersitsivoq)
 
@@ -951,7 +805,6 @@ I Num2 til Num10 er flagging af NNGUR C-et pga. klokken
 
 * LEXICON UDEN_HTR_iV_SAQ    vokalstammer som nakkaavaa uden HTR
 
-
 * LEXICON UDEN_HTR_schwa_SAQ    schwastammer som anneraa - amigaraa uden HTR
 
 * LEXICON HTR_r_GAQ_i   201000630 konsonantstammer som arsaartorpaa med HTR på I (arsaartuivoq)
@@ -975,12 +828,6 @@ I Num2 til Num10 er flagging af NNGUR C-et pga. klokken
 flex-tv ;
 
 * LEXICON HTR_k_GAQ_i  til de faa stammer med fusionerende passivt nomen som atornerlugaq, atornerluppaa, atornerluivoq
-
-
-
-
-
-
 
 * LEXICON N_Loan_ACR_V  = bøjelige acronymer med appellativ-betydning som *en BMW*, der skal have bindestreg, men ikke i før videredannelse 
 
@@ -1024,22 +871,15 @@ flex-tv ;
 
 * LEXICON N_Loan_Unit  loanwords ending in consonants, semantic: unit
 
-
 * LEXICON V_Loan  verbal intransitive loanwords
 
 * LEXICON V_Loan_tr  verbal transitive loanwords
-
 
 Nye gennemgangsleksika specifikt for +UTE+Der/vv tilføjet 20180118 (PL)
 
 Nye gennemgangsleksika specifikt for +UTE+Der/vv tilføjet 20180928 (PL)
 
 Nye gennemgangsleksika specifikt for +UTE+Der/vv tilføjet 20180928 (PL)
-
-
-
-
-
 
 Nye gennemgangsleksika for TAR med følgende morfemer
 
@@ -1079,136 +919,18 @@ Gennemgangsleksikon RUJUUR+Der/vv
 
 Gennemgangsleksikon for TAR m. fl. !tilføjet 20170501
 
-
-
-
-
 efter GUMALLIR GUNNAIR LIR QQAMMIR RIIR UMMIR etc. !Ny default + post_-lexica PL 20180416
 
 TIR og TITIR
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers Mac
 
 | --- 
 | --- 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 * LEXICON Z1+maZmorf  derivationsmorfemer til nominer som isuma
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 * LEXICON Z1+maZ  
-
-
-
-
-
-
 
 * * *
 <small>This (part of) documentation was generated from [../src/fst/affixes/derivations-inflections.lexc](http://github.com/giellalt/lang-kal/blob/main/../src/fst/affixes/derivations-inflections.lexc)</small>

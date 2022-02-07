@@ -874,7 +874,12 @@ endef
 # Extract Markdown doccomments:
 define make_md_files
 $$(top_srcdir)/docs/$$(call src2md,$(1)): $(1)
-	$$(AM_V_AWK)"$(GAWK)" -v GLANG=$(GLANG) -f $(DOCC2MDWIKI) $$< > $$@
+	$$(AM_V_AWK)"$(GAWK)" -v GLANG=$(GLANG) -f $(DOCC2MDWIKI) $$< |\
+		$(SED) -e 's/@/REALLY_AT/g' |\
+		tr '\n' '@' |\
+		$(SED) -e 's/@@@*/@@/g' |\
+		tr '@' '\n' |\
+		$(SED) -e 's/REALLY_AT/@/g' > $$@
 endef
 
 # Build each MD file:
@@ -897,13 +902,43 @@ generated-markdowns.targets: $(VPATH_MDFILES)
 	$(AM_V_GEN)echo $(MDFILES) | tr ' ' '\n' > $@
 
 # Collect all target files into one big MD file:
-$(ALLINONE_MD_PAGE): generated-markdowns.targets
-	$(AM_V_GEN)cat `cat generated-markdowns.targets | sed -e 's@^@$(srcdir)/@'` > $@
+$(ALLINONE_MD_PAGE): $(VPATH_MDFILES)
+	$(AM_V_GEN)cat $(VPATH_MDFILES) > $@
 
-$(LINKS): generated-markdowns.targets
-	$(AM_V_GEN)cat generated-markdowns.targets |\
-				LC_COLLATE=C sed 's/[a-zA-Z0-9._-]*/* [&]\(&\)/g' \
-				> $@
+$(LINKS):
+	for doc2md in $(DOCSRC_MDFILES) ; do \
+		doc=`echo "$$doc2md" | cut -d '@' -f 1` ;\
+		md=`echo "$$doc2md" | cut -d '@' -f 2` ;\
+		d=`dirname "$$doc"` ;\
+		b=`basename "$$md" .md` ;\
+		html=$$b.html ;\
+		d1=`echo "$$d" | cut -d '/' -f 1` ;\
+		d2=`echo "$$d" | cut -d '/' -f 2` ;\
+		d3=`echo "$$d" | cut -d '/' -f 3` ;\
+		d4=`echo "$$d" | cut -d '/' -f 4` ;\
+		if test "x$$d1" != "x$$oldd1" ; then \
+			echo "* \`$$d1\`" ;\
+			oldd1=$$d1 ;\
+		fi ; \
+		if test "x$$d2" = x ; then \
+			echo "  * [$$doc]($$html)" ;\
+		elif test "x$$d2" != "x$$oldd2" ; then \
+			echo "  * \`$$d2\`" ;\
+			oldd2=$$d2 ;\
+		fi ; \
+		if test "x$$d3" = x -a "x$$d2" != x; then \
+			echo "    * [$$doc]($$html)" ;\
+		elif test "x$$d3" != "x$$oldd3" ; then \
+			echo "    * \`$$d3\`" ;\
+			oldd3=$$d3 ;\
+		fi ; \
+		if test "x$$d4" = x -a "x$$d3" != x ; then \
+			echo "      * [$$doc]($$html)" ;\
+		elif test "x$$d4" != "x$$oldd4" ; then \
+			echo "      * \`$$d4\`" ;\
+			oldd4=$$d4 ;\
+		fi ; \
+	done > $@
 
 empty.md:
 	$(AM_V_GEN)echo > $@

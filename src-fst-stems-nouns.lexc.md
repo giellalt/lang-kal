@@ -16,7 +16,6 @@
 * tup  = 
 * K    = Direkte til finale klitika
 
-
 ...ƒ
 
 * LEXICON Nomen  Nominalstammer
@@ -25,47 +24,10 @@ Leksikonet Nomen inneholder nomenerne.
 
 xxx 20170522 til former, som ikke kan læses men som har brug for en analyse i cg'en. Pluralis og singularis-kataloger er ikke medtaget.
 
-
-
-
-
-
 * aaffaffak Z2-Zmorf ;              
 * aaffaffak+N+Abs+Sg:aaffaffaq Krestr ; 
 * aaffaq Z2-qZmorf ;                 
 aaffattaq Z1Zmorf ;                * ...
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 * * *
 <small>This (part of) documentation was generated from [../src/fst/stems/nouns.lexc](http://github.com/giellalt/lang-kal/blob/main/../src/fst/stems/nouns.lexc)</small>

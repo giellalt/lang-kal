@@ -4,7 +4,6 @@ Fil for at generere de centrale morfologiske processer i vor grønlandske analys
 
 # Multicharacter symbols
 
-
 * **v2** = Alternativt /v/ i låneord, der ikke skal slettes efter /u/
 * **AA+** = præfiks
 * **TA+** = præfiks
@@ -23,8 +22,6 @@ Fil for at generere de centrale morfologiske processer i vor grønlandske analys
 * **+Num** = Numeral
 * **+Symbol** = independent symbols in the text stream, like £, €, ©
 
-
-
 ## Secondary tags
 
 ### Tags for Verbs
@@ -33,7 +30,6 @@ Fil for at generere de centrale morfologiske processer i vor grønlandske analys
 * **+Gram/HV** = Non-marked agentive Verb (used as Half-transitive)
 * **+Gram/Db** = Double-transitive Verb. PL tilføjet 20180319
 * **+Gram/Exclm** = Exclamation !Flyttet fra primære tags 20180420 PL
-
 
 ### Tags for Pronouns
 * **+Gram/Int** = Interrogative Pronoun
@@ -67,7 +63,6 @@ Fil for at generere de centrale morfologiske processer i vor grønlandske analys
 ***+Sem/Unit** = Unit !Til besværlige låneord som 'time' etc., der optræder absolut
 ***+Sem/Url** tag til adresser af typen www.ccc.cc
 *** +Sem/misse ** tag til at markere usikker possessor for misse
-
 
 ### Grammar
 ***+Gram/Comp** = Composita !Særlig tag til NIQ ajor/saper/artor/nalu- konstruktioner ved transitive verber
@@ -114,7 +109,6 @@ That is, they need special treatment in e.g. speech syntesis.
 * **+Use/-Spell** = Do not include in speller
 * **+Use/Hybrid** = For generating split hybrids. Should not be included in speller, analyser, or norm-generator
 * **+Err/Sub** = Not authorized spelling: 2-imik
-
 
 ## Tags for Inflection
 
@@ -196,19 +190,15 @@ Test af boolsk variabel til ad hoc blokering af Gram/Exclm. stems sættes Off og
 
 Off-flag sættes i verbs på transitive verber med usandsynlig Refl. On-flag på taggen Gram/Refl i gennemgangslexica
 
-
 Off-flag på verber som akuaa, der ikke må lave metatese på NIQ
 
 Nyt flag 20211214 for at forebygge *taakkuunngitsoq og *taannaanngitsut
-
 
 Off-flag på nominer, der SKAL opføre sig replacive som pilersaarusiorpoq og aqqusinniorpoq
 
 Off-flag i nouns og Off-flag i der-inf  når TUR og TUGAQ ikke må assibileres og On-flag, når de skal assibileres. Også for at forebygge assibilering efter HTR på nnip
 
 Ad hoc til test af alternativ flag diacritics ved præfikser. Husk også den udkommenterede linie 'Kingumoorutit ;' i LEXICON Root
-
-
 
 Test af P- og D-flag til forebyggelse af rekusivitet ved TIP
 og blokeres af 
@@ -217,18 +207,11 @@ Test 20210504 af P- og R-flag for at generere både takornariat og takornarissat
 
 Flags for loan words, which must not go to N+Abs+Sg without derivation.
 
-
-
-
 ## Symbols that need to be escaped on the lower side (towards twolc)
 * »
 * « ()
 * > (written with square brackets as stem, to avoid collision with the morpheme boundary marker)
 * < (written with square brackets as stem, to avoid collision with the morpheme boundary marker)
-
-
-
-
 
 ## Flag diacritics
 We have manually optimised the structure of our lexicon using following

@@ -1,15 +1,24 @@
-* [src-cg3-disambiguator.cg3.md](src-cg3-disambiguator.cg3.md)
-* [src-cg3-functions.cg3.md](src-cg3-functions.cg3.md)
-* [src-fst-stems-nouns.lexc.md](src-fst-stems-nouns.lexc.md)
-* [src-fst-stems-propernouns.lexc.md](src-fst-stems-propernouns.lexc.md)
-* [src-fst-stems-verbs.lexc.md](src-fst-stems-verbs.lexc.md)
-* [src-fst-affixes-numerals.lexc.md](src-fst-affixes-numerals.lexc.md)
-* [src-fst-affixes-propernouns.lexc.md](src-fst-affixes-propernouns.lexc.md)
-* [src-fst-affixes-derivations-inflections.lexc.md](src-fst-affixes-derivations-inflections.lexc.md)
-* [src-fst-affixes-symbols.lexc.md](src-fst-affixes-symbols.lexc.md)
-* [src-fst-root.lexc.md](src-fst-root.lexc.md)
-* [src-transcriptions-transcriptor-numbers-digit2text.lexc.md](src-transcriptions-transcriptor-numbers-digit2text.lexc.md)
-* [src-transcriptions-transcriptor-abbrevs2text.lexc.md](src-transcriptions-transcriptor-abbrevs2text.lexc.md)
-* [tools-grammarcheckers-grammarchecker.cg3.md](tools-grammarcheckers-grammarchecker.cg3.md)
-* [tools-tokenisers-tokeniser-gramcheck-gt-desc.pmscript.md](tools-tokenisers-tokeniser-gramcheck-gt-desc.pmscript.md)
-* [tools-tokenisers-tokeniser-disamb-gt-desc.pmscript.md](tools-tokenisers-tokeniser-disamb-gt-desc.pmscript.md)
+* `src`
+  * `cg3`
+    * [src/cg3/disambiguator.cg3](src-cg3-disambiguator.cg3.html)
+    * [src/cg3/functions.cg3](src-cg3-functions.cg3.html)
+  * `fst`
+    * `stems`
+      * [src/fst/stems/nouns.lexc](src-fst-stems-nouns.lexc.html)
+      * [src/fst/stems/propernouns.lexc](src-fst-stems-propernouns.lexc.html)
+      * [src/fst/stems/verbs.lexc](src-fst-stems-verbs.lexc.html)
+    * `affixes`
+      * [src/fst/affixes/numerals.lexc](src-fst-affixes-numerals.lexc.html)
+      * [src/fst/affixes/propernouns.lexc](src-fst-affixes-propernouns.lexc.html)
+      * [src/fst/affixes/derivations-inflections.lexc](src-fst-affixes-derivations-inflections.lexc.html)
+      * [src/fst/affixes/symbols.lexc](src-fst-affixes-symbols.lexc.html)
+    * [src/fst/root.lexc](src-fst-root.lexc.html)
+  * `transcriptions`
+    * [src/transcriptions/transcriptor-numbers-digit2text.lexc](src-transcriptions-transcriptor-numbers-digit2text.lexc.html)
+    * [src/transcriptions/transcriptor-abbrevs2text.lexc](src-transcriptions-transcriptor-abbrevs2text.lexc.html)
+* `tools`
+  * `grammarcheckers`
+    * [tools/grammarcheckers/grammarchecker.cg3](tools-grammarcheckers-grammarchecker.cg3.html)
+  * `tokenisers`
+    * [tools/tokenisers/tokeniser-gramcheck-gt-desc.pmscript](tools-tokenisers-tokeniser-gramcheck-gt-desc.pmscript.html)
+    * [tools/tokenisers/tokeniser-disamb-gt-desc.pmscript](tools-tokenisers-tokeniser-disamb-gt-desc.pmscript.html)
