@@ -240,4 +240,8 @@ given the proper use of these flags.
 |  @U.Cap.Opt@ | Allowing downcasing of derived names: København > københavner.
 
 * * *
-<small>This (part of) documentation was generated from [../src/fst/root.lexc](http://github.com/giellalt/lang-kal/blob/main/../src/fst/root.lexc)</small>
+
+<small>This (part of) documentation was generated from [src/fst/root.lexc](https://github.com/giellalt/lang-kal/blob/main/src/fst/root.lexc)</small>
+
+---
+

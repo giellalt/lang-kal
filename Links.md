@@ -1,24 +1,24 @@
-* `src`
-  * `cg3`
-    * [src/cg3/disambiguator.cg3](src-cg3-disambiguator.cg3.html)
-    * [src/cg3/functions.cg3](src-cg3-functions.cg3.html)
-  * `fst`
-    * `stems`
-      * [src/fst/stems/nouns.lexc](src-fst-stems-nouns.lexc.html)
-      * [src/fst/stems/propernouns.lexc](src-fst-stems-propernouns.lexc.html)
-      * [src/fst/stems/verbs.lexc](src-fst-stems-verbs.lexc.html)
-    * `affixes`
-      * [src/fst/affixes/numerals.lexc](src-fst-affixes-numerals.lexc.html)
-      * [src/fst/affixes/propernouns.lexc](src-fst-affixes-propernouns.lexc.html)
-      * [src/fst/affixes/derivations-inflections.lexc](src-fst-affixes-derivations-inflections.lexc.html)
-      * [src/fst/affixes/symbols.lexc](src-fst-affixes-symbols.lexc.html)
-    * [src/fst/root.lexc](src-fst-root.lexc.html)
-  * `transcriptions`
-    * [src/transcriptions/transcriptor-numbers-digit2text.lexc](src-transcriptions-transcriptor-numbers-digit2text.lexc.html)
-    * [src/transcriptions/transcriptor-abbrevs2text.lexc](src-transcriptions-transcriptor-abbrevs2text.lexc.html)
-* `tools`
-  * `grammarcheckers`
-    * [tools/grammarcheckers/grammarchecker.cg3](tools-grammarcheckers-grammarchecker.cg3.html)
-  * `tokenisers`
-    * [tools/tokenisers/tokeniser-gramcheck-gt-desc.pmscript](tools-tokenisers-tokeniser-gramcheck-gt-desc.pmscript.html)
-    * [tools/tokenisers/tokeniser-disamb-gt-desc.pmscript](tools-tokenisers-tokeniser-disamb-gt-desc.pmscript.html)
+* `src/`
+    * `cg3/`
+        * [disambiguator.cg3](src-cg3-disambiguator.cg3.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/cg3/disambiguator.cg3))
+        * [functions.cg3](src-cg3-functions.cg3.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/cg3/functions.cg3))
+    * `fst/`
+        * `stems/`
+            * [nouns.lexc](src-fst-stems-nouns.lexc.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/fst/stems/nouns.lexc))
+            * [propernouns.lexc](src-fst-stems-propernouns.lexc.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/fst/stems/propernouns.lexc))
+            * [verbs.lexc](src-fst-stems-verbs.lexc.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/fst/stems/verbs.lexc))
+        * `affixes/`
+            * [numerals.lexc](src-fst-affixes-numerals.lexc.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/fst/affixes/numerals.lexc))
+            * [propernouns.lexc](src-fst-affixes-propernouns.lexc.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/fst/affixes/propernouns.lexc))
+            * [derivations-inflections.lexc](src-fst-affixes-derivations-inflections.lexc.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/fst/affixes/derivations-inflections.lexc))
+            * [symbols.lexc](src-fst-affixes-symbols.lexc.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/fst/affixes/symbols.lexc))
+        * [root.lexc](src-fst-root.lexc.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/fst/root.lexc))
+    * `transcriptions/`
+        * [transcriptor-numbers-digit2text.lexc](src-transcriptions-transcriptor-numbers-digit2text.lexc.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/transcriptions/transcriptor-numbers-digit2text.lexc))
+        * [transcriptor-abbrevs2text.lexc](src-transcriptions-transcriptor-abbrevs2text.lexc.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/transcriptions/transcriptor-abbrevs2text.lexc))
+* `tools/`
+    * `grammarcheckers/`
+        * [grammarchecker.cg3](tools-grammarcheckers-grammarchecker.cg3.html) ([src](https://github.com/giellalt/lang-kal/blob/main/tools/grammarcheckers/grammarchecker.cg3))
+    * `tokenisers/`
+        * [tokeniser-gramcheck-gt-desc.pmscript](tools-tokenisers-tokeniser-gramcheck-gt-desc.pmscript.html) ([src](https://github.com/giellalt/lang-kal/blob/main/tools/tokenisers/tokeniser-gramcheck-gt-desc.pmscript))
+        * [tokeniser-disamb-gt-desc.pmscript](tools-tokenisers-tokeniser-disamb-gt-desc.pmscript.html) ([src](https://github.com/giellalt/lang-kal/blob/main/tools/tokenisers/tokeniser-disamb-gt-desc.pmscript))
