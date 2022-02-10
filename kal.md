@@ -4,174 +4,11 @@ All documents in one file
 
 
 
-Jeg kan ikke løse problemet fornuftigt, så hermed en alt for snæver ad hoc-regel
-
 * * *
-
 <small>This (part of) documentation was generated from [src/cg3/disambiguator.cg3](https://github.com/giellalt/lang-kal/blob/main/src/cg3/disambiguator.cg3)</small>
 
----
-
-
-
-#Vistnok overflødig. Må skulle mappes @CONT->N i stedet, parataksen giver jo sig selv.
-
 * * *
-
 <small>This (part of) documentation was generated from [src/cg3/functions.cg3](https://github.com/giellalt/lang-kal/blob/main/src/cg3/functions.cg3)</small>
-
----
-
-# Grønlandske nomener 
-
-## Dokumentasjon for leksikonnavne:
-
-* Z = nomen
-* 1 = svag bøjning, p-bøjning
-* 2 = sterk bøjning, up-bøjning
-* P = plurale tantum
-* S = singularis
-* - = sterk bøjing som trunkerer (2-)
-* a, q, ... = gemineringer ved konsonantiske flexiver
-* Z = nomen
-* morf = går til derivationsleksika
-*      = går til flexivleksika
-* tpt  =  
-* tup  = 
-* K    = Direkte til finale klitika
-
-...ƒ
-
-* LEXICON Nomen  Nominalstammer
-
-Leksikonet Nomen inneholder nomenerne.
-
-xxx 20170522 til former, som ikke kan læses men som har brug for en analyse i cg'en. Pluralis og singularis-kataloger er ikke medtaget.
-
-* aaffaffak Z2-Zmorf ;              
-* aaffaffak+N+Abs+Sg:aaffaffaq Krestr ; 
-* aaffaq Z2-qZmorf ;                 
-aaffattaq Z1Zmorf ;                * ...
-
-* * *
-
-<small>This (part of) documentation was generated from [src/fst/stems/nouns.lexc](https://github.com/giellalt/lang-kal/blob/main/src/fst/stems/nouns.lexc)</small>
-
----
-
-
-
-xxx 20170522 til former, som ikke kan læses men som har brug for en analyse i cg'en..
-
-* * *
-
-<small>This (part of) documentation was generated from [src/fst/stems/propernouns.lexc](https://github.com/giellalt/lang-kal/blob/main/src/fst/stems/propernouns.lexc)</small>
-
----
-
-
-
-xxx 20170524 til verbalstammer, som ikke kan læses men som har brug for en analyse i cg'en. Pluralis tantum-kataloger er ikke medtaget. !er det nødvendigt også at medtage stammer fra derivationsleksika?
-
-* * *
-
-<small>This (part of) documentation was generated from [src/fst/stems/verbs.lexc](https://github.com/giellalt/lang-kal/blob/main/src/fst/stems/verbs.lexc)</small>
-
----
-
-
-Inflection and derivation.
-
-* * *
-
-<small>This (part of) documentation was generated from [src/fst/affixes/numerals.lexc](https://github.com/giellalt/lang-kal/blob/main/src/fst/affixes/numerals.lexc)</small>
-
----
-
-# Propriernes morfologi i grønlandsk
-
-* LEXICON ZxxxV   steder og navne på vokal som ikke er i FST'en
-
-* LEXICON ZxxxC   steder og navne på konsonant som ikke er i FST'en
-
-Navnelexikon er i ateq-kal-lex.txt.
-
-* LEXICON Z1geoSZ   Igaliku og Narsaq
-* LEXICON Z1geoSZ-suf   SUB
-
-* LEXICON Z1geoPZ   Paamiut
-
-*Sisimiut examples:*
-* *Sisimiut:* `Sisimiut+Prop+Abs+Pl`
-* *Sisimiut:* `Sisimiut+Prop+Rel+Pl`
-* *Sisimiunut:* `Sisimiut+Prop+Trm+Pl`
-* *Sisimiunit:* `Sisimiut+Prop+Abl+Pl`
-* *Sisimiuniit:* `Sisimiut+Prop+Abl+Pl`
-* *Sisimiuni:* `Sisimiut+Prop+Lok+Pl`
-
-* LEXICON Z1geo_nnguaqPZ   Kangilinnguit NY 20100319 (PL)
-
-* LEXICON Z1geo_nnguaqZ    Quassunnguaq NY 20100410 (PL)
-
-* LEXICON Z1geo_tsSmorf  Kangerluarsoruseq
-
-* LEXICON Z1geo+ssPZ   Ilulissat
-
-* LEXICON Z1geo_oqsZ   Finland
-
-* LEXICON Z1geo_oqseZ   Thule
-
-* LEXICON Z2-geoSZ   Ikerasaarsuk
-
-* LEXICON Z2-geoSZ_TUQAQ   Nuutoqaq
-
-* LEXICON Z2+lgeoSZ   Nanortalik:Nanorta
-
-* LEXICON Z2-geo_uukSZ   Nuuk
-
-* LEXICON Z2-geo_specielSZ   Qinngorput – Qinngorpummi, Qinngorpumi
-
-* LEXICON Z2-geoPZ   Iqaluit Ny 20150129. Erstatter Z1geo_lukPZ
-
-* LEXICON Z2-geoqPZ   Saqqarliit
-
-* LEXICON Z2-geolikPZ   Kapisillit:Kapisi
-
-* LEXICON Z2geo_aqSZ   Nuussuaq
-
-* LEXICON Z2geo_aqPZ   livm 20170822 Illorsuit:Illorsuaq
-
-Et særligt lexicon til literals i citationstegn med placeholder QuotedHyphen (står i acronyms.lexc)
-
-:- Z2-ateqZ-suf ;     !SUB
-
-Tidligere Z2-ateqZmorf
-
-Nyt lexicon 20180615 Z2suaq_ateqZmorf
-
-* LEXICON ZpossessumZ   !Kalaallit% Nunaat flyttet til ZgeopossessumSZ
-
-* LEXICON ZpossessumSZ   Nuup Kommunea
-
-* LEXICON ZpossessumPZ   
-
-* LEXICON ZgeopossessumSZ   !Kalaallit% Nunaat flyttet til ZgeopossessumPZ
-
-* LEXICON ZgeopossessumPZ   Kalaallit% Nunaat
-
-* LEXICON ZPropKKUTZ  kopieret fra ZkkutZ. Det meste af derivation udkommenteret, da usandsynlig ved proprier
-
-* LEXICON Z1Prop+qaZ  kopieret ind fra Z1+qaZ (tp), hvis størstedel er slettet her
-
-* LEXICON Proptp  
-
-* * *
-
-<small>This (part of) documentation was generated from [src/fst/affixes/propernouns.lexc](https://github.com/giellalt/lang-kal/blob/main/src/fst/affixes/propernouns.lexc)</small>
-
----
-
-
 # Fil for at generere de centrale morfologiske processer i vor grønlandske analysator               
 
 ## Dokumentasjon for leksikonnavne:
@@ -1112,6 +949,98 @@ Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers
 ---
 
 
+Inflection and derivation.
+
+* * *
+
+<small>This (part of) documentation was generated from [src/fst/affixes/numerals.lexc](https://github.com/giellalt/lang-kal/blob/main/src/fst/affixes/numerals.lexc)</small>
+
+---
+
+# Propriernes morfologi i grønlandsk
+
+* LEXICON ZxxxV   steder og navne på vokal som ikke er i FST'en
+
+* LEXICON ZxxxC   steder og navne på konsonant som ikke er i FST'en
+
+Navnelexikon er i ateq-kal-lex.txt.
+
+* LEXICON Z1geoSZ   Igaliku og Narsaq
+* LEXICON Z1geoSZ-suf   SUB
+
+* LEXICON Z1geoPZ   Paamiut
+
+*Sisimiut examples:*
+* *Sisimiut:* `Sisimiut+Prop+Abs+Pl`
+* *Sisimiut:* `Sisimiut+Prop+Rel+Pl`
+* *Sisimiunut:* `Sisimiut+Prop+Trm+Pl`
+* *Sisimiunit:* `Sisimiut+Prop+Abl+Pl`
+* *Sisimiuniit:* `Sisimiut+Prop+Abl+Pl`
+* *Sisimiuni:* `Sisimiut+Prop+Lok+Pl`
+
+* LEXICON Z1geo_nnguaqPZ   Kangilinnguit NY 20100319 (PL)
+
+* LEXICON Z1geo_nnguaqZ    Quassunnguaq NY 20100410 (PL)
+
+* LEXICON Z1geo_tsSmorf  Kangerluarsoruseq
+
+* LEXICON Z1geo+ssPZ   Ilulissat
+
+* LEXICON Z1geo_oqsZ   Finland
+
+* LEXICON Z1geo_oqseZ   Thule
+
+* LEXICON Z2-geoSZ   Ikerasaarsuk
+
+* LEXICON Z2-geoSZ_TUQAQ   Nuutoqaq
+
+* LEXICON Z2+lgeoSZ   Nanortalik:Nanorta
+
+* LEXICON Z2-geo_uukSZ   Nuuk
+
+* LEXICON Z2-geo_specielSZ   Qinngorput – Qinngorpummi, Qinngorpumi
+
+* LEXICON Z2-geoPZ   Iqaluit Ny 20150129. Erstatter Z1geo_lukPZ
+
+* LEXICON Z2-geoqPZ   Saqqarliit
+
+* LEXICON Z2-geolikPZ   Kapisillit:Kapisi
+
+* LEXICON Z2geo_aqSZ   Nuussuaq
+
+* LEXICON Z2geo_aqPZ   livm 20170822 Illorsuit:Illorsuaq
+
+Et særligt lexicon til literals i citationstegn med placeholder QuotedHyphen (står i acronyms.lexc)
+
+:- Z2-ateqZ-suf ;     !SUB
+
+Tidligere Z2-ateqZmorf
+
+Nyt lexicon 20180615 Z2suaq_ateqZmorf
+
+* LEXICON ZpossessumZ   !Kalaallit% Nunaat flyttet til ZgeopossessumSZ
+
+* LEXICON ZpossessumSZ   Nuup Kommunea
+
+* LEXICON ZpossessumPZ   
+
+* LEXICON ZgeopossessumSZ   !Kalaallit% Nunaat flyttet til ZgeopossessumPZ
+
+* LEXICON ZgeopossessumPZ   Kalaallit% Nunaat
+
+* LEXICON ZPropKKUTZ  kopieret fra ZkkutZ. Det meste af derivation udkommenteret, da usandsynlig ved proprier
+
+* LEXICON Z1Prop+qaZ  kopieret ind fra Z1+qaZ (tp), hvis størstedel er slettet her
+
+* LEXICON Proptp  
+
+* * *
+
+<small>This (part of) documentation was generated from [src/fst/affixes/propernouns.lexc](https://github.com/giellalt/lang-kal/blob/main/src/fst/affixes/propernouns.lexc)</small>
+
+---
+
+
 
 # Symbol affixes
 
@@ -1368,17 +1297,60 @@ given the proper use of these flags.
 
 ---
 
+# Grønlandske nomener 
 
+## Dokumentasjon for leksikonnavne:
 
-% komma% :,      Root ;
-% tjuohkkis% :%. Root ;
-% kolon% :%:     Root ;
-% sárggis% :%-   Root ; 
-% násti% :%*     Root ; 
+* Z = nomen
+* 1 = svag bøjning, p-bøjning
+* 2 = sterk bøjning, up-bøjning
+* P = plurale tantum
+* S = singularis
+* - = sterk bøjing som trunkerer (2-)
+* a, q, ... = gemineringer ved konsonantiske flexiver
+* Z = nomen
+* morf = går til derivationsleksika
+*      = går til flexivleksika
+* tpt  =  
+* tup  = 
+* K    = Direkte til finale klitika
+
+...ƒ
+
+* LEXICON Nomen  Nominalstammer
+
+Leksikonet Nomen inneholder nomenerne.
+
+xxx 20170522 til former, som ikke kan læses men som har brug for en analyse i cg'en. Pluralis og singularis-kataloger er ikke medtaget.
+
+* aaffaffak Z2-Zmorf ;              
+* aaffaffak+N+Abs+Sg:aaffaffaq Krestr ; 
+* aaffaq Z2-qZmorf ;                 
+aaffattaq Z1Zmorf ;                * ...
 
 * * *
 
-<small>This (part of) documentation was generated from [src/transcriptions/transcriptor-numbers-digit2text.lexc](https://github.com/giellalt/lang-kal/blob/main/src/transcriptions/transcriptor-numbers-digit2text.lexc)</small>
+<small>This (part of) documentation was generated from [src/fst/stems/nouns.lexc](https://github.com/giellalt/lang-kal/blob/main/src/fst/stems/nouns.lexc)</small>
+
+---
+
+
+
+xxx 20170522 til former, som ikke kan læses men som har brug for en analyse i cg'en..
+
+* * *
+
+<small>This (part of) documentation was generated from [src/fst/stems/propernouns.lexc](https://github.com/giellalt/lang-kal/blob/main/src/fst/stems/propernouns.lexc)</small>
+
+---
+
+
+
+xxx 20170524 til verbalstammer, som ikke kan læses men som har brug for en analyse i cg'en. Pluralis tantum-kataloger er ikke medtaget. !er det nødvendigt også at medtage stammer fra derivationsleksika?
+
+* * *
+
+<small>This (part of) documentation was generated from [src/fst/stems/verbs.lexc](https://github.com/giellalt/lang-kal/blob/main/src/fst/stems/verbs.lexc)</small>
 
 ---
 
@@ -1399,6 +1371,20 @@ For example:
 * * *
 
 <small>This (part of) documentation was generated from [src/transcriptions/transcriptor-abbrevs2text.lexc](https://github.com/giellalt/lang-kal/blob/main/src/transcriptions/transcriptor-abbrevs2text.lexc)</small>
+
+---
+
+
+
+% komma% :,      Root ;
+% tjuohkkis% :%. Root ;
+% kolon% :%:     Root ;
+% sárggis% :%-   Root ; 
+% násti% :%*     Root ; 
+
+* * *
+
+<small>This (part of) documentation was generated from [src/transcriptions/transcriptor-numbers-digit2text.lexc](https://github.com/giellalt/lang-kal/blob/main/src/transcriptions/transcriptor-numbers-digit2text.lexc)</small>
 
 ---
 
@@ -1440,7 +1426,6 @@ CLB
 LEFT
 RIGHT
 WEB
-QMARK
 PPUNCT
 PUNCT
 
@@ -1554,9 +1539,6 @@ Sem/Txt
 
 HUMAN
 
-HAB-ACTOR
-HAB-ACTOR-NOT-HUMAN
-
 PROP-ATTR
 PROP-SUR
 
@@ -1645,8 +1627,6 @@ INITIAL
 ### Sets for word or not
 
 WORD
-REAL-WORD
-REAL-WORD-NOT-ABBR
 NOT-COMMA
 
 ### Case sets
@@ -1705,8 +1685,66 @@ expression **WORD - premodifiers**.
 ### Grammarchecker sets
 
 * * *
+<small>This (part of) documentation was generated from [tools/grammarcheckers/grammarchecker.cg3](https://github.com/giellalt/lang-kal/blob/main/tools/grammarcheckers/grammarchecker.cg3)</small># Tokeniser for kal
 
-<small>This (part of) documentation was generated from [tools/grammarcheckers/grammarchecker.cg3](https://github.com/giellalt/lang-kal/blob/main/tools/grammarcheckers/grammarchecker.cg3)</small>
+Usage:
+```
+$ make
+$ echo "ja, ja" | hfst-tokenise --giella-cg tokeniser-disamb-gt-desc.pmhfst
+$ echo "Juos gorreválggain lea (dárbbašlaš) deavdit gáibádusa boasttu olmmoš, man mielde lahtuid." | hfst-tokenise --giella-cg tokeniser-disamb-gt-desc.pmhfst
+$ echo "(gáfe) 'ja' ja 3. ja? ц jaja ukjend \"ukjend\"" | hfst-tokenise --giella-cg tokeniser-disamb-gt-desc.pmhfst
+$ echo "márffibiillagáffe" | hfst-tokenise --giella-cg tokeniser-disamb-gt-desc.pmhfst
+```
+
+Pmatch documentation:
+<https://kitwiki.csc.fi/twiki/bin/view/KitWiki/HfstPmatch>
+
+Characters which have analyses in the lexicon, but can appear without spaces
+before/after, that is, with no context conditions, and adjacent to words:
+* Punct contains ASCII punctuation marks
+* The symbol after m-dash is soft-hyphen `U+00AD`
+* The symbol following {•} is byte-order-mark / zero-width no-break space
+`U+FEFF`.
+
+Whitespace contains ASCII white space and
+the List contains some unicode white space characters
+* En Quad U+2000 to Zero-Width Joiner U+200d'
+* Narrow No-Break Space U+202F
+* Medium Mathematical Space U+205F
+* Word joiner U+2060
+
+Apart from what's in our morphology, there are
+1. unknown word-like forms, and
+2. unmatched strings
+We want to give 1) a match, but let 2) be treated specially by
+`hfst-tokenise -a`
+Unknowns are made of:
+* lower-case ASCII
+* upper-case ASCII
+* select extended latin symbols
+ASCII digits
+* select symbols
+* Combining diacritics as individual symbols,
+* various symbols from Private area (probably Microsoft),
+so far:
+* U+F0B7 for "x in box"
+
+## Unknown handling
+Unknowns are tagged ?? and treated specially with `hfst-tokenise`
+hfst-tokenise --giella-cg will treat such empty analyses as unknowns, and
+remove empty analyses from other readings. Empty readings are also
+legal in CG, they get a default baseform equal to the wordform, but
+no tag to check, so it's safer to let hfst-tokenise handle them.
+
+Finally we mark as a token any sequence making up a:
+* known word in context
+* unknown (OOV) token in context
+* sequence of word and punctuation
+* URL in context
+
+* * *
+
+<small>This (part of) documentation was generated from [tools/tokenisers/tokeniser-disamb-gt-desc.pmscript](https://github.com/giellalt/lang-kal/blob/main/tools/tokenisers/tokeniser-disamb-gt-desc.pmscript)</small>
 
 ---
 
@@ -1770,69 +1808,6 @@ Finally we mark as a token any sequence making up a:
 * * *
 
 <small>This (part of) documentation was generated from [tools/tokenisers/tokeniser-gramcheck-gt-desc.pmscript](https://github.com/giellalt/lang-kal/blob/main/tools/tokenisers/tokeniser-gramcheck-gt-desc.pmscript)</small>
-
----
-
-# Tokeniser for kal
-
-Usage:
-```
-$ make
-$ echo "ja, ja" | hfst-tokenise --giella-cg tokeniser-disamb-gt-desc.pmhfst
-$ echo "Juos gorreválggain lea (dárbbašlaš) deavdit gáibádusa boasttu olmmoš, man mielde lahtuid." | hfst-tokenise --giella-cg tokeniser-disamb-gt-desc.pmhfst
-$ echo "(gáfe) 'ja' ja 3. ja? ц jaja ukjend \"ukjend\"" | hfst-tokenise --giella-cg tokeniser-disamb-gt-desc.pmhfst
-$ echo "márffibiillagáffe" | hfst-tokenise --giella-cg tokeniser-disamb-gt-desc.pmhfst
-```
-
-Pmatch documentation:
-<https://kitwiki.csc.fi/twiki/bin/view/KitWiki/HfstPmatch>
-
-Characters which have analyses in the lexicon, but can appear without spaces
-before/after, that is, with no context conditions, and adjacent to words:
-* Punct contains ASCII punctuation marks
-* The symbol after m-dash is soft-hyphen `U+00AD`
-* The symbol following {•} is byte-order-mark / zero-width no-break space
-`U+FEFF`.
-
-Whitespace contains ASCII white space and
-the List contains some unicode white space characters
-* En Quad U+2000 to Zero-Width Joiner U+200d'
-* Narrow No-Break Space U+202F
-* Medium Mathematical Space U+205F
-* Word joiner U+2060
-
-Apart from what's in our morphology, there are
-1. unknown word-like forms, and
-2. unmatched strings
-We want to give 1) a match, but let 2) be treated specially by
-`hfst-tokenise -a`
-Unknowns are made of:
-* lower-case ASCII
-* upper-case ASCII
-* select extended latin symbols
-ASCII digits
-* select symbols
-* Combining diacritics as individual symbols,
-* various symbols from Private area (probably Microsoft),
-so far:
-* U+F0B7 for "x in box"
-
-## Unknown handling
-Unknowns are tagged ?? and treated specially with `hfst-tokenise`
-hfst-tokenise --giella-cg will treat such empty analyses as unknowns, and
-remove empty analyses from other readings. Empty readings are also
-legal in CG, they get a default baseform equal to the wordform, but
-no tag to check, so it's safer to let hfst-tokenise handle them.
-
-Finally we mark as a token any sequence making up a:
-* known word in context
-* unknown (OOV) token in context
-* sequence of word and punctuation
-* URL in context
-
-* * *
-
-<small>This (part of) documentation was generated from [tools/tokenisers/tokeniser-disamb-gt-desc.pmscript](https://github.com/giellalt/lang-kal/blob/main/tools/tokenisers/tokeniser-disamb-gt-desc.pmscript)</small>
 
 ---
 

@@ -1,10 +1,4 @@
 
 
-Jeg kan ikke løse problemet fornuftigt, så hermed en alt for snæver ad hoc-regel
-
 * * *
-
 <small>This (part of) documentation was generated from [src/cg3/disambiguator.cg3](https://github.com/giellalt/lang-kal/blob/main/src/cg3/disambiguator.cg3)</small>
-
----
-
