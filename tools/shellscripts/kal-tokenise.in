@@ -245,6 +245,9 @@ sub call_tokenizer {
       }
    }
 
+   # Mark that this symbol did not have a space between it and the number
+   $in =~ s@(^|\s)([-+]\d+)(?=(?:\s|\pP|$))@$1\x{e003}$2@g;
+
    my $out = '';
    if (defined $cache{$in}) {
       $out = $cache{$in};
@@ -257,6 +260,10 @@ sub call_tokenizer {
       }
       $out =~ s@\Q$nonce\E\s*@@sg;
       $out =~ s@ \?\?+@ ?@g;
+
+      # Move the no-space marker onto the token after it
+      $out =~ s@\n?\x{e003} *\n("<.+?>"\n\t[^\n]+)@$1 <nospace>@g;
+      $out =~ s@"<\x{e003}>"\n\t"\x{e003}" \?\n("<.+?>"\n\t[^\n]+)@$1 <nospace>@g;
 
       # Restore ALL-UPPER forms
       $out =~ s@\n?\x{e001} *\n"<([^\n]+?)>"@\n"<\U$1>"@g;
