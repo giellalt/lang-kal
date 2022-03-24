@@ -11,7 +11,7 @@ Navnelexikon er i ateq-kal-lex.txt.
 
 * LEXICON Z1geoPZ   Paamiut
 
-*Sisimiut examples:*
+* Sisimiut examples:*
 * *Sisimiut:* `Sisimiut+Prop+Abs+Pl`
 * *Sisimiut:* `Sisimiut+Prop+Rel+Pl`
 * *Sisimiunut:* `Sisimiut+Prop+Trm+Pl`

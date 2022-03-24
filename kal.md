@@ -970,7 +970,7 @@ Navnelexikon er i ateq-kal-lex.txt.
 
 * LEXICON Z1geoPZ   Paamiut
 
-*Sisimiut examples:*
+* Sisimiut examples:*
 * *Sisimiut:* `Sisimiut+Prop+Abs+Pl`
 * *Sisimiut:* `Sisimiut+Prop+Rel+Pl`
 * *Sisimiunut:* `Sisimiut+Prop+Trm+Pl`
@@ -1326,7 +1326,7 @@ xxx 20170522 til former, som ikke kan læses men som har brug for en analyse i c
 * aaffaffak Z2-Zmorf ;              
 * aaffaffak+N+Abs+Sg:aaffaffaq Krestr ; 
 * aaffaq Z2-qZmorf ;                 
-aaffattaq Z1Zmorf ;                * ...
+* ...
 
 * * *
 
