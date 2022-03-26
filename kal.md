@@ -535,8 +535,10 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 | --- 
 | --- 
 | --- 
-| --- 
-| --- 
+| ---
+| ---  
+| ---
+| ---
 | --- 
 | --- 
 
@@ -544,8 +546,10 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 | --- 
 | --- 
 | --- 
-| --- 
-| --- 
+| ---
+| ---  
+| ---
+| ---  
 | --- 
 | --- 
 
@@ -553,7 +557,9 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 | --- 
 | --- 
 | --- 
+| ---
 | --- 
+| ---
 | --- 
 | --- 
 | --- 
@@ -561,7 +567,9 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 * LEXICON GIIT  
 | --- 
 | --- 
+| ---
 | --- 
+| ---
 | --- 
 | --- 
 | --- 
