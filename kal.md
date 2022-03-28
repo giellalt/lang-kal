@@ -29,7 +29,7 @@ All documents in one file
 
 ## Specielle lexica 
 
-## KAPITLER TIL fst-DOKUMENTATION
+## KAPITLER TIL fst-DOKUMENTA
 
 TARIAQAR på transitiver kan både danne transitive, refleksive og passive verber. Derfor bliver
 alle forekomster af TARIAQAR ved transitiver startende fra juni 2020 både sendt videre normalt til 
