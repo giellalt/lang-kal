@@ -577,7 +577,9 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 * LEXICON tup  
 | --- 
 | --- 
+| ---
 | --- 
+| ---
 | --- 
 | --- 
 | --- 
@@ -585,7 +587,9 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 * LEXICON tup_speciel  Kun til brug for NIQ som passiv ved transitive stammer
 | --- 
 | --- 
+| ---
 | --- 
+| ---
 | --- 
 | --- 
 | --- 
@@ -596,9 +600,13 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 | --- 
 | --- 
 | --- 
+| ---
 | --- 
+| ---
 | --- 
+| ---
 | --- 
+| ---
 | --- 
 | --- 
 | --- 
@@ -613,7 +621,9 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 * LEXICON Z2+rZ  
 | --- 
 | --- 
+| ---
 | --- 
+| ---
 | --- 
 | --- 
 | --- 
