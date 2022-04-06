@@ -1115,6 +1115,7 @@ Fil for at generere de centrale morfologiske processer i vor grønlandske analys
 * **+Gram/Adj** = Adjektiver optaget direkte inkl. ubøjet anvendelse før kerne
 
 ### Semantics
+anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
 ***+Sem/Be**  <fn:Be> !#náipoĸ
 ***+Sem/event** fx Avannaata Qimussersua
 ***+Sem/Fem** Forsøg med femininum sml. Sem/Mask
