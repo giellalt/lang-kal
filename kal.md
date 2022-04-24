@@ -413,6 +413,8 @@ PL 20180718. Følgende er et særligt lexicon til ip i stedet for tidligere LEXI
 
 * LEXICON pi_flex-tv_vaa2  fleksiver helt uden derivativer specielt til pi-
 
+* LEXICON flex-tv_KunCont  fleksiver helt uden derivativer specielt til TASSAA=GUNNAIR
+
 * LEXICON su_flex-tv_vaa 
 
 * LEXICON su_flex-tv_vaa2  fleksiver helt uden derivativer specielt til pi-
