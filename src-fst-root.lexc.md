@@ -111,6 +111,8 @@ That is, they need special treatment in e.g. speech syntesis.
 * **+Use/Hybrid** = For generating split hybrids. Should not be included in speller, analyser, or norm-generator
 * **+Err/Sub** = Not authorized spelling: 2-imik
 
+### Ekstra vedr. LG
+
 ## Tags for Inflection
 
 ### Numerus

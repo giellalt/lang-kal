@@ -31,7 +31,7 @@ Navnelexikon er i ateq-kal-lex.txt.
 
 * LEXICON Z1geo_oqseZ   Thule
 
-* LEXICON Z2-geoSZ   Ikerasaarsuk
+* LEXICON Z2-geoSZ   Ikerasaarsuk og Iqaluit
 
 * LEXICON Z2-geoSZ_TUQAQ   Nuutoqaq
 
@@ -41,15 +41,11 @@ Navnelexikon er i ateq-kal-lex.txt.
 
 * LEXICON Z2-geo_specielSZ   Qinngorput – Qinngorpummi, Qinngorpumi
 
-* LEXICON Z2-geoPZ   Iqaluit Ny 20150129. Erstatter Z1geo_lukPZ
-
 * LEXICON Z2-geoqPZ   Saqqarliit
 
 * LEXICON Z2-geolikPZ   Kapisillit:Kapisi
 
 * LEXICON Z2geo_aqSZ   Nuussuaq
-
-* LEXICON Z2geo_aqPZ   livm 20170822 Illorsuit:Illorsuaq
 
 Et særligt lexicon til literals i citationstegn med placeholder QuotedHyphen (står i acronyms.lexc)
 
