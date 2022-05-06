@@ -16,9 +16,11 @@ Mapping-Prefix = £ ;
 
 LIST Syn/Stop = Syn/Stop ; #Tag til steder, hvor longest match skal blokeres
 
-ADDCOHORT:0010 ("<FemSubj>" "FemSubj" Abs Sg Sem/Fem Gram/ContSubjekt) BEFORE @PRED + CONT + 4Sg IF (*-1 femverb + 4Sg LINK *1 @PRED + 3Sg LINK 1 CONJ-C LINK *1 _TARGET_ + @PRED + CONT + 4Sg BARRIER @PRED); #Naartulerami aalajangersimasumik suliffeqarsinnaajunnaarpoq taamaattumillu aningaasanik <ny node> qinnuteqarluni.
+ADDCOHORT:0010 ("<femsubj>" "femsubj" Pron Abs Sg Sem/Fem Gram/ContSubjekt) BEFORE @PRED + CONT + 4Sg IF (*-1 femverb + 4Sg LINK *1 @PRED + 3Sg LINK 1 CONJ-C LINK *1 _TARGET_ + @PRED + CONT + 4Sg BARRIER @PRED); #Naartulerami aalajangersimasumik suliffeqarsinnaajunnaarpoq taamaattumillu aningaasanik <ny node> qinnuteqarluni.
 
-ADDCOHORT:0011 ("<FemSubj>" "FemSubj" Rel Sg Sem/Fem Gram/ContSubjekt) BEFORE @PRED + CONT + TRANSVERB IF (*-1 femverb + 4Sg LINK *1 @PRED + 3Sg LINK 1 CONJ-C LINK *1 _TARGET_ + @PRED + CONT BARRIER @PRED); #Naartulerami aalajangersimasumik suliffeqarsinnaajunnaarpoq taamaattumillu Sønderborgip kommunia ikiorsiissutinik FemSubj qinnuteqarfigalugu.
+ADDCOHORT:0011 ("<femsubj>" "femsubj" Pron Rel Sg Sem/Fem Gram/ContSubjekt) BEFORE @PRED + CONT + TRANSVERB IF (*-1 femverb + 4Sg LINK *1 @PRED + 3Sg LINK 1 CONJ-C LINK *1 _TARGET_ + @PRED + CONT BARRIER @PRED); #Naartulerami aalajangersimasumik suliffeqarsinnaajunnaarpoq taamaattumillu Sønderborgip kommunia ikiorsiissutinik FemSubj qinnuteqarfigalugu.
+
+MAP @SUBJ> target ("femsubj") IF (*1 CONT + @PRED); 
 
 SETPARENT ("FemSubj") 
 (NOT p (*))
@@ -924,7 +926,10 @@ SETPARENT:M_faste0032B @i-ADVL> + OTHERTIME + Lok TO (*1 <fn:ModeOfMovement> + G
 
 SETPARENT:M_faste0033 @N< + ("siuleq") + POSSESSUM3 + $$KASUS TO (-1 ("ukioq") + $$KASUS); #aali UKIUNUT siuliinut naleqqiullugu appasinnerpaalluni.
 #
-#MAP:M_faste0034 @>N TARGET ("[0123456789]{4}"r) + Lok IF (1 SEASON + Lok);#
+SETPARENT:M_faste0034 @>N + ("[0123456789]{4}"r) + Lok IF 
+(NOT p (*))
+TO (1 SEASON + Lok)
+;#
 
 #MAP:M_faste0040 @i-ADVL> TARGET TRANSPORT + Ins IF (1 <fn:ModeOfMovement> + N) #gummibådimik angalaneq
 #(NEGATE *1 HTR BARRIER V OR Der/vn)#Nuummi politeeqarfiup pisortaata, Bent Heiselbergip naatsorsuutigaa BIILINIK ingerlatitsisoq mianersuaalliorluni toqutsisimasutut unnerluutigineqassasoq.
@@ -6998,15 +7003,16 @@ TO (*1 Der/vn + N - Gram/Abbr - (/__\"ati\"\ Gram\/TV\ TAQ__/l) - ("timmi") - (/
 SETPARENT:M0870B @i-ADVL> + OBLIQUE TO (-1 OBLIQUE + $$KASUS LINK 1 _TARGET_ + OBLIQUE - $$KASUS LINK 1A OBLIQUE + $$KASUS + Der/vn OR $$KASUS + ADVERBIEL) #.. aaqqissuisuusimasorlu Jørgen Fleischer naapertorlugu kalaallit ikittuinnaat akornanni oqaatsinut NUNARSUARMIOQATIGIINNIT atorneqarnerpaanut piginnaasaqarpoq.
 ;
 
-#MAP:M0870C @i-ADVL> TARGET Lok + PLACE IF (*1 Der/vn - HUMAN - V - Gram/Comp OR INDERIVERENDE_SUBSTANTIV - HUMAN - V BARRIER (*) - @>N - @i-ADVL>)
-#(NEGATE 1 (/"aasaq"\ U\ Der/nv\ Gram/IV\ NIQ/l) LINK 1 ("nalunaaqutaq")) #KITAANI aasaanerani nalunaaqutaq 2019-imi oktobarip 26-ata tungaanut atuutissaaq.
-#(NEGATE 1 LIK + N - ADVERBIEL - NUM)#skal nemlig være i-ADVL>N
-#(NEGATE 1 Lok + LU LINK NEGATE *1 Der/vn - ADVERBIEL - @N< - V )#Innuttaasut tamarmik qaffasissumik atugarissaassappata ILLOQARFINNI nunaqarfinnilu ikinnerusuni najugaqartariaqarpugut.
-#(NEGATE 0 Lok + LU LINK -1 Lok - @i-ADVL>)#Innuttaasut tamarmik qaffasissumik atugarissaassappata illoqarfinni NUNAQARFINNILU ikinnerusuni najugaqartariaqarpugut.
-#(NEGATE *1 (/"UR"\ Gram/IV\ TUQ\ Der/vn\ N\ Ins/l) BARRIER Der/vn LINK -1 (/"pisortaq"\ N\ Via\ Pl\ Hyb/1-2/l))#"<pisortatigoortumik>" bør indeholdes i ADVERBIEL-sættet. Namminersortut raajaleriffittaavat nunaqarfinni siullerpaajusoq ALLUITSUP PAANI pisortatigoortumik ullumi atoqqaartinneqassaaq .
-#(NEGATE 1 Der/vn + Lok)#Må ikke tagges pga af eget adled: Taamaammat naliliissutigineqartariaqarpoq timmiaq NUNAMI siammasissumi piaqqiorsinnaasoq
-
-# ;
+SETPARENT:M0870C @i-ADVL> + Lok + PLACE IF 
+(NOT p (*))
+(NEGATE 1 (/"aasaq"\ U\ Der/nv\ Gram/IV\ NIQ/l) LINK 1 ("nalunaaqutaq")) #KITAANI aasaanerani nalunaaqutaq 2019-imi oktobarip 26-ata tungaanut atuutissaaq.
+(NEGATE 1 LIK + N - ADVERBIEL - NUM)#skal nemlig være i-ADVL>N
+(NEGATE 1 Lok + LU LINK NEGATE *1 Der/vn - ADVERBIEL - @N< - V )#Innuttaasut tamarmik qaffasissumik atugarissaassappata ILLOQARFINNI nunaqarfinnilu ikinnerusuni najugaqartariaqarpugut.
+(NEGATE 0 Lok + LU LINK -1 Lok - @i-ADVL>)#Innuttaasut tamarmik qaffasissumik atugarissaassappata illoqarfinni NUNAQARFINNILU ikinnerusuni najugaqartariaqarpugut.
+(NEGATE *1 (/"UR"\ Gram/IV\ TUQ\ Der/vn\ N\ Ins/l) BARRIER Der/vn LINK -1 (/"pisortaq"\ N\ Via\ Pl\ Hyb/1-2/l))#"<pisortatigoortumik>" bør indeholdes i ADVERBIEL-sættet. Namminersortut raajaleriffittaavat nunaqarfinni siullerpaajusoq ALLUITSUP PAANI pisortatigoortumik ullumi atoqqaartinneqassaaq .
+(NEGATE 1 Der/vn + Lok)#Må ikke tagges pga af eget adled: Taamaammat naliliissutigineqartariaqarpoq timmiaq NUNAMI siammasissumi piaqqiorsinnaasoq
+TO (*1 Der/vn - HUMAN - V - Gram/Comp OR INDERIVERENDE_SUBSTANTIV - HUMAN - V BARRIER (*) - @>N - @i-ADVL>)
+ ;
 SETPARENT:M0870D (@i-ADVL>) + Lok + Sg IF 
 (NOT p (*))
 (NEGATE 1 NAR)(NEGATE 1 Rel LINK 1 POSSESSUM3 + Lok)(NEGATE 1 CONJ-LU + (Lok))(NEGATE -1 ("ulloq") LINK -1 BOS)(NEGATE 0 Lok + PLACE LINK 1 HUMAN)(NEGATE 1 @N< + Lok LINK *-1 (*) - Lok) #Kun Trm til Der/vn med NAR. Rettet 2.4. NEGATE nr. 2 20091104 for at haandtere paratakse. 20170425 sidste negate er nok ullut ilaanni og nexusadverbial
