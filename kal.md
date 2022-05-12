@@ -1008,6 +1008,8 @@ Navnelexikon er i ateq-kal-lex.txt.
 
 * LEXICON Z1geo_oqsZ   Finland
 
+* LEXICON Z1geo_oqsetZmorf   Atlanterhavet
+
 * LEXICON Z1geo_oqseZ   Thule
 
 * LEXICON Z2-geoSZ   Ikerasaarsuk og Iqaluit
