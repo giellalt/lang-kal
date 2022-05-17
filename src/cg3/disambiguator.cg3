@@ -1703,13 +1703,13 @@ SET OTHERDAY = ("ullortuneq") | ("ullukinneq") ;
 LIST SEASON = "aasaq" "ukiaq" "ukioq" "upernaaq" "upernassaq"; #årstider
 LIST HOLIDAY = "juulli" "poorski" "piinsi" ;
 
-SET TIMEVERB2 = ("naammassi") - Gram/Pass;
+#SET TIMEVERB2 = ("naammassi") - Gram/Pass; #PL20220517 Forstår ikke hvorfor tidsverbum. Slettet uden regressionskonsekvenser
 
 LIST TIMEVERB1 = ("agger") ("assi" GIIAAR) 
 #("ili" NIQ) #fjernet igen, da mange uønskede hits i reglerne 
 ("ingerla") ("ip" TUQ U) "pula" ("qaama") "qaanger" "qaangiup" ("qiteqqup") ("sivitsor") ("imaali"); #verber som kan have tidsudtryk som subjekt #("naammassi") reduceret for Gram/Pass, da ellers overblokerende
 
-SET TIMEVERB = TIMEVERB1 | TIMEVERB2 ;
+SET TIMEVERB = TIMEVERB1;# | TIMEVERB2 ;
 
 SET TEMPUSVERB = UGEDAGE | ("ilaanneeriar") | (/"imaali"\ Gram/IV\ LLAR\ Der/vv\ Gram/IV\ V\ Par/l) | ("qaanger") | ("qaqutigut" U) | ("qiteqqup") | ("taamaali") | ("ukiar") | ("ukioq" U) | ("unnup") ;
 LIST TIMEAFFIX = (/__RIIR\ Der\/vv\ \(Gram\/..\ \)*V__/l) (/__LIR\ Der\/vv\ \(Gram\/..\ \)*V__/l) ;
@@ -4406,6 +4406,9 @@ REMOVE:uløselighed0385 1SgPoss IF (-1 <fn:Want> + 1Sg LINK 1 _TARGET_ + ("sulia
 REMOVE:uløselighed0390 (/"aa"\ Gram/[IT]V\ QQIP/l) IF (0 ("aaqqip") + INTRANSVERB + 1Sg);#
 
 REMOVE:uløselighed0395 (/"tassa"\ U/l) + Par + 3Pl IF (*-1 (Abs Pl) LINK *1 3PlO BARRIER V LINK *1 _TARGET_ + Abs + Pl LINK NEGATE *1 V - Gram/Exclm BARRIER KOMMA); #Sisimiuni politiit sapaatip akunnerani kingullermi qamutit aqqanillit normuiarpaat, TASSAANERUSUT taxat, Sisimiut aviisiat Silleq nittartakkamini allappoq.
+
+#Lokalis, ikke agens
+REMOVE:uløselighed0400 Abl IF (0 Sem/inst + Lok LINK -1 (/qaffap"\ Gram/TV\ NIQAR\ Der/vv\ Gram/IV\ V\ Cont/l)); #Ilinniarfiit ilaat qaffanneqarlutik ILISIMATUSARFIMMIilersinneqarput
 
 #Lok anvendt på MIK-OBJ i stedet for Ins er svær (umulig?) at håndtere. En tidlig og farlig regel, der skal følges op på
 SUBSTITUTE:Sub0008 Lok Ins TARGET (HTR) IF (1 HTR - ("ilar")) #siunnersortit .. Tasiilami inunnik ISUMAGINNINNERMI ingerlatitsivimmi .. ikiuussimapput. Mange fejl pga. ambiguøs ilaivoĸ vs. ilauvoĸ
@@ -12666,7 +12669,8 @@ REMOVE:1802 Rel + 4SgPoss IF (0 PLACE + Lok) ;
 
 
 
-SELECT:Sel0038 Abl IF (*1 PASSIV BARRIER VFIN)(NEGATE 0 Ins LINK *1 QAR BARRIER V)(NEGATE *1 HTR BARRIER V)(NEGATE 0 Ins + CONJ-LUUNNIIT)(NEGATE 0 THING)
+SELECT:Sel0038 Abl IF (*1 PASSIV BARRIER VFIN)
+(NEGATE 0 Ins LINK *1 QAR BARRIER V)(NEGATE *1 HTR BARRIER V)(NEGATE 0 Ins + CONJ-LUUNNIIT)(NEGATE 0 THING)
 (NEGATE 0 ("ini") LINK 1 ("IP"))#ad hoc regel mens vi afventer opsplitning af GCG til to grammatikker
 (NEGATE 0 Ins LINK *1 Der/vn BARRIER PASSIV OR V)#Ilinniakkamillu ingerlatsisut efterskolernermut, inuusuttunut ilinniarfinnut INGERLARIAQQIFFIUSUMILLU ilinniarnermut immikkoortiterneqarput.
 ; #Regel for agens tilfoejet 9.11. Må ikke slette Ins til QAR
