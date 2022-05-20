@@ -16,7 +16,11 @@
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Add language-specific flags for hfst-lexc compilation here:
-HFST_LEXC_LOCAL_FLAGS=--Werror
+if HAVE_SHARED_COMMON
+HFST_LEXC_LOCAL_FLAGS=  --Werror # uncomment if lexc is good enough
+else
+HFST_LEXC_LOCAL_FLAGS=  # No --Werror if deps are missing !
+endif
 
 ####### Morphology source file defs: ########
 
@@ -54,8 +58,28 @@ GT_LEXC_L2_SRCS=\
 			$(L2)
 
 # Set this to the names of all generated lexc files, if any
-GENERATED_LEXC_SRCS=generated_files/punctuation.lexc \
-                    generated_files/symbols.lexc
+GENERATED_LEXC_SRCS=generated_files/mul-$(GLANG)-punctuation.lexc \
+                    generated_files/mul-$(GLANG)-symbols.lexc
+
+# change handling of shared lexical data here:
+if HAVE_SHARED_COMMON
+url.tmp.lexc: $(gt_SHARED_common)/src/fst/url.lexc
+	$(AM_V_CP)cp -f $< $@
+
+generated_files/mul-$(GLANG)-%.lexc: $(gt_SHARED_common)/src/fst/stems/%.lexc
+	$(AM_V_at)$(MKDIR_P) generated_files
+	$(AM_V_CP)cp -f $< $@
+else
+# this is "safe" fallback (compiles but you miss everything)
+url.tmp.lexc:
+	echo "LEXICON Root" > $@
+	echo "< h t t p (s) : / / ?*> # ;" >> $@
+
+generated_files/mul-$(GLANG)-%.lexc:
+	$(AM_V_at)$(MKDIR_P) generated_files
+	$(AM_C_GEN)echo "! Missing shared common data" > $@
+endif
+# add other lexical shared data handling here
 
 # Set this to the names of all source xml files, if any
 GT_XML_SRCS=
