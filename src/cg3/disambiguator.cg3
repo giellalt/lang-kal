@@ -112,6 +112,7 @@ LIST Num = Num ("tyve") ;
 LIST iNum = iNum ;
 LIST Sem/CognitiveMaking = Sem/CognitiveMaking; #qinersivoq i modsætning til qinerlerpoq
 LIST Sem/Concessive = Sem/Concessive ; #koncessive sætninger
+LIST Sem/dur = Sem/dur ;
 LIST Sem/event = Sem/event ;
 LIST Sem/Fem = Sem/Fem ; #Introduceret som test 20180613. Skal måske ud igen
 LIST Sem/FirstName = Sem/FirstName ;
@@ -127,6 +128,7 @@ LIST Sem/misse = Sem/misse ; #Tag til tilfældig possessornumerus ved misse
 LIST Sem/Remove = Sem/Remove ; #atserivoq - ikke atsiivoq
 LIST Sem/sem = Sem/sem ; #semiotik til dækning af både sem-r og sem-w
 LIST Sem/Temporal = Sem/Temporal ; #måske kan den bare slås sammen med Sem/Time. #til baggrundsparticipier.
+LIST Sem/temp = Sem/temp ;
 LIST Sem/Time = Sem/Time ;
 LIST Sem/Unit = Sem/Unit <unit>;
 LIST Sem/Url = Sem/Url ; #Semantisk tag til webadresser.
@@ -1623,6 +1625,7 @@ LIST <fn:ModeOfMovement> = "angala" "biiler" "ani" "ingerla" "naap" "ornip" "suk
 LIST <fn:Put> = "issorar" ;
 LIST <fn:Remove> = "nioor" "nioorar" "usingiar" ;
 LIST <fn:Socialize> = "asa" "oqallip" "siumor" "unammi" ;
+LIST <fn:sound_biocom> = "qarlor" ;
 LIST <fn:Take/Bring> = "ikaap" "ikaassor" "nassip" "tigu";
 LIST <fn:Talk> = /"eqqaa"\ Gram/TV\ TIP/l "kalerrisaar" "naggaser" "nalunaar" "nangip" "nassuer" "oqalup" "oqar"; #nangippoq medtaget trods anden sem. role
 LIST <fn:Want> = "neriup" ;
@@ -1790,7 +1793,8 @@ LIST MEDIER = "Atuagagdliutit" "atuagagdliutit" "Atuagalliutit" "aviisi" "Facebo
 LIST OTHERTIME = #(Num Lok Sg 3PlPoss)
 Sem/Time %Othertime ("aallar" QQAAR UTE) ("aasaq") "akunneq" ("aqagu") (/"atuup"\ Gram/IV\ LIR\ Der/vv\ Gram/IV\ NIQ/l) 
 (/"inuk"\ U\ .*\ NIQ/l) # blokerer uønsket forsøgt udkommenteret 20210602
-"ippassaani" "ippassaq" "juulli" ("kingulleq") ("kingu" NIQ) ("kinguneq") ("kinguninnguaq") ("kingusip") "kvartal" ("maanna") "minut" "min."
+"ippassaani" "ippassaq" "juulli" ("kingulleq") ("kingu" NIQ) ("kinguneq") ("kinguninnguaq") ("kingusip") "kvartal" ("maanna") 
+(/"marluk qiteq"\ N\ Abs\ Sg\ 3SgPoss/l) "minut" "min."
 #(/"naa"\ Gram/IV\ NIQ/l)
   "naggat" ("nali") "nalunaaquttap-akunneq" (/"piffik"\ SSAQ/l) "poorski" ("qaammat") ("qangali") "qangangaatsiaq" ("qeqqa") ("sapaat") ("sapaatip-akunneq") ("sekund") (/"silattor"\ Gram/IV\ NNGIT\ Der/vv\ Gram/IV\ NIQ/l) "sivisoorsuaq" ("sivisu") "sivitsunngitsoq" ("siulleq") (/"siu"\ LLIQ\ Der/nn\ PAAQ/l) ("siuneq") ("siorna") "siornatigut" (/"suli"\ Gram/IV\ NNGIT\ Der/vv\ Gram/IV\ VIK/l) ("taarsi") "time" "tiimi" ("ualeq") ("ukiaq") "ukiaru" ("ukiar" TUQ) ("ukiartoq") ("ukioq")  ("ullaa") "ullaaq" "ullaaralaaq" "ullaaralaannguaq" ("ullaaq" RALAAQ NNGUAQ) "ullaaror" "ullaassaq" ("ulloq") ("ullumi") ("unnuaq") "unnuaqeqqa" ("unnuk") ("unnup" Par) "upernaaq";
 
@@ -1879,7 +1883,7 @@ LIST AIRTRANSPORT = "timmi" "helikopter" "helikopteri" "qulimiguulik" "timmisart
 LIST WATERTRANSPORT_list = "ilaasortaat" "qajaq" "umiaasaq" "umiaq" "umiarsuaq" "umiatsiaq";
 SET WATERTRANSPORT = WATERTRANSPORT_list | <Vwater> ;
 SET TRANSPORT = LANDTRANSPORT | AIRTRANSPORT | WATERTRANSPORT;
-LIST BIRDS = "appa" "appaliarsuk" "aqisseq" "kiinaaleeraq" "kukkukooq" "kussak" "miteq" "naaja" "nattoralik" "oqaatsoq" "orpimmiutaq" "qupaloraarsuk" "serfaq" "taateraaq" "timmiaq" "tulugaq" "tuullik" "uppik" ;
+LIST BIRDS = "appa" "appaliarsuk" "aqisseq" "kiinaaleeraq" "kukkukooq" "kussak" "miteq" "naaja" "nattoralik" "oqaatsoq" "orpimmiutaq" "qupaloraarsuk" "serfaq" "taateraaq" "timmiaq" "timmiaaraq" "tulugaq" "tuullik" "uppik" ;
 SET AIRBORNE = BIRDS | AIRTRANSPORT ;
 LIST GEOOBJ = "imaq" ("naalap" VIK) "nuna" "qarmaq" "qeqertaq" "sermeq" "sineriak" "sissaq" "tungi"; # et specifikt set af mulige objekter til disambiguering af fx sinip vs. siner og ersi vs. ersip
 SET sinerOBJ = GEOOBJ | Prop ;
@@ -2310,6 +2314,8 @@ REMOVE:tidlig0006 ("IP") - Hyb/2-2 ;
 #Ambiguitet mellem DMI og *DMi+Orth/Alt. Reglen er ad hoc og må kunne gøres mere generel
 REMOVE:tidlig0010 ("DM") + Orth/Alt IF (0 ("DMI") );
 REMOVE:tidlig0011 POSSESSUM3 IF (0 Prop + ("Inuppiaat"));#
+#Timmiaaqqat´Sem/inst kan ikke disambigueres fra appellativ først i sætningen
+REMOVE:tidlig0012 ("Timmiaaqqat") + Sem/inst IF (0 BIRDS + &&IV_SUBJ& LINK *1 <fn:sound_biocom> + &&IV_SUBJ&); #TIMMIAAQQAT unnuap nillernerani nipaassimallutik seqernup kissalaarnera malugilersimallugu qarlortalerput.
 
 REMOVE:tidlig0014 ("kiisa" Adv LU) IF (0 ("kiisalu")); #En radikal regel baseret på den antagelse, at kiisa kun er adverbiel når uden LU
 
@@ -2947,6 +2953,9 @@ REMOVE:tidlig0781 ("qipoqqaq") - UTE + POSSESSUM3 IF (0 ("qipoqqaq") + Pl); #Oqa
 REMOVE:tidlig0785 (Abs Sg MI) IF (0 Lok) #Ilinniagaq: OQAASILERINERMI, Atuakkialerinermi Tusagassiuutilerinermilu cand. mag.-iuvunga.
 (NEGATE *1 V + 3Sg BARRIER KOMMA)
 ;
+
+REMOVE:tidlig0790 (/"ulloq"\ Sem/temp/l) + Pl IF (0 (/"ulloq"\ Sem/dur/l) + Pl);
+
 #SUBSTITUTE:tidlig0580 (Abs) (Rel) TARGET (/"ataaseq"\ Num\ Abs/l) OR (/"01"\ Num\ Abs\ Sg/l) IF (1 ("misse") + POSSESSUM3); #Nal. ATAASEQ miss.
 SUBSTITUTE:tidlig0581 (Abs) (Ins Orht/Alt) TARGET (/"cm"\ OLang/DAN\ N\ Abs/l) IF (-1 Num LINK 2 LIK_QAR); #Angut 17-init missaannik ukiulik 170-175 CM angissusilik, tuattoq, sakiaani allannertalimmik nasartalimmik tujuululik, koorpunik qarlilik.
 SUBSTITUTE:tidlig0582 (3SgPoss) (3PlPoss) TARGET (/"misse"\ N\ Ins\ Sg\ 3SgPoss/l) IF (-1 Sem/Unit + Rel + Pl); #Attavik 130 km-it MISSAANIK isorartussuseqassaaq.
@@ -3393,8 +3402,13 @@ REMOVE:0040I NAAR - NAAR_VERBER ; #Sletter irriterende fejlanalyser med NAAR på
 REMOVE:0039B ("aak") OR ("aaq") IF (0 ("aamma")) ;
 SELECT:0039C Adv IF (-1 ("sooq") LINK 1 ("aamma")) ;
 REMOVE:0039D ("naa") IF (0 ("naamik")) ;
-REMOVE:0039E ("aap") IF (0 ("aappaq")) ;
-REMOVE:0039F ("allak") IF (0 ("alla"))(NEGATE *0W SEMIOTIC) ; #den er måske for tidlig
+REMOVE:0039E ("aap") IF (0 ("aappaq")) 
+(NEGATE *0 ("qeri") BARRIER V - _TARGET_)#Unnuap nunaa qerisimavoq, AAPPALLI unnuap nillersimanera malugineqarsinnaajunnaassaaq.
+;
+REMOVE:0039F ("aa") IF (0 ("aap") LINK *0 ("qeri") BARRIER V - _TARGET_)#Unnuap nunaa qerisimavoq, AAPPALLI unnuap nillersimanera malugineqarsinnaajunnaassaaq.
+;
+
+REMOVE:0039G ("allak") IF (0 ("alla"))(NEGATE *0W SEMIOTIC) ; #den er måske for tidlig
 SELECT:0023 ("illuttut") + ADVERBIEL IF (*1 LIK OR QAR BARRIER V); #Næppe sneblinde, men tosidet N
 
 #TAQ vs. GE skaber problemer. Vælg altid GE, hvis mulig sammenblanding med TAQ og hvis ikke andre finitte verber i sætningen
@@ -13824,7 +13838,7 @@ REMOVE:8534AJ (/"sanna"\ Gram/Dem\ iPron\ iAeq\ iPl\ Gram/Hyb\ UR/l) IF (0 ("sak
 REMOVE:8534AK ("nalunaaquttap-akunneq") + 3PlPoss IF (0 ("nalunaaquttap-akunneq") + 3SgPoss);
 REMOVE:8534AL (/"ili"\ Gram/TV\ UTE\ Der/vv\ Gram/TV\ TAQ\ Der/vn\ N\ Via/l) IF (0 (/"illiaq"\ N\ Via/l));#Næppe gravoffer frem for uterus i Via
 REMOVE:8534AM (/"qiteq"\ Sem/an/l) IF (0 ("qiteq") + ADVERBIEL); #Ikke qiteq+Sem/an hvis qitiusumik
-
+REMOVE:8534AN (/"ulloq"\ Sem/temp\ U/l) IF (0 (/"ulloq"\ Sem/dur\ U/l)); 
 
 REMOVE:8599 TUQ + Aeq - Der/vn IF (0 TUQ + Aeq + Der/vn)(NEGATE 1 ("ip")); #De særlige former af TUQ + Aeq på transitiver fulgt af "ippaa" slettes hvis ikke fulgt af "ippaa"
 
@@ -14128,6 +14142,10 @@ REMOVE:5490CO (/"oqaq"\ U\ Der/nv\ Gram/IV\ TIGE/l) IF (0 ("oqaatige"));
 REMOVE:5490CP (/"sussaar"\ Gram/IV\ NNGIT/l) IF (0 (/"sussaq"\ U\ Der/nv\ Gram/IV\ NNGIT/l));
 REMOVE:5490CQ (/"meriaq"\ NNGUR/l) IF (0 ("merianngu"));
 REMOVE:5490CR (/"siani"\ Gram/IV\ INNARIAA/l) IF (0 (/"sianer"\ Gram/IV\ INNARIAA/l));
+REMOVE:5490CS ("kissar") IF (0 ("kissap") LINK *-1 ("seqineq") BARRIER V);
+REMOVE:5490CT ("qerip") IF (0 ("qeri") + &&IV_SUBJ& LINK *-1 &&IV_SUBJ& - HUMAN BARRIER V) #Unnuap nunaa QERISIMAVOQ, aappalli unnuap nillersimanera malugineqarsinnaajunnaassaaq.
+;
+
 
 # Der/nv eller Der/vv?
 SELECT:5493 QATE + Der/vn + GE - Imp IF (0 QATE + Der/nn + GE)(NEGATE *-1 HUMAN + @OBJ>) ;
