@@ -1,5 +1,5 @@
 # -*- cg-pre-pipe: ~/langtech/kal/tools/shellscripts/kal-tokenise ~/langtech/kal/tools/tokenisers/tokeniser-disamb-gt-desc.pmhfst | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/kal-pre1.cg3 | ~/langtech/kal/tools/shellscripts/kal-hybrid-split | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/kal-pre2.cg3   -*-
-
+#Kørsel med semantik: ~/langtech/kal/tools/shellscripts/kal-tokenise ~/langtech/kal/tools/tokenisers/tokeniser-disamb-gt-desc.pmhfst | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/kal-pre1.cg3 | ~/langtech/kal/tools/shellscripts/kal-hybrid-split | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/kal-pre2.cg3 | bash -l -c ~/langtech/nutserut/dev/kal2eng/bin/long2sem.pl
 # =================================================================== #
 # =================================================================== #
 #     W E S T   G R E E N L A N D I C   D I S A M B I G U A T O R     #
@@ -2884,7 +2884,7 @@ REMOVE:tidlig0670 ("inuiak") + 3PlPoss IF (0 ("inuiak") - 3PlPoss + $$KASUS LINK
 REMOVE:tidlig0675 Par IF (*-1W (/"suli"\ Gram/IV\ VIK\ Der/vn\ N\ Abs\ Sg/l) LINK 1 (":") LINK *1W _TARGET_ + N + Abs LINK NEGATE *0 V - %AmbiguøsPar); #Meget smal regel Suliffik: ...Tuq.
 
 #Et par regler til at disambiguere 1SgPoss fra 3SgPoss
-REMOVE:tidlig0680 (/NIQ\ Der/vn\ N\ Abs\ Sg\ 3SgPoss/l) IF (0 (/NIQ\ Der/vn\ N\ Abs\ Sg\ 1SgPoss/l) LINK *1 V + 1Sg + 3SgO BARRIER VERB-NOTCONT)
+REMOVE:tidlig0680 (/NIQ\ Der/vn\ \(?:i?Sem/\\S+\ \)*N\ Abs\ Sg\ 3SgPoss/l) IF (0 (/NIQ\ Der/vn\ \(?:i?Sem/\\S+\ \)*N\ Abs\ Sg\ 1SgPoss/l) LINK *1 V + 1Sg + 3SgO BARRIER VERB-NOTCONT)
 (NEGATE 0 &&POSS34_POSS& LINK *-1 Rel + &&POSS34_POSS& BARRIER (*) - OBLIQUE - Adv - Interj - %ContHypotagme - (2SgPoss %AmbiguøsN))#Kisianni una tikkuussineruvoq, partiittalu katersuuffiujartortutut INISSISIMANERA nuannaarutigivara, taanna oqarpoq.
 ;
 
@@ -2956,6 +2956,12 @@ REMOVE:tidlig0785 (Abs Sg MI) IF (0 Lok) #Ilinniagaq: OQAASILERINERMI, Atuakkial
 
 REMOVE:tidlig0790 (/"ulloq"\ Sem/temp/l) + Pl IF (0 (/"ulloq"\ Sem/dur/l) + Pl);
 
+REMOVE:tidlig0794 ("ullu") IF (0 ("ulloq"))
+(NEGATE *0 BIRDS);
+REMOVE:tidlig0795 ("ullu") + 4SgPoss IF (0 ("ulloq"))#Meeqqanik sumiginnaasarnerit kinguaassiuutitigullu atornerluisarnerit akiorniarlugit paasititsiniaaneq september 2006-miit aallartinneqarmalli sinerissami illoqarfinnit qulinit peqataasut ULLUNI pingasuni qulequtaq pillugu pikkorissartinneqarsimalereerput.
+(NEGATE *-1 BIRDS + Rel LINK *1 _TARGET_ LINK *1 TRANSVERB + 3Sg);
+
+REMOVE:tidlig0796 ("ullu") + 1PlPoss IF (0 ("ulloq") + 1PlPoss); #Angallataatit piffimmiit piffimmut sukkasuumik periataarsinnaanngimmata, politiit ULLUTSINNUT naleqqunnerusunik angallateqalerniarlutik aalajangerpaat.
 #SUBSTITUTE:tidlig0580 (Abs) (Rel) TARGET (/"ataaseq"\ Num\ Abs/l) OR (/"01"\ Num\ Abs\ Sg/l) IF (1 ("misse") + POSSESSUM3); #Nal. ATAASEQ miss.
 SUBSTITUTE:tidlig0581 (Abs) (Ins Orht/Alt) TARGET (/"cm"\ OLang/DAN\ N\ Abs/l) IF (-1 Num LINK 2 LIK_QAR); #Angut 17-init missaannik ukiulik 170-175 CM angissusilik, tuattoq, sakiaani allannertalimmik nasartalimmik tujuululik, koorpunik qarlilik.
 SUBSTITUTE:tidlig0582 (3SgPoss) (3PlPoss) TARGET (/"misse"\ N\ Ins\ Sg\ 3SgPoss/l) IF (-1 Sem/Unit + Rel + Pl); #Attavik 130 km-it MISSAANIK isorartussuseqassaaq.
@@ -5178,7 +5184,8 @@ REMOVE:0078 Abs + Sg + 4SgPoss IF (NEGATE *1 TRANSVERB + 3SgO OR Cau + 3Sg OR Co
 
 ;
 
-REMOVE:0028E 4SgPoss + Rel + Sg IF (0 Lok)(NEGATE *1 CON_CAU + TRANSVERB + 3Sg LINK *1 VFIN + 3Sg)
+REMOVE:0028E 4SgPoss + Rel + Sg IF (0 Lok)
+(NEGATE *1 CON_CAU + TRANSVERB + 3Sg LINK *1 VFIN + 3Sg)
 (NEGATE *1 3SgPoss BARRIER (*) - OBLIQUE - Adv - CONT - TIDSPOSSESSOR)
  (NEGATE *1 Par + TRANSVERB + 3Sg BARRIER (*) - OBLIQUE - Adv ); # .. Frederiksen, KOMMUNALBESTYRELSEMI pissaaneq tigummiinnassaguniuk qineqqusaarnissami tamaviaartariaqassaaq.
 
@@ -13839,7 +13846,6 @@ REMOVE:8534AK ("nalunaaquttap-akunneq") + 3PlPoss IF (0 ("nalunaaquttap-akunneq"
 REMOVE:8534AL (/"ili"\ Gram/TV\ UTE\ Der/vv\ Gram/TV\ TAQ\ Der/vn\ N\ Via/l) IF (0 (/"illiaq"\ N\ Via/l));#Næppe gravoffer frem for uterus i Via
 REMOVE:8534AM (/"qiteq"\ Sem/an/l) IF (0 ("qiteq") + ADVERBIEL); #Ikke qiteq+Sem/an hvis qitiusumik
 REMOVE:8534AN (/"ulloq"\ Sem/temp\ U/l) IF (0 (/"ulloq"\ Sem/dur\ U/l)); 
-
 REMOVE:8599 TUQ + Aeq - Der/vn IF (0 TUQ + Aeq + Der/vn)(NEGATE 1 ("ip")); #De særlige former af TUQ + Aeq på transitiver fulgt af "ippaa" slettes hvis ikke fulgt af "ippaa"
 
 
@@ -16399,6 +16405,23 @@ REMOVE:9973X Prop + Gram/Abbr + Lok IF (0 OLang/DAN + Abs + Sg LINK *1 INTRANSVE
 REMOVE:9973 LOAN ; # Slet låneord, hvis ikke eneste læsning
 
 #SUBSTITUTE:S0060 %AmbiguøsN (*) TARGET %AmbiguøsN ;
+
+####################################################
+## Nyt afsnit 20220610 - Semantisk disambiguering ##
+####################################################
+
+LIST Sem/ac = Sem/ac ;
+LIST Sem/B = Sem/B;
+LIST Sem/lodge = Sem/lodge ;
+LIST Sem/mon-c = Sem/mon-c;
+LIST Sem/mon-m = Sem/mon-m;
+LIST Sem/reach = Sem/reach ;
+LIST Sem/sem-c = Sem/sem-c ;
+
+REMOVE:Sem0050 Sem/ac IF (0 Sem/sem-c + POSSESSUM); #Pilersaarutigut.
+REMOVE:Sem0055 Sem/B + &&IV_SUBJ& IF (0 (/Sem/mon.*/r) LINK *1 Sem/reach + &&IV_SUBJ&); #Ilinniarnera naammassigukku ANINGAASAT inissippata, ineerarpassualimmik aneerasaartarfilimmillu illutaassaagut.
+REMOVE:Sem0060 Sem/mon-c + Pl IF (0 Sem/mon-m + Pl); #Ilinniarnera naammassigukku ANINGAASAT inissippata, ineerarpassualimmik aneerasaartarfilimmillu illutaassaagut.
+REMOVE:Sem0065 Sem/lodge + &&IV_SUBJ& IF (0 Sem/reach LINK *-1 Abs + &&IV_SUBJ& - HUMAN); #Ilinniarnera naammassigukku aningaasat INISSIPPATA, ineerarpassualimmik aneerasaartarfilimmillu illutaassaagut.
 
 ##############
 AFTER-SECTIONS
