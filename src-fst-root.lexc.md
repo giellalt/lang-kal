@@ -30,6 +30,7 @@ Fil for at generere de centrale morfologiske processer i vor grønlandske analys
 * **+Gram/HV** = Non-marked agentive Verb (used as Half-transitive)
 * **+Gram/Db** = Double-transitive Verb. PL tilføjet 20180319
 * **+Gram/Exclm** = Exclamation !Flyttet fra primære tags 20180420 PL
+* **@CODE** = upersonlig CONT med NAR+3Sg til højre 
 
 ### Tags for Pronouns
 * **+Gram/Int** = Interrogative Pronoun
