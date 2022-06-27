@@ -1941,7 +1941,7 @@ SET HUMAN = FAM OR NAME OR TITEL OR ORGANISATION OR HUM OR Prop - Sem/Geo  OR <H
 SET NON_HUMAN = N - HUMAN ;
 
 LIST MASK = "aata" "angut" "ani" "aqqaluk" "aqqalu" "ataata" "erneq" ;
-LIST FEM = "aana" "aleqa" "anaana" "arnaq" "naja" "ningiu" "panik" ;
+LIST FEM = "aana" "aleqa" "anaana" "arnaq" "naja" "ningiu" "niviarsiaraq" "panik" ;
 
 LIST PROP_VS_APPELLATIV = "anguteq" "anguteeraq" "aqqalu" "aqqaluk" "arnaq" "arnannguaq" "inuk" "malik" "minik" "naja" "najaaraq" "najannguaq" "nuka" "paninnguaq" "Angut" "Anguti" "Anguteq" "Anguteĸ" "Anguteeraq" "Aqqalu" "Aqqaluk" "Arnaq" "Arnannguaq" "Inuk" "Malik" "Minik" "Naja" "Najaaraq" "Najannguaq" "Nuka" "Paninnguaq" ; #Liste med proprier, der også er sandsynlige som appellativer
 
@@ -5303,6 +5303,7 @@ REMOVE:0100Z 2SgPoss IF (*0 V + 3Pl OR V + 3PlO OR 3PlPoss BARRIER V OR KOMMA) #
 (NEGATE *1 EXCLMARK)
 (NEGATE *0 Gram/Exclm)
 (NEGATE 0 NIQ LINK *1 2SgPoss + $$KASUS BARRIER (*) - $$KASUS)#Oqaasiliortuni ilaasortatut SUILNINNI paasissutissat pisariaqartikkumaakkatit ataani takussutissiaraakka najoqqutassallu kakkiullugit.
+(NEGATE 0 (/TAQ\ Der/vn\ N\ Abs\ Sg/l) LINK 1 (Prop Abs Sg))#Oqaasiliortut niviarsiaqqat aqqattut QINNUTIGISAT Suluk akuereqqammerpaat.
 ;
 REMOVE:0100V 2SgPoss IF (0 Aeq LINK 1 ("ip")) ; #Imigassaq aalakoornartortalik immuttut inngilaq.
 
@@ -5313,7 +5314,12 @@ REMOVE:0100Z POSSESSUM12 IF (0 Part) ; #aasiit
 SELECT:0100AA 2SgPoss IF (*0 ("quja" NAR Gram/Exclm))(NEGATE -1 ("uanga"))(NEGATE *0 VFIN) ; #Kontekst, der maa sikres foer foelgende REMOVE
 SELECT:0100AB 2SgPoss - ("massak") - SSA IF (NEGATE *0S V OR INDERIVERENDE_SUBSTANTIV)(*1 ("?"))(NEGATE 0 V + 2Sg)(NEGATE *0 Gram/Int + Pron + Pl) ; #Kontekst, der maa sikres foer foelgende REMOVE. Specialitet at massak+Via opfattes som 2SgPoss og ikke Der/vn med SSA
 
-REMOVE:0100AC 2SgPoss IF (0 Rel + Pl LINK *1 TRANSVERB + 3Pl LINK NEGATE *0 (Rel3Pl) - _TARGET_); #POLITIIT ikuallattoqarneranut pissutaasoq paasinialeruttorpaat.
+REMOVE:0100AC 2SgPoss IF (0 Rel + Pl LINK *1 TRANSVERB + 3Pl LINK NEGATE *0 (Rel3Pl) - _TARGET_) #POLITIIT ikuallattoqarneranut pissutaasoq paasinialeruttorpaat.
+(NEGATE 0 (/TAQ\ Der/vn\ N\ Abs\ Sg/l) LINK 1 (Prop Abs Sg))#Oqaasiliortut niviarsiaqqat aqqattut QINNUTIGISAT Suluk akuereqqammerpaat.
+;
+
+REMOVE:0100AD (/Abs|Rel/r) + Pl IF (*-1 Rel + &&SUBJTRANSVERB& LINK *1 _TARGET_ + (/TAQ\ Der/vn\ N\ Abs\ Sg/l) LINK 1 (Prop Abs Sg) LINK *1 VFIN + &&SUBJTRANSVERB& + 3SgO)#Oqaasiliortut niviarsiaqqat aqqattut QINNUTIGISAT Suluk akuereqqammerpaat.
+;
 
 #SELECT:0101X Abs + 2SgPoss IF (*1 Ind + 3Sg + INTRANSVERB BARRIER TRANSVERB + 3SgO)(NEGATE 0 Pl + Abs LINK *1 Par + 3Pl) ; #Et sikkert subjekt må ikke læses som plur. BARRIER pga. mulig ledsagemåde med objekt. Der tages højde for en mulig or. obl. før verbet
 #Ny formulering, da tagger forkert fx 'amerlanerit sinippiaratik .. '
@@ -14799,6 +14805,9 @@ REMOVE:6000O Sem/Geo IF (0 Sem/Hum LINK 1 (":")); #Sofia: Uangaana, ..
 REMOVE:6000P Sem/Geo + UNA IF (0 Sem/Hum + UNA);
 REMOVE:6000Q Sem/Geo + UNA IF (*-1 Interj BARRIER (*) - KOMMA LINK *1 _TARGET_ + Gram/Pers + UNA LINK 1 KOMMA);
 REMOVE:6000R ("Sermitsiaq") + Sem/Hum IF (0 ("Sermitsiaq") + Sem/Geo LINK 1 ("nali"));
+REMOVE:6000S ("(.*)"r) + Sem/Mask IF (0 (VSTR:"$1") + Sem/Fem LINK *0 FEM + Rel LINK 1 ("ateq") + POSSESSUM3);
+#SELECT:0172 Prop + ("(.*)"r) IF (*0C Prop + (VSTR:"$1")) ; #Vælg samme proprium, hvis det helt sikkert også findes andetsteds i samme sætning. Måske for striks?
+
 
 #Proprium eller verbum
 REMOVE:6100A ("Oqi" Sem/Hum) IF (0 ("oqila") OR ("oqiliallap"));#oqiliallaqaanga
