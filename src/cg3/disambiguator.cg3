@@ -1,4 +1,5 @@
 # -*- cg-pre-pipe: ~/langtech/kal/tools/shellscripts/kal-tokenise ~/langtech/kal/tools/tokenisers/tokeniser-disamb-gt-desc.pmhfst | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/kal-pre1.cg3 | ~/langtech/kal/tools/shellscripts/kal-hybrid-split | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/kal-pre2.cg3   -*-
+
 #Kørsel med semantik: ~/langtech/kal/tools/shellscripts/kal-tokenise ~/langtech/kal/tools/tokenisers/tokeniser-disamb-gt-desc.pmhfst | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/kal-pre1.cg3 | ~/langtech/kal/tools/shellscripts/kal-hybrid-split | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/kal-pre2.cg3 | bash -l -c ~/langtech/nutserut/dev/kal2eng/bin/long2sem.pl
 # =================================================================== #
 # =================================================================== #
@@ -2970,6 +2971,11 @@ REMOVE:tidlig0795 ("ullu") + 4SgPoss IF (0 ("ulloq"))#Meeqqanik sumiginnaasarner
 (NEGATE *-1 BIRDS + Rel LINK *1 _TARGET_ LINK *1 TRANSVERB + 3Sg);
 
 REMOVE:tidlig0796 ("ullu") + 1PlPoss IF (0 ("ulloq") + 1PlPoss); #Angallataatit piffimmiit piffimmut sukkasuumik periataarsinnaanngimmata, politiit ULLUTSINNUT naleqqunnerusunik angallateqalerniarlutik aalajangerpaat.
+
+REMOVE:tidlig0800 (/VIK\ Der/nn\ N\ Abs\ Sg/l) IF (0 Rel + Pl LINK *1 TRANSVERB + 3Pl - 3SgO); #KINGULLIARSUILLU imatut ilaartorsimagaat tusarnikuuara
+
+
+
 #SUBSTITUTE:tidlig0580 (Abs) (Rel) TARGET (/"ataaseq"\ Num\ Abs/l) OR (/"01"\ Num\ Abs\ Sg/l) IF (1 ("misse") + POSSESSUM3); #Nal. ATAASEQ miss.
 SUBSTITUTE:tidlig0581 (Abs) (Ins Orht/Alt) TARGET (/"cm"\ OLang/DAN\ N\ Abs/l) IF (-1 Num LINK 2 LIK_QAR); #Angut 17-init missaannik ukiulik 170-175 CM angissusilik, tuattoq, sakiaani allannertalimmik nasartalimmik tujuululik, koorpunik qarlilik.
 SUBSTITUTE:tidlig0582 (3SgPoss) (3PlPoss) TARGET (/"misse"\ N\ Ins\ Sg\ 3SgPoss/l) IF (-1 Sem/Unit + Rel + Pl); #Attavik 130 km-it MISSAANIK isorartussuseqassaaq.
@@ -3278,7 +3284,7 @@ SUBSTITUTE:adv4lix LI ADV-LI TARGET LI IF (0 ("[0123456789]{4}"r) + Lok); #Ny PL
 SUBSTITUTE:adv5lix LI ADV-LI TARGET LI IF (0 Abs + SEASON) #upernaarli
 (NEGATE -1 KOMMA)# .. atorfinippoq, UKIORLI ataaseq qaangiuttoq ..
 ;
-SUBSTITUTE:adv6lix LI ADV-LI TARGET LI IF (0 Aeq) #Titartagarali kingulleq ILAATULLI aamma tassa naammaginngilaa.
+SUBSTITUTE:adv6lix LI ADV-LI TARGET LI IF (0 Aeq - ("taama") - ("ima")) #Titartagarali kingulleq ILAATULLI aamma tassa naammaginngilaa.
 (NEGATE -1 KOMMA)#Kiisa palasi ilungersuanermit qaamigut aallilerpoq, soormimiuna aamma niuertussap taama isigitigigaani, ALLATULLI ajornaqimmat iluarisaannarminik oqalulluni aallartippoq.
 ;
 SUBSTITUTE:adv7lix LI ADV-LI TARGET LI IF (0 (/NIQ\ Der/vn\ N\ Abl/l) LINK *1 V)
@@ -12503,7 +12509,7 @@ REMOVE:1681E Prop + AFFINGERET IF (0 Prop - AFFINGERET) (NEGATE 0 PROP + Aeq - A
 
 REMOVE:1682 2SgPoss IF (0 NUMHOVED) ; #kapitalit pingajuanniippoq.
 REMOVE:1683 POSSESSUM12 IF (0 Pl - POSSESSUM)(*1 NIQAR) ;
-REMOVE:1684 N IF (0 Adv)(NEGATE 0 ("imma") OR ("taamaattoq"))
+REMOVE:1684 N IF (0 Adv)(NEGATE 0 ("imma") OR ("taamaattoq"))#(tilføjes når particles er ændret fra fuldform til .*+Aeq) OR ("ima" Aeq) OR ("taama" Aeq))
 (NEGATE 0 ("ila") + 3PlPoss LINK -1 Rel + Pl)# Allakkat ILAANNI arnat atiminnik saqqummiussipput, nassiussisulli amerlanerit kinaassutsiminnik isertuussipput.
 (NEGATE -1 Ins + Sg)#Panini namminermisut inuunermik TAAMAATTUMIK atugaqaqqunagu silattunnginnerani toqoqatigalugu inuunera kipiniaraluarpaa
 (NEGATE 0 ("siuneq") + 3SgPoss LINK -1 ("manna") + Rel)#
@@ -14295,6 +14301,7 @@ REMOVE:5578F (/"kaap"\ Gram/TV\ VIP/l) IF (0 ("kaavip") LINK -1 ("anori") OR ("a
 REMOVE:Int0400 (/__LIR\ Der/nv__/l) (0 (/\"imer\"\ Gram/TV\ LIR\ Der/vv__/l)) ; #imilerpaa
 REMOVE:5578G ("nalunaap") (0 ("nalunaar") LINK *-1 Trm OR Abl) ;
 REMOVE:5578H (/"tutsaq"\ GIP\ Der/nv/l) IF (0 ("tutsarip"));
+REMOVE:5578I ("allagarser") IF (0 (/"allap"\ Gram/TV\ TAQ\ Der/vn\ SI/l) LINK -1 Abl); #Ullaaq iterpunga bussiniit ALLAGAARSEREERSIMALLUNGA
 
 # Enkelte derivativer
 REMOVE:Int0401 IR + Der/nv IF (0 V + Der/vv OR ("ila")) ; #'ilaarpaa' ikke 'ila+IR'
@@ -15480,6 +15487,8 @@ REMOVE:9968AT Par + @CL-CIT> IF (0 Abs + @N< LINK *1 TIMENOUN + Rel LINK *1 Num 
 #Problematiske i-stammer med TIP vs. HTR
 REMOVE:9968AU INTRANSVERB + (/i"\ Gram/[IT]V\ TIP/l) + Gram/Refl IF (0 INTRANSVERB + (/i"\ Gram/TV\ HTR/l)); #Ilami taamani Hansenip annaassiniaraluarluni nakkakattarnera isinneralu takorloorlugit, naamik kingornagut ajorani panertunik ATISEREERMAT illarnarnera assissaqanngilaq.
 
+REMOVE:9968AV Par + 3PlO IF (*1 ORATIOOBLVERB LINK *-1 _TARGET_ + Par + 3Pl + 3SgO BARRIER V LINK *-1 Rel + Pl BARRIER (*) - Adv) #kingulliarsuillu imatut ILAARTORSIMAGAAT tusarnikuuara
+(NEGATE *-1 Abs + Sg BARRIER V);
 
 ###########################################
 #Mapping af resterende nominer, Num og Prop
@@ -16468,6 +16477,9 @@ REMOVE:9973 LOAN ; # Slet låneord, hvis ikke eneste læsning
 ## Nyt afsnit 20220610 - Semantisk disambiguering ##
 ####################################################
 
+LIST Sem/Aich = Sem/Aich ;
+LIST iSem/Aich = iSem/Aich ;
+SET SEM/Aich = Sem/Aich OR iSem/Aich ;
 LIST Sem/ac = Sem/ac ;
 LIST iSem/ac = iSem/ac ;
 SET SEM/ac = Sem/ac OR iSem/ac ;
@@ -16475,9 +16487,9 @@ LIST Sem/ac-cat = Sem/ac-cat ;
 LIST iSem/ac-cat = iSem/ac-cat ;
 SET SEM/ac-cat = Sem/ac-cat OR iSem/ac-cat ;
 SET SEM/ac-ALL = SEM/ac OR SEM/ac-cat ;
-LIST Sem/Aich = Sem/Aich ;
-LIST iSem/Aich = iSem/Aich ;
-SET SEM/Aich = Sem/Aich OR iSem/Aich ;
+LIST Sem/an = Sem/an ;
+LIST iSem/an = iSem/an ;
+
 LIST Sem/appear = Sem/appear ;
 LIST iSem/appear = iSem/appear ;
 SET SEM/appear = Sem/appear OR iSem/appear ;
@@ -16490,9 +16502,16 @@ SET SEM/be_attribute = Sem/be_attribute OR iSem/be_attribute ;
 LIST Sem/cc-h = Sem/cc-h ;
 LIST iSem/cc-h = iSem/cc-h ;
 SET SEM/cc-h = Sem/cc-h OR iSem/cc-h ;
+LIST Sem/characterize = Sem/characterize ;
+LIST iSem/characterize = iSem/characterize ;
 LIST Sem/con = Sem/con ;
 LIST iSem/con = iSem/con ;
 SET SEM/con = Sem/con OR iSem/con ;
+LIST Sem/f-an = Sem/f-an ;
+LIST iSem/f-an = iSem/f-an ;
+LIST Sem/f-psych = Sem/f-psych ;
+LIST iSem/f-psych = iSem/f-psych ;
+SET SEM/f-psych = Sem/f-psych OR iSem/f-psych ;
 LIST Sem/food = Sem/food ;
 LIST iSem/food = iSem/food ;
 SET SEM/food = Sem/food OR iSem/food ;
@@ -16509,33 +16528,54 @@ SET SEM/HH = Sem/HH OR iSem/HH ;
 LIST Sem/Hnat = Sem/Hnat ;
 LIST iSem/Hnat = iSem/Hnat ;
 SET SEM/Hnat = Sem/Hnat OR iSem/Hnat ;
+LIST Sem/hint = Sem/hint ; #oqaatige
+LIST iSem/hint = iSem/hint ;
+
 LIST Sem/investigate = Sem/investigate ;
 LIST iSem/investigate = iSem/investigate ;
 SET SEM/investigate = Sem/investigate OR iSem/investigate ;
-LIST Sem/ling = Sem/ling ;
-LIST iSem/ling = iSem/ling ;
-SET SEM/ling = Sem/ling OR iSem/ling ;
-LIST Sem/lodge = Sem/lodge ;
-LIST iSem/lodge = iSem/lodge ;
-SET SEM/lodge = Sem/lodge OR iSem/lodge ;
+
+LIST Sem/increase = Sem/increase ;
+LIST iSem/increase = iSem/increase ;
+
+LIST Sem/L = Sem/L ;
+LIST iSem/L = iSem/L ;
+SET SEM/L = Sem/L OR iSem/L ;
+LIST Sem/Location = Sem/Location ;
+LIST iSem/Location = iSem/Location ;
+
+LIST Sem/Ltip = Sem/Ltip ;
+LIST iSem/Ltip = iSem/Ltip ;
+SET SEM/Ltip = Sem/Ltip OR iSem/Ltip ;
 LIST Sem/Ltop = Sem/Ltop ;
 LIST iSem/Ltop = iSem/Ltop ;
 SET SEM/Ltop = Sem/Ltop OR iSem/Ltop ;
+LIST Sem/ling = Sem/ling ;
+LIST iSem/ling = iSem/ling ;
+SET SEM/ling = Sem/ling OR iSem/ling ;
+LIST Sem/listen = Sem/listen ;
+LIST iSem/listen = iSem/listen ;
+
+LIST Sem/lodge = Sem/lodge ;
+LIST iSem/lodge = iSem/lodge ;
+SET SEM/lodge = Sem/lodge OR iSem/lodge ;
 LIST Sem/mon-c = Sem/mon-c ;
 LIST iSem/mon-c = iSem/mon-c ;
 SET SEM/mon-c = Sem/mon-c OR iSem/mon-c ;
 LIST Sem/mon-m = Sem/mon-m ;
 LIST iSem/mon-m = iSem/mon-m ;
 SET SEM/mon-m = Sem/mon-m OR iSem/mon-m ;
-LIST Sem/reach = Sem/reach ;
-LIST iSem/reach = iSem/reach ;
-SET SEM/reach = Sem/reach OR iSem/reach ;
 LIST Sem/percep-w = Sem/percep-w ;
 LIST iSem/percep-w = iSem/percep-w ;
 SET SEM/percep-w = Sem/percep-w OR iSem/percep-w ;
 LIST Sem/predict = Sem/predict ;
 LIST iSem/predict = iSem/predict ;
 SET SEM/predict = Sem/predict OR iSem/predict ;
+LIST Sem/reach = Sem/reach ;
+LIST iSem/reach = iSem/reach ;
+SET SEM/reach = Sem/reach OR iSem/reach ;
+LIST Sem/repair = Sem/repair ;
+LIST iSem/repair = iSem/repair ;
 LIST Sem/run = Sem/run ;
 LIST iSem/run = iSem/run ;
 SET SEM/run = Sem/run OR iSem/run ;
@@ -16551,6 +16591,14 @@ SET SEM/sem-c = Sem/sem-c OR iSem/sem-c ;
 LIST Sem/sem-r = Sem/sem-r ;
 LIST iSem/sem-r = iSem/sem-r ;
 SET SEM/sem-r = Sem/sem-r OR iSem/sem-r ;
+LIST Sem/unit = Sem/unit ;
+LIST iSem/unit = iSem/unit ;
+LIST Sem/wea = Sem/wea ;
+LIST iSem/wea = iSem/wea ;
+SET SEM/wea = Sem/wea OR iSem/wea ;
+LIST Sem/weather = Sem/weather ;
+LIST iSem/weather = iSem/weather ;
+SET SEM/weather = Sem/weather OR iSem/weather ;
 
 
 REMOVE:Sem0050 Sem/ac IF (0 Sem/sem-c + POSSESSUM) #Pilersaarutigut.
@@ -16578,7 +16626,23 @@ REMOVE:Sem0090 (/^i?Sem/sem.*/r) IF (0 SEM/Ltop LINK 1 ("nali")); #SERMITSIAP na
 #Følgende må løbende NEGATE-s. Foreløbig blot en fornemmelse af statistik
 REMOVE:Sem0095 SEM/Hnat IF (0 SEM/H); #Taamaattoraasiit INUTTAI oqassapput:
 
-SUBSTITUTE:0005 (iSem/H) (iSem/HH) TARGET (/"inuk"\ iSem/H\ TAQ/l) IF (0 Pl);
+REMOVE:Sem0100 SEM/H IF (0 (/"inuk"\ TAQ\ Der/nn\ \(i\)?Sem/HH/l) + Pl);
+
+REMOVE:Sem0105 SEM/L OR SEM/f-psych IF (-1 Sem/Geo + Rel LINK 1 _TARGET_ + SEM/wea + &&IV_SUBJ& LINK *1 SEM/be_attribute + &&IV_SUBJ&); #Qangami Nuup SILAA ajorami!”
+
+REMOVE:Sem0110 (/^i?Sem/repair.*/r) IF (0 (/^i?Sem/say.*/r) + Par + 3SgO LINK *1 ORATIOOBLVERB BARRIER V) #kingulliarsuillu imatut ILAARTORSIMAGAAT tusarnikuuara
+(NEGATE *-1 Abs + Sg + (/^i?Sem/cc.*/r) BARRIER V);
+
+REMOVE:Sem0115 (/^i?Sem/f-.*/r) IF (0 (/^i?Sem/L.*/r) + POSSESSUM3 LINK -1 Sem/Geo + Rel); #Nuulli QINNGUANI najugaqartuulluni taamatut oqaannarnissaq ajornaqaaq, pingaartumik biileqarani.
+
+REMOVE:Sem0120 (/^i?Sem/characterize/r) IF (0 ORATIOOBLVERB + VFIN + (/^i?Sem/say.*/r) LINK *0 Par BARRIER V); #Ippassaq raatiumi OQAATIGIVAAT anori sekundtimut 40 meterinik sakkortussuseqartassasoq, anoraasuasarneranilu suli sakkortunerusarsinnaasassalluni.
+REMOVE:Sem0121 (/^i?Sem/hint/r) IF (0 ORATIOOBLVERB + VFIN + (/^i?Sem/say.*/r) LINK *0 Par BARRIER V); #Ippassaq raatiumi OQAATIGIVAAT anori sekundtimut 40 meterinik sakkortussuseqartassasoq, anoraasuasarneranilu suli sakkortunerusarsinnaasassalluni.
+
+REMOVE:Sem0125 (/^i?Sem/L/r) OR (/^i?Sem/f.*/r) IF (0 ("sila") + (/^i?Sem/wea/r) LINK 1 (/^i?Sem/weather/r)); #SILAP anorersuarpallaarnera peqqutigalugu.
+
+REMOVE:Sem0130 (/^i?Sem/am/r) IF (0 (/"sakku"\ TU\ Der/nv\ Gram/IV\ SSUSIQ/l) + (/^i?Sem/unit/r) + QAR); #Ippassaq raatiumi oqaatigivaat anori sekundtimut 40 meterinik SAKKORTUSSUSEQARTASSASOQ,
+
+REMOVE:Sem0135 ("qiteq") + (/^i?Sem/an/r) IF (0 (/^i?Sem/L.*/r) + Pl);#Taamatulli aalajangerninni QITIUTITAKKA tassaapput meeqqat
 
 ##############
 AFTER-SECTIONS
