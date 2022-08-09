@@ -39,7 +39,7 @@
 	# Disambiguation rules (linie 1175)
 		# Frequent and safe rules - all wordclasses (1435)
 		# SELECT og REMOVE verber (11639 - 20210512)
-		# SELECT and REMOVE participles (1460)
+		# SELECT and REMOVE participles (11779) (26062022)
 		# SELECT og REMOVE nominer (11669 - 20210512)
                             # One-cohort disambiguation - cycle 0
 
@@ -1722,6 +1722,9 @@ SET OTHERDAY = ("ullortuneq") | ("ullukinneq") ;
 LIST SEASON = "aasaq" "ukiaq" "ukioq" "upernaaq" "upernassaq"; #årstider
 LIST HOLIDAY = "juulli" "poorski" "piinsi" ;
 
+#LIST VERBER aasaraa-typen
+LIST TRANS_TIDSVERBER = "aasar" "unnuup" ; 
+
 #SET TIMEVERB2 = ("naammassi") - Gram/Pass; #PL20220517 Forstår ikke hvorfor tidsverbum. Slettet uden regressionskonsekvenser
 
 LIST TIMEVERB = ("agger") ("assi" GIIAAR) 
@@ -3321,10 +3324,17 @@ SELECT:conjC ("aamma") + Conj IF (-1* PLACE BARRIER (*) - PUNCT LINK *1 _TARGET_
 SELECT:conjD ("aamma") + Conj IF (-2 Abl LINK 1 Trm LINK 2 Abl LINK 1 Trm); #kalaallisuumit qallunaatuumut AAMMA qallunaatuumit kalaallisuumut
 REMOVE:conjE ("aamma") + Conj IF (*-1 V - 3Pl - 3Sg BARRIER (*) - V) (*1 V + 3Sg OR V + 3Pl)  #Konjunktioner skal have noget "ens" på begge sider. #Mikisuullunga aamma juullip orpiliaata akisunnera, unnuaqeqqanut naalagiarnermi pattagiarsuup erinaa asasamalu qungujunnerisa saamanerat juullimi tunissutisiannik qaamaneqalersitsisut ittarput.
 (NEGATE -1 CONT + TRANSVERB LINK *1 CONT + TRANSVERB BARRIER V)#Suliffeqarfinni naatsorsuutit pillugit AAMMA sanaartornermut aningaasartuutinut naleqqersuutit pillugit kisitsisit nutaat kisitsisaataasivimmi bank.stat.gl-imi pissarsiarineqarsinnaalerput.
+(NEGATE *-1 $$MODUS BARRIER V LINK *1 _TARGET_ + Conj LINK *1 $$MODUS BARRIER V) #Sinnakikkama AAMMA silaannaap nillataartup timiga qiiaammertimmagu nukikka sukaterpakka.
 ;
+
 REMOVE:conjE1 ("aamma") + Adv IF (0 ("aamma" Conj) LINK -1 CONT + TRANSVERB LINK *1 CONT + TRANSVERB BARRIER V) #Suliffeqarfinni naatsorsuutit pillugit AAMMA sanaartornermut aningaasartuutinut naleqqersuutit pillugit kisitsisit nutaat kisitsisaataasivimmi bank.stat.gl-imi pissarsiarineqarsinnaalerput.
 (NEGATE -2 BOS LINK 1 ("taamaali" Gram/TV) LINK 0 ("taamaali" Gram/IV) )#Taamaalillunga AAMMA ullut pingajussaanni orpik baobab pillugu pisimasoq annilaarnartoq tusarpara.
 ;
+
+REMOVE:conjE2 ("aamma") + Adv IF (*-1 CON_CAU BARRIER V LINK *1 _TARGET_ + Conj LINK *1 CON_CAU BARRIER V) #Sinnakikkama AAMMA silaannaap nillataartup timiga qiiaammertimmagu nukikka sukaterpakka.
+;
+
+
 REMOVE:conjF ("aamma") + Conj IF (-1 BOS)(1 NIQ) ; #så plejer aamma at være i-ADVL>
 REMOVE:conjG ("aamma") + Conj IF (-1 UNA OR UKU) ;
 REMOVE:conjH ("aamma") + Conj IF (-1 KONCESSIV) ;
@@ -5943,13 +5953,15 @@ REMOVE:0322E1 Gram/Refl  IF (NEGATE *-1 ("immi") BARRIER KOMMA)
 (NEGATE *0 VFIN + 1Pl LINK *0 _TARGET_ + CONT + 1Pl)#aallartissuugut uagutsinnut AALLAAVIGALUTA.
 ;
 
-REMOVE:0322E2 (/Gram/TV\ V\ Ind\ 3Sg\ 1SgO/l) IF (0 (/Gram/Refl\ \(Gram/IV\ \)?V\ Ind\ 1Sg/l) LINK NEGATE *0 V + 3Sg) #Isumaalliortutut MISIGISIMAQAANGA, nalulerlugulu qanoq qanilleqqissinnaanerlugu, angoqqissanerlugu 
+REMOVE:0322E2 (/Gram/TV\ V\ Ind\ 3Sg\ 1SgO/l) IF (0 (/Gram/Refl\ \(Gram/IV\ \)?V\ Ind\ 1Sg/l) LINK NEGATE *0 V + 3Sg) (-1 Aeq OR ("immi")) #Isumaalliortutut MISIGISIMAQAANGA, nalulerlugulu qanoq qanilleqqissinnaanerlugu, angoqqissanerlugu 
 (NEGATE *-1 Rel + Sg BARRIER V)#angerlarsimasup MISIGAANGA.
 ;
 
-REMOVE:0322E3 (/LIR\ Der/nv\ Gram/IV\ SSA\ Der/vv\ Gram/IV/l) IF (0 (/LIR\ Der/nv\ Gram/TV\ SSA\ Der/vv\ Gram/Refl\ Gram/IV/l)); #PUUSSIALISSAVIT
+REMOVE:0322E3 (/Gram/TV\ Gram/Refl\ Gram/IV\ V\ Ind\ 1Sg/l) IF (0 TRANSVERB LINK NEGATE -1 Aeq OR ("immi")); #QINNUIGAANGA inuiannut inuulluaqqussutini apuuteqqullugu,
 
-REMOVE:0322E4 CONT + 1PlO IF (0 CONT + Gram/Refl + 1Pl LINK *0 VFIN + 1Pl BARRIER VFIN);#aallartissuugut uagutsinnut AALLAAVIGALUTA.
+REMOVE:0322E4 (/LIR\ Der/nv\ Gram/IV\ SSA\ Der/vv\ Gram/IV/l) IF (0 (/LIR\ Der/nv\ Gram/TV\ SSA\ Der/vv\ Gram/Refl\ Gram/IV/l)); #PUUSSIALISSAVIT
+
+REMOVE:0322E5 CONT + 1PlO IF (0 CONT + Gram/Refl + 1Pl LINK *0 VFIN + 1Pl BARRIER VFIN);#aallartissuugut uagutsinnut AALLAAVIGALUTA.
 
 
 REMOVE:0322F (/"\ Gram/TV\ TIP/l) IF (0 (/"\ Gram/IV\ TIP/l) + CONT + INTRANSVERB); #Maanna ullaaralaannguami Utterslev Mosekkut INGERLATILLUNI Emiliep kalaallit ilaquttani eqqarsaatigalugit Margrethep angaaminik ajoqiusumik oqaluttuarnera eqqarsaatigilerpaa.
@@ -11811,13 +11823,16 @@ REMOVE:sem100 KKUT IF (0 Via) (1 ("oqallip")) ;
 # SELECT and REMOVE participles #
 #################################
 
-REMOVE:0403A Par IF (0 N + NUMERUS + PN + &&IV_SUBJ&)(*1 V + &&IV_SUBJ&)(-1 BOS) ; #aalisartuusugut ajornakusooruteqarpugut.
+REMOVE:0403A Par + 3PlO + TRANS_TIDSVERBER IF (0 Par + 3SgO + TRANS_TIDSVERBER) #UNNUUKKAAlu kissarneqalerama saannerilerlungalu.
+(NEGATE -1 Abs + Pl);
 
-SELECT:0403B Par + TIME IF (-1 BOS OR KOMMA)(1 &&IVTVSUBJ& + N OR &&IVTVSUBJ& + PROP LINK *1 &&IVTVSUBJ& + V BARRIER (*) - Adv - ADVERBIEL - OBLIQUE - CONT - Rel);
+REMOVE:0403B Par IF (0 N + NUMERUS + PN + &&IV_SUBJ&)(*1 V + &&IV_SUBJ&)(-1 BOS) ; #aalisartuusugut ajornakusooruteqarpugut.
 
-REMOVE:0403C Par + TITEL + U IF (0 Abs LINK 1 KOMMA LINK 1 Prop); #Siumummi Partii Naleqqamilu ALLATTAANERUSIMASOQ, Mikael Petersen, Eqqartuussisoqarfik Sermersuumi suliassami oqaluttuarisaanermi eqqaamasassami ulloq taanna sassassaaq.
+SELECT:0403C Par + TIME IF (-1 BOS OR KOMMA)(1 &&IVTVSUBJ& + N OR &&IVTVSUBJ& + PROP LINK *1 &&IVTVSUBJ& + V BARRIER (*) - Adv - ADVERBIEL - OBLIQUE - CONT - Rel);
 
-REMOVE:0403D Par + 3Pl IF (-1 Abs + Pl LINK 1 _TARGET_ + Abs + Pl + Der/vn LINK *1 3PlO BARRIER V)#Naalakkersuisoqatigiit PATAJAATSUT ukiuni sisamani issiasussat pilersikkusullugit, Inuit Ataqatigiit siulittaasuata oqaatigaa.
+REMOVE:0403D Par + TITEL + U IF (0 Abs LINK 1 KOMMA LINK 1 Prop); #Siumummi Partii Naleqqamilu ALLATTAANERUSIMASOQ, Mikael Petersen, Eqqartuussisoqarfik Sermersuumi suliassami oqaluttuarisaanermi eqqaamasassami ulloq taanna sassassaaq.
+
+REMOVE:0403E Par + 3Pl IF (-1 Abs + Pl LINK 1 _TARGET_ + Abs + Pl + Der/vn LINK *1 3PlO BARRIER V)#Naalakkersuisoqatigiit PATAJAATSUT ukiuni sisamani issiasussat pilersikkusullugit, Inuit Ataqatigiit siulittaasuata oqaatigaa.
 (NEGATE *1 ORATIOOBLVERB BARRIER 3PlO)
 ;
 REMOVE:0404A Par IF (*-1 TRANSVERB + VIK + GE BARRIER V OR KOMMA LINK NOT *-1 Abs + Sg - TIME)(NEGATE *-1 ORATIOOBLVERB) ;
