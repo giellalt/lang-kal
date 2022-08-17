@@ -121,16 +121,13 @@ LIST Num = Num ("tyve") ;
 LIST iNum = iNum ;
 LIST Sem/CognitiveMaking = Sem/CognitiveMaking; #qinersivoq i modsætning til qinerlerpoq
 LIST Sem/Concessive = Sem/Concessive ; #koncessive sætninger
-LIST Sem/dur = Sem/dur ;
 LIST Sem/event = Sem/event ;
 LIST Sem/Fem = Sem/Fem ; #Introduceret som test 20180613. Skal måske ud igen
 LIST Sem/FirstName = Sem/FirstName ;
 LIST Sem/Geo = Sem/Geo ;
-LIST Sem/HH = Sem/HH ; #organisationer mv.
 LIST Sem/Hum = Sem/Hum <hum> ;
 LIST Sem/Hunt = Sem/Hunt; #qinerlerpoq i modsætning til qinersivoq
 LIST Sem/inst = Sem/inst ; #sem-tag til Sem/Hum som er NOT-PERSON fx Aarhus Universitetshospital
-LIST Sem/Location = Sem/Location ; #Location til adskillelse af fx qiteq+An fra qiteq+L
 LIST Sem/LastName = Sem/LastName ;
 LIST Sem/Mask = Sem/Mask ; #Introduceret som test 20180613. Skal måske ud igen
 LIST Sem/misse = Sem/misse ; #Tag til tilfældig possessornumerus ved misse
@@ -2998,6 +2995,8 @@ REMOVE:tidlig0820 ("inap" HTR 4SgPoss) IF (0 ("Inatsisartut" Prop Lok));
 REMOVE:tidlig0825 ("siuneq" Abs 3SgPoss) IF (0 ("siorna" Adv) LINK 1 VERB-NOTCONT) #Coronavirusimik siorna tunillatsissimasoqaqqaartalermat, Naalakkersuisut Nuummit aallartoqarsinnaajunnaartitsipput, kingullertigullu Sisimiuni Qaqortumilu ungasinngitsukkut aallartoqaqqusaajunnaarsitsipput.
 (NEGATE -1 ("manna" Rel))
 ;
+
+REMOVE:tidlig0830 ("aappaq" Pl 3SgPoss) IF (*-1 ("aappaq" Sg 3SgPoss));
 
 #SUBSTITUTE:tidlig0580 (Abs) (Rel) TARGET (/"ataaseq"\ Num\ Abs/l) OR (/"01"\ Num\ Abs\ Sg/l) IF (1 ("misse") + POSSESSUM3); #Nal. ATAASEQ miss.
 SUBSTITUTE:tidlig0581 (Abs) (Ins Orht/Alt) TARGET (/"cm"\ OLang/DAN\ N\ Abs/l) IF (-1 Num LINK 2 LIK_QAR); #Angut 17-init missaannik ukiulik 170-175 CM angissusilik, tuattoq, sakiaani allannertalimmik nasartalimmik tujuululik, koorpunik qarlilik.
@@ -16579,6 +16578,8 @@ LIST iSem/con = iSem/con ;
 SET SEM/con = Sem/con OR iSem/con ;
 LIST Sem/dur = Sem/dur ;
 LIST iSem/dur = iSem/dur ;
+LIST Sem/encounter = Sem/encounter ;
+LIST iSem/encounter = iSem/encounter ;
 LIST Sem/f-an = Sem/f-an ;
 LIST iSem/f-an = iSem/f-an ;
 LIST Sem/f-psych = Sem/f-psych ;
@@ -16594,12 +16595,18 @@ SET SEM/food-ALL = SEM/food OR SEM/food-h;
 LIST Sem/H = Sem/H ;
 LIST iSem/H = iSem/H ;
 SET SEM/H = Sem/H OR iSem/H ;
+LIST Sem/Hfam = Sem/Hfam ;
+LIST iSem/Hfam = iSem/Hfam ;
+
 LIST Sem/HH = Sem/HH;
 LIST iSem/HH = iSem/HH ;
 SET SEM/HH = Sem/HH OR iSem/HH ;
 LIST Sem/Hnat = Sem/Hnat ;
 LIST iSem/Hnat = iSem/Hnat ;
 SET SEM/Hnat = Sem/Hnat OR iSem/Hnat ;
+LIST Sem/Hprof = Sem/Hprof ;
+LIST iSem/Hprof = iSem/Hprof ;
+
 LIST Sem/hint = Sem/hint ; #oqaatige
 LIST iSem/hint = iSem/hint ;
 
@@ -16613,11 +16620,10 @@ LIST iSem/increase = iSem/increase ;
 LIST Sem/L = Sem/L ;
 LIST iSem/L = iSem/L ;
 SET SEM/L = Sem/L OR iSem/L ;
+LIST Sem/Location = Sem/Location ; #Location til adskillelse af fx qiteq+An fra qiteq+L
+LIST iSem/Location = iSem/Location ;
 LIST Sem/La = Sem/La ; #Location Animal
 LIST iSem/La = iSem/La ;
-LIST Sem/Location = Sem/Location ;
-LIST iSem/Location = iSem/Location ;
-
 LIST Sem/Ltip = Sem/Ltip ;
 LIST iSem/Ltip = iSem/Ltip ;
 SET SEM/Ltip = Sem/Ltip OR iSem/Ltip ;
@@ -16669,6 +16675,8 @@ LIST iSem/sem-r = iSem/sem-r ;
 SET SEM/sem-r = Sem/sem-r OR iSem/sem-r ;
 LIST Sem/start_movement = Sem/start_movement ;
 LIST iSem/start_movement = iSem/start_movement ;
+LIST Sem/teach = Sem/teach ;
+LIST iSem/teach = iSem/teach ;
 LIST Sem/unit = Sem/unit ;
 LIST iSem/unit = iSem/unit ;
 LIST Sem/wea = Sem/wea ;
@@ -16732,7 +16740,13 @@ SELECT:Sem0145 ("ulloq") + (/^i?Sem/dur/r) IF (0 ("ulloq") - (/^i?Sem/dur/r))
 
 SELECT:Sem0150 ("sila") + (/^i?Sem/L/r) IF (0 SUAQ LINK NEGATE *0 V);
 
-REMOVE:Sem0155 ("ateq") + (/^i?Sem/sem.*/r) IF (0 ("ateq")+ (/^i?Sem/ac.*/r) + QAR);  
+REMOVE:Sem0155 ("ateq") + (/^i?Sem/sem.*/r) IF (0 ("ateq")+ (/^i?Sem/ac.*/r) + QAR); 
+
+REMOVE:Sem0160 ("aallar") +  (/^i?Sem/start_movement.*/r) IF (0 ("aallar") + (/[12][SP][gl]/r) + (/^i?Sem/run.*/r)); 
+
+REMOVE:Sem0165 ("aappaq") + (/^i?Sem/food.*/r) IF (0 ("aappaq" Sg 3SgPoss) + (/^i?Sem/Hprof.*/r) LINK *0 ("aappaq" Sg 3SgPoss) + (/^i?Sem/Hprof.*/r));
+REMOVE:Sem0166 ("aappaq") + (/^i?Sem/Hfam.*/r) IF (0 ("aappaq" Sg 3SgPoss) + (/^i?Sem/Hprof.*/r) LINK *0 ("aappaq" Sg 3SgPoss) + (/^i?Sem/Hprof.*/r));
+
 ##############
 AFTER-SECTIONS
 
