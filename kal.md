@@ -1280,6 +1280,8 @@ Off-flag på nominer, der SKAL opføre sig replacive som pilersaarusiorpoq og aq
 
 Off-flag i nouns og Off-flag i der-inf  når TUR og TUGAQ ikke må assibileres og On-flag, når de skal assibileres. Også for at forebygge assibilering efter HTR på nnip
 
+Flag specielt for at sikre additiv p-bøjning af ulloq i Trm
+
 Ad hoc til test af alternativ flag diacritics ved præfikser. Husk også den udkommenterede linie 'Kingumoorutit ;' i LEXICON Root
 
 Test af P- og D-flag til forebyggelse af rekusivitet ved TIP
