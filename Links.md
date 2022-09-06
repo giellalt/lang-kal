@@ -1,7 +1,6 @@
 * `src/`
     * `cg3/`
         * [disambiguator.cg3](src-cg3-disambiguator.cg3.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/cg3/disambiguator.cg3))
-        * [functions.cg3](src-cg3-functions.cg3.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/cg3/functions.cg3))
     * `fst/`
         * `affixes/`
             * [derivations-inflections.lexc](src-fst-affixes-derivations-inflections.lexc.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/fst/affixes/derivations-inflections.lexc))
