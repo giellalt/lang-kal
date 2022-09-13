@@ -113,6 +113,7 @@ That is, they need special treatment in e.g. speech syntesis.
 * **+Use/-Spell** = Do not include in speller
 * **+Use/Hybrid** = For generating split hybrids. Should not be included in speller, analyser, or norm-generator
 * **+Err/Sub** = Not authorized spelling: 2-imik
+tag, vi ikke bruger, men som optræder i de delte filer
 
 ### Ekstra vedr. LG
 
