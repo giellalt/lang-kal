@@ -69,7 +69,6 @@ Følgende leksika var ikke defineret andetsteds (liste), men her
 definert ad hoc for at få koden til at kompilere. De bør alle
 bli erstattet af de korrekte leksika (eller fjernet).:
 
-- LEXICON Z1nnguaqPZ # ;
 - LEXICON Z2+rPZ # ;
 
 Det kan være flere grunder hertil:
