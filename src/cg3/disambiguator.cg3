@@ -1783,6 +1783,7 @@ LIST LEKSIKALISERING =
 (/"ilinniar"\ Gram/IV\ TIP\ Der/vv\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TUQ/l)
 (/"illu"\ QAR\ Der/nv\ Gram/IV\ VIK/l)
 (/"inuk"\ U\ Der/nv\ Gram/IV\ NIQ/l)
+(/"isuma"\ Gram/IV\ QATIGIIP\ Der/vv\ Gram/Reci\ Gram/IV\ UTE/l)
 (/"killik"\ QAR\ Der/nv\ Gram/IV\ VIK/l)
 (/"naalagaq"\ LIRSUR\ Der/nv\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TUQ/l) #medtaget som appellativ pga hyppig sammenblanding med Prop
 (/"naalagaq"\ LIRSUR\ Der/nv\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TUQ\ Der/vn\ QAR\ Der/nv\ Gram/IV\ VIK/l)
@@ -3906,6 +3907,7 @@ SELECT:0014 Par IF (0 N + Abs OR Rel)(*-1 BOS BARRIER (*) - Adv - OBLIQUE)(1 EOS
 (NEGATE 0 <Hprof>)
 (NEGATE 0 Prop + &&IV_SUBJ& LINK *1 VFIN + &&IV_SUBJ& BARRIER V )#Mette Frederiksen Folketingimi ammaanersiornermi: ISSITTOQ soqutigineqaleraluttuinnarpoq
 (NEGATE -1 BOS LINK 2 (":") )#Nutserisoq:
+(NEGATE0 LEKSIKALISERING + N)
 ;
 
 #Vokativ meget sjælden uden proprium
@@ -12036,7 +12038,7 @@ SELECT:0443 Par + 3Pl IF
 (NEGATE -1 Abs + Pl LINK 1 _TARGET_ + Abs + CONJ-C LINK NEGATE *0 V - %AmbiguøsPar)#Aqqit/uiguutit ittoorutaasinnaasut KANNGUSUTSITSISINNAASULLUUNNIIT.
 (NEGATE *1C Abs + Pl BARRIER (*) - KOMMA LINK NEGATE *0 VFIN)#Ilagiittarnigut KINERTUT, pinaveersaartitassat.
 (NEGATE *-1 BOS OR KOMMA LINK 1 ("tassa") LINK *1 _TARGET_ + Abs + Pl BARRIER VERB-NOTCONT - %AmbiguøsPar)# Tassa inuusuttut 15-16-inik ukiullit 10. klassimi soraarummeernersiorlutik NUANNASSUATAARTUT 
-
+(NEGATE 0 LEKSIKALISERING + N) #isumaqatigiissut
 ;
 #Participium i overskrifter
 
@@ -14309,7 +14311,9 @@ REMOVE:5490CÅ (/"ataatsimiip"\ Gram/IV\ QATE\ Der/vn\ GE\ Der/nv\ Gram/TV\ NIQ\
 REMOVE:5490DA (/NIR\ Der/vv\ Gram/IV\ V\ Con/l) IF (0 (/NIR\ Der/vv\ Gram/IV\ V\ Int/l) LINK *1 ("?")); 
 
 # Der/nv eller Der/vv?
-SELECT:5493 QATE + Der/vn + GE - Imp IF (0 QATE + Der/nn + GE)(NEGATE *-1 HUMAN + @OBJ>) ;
+SELECT:5493 QATE + Der/vn + GE - Imp IF (0 QATE + Der/nn + GE)(NEGATE *-1 HUMAN + @OBJ>) 
+(NEGATE 0 LEKSIKALISERING)
+;
 REMOVE:5494 (/__\"pi\"\ LIR\ Der\/nv__/l) IF (0 (/__\"pi\"\ LIR\ Der\/vv__/l))(NEGATE 0 NIQAR); # vaelger pi+LIR=TIP frem for pi+LIR+TIP
 #SELECT:5495 ("pi") + Der/nn ; # ad hoc for at disambiguere pi+Der/nn fra pi+vn #Fungerer ikke efter hensigten
 REMOVE:5496 ("pup") + LAAR IF (0 ("pulaar")) ;
@@ -14995,11 +14999,12 @@ REMOVE:9492C Pl + POSSESSUM IF (0 Sg + POSSESSUM)(NEGATE 0 Sg + Pl)(NEGATE 1 N +
 (NEGATE 0 $$KASUS LINK *1 $$KASUS + Pl BARRIER (*) - Rel - OBLIQUE)#Kalaallit MEERARTAAT 1.000-it missaanniittut inooqatigiinnikkut ilungersunartunik ajornartorsiuteqartut , immikkut ilisimasallit naliliipput .
 (NEGATE 0 %TaqPossPoss + $$NUMERUS LINK *-1 $$NUMERUS BARRIER (*) - %TaqPossPoss)#meeqqanik arnap IKIUGAANIK takunnippunga.
 (NEGATE -1 Rel + Pl LINK 1 _TARGET_ + 3PlPoss + Abs LINK 1 INTRANSVERB + 3Pl)#Tamatuma kingornagut atuakkiat, taalliat, aviisit, atuagassiat, nittartakkat inatsisillu OQAASERTAAT katersorneqarput.
-
 ;
 
-REMOVE:9492D Pl + 3PlPoss + $$KASUS IF (0 Sg + 3PlPoss)(NEGATE 1 Sg + $$KASUS)(NEGATE 1 Pl + $$KASUS)(NEGATE NOT *1 V BARRIER ("tassa") LINK *-1 _TARGET_ + Abs LINK *-1 INTRANSVERB + 3Pl BARRIER V)(NEGATE -1 Rel + Pl) ; #Statistisk begrundet, men forbehold for kongruensadled
-
+REMOVE:9492D Pl + 3PlPoss + $$KASUS IF (0 Sg + 3PlPoss)
+(NEGATE 1 Sg + $$KASUS)(NEGATE 1 Pl + $$KASUS)(NEGATE NOT *1 V BARRIER ("tassa") LINK *-1 _TARGET_ + Abs LINK *-1 INTRANSVERB + 3Pl BARRIER V)(NEGATE -1 Rel + Pl)  #Statistisk begrundet, men forbehold for kongruensadled
+##
+;
 REMOVE:9500A Pl + Lok IF (0 Abs + Pl + 4SgPoss)(1 Abs + Pl LINK *1 3PlO)(NEGATE 1 Lok) ;
 REMOVE:9500B Sg + $$KASUS IF (1 Pl + $$KASUS + @N<) ;
 
@@ -16305,14 +16310,17 @@ SELECT:9966X (/__Gram\/TV\ TIP__/l) + TRANSVERB IF (-1C Trm OR Ins LINK -1C Abs 
 
 REMOVE:9966Y (/__LIRSUR\ Der\/nv\ Gram\/IV\ TIP__/l) IF (0 (/__LIRSUR\ Der\/nv\ Gram\/IV\ TIP__/l)) ; #heuristisk valg af intransitiv sent i kaskaden # LIRSUR er transitiv i Titartaaneq atuartitsinermini iluaqutiginiartarsimavaa atuartitsissutini assigiinngitsuni, soorlu silamiut ingerlaasiannik oqaluttuarisani, assiliartalersortittarlugit.
 
-SELECT:9966 (/__Gram\/IV\ NIQ__/l) - (/Gram\/Refl\ \(Gram\/IV\ NIQ\ \)?/l) IF (0 (/__Gram\/TV\ \(Gram\/Pass\ \)?NIQ__/l) )
+SELECT:9966A (/__Gram\/IV\ NIQ__/l) - (/Gram\/Refl\ \(Gram\/IV\ NIQ\ \)?/l) IF (0 (/__Gram\/TV\ \(Gram\/Pass\ \)?NIQ__/l) )
 (NEGATE -1 Ins + Pl)(NEGATE 0 NIRMIT OR Gram/Comp)
 (NEGATE 0 ("inneq") + Ins LINK 1 LIK_QAR)#Margrethe parnaarussivimmiitillugu ajortup saqqummerfigaa uumasupiluttut INNERMIK isilittut qanerujussuaqartutullu isikkoqarluni.
 (NEGATE *-1 Abs + &&TV_OBJ& LINK *1 _TARGET_ + Par + &&TV_OBJ&)# LINK *1 OQARPOQ BARRIER V)#Kalaallit Nunaanni Politiit nutaanik sukkanernillu angallatitaaraluarlutik, ataaseq ATUINNARNIARAAT, politimesteri Bjørn Tegner Bay oqarpoq. 
-
+(NEGATE 0 (/LIRSUR\ Der/nv\ Gram/TV\ \(TAR\ Der/vv\ \)?Gram/TV\ Gram/Pass\ NIQ/l))#Nutaarsiassat qanoq ILUSILERSORTARNISSAANNUT innersuussai saqqaanut taamaallaat tunngapput.
 ; #heuristisk valg af intransitiv sent i kaskaden
 
-SELECT:9966A (/__Gram/IV\ TIP__/l) - (/Gram\/Refl\ Gram\/IV\ NIQ\ /l) IF (0 (/__Gram\/TV\ TIP__/l))
+REMOVE:9966B (/LIRSUR\ Der/nv\ Gram/IV\ \(TAR\ Der/vv\ \)?Gram/IV\ NIQ/l) IF (0 (/LIRSUR\ Der/nv\ Gram/TV\ \(TAR\ Der/vv\ \)?Gram/TV\ Gram/Pass\ NIQ/l));#Nutaarsiassat qanoq ILUSILERSORTARNISSAANNUT innersuussai saqqaanut taamaallaat tunngapput.
+
+
+SELECT:9966C (/__Gram/IV\ TIP__/l) - (/Gram\/Refl\ Gram\/IV\ NIQ\ /l) IF (0 (/__Gram\/TV\ TIP__/l))
 (NEGATE 0 ("inor") OR ("tusar")) #heuristisk valg af intransitiv sent i kaskaden. inor+INTRANS næsten semantisk utænkelig ved TIP
 (NEGATE 0 (/"eqqaa"\ Gram/TV\ TIP/l))#ataqqinartuaqqap EQQAASIPPAA.
 (NEGATE 0 (/Gram/TV\ TIP\ Der/vv\ Gram/Db/l) + INTRANSVERB LINK NEGATE *-1 Abs + (/[SP][gl]/r)) #Paasiuminaatsumik SUNNERTIKKAANNI akuersinnginnissaq ajornartarpoq.
@@ -16320,15 +16328,15 @@ SELECT:9966A (/__Gram/IV\ TIP__/l) - (/Gram\/Refl\ Gram\/IV\ NIQ\ /l) IF (0 (/__
 (NEGATE 0 Gram/TV + Gram/Refl LINK 0 HTR LINK -1 Ins)#Ilami taamani Hansenip annaassiniaraluarluni nakkakattarnera isinneralu takorloorlugit, naamik kingornagut ajorani panertunik ATISEREERMAT illarnarnera assissaqanngilaq.
 
 ;
-SELECT:9966B (/__Gram\/IV\ TUQ__/l) IF (0 (/__Gram\/TV\ TUQ__/l)) ; #heuristisk valg af intransitiv sent i kaskaden
-SELECT:9966C (/__Gram\/IV\ TUQ__/l) IF (0 (/__Gram\/TV\ Gram\/Pass\ TUQ__/l) + ("tikeraar")) ; #heuristisk valg af intransitiv sent i kaskaden. I første omgang kun lavet specifikt for tikeraartoq (tikeraartoraat).
+SELECT:9966D (/__Gram\/IV\ TUQ__/l) IF (0 (/__Gram\/TV\ TUQ__/l)) ; #heuristisk valg af intransitiv sent i kaskaden
+SELECT:9966E (/__Gram\/IV\ TUQ__/l) IF (0 (/__Gram\/TV\ Gram\/Pass\ TUQ__/l) + ("tikeraar")) ; #heuristisk valg af intransitiv sent i kaskaden. I første omgang kun lavet specifikt for tikeraartoq (tikeraartoraat).
 
-REMOVE:9966D HVVERB IF ( 0 (/__Gram\/IV\ VIK__/l)) ; #heuristisk valg af halvtransitiv sent i kaskaden. Skal dog ikke hitte på nominaliseringer
+REMOVE:9966F HVVERB IF ( 0 (/__Gram\/IV\ VIK__/l)) ; #heuristisk valg af halvtransitiv sent i kaskaden. Skal dog ikke hitte på nominaliseringer
 
 #Disambiguering af taku=IT+Imp fra taku+Int
-REMOVE:9966E (/"taku"\ Gram/HV\ IT/l) IF (0 ("taku") + Int + &&TV_OBJ& LINK *-1 Abs + &&TV_OBJ& BARRIER (*) - OBLIQUE - Adv); #Puiaasarsiukkakka TAKUIGUT?
+REMOVE:9966G (/"taku"\ Gram/HV\ IT/l) IF (0 ("taku") + Int + &&TV_OBJ& LINK *-1 Abs + &&TV_OBJ& BARRIER (*) - OBLIQUE - Adv); #Puiaasarsiukkakka TAKUIGUT?
 
-SELECT:9966F HVVERB IF (NOT -*1 ("immi") BARRIER V)(NEGATE 0 (/__Gram\/IV\ VIK__/l))
+SELECT:9966H HVVERB IF (NOT -*1 ("immi") BARRIER V)(NEGATE 0 (/__Gram\/IV\ VIK__/l))
 (NEGATE 0 QQU)
 (NEGATE 0 (/Gram\/TV\ NIQAR/l) )
 (NEGATE 0 (/Gram\/TV\ HTR/l) )
@@ -16337,7 +16345,7 @@ SELECT:9966F HVVERB IF (NOT -*1 ("immi") BARRIER V)(NEGATE 0 (/__Gram\/IV\ VIK__
 
 ; #heuristisk valg af halvtransitiv sent i kaskaden. Skal dog ikke hitte på nominaliseringer
 
-REMOVE:9966G (/"\ Gram/TV\ Gram/Refl\ Gram/IV\ NIQ/l) IF (0 (/"\ Gram/IV\ NIQ/l));
+REMOVE:9966I (/"\ Gram/TV\ Gram/Refl\ Gram/IV\ NIQ/l) IF (0 (/"\ Gram/IV\ NIQ/l));
 
 REMOVE:9967A ("(\"[^<].*\"\sGram\/TV\sTIP)"r) IF (0 ("(\"[^<].*\"\sGram\/IV\sTIP)"r)); #Virker ikke 20180304
 
