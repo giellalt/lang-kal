@@ -126,6 +126,17 @@ sub call_tokenizer {
       $in =~ s@$w@\x{e001} $t@g;
    }
 
+   # Hide extremely long words
+   my %long_cache = ();
+   while ($in =~ m@(\pL{100,})@) {
+      my ($s,$w) = ($1,$1);
+      utf8::encode($s); # sha1_base64() can't handle UTF-8 for some reason
+      my $hash = sha1_base64($s);
+      $hash =~ s/[^a-zA-Z0-9]/x/g;
+      $long_cache{$w} = "LONG_$hash";
+      $in =~ s@\Q$w\E@LONG_$hash@g;
+   }
+
    # Turn URLs into placeholders to avoid endless loop
    my %url_cache = ();
    while ($in =~ m@((?:(ht|f)tp(s?)://)?[^\s\pZ/]+\.[a-z]{2,}/\S*)@) {
@@ -274,6 +285,11 @@ sub call_tokenizer {
       while (my ($u,$h) = each(%url_cache)) {
          $out =~ s@"<\Q$h\E>"@"<$u>"@g;
          $out =~ s@\t"\Q$h\E" \?@\t"$u" Sem/Url Prop Abs\n\t"$u" URL@g;
+      }
+
+      # Restore extremely long words
+      while (my ($w,$h) = each(%long_cache)) {
+         $out =~ s@\Q$h\E@$w@g;
       }
 
       for (my $n=0 ; $n<scalar(@qhyphs) ; ++$n) {
