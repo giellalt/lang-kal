@@ -85,7 +85,7 @@ Nogle af dem er dokumenterede, andre ikke.
 	* +ALUK+Der/nn+INNAQ+Der/nn:%>%TRUNCaluinnaq tup- ; 
 
 - LEXICON Z1VZmorf  Derivationsmorfemer til nominer, der ender med vokal a, i, u 20200916 NN
-	 -  tp ;  
+	 -  tpV ;   !PL20221117 nyt fortsættelseslex
 
 * LEXICON Z1eqZmorf  Derivationsmorfemer til nominer på seq og leq
 	  * Z1eqZ ; 
@@ -460,6 +460,14 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 | --- 
 
 * LEXICON tp  obs 20200623: fleksionsmorfemgrænse er %< og ikke %>
+| --- 
+
+| --- 
+| --- 
+| --- 
+| --- 
+
+* LEXICON tpV  obs 20200623: fleksionsmorfemgrænse er %< og ikke %> 
 | --- 
 
 | --- 
