@@ -1936,7 +1936,7 @@ LIST Mellemnavn = (Borup Sem/Hum) ;
 SET Efternavn = Sem/Hum - Fornavn ;
 LIST Hmyth = "Aningaaq" "Aqissiaq" "Guuti" "Maliina" ; #Proprier, der anvendes som/med vokativ
 SET NOT-PERSON = EVENT ;
-
+LIST NÆPPE_FIRSTNAME = "naasoq" "niviarsiaraq" "nukappiaq" "nukappiaraq" "nukarleq" "piffik" "pupik" "una"; #Liste med appellativer, som teoretisk kan være proprier i position 0, men højst usandsynligt er det
 SET FIRSTNAME = (Sem/Mask Prop) | (Sem/Fem Prop) | Mask | Fem | ("Frederik") | ("Nuka") | ("A") | ("B") | ("C") | ("Chr") | ("D") | ("E") | ("F") | ("G") | ("H") | ("I") | ("J") | ("K") | ("Kr") | ("L") | ("M") | ("N") | ("O") | ("P") | ("Q") | ("R") | ("S") | ("T") | ("U") | ("V") | ("W") | ("X") | ("Y") | ("Z") | ("Æ") | ("Ø") | ("Å") ;
 SET NAME = FIRSTNAME | Sur ;
 SET NOT-FIRST = WORD - FIRSTNAME ;
@@ -4033,8 +4033,8 @@ REMOVE:0001P ("\\p{Lu}.*"r) + Prop + PROP_VS_APPELLATIV IF (-1 BOS)(0 ("([a-z].*
 
 ; 
 
-REMOVE:0001Q ("(\\p{Lu}.*)"r) + Fornavn IF (0 N)#(NEGATE *0CW (VSTR:"%l$1"r))
-(-1 BOS) 
+REMOVE:0001Q ("(\\p{Lu}.*)"r) + Fornavn - NÆPPE_FIRSTNAME IF (0 N)(-1 BOS OR DIRTALESTART)
+(NEGATE *0CW (VSTR:"$1"r)) 
 (NEGATE 1 Prop)
 (NEGATE 0 Hmyth LINK *1 2Sg) #Kun personnavne, ikke institutioner som Pinngortitaleriffik. Forbehold for vokativer
 (NEGATE 0 GUUQ) #Alliarooruna arnaq silatoorsuaq sullerissorsuarlu, (Alliaq, ikke Als LIAQ)
@@ -4042,7 +4042,7 @@ REMOVE:0001Q ("(\\p{Lu}.*)"r) + Fornavn IF (0 N)#(NEGATE *0CW (VSTR:"%l$1"r))
 (NEGATE 0 FIRSTNAME LINK *1 Sem/Hum + Sur BARRIER (*) - FIRSTNAME - Gram/Abbr)
 (NEGATE 0 ("Naja") - POSSESSUM)#Naja er meget frekvent
 (NEGATE 0 ("Nuunu") - POSSESSUM) #nuunu uden poss. i første position usandsynlig og Nuunu alm. pigenavn
-(NEGATE 0 (Prop Abs Sg) LINK *1 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO BARRIER V )#AANEERAQ oqaluutilaarlara
+(NEGATE 0 (Prop Abs Sg) LINK *1 INTRANSVERB + 3Sg + <fn:Talk> OR TRANSVERB + 3SgO + <fn:Talk> BARRIER V )#AANEERAQ oqaluutilaarlara
 ; #Laver alt for mange fejl, fx Flemming<Geo> illumik piareersaavoq. Der mangler nok en betingelse? Proprier disambigueres senere.
 
 REMOVE:0001QA ("nuunu") + N - POSSESSUM IF (0 ("Nuunu") + Sem/Fem + Prop);
