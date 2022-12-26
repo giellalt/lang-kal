@@ -964,11 +964,11 @@ REMOVE:0001L ("\\p{Lu}.*"r) + Prop IF (0 ("([a-z].*)"r))(**0CW (VSTR:"$1"r))(-1 
 #20221226;
 
 #Proprium med MI er næsten altid lokativ
-REMOVE:0042a PROP + ("nunarsuaq") (0 ("nunarsuaq") + N OR ("nuna") + SUAQ + N) ;
-REMOVE:0042 Prop + MI IF (0 Prop + Lok);
+#20221226REMOVE:0042a PROP + ("nunarsuaq") (0 ("nunarsuaq") + N OR ("nuna") + SUAQ + N) ;
+20221226REMOVE:0042 Prop + MI IF (0 Prop + Lok);
 
 #En irriterende ambiguitet med det næsten usandsynlige personnavn Seqineq i position 1
-REMOVE:0001XX ("Seqineq") + Sem/Hum IF (0 ("seqineq") + N)(-*1 BOS BARRIER (*) - PUNCT)(NEGATE *1 ("Seqineq") + Prop);
+#20221226REMOVE:0001XX ("Seqineq") + Sem/Hum IF (0 ("seqineq") + N)(-*1 BOS BARRIER (*) - PUNCT)(NEGATE *1 ("Seqineq") + Prop);
 
 #PL20200513 har selv lavet reglen, men forstår den ikke længere. Kan ikke slettes uden problemer, så i første omgang en ad hoc NEGATE
 #SELECT:0001X Prop - Orth/Copy - Orth/Append IF (NEGATE -*1 BOS BARRIER (*) - PUNCT)
@@ -1104,21 +1104,21 @@ UNMAP @i-POSS> IF (1 @i-POSS> - iPOSSESSUM) ;
 #Enkeltvise komplekse konstruktioner, der er nærmest er uløselige med generelle regler.
 
 #0040Vn er strukturen 3PlPoss+SUBJ> ADLED 3PlPoss+Lok+ADVL> Gram/Coref + Pron Adled til Lok V+3Pl som i "Meeraat nukarliliarsuit erneranni nammineq illulimmi inissisimasinnaapput"
-SELECT:0040V1 Abs + Pl + 3PlPoss IF (-1 BOS)(1 Abs + Pl)(2 Lok + 3PlPoss + Sg)(3 Gram/Coref + Pron + 4Sg + Rel)(4 Lok LINK *1 V + 3Pl) ;
+#20221220SELECT:0040V1 Abs + Pl + 3PlPoss IF (-1 BOS)(1 Abs + Pl)(2 Lok + 3PlPoss + Sg)(3 Gram/Coref + Pron + 4Sg + Rel)(4 Lok LINK *1 V + 3Pl) ;
 MAP:M0040V1 @SUBJ> TARGET Abs + Pl + 3PlPoss IF (-1 BOS)(1 Abs + Pl)(2 Lok + 3PlPoss + Sg)(3 Gram/Coref + Pron + 4Sg + Rel)(4 Lok LINK *1 V + 3Pl) ;
-SELECT:0040V2 Abs + Pl IF (-1 Abs + Pl + 3PlPoss LINK -1 BOS)(1 Lok + 3PlPoss + Sg)(2 Gram/Coref + Pron + 4Sg + Rel)(3 Lok LINK *1 V + 3Pl) ;
+#20221220SELECT:0040V2 Abs + Pl IF (-1 Abs + Pl + 3PlPoss LINK -1 BOS)(1 Lok + 3PlPoss + Sg)(2 Gram/Coref + Pron + 4Sg + Rel)(3 Lok LINK *1 V + 3Pl) ;
 MAP:M0040V2 @<APPOS TARGET Abs + Pl IF (-1 Abs + Pl + 3PlPoss LINK -1 BOS)(1 Lok + 3PlPoss + Sg)(2 Gram/Coref + Pron + 4Sg + Rel)(3 Lok LINK *1 V + 3Pl) ;
-SELECT:0040V4 Gram/Coref + Pron + 4Sg + Rel IF (-3 Abs + Pl + 3PlPoss LINK -1 BOS)(-2 Abs + Pl)(-1 Lok + 3PlPoss + Sg)(1 Lok LINK *1 V + 3Pl) ;
+#20221220SELECT:0040V4 Gram/Coref + Pron + 4Sg + Rel IF (-3 Abs + Pl + 3PlPoss LINK -1 BOS)(-2 Abs + Pl)(-1 Lok + 3PlPoss + Sg)(1 Lok LINK *1 V + 3Pl) ;
 MAP:M0040V4 @POSS> TARGET Gram/Coref + Pron + 4Sg + Rel IF (-3 Abs + Pl + 3PlPoss LINK -1 BOS)(-2 Abs + Pl)(-1 Lok + 3PlPoss + Sg)(1 Lok LINK *1 V + 3Pl) ;
 
 #0040X typen (implicit subjekt+3Sg) O V+3Sg namminerlu objekt+4SgPoss fulgt af EOS
-SELECT:0040X1 Gram/Coref + Pron + Rel + 4Sg + CONJ-LU OR (CONJ-LU MI) IF (*-1 TRANSVERB + 3Sg LINK *-1 Abs)(1 Abs)(NEGATE *1 V) ;
+#20221220SELECT:0040X1 Gram/Coref + Pron + Rel + 4Sg + CONJ-LU OR (CONJ-LU MI) IF (*-1 TRANSVERB + 3Sg LINK *-1 Abs)(1 Abs)(NEGATE *1 V) ;
 MAP:M0040X1 @POSS> TARGET Gram/Coref + Pron + Rel + 4Sg + CONJ-LU IF (*-1 TRANSVERB + 3Sg LINK -*1 Abs)(1 Abs)(NEGATE *1 V) ;
-SELECT:0040X2 Abs IF (-1 Gram/Coref + Pron + Rel + 4Sg + CONJ-LU OR (CONJ-LU MI))(*-1 TRANSVERB + 3Sg LINK -*1 Abs BARRIER TRANSVERB)(NEGATE *1 V) ;
+#20221220SELECT:0040X2 Abs IF (-1 Gram/Coref + Pron + Rel + 4Sg + CONJ-LU OR (CONJ-LU MI))(*-1 TRANSVERB + 3Sg LINK -*1 Abs BARRIER TRANSVERB)(NEGATE *1 V) ;
 MAP:M0040X2 @<OBJ Abs IF (-1 Gram/Coref + Pron + Rel + 4Sg + CONJ-LU OR (CONJ-LU MI))(*-1 TRANSVERB + 3Sg LINK -*1 Abs BARRIER TRANSVERB)(NEGATE *1 V)  ;
 
 #I sekvensen Subjekt+Prop+Abs : Possessor+Prop : Objekt+vn : CONT+3SgO : INTRANSVERB+3Sg må subjektet ikke blive objekt og objektet ikke objektskomplement
-SELECT:0041A Prop + Abs IF (1 Prop + Rel + Sg LINK 1 3SgPoss LINK *1 CONT + 3SgO LINK *1 INTRANSVERB + 3Sg BARRIER KOMMA OR VFIN) ;
+#20221220SELECT:0041A Prop + Abs IF (1 Prop + Rel + Sg LINK 1 3SgPoss LINK *1 CONT + 3SgO LINK *1 INTRANSVERB + 3Sg BARRIER KOMMA OR VFIN) ;
 
 MAP:M0041AX @SUBJ> TARGET Prop + Abs IF (*1 Prop + Rel + Sg BARRIER (*) - FIRSTNAME + Abs LINK 1 3SgPoss LINK *1 CONT + 3SgO LINK *1 INTRANSVERB + 3Sg BARRIER KOMMA OR VFIN)
 (NEGATE 0 FIRSTNAME LINK 1 Sem/Hum - FIRSTNAME)#Naalakkersuisut siulittaasuat Kim Kielsen GERDA Vilholmip toquneranut atatillugu eqqaaniummik nassiussivoq.
@@ -1137,15 +1137,11 @@ MAP:M0042A @SUBJ> TARGET (/"IR"\ Gram/IV\ TUQ\ Der/vn\ N\ Abs/l) IF (1 KOMMA LIN
 #0043AZ forebygger fejlhit på typen BOS (evt. dem.pron) SUBJ U+@N< @PRED, hvor PRED er et ORATIOOBLVERB: Unalu angut PITSAASOQ oqarpoq Oleulluni. Reglen forkaster muligheden af or.obl. (*han sagde at manden var fin) stochastisk, idet or.obl. til venstre sjældenere en or.obl. til højre
 #SELECT:0043AZ Abs + $$NUMERUS + &&IV_SUBJ& IF (-1 Abs + $$NUMERUS LINK *-1 BOS OR KOMMA)(*1 V + &&IV_SUBJ&) ; #Virker ikke med BARRIER (*) - Gram/Dem. Problemer med SUBJ + Pl + Rel, der slettes før TRANSVERB til højre. Reglen begrænses derfortil følgende
 #REMOVE:0043AZ U + Par + &&IV_SUBJ& IF (-1 Abs + Sg LINK *-1 BOS OR KOMMA)(*1 V + &&IV_SUBJ&) ; #Virker ikke med BARRIER (*) - Gram/Dem. Problemer med SUBJ + Pl + Rel, der slettes før TRANSVERB til højre. Reglen begrænses derfortil følgende
-REMOVE:0043AZ U + Par IF (-1 Abs + Sg LINK -1 Gram/Dem LINK -1 BOS OR KOMMA)(*1 ORATIOOBLVERB LINK *1 Par OR Cont ) ;
-REMOVE:0043AZ U + Par IF (-1 Abs + Sg LINK -1 BOS OR KOMMA)(*1 ORATIOOBLVERB LINK *1 Par OR Cont ) ;
+#20221220REMOVE:0043AZ U + Par IF (-1 Abs + Sg LINK -1 Gram/Dem LINK -1 BOS OR KOMMA)(*1 ORATIOOBLVERB LINK *1 Par OR Cont ) ;
+#20221220REMOVE:0043AZ U + Par IF (-1 Abs + Sg LINK -1 BOS OR KOMMA)(*1 ORATIOOBLVERB LINK *1 Par OR Cont ) ;
 
 #I or.obl. er adled til subjekt fulgt af Par vanskelige at adskille. Følgende antager, at to konsekutive CL-CIT uden konjunktion ikke er sandsynlig undtagen ifm opremsninger
-REMOVE:0042B Par - CONJ-C IF (1 Par LINK -1 Abs + Der/vn LINK *-1 ORATIOOBLVERB BARRIER V)#Nunatsinni nakorsaanerup erseqqissaatigaa, inuk ataaseq MATTUSSAAQQASOQ tunillatsissimasoq.
-(NEGATE 1 Par + CONJ-C)#Nassuiaappara baobabit ORPIGAARAANNGITSUT orpissuusulli oqaluffittut portutigisut allaalluunniit nagguaatsorpassuarnik nassaraluarpat, taakku orpik baobabi ataaseq nungussinnaanavianngikkaalluunniit.
-(NEGATE *1 Par + CONJ-C BARRIER (*) - Par - KOMMA - (/TUQ\ Der/vn\ N/l))#Atuarsinnaalerami tamanna uppernarsisoraa, aviisini atuartaramiuk kalaallit IMERAJUTTUUSUT toqutsigajuttuusut imminorajuttuusullu. Sidste minus i BARRIER fordi stadig ikke disambiguerede Abs og Rel
-(NEGATE 0 Par + (/__GALUAR\ Der\/vv\ Gram\/..\ V__/l)) # Mulig @PRED2
-;
+#20221220REMOVE:0042B Par - CONJ-C IF (1 Par LINK -1 Abs + Der/vn LINK *-1 ORATIOOBLVERB BARRIER V)#Nunatsinni nakorsaanerup erseqqissaatigaa, inuk ataaseq MATTUSSAAQQASOQ tunillatsissimasoq.(NEGATE 1 Par + CONJ-C)#Nassuiaappara baobabit ORPIGAARAANNGITSUT orpissuusulli oqaluffittut portutigisut allaalluunniit nagguaatsorpassuarnik nassaraluarpat, taakku orpik baobabi ataaseq nungussinnaanavianngikkaalluunniit.(NEGATE *1 Par + CONJ-C BARRIER (*) - Par - KOMMA - (/TUQ\ Der/vn\ N/l))#Atuarsinnaalerami tamanna uppernarsisoraa, aviisini atuartaramiuk kalaallit IMERAJUTTUUSUT toqutsigajuttuusut imminorajuttuusullu. Sidste minus i BARRIER fordi stadig ikke disambiguerede Abs og Rel(NEGATE 0 Par + (/__GALUAR\ Der\/vv\ Gram\/..\ V__/l)) # Mulig @PRED2 ;
 
 #Regel 0043AX virker ikke på subjekt af formen N+U+TUQ hvis fulgt af ambiguøs Par+3Sg
 #20221222REMOVE:0043AX Par IF (-1 ORATIOOBLVERB LINK 1 HUMAN + U + Abs LINK 1 Par LINK 1 EOS) ;
@@ -1158,9 +1154,6 @@ REMOVE:0042B Par - CONJ-C IF (1 Par LINK -1 Abs + Der/vn LINK *-1 ORATIOOBLVERB 
 #20221222(NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER (*) - Rel)#Københavnimi uumasuusivissuarmi pandat MARLUUSUT aappaat qimaasimasoq, Zoologisk Havep nalunaarutigaa.
 #20221222(NEGATE -1 $$KASUS + $$NUMERUS LINK 1 $$KASUS + $$NUMERUS + LU)#Kalaallit politikerit INUUSSUTISSARSIORTULLU taakkualu ilaqutaat pillugit assit paasissutissallu katersorneqarsimasut, Kinamiut paasissutissaataanni saqqummiunneqartuni erserpoq.
 #20221222;
-
-SELECT:0043AX_LI_LU U + Par + CONJ-LI OR U + Par + CONJ-LU IF (-1C Par); #'Inquit orpigaaraanngitsut ORPISSUUSULLI'
-#SELECT:0043AXX Abs + Sg IF (*0 ORATIOOBLVERB)(-*1 Par + 3Sg LINK -*1 Abs + Sg ) ;
 
 #forsøg på mere generel formulering, der dækker både sing. og plur.
 SELECT:0043AXX Abs + $$NUMERUS + &&IV_SUBJ& - 2SgPoss IF (*0 ORATIOOBLVERB BARRIER VFIN)(-*1 U + Par + &&IV_SUBJ& - ("tassa") LINK -*1 Abs + $$NUMERUS BARRIER VFIN)
