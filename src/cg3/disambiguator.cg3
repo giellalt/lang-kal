@@ -85,7 +85,6 @@ LIST COMMONAFFSTRING = \= ;
 LIST EXCLMARK = ("^excl") ("!") ;
 
 # Parts of speech with tags declared as single-membered LISTs #
-
 LIST N = N ;
 LIST V = V ;
 LIST N* = N* ; #Præprocessorens tagging af N, der indgår i compounds
@@ -4180,7 +4179,10 @@ REMOVE:0113 SPATIAL + LIR IF (0 ("ungasip")); #20120422 ("ungate")+LIR vist alti
 REMOVE:0114A SPATIAL - ("aki") - ("ilumoor") (NEGATE 0 ("ilu" iTrm))(NEGATE 0 POSSESSUM OR KANNIQ OR INNAQ)
 (NEGATE 0 (/"angi"\ Gram/IV\ NIQ\ Der/vn\ TU/l) LINK 0 (/"angi"\ Gram/IV\ NIQ\ Der/vn\ TUR/l))#
 (NEGATE 0 ("avate") + Trm LINK 0 ("avat") + Trm)#avammut
+(NEGATE 0 ("salliup") + INTRANSVERB LINK 0 (/"saaq"\ LLIQ\ Der/nn\ U/l) )#PL20230112 Taakkunannga Qaqortumi, Aasianni Sisimiunilu innuttaasut peqqinnissaqarfimmilu SALLIULLUTIK sulisut kapineqarput
+(NEGATE 0 (/"salliup"\ Gram/TV\ TIP/l) LINK 0 (/"saaq"\ LLIQ\ Der/nn\ U\ Der/nv\ Gram/IV\ TIP/l) )#PL20230112 Grethe Kaalamit SALLIUTILLUGU qinerpaa.
 ;
+
 REMOVE:0114 Abs + 4SgPoss IF (0 SPATIAL + POSSESSUM + Lok LINK -1 Rel)(NEGATE 0 ("ate") + TAQ)(NEGATE 0 ("aki") + TUQ + SSAQ ) ; # Olep saani næppe subjekt og objekt men possessor possessum. Må dog ikke hitte på atisat og ikke på "aki" i fx "akisussaassuseq"
 
 REMOVE:0114B SPATIAL + QATE IF (0 N - SPATIAL) ; #qiteqat
@@ -5527,16 +5529,18 @@ REMOVE:0111B iOBLIQUE + i1SgPoss IF (1C i2SgPoss) ;
 REMOVE:0111C iOBLIQUE + iPOSSESSUM IF (0 TUQ + U - iOBLIQUE) ;
 REMOVE:0111D iOBLIQUE + (/i..*Der\/nv\ Gram\/TV/l) IF (0 Gram/IV) ;
 #Ved 1SgPoss vs. 2SgPoss konflikter vil der være flest korrekte 1SgPoss blandt assimilerede endelser fordi 2SgPoss ofte(st) vil have formen rC. Derfor ændres rækkefølgen, så 0113 sletter før 0112, der oftest slet ikke vil blive aktiveret fordi resten af cohorten så er 1SgPoss
-REMOVE:0113 OBLIQUE + 2SgPoss IF 
+REMOVE:0113A OBLIQUE + 2SgPoss IF 
 (NEGATE -1 ("illit"))
 (NEGATE *0 VERB-NOTCONT + 2Sg)
 (NEGATE 1 2SgPoss)
-(NEGATE *0 Gram/Int + &&IV_SUBJ& LINK *1 ("illit") LINK *1 Int + &&IV_SUBJ&)#Meeqqanik APERSUINERPASSUANNNI suut inuttut ilinnut ilungersunarnerpaasimappat?
+(NEGATE *0 Gram/Int + &&IV_SUBJ& LINK *1 ("illit") LINK *1 Int + &&IV_SUBJ&)#Meeqqanik APERSUINERPASSUANNI suut inuttut ilinnut ilungersunarnerpaasimappat?
 (NEGATE -*1 ("quja") + Gram/Exclm)
 (NEGATE 0 NIQ LINK *1 2SgPoss + $$KASUS BARRIER (*) - $$KASUS)#Oqaasiliortuni ilaasortatut SULININNI paasissutissat pisariaqartikkumaakkatit ataani takussutissiaraakka najoqqutassallu kakkiullugit.
 (NEGATE 0 (NIQ Ins) LINK *1 2SgO BARRIER V)#ILUATSITSILLUARNISSANNIK kissaappakkit.
-(NEGATE 0 ("toqqusaaq"));
+(NEGATE 0 ("toqqusaaq"))
  ;
+
+REMOVE:0113B 1SgPoss IF (0 2SgPoss LINK *0 Gram/Int + &&IV_SUBJ& LINK *1 ("illit") LINK *1 Int + &&IV_SUBJ&); #Meeqqanik APERSUINERPASSUANNI suut inuttut ilinnut ilungersunarnerpaasimappat?
 
 REMOVE:0112 OBLIQUE + 1SgPoss IF (NEGATE -1 ("uanga") + 1Sg)(NEGATE *0 VERB-NOTCONT + 1Sg)(NEGATE 0*W 1Sg OR 1SgPoss - Hyb/1-2)(NEGATE 0 FAM + POSSESSUM + Ins LINK *1 HTR) # (0*W (someset)) Sidste NEGATE forebygger sletning af possessum i mik-objekter når der er tale om familiebetegnelser
 (NEGATE 0 ("toqqusaaq"));
@@ -5613,17 +5617,25 @@ REMOVE:0069_3SgPoss 3SgPoss IF (*-1 BOS BARRIER (*) - Adv)(0 1SgPoss)(*-1< DIRTA
 
 REMOVE:0070_3SgPoss 3SgPoss IF (*-1 BOS BARRIER (*) - Adv - DIRTALESTART)(0 1SgPoss)(*1> DIRTALESLUT OR ("\?") OR ("\!") BARRIER DIRTALESTART) ; #R12 Tilføjet LINK 1 DIRTALESTART
 
-REMOVE:0070_1SgPoss 1SgPoss IF (NEGATE *-1< DIRTALEMIDDLE OR DIRTALESTART OR ORATIOOBLVERB BARRIER DIRTALESLUT OR BOS) (NEGATE *-1< 1Sg OR 1SgO)(NEGATE *1 1Sg OR 1SgO);
+REMOVE:0070_1SgPoss 1SgPoss IF 
+(NEGATE *-1< DIRTALEMIDDLE OR DIRTALESTART OR ORATIOOBLVERB BARRIER DIRTALESLUT OR BOS)
+(NEGATE *-1< 1Sg OR 1SgO)
+(NEGATE *1 1Sg OR 1SgO)
+(NEGATE *0 1Sg OR 1SgO OR 1SgPoss)#PL20230112 Anaanaga INUUINNI najorusunnaraluaqaaq ullorsioqataasunnguuvoq kaffesortitsilaarsimallunilu.
+;
 
 REMOVE:0071_1SgPoss NOT-REL + 1SgPoss IF (NEGATE *0 V + 1Sg)(NEGATE *0W 1Sg OR 1SgO OR 1SgPoss OR DIRTALESLUT OR DIRTALEMIDDLE)#(NEGATE 0 FAM + POSSESSUM + Ins LINK *1 HTR) # Sidste NEGATE forebygger sletning af possessum i mik-objekter når der er tale om familiebetegnelser
 ;
 
 #Lidt mere usikker disambiguering af 1SgPoss og 3SgPoss
-REMOVE:0072 NIQ + 3SgPoss IF (0 1SgPoss LINK *0 VFIN + 1Sg BARRIER CLB)
+REMOVE:0072A NIQ + 3SgPoss IF (0 1SgPoss LINK *0 VFIN + 1Sg BARRIER CLB)
 (NEGATE *-1 Rel + Sg BARRIER VFIN)
 (NEGATE 0 TUQ + QAR + NIQ)
 (NEGATE *1 TRANSVERB LINK *1 VFIN + 1Sg)
+(NEGATE -1 (Cau 4Sg) OR (IteCau 4Sg))# PL20230112 Qitigiaraangami ANGERLAJAARTARNERA mersernartutut isigisarpaat,
 ;
+
+REMOVE:0072B NIQ + 1SgPoss IF (-1 (Cau 4Sg) OR (IteCau 4Sg)); # PL20230112 Qitigiaraangami ANGERLAJAARTARNERA mersernartutut isigisarpaat,
 
 #SELECT:0072_conj-possessum $$POSSESSUM + $$KASUS IF (*-1C $$POSSESSUM + $$KASUS BARRIER (*) - CONJ-C) ; #selects wrong in "Qisuup masattup saviminertarasaartullu ikumanermini nipit assigiinngitsut pilersittalermagit isumaqartilerpakka innermut ikummarissumut pulaqqusisut pulagumalu ukiut ingerlanerini ataatsimoorluta misigisarsimasavut nuannersut uterfigissagikka, qimaqqinngisaannassallugillu ukiup qanoq ilinera sumilu *najugaqarnera akornutiginagit."
 
@@ -14904,7 +14916,9 @@ REMOVE:5639CL (/TARE\ Der/vv\ LIR/l) IF (0 (/TAQ\ Der/vn\ GE\ Der/nv\ Gram/TV\ L
 REMOVE:5639CM (/TARE\ Der/vv\ TAR/l) IF (0 (/TAQ\ Der/vn\ GE\ Der/nv\ Gram/TV/l)); 
 REMOVE:5639CN (/UTE\ Der/vn\ SSIP\ Der/nv\ Gram/TV\ HTR/l) IF (0 (/UTE\ Der/vn\ SSAQ\ Der/nn\ LIR\ Der/nv\ Gram/TV\ HTR/l)); #PL20230109 Kiisalu siunnersuutip imaraa PINEQAATISSIISARNERMUT aalajangersagaq.
 REMOVE:5639CO (/"piareer"\ Gram/IV\ TAR/l) IF (0 (/"piareer"\ Gram/IV\ SAR/l) LINK -1 (/NIQ\ Der/vn\ \(SSAQ\ Der/nn\ \)?N\ Trm/l)); #PL20230109 Tassanngaannaq oqartoqarami pigisanik poortueqqusisumik nuunnissamullu PIAREERSAQQUSISUMIK.
-REMOVE:5639CP (/"piareer"\ Gram/IV\ TAR/l) IF (0 (/"piareer"\ Gram/IV\ SAR/l)); #PL20230109 Naasorlu, peqqissaangaarluni PIAREERSARSIMASOQ, aatsaajutigaluni oqarpoq: #Farlig regel, der sikkert kræver nogle NEGATE-er
+REMOVE:5639CP (/"piareer"\ Gram/IV\ TAR/l) IF (0 (/"piareer"\ Gram/IV\ SAR/l)); 
+REMOVE:5639CQ TAAQ IF (0 (/"illu"\ QAR\ Der/nv\ Gram/IV\ VIK\ Der/vn\ TAQ/l) + POSSESSUM3 LINK *1 (/"nuna"\ TAQ/l) + POSSESSUM3 BARRIER (*) - KOMMA); #PL20230112 Pauline Kleist Deichmannip Aqqutaani pisuttoq januaarip ulluisa 19-ianni kingullermik takuneqarpoq, kingornalu Sisimiut ILLOQARFITTAANI	, nunataani immamilu annertuumik ujaarineqarluni.
+REMOVE:5639CR TAAQ IF (0 (/"nuna"\ TAQ/l) + POSSESSUM3 LINK *-1 (/"illu"\ QAR\ Der/nv\ Gram/IV\ VIK\ Der/vn\ TAQ/l) + POSSESSUM3 BARRIER (*) - KOMMA); #PL20230112 Pauline Kleist Deichmannip Aqqutaani pisuttoq januaarip ulluisa 19-ianni kingullermik takuneqarpoq, kingornalu Sisimiut illoqarfittaani, NUNATAANI immamilu annertuumik ujaarineqarluni.
 
 # Enkelte substantiver
 REMOVE:Int0476 ("pineq") IF (NEGATE *0 ("kamik")) ; #20091103 pineq+QAR vs. pineqar-
@@ -15572,7 +15586,8 @@ REMOVE:9961C (/"tusar"\ Gram/TV\ TAQ\ Der/vn\ SSAQ\ Der/nn\ LIUR\ Der/nv\ Gram/I
 
 
 #Oblique kasus med 3PlPoss slører numerus. Alt andet lige vælg sing dog ikke ved HUM + MIK-OBJ jf.  9491A
-REMOVE:9965 OBLIQUE + $$KASUS + Pl IF (0 OBLIQUE + Sg)(NEGATE 0 HUM LINK 1 HTR)(NEGATE 1 $$KASUS + Pl) #laver fejl, fx ved Qallunaavinnik og Nukissiorfiit.
+REMOVE:9965A OBLIQUE + $$KASUS + Pl IF (0 OBLIQUE + Sg)
+(NEGATE 0 HUM LINK 1 HTR)(NEGATE 1 $$KASUS + Pl) #laver fejl, fx ved Qallunaavinnik og Nukissiorfiit.
 (NEGATE 0 $$KASUS LINK -1 $$KASUS) #Aqqaluartaannguup qallunaat nunaanniinnerani anaana aningaasanik PAGGATSITASSAMINIK katersisimavoq.
 (NEGATE 0 ("ila") + 3PlPoss LINK -1 Rel + Pl)# Allakkat ILAANNI arnat atiminnik saqqummiussipput, nassiussisulli amerlanerit kinaassutsiminnik isertuussipput.
 (NEGATE 0 ANIMAL - ("qimmeq") + POSSESSUM LINK 0 N - POSSESSUM + Pl)#Taamaasiornikkut qulakkeerneqassaaq qalerallit 200 tonsit nunaqarfinnut tulaanneqassasut QALERALINNIK tunisassiorneq taamallu nunaqarfinni marlunni suliffissaqartitsineq ingerlaavarsinnaaqqullugit.
@@ -15581,7 +15596,14 @@ REMOVE:9965 OBLIQUE + $$KASUS + Pl IF (0 OBLIQUE + Sg)(NEGATE 0 HUM LINK 1 HTR)(
 (NEGATE 0 1SgPoss LINK 0 INSTITUTION + Lok)#
 (NEGATE 0 (/"iser"\ Gram/IV\ TAR\ Der/vv\ Gram/IV\ VIK/l) + 1SgPoss LINK 0 Lok - POSSESSUM LINK -1 ("internet") + Trm )#
 (NEGATE 0 Aeq LINK *1 (/[1234]Pl/r) OR Der/vn + N + Pl BARRIER V)#Uagut INERSIMASUTUT allanngulaarnerit nalorninartorsiutigisinnaasarpavut. 
+(NEGATE *1 $$KASUS + Pl BARRIER (*) - %PossOblique )#ISSIAVINNUT timmisartup issiaviitut ilusilinnut ingilluartiteruttortugut, oqarpallattoqarpoq:
+(NEGATE 0 N - POSSESSUM LINK NOT *0 (/[12]Sg/r))#-****** 5 LINK 0 POSSESSUM12)#Siumut Demokraatillu aatsitassarsiulersaarnermut tapersersuisuupput, pissutigalugu aatsitassarsiutileqatigiiffiup oqarnera naapertorlugu tamanna nunatta karsianut koruuninik milliardilikkaanik isaatitsissutaasinnaallunilu piffimmi SULIFFINNIK pilersitsissutaasinnaalluni.
+(NEGATE 0 (/"qallunaaq"\ VIK\ Der/nn/l) - POSSESSUM LINK 0 (/"qallunaaq"\ VIK\ Der/nn/l) + POSSESSUM) #QALLUNAAVINNIK ikinnguteqarnera takussavaa.
+(NEGATE 0 1SgPoss LINK NEGATE *0 1Sg OR 1SgO OR 1SgPoss LINK NOT 0 3SgPoss)#PL20230112 Taakku ilaat tassaasinnaavoq TIMERSOQATIGIIFFINNI pisoqarnerulernera. 
 ;
+REMOVE:9965B (/"qallunaaq"\ VIK\ Der/nn/l) + POSSESSUM IF (0 (/"qallunaaq"\ VIK\ Der/nn/l) - POSSESSUM); #QALLUNAAVINNIK ikinnguteqarnera takussavaa.
+
+#REMOVE:9968C (NEGATE 0 1SgPoss LINK NEGATE *0 1Sg OR 1SgO OR 1SgPoss LINK NOT 0 3SgPoss)#PL20230112 Taakku ilaat tassaasinnaavoq TIMERSOQATIGIIFFINNI pisoqarnerulernera. 
 
 #Disambiguering af overflødige refleksiver
 REMOVE:Int0610 Gram/Refl + 3Pl IF (0 Gram/IV + 3Pl - Gram/Refl)(NEGATE *-1 ("immi"))
@@ -16249,6 +16271,8 @@ REMOVE:9970EH (Abs Pl) IF (0 (Rel Pl) LINK *1 (Rel Sg) BARRIER (*) - (Rel Pl) LI
 ;
 
 REMOVE:9970EI (Abs Pl) IF (-1 BOS OR DIRTALESTART LINK 1 _TARGET_ + Rel + Sg LINK 1 3SgPoss + Abs + &&IV_SUBJ& LINK *1 V + &&IV_SUBJ&); #PL20230101 NALUNAARUTILLI oqaasertai ersernerlupput.
+
+REMOVE:9970EJ ("qaliaq") + POSSESSUM3 IF (0 ("qaliaq") - POSSESSUM3 LINK NOT -1 Rel); #PL20230112 Quarsaartorujussuuvoq tusaleramiuk QALIANIIT	 aterpalulersoq, imminut qiviarpoq, tassami makittaataannaagami, sulili qanoq ilerianngitsoq matu mapperpoq kiffaalu Jaakubiini iggavimmut iserpoq.
 
 #Disambiguering og mapping af resterende partikler
 ##################################################
