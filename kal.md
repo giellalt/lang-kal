@@ -1290,6 +1290,8 @@ Off-flag i nouns og Off-flag i der-inf  når TUR og TUGAQ ikke må assibileres o
 
 Flag specielt for at sikre additiv p-bøjning af ulloq i Trm
 
+Flag til forebyggelse af manglende assibilering. P sættes i stem-filerne og C i der-infl
+
 Ad hoc til test af alternativ flag diacritics ved præfikser. Husk også den udkommenterede linie 'Kingumoorutit ;' i LEXICON Root
 
 Test af P- og D-flag til forebyggelse af rekusivitet ved TIP
