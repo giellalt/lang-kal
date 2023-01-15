@@ -316,8 +316,11 @@ TO (*-1 BOS LINK 1 ("[0123456789]{4}"r) + Rel LINK 1 ("[0123456789]{4}"r) + Rel 
 
 
 ##HTR med såvel personobjekt som tingsobjekt sætter personen i Trm og tingen i Ins
-#MAP:M_tidlig0180 @MIK-OBJ> TARGET Trm + HUMAN IF (*1 Ins + NON_HUMAN BARRIER V LINK *1 HTR + HUMVERB + TIP - LIK_QAR BARRIER V)#Tassami Kalaallit Nunaanni Brugseni atuaqatigiinnut, siunissami atuarfiup qanoq ittuunissaanik siunnersuutitsialaqartunut 100.000 koruuninik unammisitsivoq. Men ikke Taamaattumik partiip siulittaasuata sapinngisamik nunatsinniittuunissaa pisariaqartipparput, nalunngilarpummi Folketingimut aamma piukkunnarluartunik SINNIISUSSAATEQARLUTA.
-#;
+SETPARENT:M_tidlig0180 @MIK-OBJ> + Trm + HUMAN IF
+(NOT p (*)) 
+(NEGATE 0 (NIQ Trm) LINK 1 Ins LINK 1 HTR)#Canadami nunap inoqqaavisa siuttui uuliamik gassimillu ujaasilluni MISISSUISOQARNISSAANUT akerliussutsimik takutitseqqusipput.
+TO (*1 Ins + NON_HUMAN BARRIER V LINK *1A HTR + HUMVERB + TIP - LIK_QAR BARRIER V)#Tassami Kalaallit Nunaanni Brugseni atuaqatigiinnut, siunissami atuarfiup qanoq ittuunissaanik siunnersuutitsialaqartunut 100.000 koruuninik unammisitsivoq. Men ikke Taamaattumik partiip siulittaasuata sapinngisamik nunatsinniittuunissaa pisariaqartipparput, nalunngilarpummi Folketingimut aamma piukkunnarluartunik SINNIISUSSAATEQARLUTA.
+;
 #
 ##tidsangivelser i Abs er lidt uforudsigelige
 SETPARENT:M_tidlig0190 @i-ADVL> + MAANED + Abs IF 
@@ -657,9 +660,21 @@ TO (1 Hyb/2-2 + V) ;
 #(NEGATE 1 CONT + 3SgO)#TAMANNA pissutigalugu nakorsaaneqarfiup politiit suleqatigalugit pisoq misissuiffigaat, ..
 
 #;
-#
-#MAP:M0003_kasusattraktion @SUBJ> TARGET Prop + Sem/Hum + Abs + Sg - FIRSTNAME IF (*1 Abs + Sg - Gram/Abbr LINK *1 4Sg + 3SgO BARRIER V LINK *1 VFIN + 3Sg BARRIER V); #Danskit nunanut allanut tunngasunut ministeriat, Jeppe KOFOD (S), nunanut allanut tunngasunut naalakkersuisoq, Steen Lynge (D) Nuummi ataatsimeeqatigereeramiuk taama oqarpoq. Men (D) ikke objekt for subjektet Lynge
-#
+
+SETPARENT:M0003_kasusattraktionA @SUBJ> + TITEL + Abs + Sg IF 
+(NOT p (*))
+(NEGATE *-1 @SUBJ> BARRIER V LINK *1 _TARGET_ LINK *1 3SgO BARRIER V)#Danskit nunanut allanut tunngasunut ministeriat, Jeppe Kofod (S), nunanut allanut tunngasunut NAALAKKERSUISOQ, Steen Lynge (D) Nuummi ataatsimeeqatigereeramiuk taama oqarpoq.
+
+TO (*1 Sem/Hum + Abs BARRIER (*) - KOMMA - FIRSTNAME LINK *1 Abs + Sg - Gram/Abbr LINK *1 4Sg + 3SgO BARRIER V LINK *1A VFIN + 3Sg BARRIER V) 
+;
+
+SETPARENT:M0003_kasusattraktionB @SUBJ> + Prop + Sem/Hum + Abs + Sg - FIRSTNAME IF 
+(NOT p (*))
+(NEGATE *-1 TITEL + @SUBJ> BARRIER (*) - FIRSTNAME - KOMMA)#Danskit nunanut allanut tunngasunut ministeriat, Jeppe KOFOD (S), nunanut allanut tunngasunut naalakkersuisoq, Steen Lynge (D) Nuummi ataatsimeeqatigereeramiuk taama oqarpoq. Men (D) ikke objekt for subjektet Lynge
+TO (*1 Abs + Sg - Gram/Abbr LINK *1 4Sg + 3SgO BARRIER V LINK *1A VFIN + 3Sg BARRIER V)
+
+; 
+
 #### TIME ###
 ##==========#
 SETPARENT:M0015 @CL-ADVL> + ("siuneq") + Abs + 3SgPoss IF (-1 ("manna") + Rel) #En tidlig, meget bred regel til at håndtere uforudsigelige/ manglende bøjninger af siorna
@@ -9321,6 +9336,7 @@ SETPARENT:M1801 @N< + Abs + Sg + N IF
 (NEGATE *1 3Pl + 3PlO BARRIER V LINK *-1 _TARGET_ LINK *-1 CONJ-C LINK *-1 Abs BARRIER V)#Avataarsualiartartut USA-meersut Qaammammukartinneqarnissaat, allaallumi MARSILIARTINNEQARNISSAAT, Trumpip naalakkersuisoqataasalu sulissutiginiaraat, arlaleriarluni oqaatigineqarnikuuvoq.
 (NEGATE -1 KOMMA LINK 1 _TARGET_ + Abs + Sg LINK *1 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO)#- Arfininngornermi ualikkut paasitinneqarpugut covid 19-qarluni toqusoq siulleq nalaanneqarsimasoq, PISORLU alianaqisoq assut attorteqqassutigaara.
 (NEGATE *-1 TITEL + Abs LINK *1 CONJ-C LINK *1 _TARGET_ + TITEL LINK *1 3PlO)#KNR-ip Naalakkersuisut siulittaasuat, Kim Kielsen (S) peqqissutsimullu NAALAKKERSUISOQ, Anna Wangenheim ulluni qassiiusuni oqaaseqartinniarsarigaluarpai.
+(NEGATE 0 TIMENOUN LINK NOT -1 TIMENOUN)#Avannaata Kommuniani upalungaarsimanermut pisortaq, Jens Dahl ULLAAQ nal. tallimat missaata tungaanut aamma sulivoq.
 
 TO (*-1 §noun-comma BARRIER V - ("pi"));
 
