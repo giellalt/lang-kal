@@ -1699,10 +1699,11 @@ LIST <Hprof> =
 LIST <HH> = (/"nipi"\ LIRSUR\ Der/nv\ Gram/IV\ Gram/IV\ QATE\ Der/vn\ GIIT/l) ;
 LIST <inst> = "Brugseneeraq" "Pisiffik"
 (/"suli"\ Gram/IV\ VIK\ Der/vn\ QAR\ Der/nv\ Gram/IV\ VIK/l) "umiarsualivik" "universitet" ;
-LIST <L> = "sumiiffik" "ulloriaq";
+LIST <L> = "sumiiffik" "ulloriaq" ;
 LIST <Lciv> = "Avannaata Kommunia" "kommune" ("Nuuk" Prop) ("Sisimiut" Prop);
 LIST <Lh> = "inissiaq" "livsstilscafe" (/"sakku"\ TUUQ\ Der/nn\ QAR\ Der/nv\ Gram/IV\ VIK/l) (/"sakkutooq"\ Sem/Hum\ QAR\ Der/nv\ Gram/IV\ VIK/l) "umiarsualivik" (/"uuma"\ Gram/IV\ TUQ\ Der/vn\ UTE\ Der/nn\ LIVIK/l) ;
 LIST <Lpath> = "aqqut" "aqqusineq" ;
+LIST <Ltop> = "qaqqaq" ;
 LIST <Ltown> = "Sisimiut" ; #liste til brug for usikker numerus i possessor og subjektsperson
 LIST <mat> = "kuulti" "sølvi" ;
 LIST <mon> = "aningaasaq" (/"iser"\ Gram/IV\ TIP\ Der/vv\ Gram/TV\ TAQ/l) ;
@@ -15228,7 +15229,13 @@ REMOVE:5851B Abs + Pl IF (0 Abs + Sg)(1C Abs + Sg - POSSESSUM3) #Ambigiøse poss
 (NEGATE 0 (Abs 2SgPoss) LINK 0 Abs + Pl + Der/vn LINK *-1 Abs + Pl BARRIER (*) - OBLIQUE)#Tamanna isumaqarpoq e-mailisiatit allassimasulluunniit allat takivallaanngitsut kalaallisut qallunaatulluunniit ALLASSIMASUT nutserut atorlugu nutsertissinnaanngoritit.
 (NEGATE 0 (Abs 2SgPoss) LINK 0 (Abs Pl) LINK *1 VFIN + 3Pl BARRIER VERB-NOTCONT)#SIORAASAT et kiilu missiliorlugu sinneqarput.
 ;
-REMOVE:5851C Abs + Pl IF (0 Rel + Pl - Num)(1C 3PlPossUdenMWE)(NEGATE *1 TRANSVERB + 3PlO BARRIER V)  #Ambigiøse possessum ud fra adled eller apposition
+REMOVE:5851CX Abs + Pl IF (0 Rel + Pl - Num)(*1C 3PlPossUdenMWE BARRIER (*) - ("""))
+(NEGATE *1 TRANSVERB + 3PlO BARRIER V)  #Ambigiøse possessum ud fra adled eller apposition
+(NEGATE 0 Abs + Hyb/2-2 LINK *1 Abs + Hyb/2-2 + CONJ-C BARRIER (*) - Hyb/1-2 LINK *1 VFIN + 3Pl BARRIER V OR 3PlPoss)#Allagaatinik katersuivimmi ujarliutip nanisaani ujagaq qiterliulluni inissisimasassaaq, oqaatsillu siuliiniITTUT kinguliiniittullu amerlanngitsuinnaat aamma nuisinneqartassapput.
+
+;
+REMOVE:5851C Abs + Pl IF (0 Rel + Pl - Num)(1C 3PlPossUdenMWE)
+(NEGATE *1 TRANSVERB + 3PlO BARRIER V)  #Ambigiøse possessum ud fra adled eller apposition
 (NEGATE 0 Abs + Hyb/2-2 LINK *1 Abs + Hyb/2-2 + CONJ-C BARRIER (*) - Hyb/1-2 LINK *1 VFIN + 3Pl BARRIER V OR 3PlPoss)#Allagaatinik katersuivimmi ujarliutip nanisaani ujagaq qiterliulluni inissisimasassaaq, oqaatsillu siuliiniITTUT kinguliiniittullu amerlanngitsuinnaat aamma nuisinneqartassapput.
 
 ;
@@ -15538,11 +15545,14 @@ SELECT:9946D Ins IF (0 Abl)
 (NEGATE 1C TUQ + Abl)
 (NEGATE 0 LU OR LI OR LUUNNIIT LINK -1 Abl)#Bakteeriat neqimit NERPIMILLUUNNIIT ooqanngitsumeersut aammattaaq assanniissinnaapput
 (NEGATE 1 <fn:Emit>)#MASKINANITTAAQ siorsunneqassaaq.
+(NEGATE 0 <Ltop> LINK *1 PALUP BARRIER (*) - Abl)#PL20230116 Nuiatannguit "assaasaat" ataasiakkaat qilammut tungutsoreqisumut allalersuisuusutut ipput, QAQQANILLU kuunnguarpalorusaarneq ”Grønlandip” aasaata kusanassusianik oqaluttuaannarporlusooq.
  ;
 
-SELECT:9946E Lok + ("suna") OR iLok + ("suna") IF (0 iAbl OR iIns OR Abl OR Ins) ; #sumerpiaq er højst sandsynligt Lok
+REMOVE:9946E Ins IF (0 Abl + <Ltop> LINK *1 PALUP BARRIER (*) - Abl) ;
 
-REMOVE:9946F Ins IF (0 Abl LINK 1 <fn:Emit> + V); #MASKINANITTAAQ siorsunneqassaaq.
+SELECT:9946F Lok + ("suna") OR iLok + ("suna") IF (0 iAbl OR iIns OR Abl OR Ins) ; #sumerpiaq er højst sandsynligt Lok
+
+REMOVE:9946G Ins IF (0 Abl LINK 1 <fn:Emit> + V); #MASKINANITTAAQ siorsunneqassaaq.
 
  # Heuristiske regler:
  # Hvis alt andet har været prøvet vælg den statistisk mest sandsynlige
