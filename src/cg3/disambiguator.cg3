@@ -894,6 +894,7 @@ LIST SINNAA_TUAR = SINNAA\=TUAR ;
 LIST SINNAA_TIP = SINNAA\=TIP ;
 LIST SINNAAQ = SINNAAQ ;
 LIST SINNAANNGUR = SINNAANNGUR ;
+LIST SIR = SIR ; #KW16012023
 LIST SIUR = SIUR ;
 LIST SIUT = SIUT ;
 LIST SUNNI = SUNNI ;
@@ -4091,6 +4092,8 @@ SELECT:0040I VFIN IF (*-1 PUNCT)(*1 PUNCT)
 SELECT:0054B Prop + Sg + 3PlPoss OR iProp + iSg + i3PlPoss IF (-1 Prop + Rel + Pl);
 SELECT:0057 Prop + Rel - ("nuna") IF (1 Prop + POSSESSUM OR ("Nunaat") OR iProp + iPOSSESSUM) ;
 
+REMOVE:0058 Prop + Gram/Abbr - Abs IF (0 N - Abs); #Ammut qiviarama sulisut suli ulapputtut takuakka; #Forkortelser har nok altid bindestreg eller i foran fleksionen
+
 REMOVE:Int0120 V - Hyb/2-2 IF (0 ("\\p{Lu}.*"r) - (Der/nv)) (-1 (".*"))  #Inuit Ataqatigiit, Partii Naleraq, Atassut *Suleqatigiissitsisullu ataatsimoorlutik Naalakkersuisunut nalunaaruteqarput: ....
 (NEGATE 0 ("IP"))#Naluara qanoq innersoq.
 ;
@@ -4182,6 +4185,7 @@ REMOVE:0113 SPATIAL + LIR IF (0 ("ungasip")); #20120422 ("ungate")+LIR vist alti
 REMOVE:0114A SPATIAL - ("aki") - ("ilumoor") (NEGATE 0 ("ilu" iTrm))(NEGATE 0 POSSESSUM OR KANNIQ OR INNAQ)
 (NEGATE 0 (/"angi"\ Gram/IV\ NIQ\ Der/vn\ TU/l) LINK 0 (/"angi"\ Gram/IV\ NIQ\ Der/vn\ TUR/l))#
 (NEGATE 0 ("avate") + Trm LINK 0 ("avat") + Trm)#avammut
+(NEGATE 0 ("ate") + Trm) #ammut
 (NEGATE 0 ("salliup") + INTRANSVERB LINK 0 (/"saaq"\ LLIQ\ Der/nn\ U/l) )#PL20230112 Taakkunannga Qaqortumi, Aasianni Sisimiunilu innuttaasut peqqinnissaqarfimmilu SALLIULLUTIK sulisut kapineqarput
 (NEGATE 0 (/"salliup"\ Gram/TV\ TIP/l) LINK 0 (/"saaq"\ LLIQ\ Der/nn\ U\ Der/nv\ Gram/IV\ TIP/l) )#PL20230112 Grethe Kaalamit SALLIUTILLUGU qinerpaa.
 ;
@@ -12517,6 +12521,9 @@ REMOVE:0549I (Abs Sg) IF (*-1 Abs + &&IV_SUBJ& LINK *1 VFIN + &&IV_SUBJ& LINK *1
 REMOVE:0549J Par + 3Pl IF (-1 Abs + Pl)(*1 VFIN + Ind + 3Pl - ORATIOOBLVERB) #Naak inuit oqquminngaanniit meterialuinnarnik biilinut ikaarsinnaagaluartut tamanna anorersuup ajornakusoortippaa, taamaallutillu najugaqartut ANIAREERSIMASUT ambulancenut politiillu biiliinut sulisunit ikaassorneqarput.
 (NEGATE 0 (Abs Pl) LINK 0 (Par 3Pl) LINK -1 (Abs Pl) LINK *-1 ORATIOOBLVERB BARRIER (*) - %PossOblique)#Malunnarsivorlu allagartartaartussat akornanni misigissutsit qaffakaasut, qularnanngitsumik pilluarput tulluusimaarlutillu.
 ;
+
+REMOVE:0549K Par IF (1 TUQ + Abs + CONJ-LU); #Anori NILLERTOQ masannartorlu suli timinni malugisinnaavara, inili kiatsissimaqaaq pujoqalersimaqalunilu.
+
 SECTION #Skal kun bruges til at isolere Par - reglerne
 
 ############################################
@@ -13993,7 +14000,7 @@ SELECT:8531 ("inuiaassuseq") IF (0 ("inuk") + IAR + HTR + SSUSIQ) ;
 SELECT:8532A UGEDAGE IF (0 NIRMIT) ; #marlunngornermut er ikke NIRMIT
 REMOVE:8532B ("tasersuk") IF (0 ("taseq") + SUAQ) ; #tasersuk findes ikke i corpus. Er måske archaisk
 REMOVE:8532C ("avatangiiseq") IF (0 ("avatangiisi"));
-REMOVE:8532Da ("(.*)"r) - OBLIQUE - Rel IF (0 (VSTR:"$1"v) + OBLIQUE LINK 0 Gram/Abbr OR Sem/Unit) (NEGATE 0 ("timi")) ;
+REMOVE:8532Da ("(.*)"r) - OBLIQUE - Rel IF (0 (VSTR:"$1"v) + OBLIQUE LINK 0 Prop OR Sem/Unit) (NEGATE 0 ("timi")) ;
 REMOVE:8532D ("(.*)"r) - Sem/Unit IF (0 (VSTR:"$1"v) + Sem/Unit LINK -1 Num) #fx grad+<unit> vs. grad+<ac>
 (NEGATE -1 Num LINK 1 _TARGET_ + Ins LINK 1 LIK_QAR)#Angut 17-init missaannik ukiulik 170-175 CM angissusilik,
 ;
@@ -14125,11 +14132,16 @@ REMOVE:8534BG ("uniffik") IF (0 ("unip")); #reglen skal være mere specifik så 
 REMOVE:8534BH (/"assi"\ Sem/anzo/l) IF (0 (/"assi"\ Sem/sem-w/l)); #sandsynlighed
 REMOVE:8534BI (/"naatsorsor"\ Gram/TV\ UTE/l) + Sg + OBLIQUE IF (0 (/"naatsorsor"\ Gram/TV\ UTE/l) + Pl + OBLIQUE); #PL20230107 KNI-lli 2008-mi 2009-milu naatsorsuutai aamma kukkuneqartut, NAATSORSUUTAANIK misissuinermi erserpoq.: naatsorsuutit næsten altid Pl
 REMOVE:8534BJ ("nalik") IF (0 ("nale")); #PL20230109 formodes at slette alt andet end 'nalinga' o.lign.
-SELECT:8534BK (/"saaq"\ Sem/Lsurf/l) IF (0 Hyb/1-2);
+SELECT:8534BK1 (/"saaq"\ Sem/Lsurf/l) IF (0 Hyb/1-2 OR POSSESSUM + Lok);
+REMOVE:8534BK2 (/"saaq"\ Sem/cloH/l) IF (NEGATE *0 ("annoraaq")); #der kan tilføjes flere ord, men ikke alle slags tøj (fx ilullip saavata kaasarfia = brystlomme)
+REMOVE:8534BK3 (/"saaq"\ Sem/cm/l) IF (0 POSSESSUM); #sandsynlighed
 REMOVE:8534BL ("toqqusaq") IF (0 ("toqqusaaq")); #Ordet bruges næppe som ikke-stednavn.
 REMOVE:8534BM ("qulleq") + (/^i?Sem/cm-liq/r) IF (0 ("qulli") + (/^i?Sem/cm-liq/r)); #dobbeltform
 REMOVE:8534BN ("qulleq") + (/^i?Sem/f-phys/r) IF (0 ("qulleq") + (/^i?Sem/cc-light/r) + (/Der/nn/l)); #qulleq som position kan nok ikke inderiveres særligt godt (qullersaq etc. bliver læst anderledes)
 REMOVE:8534BO ("qulli") + SUAQ IF (0 ("qulleq") + SUAQ); #Qatserutit kranersuallit imermik qatserutaata slangitarsui marluk QULLERSUARNUT najummatsiutigivaat.
+REMOVE:8534BP ("asseq") IF (0 ("assi") + Err/Sub); #Tiguara ASSEQ aserornikoq isigilerlugulu, siuaakka qalipaateqanngitsumik assilineqarsimasut. #Ordet bruges nok ikke så meget mere (står kun i historiske ordbøger). Jeg kan ikke lige komme op med en anden mulighed for disambiguering.
+REMOVE:8534BQ ("aanaaq") IF (0 ("aanaa")); #dialektform af aanaq?
+REMOVE:8534BR ("sinik") + SSAQ + POSSESSUM IF (0 ("sini") + SSAQ LINK -1 NON_HUMAN + Rel); #Assip SINISSAA.
 REMOVE:8599 TUQ + Aeq - Der/vn IF (0 TUQ + Aeq + Der/vn)(NEGATE 1 ("ip")); #De særlige former af TUQ + Aeq på transitiver fulgt af "ippaa" slettes hvis ikke fulgt af "ippaa"
 REMOVE:8600A (/"sukku"\ Sem/food-m-h\ N/l) IF (0 (/"suna"\ Gram/Int\ Pron\ Via/l) LINK 1 ("tamaq") OR (/"ma"\ Prefix/TA\ Gram/Dem\ Adv\ Via/l));
 
@@ -14225,6 +14237,7 @@ REMOVE:5200Q ("isigak") IF (0 ("isige") LINK NOT *0 VFIN BARRIER CONJ-C OR KOMMA
 REMOVE:5200R ("sianeq") OR ("siani") IF (0 ("siani") + LIR);
 REMOVE:5200S ("saaq") IF (0 ("saap") + Abs + Pl); #Igalaat saavaniittut naneruutit takisuut SAATTUT takusinnaavakka ammut peqissimasut, sofalu ameq qillalaartuinnanngorsimavoq, eqikkiartortutullu isikkoqarluni.
 REMOVE:5200T (/"tup"\ Gram/IV\ QQU\ Der/vv\ Gram/TV\ TAQ\ Der/vn/l) IF (0 ("toqqusaaq"));
+REMOVE:5200U ("aqoq") OR ("aqu") IF (0 ("aqup") + LIR); #Tassanngaannaq misigilerpunga qilak qaammartutut ilisoq takulerlugu, toornaarsussuullu anori AQULEQQIPPAA.
 
 
 # Verbum eller verbum?
@@ -14491,12 +14504,13 @@ SELECT:5490DMa ("niller") + (/^i?Sem/speak_mnr/r) IF (0 1Sg OR 2Sg OR 1Pl OR 2Pl
 SELECT:5490DMb ("niller") + (/^i?Sem/be_attribute/r) IF (*-1 (/^i?Sem/wea-wind/r)); #Anori NILLERTOQ masannartorlu suli timinni malugisinnaavara, inili kiatsissimaqaaq pujoqalersimaqalunilu.
 
 REMOVE:5490DN (/"angi"\ Gram/IV\ NIRSAQ\ Der/vn\ U/l) IF (0 (/"anner"\ Gram/IV\ SAR\ Der/vv\ Gram/TV\ HTR/l) LINK 0 (/NIQ\ Der/vn\ \(TAQ\ Der/nn\ \)?LIK/l)); #PL20221229 Nuummi politiit tallimanngormat nalunaaqutaq 21-p missaani ANNERSAANERTALIMMIK saassussinermut takunnissimasinnaasunik ujartuipput.
-REMOVE:5490DO ("isaap") OR ("isaar") IF (0 ("iser" A) + &&IV_SUBJ& LINK *-1 Abs + &&IV_SUBJ& - HUMAN); #PL20230108 Soorlumi illup ilua kissakkiartortoq, tipilu ikuallassunni matup ataatigut ISAALERLUNI.
+REMOVE:5490DO ("isaap") OR ("isaar") OR ("isa") + U IF (0 ("iser" A) + &&IV_SUBJ& LINK *-1 Abs + &&IV_SUBJ& - HUMAN); #PL20230108 Soorlumi illup ilua kissakkiartortoq, tipilu ikuallassunni matup ataatigut ISAALERLUNI.
 REMOVE:5490DP ("aniar") IF (0 ("ania") + RIIR); #Naak inuit oqquminngaanniit meterialuinnarnik biilinut ikaarsinnaagaluartut tamanna anorersuup ajornakusoortippaa, taamaalillutillu najugaqartut ANIAREERSIMASUT ambulancenut politiillu biiliinut sulisunit ikaassorneqarput.
 REMOVE:5490DQ (/"siuar"\ Gram/IV\ SAAR/l) IF (0 (/"siuar"\ Gram/IV\ SAR\ Der/vv\ \(Gram/TV\ \)?HTR/l)); #PL20230110 Inuiaqatigiinni tamakkiisumik oqaasiulernissaat anguniarlugu SIUARSAAQATAAFFIGERUSOQAAKKA.
 REMOVE:5490DR (/"\(.*\)"\ Gram/TV\ SAR/l) IF (0 (/".*"\ Gram/IV\ SAR/l)); #PL20230110 Inuiaqatigiinni tamakkiisumik oqaasiulernissaat anguniarlugu SIUARSAAQATAAFFIGERUSOQAAKKA.
 SELECT:5490DS ("saap") + (/^i?Sem/be_attribute.*/r) IF (-1 (/^i?Sem/be_attribute.*/r)); #Igalaat saavaniittut naneruutit takisuut SAATTUT takusinnaavakka ammut peqissimasut, sofalu ameq qillalaartuinnanngorsimavoq, eqikkiartortutullu isikkoqarluni.
 REMOVE:5490DT (/"qitip"\ Gram/IV\ QQU/l) IF (0 ("qiteqqup")); #Takusinnaavara qatserussuit anginersaata kranersua qummut tallisartoq misilittaraluaraat, inissiarsuarli QITEQQUTIINNARLUGU anorimit biilit aalanermik sapernulertarput, taamaaligaangallu majuartarfiit ammut aallartiinnarneqartarput.
+SELECT:5490DU ("masannar") IF (*0 (/^i?Sem/wea.*/r)); #Anori nillertoq MASANNARTORLU suli timinni malugisinnaavara, inili kiatsissimaqaaq pujoqalersimaqalunilu.
 
 # Verbum eller partikel?
 SELECT:5491A ("aarit") IF (-1 BOS);
@@ -14615,6 +14629,8 @@ REMOVE:Int0400 (/__LIR\ Der/nv__/l) (0 (/\"imer\"\ Gram/TV\ LIR\ Der/vv__/l)) ; 
 REMOVE:5578G ("nalunaap") (0 ("nalunaar") LINK *-1 Trm OR Abl) ;
 REMOVE:5578H (/"tutsaq"\ GIP\ Der/nv/l) IF (0 ("tutsarip"));
 REMOVE:5578I ("allagarser") IF (0 (/"allap"\ Gram/TV\ TAQ\ Der/vn\ SI/l) LINK -1 Abl); #Ullaaq iterpunga bussiniit ALLAGAARSEREERSIMALLUNGA
+REMOVE:5578J ("najorsip") + Gram/Refl IF (0 ("najor") + HTR + Gram/IV); #Qaqutikkut najoqqarujoortagara, massakkulli NAJORSERUJUSSUARPUNGA.
+REMOVE:5578K ("najor") + SIR + Gram/Refl IF (0 ("najor") + HTR + Gram/IV); #Qaqutikkut najoqqarujoortagara, massakkulli NAJORSERUJUSSUARPUNGA.
 
 # Enkelte derivativer
 REMOVE:Int0401 IR + Der/nv IF (0 V + Der/vv OR ("ila")) ; #'ilaarpaa' ikke 'ila+IR'
@@ -15462,7 +15478,7 @@ REMOVE:9944A ("assik") - POSSESSUM3 IF (0 ("assik") + POSSESSUM3) ; #mest sandsy
 REMOVE:9944A ("misse") - POSSESSUM3 IF (0 ("misse") + POSSESSUM3) ; #mest sandsynligt. Fejl er meget frekvente
 REMOVE:9944A Num + POSSESSUM3 IF (0 (Num) - POSSESSUM3) ; #mest sandsynligt. Fejl er meget frekvente
 
-REMOVE:9944B Err/Sub - ("assik") - ("misse") - Num ; #Skummel regel, men så sen, at ingen fejl i en roman
+REMOVE:9944B Err/Sub - ("assik") - ("assi") - ("misse") - Num ; #Skummel regel, men så sen, at ingen fejl i en roman
 
 REMOVE:Int0603 Gram/ACR IF (0 Prop - Orth/Append) ;
 REMOVE:9945 Orth/Arch
@@ -16957,6 +16973,8 @@ SELECT:Sem0150 ("sila") + (/^i?Sem/L/r) IF (0 SUAQ LINK NEGATE *0 V);
 
 REMOVE:Sem0155 ("ateq") + (/^i?Sem/sem.*/r) IF (0 ("ateq")+ (/^i?Sem/ac.*/r) + QAR); 
 
+REMOVE:Sem0160 ("issoq") + (/^i?Sem/Bflo.*/r); #Ataataga mikisuusoq qatanngutini angajoqqaanilu ilagalugit assilitissimapput, illup issunik ujaqqanillu qarmakkap saavani. #lav undtagelser når de kommer (fx LINK "naa")
+
 REMOVE:Sem0165 ("aappaq") + (/^i?Sem/food.*/r) IF (0 ("aappaq" Sg 3SgPoss) + (/^i?Sem/Hprof.*/r) LINK *0 ("aappaq" Sg 3SgPoss) + (/^i?Sem/Hprof.*/r));
 REMOVE:Sem0166 ("aappaq") + (/^i?Sem/Hfam.*/r) IF (0 ("aappaq" Sg 3SgPoss) + (/^i?Sem/Hprof.*/r) LINK *0 ("aappaq" Sg 3SgPoss) + (/^i?Sem/Hprof.*/r));
 
@@ -17094,7 +17112,7 @@ SELECT:Sem0415 ("timi") + (/^i?Sem/anmov.*/r) IF (0 POSSESSUM12); #Anori nillert
 REMOVE:Sem0420 ("qasilip") + (/^i?Sem/stimulus_subj.*/r) IF (*-1 (/^i?Sem/an.*/r) + OBLIQUE); #Pujoq toqqusaannut QASILITTUTUT misiginarpoq, ipianngunartumillu quersoqqajaavunga.
 
 REMOVE:Sem0425 ("pujoq") + (/^i?Sem/wea-m.*/r) IF (*0 (/^i?Sem/pain/r)); #PUJOQ toqqusaannut qasilittutut misiginarpoq, ipianngunartumillu quersoqqajaavunga. #Tåge gør ikke ondt, der skal komme mange flere disambigueringsregler til.
-REMOVE:Sem0426 ("pujoq") + (/^i?Sem/wea-m.*/r) IF (*0 (/^i?Sem/Ldoor/r)); #Altanip matuata eqqaanut ingippunga, niaqora ammooqqatinniarsaralugu PUTSUMIISIKKUSUNNAGU. #Der er sjældent tåge i huse.
+REMOVE:Sem0426 ("pujoq") + (/^i?Sem/wea-m.*/r) IF (*0 (/^i?Sem/Ldoor/r) OR (/^i?Sem/Lh/r)); #Altanip matuata eqqaanut ingippunga, niaqora ammooqqatinniarsaralugu PUTSUMIISIKKUSUNNAGU. #Der er sjældent tåge i huse.
 
 REMOVE:Sem0430 ("misige") + (/^i?Sem/undergo.*/r) IF (*0 (/^i?Sem/pain/r)); #Pujoq toqqusaannut qasilittutut MISIGINARPOQ, ipianngunartumillu quersoqqajaavunga.
 REMOVE:Sem0431 ("misige") + (/^i?Sem/undergo.*/r) IF (0 Gram/Refl LINK *0 Aeq); #MISIGISIMAVUNGA sapiinnerusutut, isikkalu allarterpakka.
@@ -17104,6 +17122,14 @@ REMOVE:Sem0435 ("anillap") + (/^i?Sem/worsen.*/r) IF (0 (/^i?Sem/leave.*/r)); #T
 REMOVE:Sem0440 ("imaq") + (/^i?Sem/Lwater.*/r) IF (0 (/^i?Sem/am.*/r) + POSSESSUM3 LINK -1 (/^i?Sem/con.*/r) + Rel); #Assamma aappaanik paniga sianerfigaara, puiaasap IMAATA nunngutaa aarlorutiutigalugu.
 
 SELECT:Sem0445 (/"aallar"\ Gram/IV\ TIP\ Der/vv\ Gram/TV/l) + (/^i?Sem/send.*/r) IF (-1 Trm); #Takusinnaavara qatserussuit anginersaata kranersua qummut tallisartoq misilittaraluaraat, inissiarsuarli qiteqqutiinnarlugu anorimit biilit aalanermik sapernulertarput, taamaaligaangallu majuartarfiit ammut AALLARTIINNARNEQARTARPUT.
+
+SELECT:Sem0450 ("attat") + (/^i?Sem/part-clo.*/r) IF (*0 (/^i?Sem/cloH.*/r)); #Ilullima paffequtaata ATTATAI peeriarlugit, assakka poorpakka.
+
+REMOVE:Sem0455 ("ungaloq") + (/^i?Sem/Lcover.*/r) (NEGATE 0 POSSESSUM LINK -1 Rel + ("atuar") + TAQ); #hegn vs. bogomslag
+
+SELECT:Sem0460 ("ameq") + (/^i?Sem/mat.*/r) IF (-1 (/^i?Sem/furn.*/r)); #Igalaat saavaniittut naneruutit takisuut saattut takusinnaavakka ammut peqissimasut, sofalu AMEQ qillalaartuinnanngorsimavoq, eqikkiartortutullu isikkoqarluni.
+
+REMOVE:Sem0465 ("uninnga") + (/^i?Sem/institutionalize.*/r) IF (-1 Lok)(NEGATE -1 (/^i?Sem/inst.*/r)); #Anorersuartorsuarmi UNINNGAVUNGA, innersuillu soqutigiunnaarpakka, Chivap sapiinnerulertissimammanga altanip ungaluinut saviminiusunut qaqivunga, aqqaqqikkamalu altanip ungalua tunormioralugu paarilerlugu.
 
 
 ##############
