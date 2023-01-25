@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use utf8;
 use FileHandle;
+use IPC::Cmd qw(can_run);
 use IPC::Open2;
 use Digest::SHA qw(sha1_base64);
 use FindBin qw($Bin);
@@ -31,7 +32,7 @@ my $rop = GetOptions(
 	'no-quote-raw|R' => \$opt_noquote_raw,
                     );
 
-my @bins = ($opt_bin, '/usr/local/bin/hfst-tokenise', '/opt/local/bin/hfst-tokenise', '/usr/bin/hfst-tokenise');
+my @bins = ($opt_bin, can_run('hfst-tokenise'), '/usr/local/bin/hfst-tokenise', '/opt/local/bin/hfst-tokenise', '/usr/bin/hfst-tokenise');
 my $bin = '';
 foreach my $f (@bins) {
    if ($f && -x $f) {

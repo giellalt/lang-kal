@@ -3,6 +3,7 @@
 use strict;
 use warnings;
 use utf8;
+use IPC::Cmd qw(can_run);
 use FindBin qw($Bin);
 
 BEGIN {
@@ -15,10 +16,27 @@ use feature 'unicode_strings';
 
 use Getopt::Long;
 Getopt::Long::Configure('no_ignore_case');
+my $opt_bin = '';
 my $opt_verbose = 0;
 my $rop = GetOptions(
+	'bin|b=s' => \$opt_bin,
 	'verbose|v' => \$opt_verbose,
                     );
+
+my @bins = ($opt_bin, can_run('hfst-optimized-lookup'), '/usr/local/bin/hfst-optimized-lookup', '/opt/local/bin/hfst-optimized-lookup', '/usr/bin/hfst-optimized-lookup');
+my $bin = '';
+foreach my $f (@bins) {
+   if ($f && -x $f) {
+      $bin = $f;
+      last;
+   }
+}
+if (!$bin || !-x $bin) {
+   die("No usable hfst-optimized-lookup given or found!\n");
+}
+if ($opt_verbose) {
+   print STDERR "kal-generate: Using ${bin}\n";
+}
 
 my $prefix = '@prefix@';
 my @fsts = ('', "@datarootdir@/giella/@GTLANG@/generator-gt-desc.hfstol", '/usr/local/share/giella/@GTLANG@/generator-gt-desc.hfstol', '/usr/share/giella/@GTLANG@/generator-gt-desc.hfstol', "$Bin/../../src/generator-gt-desc.hfstol");
@@ -40,7 +58,7 @@ if ($opt_verbose) {
    print STDERR "kal-generate: Using ${fst}\n";
 }
 
-my $t = "hfst-optimized-lookup -p -u ${fst}";
+my $t = "${bin} -p -u ${fst}";
 
 # Prefixes from root.lexc ca. lines 14-15
 my @p = qw(AA TA);
