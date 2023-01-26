@@ -122,9 +122,13 @@ sub call_tokenizer {
    }
 
    # Turn very long ALL-UPPER strings to First Upper to avoid geometric slowdown
-   while ($in =~ m@(\p{Lu}[\pP\pS\p{Lu}]{14,})@) {
+   while ($in =~ m@(\p{Lu}[\pP\pS\p{Lu}]{14,})@g) {
       my ($w,$t) = ($1, ucfirst(lc($1)));
-      $in =~ s@\Q$w\E@\x{e001} $t@g;
+      if ($w !~ m@\p{Lu}.*?\p{Lu}@) {
+         # If there aren't multiple upper-case letters, assume it'll tokenize around symbols
+         next;
+      }
+      $in =~ s@\Q$w\E@ \x{e001} $t@g;
    }
 
    # Hide extremely long words
