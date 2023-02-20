@@ -5949,10 +5949,10 @@ REMOVE:0213 Gram/Pers + Pron + Abs + 2Sg IF (*1 2SgPoss BARRIER V OR CONJ-C) ;
 # Gram/Coref + Pron #
 ##################
 
-SELECT:0232A Gram/Coref + Pron + Rel + 1Sg IF (1C 1SgPoss) ;
-SELECT:0232B Gram/Coref + Pron + Rel + 1Pl IF (1 1PlPoss) ;
-SELECT:0232C Gram/Coref + Pron + Rel + 2Sg IF (1 2SgPoss) ;
-SELECT:0232D Gram/Coref + Pron + Rel + 2Pl IF (1 2PlPoss) ;
+SELECT:0232A Gram/Coref + Pron + Rel + 1Sg IF (1 1SgPoss)(NEGATE 1 NOT-POSSESSUM) ; #NEGATE for ambiguøse former, fx: Tamanna pisinnaavoq aningaaserivik suleqatigalugu imaluunniit nammineq eqqarsaatersornikkut, Klaus Eskildsen oqarpoq.
+SELECT:0232B Gram/Coref + Pron + Rel + 1Pl IF (1 1PlPoss)(NEGATE 1 NOT-POSSESSUM) ;
+SELECT:0232C Gram/Coref + Pron + Rel + 2Sg IF (1 2SgPoss)(NEGATE 1 NOT-POSSESSUM) ;
+SELECT:0232D Gram/Coref + Pron + Rel + 2Pl IF (1 2PlPoss)(NEGATE 1 NOT-POSSESSUM) ;
 SELECT:0232E Gram/Coref + Pron + Rel + 4Sg IF (1 3SgPoss) ;
 SELECT:0232F Gram/Coref + Pron + Rel + 4Pl IF (1 3PlPoss) ;
 SELECT:0232G Gram/Coref + Pron + Rel + 4Sg IF (1 4SgPoss) ;
@@ -6254,11 +6254,13 @@ SELECT:0388 Ind + 3Pl + 3PlO IF (NEGATE *0 VFIN)(*-1 Rel + Pl LINK *1C Abs + Pl 
 ;
 
 # Disambiguerer 1Sg fra 2Sg som subjekt for transitiv IKKE
-REMOVE:0389A CON_CAU + 1Sg IF (*1 V + 2Sg)
+REMOVE:0389A CON_CAU + 1Sg IF (*0 V + 2Sg)
 (NEGATE 0 2SgO LINK *1 Gram/Cong + 2Sg OR V + 2Sg)#- Taavami nalaatsornerusimanngilaq ulloq taanna sapaatip-akunnera qaangiummat ILISARISIMALERAKKIT maani kiserrappit pisorujoortutit, miilit tuusintilippassuit nunaqarfinninngaanniit ungasitsigisumi.
+(NEGATE *0 VFIN + 1Sg) #gælder ikke når det også kan (og skal) læses som 1Sg
 ;
-REMOVE:0389B CON_CAU + 2Sg IF (*1 V + 1Sg) ; # Disambiguerer 1Sg fra 2Sg som subjekt for transitiv
-
+REMOVE:0389B CON_CAU + 2Sg IF (*0 V + 1Sg) # Disambiguerer 1Sg fra 2Sg som subjekt for transitiv
+(NEGATE *0 VFIN + 2Sg) #gælder ikke når det også kan (og skal) læses som 2Sg
+;
 
 ################################################################
 # Frequent and safe rules - specific derivatives (remember also to check the final probabilistic loop) #
@@ -12673,6 +12675,7 @@ REMOVE:2221 N - Prop - iProp - Der/vv - ANIMAL IF (0 ("<\\p{Lu}.*>"r) LINK NOT 0
 (NEGATE 0 @SUBJ> LINK *0C ("<\\p{Lu}.*>"r) - @SUBJ> BARRIER @SUBJ>)#Må ikke vælge stochastisk Prop hvis appellativet ikke indgår syntagmatisk med det betingende Prop: PIVIUSULERSAARUT Nuka Bisgaardimut tunngasoq Space Rocket Nationimit suliarineqaleruttorpoq.
 (NEGATE 0 Orth/Copy LINK 0 N)#Politiit oqaaseqartartuata oqarnera naapertorlugu innuttaasut qimagussorniarneqarnerminni COVID-19-IMIK tunillatsinnissaminnik ernumallutik qimagussorneqarusussimanngikkaluarput.
 (NEGATE 0 ("Aggusti") + Prop + Lok LINK 0 MAANED) #AGGUSTIMILI Hjørringimi najugaqarpunga
+(NEGATE 0 ("Sofar")) #sofa
 
 ;
 SELECT:2222 Prop + Lok IF (-1 Lok) ;
@@ -14241,6 +14244,9 @@ REMOVE:8600E ("kikkuusoq") + GE IF (0 ("kina") + SURE); #Kamassariutaa, KIKKUUSO
 REMOVE:8601A ("inna") IF (0 ("innga"));
 REMOVE:8601B ("kinnga") + U IF (0 ("kina") + U); #Kamassariutaa, KIKKUUSORAAMMITA, atisakka peerpakka allarummillu nermullunga matulu ammarlugu.
 
+# Nomen eller proprium?
+REMOVE:8602 ("Sofar") IF (0 ("sofa")); #SOFAMIIT nikuikkama suniarnerlunga naluara, igaffimmut aallarpunga.
+
 # Nomen eller partikel?
 SELECT:Sel0081 ("aamma") ; # "aamma" mere sandsynlig end "aak"+Rel
 REMOVE:Int0370 ("aatsar") + UTE IF (NEGATE 0 POSSESSUM OR GE) ; #20091113 saa er det nok 'aatsaat'
@@ -14347,7 +14353,8 @@ REMOVE:5200AJ ("arlaq") + LIR + RIAR IF (0 ("arlaq") + LIK + RIAR);
 REMOVE:5200AK ("erneq") + LIR IF (0 ("erni")); #Naammagittarniaannarpunga nalunnginnakku ERNILERUMA ilagisussaagaanga.
 REMOVE:5200AL ("tikeq") + NGAJAK IF (0 ("tikip") + NGAJAP); #Aapparma niuffissani TIKINGAJALERSIMAGAMIUK niunissaminut piareersalerpoq, bussillu unilermata tuaviinnaq oqaluutipallariarluta baajeerpugut.
 REMOVE:5200AM ("uneq") + LIR IF (0 ("unip") + LIR); #Aapparma niuffissani tikingajalersimagamiuk niunissaminut piareersalerpoq, bussillu UNILERMATA tuaviinnaq oqaluutipallariarluta baajeerpugut.
-
+REMOVE:5200AN ("ingerlaaq") + LIR IF (0 ("ingerlaar") + LIR); #Aamma sukkasuumik timinni INGERLAALERNERANI uummatimalu tillerulunneranit isigisara ajortippoq.
+REMOVE:5200AO ("ip") + NIQ IF (0 ("inneq"));
 
 
 # Verbum eller verbum?
@@ -17156,9 +17163,10 @@ REMOVE:Sem0420 ("qasilip") + (/^i?Sem/stimulus_subj.*/r) IF (*-1 (/^i?Sem/an.*/r
 REMOVE:Sem0425 ("pujoq") + (/^i?Sem/wea-m.*/r) IF (*0 (/^i?Sem/pain/r)); #PUJOQ toqqusaannut qasilittutut misiginarpoq, ipianngunartumillu quersoqqajaavunga. #Tåge gør ikke ondt, der skal komme mange flere disambigueringsregler til.
 REMOVE:Sem0426 ("pujoq") + (/^i?Sem/wea-m.*/r) IF (*0 (/^i?Sem/Ldoor/r) OR (/^i?Sem/Lh/r)); #Altanip matuata eqqaanut ingippunga, niaqora ammooqqatinniarsaralugu PUTSUMIISIKKUSUNNAGU. #Der er sjældent tåge i huse.
 
-REMOVE:Sem0430 ("misige") + (/^i?Sem/undergo.*/r) IF (*0 (/^i?Sem/pain/r)); #Pujoq toqqusaannut qasilittutut MISIGINARPOQ, ipianngunartumillu quersoqqajaavunga.
-REMOVE:Sem0431 ("misige") + (/^i?Sem/undergo.*/r) IF (0 Gram/Refl LINK *0 Aeq); #MISIGISIMAVUNGA sapiinnerusutut, isikkalu allarterpakka.
-REMOVE:Sem0432 ("misige") + (/^i?Sem/undergo.*/r) IF (0 NAR); #Nikinninnguakka tamarmik MISIGINARPUT soorlu tassa suut kusanartorujussuit, uffalu tamanna perusunngitsigalugu.
+REMOVE:Sem0430 ("misige") + (/^i?Sem/undergo.*/r); #andre regler deaktiveret, lav undtagelser når de kommer
+#REMOVE:Sem0430 ("misige") + (/^i?Sem/undergo.*/r) IF (*0 (/^i?Sem/pain/r)); #Pujoq toqqusaannut qasilittutut MISIGINARPOQ, ipianngunartumillu quersoqqajaavunga.
+#REMOVE:Sem0431 ("misige") + (/^i?Sem/undergo.*/r) IF (0 Gram/Refl LINK *0 Aeq); #MISIGISIMAVUNGA sapiinnerusutut, isikkalu allarterpakka.
+#REMOVE:Sem0432 ("misige") + (/^i?Sem/undergo.*/r) IF (0 NAR); #Nikinninnguakka tamarmik MISIGINARPUT soorlu tassa suut kusanartorujussuit, uffalu tamanna perusunngitsigalugu.
 
 
 REMOVE:Sem0435 ("anillap") + (/^i?Sem/worsen.*/r) IF (0 (/^i?Sem/leave.*/r)); #Tilføj undtagelser for udslæt.
@@ -17186,8 +17194,9 @@ REMOVE:Sem0480 ("peer") + (/^i?Sem/activity.*/r) IF (0 (/^i?Sem/remove.*/r)); #l
 
 REMOVE:Sem0485 (/"angi"\ Gram/IV\ TUUQ\ Der/vn\ Sem/ac-sign/l)(NEGATE 0 ("angi") LINK *0 ("naqip"));
 
-SELECT:Sem0490 ("ilu") + (/^i?Sem/an.*/r) IF (0 Via + Sg + 1SgPoss); #Mattusuumik, angisuumik takorluuinerma ILUKKUT quinaammerterujussuarpaanga.
+SELECT:Sem0490 ("ilu") + (/^i?Sem/Lh.*/r) IF (0 Via + Sg + 1SgPoss LINK 1 ("ippigusup")); #Massakkut allaffigivakkit naarmiut pillugu, tassami Larsilu naapittareernikuulluta ILUKKUT ippigusuttalerama nakorsiarama paasigakku sunaaffa gonorrémik tunillassimagaanga, ilimagilluinnaqqissaarparalu aamma illit nappaateqalersimassasutit.
 SELECT:Sem0491 ("ilu") + (/^i?Sem/an.*/r) IF (0 Trm + Sg + 1SgPoss LINK 1 ("mangup")); #ILUNNUT mangutsisinnaasumik.
+SELECT:Sem0492 ("ilu") + (/^i?Sem/an.*/r) IF (0 Via + Sg + 1SgPoss); #Mattusuumik, angisuumik takorluuinerma ILUKKUT quinaammerterujussuarpaanga.
 
 SELECT:Sem0495 ("iner") + (/^i?Sem/excrete.*/r) IF (*0 ("nipaarsaar") OR ("mangup")); #Eqqarsaatigiinnarlugu tununniit manngersumik, angisuumik ilunnut manguttoqartoq, nipaarsaarlunga INERPUNGA.
 
@@ -17211,6 +17220,7 @@ REMOVE:Sem0540 ("atuar") + (/^i?Sem/read.*/r) IF (0 (/^i?Sem/chase.*/r) LINK NOT
 (NEGATE 0 (/[12][SP][gl]/l))
 (NEGATE 0 Cont LINK *0 VFIN + (/[12][SP][gl]/l));
 SELECT:Sem0541 ("atuar") + (/^i?Sem/read.*/r) IF (*0 (/^i?Sem/sem-r.*/r));#Paasisaqarnerorusullunga atuagassiaq toorpara ATUALERLUGULU.
+SELECT:Sem0542 ("atuar") + (/^i?Sem/read.*/r) IF (0 QQIP); #ATUAQQISSINNAANNGILARA.
 
 REMOVE:Sem0545 ("unip") + (/^i?Sem/institutionalize/r)(NEGATE *-1 HUMAN + Abs); #Nilliarsuataarpunga, nipili alersimit UNITSINNEQARPOQ.
 
@@ -17230,6 +17240,8 @@ SELECT:Sem0575 ("avip") + (/^i?Sem/divide/r) IF (*0 ("isuma")); #Inuit ilaasa su
 REMOVE:Sem0580 ("oqimaap") + (/^i?Sem/percep-e/r) IF (NEGATE *0 Cont + TRANSVERB); #Sussalluni matupalaaq taamak OQIMAATSIGISSAVA.
 
 REMOVE:Sem0585 ("massip") + (/^i?Sem/changeS/r) IF (0 (/^i?Sem/change_body_pos/r)); #Tassanngaannaq MASSERIASAARPUNGA, qarlikka attaseriarlugit nutsakka qilerlugit. #lav undtagelser når de kommer
+
+SELECT:Sem0590 ("pi") + (/^i?Sem/relate/r) IF (0 Cont + (/3[SP][gl]O/l)); #pillugu
 
 
 ##############
