@@ -16,7 +16,7 @@
 * tup  = 
 * K    = Direkte til finale klitika
 
-...ƒ
+...
 
 * LEXICON Nomen  Nominalstammer
 

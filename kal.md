@@ -1369,7 +1369,7 @@ given the proper use of these flags.
 * tup  = 
 * K    = Direkte til finale klitika
 
-...ƒ
+...
 
 * LEXICON Nomen  Nominalstammer
 
