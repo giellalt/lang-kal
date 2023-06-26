@@ -49,7 +49,7 @@ GT_ANALYSERS+=
 GT_GENERATORS+=
 
 if WANT_CUSTOM_FSTS
-CUSTOM_FSTS+=
+CUSTOM_FSTS+=analyser-learner-gt-norm.xfst generator-learner-gt-norm.xfst
 endif # WANT_CUSTOM_FSTS
 
 endif # CAN_XFST
@@ -60,7 +60,7 @@ GT_ANALYSERS+=
 GT_GENERATORS+=
 
 if WANT_CUSTOM_FSTS
-CUSTOM_FSTS+=
+CUSTOM_FSTS+=analyser-learner-gt-norm.hfstol generator-learner-gt-norm.hfstol
 endif # WANT_CUSTOM_FSTS
 
 endif # CAN_HFST
@@ -71,13 +71,117 @@ GT_ANALYSERS+=
 GT_GENERATORS+=
 
 if WANT_CUSTOM_FSTS
-CUSTOM_FSTS+=
+CUSTOM_FSTS+=analyser-learner-gt-norm.foma generator-learner-gt-norm.foma
 endif # WANT_CUSTOM_FSTS
 
 endif # CAN_FOMA
 
 #################################################
 #### Add language-specific build rules here: ####
+
+# This is the normative analyser:
+# Remove sub-standard/error forms to get a normative transducer
+analyser-learner-gt-norm.xfst \
+analyser-learner-gt-norm.hfst \
+analyser-learner-gt-norm.foma:
+analyser-learner-gt-norm.%: analyser-raw-gt-desc.%            \
+					filters/remove-area-tags.%                \
+					filters/remove-dialect-tags.%             \
+					filters/remove-variant-tags.%             \
+					filters/remove-number-string-tags.%       \
+					filters/remove-error-strings.%            \
+					filters/remove-hyphenation-marks.%        \
+					filters/remove-infl_deriv-borders.%       \
+					filters/remove-word-boundary.%            \
+					filters/remove-orthography-tags.%         \
+					filters/remove-Orth_IPA-strings.%         \
+					filters/remove-orig_lang-tags.%           \
+					filters/remove-Use_GC-strings.%           \
+					filters/remove-Use_minusGC-tags.%         \
+					filters/remove-Use_minus_PMatch-tags.%    \
+					filters/remove-Use_PMatch-strings.%       \
+					filters/remove-usage_except_NGminip-tags.%\
+					filters/remove-mwe-tags.%
+	$(AM_V_XFST_TOOL)$(PRINTF) "read regex \
+				@\"filters/remove-area-tags.$*\"                \
+			.o. @\"filters/remove-dialect-tags.$*\"             \
+			.o. @\"filters/remove-variant-tags.$*\"             \
+			.o. @\"filters/remove-number-string-tags.$*\"       \
+			.o. @\"filters/remove-error-strings.$*\"            \
+			.o. @\"filters/remove-orig_lang-tags.$*\"           \
+			.o. @\"filters/remove-orthography-tags.$*\"         \
+			.o. @\"filters/remove-Orth_IPA-strings.$*\"         \
+			.o. @\"filters/remove-Use_minus_PMatch-tags.$*\"    \
+			.o. @\"filters/remove-Use_GC-strings.$*\"           \
+			.o. @\"filters/remove-Use_minusGC-tags.$*\"         \
+			.o. @\"filters/remove-Use_PMatch-strings.$*\"       \
+			.o. @\"filters/remove-usage_except_NGminip-tags.$*\"\
+			.o. @\"filters/remove-mwe-tags.$*\"                 \
+			.o. @\"$<\"                                         \
+			.o. @\"filters/remove-hyphenation-marks.$*\"        \
+			.o. @\"filters/remove-infl_deriv-borders.$*\"       \
+			.o. @\"filters/remove-word-boundary.$*\"            \
+			; \n\
+		 save stack $@\n\
+		 quit\n" | $(XFST_TOOL)
+
+# This is the normative generating transducer.
+generator-learner-gt-norm.xfst \
+generator-learner-gt-norm.hfst \
+generator-learner-gt-norm.foma:
+generator-learner-gt-norm.%: analyser-raw-gt-desc.%           \
+					filters/make-optional-transitivity-tags.% \
+					filters/make-optional-homonymy-tags.%     \
+					filters/make-optional-hyph-tags.%         \
+					filters/make-optional-variant-tags.%      \
+					filters/make-optional-semantic-tags.%     \
+					filters/make-optional-adv_comp-tags.%     \
+					filters/make-optional-orig_lang-tags.%    \
+					filters/make-optional-grammatical-tags.%  \
+					filters/remove-area-tags.%                \
+					filters/remove-dialect-tags.%             \
+					filters/remove-hyphenation-marks.%        \
+					filters/remove-infl_deriv-borders.%       \
+					filters/remove-word-boundary.%            \
+					filters/remove-number-string-tags.%       \
+					filters/remove-orthography-tags.%         \
+					filters/remove-Orth_IPA-strings.%         \
+					filters/remove-error-strings.%            \
+					filters/remove-Use_GC-strings.%           \
+					filters/remove-Use_minusGC-tags.%         \
+					filters/remove-Use_minus_PMatch-tags.%    \
+					filters/remove-Use_PMatch-strings.%       \
+					filters/remove-usage_except_NGminip-tags.%\
+					filters/remove-mwe-tags.%
+	$(AM_V_XFST_TOOL)$(PRINTF) "read regex \
+				@\"filters/make-optional-transitivity-tags.$*\" \
+			.o. @\"filters/make-optional-homonymy-tags.$*\"     \
+			.o. @\"filters/make-optional-hyph-tags.$*\"         \
+			.o. @\"filters/make-optional-variant-tags.$*\"      \
+			.o. @\"filters/make-optional-semantic-tags.$*\"     \
+			.o. @\"filters/make-optional-adv_comp-tags.$*\"     \
+			.o. @\"filters/make-optional-orig_lang-tags.$*\"    \
+			.o. @\"filters/make-optional-grammatical-tags.$*\"  \
+			.o. @\"filters/remove-area-tags.$*\"                \
+			.o. @\"filters/remove-dialect-tags.$*\"             \
+			.o. @\"filters/remove-number-string-tags.$*\"       \
+			.o. @\"filters/remove-error-strings.$*\"            \
+			.o. @\"filters/remove-orthography-tags.$*\"         \
+			.o. @\"filters/remove-Orth_IPA-strings.$*\"         \
+			.o. @\"filters/remove-Use_minus_PMatch-tags.$*\"    \
+			.o. @\"filters/remove-Use_GC-strings.$*\"           \
+			.o. @\"filters/remove-Use_minusGC-tags.$*\"         \
+			.o. @\"filters/remove-Use_PMatch-strings.$*\"       \
+			.o. @\"filters/remove-usage_except_NGminip-tags.$*\"\
+			.o. @\"filters/remove-mwe-tags.$*\"                 \
+			.o. @\"$<\"                                         \
+			.o. @\"filters/remove-hyphenation-marks.$*\"        \
+			.o. @\"filters/remove-infl_deriv-borders.$*\"       \
+			.o. @\"filters/remove-word-boundary.$*\"            \
+			;\n\
+		 twosided flag-diacritics\n\
+		 save stack $@\n\
+		 quit\n" | $(XFST_TOOL)
 
 # We need to add processing of language-specific tags in the generator:
 define giella_generators
