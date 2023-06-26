@@ -1933,6 +1933,8 @@ SET AIRBORNE = BIRDS | AIRTRANSPORT ;
 LIST GEOOBJ = "imaq" ("naalap" VIK) "nuna" "qarmaq" "qeqertaq" "sermeq" "sineriak" "sissaq" "tungi"; # et specifikt set af mulige objekter til disambiguering af fx sinip vs. siner og ersi vs. ersip
 SET sinerOBJ = GEOOBJ | Prop ;
 
+LIST GAS = (/^i?Sem/cm-gas/r) "pujoq" ;
+
 LIST SEMIOTIC = ("titartar" TAQ) "aviisi" ("atuar" TAQ) "bloggeri" "blog" "blogger" "Ekstra Bladet" ("ima" QAR NIQ LIAQ) "Sermitsiaq.AG" "Sermitsiaq" ; #blogger er egentlig ikke semiotic
 LIST PERCEPTIVE = "nipi" ;
 LIST WEATHER = "alanngoq" "anori" "aput" "naqitsiniisaffik" "nuiaq" "seqineq" "sialuk" "sila" ;
@@ -2307,6 +2309,7 @@ REMOVE:0001BR ("inuiaqat") + GIIT + OBLIQUE + (/[12]SgPoss/l) IF (0 OBLIQUE - PO
 (NEGATE -1 ("uanga") OR ("illit"));
 REMOVE:0001BS ("sooq") + MI IF (0 ("soormi"));
 REMOVE:0001BT ("aa") OR ("ai") IF (0 ("una") + Prefix/AA);
+REMOVE:0001BU ("uuj") + MAA IF (0 ("uummaa"));
 
 #Gram/Exclm og Guess overgenerer voldsomt. Skal kun overleve, når de er eneste læsning undtagen ved strukturen tassa Gram/Excl eller når eneste andet verbum er sætningsadverbalt.
 SELECT:0002A EXCLAMATION IF (1 EXCLMARK) 
@@ -11924,6 +11927,9 @@ SELECT:0410 CONT + 4SgO + NIRAR OR SURE IF (*0 ORATIOOBLVERB + 3Sg)(*1 Par + 3Pl
 REMOVE:0412 Par + 3Pl IF (0 3Sg)(1 ("aappaq") + POSSESSUM)(NEGATE -*1 Abs + Pl);
 #Håndterer den "forkerte" kongruens ved aappaq. aappaq's -1 må være possessor, hvis ikke verbum for et subjekt længere til venstre. Milloorumanngitsut aappaa oqarpallappoq:
 
+#Personlig relativsætning kun ved kongruens med verbet
+REMOVE:0413 TUQ + N + &&IV_SUBJ& (NEGATE 0 Abs - (/[12][SP][gl]/l))(NEGATE *1 V + &&IV_SUBJ&);
+
 # Isolering af ledsaetninger - non-coref.
 SELECT:0414 Par + PASSIV + 3Pl IF (-3 Rel)(-2 Abs + Pl)(-1 Ins)(1 POSSESSUM);
 
@@ -14514,6 +14520,10 @@ REMOVE:5490FD Gram/TV + PALUK IF (0 Gram/IV + PALUK); #Tungaanut aallartungalu I
 REMOVE:5490FE ("ikip") + (/^i?Sem/be_attribute/l) IF (0 (/^i?Sem/activate/l) + TIR);
 REMOVE:5490FF ("anip") + QQU IF (0 ("ani") + QQU); #stor sandsynlighed
 SELECT:5490FG ("aanga") IF (0 ("aap") + NGA);
+REMOVE:5490FH1 ("ilummoor") + Gram/TV IF (0 ("iluk") + iTrm + iSg + Gram/Hyb + UR + Gram/TV)(NEGATE *-1 Abs + GAS);
+REMOVE:5490FH2 ("iluk") + iTrm + iSg + Gram/Hyb + UR + Gram/TV IF (0 ("ilummoor") LINK *-1 Abs + GAS); #Pujortaat millukkaangakku pujualu ILUMMOORLUGU silara aallartarpoq, timeralu oqilisutut ingerlaannaq misigisimalertarluni.
+REMOVE:5490FI ("iggap") IF (0 ("iggaser")); #IGGASIAARNIARLUNGA aalajangerpunga, nerereerpata ingerlaannaq innartinniassagakkit.
+REMOVE:5490FJ ("utoqqatsi") IF (0 ("utoqqatser")); #Er de helt synonyme? #KW26062023
 
 # Verbum eller partikel?
 SELECT:5491A ("aarit") IF (-1 BOS);
@@ -14769,13 +14779,15 @@ REMOVE:5585B1 TUQ + U IF (0 TUUR OR ("akunnattoor") )
 (NEGATE 0 (/"ilaa"\ Gram/IV\ TUQ\ Der/vn\ U\ Der/nv\ Gram/IV\ NNGIT/l))
 (NEGATE 0 ("qaqutigoor") OR ("tussiar"))
 (NEGATE 0 (/"tunnga"\ Gram/IV\ TUQ\ Der/vn\ \(iSem/ac\ \)?U\ Der/nv\ Gram/IV\ NNGIT\ Der/vv\ Gram/IV\ TUQ/l) LINK -1 Trm )#ullaap tungaani Oqaasileriffimmiit sulissaanga, ullo'qeqqatali kingorna Kommuneqarfik Sermersuumi siuttunut saqqummiiartussaanga maani suliatsinnut TUNNGASUUNNGITSUMIK
+(NEGATE 0 ("taama") + IP) #TAAMAATTUUNNGILANGA.
 ;
 
 #Der bør måske laves et sæt i stedet for de to ad hoc undtagelser?
 REMOVE:5585B2 TUUR IF (0 ("qaqutigoor") + TUQ + U OR ("tussiar") + TUQ + U);
 REMOVE:5585B3 TUUR IF (0 (/"tunnga"\ Gram/IV\ TUQ\ Der/vn\ \(iSem/ac\ \)?U\ Der/nv\ Gram/IV\ NNGIT\ Der/vv\ Gram/IV\ TUQ/l) LINK -1 Trm);#ullaap tungaani Oqaasileriffimmiit sulissaanga, ullo'qeqqatali kingorna Kommuneqarfik Sermersuumi siuttunut saqqummiiartussaanga maani suliatsinnut TUNNGASUUNNGITSUMIK
+REMOVE:5585B4 TUUR IF (0 (/"tigussaa"\ Gram/IV\ TUQ\ Der/vn\ U\ Der/nv\ Gram/IV\ NNGIT\ Der/vv\ Gram/IV\ TUQ/l));
+REMOVE:5585B5 TUUR IF (0 ("taama") + IP);
 
-REMOVE:5585C TUUR IF (0 (/"tigussaa"\ Gram/IV\ TUQ\ Der/vn\ U\ Der/nv\ Gram/IV\ NNGIT\ Der/vv\ Gram/IV\ TUQ/l));
 REMOVE:5586 ("kalak") + U + LIR IF ( 0 ("kalaaleq"));
 REMOVE:5587 TAQ + LIR + Der/nv IF (0 TAR + LIR + Der/vv);
 REMOVE:5588 ("quer") + POSSESSUM IF (0 ("qui") + POSSESSUM); #næppe nogens hoster
@@ -17067,17 +17079,17 @@ SELECT:Sem0385 ("ilaartor") + (/^i?Sem/say.*/r) IF (*0 DIRTALESTART OR DIRTALESL
 
 REMOVE:Sem0390 ("marser") + (/^i?Sem/run.*/r) IF (-1 Trm); #Igalaap tungaanut MARSILAARIARLUNGA takusaqannginnama, iffiartulaarniarama saarulliup suaanik qallersorniarlugu siatserujuujutaa raatiu oqaasilerilersimasoq malinnaavigilerpara. #usikker regel, fordi man også kan marchere hen til noget
 
+#pivoq
 SELECT:Sem0395A ("pi") + (/^i?Sem/reach/r) IF (-1 Trm);
 REMOVE:Sem0395B ("pi") + (/^i?Sem/reach/r) (NEGATE -1 Trm);
-SELECT:Sem0396 ("pi") + (/^i?Sem/socializeO/r) IF (0 NIQAR + NIQ + 1SgPoss); #Ajortumik PINEQARNERA pillugu qianngilanga, kanngusukkamali qiavunga. #man kan ikke få mennesker
-SELECT:Sem0397A ("pi") + (/^i?Sem/get/r) IF (-1 Ins - ("arlaq"));
-REMOVE:Sem0397B ("pi") + (/^i?Sem/get/r) (NEGATE -1 Ins - ("arlaq"));
-SELECT:Sem0398 ("pi") + (/^i?Sem/occur/r) IF (*-1 Abs - HUMAN LINK NOT *1 Trm OR Ins LINK *1 _TARGET_); #“1979-imili Inatsisartut eqqunneqarmat aatsaat taamak kanngunartuliat piffissami sivikitsigisumi PIPPUT!”
-
+SELECT:Sem0396 ("pi") + (/^i?Sem/get/r) IF (-1 Ins - ("arlaq"));
+SELECT:Sem0397A ("pi") + (/^i?Sem/occur/r) IF (*-1 Abs - HUMAN LINK NOT *1 Trm OR Ins LINK *1 _TARGET_); #“1979-imili Inatsisartut eqqunneqarmat aatsaat taamak kanngunartuliat piffissami sivikitsigisumi PIPPUT!”
+REMOVE:Sem0397B ("pi") + (/^i?Sem/occur/r) IF (*-1 Abs + HUMAN OR ("arlaq")); #Arlaat PINNGIKKUNI, arlaat peqqusoq.
+#pivaa
 REMOVE:Sem0400A ("pi") + (/^i?Sem/relate/r) (NEGATE 0 Cont + OBJEKT3); #pillugu
 SELECT:Sem0400B ("pi") + (/^i?Sem/relate/r) IF (0 Cont + OBJEKT3);
 REMOVE:Sem0401 ("pi") + (/^i?Sem/say/r) (NEGATE *0 DIRTALESLUT);
-SELECT:Sem0402 ("pi") + (/^i?Sem/socializeO/r) IF (-1 ("taama")); #Oqassapput sianiinaagaasimasugut, taamatullu PINEQARNERPUT naammalersoq.
+SELECT:Sem0402 ("pi") + (/^i?Sem/socializeO/r) IF (0 NIQAR + NIQ + POSSESSUM12); #Ajortumik PINEQARNERA pillugu qianngilanga, kanngusukkamali qiavunga. #Oqassapput sianiinaagaasimasugut, taamatullu PINEQARNERPUT naammalersoq. #man kan ikke få mennesker
 
 SELECT:Sem0405 ("aalater") + (/^i?Sem/gesture/r) IF (*0 ("nikorfa")); #Tassanngaannaq politiit angummik utoqqasaamik takunnilerput, altanimi silataani nikorfasoq AALATERIUTIGALUNI. #Der kan nok sagtens findes en bredere regel.
 SELECT:Sem0406 ("aalater") + (/^i?Sem/gesture/r) IF (-1 ("tunge")); #Qungujulallunga tungaanut AALATERIVUNGA.
