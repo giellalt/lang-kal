@@ -434,13 +434,14 @@ LIST IRSIR = IRSIR ;
 LIST IRUTE = IRUTE ;
 LIST JA = JA ;
 LIST JAAR = JAAR ;
+LIST KAA = KAA ;
+LIST KAAP = KAAP ;
 LIST KANNIQ = KANNIQ ;
 LIST KAR = KAR ;
-LIST KKUT = KKUT ;
-LIST KKUUTAAR = KKUUTAAR ;
-LIST KAAP = KAAP ;
 LIST KASIK = KASIK ;
 LIST KIP = KIP ;
+LIST KKUT = KKUT ;
+LIST KKUUTAAR = KKUUTAAR ;
 LIST KUJUP = KUJUP ;
 LIST KULUUQ = KULUUQ ;
 LIST KUQ = KUQ ;
@@ -3552,7 +3553,7 @@ REMOVE:0147P (/\ GE\ Der/nv\ \(Gram/[A-Z]*[a-z]*\ \)*V\ Imp\ /l) ; #inuiaqatigii
 REMOVE:0147Q (/TUQ\ Der/vn\ USAAR\ Der/nv/l) OR (/TUQ\ Der/vn\ U\ Der/nv\ Gram/IV\ SAAR\ Der/vv/l) OR (/TUQ\ Der/vn\ USAAQ\ Der/nn/l) OR (/TUU\ Der/vv\ Gram/TV\ TAQ\ Der/vn/l) OR (/TUQ\ Der/vn\ USAQ\ Der/nn/l) IF (0 TUUSAAR);
 REMOVE:0147R (/QQIP\ Der/vv\ TAR\ Der/vv/l) IF (0 (/QQIP\ Der/vv\ SSA\ Der/vv/l)); #Tassami QINERSEQQISSAQAAGUT. #Er det overhovedet muligt? Er det ikke altid -qqittar-?
 REMOVE:0147S (/PALUK\ Der/vn\ LIR\ Der/nv/l) IF (0 (/PALUP\ Der/vv\ LIR\ Der/vv/l)); #ILLAATIGERPALULERMANGA tunummut qiviarpara.
-#REMOVE:0147T (/VIK\ Der/vn\ \(\^i?Sem/.*\ \)?GIP\ Der/nv/l) IF (0 (/VIK\ Der/vn\ \(\^i?Sem/.*\ \)?GE\ Der/nv/l));
+REMOVE:0147T (/VIK\ Der/vn\ \(\i?Sem/.*\ \)?GIP\ Der/nv/l) IF (0 (/VIK\ Der/vn\ \(\i?Sem/.*\ \)?GE\ Der/nv/l));
 REMOVE:0028D SAR + Gram/Refl OR SAR + Gram/Pass (0 TAR + Orth/Arch)
 (NEGATE 0 ("piareer"));#PL20230109
 
@@ -11879,7 +11880,7 @@ REMOVE:sem100 KKUT IF (0 Via) (1 ("oqallip")) ;
 REMOVE:0403A Par + 3PlO + TRANS_TIDSVERBER IF (0 Par + 3SgO + TRANS_TIDSVERBER) #UNNUUKKAAlu kissarneqalerama saannerilerlungalu.
 (NEGATE -1 Abs + Pl);
 
-REMOVE:0403B Par IF (0 N + NUMERUS + PN + &&IV_SUBJ&)(*1 V + &&IV_SUBJ&)(-1 BOS) ; #aalisartuusugut ajornakusooruteqarpugut.
+REMOVE:0403B Par IF (0 N + NUMERUS + PN + &&IV_SUBJ&)(*1 V + &&IV_SUBJ& - 34IV)(-1 BOS) ; #aalisartuusugut ajornakusooruteqarpugut.
 
 SELECT:0403C Par + TIME IF (-1 BOS OR KOMMA)(1 &&IVTVSUBJ& + N OR &&IVTVSUBJ& + PROP LINK *1 &&IVTVSUBJ& + V BARRIER (*) - Adv - ADVERBIEL - OBLIQUE - CONT - Rel);
 
@@ -11931,7 +11932,7 @@ REMOVE:0412 Par + 3Pl IF (0 3Sg)(1 ("aappaq") + POSSESSUM)(NEGATE -*1 Abs + Pl);
 #Håndterer den "forkerte" kongruens ved aappaq. aappaq's -1 må være possessor, hvis ikke verbum for et subjekt længere til venstre. Milloorumanngitsut aappaa oqarpallappoq:
 
 #Personlig relativsætning kun ved kongruens med verbet
-REMOVE:0413 TUQ + N + &&IV_SUBJ& (NEGATE 0 Abs - (/[12][SP][gl]/l))(NEGATE *1 V + &&IV_SUBJ&);
+REMOVE:0413 TUQ + N + (/[12][SP][gl]/l) + &&IV_SUBJ& (NEGATE 0 Abs - (/[12][SP][gl]/l))(NEGATE *1 V + (/[12][SP][gl]/l) + &&IV_SUBJ&); #Aneqqammertugut kavaajama singissartua singinneq ajulerpara. #Utaqqisugut politiit takkupput.
 
 # Isolering af ledsaetninger - non-coref.
 SELECT:0414 Par + PASSIV + 3Pl IF (-3 Rel)(-2 Abs + Pl)(-1 Ins)(1 POSSESSUM);
@@ -13713,10 +13714,10 @@ REMOVE:8554 Par + 3Pl IF (*1 3PlO)(NEGATE *-1 ORATIOOBLVERB BARRIER KOMMA)
 #Objekt med kongruensadled med possessor
 #REMOVE:8555 N + Rel + Pl - (/TUQ\Der\/vn\ N\ /l) IF (*-1 Rel + Pl OR POSSESSUM BARRIER CONJ-C OR V)(*1 TRANSVERB + 3Pl OR TRANSVERB + CONT)(NEGATE 0 CONJ-C)(NEGATE *-1 V)(NEGATE 1 Rel + Pl) ; #Slet Rel hvis der i forvejen er et subjekt
 
-REMOVE:8555A Abs + Pl IF (*1C TRANSVERB + 3Pl - 3PlO BARRIER 3PlPoss OR KOMMA)(NEGATE 0 Abs LINK *-2 Rel BARRIER V OR POSSESSUM)(NEGATE 0 HUM LINK NOT *1 iOBLIQUE + Abs)
-(NEGATE -1 Rel + Pl LINK 1 _TARGET_ + LEKSIKALISERING + Abs LINK 1 TRANSVERB + 3Pl)#Tassa imaappoq, kukkunersiuisut NAATSORSUUTIT akueraat, naatsorsuutilli ilaa akisussaaffiginngikkitsik erseqqissaatigalugu.
-(NEGATE 1 Abs + CONJ-C LINK 1 3PlO)#Nunatta Katersugaasiviani Nuummiittumi ISERTITAT aningaasartuutillu oqimaaqatigiissinniarlugit sipaarniarneq aamma malugisinnaavaat.
- ;
+#REMOVE:8555A Abs + Pl IF (*1C TRANSVERB + 3Pl - 3PlO BARRIER 3PlPoss OR KOMMA)(NEGATE 0 Abs LINK *-2 Rel BARRIER V OR POSSESSUM)(NEGATE 0 HUM LINK NOT *1 iOBLIQUE + Abs)
+#NEGATE -1 Rel + Pl LINK 1 _TARGET_ + LEKSIKALISERING + Abs LINK 1 TRANSVERB + 3Pl)#Tassa imaappoq, kukkunersiuisut NAATSORSUUTIT akueraat, naatsorsuutilli ilaa akisussaaffiginngikkitsik erseqqissaatigalugu.
+#(NEGATE 1 Abs + CONJ-C LINK 1 3PlO)#Nunatta Katersugaasiviani Nuummiittumi ISERTITAT aningaasartuutillu oqimaaqatigiissinniarlugit sipaarniarneq aamma malugisinnaavaat.
+#; #helt obskur og uforståelig regel uden eksempel, der ikke gør noget i regressionen bortset fra at ramme forbi KW30062023
 REMOVE:8555B Rel IF (0 Abs LINK 1 Abs + CONJ-C LINK 1 3PlO) #Nunatta Katersugaasiviani Nuummiittumi ISERTITAT aningaasartuutillu oqimaaqatigiissinniarlugit sipaarniarneq aamma malugisinnaavaat.
 (NEGATE 0 Der/vn + Rel LINK **-1C Rel BARRIER (*) - Rel - %AmbiguøsN - %AmbiguøsPar)#Kulturikkut kingornussatta TIGUSAASUT tigussaasuunngitsullu eriagalugit paarinissaannut ineriartortinnissaannullu oqaatsit sakkussaraagut pingaaruteqarnerpaasut.
 (NEGATE *-1 (Par NIR) LINK *1 _TARGET_ + Rel LINK *1 ORATIOOBLVERB + TRANSVERB OR ("sungiusar"))#Angallat qanoq atorsinnaanersoq, qanoq killeqarnersoq, qanorlu pisinnaatiginersoq Aasianni POLITIIT inuttallu sungiusalissavaat.
