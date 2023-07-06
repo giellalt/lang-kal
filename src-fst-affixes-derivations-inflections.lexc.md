@@ -375,7 +375,9 @@ PL 20180718. Følgende er et særligt lexicon til ip i stedet for tidligere LEXI
 
 * LEXICON flex-tv2  
 
-* LEXICON flex-tv2_ute  !PL20210528 kopi af flex-tv2 bortset fra Imp pga. titartaaTInnga 
+* LEXICON flex-tv2_ute  
+
+* LEXICON flex-tv_NIQ_AJUR  !PL20230706 kopi af flex-tv2 men uden derivativer
 
 * LEXICON flex-tv_fleksiver 
 
