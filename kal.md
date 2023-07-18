@@ -876,6 +876,8 @@ flex-tv ;
 
 * LEXICON N_Loan_bindestreg  låneord, der skal have bindestreg som Ph.d.
 
+Ord som PFAS
+
 * LEXICON N_Loan_Num  som bør have bindestreg *omega% 3*
 
 * LEXICON N_Loan_GEM_s  test på ordet 'gas'
