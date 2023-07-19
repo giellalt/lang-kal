@@ -1969,7 +1969,7 @@ LIST Mellemnavn = (Borup Sem/Hum) ;
 SET Efternavn = Sem/Hum - Fornavn ;
 LIST Hmyth = "Aningaaq" "Aqissiaq" "Guuti" "Maliina" ; #Proprier, der anvendes som/med vokativ
 SET NOT-PERSON = EVENT ;
-LIST NÆPPE_FIRSTNAME = "naasoq" "niviarsiaraq" "nukappiaq" "nukappiaraq" "nukarleq" "piffik" "pupik" "una"; #Liste med appellativer, som teoretisk kan være proprier i position 0, men højst usandsynligt er det
+LIST NÆPPE_FIRSTNAME = "naasoq" "niviarsiaraq" "nukappiaq" "nukappiaraq" "nukarleq" "piffik" "pupik" "ulloriaq" "una"; #Liste med appellativer, som teoretisk kan være proprier i position 0, men højst usandsynligt er det
 SET FIRSTNAME = (Sem/Mask Prop) | (Sem/Fem Prop) | Mask | Fem | ("Frederik") | ("Nuka") | ("A") | ("B") | ("C") | ("Chr") | ("D") | ("E") | ("F") | ("G") | ("H") | ("I") | ("J") | ("K") | ("Kr") | ("L") | ("M") | ("N") | ("O") | ("P") | ("Q") | ("R") | ("S") | ("T") | ("U") | ("V") | ("W") | ("X") | ("Y") | ("Z") | ("Æ") | ("Ø") | ("Å") ;
 SET NAME = FIRSTNAME | Sur ;
 SET NOT-FIRST = WORD - FIRSTNAME ;
@@ -3944,7 +3944,7 @@ REMOVE:0099Ø Num + Abs IF (0 Rel LINK 1 Num + Rel + CONJ-C LINK 1 3PlPoss); #20
 #===========#
 
 #Det ret usandsynlige participium 3Sg-1SgO + MI og refleksivt GE Ind + 1Sg + MI er homonymt med IteCau + 4Sg. Slettes hvis VFIN + 3Sg
-REMOVE:0032 Par + 3Sg + 1SgO + MI IF (0 IteCau + 4Sg LINK *1 VFIN + 3Sg);
+REMOVE:0032 Par + 3Sg + 1SgO + MI IF (0 IteCau + 4Sg LINK *1 VFIN + 3Sg OR Par + 3Sg);
 REMOVE:0033 GE + Ind + 1Sg + MI IF (0 IteCau + 4Sg LINK *1 VFIN + 3Sg); 
 
 REMOVE:0034 Par OR Ind IF (0 IteCau)(*-1 TIME + Via BARRIER V);#(NEGATE 0 TAR) ; #Kan gøres sikrere med NEGATE 0 TAR.
@@ -4006,7 +4006,7 @@ SELECT:0003F Ind - SUB IF #Se også diambiguering 2. runde i regel REMOVE:9968BK
 (NEGATE 0 (/GALUAQ\ Der/vn\ GE\ Der/nv\ Gram/TV\ V\ Ind/l) LINK 0 (/GALUAR\ Der/vv\ Gram/TV\ V\ Par/l) LINK NEGATE *0 V)#et helt isoleret Par uden kontekst
  ;
 
-REMOVE:0003G Gram/Refl IF (0 TRANSVERB + 3Sg)(*-1 Rel + Sg BARRIER 3SgPoss); #Kalip OQARFIGAANGA atuagaq tigoqqullugu
+REMOVE:0003G Gram/Refl IF (0 TRANSVERB + 3Sg)(*-1 Rel + Sg BARRIER 3SgPoss) #Kalip OQARFIGAANGA atuagaq tigoqqullugu
 
 ### INTERJEKTION, VOKATIV, FOKUS, IMPERATIV og EXCLAMATION ###
 #============================================================#
@@ -4134,10 +4134,13 @@ REMOVE:0001Q ("(\\p{Lu}.*)"r) + Fornavn - NÆPPE_FIRSTNAME IF (0 N)(-1 BOS OR DI
 (NEGATE 0 ("Naja") - POSSESSUM)#Naja er meget frekvent
 (NEGATE 0 ("Nuunu") - POSSESSUM) #nuunu uden poss. i første position usandsynlig og Nuunu alm. pigenavn
 (NEGATE 0 (Prop Abs Sg) LINK *1 INTRANSVERB + 3Sg + <fn:Talk> OR TRANSVERB + 3SgO + <fn:Talk> BARRIER V )#AANEERAQ oqaluutilaarlara
+(NEGATE 0 ARAQ + $$KASUS LINK NOT 1 N + TUQ + $$KASUS)
 ; #Laver alt for mange fejl, fx Flemming<Geo> illumik piareersaavoq. Der mangler nok en betingelse? Proprier disambigueres senere.
 
 REMOVE:0001QA ("nuunu") + N - POSSESSUM IF (0 ("Nuunu") + Sem/Fem + Prop);
 REMOVE:0001QB ("Nuunu") + Sem/Mask IF (0 ("Nuunu") + Sem/Fem);
+
+REMOVE:0001QC N + ARAQ - NÆPPE_FIRSTNAME IF (0 Fornavn + ARAQ); #ARSUGAAQQAP inuup mikissusaa, anaanami oqaasii paasisinnaaneq ajorpai.
 
 
 #Proprium med MI er næsten altid lokativ
@@ -12984,9 +12987,12 @@ SELECT:Sel0038 Abl IF (*1 PASSIV BARRIER VFIN)
 (NEGATE 0 Ins LINK *1 QAR BARRIER V)(NEGATE *1 HTR BARRIER V)(NEGATE 0 Ins + CONJ-LUUNNIIT)(NEGATE 0 THING)
 (NEGATE 0 ("ini") LINK 1 ("IP"))#ad hoc regel mens vi afventer opsplitning af GCG til to grammatikker
 (NEGATE 0 Ins LINK *1 Der/vn BARRIER PASSIV OR V)#Ilinniakkamillu ingerlatsisut efterskolernermut, inuusuttunut ilinniarfinnut INGERLARIAQQIFFIUSUMILLU ilinniarnermut immikkoortiterneqarput.
+(NEGATE 0 ("sunnguaq") + Ins) #Pituannguugamimigooq SUNNGUAMILLUUNNIIT nukersortinneqassanngilaq.
 ; #Regel for agens tilfoejet 9.11. Må ikke slette Ins til QAR
 
 SELECT:Sel0039 Ins + THING IF (0 Abl) (1 SINNAA) ; #ilaalu mikingaaramik *qinngussuarmilluunniit takuneqarsinnaanngingajattut.
+
+SELECT:Sel0040 ("sunnguaq") + Ins IF (0 ADV-LUUNNIIT); #Pituannguugamimigooq SUNNGUAMILLUUNNIIT nukersortinneqassanngilaq.
 
 # One-cohort disambiguation - cycle 0
 
@@ -14778,6 +14784,7 @@ REMOVE:0553A NIQAR IF (0 NIQ + QAR - HTR LINK -1 Ins + Pl - CONJ-C OR Ins + Num 
 (NEGATE 0 (/".*"\ Gram/TV\ NIQAR/l) + 3Pl LINK *-1 Abs + Pl BARRIER 3PlO OR V + 3Pl OR CON_CAU + 4Pl)#
 (NEGATE 0 <fn:Influence> + NIQAR OR <fn:Judge> + NIQAR LINK *-1 Ins BARRIER V)#Ilinniartitsisunik pitsaasunik peqassagaanni pikkorissarnernik amerlasuunik PERIARFISSINNEQARTARIAQARPUT.
 (NEGATE 0 (/SSIP\ Der/nv\ Gram/TV\ NIQAR/l))
+(NEGATE 0 ("poor")) #Angerlamut apuuttorlu ”...arpaqattaarnak annertunngooqinaatit. Eqqissillutit iPaderniarit...”, ineeqqamini pinnguarpassuami pujoralannik POORNEQALERSUT akorninut pilluni iPadileruni, ullorsuaq ualersuarlu naasaraaq, kakkilertalluni tangajullattaajutigaluni.
 ;
 REMOVE:Int0424 (/__INNAQ\ Der\/vn\__/l) IF (0 (/__INNAQ\ Der\/nn\__/l))(NEGATE 0 ("pisup")) ; #ikke slette pisuinnaat (aqqutaat)
 REMOVE:5553B NIQ + QAR IF (0 NIQAR)(NEGATE -1 Ins + POSSESSUM); #Sen regel udelukkende ud fra sandsynlighed
@@ -15302,12 +15309,16 @@ REMOVE:9492D Pl + POSSESSUM IF (0 Sg + POSSESSUM)(NEGATE 0 Sg + Pl)(NEGATE 1 N +
 (NEGATE 0 $$KASUS LINK *1 $$KASUS + Pl BARRIER (*) - Rel - OBLIQUE)#Kalaallit MEERARTAAT 1.000-it missaanniittut inooqatigiinnikkut ilungersunartunik ajornartorsiuteqartut , immikkut ilisimasallit naliliipput .
 (NEGATE 0 %TaqPossPoss + $$NUMERUS LINK *-1 $$NUMERUS BARRIER (*) - %TaqPossPoss)#meeqqanik arnap IKIUGAANIK takunnippunga.
 (NEGATE -1 Rel + Pl LINK 1 _TARGET_ + 3PlPoss + Abs LINK 1 INTRANSVERB + 3Pl)#Tamatuma kingornagut atuakkiat, taalliat, aviisit, atuagassiat, nittartakkat inatsisillu OQAASERTAAT katersorneqarput.
+(NEGATE 0 ("nalu") + NNGIT + TAQ + Trm) #NALUNNGISAMINULLI oqaannartarpoq ”Uteriitsuliaq!”
 ;
 
 REMOVE:9492E Pl + 3PlPoss + $$KASUS IF (0 Sg + 3PlPoss)
 (NEGATE 1 Sg + $$KASUS)(NEGATE 1 Pl + $$KASUS)(NEGATE NOT *1 V BARRIER ("tassa") LINK *-1 _TARGET_ + Abs LINK *-1 INTRANSVERB + 3Pl BARRIER V)(NEGATE -1 Rel + Pl)  #Statistisk begrundet, men forbehold for kongruensadled
 ##
 ;
+
+REMOVE:9492F ("nalu") + NNGIT + TAQ + Trm + Sg + 4SgPoss IF (0 Pl); #NALUNNGISAMINULLI oqaannartarpoq ”Uteriitsuliaq!” #Ren sandsynlighed, fordi man plejer at have flere bekendte.
+
 REMOVE:9500A Pl + Lok IF (0 Abs + Pl + 4SgPoss)(1 Abs + Pl LINK *1 3PlO)(NEGATE 1 Lok) ;
 REMOVE:9500B Sg + $$KASUS IF (1 Pl + $$KASUS + @N<) ;
 
@@ -15696,6 +15707,7 @@ REMOVE:9965A OBLIQUE + $$KASUS + Pl IF (0 OBLIQUE + Sg)
 (NEGATE 0 N - POSSESSUM LINK NOT *0 (/[12]Sg/r))#-****** 5 LINK 0 POSSESSUM12)#Siumut Demokraatillu aatsitassarsiulersaarnermut tapersersuisuupput, pissutigalugu aatsitassarsiutileqatigiiffiup oqarnera naapertorlugu tamanna nunatta karsianut koruuninik milliardilikkaanik isaatitsissutaasinnaallunilu piffimmi SULIFFINNIK pilersitsissutaasinnaalluni.
 (NEGATE 0 (/"qallunaaq"\ VIK\ Der/nn/l) - POSSESSUM LINK 0 (/"qallunaaq"\ VIK\ Der/nn/l) + POSSESSUM) #QALLUNAAVINNIK ikinnguteqarnera takussavaa.
 (NEGATE 0 1SgPoss LINK NEGATE *0 1Sg OR 1SgO OR 1SgPoss LINK NOT 0 3SgPoss)#PL20230112 Taakku ilaat tassaasinnaavoq TIMERSOQATIGIIFFINNI pisoqarnerulernera.
+
 ;
 REMOVE:9965B (/"qallunaaq"\ VIK\ Der/nn/l) + POSSESSUM IF (0 (/"qallunaaq"\ VIK\ Der/nn/l) - POSSESSUM); #QALLUNAAVINNIK ikinnguteqarnera takussavaa.
 
@@ -16617,7 +16629,7 @@ SELECT:Sel0096 (@CL-<CIT) IF (*-1 ORATIOOBLVERB BARRIER V-NOT-Par)(NEGATE 0 @OBJ
 (NEGATE 0 @SUBJ> + &&IV_SUBJ& LINK NOT *-1 Abs + &&IV_SUBJ& BARRIER KOMMA LINK *1 VFIN + &&IV_SUBJ&)#.. unnugu arfineq pingasut missaanni Nuummut tikinnissaat, Air Greenlandip timmisartunik AQUTSISOQARFIANEERSOQ, Hans Baadsgård oqaluttuarpoq.
 
 ;
-SELECT:9969:L TUQ + Abs IF (-1 V + U )(1 KOMMA OR EOS)(NEGATE -1 TEMPUSVERB + Par) ;
+SELECT:9969:L TUQ + Abs IF (-1 V + U )(1 KOMMA OR EOS)(NEGATE -1 TEMPUSVERB + Par);
 REMOVE:Int0620 @CL-CIT> IF (1 @N<) ; # Hvis det er en CL-CIT, er der ikke et adnominalt adled til højre for det. I så fald er det et objekt, eller det ord der er tagget som @N< er CL-CIT. Naasorli ajortuusoq paasigaanni.
 
 REMOVE:9969M (/Gram/TV\ QQU\ Der/vv\ Gram/Db/l) IF (0 (/Gram/IV\ QQU\ Der/vv\ Gram/TV/l))(NEGATE *-1 Trm BARRIER V)#Inuk takornartaq sanilerisap angallataanik misissuisoq takugaanni taanna PEEQQUNEQARSINNAAVOQ,
@@ -16734,6 +16746,9 @@ REMOVE:9975A2 3PlPoss IF (-1*W 3Sg OR 3SgO)(0 3SgPoss)(NEGATE *-1 3Pl) #Possesso
 (NEGATE 0 ("akunneq") + 3PlPoss LINK -1 $$KASUS + LU LINK -1 $$KASUS)#Aamma Nuup, Sisimiut, Aasiaat Ilulissallu AKORNINI timmisartuussinerit pisarnertut ingerlanneqassapput. En sikrere regel fordi Rel i -1 kan være REMOVE-et fejlagtigt
 (NEGATE *-1 Rel + Pl BARRIER (*) - Ins - ("'"))#Taannali aatsaat 'savalimmiormiut kalaallillu oqartussaasuisa' imarisaanik AKUERSINERISIGUT atuutilissasoq, isumaqatigiissummi allassimavoq.
 ;
+
+REMOVE:9975A3 3PlO IF (0 3SgO LINK *-1W 3Sg LINK NOT *0 3Pl) #Pituannguugamimigooq sunnguamilluunniit nukersortinneqassanngilaq. Ullaamiit unnussuarmut angajoqqaavisa sunik tamanik OQILISAAPPAAT.
+(NEGATE 0 Gram/Gaanni);
 
 #REMOVE:9975A5 3SgPoss IF (-1*W 3Pl OR 3PlO)(0 3PlPoss)(NEGATE *-1 3Sg) ; #Possessor 3Pl hvis 3Pl i omgivende sætninger
 
@@ -17355,6 +17370,8 @@ SELECT:Sem0775 ("aquut") + (/^i?Sem/Vground/r) IF (*0W ("biili"));
 SELECT:Sem0780 ("siorleq") + (/^i?Sem/L/r) + $$KASUS + $$NUMERUS IF (-1 $$KASUS + $$NUMERUS); #Aquutaa assoroorluni paarivaa, timini igalaap SIORLIUP tungaanut kivippaa nilliaatigaluni ingeqqillunilu.
 
 REMOVE:Sem0785 ("ilu") + (/^i?Sem/an/r) IF (0 (/^i?Sem/Lh/r) + POSSESSUM3 LINK -1 ("ini") OR ("illu"));
+
+REMOVE:Sem0790 ("tulleq") + (/^i?Sem/an/r) IF (0 (/^i?Sem/unit/r) LINK -1 NIRPAAQ); #Anaanaata nalunngisaminnut ERSEQQISSARTUAANNARPAA Arsugap atuaqatimini anginerpaap TULLIUNERA.
 
 ##############
 AFTER-SECTIONS
