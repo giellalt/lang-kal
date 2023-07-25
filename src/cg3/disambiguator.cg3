@@ -1857,7 +1857,7 @@ LIST USPATIAL = "sanik" "ateq";
 LIST ORGANISATION = "Atassut" "Demokraatit" "De Konservative" "Enhedslisten" "IA" "Inuit Ataqatigiit" "Kalaallit Røde Korsiat" "KNAK" ("Naalakkersuisoq" Pl) "Naalakkersuisut" "Naleraq" "Nunatsinni Inuit Innarluutillit Kattuffiat" "NIIK" "Nunatta Qitornai" "parti" "Partii Naleraq" "peqatigiiffik" "Røde Kors" "S" "Siumut" "Suleqatigiissitsisut" "V";
 LIST DISEASE = "corona" "coronavirus" "COVID" "COVID-19" "COVID19" "gigt";
 
-LIST PLACE = (/"akunnip"\ Gram/IV\ TAR\ Der/vv\ Gram/IV\ VIK/l) (/"atuar"\ Gram/TV\ TAQ\ Der/vn\ IRNIAR\ Der/nv\ Gram/IV\ VIK/l) ("atuar" VIK) "børnehave" "eqqaq" "etage" "illu" (/"illu"\ QAR\ Der/nv\ Gram/IV\ VIK/l) "imaq" "itersaq" "itersaliaq" "itersaliarsuaq" "klasse" ("mip" TAR VIK) "mittarfik" "napparsimavik" "napparsimmavik" "nuna" ("oqalup" VIK) "orpippassuaq" "sakkutooqarfik" "sal" "siku" "silarsuaq" "sineriak" "ungaloq" "village" Sem/Geo
+LIST PLACE = (/"akunnip"\ Gram/IV\ TAR\ Der/vv\ Gram/IV\ VIK/l) (/"atuar"\ Gram/TV\ TAQ\ Der/vn\ IRNIAR\ Der/nv\ Gram/IV\ VIK/l) ("atuar" VIK) "børnehave" "eqqaq" "etage" "illu" (/"illu"\ QAR\ Der/nv\ Gram/IV\ VIK/l) "imaq" "itersaq" "itersaliaq" "itersaliarsuaq" "klasse" ("mip" TAR VIK) "mittarfik" "napparsimavik" "napparsimmavik" "nuna" ("oqalup" VIK) "orpippassuaq" (/"paaqqi"\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TAR\ Der/vv\ Gram/IV\ VIK\ Der/vn/l) "sakkutooqarfik" "sal" "siku" "silarsuaq" "sineriak" "ungaloq" "village" Sem/Geo
  ^Sem/Hum #fail-fast-tag: hvis taggen er med vil evt. andre TRUE-tags blive blokeret
 "lexicon" <Lh>;
 LIST PLACE_MORE = (/\"<\\p{Lu}.*\>"/r) ^Hyb/2-2; #Der må gøres noget, for rammer også fejlstavet *Naalakkersuisoq
@@ -3532,7 +3532,7 @@ REMOVE:0016D ("Aas") + AAT IF (0 ("Aasiaat")) ;
 REMOVE:0017A ("tamap") + Imp IF (0 (/__Gram\/Dem\ Pron__/l)) ; #Archaisk tamap+Imp meget usandsynlig
 REMOVE:0017B (/"angi"\ Gram/IV\ NIQ/l) + LAAQ IF (0 ("annilaar")) ;
 REMOVE:0018 ("assoq") + 2SgPoss IF (0 (/__\"assut\"\ Adv__/l) OR (/__\"assut\"\ Interj__/l)) ; #'din luvart' fremfor 'meget' næsten utænkelig
-REMOVE:0021 ("usi") + Abs IF (0 ("usi") + Interj)(-1 BOS OR KOMMA)(1 KOMMA); #'last' som isoleret ord nærmest utænkelig
+REMOVE:0021 ("usi") + Abs OR ("usi") + Lok IF (0 ("usi") + Interj)(-1 BOS OR PUNCT OR CLB)(1 EOS OR PUNCT OR CLB); #'last' som isoleret ord nærmest utænkelig #også taget højde for "Usimi!"
 REMOVE:0021A (/__\"ingerla\"\ Gram\/TV__/l) IF (0 Gram/IV)(NEGATE *0 Sem/Unit) ; #ingerla er sjældent transitiv, sandsynligvis kun når obj er unit.
 REMOVE:0022 (/__TUQ\ Der\/vn\ LIR\ Der\/nv__/l) IF (0 ("ilungersor") + LIR) ;
 REMOVE:0022A UTE + Der/nn + NOT-POSSESSUM - SSAQ - PALAAQ - SUAQ - TAAR IF ( 0 POSSESSUM) #SSAQ og PALAAQ medtaget som mulige +Der/nn
@@ -3948,12 +3948,14 @@ REMOVE:0099Ø Num + Abs IF (0 Rel LINK 1 Num + Rel + CONJ-C LINK 1 3PlPoss); #20
 #===========#
 
 #Det ret usandsynlige participium 3Sg-1SgO + MI og refleksivt GE Ind + 1Sg + MI er homonymt med IteCau + 4Sg. Slettes hvis VFIN + 3Sg
-REMOVE:0032 Par + 3Sg + 1SgO + MI IF (0 IteCau + 4Sg LINK *1 VFIN + 3Sg OR Par + 3Sg);
-REMOVE:0033 GE + Ind + 1Sg + MI IF (0 IteCau + 4Sg LINK *1 VFIN + 3Sg); 
+REMOVE:0032 Par + 3Sg + 1SgO + MI IF (0 IteCau + 4Sg LINK *1 VFIN + 3Sg OR Par + 3Sg OR TUQ + SSAQ);
+REMOVE:0033 GE + Ind + 1Sg + MI IF (0 IteCau + 4Sg LINK *1 VFIN + 3Sg OR Par + 3Sg OR TUQ + SSAQ);
 
-REMOVE:0034 Par OR Ind IF (0 IteCau)(*-1 TIME + Via BARRIER V);#(NEGATE 0 TAR) ; #Kan gøres sikrere med NEGATE 0 TAR.
+REMOVE:0034 GE + Ind + 3Sg + 1SgO + MI IF (0 IteCau + 4Sg LINK *1 VFIN + 3Sg OR Par + 3Sg OR TUQ + SSAQ); #Angerlamut ISERAANGAMI takummaasartussaq. 
 
-REMOVE:0035 Par IF (0 N LINK 1 ("[a-z]*li(t|k)"r))
+REMOVE:0035 Par OR Ind IF (0 IteCau)(*-1 TIME + Via BARRIER V);#(NEGATE 0 TAR) ; #Kan gøres sikrere med NEGATE 0 TAR.
+
+REMOVE:0036 Par IF (0 N LINK 1 ("[a-z]*li(t|k)"r))
 (NEGATE *-1 BOS BARRIER (*) - Adv LINK *1 _TARGET_ LINK 1 Abs + &&IV_SUBJ& LINK *1 VFIN + &&IV_SUBJ& BARRIER VERB-NOTCONT)#suli SINITTUGUT pujortuleeraq aallarsimavoq.
 (NEGATE 1 Gram/Pers + $$PN LINK 1 V + $$PN)#Assersuut ima misigivunga, IMANNAANNGITSOQ illit pisuullutit ima misigisunga.
 ;
@@ -4168,6 +4170,9 @@ SELECT:0001U TITEL + $$NUMERUS + $$KASUS IF (0 Par)(1 Prop + $$NUMERUS + $$KASUS
 REMOVE:0001V1 ("aaneq") IF (0 (Prop Abs Sg) LINK *1 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO BARRIER V ); #AANEERAQ oqaluutilaarlara
 REMOVE:0001V2 (/"aa"\ Gram/[IT]V\ \(Gram/Pass\ \)?NIQ/l) IF (0 (Prop Abs Sg) LINK *1 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO BARRIER V ); #AANEERAQ oqaluutilaarlara
 
+REMOVE:0001W ("Angerla") + Prop IF (0 ("angerlamut")); #ANGERLAMUT iseraangami takummaasartussaq.
+
+
 #HNOUN NP i citationstegn med og uden komma
 SELECT:0040GX Abs IF (1 Abs)(2 KOMMA)(3 ("”"))(*1 ORATIOOBLVERB) ;
 SELECT:0040HX Abs IF (-1 Abs)(1 KOMMA)(2 ("”"))(*1 ORATIOOBLVERB) ;
@@ -4292,7 +4297,9 @@ REMOVE:0114B SPATIAL + QATE IF (0 N - SPATIAL) ; #qiteqat
 SELECT:00115 (/"siuttoq"\ N\ Abs\ Pl/l) IF (*1 (/Gram/IV\ V\ Ind\ 3Pl/l)) ;
 
 SELECT:0115A SPATIAL - ("ate") - LIK + (Sg) IF (0 POSSESSUM - 2SgPoss)
-(NEGATE 0 $$KASUS + $$NUMERUS LINK -1 POSSESSUM + $$KASUS + $$NUMERUS)(NEGATE 0 V - iN)(NEGATE 0 ("Tunu"))
+(NEGATE 0 $$KASUS + $$NUMERUS LINK -1 POSSESSUM + $$KASUS + $$NUMERUS)
+(NEGATE 0 V - iN)
+(NEGATE 0 ("Tunu"))
 (NEGATE 0 Interj + MI LINK 1 EOS)#Qaami!
 (NEGATE -1 BOS OR KOMMA OR DIRTALESTART LINK 1 Interj)#Qatanngut, QAA panat tiguniaruk.
 (NEGATE 0 ("eqqartuup"))#Ikke eqqaq+TUUQ, men advokat
@@ -14122,7 +14129,7 @@ REMOVE:8534CX (/"inuk"\ TAQ\ Der/nn\ U\ Der/nv\ Gram/IV\ TUQ/l) IF (0 ("inuttaas
 REMOVE:8534CY (/"allak"\ TAQ\ Der/nn\ U/l) IF (0 (/"allatsi"\ U/l)) ;
 SELECT:8534CZ ("qulli") IF (0 ("qulleq") LINK *1 ("kuup")); #lamper kan ikke flyde
 REMOVE:8534CÆ ("qaleq") IF (0 ("qaliaq") LINK NEGATE *0 ("nujaq"));
-
+REMOVE:8534CØ ("uluk") + SSAQ IF (0 ("uluak"));
 REMOVE:8599 TUQ + Aeq - Der/vn IF (0 TUQ + Aeq + Der/vn)(NEGATE 1 ("ip")); #De særlige former af TUQ + Aeq på transitiver fulgt af "ippaa" slettes hvis ikke fulgt af "ippaa"
 
 # Nomen eller pron
@@ -14208,7 +14215,7 @@ REMOVE:4916 Num + Pl + ("\\d{4}-\\d{4}"r) ;
 REMOVE:4920A ("taap") IF (NEGATE *1 CLOTHES) ;
 REMOVE:4920B ("ajup") IF (NEGATE *1 CLOTHES) ;
 SELECT:4920C BODY OR ANATOMIC IF (1 ("arsaq") OR ("arsar")) ;
-REMOVE:4920D Via - ANATOMIC OR Via + BODY (0 Via + ANATOMIC OR Via + BODY) ;
+REMOVE:4920D Via - BODY (0 Via + BODY) ;
 
 #Nomen eller verbum?
 #En tvivlsom disambiguering af 'fordi han trak maven ind' vs. 'lokal' alene baseret på sandsynlighed
@@ -14597,6 +14604,11 @@ REMOVE:5490FM ("meeraq") + TAQ + U IF (0 ("meeraq") + TAAR); #Nalunngilara Larsi
 REMOVE:5490FN ("sassar") + TIP + Gram/Db IF (-1 ("eqqartuussivik")); #Eqqartuussivimmi SASSARTINNEQARPUNGA.
 REMOVE:5490FO ("illaar") OR ("illaa") IF (0 ("illaq") + U LINK *0 ("illar")); #Imminut pinngitsaalilluni ILLAANNGITSUMIK illapalaartittarpoq.
 REMOVE:5490FP ("aalaq") + KUQ + U IF (0 ("aalakoor"));
+REMOVE:5490FQ GE - NIQAR IF (0 UTIGE + Cont) #Ataataata natermut aqqaramiuk, kaavisittagaq kaavisikkamiuk, natermi angalaalermat anaanaata assani PATTAATIGALUGIT illaqattaalerpoq.
+(NEGATE 0 ("assersor"))
+(NEGATE 0 ("naatsorsor"))
+(NEGATE 0 ("akiler"));
+REMOVE:5490FR ("oqaap") + NAR IF (0 ("oqar") + INNAR); #Nalunngisaminulli OQAANNARTARPOQ ”Uteriitsuliaq!”
 
 # Verbum eller partikel?
 SELECT:5491A ("aarit") IF (-1 BOS);
@@ -17188,7 +17200,8 @@ REMOVE:Sem0332B (/"isuma"\ QAR\ Der/nv/l) + (/^i?Sem/think/l) IF (NEGATE *0 V BA
 
 REMOVE:Sem0335 ("iki") + (/^i?Sem/burn.*/r) IF (NEGATE *-1 (/^i?Sem/cc-light.*/r)); #Naneruutinik amusartunni ujaasivunga, nassaaramalu sumut tamaanga ilioraariarlunga IKITITERPUNGA.
 SELECT:Sem0336 ("iki") + (/^i?Sem/put_deposit.*/r) IF (-1 Trm); #Assit qangarnisat ataatsimoortut tiguakka nammattakkamullu IKILLUGIT.
-REMOVE:Sem0337 ("iki") + (/^i?Sem/enter.*/r) IF (NEGATE *-1 (/^i?Sem/V.*/r)); 
+REMOVE:Sem0337 ("iki") + (/^i?Sem/enter.*/r) IF (NEGATE *-1 (/^i?Sem/V.*/r));
+REMOVE:Sem0338 ("iki") + (/^i?Sem/be_attribute/r) IF (0 GIARTUR); #Arpaannaq biilinut IKIARTORPOQ, qilanaarisaqaramimi. 
 
 SELECT:Sem0340 ("ikuma") + (/^i?Sem/burn.*/r) IF (*-1 (/^i?Sem/cc-fire.*/r)); #Innersuarlu silammuinnavik IKUMAGAMI tikka avammuinnaq soorlu supineqartartoq.
 SELECT:Sem0341 ("ikuma") + (/^i?Sem/burn.*/r) IF (*0 ("tusaa")); #Tusaasinnaavara gangimi sakkortuumik taqqamani IKUMASOQARPALUTTOQ. (Lys kan ikke høres.)
