@@ -50,8 +50,8 @@
 
 INCLUDE STATIC disambiguator.cg3 ;
 
-# Begyndende udkommentering af REMOVE og SELECT, der kun skal stå i disambiguator. Vil blive udkommenteret med '#DATO' fx '#20210704'
-
+# Begyndende udkommentering af REMOVE og SELECT, der kun skal stå i disambiguator. Vil blive udkommenteret med '#DATO' fx '#20210704'. Færdiggjort 20230726.
+# Begyndende sletning hvor REMOVE og SELECT står med #
 
 
 
@@ -2003,88 +2003,18 @@ MAP:M0099M @SUBJ> TARGET Gram/Cong + Nom + 2Pl IF (1 V + 2Pl);
 #Overfloedige possessumformer#
 ##############################
 
-
+##En del kommentarer
 #Vanskelige sammenfald mellem plur. og 2SgPoss i absolutte konstruktioner håndteres før SELECT:0100
-
-#20230116SELECT:0100Y Pl + $$KASUS IF (1 Num + Pl + $$KASUS) (0C 2SgPoss) ;
-
-#20230116SELECT:0100A 2SgPoss IF (*0 ("quja" NAR Gram/Exclm))(NEGATE -1 ("uanga"))(NEGATE *0 VFIN) ; #Kontekst, der maa sikres foer foelgende REMOVE
-#20230116SELECT:0100B 2SgPoss - ("massak") - SSA IF (NEGATE *0S V OR INDERIVERENDE_SUBSTANTIV)(*1 ("?"))(NEGATE 0 V + 2Sg)(NEGATE *0 Gram/Int + Pron + Pl) ; #Kontekst, der maa sikres foer foelgende REMOVE. Specialitet at massak+Via opfattes som 2SgPoss og ikke Der/vn med SSA
-#SELECT:0101X Abs + 2SgPoss IF (*1 Ind + 3Sg + INTRANSVERB BARRIER TRANSVERB + 3SgO)(NEGATE 0 Pl + Abs LINK *1 Par + 3Pl) ; #Et sikkert subjekt må ikke læses som plur. BARRIER pga. mulig ledsagemåde med objekt. Der tages højde for en mulig or. obl. før verbet
-#Ny formulering, da tagger forkert fx 'amerlanerit sinippiaratik .. '
-
-#20230116SELECT:0101X Abs + 2SgPoss - PLACE_MORE IF(*1 Ind + 3Sg + INTRANSVERB - ORATIOOBLVERB BARRIER V)
-#(NEGATE 0 Pron + 2Sg) #illit må ikke fravælges
-#(NEGATE *1 TRANSVERB + 3SgO)
-#(NEGATE 0 Pl + Abs LINK *1 Par + 3Pl)
-#(NEGATE *1 POSSESSUM3 BARRIER V)
-#(NEGATE 0 Rel LINK *1 iPOSSESSUM)
-#(NEGATE 0 Par + &&IV_SUBJ& LINK *-1 Abs + &&IV_SUBJ&)#Tamanna Naalakkersuisut IKIOQQOREERSUT pivoq.
-#(NEGATE *-1 ORATIOOBLVERB LINK *1 Abs BARRIER V OR KOMMA LINK *1 Par + TRANSVERB BARRIER V)#Misigisimavunga pisassartik PIGAAT, Erna Vinther AG-mut oqarpoq.
-#(NEGATE 0 Par LINK 1 ORATIOOBLVERB)#
-#;#LINK *1 Ind + 3Sg + INTRANSVERB BARRIER V) #Et subjekt er ikke sikkert hvis det kan være possessor #Attu Aasiaat eqqaanniippoq.
- #Et sikkert subjekt må ikke læses som plur. BARRIER pga. mulig ledsagemåde med objekt. Der tages højde for en mulig or. obl. før verbet
-
 #Foelgende fjerner overflødige possessum. Cont og ContNeg undtaget, fordi de altid indeholder alle personer. Længere oppe regler til ikke at få KKUT læst som Via
-
 #Ved 1SgPoss vs. 2SgPoss konflikter vil der være flest korrekte 1SgPoss blandt assimilerede endelser fordi 2SgPoss ofte(st) vil have formen rC. Derfor ændres rækkefølgen, så 0113 sletter før 0112, der oftest slet ikke vil blive aktiveret fordi resten af cohorten så er 1SgPoss
-
-
-# 1SgPoss vs. 3SgPoss - semantic rules
-#20230207SELECT:0065_3SgPoss_semanticA POSSESSUM3 OR iPOSSESSUM3 IF (0 WEATHERVERB)(*-1 WEATHER + Rel BARRIER KOMMA OR VERB-NOTCONT) ;
-#20230207SELECT:0065_3SgPoss_semanticB POSSESSUM3 OR iPOSSESSUM3 IF (0 TIMEVERB)(*-1 TIME + Rel BARRIER KOMMA OR VERB-NOTCONT) ;
-#20230207SELECT:0065_3SgPoss_semanticC POSSESSUM3 OR iPOSSESSUM3 IF (*-1 WEATHER + Rel BARRIER (*) - Adv) ; #Nappaatit, silap qanoq innera naalakkersuisullu pillugit tusagaqarusunngilanga.
-#20230207SELECT:0065_3SgPoss_semanticD POSSESSUM3 OR iPOSSESSUM3 IF (*-1 TIME + Rel BARRIER (*) - Adv) #Nappaatit, silap qanoq innera naalakkersuisullu pillugit tusagaqarusunngilanga.
-#(NEGATE 0 ADJEKTIVISK)#ikke naammassisut NUTAAT allagartartaartippai
-#(NEGATE 0 VFIN LINK NEGATE *0 VFIN - (Imp 1Pl))#Inatsisit unioqqutillugit assinik siammarterisarnerup misigissutsitigut kingunerisartagaasa ASSIGAAT kinguaassiutitigut kannguttaatsuliornerit. Forsigtighedsprincip i hvert fald ikke hvis eneste VFIN (undtaget endnu ikke disambiguerede Imp)
-#(NEGATE -1 Rel LINK 1 _TARGET_ + CONJ-C LINK *1 POSSESSUM3 BARRIER (*) - ADJEKTIVISK + Rel)# Ullup UNNUALLU kingulliup ingerlanerani misissorneqarsimasut 0,33 procentii tunillanneqarsimasutut nalunaarsorneqarsimasut, SSI-p nalunaarsugaanni erserpoq.
-
-#;
-
 # POSSESSUM safe rules
-#20230207SELECT:0124_1SgPoss 1SgPoss OR i1SgPoss IF (*-1 Gram/Pers + 1Sg + Rel BARRIER VERB-NOTCONT OR Pron - 1Sg OR POSSESSUM - POSSESSUM1 OR iPOSSESSUM - iPOSSESSUM1) ; #Uanga terianniamik kammaqarsimanera nuannaarutigeqaara...
-#SELECT:0124_2SgPoss 2SgPoss OR i2SgPoss IF (*-1 Gram/Pers + 2Sg + Rel BARRIER VERB-NOTCONT OR Pron - 2Sg) ; #Illilli ulloriamineeqqanni issiavik nikisilaaginnarlugu seqernup unnukkut aappillernera takusinnaasarpat... #upræcis
-#SELECT:0124_1PlPoss 1PlPoss OR i1PlPoss IF (*-1 Gram/Pers + 1Sg + Rel + CONJ-C OR Gram/Pers + 1Pl + Rel BARRIER VERB-NOTCONT OR Pron - 1Sg) ;
-#SELECT:0124_2PlPoss 2PlPoss OR i2PlPoss IF (*-1 Gram/Pers + 2Sg + Rel + CONJ-C OR Gram/Pers + 2Pl + Rel BARRIER VERB-NOTCONT OR Pron - 2Sg - 2Pl) ;
-
 # 1SgPoss vs. 3SgPoss
-#SELECT:0065_3SgPoss_possessor 3SgPoss IF (-*1C Rel + Sg BARRIER (*) - CONT - Adv - Pali - (Rel Pl) - OBLIQUE)(NEGATE 0 V - iPOSSESSUM)(NEGATE *1 VERB-NOTCONT + TRANSVERB + 3Sg BARRIER VFIN)(NEGATE *-1 POSSESSUM3 - Rel - TIME BARRIER Rel + Sg LINK *-1C Rel + Sg);
-#SELECT:0065_3SgPoss_possessor 3SgPoss IF (-*1C Rel + Sg BARRIER (*) - CONT - Adv - Pali - (Rel Pl) - OBLIQUE)(NEGATE 0 V - iPOSSESSUM)(NEGATE *1 VERB-NOTCONT + TRANSVERB + 3Sg BARRIER VFIN);
-
-#20230207SELECT:0065_3SgPoss_possessor 3SgPoss - Num IF
-#        (-*1C Rel + Sg BARRIER (*) - CONT - Adv  - Pali - OBLIQUE)
- #       (NEGATE 0 V - iPOSSESSUM)
-  #      (NEGATE *1 VERB-NOTCONT + TRANSVERB + 3Sg BARRIER VFIN)
-   #     (NEGATE *-1 OBLIQUE + POSSESSUM BARRIER (*) - (Rel Sg))
-    #    (NEGATE *1> POSSESSUM1 CBARRIER V - CONT OR POSSESSUM - POSSESSUM1)
-     #   (NEGATE *1> V + 1Sg BARRIER V)
-		#	(NEGATE -1 Rel + LU LINK -1 Rel)#Marsip Venusillu SANIATIGUT
-#(NEGATE -1 Rel + Sg LINK *-1 CONJ-C LINK *-1 Rel + Sg)#1800-kkunni oqaluttuartarsimasut , Aalut Kangermiup Jens Kreutzmannillu Kangaamiuneersup OQALUTTUAASA sumi pisarsimaneri
-
-#;
-
-#20230207SELECT:0066_3SgPoss_possessor 3SgPoss IF (-*1C Rel + Sg + 4SgPoss BARRIER (*) - CONT - Adv - Pali - OBLIQUE)(NOT 0 Adv); #Minikursusimit "anigornissat" qaqugu pissanersoq Odensemut apuunnissarpit *ilaatigut aalajangissavaa.
-
 #Combinations of derivational/inflectional morphemes
-
-#SELECT:0072_conj-possessum $$POSSESSUM + $$KASUS IF (*-1C $$POSSESSUM + $$KASUS BARRIER (*) - CONJ-C) ; #selects wrong in "Qisuup masattup saviminertarasaartullu ikumanermini nipit assigiinngitsut pilersittalermagit isumaqartilerpakka innermut ikummarissumut pulaqqusisut pulagumalu ukiut ingerlanerini ataatsimoorluta misigisarsimasavut nuannersut uterfigissagikka, qimaqqinngisaannassallugillu ukiup qanoq ilinera sumilu *najugaqarnera akornutiginagit."
-
-#20230309SELECT:0132 Ins + Gram/Indef + Pron IF (1 NIQ LINK 1 ("ajor"))(NEGATE *1 NIQAR) ; #specialfald til følgende vedr. NIQ ajor..
-#20230309SELECT:0133 Ins + Gram/Indef + Pron IF (1 V)(NEGATE *1 NIQAR) ;
-
-#20230309SELECT:0135 Rel + 3SgPoss IF (1 3SgPoss)(NEGATE *-1 Rel + Pl) ; #N-ata pia og N-isa piat
-
 #PL 20190412 Meget snævre regler forårsaget af brugen af akornanni i pali-betydning midt i subjektsyntagmet. Regel 0136X forebygger at 0136 hitter på ILAASUT+Rel pga. akornanni i stedet for ilaasut+Abs som subjekt i sætningen ilaasut 1373-iusut akornanni 479-it helikopterimik qimagussortinneqarsimapput
-
-#20230309SELECT:0136X Abs + Pl IF (*1 NUM + Pl + Abs BARRIER (*) - ("tamaq") LINK 1 ("akunneq") + 3PlPoss LINK 1 NUM LINK *1 V + 3Pl BARRIER (*) - OBLIQUE ) ;
-#PL 20190413 BEMÆRK: Reglen SUBSTITUTE (Lok Sg 3PlPoss) (Lok Sg) TARGET ("akunneq") IF (-1 NUM)(1 NUM) ; # akornanni i pali-betydningen '(antal) HVORAF (antal)' gør subjektet til POSS og sletter Abs læsninger allerede tidligt. Derfor må possessum slettes tidligt, i hvert fald før regel 0063.
 
 MAP:M0136X @SUBJ> TARGET Abs + Pl IF (*1 NUM + Pl + Abs BARRIER (*) - ("tamaq") LINK 1 ("akunneq") LINK 1 NUM LINK *1 V + 3Pl BARRIER (*) - OBLIQUE ) ;
 MAP:M0136XX @ADVL>N TARGET ("akunneq") IF (-1 NUM + Pl + Abs )(1 NUM LINK *1 V + 3Pl BARRIER (*) - OBLIQUE ) ;
 
-#SELECT:0149TEST &&Objekt IF (*1 &&Objekt BARRIER V);
-
-#20230309SELECT:0149B POSSESSUM12 IF (0 V + 3Pl)(-1 Nom - 4Pl) ; #arpattartoq tamatta nalunngisarput
 
 ##########################################
 # Frequent and safe rules - proper names #
