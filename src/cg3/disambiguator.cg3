@@ -1995,7 +1995,9 @@ LIST INSTITUTION = Sem/inst
 (/"isuma"\ GE\ Der/nv\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TUQ\ Der/vn\ QAR\ Der/nv\ Gram/IV\ VIK/l)
 "Kalaallit Airports" "KNR" "kommunalbestyrelse" "kommune" 
 (/"maalaar"\ Gram/IV\ UTE\ Der/vn\ QAR\ Der/nv\ Gram/IV\ TAR\ Der/vv\ Gram/IV\ VIK/l) "ministereqarfik" "ministerium" 
-"Naalakkersuisut" "Nutserinermut Oqaluttaanermullu Immikkoortortaq" 
+"Naalakkersuisut" 
+"Namminersorlutik Oqartussat"
+"Nutserinermut Oqaluttaanermullu Immikkoortortaq" 
 "Oqaasileriffik" "Oqaasilerinermut, Atuakkialerinermut Tusagassiuutilerinermullu Immikkoortortaq" "Oqaasiliortut" 
 (/"peqqip"\ Gram/IV\ NIQ\ Der/vn\ SSAQ\ Der/nn\ QAR\ Der/nv\ Gram/IV\ VIK/l)
 (/"politimester"\ OLang/DAN\ QAR\ Der/nv\ Gram/IV\ VIK/l)
@@ -3081,6 +3083,9 @@ REMOVE:tidlig0845 CON_CAU + 1Sg IF (*-1 VFIN + 2Sg BARRIER V - %AmbiguøsPar LIN
 REMOVE:tidlig0850 (N TTAAQ) IF (0 (Ind 3Sg SSA) LINK NEGATE *0 VFIN); #PL20221221 Ataatsimiigiaqqusineq PISSAAQ ataatsimiinnissaq minnerpaamik ullunik suliffiusunik tallimanik sioqqullugu.
 REMOVE:tidlig0851 (N TTAAQ) IF (0 (Ind 3Sg SSA) LINK *0 Int LINK 0 Con LINK NEGATE *0 VFIN - _TARGET_); #PL20221221 Eva iserpat SINISSAAQ.
 
+#Udisambiguerede pi+Gram/TV+LLUAR skaber problemer
+REMOVE:tidlig0855 (/"pi"\ Gram/TV\ LLUAR/l) IF (0 ("pilluar") + VFIN);#Illillu qilaliarfimmi PILLUARIT.
+
 #SUBSTITUTE:tidlig0580 (Abs) (Rel) TARGET (/"ataaseq"\ Num\ Abs/l) OR (/"01"\ Num\ Abs\ Sg/l) IF (1 ("misse") + POSSESSUM3); #Nal. ATAASEQ miss.
 SUBSTITUTE:tidlig0581 (Abs) (Ins Sem/Unit) TARGET (/"cm"\ OLang/DAN\ N\ Abs/l) IF (-1 Num LINK 2 LIK_QAR); #Angut 17-init missaannik ukiulik 170-175 CM angissusilik, tuattoq, sakiaani allannertalimmik nasartalimmik tujuululik, koorpunik qarlilik.
 SUBSTITUTE:tidlig0582 (3SgPoss) (3PlPoss) TARGET (/"misse"\ N\ Ins\ Sg\ 3SgPoss/l) IF (-1 Sem/Unit + Rel + Pl); #Attavik 130 km-it MISSAANIK isorartussuseqassaaq.
@@ -3882,7 +3887,9 @@ SELECT:0030 TIME + Rel IF (-1 BOS)(1 ("ila") + 3SgPoss + Abs LINK *1 T:NexusHøj
 SELECT:0031 ("ila") + 3SgPoss + Abs IF (-1 TIME + Rel)(*1 T:NexusHøjre ) ;
 
 REMOVE:0040A TIME + KKUT IF (-1 BOS); #Kan vist kun være Via i den position
-SELECT:0040F TIME + Abs IF (1 ("tamaq") + Akk - (/[12][SP][gl]/r));
+SELECT:0040F TIME + Abs IF (1 ("tamaq") + Akk - (/[12][SP][gl]/r))
+(NEGATE 0 POSSESSUM12)#TIMIGA tamaat qaqorsaaserpara
+;
 REMOVE:0098 TIME + POSSESSUM12 IF (NEGATE 0 Der/nv) # Må være en udelukket kombination men må ikke slette fx aasarsiorfik eller (uanga) inuunera
 (NEGATE 0 Abs + Sg LINK *1 3SgO BARRIER (*) - Abs)#Piffissaq AGGERFISSAT nalunngikkutsigu bussit unittarfiannut naapigiarsinnaavatsigit, Eriup ilaanni pulaarlutik arni oqarfigaa.
 ;
@@ -5378,6 +5385,7 @@ SELECT:0101X Abs + 2SgPoss - PLACE_MORE IF (*1 Ind + 3Sg + INTRANSVERB - ORATIOO
 (NEGATE 0 3PlPoss LINK *-1 Rel + Pl BARRIER (*) - Trm)#Danskit nunanut allanut tunngasunut MINISTERIAT, Jeppe Kofod (S) taama oqarpoq.
 (NEGATE 0 ("sinersor")) #sinersortaat
 (NEGATE 0 ("suna"))
+(NEGATE 0 2SgPoss + Sg LINK 0 TIME + Abs + Pl LINK 1 Akk + 3Pl)#naatitsivigisarpaa, aamma AASAT tamaasa kuanninik naasoqartarpoq.
 ;#LINK *1 Ind + 3Sg + INTRANSVERB BARRIER V) #Et subjekt er ikke sikkert hvis det kan være possessor #Attu Aasiaat eqqaanniippoq.
  #Et sikkert subjekt må ikke læses som plur. BARRIER pga. mulig ledsagemåde med objekt. Der tages højde for en mulig or. obl. før verbet
 
@@ -5799,7 +5807,9 @@ SELECT:0194 DivPron + Nom + 4Sg IF (-1 ("tassa") LINK -1 BOS) ; #Tassa kisimi! s
 REMOVE:0195A DivPron + Rel + 3Sg ;
 REMOVE:0195B DivPron + Rel + 3Pl ;
 
-SELECT:0196A Gram/Pers + Pron + Rel + $$PERSON IF (*1 TRANSVERB + $$PERSON BARRIER KOMMA)(NEGATE *1 Rel LINK *1 2SgO BARRIER KOMMA)(NEGATE *1 CONT LINK *1 TRANSVERB + $$PERSON ) ;
+SELECT:0196A Gram/Pers + Pron + Rel + $$PERSON IF (*1 TRANSVERB + $$PERSON BARRIER KOMMA)(NEGATE *1 Rel LINK *1 2SgO BARRIER KOMMA)(NEGATE *1 CONT LINK *1 TRANSVERB + $$PERSON ) 
+;
+
 REMOVE:0196B Gram/Pers + Abs + 1Sg IF (0 Gram/Pers + Rel + 1Sg LINK 1 CONT + TRANSVERB - 1SgO LINK NOT *1 1SgO OR INTRANSVERB + 1Sg);
 
 #Regler for DivPron. 0197X før 0197 for at lade DivPron-objekter overleve
@@ -15815,7 +15825,7 @@ REMOVE:9965A OBLIQUE + $$KASUS + Pl IF (0 OBLIQUE + Sg)
 (NEGATE 0 N - POSSESSUM LINK NOT *0 (/[12]Sg/r))#-****** 5 LINK 0 POSSESSUM12)#Siumut Demokraatillu aatsitassarsiulersaarnermut tapersersuisuupput, pissutigalugu aatsitassarsiutileqatigiiffiup oqarnera naapertorlugu tamanna nunatta karsianut koruuninik milliardilikkaanik isaatitsissutaasinnaallunilu piffimmi SULIFFINNIK pilersitsissutaasinnaalluni.
 (NEGATE 0 (/"qallunaaq"\ VIK\ Der/nn/l) - POSSESSUM LINK 0 (/"qallunaaq"\ VIK\ Der/nn/l) + POSSESSUM) #QALLUNAAVINNIK ikinnguteqarnera takussavaa.
 (NEGATE 0 1SgPoss LINK NEGATE *0 1Sg OR 1SgO OR 1SgPoss LINK NOT 0 3SgPoss)#PL20230112 Taakku ilaat tassaasinnaavoq TIMERSOQATIGIIFFINNI pisoqarnerulernera.
-
+(NEGATE 0 1SgPoss LINK 0 (/N\ Ins\ Pl/l) - 1SgPoss LINK NEGATE *0 1Sg OR ("uanga"))#- Akunnittarfik massakkorpiaq Mittarfeqarfinnit pigineqarlunilu ingerlanneqarpoq, taakkulu MITTARFINNIK ingerlatsisussaapput akunnittarfinnillu ingerlatsinermik akisussaaffeqartussaasariaqarnatik.
 ;
 REMOVE:9965B (/"qallunaaq"\ VIK\ Der/nn/l) + POSSESSUM IF (0 (/"qallunaaq"\ VIK\ Der/nn/l) - POSSESSUM); #QALLUNAAVINNIK ikinnguteqarnera takussavaa.
 
