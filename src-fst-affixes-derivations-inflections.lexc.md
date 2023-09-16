@@ -750,6 +750,8 @@ I Num2 til Num10 er flagging af NNGUR C-et pga. klokken
 
 * LEXICON GaqP  
 
+* LEXICON iGaqP  transitive r-stammer med i som stammevokal NY PL 20230916
+
 * LEXICON Taq  passivt nomen af transitive stammer på k
 
 * LEXICON iTaq  passivt nomen af transitive stammer på k med vokal med strong i
