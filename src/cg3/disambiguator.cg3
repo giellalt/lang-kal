@@ -4172,6 +4172,7 @@ REMOVE:0001R ("(\\p{Lu}.*)"r) + Fornavn - NÆPPE_FIRSTNAME IF (0 N)(-1 BOS OR DI
 (NEGATE 0 ("Nuunu") - POSSESSUM) #nuunu uden poss. i første position usandsynlig og Nuunu alm. pigenavn
 (NEGATE 0 (Prop Abs Sg) LINK *1 INTRANSVERB + 3Sg + <fn:Talk> OR TRANSVERB + 3SgO + <fn:Talk> BARRIER V )#AANEERAQ oqaluutilaarlara
 (NEGATE 0 ARAQ + $$KASUS LINK NOT 1 N + TUQ + $$KASUS)
+(NEGATE 0 ("Arsugaq")) #test
 ; #Laver alt for mange fejl, fx Flemming<Geo> illumik piareersaavoq. Der mangler nok en betingelse? Proprier disambigueres senere.
 
 REMOVE:0001S ("nuunu") + N - POSSESSUM IF (0 ("Nuunu") + Sem/Fem + Prop);
@@ -5426,6 +5427,7 @@ REMOVE:0101 Abs + 2SgPoss IF
 (NEGATE *1 3SgO)(NEGATE *1 INTRANSVERB + 3Sg BARRIER Abs + Sg)
 (NEGATE 1 ("tassa") LINK 1C Sg) #Sidste NEGATE for skyld "Soraluannguit tassa niviarsiaq .."
 (NEGATE *0 VFIN + 3Sg LINK NEGATE *0 Abs + Sg - _TARGET_)#Tunngaviusumik inassutigineqarpoq inissiami immikkoortumi ANGERLARSIMAANNARNISSAT.
+(NEGATE *0 2SgPoss LINK NOT 0 N - 2SgPoss) #Uannut iliuuserinikuusatit, ILIUUSERINIKUUNNGISATILLU eqqarsaatigeqqajaavakka. #kun til sikre 2SgPoss
 ;
 REMOVE:0102 Abs + 2SgPoss + TUQ IF (NEGATE *0 ("illit") OR 2Sg); #1.4. Evt. elaboreres med TAQ og UTE
 REMOVE:0103 Rel + Pl + 2SgPoss IF (NEGATE *0 ("illit"));
@@ -12657,6 +12659,8 @@ REMOVE:0549Q INTRANSVERB + &&IV_SUBJ& + Par IF (0 TUQ + Abs + &&IV_SUBJ& ) (-1 A
 
 SELECT:0549R Par IF (0 TUQ LINK *-1 UNA OR ("sooruna") BARRIER V); #Sooruna TOQUSOQARTARTOQ?
 
+SELECT:0549S TUQ + Abs + Pl - NIR IF (*1 VFIN + 3PlO LINK *-1 _TARGET_ LINK *-1 ("suna")); #Uunnaavik ikumatiinnassanerlugu eqqarsarsuataarninni suut kingumut PISIMASUT eqqaanngitsoornerpakka.
+
 SECTION #Skal kun bruges til at isolere Par - reglerne
 
 ############################################
@@ -14314,6 +14318,7 @@ REMOVE:8602A ("Sofar") IF (0 ("sofa")); #SOFAMIIT nikuikkama suniarnerlunga nalu
 REMOVE:8602B ("neriup") + UTE + (/^iSem/HH/r) IF (0 (/^iSem/f-psych/r)); #Manngertisimaannarpoq, immaqami NERIUUTIGIGALUARLUGU inuiaqatigiit tukkiartornissaat.
 REMOVE:8602C ("Ulloriaq") + Prop IF (0 ("ulloriaq" N ARAQ)); #ULLORIAAQQAMIK nalunngisaqarpunga
 REMOVE:8602D (*) - ("timi") (0 ("<[T|t]im.*>"r) + Trm LINK 1 ("qaqorsaat") LINK NEGATE 1* Gram/Db OR ("tunniup") OR ("isaap")) ; #Jude 20230906
+REMOVE:8602E ("arsugaq") + N IF (*0W ("Arsugaq") + Prop); #kan sikkert laves om til en almen regel for alle navne.
 
 # Proprium eller pron?
 REMOVE:8603 ("Kina") + Prop IF (0 ("kina") + Pron LINK *1 ("?")); #KINA?
@@ -14835,6 +14840,8 @@ REMOVE:5490GP ("oqami") IF (0 ("oqar") + MISAAR); #”Schh.. rolig..” assani i
 REMOVE:5490GQ ("nakkaap") IF (0 ("nakkaa") + TIP); #Alliguma imigassamut NAKKAATISSAANGA, inuunera annaariaannanngussavara.
 REMOVE:5490GR (*) - ("iser") (0 ("<isaati.*>"r)) ; #Jude 20230915
 REMOVE:5490GS ("tup") + LLUAR IF (0 ("tulluar"));
+REMOVE:5490GT ("saper") + Gram/TV IF (0 ("saper") + Gram/IV LINK -1 NIQ); #-neq saper-
+REMOVE:5490GU ("ujap") + USIQ IF (0 ("ujaasi"));
 
 # Verbum eller partikel?
 SELECT:5491A ("aarit") IF (-1 BOS);
@@ -17599,9 +17606,10 @@ SELECT:Sem0336 ("iki") + (/^i?Sem/put_deposit.*/r) IF (-1 Trm); #Assit qangarnis
 REMOVE:Sem0337 ("iki") + (/^i?Sem/enter.*/r) IF (NEGATE *-1 (/^i?Sem/V.*/r));
 REMOVE:Sem0338 ("iki") + (/^i?Sem/be_attribute/r) IF (0 GIARTUR); #Arpaannaq biilinut IKIARTORPOQ, qilanaarisaqaramimi. 
 
-SELECT:Sem0340 ("ikuma") + (/^i?Sem/burn.*/r) IF (*-1 (/^i?Sem/cc-fire.*/r)); #Innersuarlu silammuinnavik IKUMAGAMI tikka avammuinnaq soorlu supineqartartoq.
-SELECT:Sem0341 ("ikuma") + (/^i?Sem/burn.*/r) IF (*0 ("tusaa")); #Tusaasinnaavara gangimi sakkortuumik taqqamani IKUMASOQARPALUTTOQ. (Lys kan ikke høres.)
-REMOVE:Sem0342 ("ikummarip") + (/^i?Sem/burn.*/r) IF (NOT *-1 (/^i?Sem/cc-fire.*/r)); #Sila taartuinnaavoq, akitsinnilu Nuussuaq IKUMMARIPPOQ, silarlussuup masannartumik akullip sukkut tamaana sakkukilliimeriaraangat qullerpassuit ersersilertarpai.
+SELECT:Sem0340 ("ikuma") + (/^i?Sem/burn/r) IF (*-1 (/^i?Sem/cc-fire/r)); #Innersuarlu silammuinnavik IKUMAGAMI tikka avammuinnaq soorlu supineqartartoq.
+SELECT:Sem0341 ("ikuma") + (/^i?Sem/burn/r) IF (*0 ("tusaa")); #Tusaasinnaavara gangimi sakkortuumik taqqamani IKUMASOQARPALUTTOQ. (Lys kan ikke høres.)
+SELECT:Sem0342 ("ikuma") + TIP + (/^i?Sem/light_emission/r); #Uunnaavik IKUMATIINNASSANERLUGU eqqarsarsuataarninni suut kingumut pisimasut eqqaanngitsoornerpakka. #kan ikke tænke på en god regel ligenu
+REMOVE:Sem0344 ("ikummarip") + (/^i?Sem/burn.*/r) IF (NOT *-1 (/^i?Sem/cc-fire.*/r)); #Sila taartuinnaavoq, akitsinnilu Nuussuaq IKUMMARIPPOQ, silarlussuup masannartumik akullip sukkut tamaana sakkukilliimeriaraangat qullerpassuit ersersilertarpai.
 
 REMOVE:Sem0345 ("supi") + (/^i?Sem/deactivate.*/r)
 (NEGATE 0 ("supi") LINK *0 ("naneruut")); #flere undtagelser kan tilføjes løbende
@@ -17768,7 +17776,7 @@ SELECT:Sem0620 ("aku") + (/^i?Sem/part/r) IF (0 U); #Ataaseq isumaqarpoq ikiaroo
 
 REMOVE:Sem0625 ("ujaloq") + (/^i?Sem/cc-cord/r) OR ("ujalu") + (/^i?Sem/cc-cord/r) IF (0 (/^i?Sem/anorg/r) LINK *0 BODY OR ANATOMIC); #Aalakoorluni imminoriaraluarnermini assami UJALUI tamaasa kipimmagit atorsinnaajunnaarput.
 
-REMOVE:Sem0630 ("naap") + (/^i?Sem/fall/r) IF (0 TIGE OR VALLAAR); #Taamak qaamatigisoq kjoleralu NAATSIGISOQ avalannissara orniginngilara. #Uanga atorpara NAAPPALLAALAARUNARTOQ, Nuummi pisiaq.
+REMOVE:Sem0630 ("naap") + (/^i?Sem/fall/r) IF (0 TIGE OR VALLAAR OR NIRU); #Taamak qaamatigisoq kjoleralu NAATSIGISOQ avalannissara orniginngilara. #Uanga atorpara NAAPPALLAALAARUNARTOQ, Nuummi pisiaq.
 
 REMOVE:Sem0635 ("sigguk") + (/^i?Sem/anzo/r) (NEGATE *0 ANIMAL); #Isigillualeriarakkit takulerpara kiinaani soorlu kigutai nuugissut takisuut, SIGGUI qalipaateqaratik paningaaramik siittoornernik ulikkaartut.
 
@@ -17865,6 +17873,8 @@ SELECT:Sem0840 ("taa") + (/^i?Sem/name/r) IF (*0 ("ateq")); #Sallaatsunnguamik i
 REMOVE:Sem0845 ("pukkip") + (/^i?Sem/cloH-shoe/r) IF (0 (/^i?Sem/jsize/r) LINK *0 ("qaqqaq")) ;
 
 REMOVE:Sem0850 ("nukik") + (/^i?Sem/anorg/r) IF (0 (/i?Sem/am/r) LINK 1 ("katersaq")) ;
+
+REMOVE:Sem0850 ("kipi") + (/^i?Sem/hurt/r); #lav undtagelser når de kommer
 
 ##############
 AFTER-SECTIONS
