@@ -2,7 +2,7 @@ The Kalaallisut morphology and tools
 ==========================================
 
 [![GitHub issues](https://img.shields.io/github/issues-raw/giellalt/lang-kal)](https://github.com/giellalt/lang-kal/issues)
-[![Build Status](https://divvun-tc.thetc.se/api/github/v1/repository/giellalt/lang-kal/main/badge.svg)](https://github.com/giellalt/lang-kal/actions)
+[![Build Status](https://divvun-tc.giellalt.org/api/github/v1/repository/giellalt/lang-kal/main/badge.svg)](https://github.com/giellalt/lang-kal/actions)
 [![License](https://img.shields.io/github/license/giellalt/lang-kal)](https://github.com/giellalt/lang-kal/blob/main/LICENSE)
 [![Desktop speller download](https://img.shields.io/badge/download%40latest-desktop--bhfst-brightgreen)](https://pahkat.uit.no/main/download/speller-kal?platform=desktop&channel=nightly)
 [![Mobile speller download](https://img.shields.io/badge/download%40latest-mobile--bhfst-brightgreen)](https://pahkat.uit.no/main/download/speller-kal?platform=mbile&channel=nightly)
