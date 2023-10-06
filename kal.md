@@ -1111,7 +1111,6 @@ Fil for at generere de centrale morfologiske processer i vor grønlandske analys
 
 # Multicharacter symbols
 
-* **v2** = Alternativt /v/ i låneord, der ikke skal slettes efter /u/
 * **AA+** = præfiks
 * **TA+** = præfiks
 
