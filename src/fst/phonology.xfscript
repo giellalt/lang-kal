@@ -24,7 +24,7 @@ define Vow [ a | e | i | i2 | o | u | u2 | í | á | ú | î | â | û | ê | ô
 
 echo << Vi definerer konsonanterne... >>
 define Cns [ c2 | c | d | f | g | g2 | g3 | g4 | h | j | ĸ | k | l | m |
-             n | p | q | r | s | t | v | v2 ]  ; !v2 er v-er i låneord, der ikke skal slettes. 
+             n | p | q | r | s | t | v ]  ;  
 
 ! These symbols will be turned into real quotes by a separate processing step;
 ! the quasi-rule here is just to silence a warning in (hfst-)xfst.
@@ -245,9 +245,9 @@ echo << Vi rydder op >>
 !define IngenArkefonemer [ t2 -> t, g2 -> g, g3 -> 0 ] ;
 define IngenArkefonemer [ g2 -> g, g3 -> 0, g4 -> 0 ] ;
 define DummyDeletion [ Dummy -> 0 ] ;
-define vSlet [ v -> 0 || u (%>) _ [ i | e | a ] ] ; !En rent ortografisk regel
+define vSlet [ v -> 0 || u %> _ [ i | e | a ] ] ; !En rent ortografisk regel
 define jSlet [ j -> 0 || i %> _ ] ; !Tilfoejet 26.5.08
-define v2Slet [ v2 -> v ] ;
+!define v2Slet [ v2 -> v ] ;
 
 echo << Vi sætter ting sammen >>
 
@@ -518,12 +518,11 @@ jSlet
 .o.
 TripleUReduktion ![ u u -> u || _ %> u ] ;
 .o.
-DummyDeletion ![ Dummy -> 0 ]
+vSlet ![ v -> 0 || u %> _ [ i | e | a ] ] ; !En rent ortografisk regel
+.o.
+!v2Slet  ! [ v2 -> v ] ;
 !.o.
-!SevenQuotation
-.o.
-vSlet ![ v -> 0 || u _ [ i | e | a ] ] en anden rent ortografisk regel
-.o.
-v2Slet ] ;
+DummyDeletion ] ; ![ Dummy -> 0 ]
+
 !.o.
 !esc ] ;
