@@ -19,8 +19,10 @@
 
 echo << Vi definerer vokalerne... >>
 
-define Vow [ a | e | i | i2 | o | u | u2 | í | á | ú | î | â | û | ê | ô | ĩ | ã | ũ ] ;
+! define Vow [ a | e | i | i2 | o | u | u2 | í | á | ú | î | â | û | ê | ô | ĩ | ã | ũ ] ;
 ! u2 er u i låneord, der ikke skal ændres til o foran r/q: Puurunen, Turunen
+
+define Vow [ a | e | i | i2 | o | u | í | á | ú | î | â | û | ê | ô | ĩ | ã | ũ ] ;
 
 echo << Vi definerer konsonanterne... >>
 define Cns [ c2 | c | d | f | g | g2 | g3 | g4 | h | j | ĸ | k | l | m |
@@ -94,7 +96,7 @@ define G4regel1 [ g4 -> 0 || [ i | u  ] %> _ ] ;
 define G4regel2 [ g4 -> j || a %> _ ] ;
 
 !u2 introduceret 30.6. for at håndtere låneord som Puurunen, der ikke skal blive Poorunen
-define U2regel [ u2 -> u ] ;
+!define U2regel [ u2 -> u ] ;
 
 
 !i2 introduceret 4.juni for at haandtere ateq, tupeq, aleq typer i samme paradigme
@@ -184,7 +186,13 @@ echo << Vi definerer vokalregler >>
 !define schwaC [ [ i2 | i3 ] -> i || _ %> ( %TRUNC ) Cns ] ;
 !define schwaV [ [ i2 | i3 ] -> a || _ %> ( %TRUNC ) Vow ] ;
 !define schwaNULL [ i3 -> 0 || t _ [ .#. | %CLIT ] ] ;
-define Langradikalisering [ [ i %> e | i i | i %> ( %ProgI ) i ] -> e e, [ u %> o | u u | u %> ( Dummy ) u ] -> o o || _ ( %> ) ( \Segment ) Uvular ] ; !20100117 (pl) tilfoejet ( %ProgI ) paa venstre af hensyn til progressiv ass. ved i.
+!define Langradikalisering [ [ i %> e | i i | i %> ( %ProgI ) i ] -> e e, [ u %> o | u u | u %> ( Dummy ) u ] -> o o || _ ( %> ) ( \Segment ) Uvular ] ; !20100117 (pl) tilfoejet ( %ProgI ) paa venstre af hensyn til progressiv ass. ved i.
+
+!TEST 20231007 aht. Puurunen og kultuuri
+define Langradikalisering [ [ i %> e | i i | i %> ( %ProgI ) i ] -> e e, [ u %> o | u %> ( Dummy ) u ] -> o o || _ ( %> ) ( \Segment ) Uvular ] ; !20100117 (pl) tilfoejet ( %ProgI ) paa venstre af hensyn til progressiv ass. ved i.
+
+define uuLangradikalisering [ u u  -> o o || _  %>  ( \Segment ) Uvular ] ; 
+
 define radikalisering [ i -> e, u -> o || _ %> ( \Segment ) Uvular ] ;
 
 !define EeafRadikalisering [ e e -> i i || _ %> ( %TRUNC ) [ NonUvular | i | u | a ] ] ;
@@ -428,13 +436,9 @@ tAssimilation ![ NonUvular -> t || Vow _ %> t ]
 .o.
 qAssimilation ![ Cns -> q || Vow _ %> (\Segment) q ]
 .o.
-!schwaC ![ [ i2 | i3 ] -> i || _ %> ( %TRUNC ) Cns ]
-!.o.
-!schwaV ![ [ i2 | i3 ] -> a || _ %> ( %TRUNC ) Vow ]
-!.o.
-!schwaNULL ![ i3 -> 0 || t _ [ .#. | %CLIT ] ]
-!.o.
-Langradikalisering ![ [ i %> e | i i | i %> ( %ProgI ) i ] -> e e, [ u %> o | u u | u %> u ] -> o o || _ ( %> ) ( \Segment ) Uvular ]
+Langradikalisering  ! [ [ i %> e | i i | i %> ( %ProgI ) i ] -> e e, [ u %> o | u %> ( Dummy ) u ] -> o o || _ ( %> ) ( \Segment ) Uvular ] ; !20100117 (pl) tilfoejet ( %ProgI ) paa venstre af hensyn til progressiv ass. ved i.
+.o.
+uuLangradikalisering ! [ u u  -> o o || _  %>  ( \Segment ) Uvular ] ; 
 .o.
 radikalisering ![ i -> e, u -> o || _ %> ( \Segment ) Uvular ] ;
 .o.
@@ -504,8 +508,8 @@ Gaffix3 ![ g3 -> 0 || i %> _ u ] ;
 .o.
 Gaffix4 ![ g3 -> j || [ a | u ] %> _ u ] ;
 .o.
-U2regel ![ u2 -> u ] ;
-.o.
+!U2regel ![ u2 -> u ] ;
+!.o.
 !IngenArkefonemer ![ t2 -> t, g2 -> g, g3 -> 0, g4 -> 0  ]
 !.o.
 IngenArkefonemer ![ g2 -> g, g3 -> 0, g4 -> 0  ]
