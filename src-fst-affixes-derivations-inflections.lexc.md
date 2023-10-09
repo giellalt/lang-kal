@@ -961,6 +961,8 @@ Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers
 | --- 
 | --- 
 
+* LEXICON Z1+qaZ  !### udkommentererede gemineringsleksika, erstattet af GEMS (stop, klusil) og GEMC (kontinuant)
+
 * LEXICON ZsaqZ  
 
 * LEXICON Z1+koZ  
@@ -978,6 +980,8 @@ Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers
 * LEXICON Z1+koZmorf  derivationsmorfemer til nominer
 
 * LEXICON ZsaqZmorf  derivationsmorfemer til nominer
+
+* LEXICON Z1+qaZmorf  derivationsmorfemer til nominer
 
 * LEXICON Z1+laZmorf  derivationsmorfemer til nominer
 
