@@ -4,7 +4,8 @@
 
 #Kørsel med semantik på zsh: ~/langtech/kal/tools/shellscripts/kal-tokenise ~/langtech/kal/tools/tokenisers/tokeniser-disamb-gt-desc.pmhfst | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/kal-pre1.cg3 | ~/langtech/kal/tools/shellscripts/kal-hybrid-split | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/kal-pre2.cg3 | zsh -l -c ~/langtech/nutserut/dev/kal2eng/bin/long2sem.pl
 
-#Opdatering af semantik: ~/langtech/nutserut/dev/kal2eng/bin/update-long2sem.pl  
+#Opdatering af semantik inkl. gloss-interface: cd ~/langtech/nutserut/dev/kal2eng && bin/update-long2sem.pl && ~/langtech/gloss/ui.pl && cd ~/langtech/nutserut/dev/kal2eng
+ 
 # =================================================================== #
 # =================================================================== #
 #     W E S T   G R E E N L A N D I C   D I S A M B I G U A T O R     #
@@ -1400,6 +1401,25 @@ LIST ContNegObjSg = (Sg Abs) (3SgO ContNeg);
 LIST ContObjPl = (Pl Abs) (3PlO Cont) ;
 LIST ContNegObjPl = (Pl Abs) (3PlO ContNeg) ;
 SET ContObj& = ContObjSg OR ContNegObjSg OR ContObjPl OR ContNegObjPl ;
+
+#Unification set til i-ADVL> til NIQ med kongruent possessor
+LIST ContNIQ1Sg = (Cont 1Sg) (NIQ 1SgPoss); 
+LIST ContNIQ2Sg = (Cont 2Sg) (NIQ 2SgPoss); 
+LIST ContNIQ4Sg_3Poss = (Cont 4Sg) (NIQ 3SgPoss); 
+LIST ContNIQ4Sg_4Poss = (Cont 4Sg) (NIQ 4SgPoss); 
+LIST ContNIQ1Pl = (Cont 1Pl) (NIQ 1PlPoss); 
+LIST ContNIQ2Pl = (Cont 2Pl) (NIQ 2PlPoss); 
+LIST ContNIQ4Pl_3Poss = (Cont 4Pl) (NIQ 3PlPoss); 
+LIST ContNIQ4Pl_4Poss = (Cont 4Pl) (NIQ 4PlPoss); 
+LIST ContNegNIQ1Sg = (ContNeg 1Sg) (NIQ 1SgPoss); 
+LIST ContNegNIQ2Sg = (ContNeg 2Sg) (NIQ 2SgPoss); 
+LIST ContNegNIQ4Sg_3Poss = (ContNeg 4Sg) (NIQ 3SgPoss); 
+LIST ContNegNIQ4Sg_4Poss = (ContNeg 4Sg) (NIQ 4SgPoss); 
+LIST ContNegNIQ1Pl = (ContNeg 1Pl) (NIQ 1PlPoss); 
+LIST ContNegNIQ2Pl = (ContNeg 2Pl) (NIQ 2PlPoss); 
+LIST ContNegNIQ4Pl_3Poss = (ContNeg 4Pl) (NIQ 3PlPoss); 
+LIST ContNegNIQ4Pl_4Poss = (ContNeg 4Pl) (NIQ 4PlPoss); 
+SET ContNIQ& = ContNIQ1Sg OR ContNIQ2Sg OR ContNIQ4Sg_3Poss OR ContNIQ4Sg_4Poss OR ContNIQ1Pl OR ContNIQ2Pl OR ContNIQ4Pl_3Poss OR ContNIQ4Pl_4Poss OR ContNegNIQ1Sg OR ContNegNIQ2Sg OR ContNegNIQ4Sg_3Poss OR ContNegNIQ4Sg_4Poss OR ContNegNIQ1Pl OR ContNegNIQ2Pl OR ContNegNIQ4Pl_3Poss OR ContNegNIQ4Pl_4Poss ; 
 
 # Partikler
 # ---------
@@ -8539,8 +8559,8 @@ REMOVE:8563F (/Gram/TV\ V\ Ind\ 3Pl\ 3PlO/l) IF (0 (/Gram/TV\ V\ Ind\ 3Pl\ 3SgO/
 ##### Nomen eller partikel 14303
 ##### Nomen eller numerale 14271
 ##### Nomen eller verbum   14314
-##### Verbum eller verbum  14389
-##### Enkelte derivativer  14890
+##### Verbum eller verbum  14800
+##### Enkelte derivativer  15316
 ##### Enkelte substantiver 15223
 # 
 # Gram/IV eller Gram/TV eller Gram/Db #
@@ -9534,6 +9554,10 @@ REMOVE:5578U (/"aalap"\ Gram/TV\ TIR/l) IF (0 (/"aalater"\ Gram/TV/l));#.. taper
 REMOVE:5578V Imp + Gram/ImpPos IF (0 Imp - Gram/ImpPos); #Aamma ATUARUK Canadap inuisa 20.000-t missaat orpippassuit ikuallannerini qimagussorneqartariaqartut
 REMOVE:5578W ("ilar") IF (0 ("ilaler") LINK NEGATE *0 ("allu") OR ("alluaq")); 
 REMOVE:5578X (/"angi"\ Gram/IV\ \(iSem/be_attribute\ \)?NIQ\ Der/vn\ GE/l) IF (0 ("annere")) ;
+
+REMOVE:5578Y (/"isi"\ GIP/l) IF (0 ("isige"));  #Tujormisarnera ISIGINNGITSUUSAARTARIAQARPARA.
+
+REMOVE:5578Z (/"pissap"\ Gram/IV\ NGA/l) IF (0 ("pissanga")); #Ulloq nallermat pissangaqaanga.
 
 # Enkelte derivativer
 REMOVE:Int0401 IR + Der/nv IF (0 V + Der/vv OR ("ila")) ; #'ilaarpaa' ikke 'ila+IR'
