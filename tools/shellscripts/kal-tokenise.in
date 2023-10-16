@@ -595,16 +595,30 @@ sub propagate_tags {
 }
 
 my $out = "\"<¶>\"\n\t\"¶\" CLB\n";
+my $flushing = 0;
 my $wf = '';
 while (<STDIN>) {
    s/\x{feff}//g; # Unicode BOM
+
+   if (/^<STREAMCMD:FLUSH>/) {
+      # If a flush is encountered, prevent outputting ¶ cohorts until non-tag input is seen
+      $flushing = 1;
+      print;
+      next;
+   }
 
    if (scalar(keys(%cache)) > 10000) {
       %cache = ();
    }
 
    $out = "\"<¶>\"\n\t\"¶\" CLB\n";
+   if ($flushing) {
+      $out = $_;
+   }
    if (!/^\s*$/) {
+      if (!/^</) {
+         $flushing = 0;
+      }
       $out = analyze($_);
    }
 
