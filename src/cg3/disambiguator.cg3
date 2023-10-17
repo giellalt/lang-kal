@@ -1976,7 +1976,8 @@ SET HVVERB_UdenLeksikalisering = HVVERB - (/"allap"\ Gram/HV\ Gram/IV\ USIQ\ Der
 SET TEMPUSVERB = UGEDAGE | ("ilaanneeriar") | (/"imaali"\ Gram/IV\ LLAR\ Der/vv\ Gram/IV\ V\ Par/l) | ("qaanger") | ("qaqutigut" U) | ("qiteqqup") | ("taamaali") | ("ukiar") | ("ukioq" U) | ("unnup") ;
 
 ### affixer og eknlitika LISTs ###
-LIST DERCLIT = KASIK PALAAQ ;
+LIST DERCLITDER = (/KASIK\ Der/nn/l) (/PALAAQ\ Der/nn/l) ;
+LIST DERCLITCLIT = KASIK PALAAQ ;
 LIST TIMEAFFIX = (/__RIIR\ Der\/vv\ \(Gram\/..\ \)*V__/l) (/__LIR\ Der\/vv\ \(Gram\/..\ \)*V__/l) ;
 
 ### mix LISTs (lister med blandede slags elementer) ###
@@ -2587,7 +2588,7 @@ REMOVE:0000C (/"ip"\ Gram/[IT]V\ \(Gram/Pass\ \)?NIQ\ Der/vn\ N\ Ins\ Sg/l) - PO
 (NEGATE -1 ("qanoq") OR ("taama"))
 ;
 
-REMOVE:0000D DERCLIT - Der/nn IF (0 DERCLIT + Der/nn); #Anaanapalaaq!
+REMOVE:0000D DERCLITCLIT - DERCLITDER IF (0 DERCLITDER); #Anaanapalaaq!
 
 REMOVE:0000Test (/LIAR\ Der/nv\ Gram/IV\ A\ Der/vv/l); #KW27092023 for at forhindre overgenerering. Jeg tager mig af det.
 
@@ -2784,7 +2785,7 @@ REMOVE:tidlig0014 ("kiisa" Adv LU) IF (0 ("kiisalu")); #En radikal regel baseret
 
 REMOVE:tidlig0015 (/"ili"\ Gram/TV\ QQU/l) IF (0 ("ileqqoq"));
 
-REMOVE:tidlig0016 GE IF (0 Par + 3Sg + 3SgO LINK NOT *0 VFIN)(*0W Par LINK NOT *0 VFIN - GE)(@1< (*)) #Anaanap glassi ERRORTORAA. Glassi ILIGAA. Imeq kuuttoq. Qapuk. Qaqortoq. Qapuk qaqortoq. Glassi allarteraa. Nipaa.. #må stå før reglerne der fjerner Par
+REMOVE:tidlig0016 GE IF (0 Par + 3Sg + 3SgO LINK NOT *0 VFIN)(*0W Par LINK NOT *0 VFIN - GE) #Anaanap glassi ERRORTORAA. Glassi ILIGAA. Imeq kuuttoq. Qapuk. Qaqortoq. Qapuk qaqortoq. Glassi allarteraa. Nipaa.. #må stå før reglerne der fjerner Par
 (NEGATE 0 ("ila") + GE); #fordi sidste del af reglen ikke virker i regressionen
 
 REMOVE:tidlig0019A Abs (0 Rel) (1 ("kinguneq") OR ("kingorna")) (NOT 0 TUQ) ;
@@ -5879,6 +5880,8 @@ REMOVE:0151 (Prop Sem/FirstName) IF (NEGATE 1 Prop);
 
 #REMOVE:0152 Prop + Sem/FirstName IF (1 Prop + CONJ-LU) ;
 # fordi Judithe ikke skal være Sem/FirstName i 'Judithe Perilu' #20180704 overflødig
+
+#REMOVE:0152 ("Nuna") + Prop IF (0 ("nuna") + N + 1PlPoss); #ad-hoc-løsning: Nunarput/Nunatsinni kan kun oversættes til Grønland, hvis det læses som N #KW17102023
 
 SELECT:0153 Prop + Sem/FirstName IF (1 Prop + Sg + Abs) (NEGATE 1 Prop + IP); #Ny 20101013. Må ikke hitte på 'Per Nuummiittoq'
 SELECT:0153A Prop + Sem/FirstName IF (1 Prop + Pl + KKUT) (NEGATE 1 Prop + IP); #Ny 20150221.
@@ -9062,6 +9065,7 @@ REMOVE:5200BX ("ani") + PALLAP + Der/nv IF (0 ("ani") + PALLAP + Der/vv); #ikke 
 REMOVE:5200BY ("pi") + GUMA + TAR + QE IF (0 ("pi") + GUMA + TAQ + QAR); #PIUMASAQAATIT uannut kiffaanngissusiiaasut.
 REMOVE:5200BZ ("pakkut") + LIR IF (0 ("pakkup") + LIR); #Ornippaa PAKKUTILERLUGULU.
 # Verbum eller verbum?
+REMOVE:5200CA ("ima") + U IF (0 ("imaap"));
 SELECT:Sel0083 (INNAR NNGIT) IF (*1 ("aamma") ) ; #+INNAR=NNGIT aamma Vb fremfor NAR)
 #SELECT:Sel0084 ("allor") IF (NEGATE *0 @ALLSUBJ + ("seqineq")) ; # alluppoq vistnok kun med subjekt "seqineq"
 #X@X1
@@ -9958,7 +9962,8 @@ REMOVE:5715 ("aaq") + QAR IF (0 ("aak") + QAR LINK *-1 ("arnaq")) ;
 REMOVE:5716 ("alersi") IF (0 ("alerseq"));
 REMOVE:5717 ("tulloq") + U IF (0 ("tulluup")); #'hvalvorte' sjælden og sandsynligvis archaisk
 REMOVE:5718 ("iver") + Gram/TV + TAQ IF (0 ("ivigaq")) ;
-REMOVE:5719 ("imaq") IF (0 ("ima") + QAR OR ("ima") + LIK OR ("imaap") OR ("imaali")) ;
+REMOVE:5719A ("imaq") IF (0 ("ima") + QAR OR ("ima") + LIK OR ("imaap") OR ("imaali")) ;
+REMOVE:5719B ("imaq") + (/^i?Sem/am/r) IF (0 ("ima")); #er ens
 REMOVE:5720 ("iseq") IF (1 ("tagiartor")) ;
 REMOVE:5721 ("angajoqqaaq") + Sg IF (NOT 1 ("aappaq")) ; #forældre er normalt flertal medmindre andet er specificeret
 REMOVE:5722 ("iseq") + TUGAQ IF (0 ("isertugaq")) ; #ikke en spist dis, men en hemmelighed...
@@ -12003,8 +12008,9 @@ REMOVE:Sem0256 ("ajor") + (/^i?Sem/bodystate.*/r) IF (0 (/^i?Sem/be_attribute.*/
 REMOVE:Sem0260 ("qaqip") + (/^i?Sem/pull.*/r) IF (0 ("qaqip") + (/^i?Sem/take.*/r))
 (NEGATE *0 (/"iti"\ TUUQ/l) OR ("nateq")); # Qerititsivimmiuna QAQITASSARSIORNIARTUNGA.
 
-REMOVE:Sem0265 ("imaq") + (/^i?Sem/am.*/r) IF (0 (/^i?Sem/Lwater.*/r) LINK 1 SPATIAL + POSSESSUM3); #Igaffiup igalaavinukarpunga IMMALLU tungaanut qimerluulerlunga.
-REMOVE:Sem0266 ("imaq") + (/^i?Sem/am.*/r) IF (0 (/^i?Sem/Lwater.*/r) LINK *0 (/maller*/r)); #Takassa illorsuit ataanni IMAQ mallersorsuulluni qaqortuinnaavoq.
+REMOVE:Sem0265 ("imaq") + (/^i?Sem/am.*/r) OR ("ima") IF (0 (/^i?Sem/Lwater.*/r) LINK 1 SPATIAL + POSSESSUM3); #Igaffiup igalaavinukarpunga IMMALLU tungaanut qimerluulerlunga.
+REMOVE:Sem0266 ("imaq") + (/^i?Sem/am.*/r) OR ("ima") IF (0 (/^i?Sem/Lwater.*/r) LINK *0 (/maller*/r)); #Takassa illorsuit ataanni IMAQ mallersorsuulluni qaqortuinnaavoq.
+REMOVE:Sem0267 ("imaq") + (/^i?Sem/Lwater.*/r) IF (0 (/^i?Sem/am.*/r) + POSSESSUM3 OR ("ima") + POSSESSUM3 LINK -1 (/^i?Sem/con.*/r) + Rel); #Assamma aappaanik paniga sianerfigaara, puiaasap IMAATA nunngutaa aarlorutiutigalugu.
 
 REMOVE:Sem0270 ("isikkivik") + (/^i?Sem/ac.*/r) OR (/^i?Sem/sem-c.*/r) IF (0 ("isikkivik") + (/^i?Sem/percep-w.*/r)); #ISIKKIVISSUAQ.
 
@@ -12134,8 +12140,6 @@ REMOVE:Sem0430 ("misige") + (/^i?Sem/undergo.*/r); #andre regler deaktiveret, la
 
 
 REMOVE:Sem0435 ("anillap") + (/^i?Sem/worsen.*/r) IF (0 (/^i?Sem/leave.*/r)); #Tilføj undtagelser for udslæt.
-
-REMOVE:Sem0440 ("imaq") + (/^i?Sem/Lwater.*/r) IF (0 (/^i?Sem/am.*/r) + POSSESSUM3 LINK -1 (/^i?Sem/con.*/r) + Rel); #Assamma aappaanik paniga sianerfigaara, puiaasap IMAATA nunngutaa aarlorutiutigalugu.
 
 SELECT:Sem0445 (/"aallar"\ Gram/IV\ TIP\ Der/vv\ Gram/TV/l) + (/^i?Sem/send.*/r) IF (-1 Trm); #Takusinnaavara qatserussuit anginersaata kranersua qummut tallisartoq misilittaraluaraat, inissiarsuarli qiteqqutiinnarlugu anorimit biilit aalanermik sapernulertarput, taamaaligaangallu majuartarfiit ammut AALLARTIINNARNEQARTARPUT.
 
@@ -12280,9 +12284,9 @@ REMOVE:Sem0727 ("aalajanger") + (/^i?Sem/fasten/r) IF (0 (/^i?Sem/decide/r)); #l
 
 SELECT:Sem0730 ("pi") + TUQ + U + (/^i?Sem/implement/r) IF (-1 ("nammineq")); #Nammineq PISUUNERARLUNGA.
 
-REMOVE:Sem0735 ("nuna") + (/^i?Sem/Lciv/r) IF (0 (/^i?Sem/L/r) + POSSESSUM);
-
-REMOVE:Sem0736 ("nuna") + (/^i?Sem/Ltop/r) IF (0 (/^i?Sem/L/r) + POSSESSUM);
+REMOVE:Sem0735 ("nuna") + (/^i?Sem/Lciv/r) OR ("nuna") + (/^i?Sem/Ltop/r) IF (0 (/^i?Sem/L$/r) + 1PlPoss);
+REMOVE:Sem0736 ("nuna") + (/^i?Sem/L$/r) IF (0 N - 1PlPoss);
+REMOVE:Sem0737 ("nuna") + (/^i?Sem/Ltop/r) IF (0 (/^i?Sem/Lciv/r)); #lav undtagelser når de kommer
 
 REMOVE:Sem0740 ("tapersersor") + (/^i?Sem/promote/r) IF (0 (/^i?Sem/help/r) LINK NOT *0 ("aningaasaq"));
 
@@ -12344,11 +12348,13 @@ REMOVE:Sem0870 ("ningiu") + (/^i?Sem/Hprof/r) IF (0 (/^i?Sem/Hfam/r)); #lav undt
 
 REMOVE:Sem0875 ("tunnga") + (/^i?Sem/identify/r) IF (0 (/^i?Sem/be_place/r)); #lav undtagelser når de kommer, jeg kan ikke tænke på en god regel
 
+REMOVE:Sem0880 ("nipilersuut") + (/^i?Sem/tool-mus/r) IF (0 (/^i?Sem/sem-l/r)); #lav undtagelser når de kommer
+
 ##############
 AFTER-SECTIONS
 
 
-SUBSTITUTE:GramRefl (Gram/TV Gram/Refl Gram/IV V ) (Gram/TV Gram/Refl V ) TARGET (/Gram/TV\ Gram/Refl\ Gram/IV\ V\ /l) ; #Jude 20231016
+#SUBSTITUTE:GramRefl (Gram/TV Gram/Refl Gram/IV) (Gram/TV Gram/Refl) TARGET (/Gram/TV\ Gram/Refl\ Gram/IV/l) ; #Jude 20231016 #kan ikke bruges sådan, fordi alle Gram/IV-tags bliver fjernet KW17102023
 #SUBSTITUTE:S0033A (/@.*/r) (@N<) TARGET (/__TUQ\ Der\/vn\ N__/l) + $$KASUS + $$NUMERUS + (/@\(<?SUBJ>?|<?OBJ>?|SUBJ_COMP|<?MIK-OBJ>?\)/r) (**-1 N + $$KASUS + $$NUMERUS BARRIER (*) - @i-ADVL> - @i-MIK-OBJ> - @N< - @>N - @i->V OR PILLUGU LINK 0 (VSTR:/@$1/r))(NEGATE 0 CONJ-C)
 #(NEGATE *-1 Abs LINK 1 $$OBLIQUE + LU LINK *1 _TARGET_ BARRIER (*) - $$OBLIQUE)#Air Greenlandimi timmisartumi saqisut akissarsiatik sulinermilu ATUGASSARITINNEQARTUT naammaginngilaat
 #(NEGATE *-1 @SUBJ> LINK *1 CONJ-C LINK *1 _TARGET_ + @SUBJ> LINK *1 3Pl)#USA-p præsidentiata Donald Trumpip napparsimmavimmit anilluni biiliunneqarnera akisussaassuseqanngitsuliornerusoq, USA-mi præsidentimik paarsisut Secret Servicemeersut peqqinnissaqarfimmilu SULISUT oqaatigaat.
