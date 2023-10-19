@@ -975,6 +975,8 @@ Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers
 
 * LEXICON Z1+ssZmorf  derivationsmorfemer til nominer
 
+* LEXICON Z1+niuZmorf  derivationsmorfemer til niu
+
 * LEXICON Z1+maZmorf  derivationsmorfemer til nominer som isuma
 
 * LEXICON Z1+koZmorf  derivationsmorfemer til nominer
@@ -990,6 +992,8 @@ Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers
 * LEXICON Z1+naZmorf  derivationsmorfemer til nominer med gemination af n
 
 * LEXICON Z1+ssZ  
+
+* LEXICON Z1+niuZ  
 
 * LEXICON Z1+maZ  
 
