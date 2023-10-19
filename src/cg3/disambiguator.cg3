@@ -2418,14 +2418,6 @@ SET SEM/weather = Sem/weather OR iSem/weather ;
 LIST Sem/wish = Sem/wish ; #kissaappaa
 LIST iSem/wish = iSem/wish ;
 
-# Jude 20231013 til brug ved regler om morfemkombinationer
-SET LOCSEM = SEM/build | SEM/furn | SEM/Geo | SEM/HH | SEM/HHinst | SEM/HHorg | SEM/Hprof | SEM/inst | SEM/L | SEM/Lciv | SEM/Lcountry | SEM/Lh | SEM/Ltip | SEM/Ltop | SEM/Ltown | SEM/Lwater | Sem/Hum ;
-LIST LocLex = (/"aningaaseri"\ Gram/IV\ VIK\ Der/vn/l) "iggavik" "nuna" (/"qule"\ LLIQ\ Der/nn\ TAQ\ Der/nn/l) iProp ; #Jude 20231013 in case of missing sem tag
-LIST LocSuf = (/TAQ\ Der/vn/l) (/TUQ\ Der/vn/l) (/VIK\ Der/vn/l) ;
-SET LOCN = LOCSEM | LocLex | LocSuf ;
-LIST LocB = "KAA" "KAR" "IP" "IR" "UR" ; #Jude 20231013 Hyb/2-2 der verbaliserer LOCN
-LIST LocVr = LIAR KAR ; #Jude 20231013 Der/nv der verbaliserer LOCN
-
 
 # ============ #
 # ============ #
@@ -2448,27 +2440,43 @@ REMOVE:Arch Orth/Arch + (/\(.*\)/r) (0 (VSTR:$1) - Orth/Arch)
 REMOVE:Gram (/nv\ Gram/IV\ Gram/IV\ V/l) + (/\(.*\)/r) (0 (/nv\ Gram/IV\ V/l) + (VSTR:$1)) ; #Jude 20231009 eksempel: AMEERNIARPOQ
 
 ### Judithes afsnit start ### påbegyndt 20231006: sorter umulige morfemkombinationer fra
+LIST Tag-Sem = iProp iN ; #Jude 20231018 tag other than sem
+
 ### Der/nv ###
 #GASAAR
 REMOVE:MorfGasaar0001 (*) - iSem/anzo (0 GASAAR) ; #Jude 20231006
 #GE
-#GIP
-REMOVE:MorfGip0001 (*) - iSem/ac - iSem/cloH - iSem/f-an (0 GIP) ; #Jude 20231009
-#GISSAAR 
+
+
+#GIP #GISSAAR #IAR #IRNIAR #IRSIR #IRUTE #KIP #KILLI #LIR #LIRSUR #LUP #NIP #QAR
+LIST PosSem = iSem/ac iSem/cloH ; #Jude 20231018
+LIST PosLex = "illu" ; #Jude 20231018
+SET PosN = PosSem | PosLex | Tag-Sem ; #Jude 20231018
+LIST PosVr = GE GIP GISSAAR IAR IRNIAR IRSIR IRUTE KIP KILLI LIR LIRSUR LIUR LIUTE LUP NIP QAR SI TAAR ; #Jude 20231018
+REMOVE:MorfPos0001 (*) - PosN + (/"\(.*\)"\ \([A-Z]+\)?\ \(Der/nn\)?\ \(iSem/.*\)?\ \([A-Z]+\)\ Der/nv/l) (0 PosVr + (VSTR:$5)) ;
+
 #GIIP
 REMOVE:MorfGiip001 (*) - iSem/Hprof - iSem/Hfam (0 GIIP) ; #Jude 20231009
-#IAR
+
 #ILATSI
-#IRNIAR
-#IRNIAR
-REMOVE:MorfIrniar0001 (*) - iSem/Aich - iSem/B - iSem/Btree - (/iSem/cloH.*/r) - iSem/cm - iSem/cm-liq-h - iSem/drink-m-h - iSem/food-h - iSem/mat - iSem/sem-r (0 IRNIAR) ; #Jude 20231009
-#IRSIR
-#IRUTE
-#KIP
-#KILLI
+
+#IRNIAR #SI
+LIST SBSem = iSem/Aich iSem/B iSem/Btree (/iSem/cloH.*/r) iSem/cm iSem/cm-liq-h iSem/drink-m-h iSem/food-h iSem/mat iSem/sem-r ; #Jude 20231018
+LIST SBLex = "mattak" ; #Jude g20231018
+SET SBN = SBSem | SBLex | Tag-Sem ; #Jude 20231018
+LIST SBVr = IRNIAR (/SI\ Der/nv/l) ; #Jude 20231018
+REMOVE:MorfSB0001 (*) - SBN (0 SBVr) ; #Jude 20231009
+
 #KKAAR
 #KKUMINAR
+
 #LIAR
+SET LOCSEM = SEM/build | SEM/furn | SEM/Geo | SEM/HH | SEM/HHinst | SEM/HHorg | SEM/Hprof | SEM/inst | SEM/L | SEM/Lciv | SEM/Lcountry | SEM/Lh | SEM/Ltip | SEM/Ltop | SEM/Ltown | SEM/Lwater | Sem/Hum ;
+LIST LocLex = (/"aningaaseri"\ Gram/IV\ VIK\ Der/vn/l) "iggavik" "nuna" (/"qule"\ LLIQ\ Der/nn\ TAQ\ Der/nn/l) iProp ; #Jude 20231013 in case of missing sem tag
+LIST LocSuf = (/TAQ\ Der/vn/l) (/TUQ\ Der/vn/l) (/VIK\ Der/vn/l) ;
+SET LOCN = LOCSEM | LocLex | LocSuf ;
+LIST LocB = "KAA" "KAR" "IP" "IR" "UR" ; #Jude 20231013 Hyb/2-2 der verbaliserer LOCN
+LIST LocVr = LIAR KAR ; #Jude 20231013 Der/nv der verbaliserer LOCN
 REMOVE:MorfLoc0001 (*) - LOCN (0 LocVr) 
 (NEGATE 0 (/Dial/.*/r)) #Jude 20231013
 (NEGATE 0 POSSESSUM1) ; #Jude 20231016
@@ -2484,11 +2492,10 @@ REMOVE:MorfLoc0007 (*) - iProp (0 LocVr) ; #Jude 20231013
 REMOVE:MorfLoc0008 SEM/inst (0 SEM/Hprof + LocSuf + LocVr) ; #Jude 20231013
 REMOVE:MorfLoc0009 SEM/furn OR SEM/Hprof (0 SEM/Lh + LocVr OR SEM/Lh + LocSuf + LocVr) ; #Jude 20231013
 
-#LIR
 
 #LIRNGUSAATE
 #LIRI
-#LIRSUR
+
 #LISAAR
 #LISAR
 #LIUR
@@ -2503,7 +2510,7 @@ REMOVE:MorfLoc0009 SEM/furn OR SEM/Hprof (0 SEM/Lh + LocVr OR SEM/Lh + LocSuf + 
 #QAR
 REMOVE:MorfQatigiip (*) - iSem/Lciv (0 QATE + GIIP + (/"naalagaq"\ U\ Der/nv\ Gram/IV\ VIK\ Der/vn/l)) ; #Jude 20231009
 #RSUR
-#SI
+
 #SIUR
 #SIUR#Der/nv#UTE#Der/vv
 #SUNNIP
@@ -2541,6 +2548,10 @@ REMOVE:MorfUsaar0001 (/U\ Der/nv\ Gram/IV\ \(i?Sem/.*\)?SAAR\ Der/vv/l) (0 USAAR
 #ALUK=PAK=ALUK=SUAQ
 #ARAQ=NNGUAQ
 #ARAQ=PAK=SUAQ
+
+#GIIT
+REMOVE:MorfGiit0001 (*) - (/"illuk"\ GIIT/l) (0 (/"illu"\ iSem/build\ GIIT/l)) ; #Jude 20231018
+
 #GIIT=PAK
 #GIIT=PAK=ALUK
 #GIIT=PAK=SUAQ
@@ -5754,7 +5765,7 @@ SELECT:0100Y Pl + $$KASUS IF (1 Num + Pl + $$KASUS) (0C 2SgPoss) ;
 
 REMOVE:0100Z POSSESSUM12 IF (0 Part) ; #aasiit
 SELECT:0100AA 2SgPoss IF (*0 ("quja" NAR Gram/Exclm))(NEGATE -1 ("uanga"))(NEGATE *0 VFIN) ; #Kontekst, der maa sikres foer foelgende REMOVE
-SELECT:0100AB 2SgPoss - ("massak") - SSA IF (NEGATE *0S V OR INDERIVERENDE_SUBSTANTIV)(*1 ("?"))(NEGATE 0 V + 2Sg)(NEGATE *0 Gram/Int + Pron + Pl) ; #Kontekst, der maa sikres foer foelgende REMOVE. Specialitet at massak+Via opfattes som 2SgPoss og ikke Der/vn med SSA
+SELECT:0100AB 2SgPoss - ("massak") - SSA IF (NEGATE *0S V OR INDERIVERENDE_SUBSTANTIV)(*1 ("?"))(NEGATE 0 V + 2Sg)(NEGATE *0 Gram/Int + Pron + Pl) ; #Kontekst, der maa sikres foer foelgende REMOVE. Specialitet at massak+Via opfattes som 2SgPoss og ik ke Der/vn med SSA
 
 REMOVE:0100AC 2SgPoss IF (0 Rel + Pl LINK *1 TRANSVERB + 3Pl LINK NEGATE *0 (Rel3Pl) - _TARGET_) #POLITIIT ikuallattoqarneranut pissutaasoq paasinialeruttorpaat.
 (NEGATE 0 (/TAQ\ Der/vn\ N\ Abs\ Sg/l) LINK 1 (Prop Abs Sg))#Oqaasiliortut niviarsiaqqat aqqattut QINNUTIGISAT Suluk akuereqqammerpaat.
@@ -9880,7 +9891,6 @@ REMOVE:5565 MIUQ IF (0 (MIU)) ;
 REMOVE:5566 GE + TAQ + Der/vn + LIR + Der/nv IF (0 TAR + LIR + Der/vv); #..gisalerpaa er nok TAR=LIR+Der/vv
 REMOVE:5567 TIGE IF (NEGATE -1 ("taama") OR ("qanoq") OR ("ima") OR ("imak") OR Sem/Unit OR NUMHOVED)(NEGATE -1 BOS LINK 1 EOS) #Sidste NEGATE for typen Ajortigisoq!
 (NEGATE 0 ("anniar")) #ANNIARTIGALUNGA akiuunniarsarivunga.
-(NEGATE 0 (T:alone)) #Jude v/enkeltord uden kontekst
 ; 
 SELECT:5567B TIGE IF (-1 ("taama") OR ("qanoq") OR ("ima") OR ("imak") OR Sem/Unit OR NUMHOVED) ;
 REMOVE:5568 UTIGE IF (0 TRANSVERB + (/UTE\ Der/vn/l) + GE)
