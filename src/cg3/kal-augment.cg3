@@ -1,0 +1,65 @@
+# -*- cg-pre-pipe: ~/langtech/kal/tools/shellscripts/kal-tokenise ~/langtech/kal/tools/tokenisers/tokeniser-disamb-gt-desc.pmhfst | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/kal-pre1.cg3 | ~/langtech/kal/tools/shellscripts/kal-hybrid-split | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/kal-pre2.cg3 | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/disambiguator.cg3 | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/functions.cg3  -*-
+
+
+# ===================================================================== #
+# ===================================================================== #
+#     Augmentations for texts being fed to Danish/English translation   #
+# ===================================================================== #
+# ===================================================================== #
+
+INCLUDE STATIC disambiguator.cg3 ;
+
+Mapping-Prefix = £ ;
+
+LIST Syn/Stop = Syn/Stop ; #Tag til steder, hvor longest match skal blokeres
+
+ADDCOHORT:0010 ("<femsubj>" "femsubj" Pron Abs Sg Sem/Fem Gram/ContSubjekt) BEFORE @PRED + CONT + 4Sg IF (*-1 femverb + 4Sg LINK *1 @PRED + 3Sg LINK 1 CONJ-C LINK *1 _TARGET_ + @PRED + CONT + 4Sg BARRIER @PRED); #Naartulerami aalajangersimasumik suliffeqarsinnaajunnaarpoq taamaattumillu aningaasanik <ny node> qinnuteqarluni.
+
+ADDCOHORT:0011 ("<femsubj>" "femsubj" Pron Rel Sg Sem/Fem Gram/ContSubjekt) BEFORE @PRED + CONT + TRANSVERB IF (*-1 femverb + 4Sg LINK *1 @PRED + 3Sg LINK 1 CONJ-C LINK *1 _TARGET_ + @PRED + CONT BARRIER @PRED); #Naartulerami aalajangersimasumik suliffeqarsinnaajunnaarpoq taamaattumillu Sønderborgip kommunia ikiorsiissutinik FemSubj qinnuteqarfigalugu.
+
+SUBSTITUTE:0021 (Cont @PRED) (Imp @PRED) TARGET (Cont @PRED) IF (*-1 (Imp @PRED) BARRIER V) ; #Aviisimut neqeroorummik pissarsigit – 38 39 40 sianerfigiuk imaluunniit mail adm@sermitsiaq.gl allaffigalugu
+
+MAP @SUBJ> target ("femsubj") IF (*1 CONT + @PRED);
+
+SUBSTITUTE (Cont @i-ADVL> 4Sg) (Cont @i-ADVL> 4Sg Sem/Fem) TARGET (Cont @i-ADVL> 4Sg)
+IF (*1 VFIN + NAR + 3Sg BARRIER VFIN);
+
+SETPARENT ("FemSubj")
+(NOT p (*))
+TO (*1 CONT) ;
+
+#Samtlige ADD-regler udkommenteres af hensyn til dependenserne. Må genaktiveres, når kal2eng realiseres
+#ADD Syn/Stop BEFORE (TUQ) TARGET (/__Gram/IV\ TUQ\ /l) IF (0 (/TUQ\ Der/vn\ QAR/l)) #misissui plus soqarnissaa
+#(NEGATE 0 (/"ilaa"\ Gram/IV\ TUQ/l))
+#;
+
+#ADD (<tr-end>) AFTER (Der/vn U Der/nv Gram/IV SIMA Der/vv Gram/IV) TARGET (/U\ Der/nv\ Gram/IV\ SIMA\ Der/vv/l);
+#ADD (<tr-prefix> <tr:used_to>) AFTER (U Der/nv) TARGET (/U\ Der/nv\ Gram/IV\ SIMA\ Der/vv/l);
+#ny 20201001 tr-prefix og tr-suffix er info til Perl om flytning/ ikke-flytning
+
+
+
+#SINNAA: Først med nægtelse i verbalnominer. NB 20201013 Får ikke TARGET til at virke uden rene ad hoc formuleringer
+#ADD (<tr-end>) AFTER (Der/vv Gram/IV SINNAA Der/vv NNGIT Der/vv Gram/IV) TARGET (/SINNAA\ Der/vv\ NNGIT\ Der/vv/l);
+#ADD (<tr-prefix> <tr:cannot>) BEFORE (SINNAA Der/vv NNGIT Der/vv) TARGET (/SINNAA\ Der/vv\ NNGIT\ Der/vv/l);
+
+
+
+
+#ADD (<tr-end>) AFTER (Gram/IV QQU Der/vv Gram/TV) TARGET (/Gram/IV\ QQU\ Der/vv\ Gram/TV\ /l);
+#ADD (<tr-prefix> <tr:call_for>) BEFORE (Gram/IV QQU Der/vv Gram/TV) TARGET (/Gram/IV\ QQU\ Der/vv\ Gram/TV\ /l);
+
+#ADD (<tr-end>) AFTER (Gram/IV TIP Der/vv Gram/TV HTR Der/vv Gram/IV NIQ) TARGET (/Gram/IV\ TIP\ Der/vv\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ NIQ/l);
+#ADD (<tr-prefix> <tr:causing_to>) BEFORE (Gram/IV TIP Der/vv Gram/TV) TARGET (/Gram/IV\ TIP\ Der/vv\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ NIQ/l);
+
+
+#ADD (<tr-end>) AFTER (Gram/IV TIP Der/vv Gram/TV) TARGET (/Gram/IV\ TIP\ Der/vv\ Gram/TV\ /l)
+#(NEGATE 0 (<tr:causing_to>))
+#;
+#ADD (<tr-prefix> <tr:cause_to>) BEFORE (Gram/IV TIP Der/vv Gram/TV) TARGET (/Gram/IV\ TIP\ Der/vv\ Gram/TV\ /l)
+#(NEGATE 0 (<tr:causing_to>))
+#;
+
+#SUBSTITUTE:S0100 (/"avannaq"\ N\ Trm\ Sg /l) (*) TARGET (@>N);
+
+#SUBSTITUTE:S0100 ((/"avannaq"\ N\ Trm\ Sg /l) (north) TARGET (/"avannaq"\ N\ Trm\ Sg /l) IF (0 @>N LINK 1 SPATIAL);

@@ -8,7 +8,7 @@
 
 #############################################
 #### Add language-specific sources here: ####
-GT_CG_LOCAL_SRCS=kal-pre1.cg3 kal-pre2.cg3
+GT_CG_LOCAL_SRCS=kal-pre1.cg3 kal-pre2.cg3 kal-augment.cg3
 
 #############################################################
 #### Add language-specific targets to be installed here: ####
