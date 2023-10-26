@@ -1880,7 +1880,7 @@ LIST LEKSIKALISERING =
 (/"unior"\ Gram/IV\ QQU\ Der/vv\ Gram/TV\ TIP\ Der/vv\ Gram/Db\ HTR\ Der/vv\ Gram/IV\ NIQ/l)
 (/"utoqqali"\ Gram/IV\ NIQ\ Der/vn\ SIUT/l)
 ;
-LIST LEX_FULLFORM_NOUN = "aalisagaq" "kusugaq" "qilanngaq"
+LIST LEX_FULLFORM_NOUN = "aalisagaq" "kusugaq" "qilanngaq" "aasaq"
 ; #Jude 2023 leksikaliserede nominale fuldformer, der sandsynligvis aldrig vil have tilknyttet adled til verbalstammen ELLER nominer der også har usandsynlige Gram/Exclm analyser.
 LIST MATERIAL = "ameq" "ukkusissaq" "ulik" "qipik" ;
 LIST MAANED = "januar" "januaari" "februar" "februaari" "marts" "marsi" "april" "apriili" "maj" "maaji" "juni" "juuni" "juli" "juuli" "august" "aggusti" "augusti" "aggustusi" "september" "septembari" "oktober" "oktobari" "november" "novembari" "december" "decembari" ;
@@ -2438,10 +2438,15 @@ SUBSTITUTE:S0001 ("/" PUNCT) ("/" Gram/Conj-encl Conj) TARGET ("</>") - Conj ;
 REMOVE:Symbol Symbol IF (0 PUNCT) ;
 REMOVE:MIUQ1 (MIUQ) IF (0 (MIU)) ;
 REMOVE:MIUQ2 ("(.*)mioq"r) IF (0 (VSTR:"$1miu.*"r) + N );
-REMOVE:Arch Orth/Arch + (/\(.*\)/r) (0 (VSTR:$1) - Orth/Arch)
+REMOVE:Arch0001 Orth/Arch + (/\(.*\)/r) (0 (VSTR:$1) - Orth/Arch)
 (NEGATE 0 TIP OR TAR)
 (NEGATE 0 ("erneq")) ; #Jude 20231009 eksempel: ORPEERNIARPOQ
+#REMOVE:Alt0001 Orth/Alt + BFORM (0 BFORM - Orth/Alt) ; #Jude 20231026 abandoned - ca. 170 i regtest
 REMOVE:Gram (/nv\ Gram/IV\ Gram/IV\ V/l) + (/\(.*\)/r) (0 (/nv\ Gram/IV\ V/l) + (VSTR:$1)) ; #Jude 20231009 eksempel: AMEERNIARPOQ
+#REMOVE:GramIV0001 (/Der/nv\ Gram/IV\ NIQ\ Der/vn\ N\ /l) + BFORM (0 (/Der/nv\ NIQ\ Der/vn\ N\ /l) + BFORM) ; #Jude 20231025
+REMOVE:GramIV0001 (/Der/nv\ Gram/IV\ NIQ\ Der/vn\ \([A-Z]+\ \)?\(Der/nn\ \)?\N\ /l) + BFORM (0 (/Der/nv\ NIQ\ Der/vn\ \([A-Z]+\ \)?\(Der/nn\ \)?\N\ /l) + BFORM) ; #Jude 20231026
+REMOVE:GramIV0002 (/Der/nv\ Gram/IV\ TUQ/l) + BFORM (0 (/Der/nv\ TUQ\ Der/vn\ N\ /l) + BFORM) ; #Jude 20231026
+REMOVE:GramIV0003 (/Der/nv\ Gram/IV\ NNGUARSI/l) + BFORM (0 (/Der/nv\ Gram/IV\ NNGUARSI/l) + BFORM) ; #Jude 20231026
 
 ### Judithes afsnit start ### påbegyndt 20231006: sorter umulige morfemkombinationer fra
 LIST Tag-Sem = iProp iN ; #Jude 20231018 tag other than sem
@@ -2508,7 +2513,19 @@ REMOVE:MorfLoc0009 SEM/furn OR SEM/Hprof (0 SEM/Lh + LocVr OR SEM/Lh + LocSuf + 
 #LIUR
 #LIUTE
 #LUP
-#NIP
+
+#NIP #SUNNIP
+LIST ScSem = iSem/Aich iSem/Azo iSem/Bflo iSem/cm-liq iSem/cc-fire iSem/food iSem/food-c-h iSem/food-m-h iSem/fruit-c iSem/H iSem/Lwater iSem/mat iSem/temp iSem/wea iSem/wea-m ; #Jude 20231025 
+LIST ScLex = "aalisagaq" (/"aku"\ UTE\ Der/nn\ SSAQ\ Der/nn\\( iSem/food-c\)?/l) (/"eqqiar"\ Gram/TV\\( iSem/clean\)? UTE\ Der/vn/l) "imaq" "imeq" "oquk" (/"paaq"\ SSAQ\ Der/nn/l) "pujoq" "punneq" (/"qav"\ Gram/Dem\ iAdv\ iAbl\ NISAQ\ Der/nn/l) "qipik" ; #Jude 20231025
+LIST ScSuf = MIU NISAQ (/iSem/prepare_food\ TAQ\ Der/vn/l) ; #Jude 20231025
+SET ScN = ScSem | ScLex ; #Jude 20231025
+LIST ScVr = NIP SUNNIP ; #Jude 20231025
+#REMOVE:MorfSc0001 (*) - ScN (0 ScVr) ; #Jude 20231025
+REMOVE:MorfSc0001 (*) - LEX_FULLFORM_NOUN (0 SUNNIP) ; #Jude 20231025
+REMOVE:MorfSc0002 (*) - ScSuf (0 ScVr) ; #Jude 20231025
+REMOVE:MorfSc0003 (*) - ScLex (0 ScVr) ; #Jude 20231025
+REMOVE:MorfSc0004 (*) - ScSem (0 ScVr) ; #Jude 20231026
+
 #NNGUR
 #PALAAR
 #PALLAP
@@ -2521,6 +2538,7 @@ REMOVE:MorfQatigiip (*) - iSem/Lciv (0 QATE + GIIP + (/"naalagaq"\ U\ Der/nv\ Gr
 #SIUR
 #SIUR#Der/nv#UTE#Der/vv
 #SUNNIP
+
 #SSAQQIP
 #SSIP
 #TAAR
@@ -2744,6 +2762,7 @@ REMOVE:MorfGiit0001 (*) - (/"illuk"\ GIIT/l) (0 (/"illu"\ iSem/build\ GIIT/l)) ;
 ### Der/vn ###
 
 ### Der/vv ###
+REMOVE:MorfNga0001 ("toqup") + NGA (0 ("toqu") + NGA) ; #Jude 20231026
 REMOVE ("nipip") (0 RUJUUR) ; #Jude20231009
 ### Judithes afsnit slut ###
 
@@ -12109,6 +12128,8 @@ REMOVE:9975F Par IF (0 TUQ LINK NOT *0 V LINK *-1 BOS LINK *-1W N LINK NOT *0 V)
 REMOVE:9975G Par IF (0 TUQ LINK NOT *0 V)(@1< (*) LINK NOT *0 Par); #fjern Par når det kan være @HNOUN og der ikke er andre Par i sætningerne ved siden af, hvor det her ellers kunne være en elliptisk fortsættelse.
 
 SELECT:9975H 2Pl IF (0 2Sg LINK *-1W 2Pl LINK NOT *0 2Sg); #Suliaqartariaqarpusi, taamannarsuarmi akissarsiaqarpusi! Iluamik SULLITTARIAQARPATSIGUT!”
+
+REMOVE:9975I Par IF (0 TUQ LINK NOT *0 (*)) ;
 
 REMOVE:9999 Gram/ACR; #fjern forkortelser, der stadigvæk har en anden læsning (jf. Sel0049)
 
