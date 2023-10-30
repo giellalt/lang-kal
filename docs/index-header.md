@@ -14,7 +14,7 @@ a full-sized Greenlandic analyser.
 
 Central developers have been:
 Per Langgård, Liv Molich, Nani Nilsen, Trond Trosterud, Paneeraq Nielsen,
-Anna Karina Madsen Beatrine Heilman, Tino Didriksen and Sjur Moshagen.
+Anna Karina Madsen, Beatrine Heilman, Judithe Denbæk, Tino Didriksen and Sjur Moshagen.
 
 It is in use in a Greenlandic spellchecker and in a set
 of pedagogical programs for Greenlandic.
@@ -22,11 +22,6 @@ of pedagogical programs for Greenlandic.
 # Project documentation
 
 -   [Links to source code documentation at the bottom](#in-source-documentation)
--   Source files:
-    [stems  ](https://gtsvn.uit.no/langtech/trunk/langs/kal/src/morphology/stems/) /
-    [affixes](https://gtsvn.uit.no/langtech/trunk/langs/kal/src/morphology/affixes/) /
-    [twolc  ](https://gtsvn.uit.no/langtech/trunk/langs/kal/src/phonology/kal-phon.twolc) /
-    [yaml   ](https://gtsvn.uit.no/langtech/trunk/langs/kal/test/src/morphology/)
 -   Generation of:  
     [paradigms](http://giellatekno.uit.no/cgi/p-kal.eng.html) /  
     [text     ](http://giellatekno.uit.no/cgi/d-kal.eng.html)
@@ -39,39 +34,25 @@ project, with a file structure and setup close to the Sámi ones. General
 documentation can be found at [the Sámi project
 documentation](https://giellalt.uit.no/index.html).
 
--   [The lexicon structure](lex.md)
+-   The lexicon structure (file *lex.md* missing)
 -   [Morphology issues](morph.md)
 -   [Issues in Greenlandic](IssuesInGreenlandic.md)
 
 # General information for web users
 
 In order to analyse Greenlandic text, you may paste in text in the
-window [here](http://giellatekno.uit.no/a-kal.html). The machine returns
-text with all possible analyses. The tags are listed below. The parser
-gives tags for parts of speech, morphosyntactic categories, clitecs, and
+window [here](http://giellatekno.uit.no/cgi/d-kal-eng.html). The machine returns
+text with all possible analyses. The tags are listed in the document **root.lexc** linked to below. The parser gives tags for parts of speech, morphosyntactic categories, clitecs, and
 derivational tags. The derivational affixes have tags carrying the same
-names as the affixes themselves.
-
-It is also possible to generate wordforms, by pasting the lemma and
-gramamtical tags [here](http://giellatekno.uit.no/g-kal.html)
-
-In addition to giving all possible tags, the analyser also has a
-`disambiguation mode`, that gives only analyses appropriate in the given
+names as the affixes themselves. In addition to giving all possible tags, the analyser also has a
+*disambiguation mode*, that gives only analyses appropriate in the given
 context.
 
-The parser uses the following tags:
+It is also possible to generate wordforms, by pasting the lemma and
+gramamtical tags [here](http://giellatekno.uit.no/cgi/g-kal-eng.html)
 
--   Parts of speech: `+N +V +Part +Pron +Adj +Adv +Prop +Interj +Num`
--   Morphosyntactic categories
-    -   Number:`+Sg +Du +Pl`
-    -   Case:`+Abs +Rel +Trm +Abl +Lok +Aeq +Ins +Via`
-    -   Mode:`+Ind +Int +Imp +Opt +Cau +Con +Par +Inf +InfNeg +Ite`
-    -   Person-number:`+1Sg +2Sg +3Sg +4Sg +1Pl +2Pl +3Pl +4Pl +1Du`
--   Subcategories:`+Attr +Abbr +ACR +Vok`
--   Clitics:`+Clt`
--   Other:`+Dato+`
--   Textual tags:`+CLB +ABBR +PUNCT +LEFT +RIGHT `
--   Derivational tags: See the source code for a list.
+
+
 
 # In-source documentation
 
