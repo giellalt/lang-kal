@@ -1170,21 +1170,21 @@ Fil for at generere de centrale morfologiske processer i vor grønlandske analys
 ### Semantics
 anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
 * **+Sem/Be**  <fn:Be> !#náipoĸ
-* ** +Sem/dur	** tid som periode ulloq=dag/day
+** +Sem/dur	** tid som periode ulloq=dag/day
 * **+Sem/event** fx Avannaata Qimussersua
 * **+Sem/Fem** Forsøg med femininum sml. Sem/Mask
 * **+Sem/FirstName** = Attributive
 * **+Sem/Geo** = Geographical Propernoun
 * **+Sem/H** = Menneske
-* ** +Sem/HH     ** = Organisationer
-* ** +Sem/Hprof ** = Menneske erhverv
+** +Sem/HH     ** = Organisationer
+** +Sem/Hprof ** = Menneske erhverv
 * **+Sem/Hum** = Non-geographical Propernoun
 * **+Sem/LastName**  Efternavne
 * **+Sem/Mailadresse** tag til adresser af typen cccc@cccc.cc
 * **+Sem/Mask** Forsøg med en ny tag til fornavne af maskulinum
 * **+Sem/ModeOfMovement** <fn:ModeOfmovement> !#nâgpoĸ
 * **+Sem/Remove** = atserivoq mods. atsiivoq
-* ** +Sem/temp	** tid som punkt ulloq=dato/date
+** +Sem/temp	** tid som punkt ulloq=dato/date
 * **+Sem/Time** = Temporal particle !The random adverbial 'phrases' like -riutaa -isaa etc.
 * **+Sem/Unit** = Unit !Til besværlige låneord som 'time' etc., der optræder absolut
 * **+Sem/Url** tag til adresser af typen www.ccc.cc
