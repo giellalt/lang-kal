@@ -1152,7 +1152,7 @@ Fil for at generere de centrale morfologiske processer i vor grønlandske analys
 * **+Gram/HV** = Non-marked agentive Verb (used as Half-transitive)
 * **+Gram/Db** = Double-transitive Verb. PL tilføjet 20180319
 * **+Gram/Exclm** = Exclamation !Flyttet fra primære tags 20180420 PL
-* **@CODE** = upersonlig CONT med NAR+3Sg til højre 
+* ** +Gram/Upersonlig ** = upersonlig CONT med NAR+3Sg til højre 
 
 ### Tags for Pronouns
 * **+Gram/Int** = Interrogative Pronoun
@@ -1161,7 +1161,7 @@ Fil for at generere de centrale morfologiske processer i vor grønlandske analys
 * **+Gram/Indef** = Indefinitive Pronoun
 
 ### Tags for Other Word Classes
-***+Gram/Dem** = Demonstative pronoun, demonstrative adverb or demonstrative interjection
+* **+Gram/Dem** = Demonstative pronoun, demonstrative adverb or demonstrative interjection
 * **+Gram/Cong** = Various Pronoun, eg. tamaq, kisi (personkongruensdeklination)
 * **+Gram/Abbr** = Abbreviation
 * **+Gram/ACR** = Acronyms
@@ -1169,49 +1169,49 @@ Fil for at generere de centrale morfologiske processer i vor grønlandske analys
 
 ### Semantics
 anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
-***+Sem/Be**  <fn:Be> !#náipoĸ
-*** +Sem/dur	** tid som periode ulloq=dag/day
-***+Sem/event** fx Avannaata Qimussersua
-***+Sem/Fem** Forsøg med femininum sml. Sem/Mask
+* **+Sem/Be**  <fn:Be> !#náipoĸ
+* ** +Sem/dur	** tid som periode ulloq=dag/day
+* **+Sem/event** fx Avannaata Qimussersua
+* **+Sem/Fem** Forsøg med femininum sml. Sem/Mask
 * **+Sem/FirstName** = Attributive
 * **+Sem/Geo** = Geographical Propernoun
-*** +Sem/H        ** = Menneske
+* **+Sem/H** = Menneske
 * ** +Sem/HH     ** = Organisationer
-*** +Sem/Hprof ** = Menneske erhverv
+* ** +Sem/Hprof ** = Menneske erhverv
 * **+Sem/Hum** = Non-geographical Propernoun
-***+Sem/LastName**  Efternavne
-***+Sem/Mailadresse** tag til adresser af typen cccc@cccc.cc
-***+Sem/Mask** Forsøg med en ny tag til fornavne af maskulinum
-***+Sem/ModeOfMovement** <fn:ModeOfmovement> !#nâgpoĸ
-*** +Sem/Remove	** = atserivoq mods. atsiivoq
-*** +Sem/temp	** tid som punkt ulloq=dato/date
-***+Sem/Time** = Temporal particle !The random adverbial 'phrases' like -riutaa -isaa etc.
-***+Sem/Unit** = Unit !Til besværlige låneord som 'time' etc., der optræder absolut
-***+Sem/Url** tag til adresser af typen www.ccc.cc
-*** +Sem/misse ** tag til at markere usikker possessor for misse
+* **+Sem/LastName**  Efternavne
+* **+Sem/Mailadresse** tag til adresser af typen cccc@cccc.cc
+* **+Sem/Mask** Forsøg med en ny tag til fornavne af maskulinum
+* **+Sem/ModeOfMovement** <fn:ModeOfmovement> !#nâgpoĸ
+* **+Sem/Remove** = atserivoq mods. atsiivoq
+* ** +Sem/temp	** tid som punkt ulloq=dato/date
+* **+Sem/Time** = Temporal particle !The random adverbial 'phrases' like -riutaa -isaa etc.
+* **+Sem/Unit** = Unit !Til besværlige låneord som 'time' etc., der optræder absolut
+* **+Sem/Url** tag til adresser af typen www.ccc.cc
+* **+Sem/misse** tag til at markere usikker possessor for misse
 
 ### Grammar
-***+Gram/Comp** = Composita !Særlig tag til NIQ ajor/saper/artor/nalu- konstruktioner ved transitive verber
-***+Gram/TUT_IP** = Composita !tag til at slette overtallige ip hvis der ikke står tut ved siden af
-***+Gram/Refl** = Reflexive, reciprocal or passive !asavoq
-***+Gram/Reci** = Reciprocal !naapipput
-***+Gram/Pass** = Passive !used when a derivational morpheme not explicitely denotes a passivisation, or when intransitive flexion changes an active verb into a passive
-***+Gram/PlurTant** = plurale tantum noun: ilaqutariit
-***+Gram/SingTant** = singulare tantum noun: sila
+* **+Gram/Comp** = Composita !Særlig tag til NIQ ajor/saper/artor/nalu- konstruktioner ved transitive verber
+* **+Gram/TUT_IP** = Composita !tag til at slette overtallige ip hvis der ikke står tut ved siden af
+* **+Gram/Refl** = Reflexive, reciprocal or passive !asavoq
+* **+Gram/Reci** = Reciprocal !naapipput
+* **+Gram/Pass** = Passive !used when a derivational morpheme not explicitely denotes a passivisation, or when intransitive flexion changes an active verb into a passive
+* **+Gram/PlurTant** = plurale tantum noun: ilaqutariit
+* **+Gram/SingTant** = singulare tantum noun: sila
 * **+Gram/Ord** = Ordinal number !pingajuat
-***+Gram/Hyb** = Følger hybriderne for at bestemme stederne hvor strengene kan klippes i to ord ved hybriderne
+* **+Gram/Hyb** = Følger hybriderne for at bestemme stederne hvor strengene kan klippes i to ord ved hybriderne
 *__ +Gram/TransverbNIQ __ = NIQ-former med transitivt verbale egenskaber. PL20210417
 
 ### Derivation
 * **+Der/Vok** = Vocative
-***+Der/Guess** = Guessed lemma and inflection which are not listed in the FST
-***+Der/Loan** = Guessed stems which are not listed in the FST and contain non-Greenlandic characters or non-Greenlandic final character
-***+Der/Unk** = Ukendt morfem !Ukendte morfemer i ellers analyserede stammer for at få rigtig lemmaanalyse, som orsoq+NNAP+nv+UNK+vn:orsunnattaaq
-***+Der/vv** = verb to verb
-***+Der/nn** = noun to noun
-***+Der/nv** = noun to verb
-***+Der/vn** = verb to noun
-***+Der/xx** = Follows the enclitic suffix TUQ to be able to distinguish TUQ+xx from the derivational morpheme TUQ+vn in CG: qanortoq
+* **+Der/Guess** = Guessed lemma and inflection which are not listed in the FST
+* **+Der/Loan** = Guessed stems which are not listed in the FST and contain non-Greenlandic characters or non-Greenlandic final character
+* **+Der/Unk** = Ukendt morfem !Ukendte morfemer i ellers analyserede stammer for at få rigtig lemmaanalyse, som orsoq+NNAP+nv+UNK+vn:orsunnattaaq
+* **+Der/vv** = verb to verb
+* **+Der/nn** = noun to noun
+* **+Der/nv** = noun to verb
+* **+Der/vn** = verb to noun
+* **+Der/xx** = Follows the enclitic suffix TUQ to be able to distinguish TUQ+xx from the derivational morpheme TUQ+vn in CG: qanortoq
 Citerede ordformer  jf. Kleinschmidt ^rpoĸ
 
 ### Dialect
@@ -1300,14 +1300,14 @@ tag, vi ikke bruger, men som optræder i de delte filer
 * **+4DuO** = Object 4.person dual
 
 ### Possesive tags - Possessormarkering i possessum
-***+1SgPoss** = Possessor 1.person singular
-***+2SgPoss** = Possessor 2.person singular
-***+3SgPoss** = Possessor 3.person singular
-***+4SgPoss** = Possessor 4.person singular
-***+1PlPoss** = Possessor 1.person plural
-***+2PlPoss** = Possessor 2.person plural
-***+3PlPoss** = Possessor 3.person plural
-***+4PlPoss** = Possessor 4.person plural
+* **+1SgPoss** = Possessor 1.person singular
+* **+2SgPoss** = Possessor 2.person singular
+* **+3SgPoss** = Possessor 3.person singular
+* **+4SgPoss** = Possessor 4.person singular
+* **+1PlPoss** = Possessor 1.person plural
+* **+2PlPoss** = Possessor 2.person plural
+* **+3PlPoss** = Possessor 3.person plural
+* **+4PlPoss** = Possessor 4.person plural
 
 Flag diacritics til pluralis tantum subjekter
 
