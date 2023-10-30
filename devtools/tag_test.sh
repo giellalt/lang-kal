@@ -5,18 +5,18 @@ cat  src/fst/affixes/*lexc src/fst/stems/*lexc  ../shared-mul/src/fst/stems/*lex
 
 cat src/fst/root.lexc |cut -d '!' -f1 |cut -d ':' -f1 |sed 's/+/¢+/g'|sed 's/@/¢@/g' |tr '¢' '\n' | egrep '(\+|@)' |tr -d ' ' | tr -d '\t'|sort -u > roottags
 
-echo 'Have a look at these:'
+echo '\nHave a look at these:'
 
 comm -23 lexctags roottags 
 
-echo 'Checking for double semicolon in stem files:'
-cat src/fst/stems/*lexc |cut -d '!' -f1 |grep ';.*;'
+echo '\nChecking for double semicolon in stem files:'
+cat src/fst/stems/*lexc |cut -d '!' -f1 |grep ';.*;'|egrep -v '(SCND|THRD|FRTH|FFTH|ACRO|anl)'
 
-echo 'Checking for missing Der-tags:'
-cat src/fst/stems/*lexc |cut -d '!' -f1 |grep '\+Der/.*;' |egrep -v 'Der([1234]|\+)'
+#echo 'Checking for missing Der-tags:'
+#cat src/fst/stems/*lexc |cut -d '!' -f1 |grep '\+Der/.*;' |egrep -v 'Der([1234]|\+)'
 
-echo 'Checking for double Sem-tags:'
-cat src/fst/stems/*lexc |cut -d '!' -f1 |grep '+Sem.*+Sem' 
+#echo 'Checking for double Sem-tags:'
+#cat src/fst/stems/*lexc |cut -d '!' -f1 |grep '+Sem.*+Sem' 
 
-echo 'checked'
+echo '\nchecked'
 rm lexctags roottags
