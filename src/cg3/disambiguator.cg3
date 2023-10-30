@@ -4,7 +4,7 @@
 
 #Kørsel med semantik på zsh: ~/langtech/kal/tools/shellscripts/kal-tokenise ~/langtech/kal/tools/tokenisers/tokeniser-disamb-gt-desc.pmhfst | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/kal-pre1.cg3 | ~/langtech/kal/tools/shellscripts/kal-hybrid-split | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/kal-pre2.cg3 | zsh -l -c ~/langtech/nutserut/dev/kal2eng/bin/long2sem.pl
 
-#Opdatering af semantik inkl. gloss-interface: cd ~/langtech/nutserut/dev/kal2eng && bin/update-long2sem.pl && ~/langtech/gloss/ui.pl && cd ~/langtech/nutserut/dev/kal2eng
+#Opdatering af semantik inkl. gloss-interface: cd ~/langtech/nutserut/dev/kal2eng && bin/update-long2sem.pl && ~/langtech/regtest/inspect.pl && cd ~/langtech/nutserut/dev/kal2eng
  
 # =================================================================== #
 # =================================================================== #
@@ -9121,6 +9121,7 @@ REMOVE:8534DH ("nakorsaq") + UTE IF (0 ("nakorsaat"));
 SELECT:8534DI ("issi") + SUAQ;
 REMOVE:8599A TUQ + Aeq - Der/vn IF (0 TUQ + Aeq + Der/vn)(NEGATE 1 ("ip")); #De særlige former af TUQ + Aeq på transitiver fulgt af "ippaa" slettes hvis ikke fulgt af "ippaa"
 REMOVE:8599B (*) - LEX_FULLFORM_NOUN ; #Jude 20230908
+
 REMOVE:8599C (Sem/Location) (0 (Sem/an) + (/^[12][SP][gl]Poss$/r)) ; #Jude 20230915 qitinnut
 REMOVE:8599D ("niaqoq") + LAAQ IF (0 ("niaqulaar")) ; #Parnaarussammi najugaqatikka avatangiiseqannginnertik pissutigalugu, imminnut nakkutingaaramik NIAQULAALILERSUT isigaakka, amiilaarivakkalu.
 REMOVE:8599E iN (0 (/\(iSem/Hum\ iSem/Hprof\ \)?QATE/l)) ; #Jude 20231010
@@ -9237,7 +9238,7 @@ REMOVE:5200F ("illaq") + QATE + GIIP IF (0 ("illar") + QATE + GIIP); #impression
 REMOVE:5200G (/"imeq"\ LIR/l) IF (0 (/"imer"\ Gram/IV\ LIR/l) + V + &&IV_SUBJ& LINK *0 Abs + &&IV_SUBJ& + HUM);
 REMOVE:5200H (/"angi"\ NIRPAAQ\ Der/vn\ LIR\ Der/nv/l) IF (0 ("annerpaa") + V);
 REMOVE:5200I (/"amerlasoor"\ Gram/IV\ RIAR/l) IF (0 (/"amerlasooq"\ RIAR\ Der/nv/l));
-REMOVE:5200J (/"isuma"\ QATE\ Der/nn\ U/l) IF (0 (/"isuma"\ Gram/IV\ QATE\ Der/vn\ U/l));
+REMOVE:5200J (/"isuma"\ Gram/IV\ QATE\ Der/vn\ U/l) IF (0 (/"isuma"\ QATE\ Der/nn\ U/l));
 REMOVE:5200K ("inor") IF (0 ("inuk") + Aeq LINK 1 (/"ator"\ Gram/IV\ TUQ/l));#Politeeq INUINNARTUT atortoq saassunneqartoq.
 REMOVE:5200L TIMENOUN + (/"\ LIR\ Der/nv/l) IF (0 TEMPUSVERB + (/"\ Gram/IV\ LIR/l));
 REMOVE:5200M (/"innaq"\ LIR\ Der/nv/l) IF (0 ("innar") + V); #innalerpunga
@@ -9939,15 +9940,16 @@ REMOVE:5556 TAR + RIAQ + QAR IF (0 TARIAQAR) ;
 REMOVE:5557 LIR + Der/nv + RIIR IF (0 LIR + Der/vv + RIIR) ;
 REMOVE:5558 ("ip") + LLAP IF (0 ("illar"));
 
-REMOVE:5559A QATE + GIIP IF (0 (/"isuma"\ QATE\ Der/nn\ GIIP\ Der/nv\ Gram/Reci\ Gram/IV\ \(iSem/agree\ \)?UTE\ Der/vn\ GE\ Der/nv\ Gram/TV\ TAQ\ Der/vn\ N\ Abs\ Sg\ 3PlPoss/l)); 
-REMOVE:5559B (/QATE\ Der/nn\ GIIP\ Der/nv/l) OR QATE + GIIT IF (0 (/QATE\ Der/vn\ GIIP\ Der/nv/l))
+REMOVE:5559A (/"isuma"\ Gram/IV\ QATE/l) IF (0 (/"isuma"\ QATE\ Der/nn/l));
+REMOVE:5559B QATE + GIIP IF (0 (/"isuma"\ QATE\ Der/nn\ GIIP\ Der/nv\ Gram/Reci\ Gram/IV\ \(iSem/agree\ \)?UTE\ Der/vn\ GE\ Der/nv\ Gram/TV\ TAQ\ Der/vn\ N\ Abs\ Sg\ 3PlPoss/l)); 
+REMOVE:5559C (/QATE\ Der/nn\ GIIP\ Der/nv/l) OR QATE + GIIT IF (0 (/QATE\ Der/vn\ GIIP\ Der/nv/l))
 (NEGATE 0 (/NIQ\ Der/vn\ KKUT\ Der/nn\ Gram/PlurTant\ N\ Abs/l) LINK 0 (NIQ Via))#Nunat tamalaat akornanni SULEQATIGIINNIKKUT biililiortartut annertunerusunik piumasaqaateqarfigivavut.
 (NEGATE 0 (/QATE\ Der/nn\ GIIT\ Der/nn\ N\ Aeq\ Pl/l) LINK 1 V - 3Pl - 4Pl)#NAALAGAAFFEQATIGIITTUT suleqatigiilluarutta nukittunerussaagut, taanna oqarpoq.
 (NEGATE 0 (/"isuma"\ QATE\ Der/nn\ GIIP\ Der/nv\ Gram/Reci\ Gram/IV\ \(iSem/agree\ \)?UTE\ Der/vn\ N\ Lok/l) LINK 1 (/"allap"\ Gram/HV\ \(iSem/write\ \)?SIMA/l) )#Taannali aatsaat savalimmiormiut kalaallillu oqartussaasuisa imarisaanik akuersinerisigut atuutilissasoq, ISUMAQATIGIISSUMMI allassimavoq.
 (NEGATE *-1 Rel LINK 1 Rel + CONJ-C LINK *1 (/"isuma"\ QATE\ Der/nn\ GIIP\ Der/nv\ Gram/Reci\ Gram/IV\ \(iSem/agree\ \)?UTE/l) + 3PlPoss + &&IV_SUBJ& LINK *1 V + &&IV_SUBJ& BARRIER (*) - Adv)#Nunatta USA-llu siorna oktobari naalersoq ISUMAQATIGIISSUTIGISAAT aamma sammineqassasoq ilimagineqarpoq
 (NEGATE 0 (/[SIUT|UTE]\ Der/nn\ LIK\ Der/nn\ QATE\ Der/nn/l))
 ;
-REMOVE:5559C (/LIR\ Der/nv\ \(Gram/[IT]V\ \)?QATE\ Der/vn\ GIIP/l) IF (0 (/LIK\ Der/nn\ QATE\ Der/nn\ GIIP/l)) ; 
+REMOVE:5559D (/LIR\ Der/nv\ \(Gram/[IT]V\ \)?QATE\ Der/vn\ GIIP/l) IF (0 (/LIK\ Der/nn\ QATE\ Der/nn\ GIIP/l)) ; 
 REMOVE:5560 ("ukior") + QATE IF (0 ("ukioq") + QATE) ;
 REMOVE:5561 ("ilik") + U + USIQ IF (0 ("ilior") + USIQ) ;
 REMOVE:5562 LIK + U IF (0 LIUR) ;
