@@ -52,53 +52,20 @@
 
 
 
-      # =========================================== #
-      #      Short table of contents                #
-      # =========================================== #
+#!! ## Tag declaration
 
-      # Delimiters
-      # Tags and sets
-      # Grammar checking rules
-
-# =============== #
-#!! # DELIMITERS
-# =============== #
-
-DELIMITERS = "<.>" "<!>" "<?>" "<...>" "<¶>" sent ;
-
-# ================== #
-#!! # TAGS AND SETS
-# ================== #
-
-SETS
-
-
-#!! ## Tags
-
-
-#!! This section lists all the tags inherited from the fst, and used as tags
-#!! in the syntactic analysis. The next section, **Sets**, contains sets defined
-#!! on the basis of the tags listed here, those set names are not visible in the output.
-
-
-
-# Tags declared as single-membered LISTs
-# ======================================
+#!! We import tag declaration from cg3 folder
+#!! Todo: Make disambiguation.cg3 do the same
 
 INCLUDE ../../src/cg3/tagdeclaration.cg3 ;
 
 
 
+#!! ## Tags used only here
 
+LIST QMARK = QMARK ;
 
-
-
-
-
-
-
-
-#!! ### Grammarchecker sets
+#!! ## Grammarchecker sets
 
 LIST &err-agr = &err-agr ;
 LIST &err-gen-po = &err-gen-po ;
@@ -119,15 +86,15 @@ ADD:spell-it-all (&typo &SUGGESTWF) (<spelled>) ;
 ADD:spell-conservatively (&typo &SUGGESTWF) (<spelled>) IF (NEGATE -1 QMARK LINK 2 QMARK);
 
 # A simple grammar checker rule without suggestions: Ensure preceding nominal agrees with the verb
-ADD:err-agr (&err-agr) TARGET V IF (-1C Sg + Nom) (0 V) (NOT 0 Sg3);
-ADD:err-agr (&err-agr) TARGET V IF (-1C Pron + Sg1 + Nom) (0 V) (NOT 0 Sg1);
-ADD:err-agr (&err-agr) TARGET V IF (-1C Pron + Sg2 + Nom) (0 V) (NOT 0 Sg2);
-ADD:err-agr (&err-agr) TARGET V IF (-1C Pron + Pl1 + Nom) (0 V) (NOT 0 Pl1);
-ADD:err-agr (&err-agr) TARGET V IF (-1C Pron + Pl2 + Nom) (0 V) (NOT 0 Pl2);
+# ADD:err-agr (&err-agr) TARGET V IF (-1C Sg + Nom) (0 V) (NOT 0 Sg3);
+# ADD:err-agr (&err-agr) TARGET V IF (-1C Pron + Sg1 + Nom) (0 V) (NOT 0 Sg1);
+# ADD:err-agr (&err-agr) TARGET V IF (-1C Pron + Sg2 + Nom) (0 V) (NOT 0 Sg2);
+# ADD:err-agr (&err-agr) TARGET V IF (-1C Pron + Pl1 + Nom) (0 V) (NOT 0 Pl1);
+# ADD:err-agr (&err-agr) TARGET V IF (-1C Pron + Pl2 + Nom) (0 V) (NOT 0 Pl2);
 
 # And one with a suggestion where we simply change the tag Sg into Attr:
-ADD:attr-not-pred (&attr-not-pred) TARGET (A Sg) IF (NOT 0 Attr OR Gen) (1 CC LINK *1 COMMON-N) ;
-COPY:attr-not-pred (Attr &SUGGEST) EXCEPT (Sg) TARGET (&attr-not-pred) ;
+# ADD:attr-not-pred (&attr-not-pred) TARGET (A Sg) IF (NOT 0 Attr OR Gen) (1 CC LINK *1 COMMON-N) ;
+#COPY:attr-not-pred (Attr &SUGGEST) EXCEPT (Sg) TARGET (&attr-not-pred) ;
 # The method is: Add &SUGGEST to a copied reading to *generate* a
 # suggestion form from that reading. The copy should contain the error
 # tag too – &-prefixed error tags are ignored when generating, but
