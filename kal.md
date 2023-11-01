@@ -4,6 +4,9 @@ All documents in one file
 
 
 
+W E S T   G R E E N L A N D I C   D I S A M B I G U A T O R   #
+================================================================ #
+
 - Delimiters (line 47)
 - Tags and sets
 	- Positions and household (line 53)
@@ -39,15 +42,178 @@ All documents in one file
 	-Disambiguering af enkeltord (linie 13670)
 	-Semantisk disambiguering - Nyt afsnit 20220610 (linie 16460)
 
-# Delimiters #
+# Delimiters, tags and sets
 
-#  Tags and sets #
+@OUTSIDE RULES@
+
+##  Tags and sets #
+
+### Positions and household 
+BOS, EOS, CLB, Symbol, iSymbol, PUNCT, LEFT, RIGHT, COMMONAFFSTRING, EXCLMARK
+
+### Parts of speech with tags declared as single-membered LISTs
+POS tags
+
+* LIST N = N ; 
+* LIST V = V ; 
+* LIST N* = N* ;  #Præprocessorens tagging af N, der indgår i compounds
+* LIST iV = iV ;  #Præprocessorens tagging af V, som skifter ordklasse senere i ordet.
+* LIST iN = iN ;  #Præprocessorens tagging af N, som skifter ordklasse senere i ordet.
+* LIST iProp = iProp ;  #Præprocessorens tagging af Prop, som skifter ordklasse senere i ordet.
+* LIST iPron = iPron ;  #Præprocessorens tagging af Pron, som skifter ordklasse senere i ordet.
+
+### Grammar tags
+Gram/... and different specifications
+
+* LIST Gram/2sml = Gram/2sml ; 
+* LIST Gram/ImpPos = Gram/ImpPos ; 
+... og 10 til
+
+### Semantic tags
+Gram/... and different specifications
+
+* LIST Sem/CognitiveMaking = Sem/CognitiveMaking;  #qinersivoq i modsætning til qinerlerpoq
+* LIST Sem/Concessive = Sem/Concessive ;  #koncessive sætninger
+* LIST Sem/event = Sem/event ;  
+* LIST Sem/Fem = Sem/Fem ;  #Introduceret som test 20180613. Skal måske ud igen
+* LIST Sem/FirstName = Sem/FirstName ; 
+* LIST Sem/Geo = Sem/Geo ; 
+* LIST iSem/Geo = iSem/Geo ; 
+* LIST Sem/Hum = Sem/Hum <hum> ; 
+* LIST Sem/Hunt = Sem/Hunt;  #qinerlerpoq i modsætning til qinersivoq
+
+### Orthographic error tags
+* LIST Orth/Alt = Orth/Alt ; 
+* LIST Orth/Append = Orth/Append <append> ;  #readings added by CG (APPEND)
+* LIST Orth/Arch = Orth/Arch ; 
+* LIST Orth/Copy = Orth/Copy ;  #Alternative append rules
+* LIST Orth/Youth = Orth/Youth ;  youth language
+* LIST SUB = Orth/Arch Orth/Alt Orth/Youth ;  common tag for all
+
+### Grammatical tags
+Sg, Du, Pl, iSg, iDu, iPl, ALL_Sg, ALL_Pl, case forms, verbal inflection
+
+### #Diverse tags defineret i kal-pre2 (dog et par hybrider her i disambiguator)
+
+### Derivatives #
+
+# Sets
+
+## Alle ordklasser
+
+* LIST WORD = N V Pali Conj Adv Interj Gram/Exclm Pron Prop Num ; 
+* SET POS = WORD - (<heur> <f:[0-9]+>r) ; 
+
+* SET NOT-PROP = WORD - Prop ; 
+
+* SET NOT-Abbr = WORD - Gram/Abbr ; 
+
+* SET NUM = Num | iNum ; 
+
+* LIST NUMERAL = "ataaseq" "marluk" "pingasut" "sisamat" "tallimat" "arfineq" "arfineq marluk" "arfineq pingasut" "qulingiluat" "qulaaluat" "qulit" "aqqaneq"; 
+
+* LIST KLOKKESLET = ("ataaseq" NNGUR) ("marluk" NNGUR) ("pingasut" NNGUR) ("sisamat" NNGUR) ("tallimat" NNGUR) ("arfineq" NNGUR) ("arfineq-marluk" NNGUR) ("arfineq-pingasut" NNGUR) ("qulingiluat" NNGUR) ("qulaaluat" NNGUR) ("qulit" NNGUR) ("aqqaneq" NNGUR); 
+
+* SET AFFINGERET = ALLAP , ARAQ , ARSUK , IAR  , INNAQ , INNAR , INNAR_LIR 
+
+## Verb
+Ulike verbtyper.
+
+## Nominer
+Set for kasus, possessum, appellativ, ulike nomentyper
+
+## Kombinationer af verber og nominer
 
 * * *
 <small>This (part of) documentation was generated from [src/cg3/disambiguator.cg3](https://github.com/giellalt/lang-kal/blob/main/src/cg3/disambiguator.cg3)</small>
 
 * * *
 <small>This (part of) documentation was generated from [src/cg3/functions.cg3](https://github.com/giellalt/lang-kal/blob/main/src/cg3/functions.cg3)</small>
+
+# Delimiters, tags and sets
+
+@OUTSIDE RULES@
+
+##  Tags and sets #
+
+### Positions and household 
+BOS, EOS, CLB, Symbol, iSymbol, PUNCT, LEFT, RIGHT, COMMONAFFSTRING, EXCLMARK
+
+### Parts of speech with tags declared as single-membered LISTs
+POS tags
+
+* LIST N = N ; 
+* LIST V = V ; 
+* LIST N* = N* ;  #Præprocessorens tagging af N, der indgår i compounds
+* LIST iV = iV ;  #Præprocessorens tagging af V, som skifter ordklasse senere i ordet.
+* LIST iN = iN ;  #Præprocessorens tagging af N, som skifter ordklasse senere i ordet.
+* LIST iProp = iProp ;  #Præprocessorens tagging af Prop, som skifter ordklasse senere i ordet.
+* LIST iPron = iPron ;  #Præprocessorens tagging af Pron, som skifter ordklasse senere i ordet.
+
+### Grammar tags
+Gram/... and different specifications
+
+* LIST Gram/2sml = Gram/2sml ; 
+* LIST Gram/ImpPos = Gram/ImpPos ; 
+... og 10 til
+
+### Semantic tags
+Gram/... and different specifications
+
+* LIST Sem/CognitiveMaking = Sem/CognitiveMaking;  #qinersivoq i modsætning til qinerlerpoq
+* LIST Sem/Concessive = Sem/Concessive ;  #koncessive sætninger
+* LIST Sem/event = Sem/event ;  
+* LIST Sem/Fem = Sem/Fem ;  #Introduceret som test 20180613. Skal måske ud igen
+* LIST Sem/FirstName = Sem/FirstName ; 
+* LIST Sem/Geo = Sem/Geo ; 
+* LIST iSem/Geo = iSem/Geo ; 
+* LIST Sem/Hum = Sem/Hum <hum> ; 
+* LIST Sem/Hunt = Sem/Hunt;  #qinerlerpoq i modsætning til qinersivoq
+
+### Orthographic error tags
+* LIST Orth/Alt = Orth/Alt ; 
+* LIST Orth/Append = Orth/Append <append> ;  #readings added by CG (APPEND)
+* LIST Orth/Arch = Orth/Arch ; 
+* LIST Orth/Copy = Orth/Copy ;  #Alternative append rules
+* LIST Orth/Youth = Orth/Youth ;  youth language
+* LIST SUB = Orth/Arch Orth/Alt Orth/Youth ;  common tag for all
+
+### Grammatical tags
+Sg, Du, Pl, iSg, iDu, iPl, ALL_Sg, ALL_Pl, case forms, verbal inflection
+
+### #Diverse tags defineret i kal-pre2 (dog et par hybrider her i disambiguator)
+
+### Derivatives #
+
+# Sets
+
+## Alle ordklasser
+
+* LIST WORD = N V Pali Conj Adv Interj Gram/Exclm Pron Prop Num ; 
+* SET POS = WORD - (<heur> <f:[0-9]+>r) ; 
+
+* SET NOT-PROP = WORD - Prop ; 
+
+* SET NOT-Abbr = WORD - Gram/Abbr ; 
+
+* SET NUM = Num | iNum ; 
+
+* LIST NUMERAL = "ataaseq" "marluk" "pingasut" "sisamat" "tallimat" "arfineq" "arfineq marluk" "arfineq pingasut" "qulingiluat" "qulaaluat" "qulit" "aqqaneq"; 
+
+* LIST KLOKKESLET = ("ataaseq" NNGUR) ("marluk" NNGUR) ("pingasut" NNGUR) ("sisamat" NNGUR) ("tallimat" NNGUR) ("arfineq" NNGUR) ("arfineq-marluk" NNGUR) ("arfineq-pingasut" NNGUR) ("qulingiluat" NNGUR) ("qulaaluat" NNGUR) ("qulit" NNGUR) ("aqqaneq" NNGUR); 
+
+* SET AFFINGERET = ALLAP , ARAQ , ARSUK , IAR  , INNAQ , INNAR , INNAR_LIR 
+
+## Verb
+Ulike verbtyper.
+
+## Nominer
+Set for kasus, possessum, appellativ, ulike nomentyper
+
+## Kombinationer af verber og nominer
+
+* * *
+<small>This (part of) documentation was generated from [src/cg3/tagdeclaration.cg3](https://github.com/giellalt/lang-kal/blob/main/src/cg3/tagdeclaration.cg3)</small>
 # Fil for at generere de centrale morfologiske processer i vor grønlandske analysator               
 
 ## Dokumentasjon for leksikonnavne:
@@ -1991,7 +2157,7 @@ For example:
 ---
 
 
-[ L A N G U A G E ]  G R A M M A R   C H E C K E R
+#      G R E E N L A N D I C  G R A M M A R   C H E C K E R
 
 # DELIMITERS
 
@@ -2002,287 +2168,6 @@ For example:
 This section lists all the tags inherited from the fst, and used as tags
 in the syntactic analysis. The next section, **Sets**, contains sets defined
 on the basis of the tags listed here, those set names are not visible in the output.
-
-### Beginning and end of sentence
-BOS
-EOS
-
-### Parts of speech tags
-
-N
-A
-Adv
-V
-Pron
-CS
-CC
-CC-CS
-Po
-Pr
-Pcle
-Num
-Interj
-ABBR
-ACR
-CLB
-LEFT
-RIGHT
-WEB
-PPUNCT
-PUNCT
-
-COMMA
-¶
-
-### Tags for POS sub-categories
-
-Pers
-Dem
-Interr
-Indef
-Recipr
-Refl
-Rel
-Coll
-NomAg
-Prop
-Allegro
-Arab
-Romertall
-
-### Tags for morphosyntactic properties
-
-Nom
-Acc
-Gen
-Ill
-Loc
-Com
-Ess
-Ess
-Sg
-Du
-Pl
-Cmp/SplitR
-Cmp/SgNom Cmp/SgGen
-Cmp/SgGen
-PxSg1
-PxSg2
-PxSg3
-PxDu1
-PxDu2
-PxDu3
-PxPl1
-PxPl2
-PxPl3
-Px
-
-Comp
-Superl
-Attr
-Ord
-Qst
-IV
-TV
-Prt
-Prs
-Ind
-Pot
-Cond
-Imprt
-ImprtII
-Sg1
-Sg2
-Sg3
-Du1
-Du2
-Du3
-Pl1
-Pl2
-Pl3
-Inf
-ConNeg
-Neg
-PrfPrc
-VGen
-PrsPrc
-Ger
-Sup
-Actio
-VAbess
-
-Err/Orth
-
-### Semantic tags
-
-Sem/Act
-Sem/Ani
-Sem/Atr
-Sem/Body
-Sem/Clth
-Sem/Domain
-Sem/Feat-phys
-Sem/Fem
-Sem/Group
-Sem/Lang
-Sem/Mal
-Sem/Measr
-Sem/Money
-Sem/Obj
-Sem/Obj-el
-Sem/Org
-Sem/Perc-emo
-Sem/Plc
-Sem/Sign
-Sem/State-sick
-Sem/Sur
-Sem/Time
-Sem/Txt
-
-HUMAN
-
-PROP-ATTR
-PROP-SUR
-
-TIME-N-SET
-
-###  Syntactic tags
-
-@+FAUXV
-@+FMAINV
-@-FAUXV
-@-FMAINV
-@-FSUBJ>
-@-F<OBJ
-@-FOBJ>
-@-FSPRED<OBJ
-@-F<ADVL
-@-FADVL>
-@-F<SPRED
-@-F<OPRED
-@-FSPRED>
-@-FOPRED>
-@>ADVL
-@ADVL<
-@<ADVL
-@ADVL>
-@ADVL
-@HAB>
-@<HAB
-@>N
-@Interj
-@N<
-@>A
-@P<
-@>P
-@HNOUN
-@INTERJ
-@>Num
-@Pron<
-@>Pron
-@Num<
-@OBJ
-@<OBJ
-@OBJ>
-@OPRED
-@<OPRED
-@OPRED>
-@PCLE
-@COMP-CS<
-@SPRED
-@<SPRED
-@SPRED>
-@SUBJ
-@<SUBJ
-@SUBJ>
-SUBJ
-SPRED
-OPRED
-@PPRED
-@APP
-@APP-N<
-@APP-Pron<
-@APP>Pron
-@APP-Num<
-@APP-ADVL<
-@VOC
-@CVP
-@CNP
-OBJ
-<OBJ
-OBJ>
-<OBJ-OTHERS
-OBJ>-OTHERS
-SYN-V
-@X
-
-## Sets containing sets of lists and tags
-
-This part of the file lists a large number of sets based partly upon the tags defined above, and
-partly upon lexemes drawn from the lexicon.
-See the sourcefile itself to inspect the sets, what follows here is an overview of the set types.
-
-### Sets for Single-word sets
-
-INITIAL
-
-### Sets for word or not
-
-WORD
-NOT-COMMA
-
-### Case sets
-
-ADLVCASE
-
-CASE-AGREEMENT
-CASE
-
-NOT-NOM
-NOT-GEN
-NOT-ACC
-
-### Verb sets
-
-NOT-V
-
-### Sets for finiteness and mood
-
-REAL-NEG
-
-MOOD-V
-
-NOT-PRFPRC
-
-### Sets for person
-
-SG1-V
-SG2-V
-SG3-V
-DU1-V
-DU2-V
-DU3-V
-PL1-V
-PL2-V
-PL3-V
-
-### Pronoun sets
-
-### Adjectival sets and their complements
-
-### Adverbial sets and their complements
-
-### Sets of elements with common syntactic behaviour
-
-### NP sets defined according to their morphosyntactic features
-
-### The PRE-NP-HEAD family of sets
-
-These sets model noun phrases (NPs). The idea is to first define whatever can
-occur in front of the head of the NP, and thereafter negate that with the
-expression **WORD - premodifiers**.
-
-### Border sets and their complements
 
 ### Grammarchecker sets
 
