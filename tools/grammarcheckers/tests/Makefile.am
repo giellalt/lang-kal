@@ -7,7 +7,7 @@
 if WANT_GRAMCHECK
 
 # List here (space separated) all yaml files to be run as part of make check:
-TESTS=
+TESTS=msyn-arg-trm-ins.yaml
 
 # List tests that are presently (expected) failures here, ie things that should
 # be fixed *later*, but is not critical at the moment:
