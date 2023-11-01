@@ -2159,17 +2159,14 @@ For example:
 
 #      G R E E N L A N D I C  G R A M M A R   C H E C K E R
 
-# DELIMITERS
+## Tag declaration
 
-# TAGS AND SETS
+We import tag declaration from cg3 folder
+Todo: Make disambiguation.cg3 do the same
 
-## Tags
+## Tags used only here
 
-This section lists all the tags inherited from the fst, and used as tags
-in the syntactic analysis. The next section, **Sets**, contains sets defined
-on the basis of the tags listed here, those set names are not visible in the output.
-
-### Grammarchecker sets
+## Grammarchecker sets
 
 * * *
 <small>This (part of) documentation was generated from [tools/grammarcheckers/grammarchecker.cg3](https://github.com/giellalt/lang-kal/blob/main/tools/grammarcheckers/grammarchecker.cg3)</small># Tokeniser for kal
