@@ -61,9 +61,33 @@ POS tags
 ### Grammar tags
 Gram/... and different specifications
 
-* LIST Gram/2sml = Gram/2sml ; 
-* LIST Gram/ImpPos = Gram/ImpPos ; 
-... og 10 til
+* LIST Gram/2sml = Gram/2sml ;  = ?
+* LIST Gram/ImpPos = Gram/ImpPos ;  = eksperimentell
+* LIST Gram/Int = Gram/Int ;  = i brug?
+* LIST Gram/Indef = Gram/Indef ;  = i brug?
+* LIST DivPron = Gram/Cong DivPron ;  = ?
+* LIST Gram/Cong = Gram/Cong ;  =
+* LIST Gram/Hyb = Gram/Hyb ;  = hybridverbum, resultat av Der/nv efter substantivflektion (men er Aeq Sg syntaktisk relevant?, tt)
+* LIST Gram/Pers = Gram/Pers ; 
+* LIST Gram/PersQAR = Gram/PersQAR ;   #Tag til QAR i paratakse med personligt V
+* LIST Gram/Coref = Gram/Coref ; 
+* LIST Gram/Dem = Gram/Dem ; 
+* LIST Gram/TransverbNIQ = Gram/TransverbNIQ ;   #PL20210417 kun til NIQ, der kan tage direkte objekt
+* LIST Gram/ContSubjekt = Gram/ContSubjekt ;   #"dansk" subjekt tilføjet med ADDCOHORT
+* LIST Gram/Upersonlig = Gram/Upersonlig ;   #Tag indsat i dep til konstruktioner, der oversættes med "man"
+* LIST Gram/Abbr = Gram/Abbr ; 
+* LIST Gram/ACR = Gram/ACR ; 
+* LIST Gram/Ord = Gram/Ord Der/Ord ;   # Ordinaltal #Hedder Der/Ord i den videre kæde.
+* LIST Gram/Adj = Gram/Adj ;  # Adjektiver optaget ubøjet og undertiden anvendt med dansk syntaks
+* LIST Gram/Adv-encl = Gram/Adv-encl ; 
+* LIST Gram/Comp = Gram/Comp ;   #20100228 Ny tag udelukkende til neq ajor/saper/artor/nalu (PL)
+* LIST Gram/Conj-encl = Gram/Conj-encl ;   #sideordnende enklitiske konjunktioner
+* LIST Gram/Db = Gram/Db ;  
+* LIST Gram/Exclm = Gram/Exclm ; 
+* LIST Gram/Gaanni = Gram/Gaanni ; 
+* LIST Gram/HV = Gram/HV ; 
+* LIST Gram/IV = Gram/IV ; 
+* LIST Gram/TV = Gram/TV ; 
 
 ### Semantic tags
 Gram/... and different specifications

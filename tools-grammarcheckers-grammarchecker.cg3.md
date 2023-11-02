@@ -22,21 +22,44 @@ Todo: Make disambiguation.cg3 do the same
 Declare tags not declared in disambiguation.cg3
 (TODO: Perhaps they should have been declared there as well)
 
-* LIST QAR = QAR ; 
+- LIST QAR = QAR ; 
 
 ### Tags used only here
 
-* LIST QMARK = QMARK ; 
+- LIST QMARK = QMARK ; 
 
 ## Grammarchecker tags
 
+- LIST @CODE@ellipsis = @CODE@ellipsis ; 
+- LIST @CODE@guillemets = @CODE@guillemets ; 
+- LIST @CODE@typo = @CODE@typo ; 
+- LIST @CODE@msyn-arg-trm-ins = @CODE@msyn-arg-trm-ins ; 
+- MAPPING-PREFIX = @CODE@ ; 
+
 ## Rule section
 
+### Speller suggestions rule
+add &SUGGESTWF to any spelling suggestion
+that we actually want to suggest to the user.
+The simplest is to just add it to all spelled words:
+
 ADD 
+
+But perhaps you want to only suggest spellings of words that are not inside "quotes":
+
+ADD 
+
+### Grammatical rules
+
+#### Verb valency rules
+
 ADD 
 
 ADD 
-ADD 
+
+### Simple punctuation rules 
+
+Rules for quotation marks.
 
 ADD 
 ADD 
