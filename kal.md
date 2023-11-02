@@ -2218,6 +2218,7 @@ Declare tags not declared in disambiguation.cg3
 
 - LIST @CODE@msyn-arg-trm-ins = @CODE@msyn-arg-trm-ins ; 
 - LIST @CODE@msyn-arg-ins-trm = @CODE@msyn-arg-ins-trm ; 
+- LIST @CODE@msyn-arg-abs-rel = @CODE@msyn-arg-abs-rel ; 
 
 - MAPPING-PREFIX = @CODE@ ; 
 
