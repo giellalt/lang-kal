@@ -2215,7 +2215,10 @@ Declare tags not declared in disambiguation.cg3
 - LIST @CODE@ellipsis = @CODE@ellipsis ; 
 - LIST @CODE@guillemets = @CODE@guillemets ; 
 - LIST @CODE@typo = @CODE@typo ; 
+
 - LIST @CODE@msyn-arg-trm-ins = @CODE@msyn-arg-trm-ins ; 
+- LIST @CODE@msyn-arg-ins-trm = @CODE@msyn-arg-ins-trm ; 
+
 - MAPPING-PREFIX = @CODE@ ; 
 
 ## Rule section
