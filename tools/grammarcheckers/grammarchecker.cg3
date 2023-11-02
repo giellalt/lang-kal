@@ -24,48 +24,43 @@
 #   Development setup:   #
 # ---------------------- #
 #
-# cd $GTHOME/langs/??? # replace ??? with your language code
-# ./autogen.sh
-# ./configure --enable-apertium --with-hfst --enable-syntax --enable-grammarchecker --enable-tokenisers --enable-alignment --enable-reversed-intersect
-# make
-# cd tools/grammarcheckers
-# make dev
+#!! ```
+#!!  In the catalogue for kal, do:
+#!!  ./autogen.sh
+#!!  ./configure --enable-grammarchecker --enable-spellers
+#!!  make -j
+#!!  cd tools/grammarcheckers
+#!!  make dev
 #
-# ---------------------- #
-#   Then edit/test as:   #
-# ---------------------- #
+#!!   Then test as follows:  
 #
-# emacs grammarchecker.cg3  # and C-c C-i / C-c C-c if you have cg-mode installed
-# echo "Sun ij puátá." | sh modes/???gram.mode  # from the terminal, replacing ??? with your language code
-#
-# ---------------------- #
-#   Other debug-pipes:   #
-# ---------------------- #
-#
-# ls modes/
-#
-# ---------------------- #
+#!! echo "e Nerisassiornermut soqutigisaqarpit?|sh modes/trace-kalgram.mode  # from the terminal
+#!!
+#!! Or eventually, write
+#!! `make check`
+#!!
 
-
-# The pipeline (but use modes, above)
-#  echo "Sun ij puátá." | hfst-tokenise --giella-cg  tools/tokenisers/tokeniser-gramcheck-gt-desc.pmhfst | vislcg3 -g src/cg3/disambiguator.cg3 -t | vislcg3 -g tools/grammarcheckers/grammarchecker.cg3 -t
 
 
 
 #!! ## Tag declaration
 
-#!! We import tag declaration from cg3 folder
+#!! ### Import tag declarations
+#!! We import tag declaration from `../../src/cg3/tagdeclaration.cg3`
 #!! Todo: Make disambiguation.cg3 do the same
 
 INCLUDE ../../src/cg3/tagdeclaration.cg3 ;
 
-LIST QAR = QAR ;
+#!! Declare tags not declared in disambiguation.cg3
+#!! (TODO: Perhaps they should have been declared there as well)
 
-#!! ## Tags used only here
+LIST QAR = QAR ; #!!= * @CODE@
 
-LIST QMARK = QMARK ;
+#!! ### Tags used only here
 
-#!! ## Grammarchecker sets
+LIST QMARK = QMARK ; #!!= * @CODE@
+
+#!! ## Grammarchecker tags
 
 LIST &ellipsis = &ellipsis ;
 LIST &guillemets = &guillemets ;
@@ -73,14 +68,19 @@ LIST &typo = &typo ;
 LIST &msyn-arg-trm-ins = &msyn-arg-trm-ins ;
 MAPPING-PREFIX = & ;
 
+
+#!! ## Rule section
+
 SECTION
 
 # Speller suggestions rule – add &SUGGESTWF to any spelling suggestion
 # that we actually want to suggest to the user.
 # The simplest is to just add it to all spelled words:
 ADD:spell-it-all (&typo &SUGGESTWF) (<spelled>) ;
+#!! @RULENAME@ 
 # But perhaps you want to only suggest spellings of words that are not inside "quotes":
 ADD:spell-conservatively (&typo &SUGGESTWF) (<spelled>) IF (NEGATE -1 QMARK LINK 2 QMARK);
+#!! @RULENAME@ 
 
 # A simple grammar checker rule without suggestions: Ensure preceding nominal agrees with the verb
 # ADD:msyn-agr (&msyn-agr) TARGET V IF (-1C Sg + Nom) (0 V) (NOT 0 Sg3);
@@ -90,7 +90,9 @@ ADD:spell-conservatively (&typo &SUGGESTWF) (<spelled>) IF (NEGATE -1 QMARK LINK
 # ADD:msyn-agr (&msyn-agr) TARGET V IF (-1C Pron + Pl2 + Nom) (0 V) (NOT 0 Pl2);
 
 ADD:msyn-arg-trm-ins (&msyn-arg-trm-ins) TARGET N + Trm + Sg IF (1 QAR);
+#!! @RULENAME@ 
 COPY:msyn-arg-trm-ins (Ins Sg &SUGGEST) EXCEPT (Trm Sg  &msyn-arg-trm-ins) TARGET (&msyn-arg-trm-ins);
+#!! @RULENAME@ 
 
 #err Nerisassiornermut soqutigisaqarpit? # er du interesseret til madlavning
 #ok  Nerisassiornermik soqutigisaqarpit? # er du interesseret i madlavning
@@ -106,8 +108,13 @@ COPY:msyn-arg-trm-ins (Ins Sg &SUGGEST) EXCEPT (Trm Sg  &msyn-arg-trm-ins) TARGE
 
 # Simple punctuation rules showing how to change the lemma in the suggestions:
 ADD:use-guillemets (&guillemets) TARGET (""");
+#!! @RULENAME@ 
 COPY:left-guillemet ("«" &SUGGEST) EXCEPT (""") TARGET (&guillemets) ;
+#!! @RULENAME@ 
 COPY:right-guillemet ("»" &SUGGEST) EXCEPT (""") TARGET (&guillemets) ;
+#!! @RULENAME@ 
 
 ADD:use-ellipsis (&ellipsis) TARGET ("...");
+#!! @RULENAME@ 
 COPY:use-ellipsis ("…" &SUGGEST) EXCEPT ("...") TARGET (&ellipsis) ;
+#!! @RULENAME@ 
