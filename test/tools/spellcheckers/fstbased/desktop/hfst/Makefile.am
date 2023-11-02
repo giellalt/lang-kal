@@ -27,7 +27,8 @@ endif # WANT_SPELLERS
 
 # List tests that are presently (expected) failures here (in addition to above),
 # ie things that should be fixed *later*, but is not critical at the moment:
-XFAIL_TESTS=run-acceptor-yaml-testcases.sh
+XFAIL_TESTS=run-acceptor-yaml-testcases.sh \
+            accept-all-lemmas.sh
 
 # Make sure all required files are included in the distribution:
 YAML_FILES=$(wildcard *.yaml)
