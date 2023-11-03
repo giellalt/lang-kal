@@ -112,9 +112,12 @@ That is, they need special treatment in e.g. speech syntesis.
 * **+Use/-Spell** = Do not include in speller
 * **+Use/Hybrid** = For generating split hybrids. Should not be included in speller, analyser, or norm-generator
 * **+Err/Sub** = Not authorized spelling: 2-imik
-tag, vi ikke bruger, men som optræder i de delte filer
+* **+Err/Orth !!**  tag, vi ikke bruger, men som optræder i de delte filer
+≈ * **+Err/Orth !!**  tag, vi ikke bruger, men som optræder i de delte filer
 
 ### Ekstra vedr. LG
+* **+Der/LG12** 
+* **+Der/LG13** 
 
 ## Tags for Inflection
 
@@ -187,35 +190,92 @@ tag, vi ikke bruger, men som optræder i de delte filer
 * **+4PlPoss** = Possessor 4.person plural
 
 Flag diacritics til pluralis tantum subjekter
+* **@U.Num.Pl@** 
+* **@U.Num.Sg@** 
+* **@C.Num@** Et forsøg med Clear Feature for at håndtere *qarliuvoq vs. qarleqarpoq
 
 Flag diacritics til verber med kun pluralis i objekterne
 
+* **@U.ObjNum.Pl@** 
+* **@U.ObjNum.Sg@** 
+* **@C.ObjNum@** 
+
 Test af boolsk variabel til ad hoc blokeringer
+
+* **@U.Boole.On@** 
+* **@U.Boole.Off@** 
 
 Test af boolsk variabel til ad hoc blokering af Gram/Exclm. stems sættes Off og derivation On
 
+* **@U.Exclm.On@** 
+* **@U.Exclm.Off@** 
+
 Off-flag sættes i verbs på transitive verber med usandsynlig Refl. On-flag på taggen Gram/Refl i gennemgangslexica
+
+* **@U.Refl.On@** 
+* **@U.Refl.Off@** 
+* **@C.Refl@** 
+
+* **@U.TruncTip.On@** 
+* **@U.TruncTip.Off@** 
+* **@C.TruncTip@** 
 
 Off-flag på verber som akuaa, der ikke må lave metatese på NIQ
 
+* **@U.Niq.Off@** 
+* **@U.Niq.On@** 
+* **@C.Niq@** 
+
 Nyt flag 20211214 for at forebygge *taakkuunngitsoq og *taannaanngitsut
+
+* **@U.DemPron.Sg@** 
+* **@U.DemPron.Pl@** 
+* **@C.DemPron@** 
 
 Off-flag på nominer, der SKAL opføre sig replacive som pilersaarusiorpoq og aqqusinniorpoq
 
+* **@U.Liur.Off@** 
+* **@U.Liur.On@** 
+* **@C.Liur@** 
+
 Off-flag i nouns og Off-flag i der-inf  når TUR og TUGAQ ikke må assibileres og On-flag, når de skal assibileres. Også for at forebygge assibilering efter HTR på nnip
 
-Flag specielt for at sikre additiv p-bøjning af ulloq i Trm
+* **@U.Tur.Off@** 
+* **@U.Tur.On@** 
+* **@C.Tur@** 
+
+Flag specielt for at sikre additiv p-bøjning af ulloq i Trm@
+
+* **@U.Ulloq.Off@** 
+* **@U.Ulloq.On@** 
+* **@C.Ulloq@** 
 
 Flag til forebyggelse af manglende assibilering. P sættes i stem-filerne og C i der-infl
+
+* **@P.UsikkerAssibilering.ON@**  positive setting of UsikkerAssibilering = ON
+* **@C.UsikkerAssibilering@**  clear the UsikkerAssibilering feature back to neutral
 
 Ad hoc til test af alternativ flag diacritics ved præfikser. Husk også den udkommenterede linie 'Kingumoorutit ;' i LEXICON Root
 
 Test af P- og D-flag til forebyggelse af rekusivitet ved TIP
+
+* **@P.TIP.ON@** 
+
 og blokeres af 
+* **@D.TIP@** 
 
 Test 20210504 af P- og R-flag for at generere både takornariat og takornarissat+Err/Sub
 
+* **@P.iaq.ON@** 
+* **@R.iaq.ON@** 
+
 Flags for loan words, which must not go to N+Abs+Sg without derivation.
+
+* **@P.Loan.i@** 
+* **@D.Loan.i@** disallow test
+* **@C.Loan.i@** 
+
+* **PJAT_FOR_AT_FAA_SKIDTET_TIL_AT_KOMPILERE**  en dummy, der kan kommenteres ind og ud, når make instisterer på 'nothing to do' efter bestemte fejltyper
 
 # List of the so-called Greenlandic *tilhæng*, i.e., derivational affixes
 
@@ -705,10 +765,52 @@ Flags for loan words, which must not go to N+Abs+Sg without derivation.
 * > (written with square brackets as stem, to avoid collision with the morpheme boundary marker)
 * < (written with square brackets as stem, to avoid collision with the morpheme boundary marker)
 
+* **%ROD** morfemgraense ved pegeroedderne
+* **+SUB**  Ungdomsformer
+* **+Arch**  archaiske former som agpâ (for anípâ)
+* **+Comp**  Tilfoejet 20100228. Anvendes ved +NIQ paa transitiver for skyld -neq ajor/saper/artor/nalu
+* **+Coll**  Tilfoejet 20100406 til kaldenavne, der ikke er godkendte fx Aaperaat, men Aaperaa+Coll
+* **+Loan**  Tilføjet 20100822 til visse udenlandske ord i hhv. LEXICON V-Loan og LEXICON C-Loan
+Vore morfofonemer
+* **g2 g3 g4 c2 i2** 
+* **u2**  u som skal stå som u foran r: Puurunen.
+ch til Heinrich/ Heinriup men kvæler alle ch-sekvenser. Udkommenteret 20181008
+* **í á ú î â û ê ô ĩ ã ũ** vokaler i gammel retskrivning
+
+* **+CLB +PUNCT +LEFT +RIGHT** 
+
+### Vore magiske symboler
+
+* **%TRUNC**  minus-suffikser, trunkerer
+* **%CLIT**  Klitika
+* **%STRUNC**  trunkerer både vokal og konsonant
+* **%PRONTRUNC** 
+* **%POSSESSORTRUNC** 
+* **%likTRUNC** 
+* **%VCTRUNC** 
+* **%CVqTRUNC** 
+* **%VTRUNC** 
+* **%qaGEMIN** 
+* **%qoGEMIN** 
+* **%EPENT** Epentetisk vokal mellem konsonant og clitis i fremmedord
+* **%PROP** Blokering mod vokalreglerne
+* **%ALTINF** Alternerende infinitiver ved rpoq
+* **%ProgI** Tilfoejet 20100117 for at haandtere progressiv i-assimilation ved ARAQ og UTIGE
+
+* **%GEMEQ** gemineringskode til p-bøjede på seq og leq
+* **%^GEMS** 
+* **%^GEMC** 
+* **%^GEM** 
+* **%^Loan** 
+
 ## Flag diacritics
+
 We have manually optimised the structure of our lexicon using following
 flag diacritics to restrict morhpological combinatorics - only allow compounds
 with verbs if the verb is further derived into a noun again:
+
+| Flag | Explanation
+| --- | --- 
 |  @P.NeedNoun.ON@ | (Dis)allow compounds with verbs unless nominalised
 |  @D.NeedNoun.ON@ | (Dis)allow compounds with verbs unless nominalised
 |  @C.NeedNoun@ | (Dis)allow compounds with verbs unless nominalised
@@ -716,6 +818,9 @@ For languages that allow compounding, the following flag diacritics are needed
 to control position-based compounding restrictions for nominals. Their use is
 handled automatically if combined with +CmpN/xxx tags. If not used, they will
 do no harm.
+
+| Flag | Explanation
+| --- | --- 
 |  @P.CmpFrst.FALSE@ | Require that words tagged as such only appear first
 |  @D.CmpPref.TRUE@ | Block such words from entering ENDLEX
 |  @P.CmpPref.FALSE@ | Block these words from making further compounds
@@ -724,12 +829,28 @@ do no harm.
 |  @U.CmpNone.FALSE@ | Combines with the prev tag to prohibit compounding
 |  @P.CmpOnly.TRUE@ | Sets a flag to indicate that the word has passed R
 |  @D.CmpOnly.FALSE@ | Disallow words coming directly from root.
+
 Use the following flag diacritics to control downcasing of derived proper
 nouns (e.g. Finnish Pariisi -> pariisilainen). See e.g. North Sámi for how to use
 these flags. There exists a ready-made regex that will do the actual down-casing
 given the proper use of these flags.
+
+| Flag | Explanation
+| --- | --- 
 |  @U.Cap.Obl@ | Allowing downcasing of derived names: deatnulasj.
 |  @U.Cap.Opt@ | Allowing downcasing of derived names: København > københavner.
+
+## LEXICON Root 
+- **  Nomen        ;  ** 
+- **  Verbum       ; ** 
+- **  oqr          ;  **  partikler og pronominer
+- **  ateq         ;  **  proprier (baade personer og steder)
+- **  Punctuation  ; ** 
+- **  Symbols      ; ** 
+- **  numeralier   ; ** 
+- **  Forkortelser ; ** 
+- **  Akronymer    ; ** 
+- **  Pronomen     ; ** 
 
 * * *
 
