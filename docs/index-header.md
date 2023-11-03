@@ -31,8 +31,9 @@ project, with a file structure and setup close to the Sámi ones. General
 documentation can also be found at [the Sámi project
 documentation](https://giellalt.uit.no/index.html).
 
--   [Morphology issues](morph.md)
--   [Issues in Greenlandic](IssuesInGreenlandic.md)
+- [Morphology issues](morph.md)
+- [Issues in Greenlandic](IssuesInGreenlandic.md)
+- [Tag strings (taken from the root.lexc file)](tagstrings.md)
 
 ## General information for web users
 
