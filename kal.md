@@ -1498,6 +1498,7 @@ Fil for at generere de centrale morfologiske processer i vor grønlandske analys
 ## Tags for POS (primary tags)
 
 ### Main Word Classes
+
 * **+N** = Noun
 * **+V** = Verb
 * **+Pali** = Particle-like - partikellignende
@@ -1512,6 +1513,7 @@ Fil for at generere de centrale morfologiske processer i vor grønlandske analys
 ## Secondary tags
 
 ### Tags for Verbs
+
 * **+Gram/IV** = Intransitive Verb !PL 20180319 ny formalisme gennemført livm 20180324
 * **+Gram/TV** = Transitive Verb !PL 20180319 ny formalisme gennemført livm 20180324
 * **+Gram/HV** = Non-marked agentive Verb (used as Half-transitive)
@@ -1520,12 +1522,14 @@ Fil for at generere de centrale morfologiske processer i vor grønlandske analys
 * **+Gram/Upersonlig** = upersonlig CONT med NAR+3Sg til højre 
 
 ### Tags for Pronouns
+
 * **+Gram/Int** = Interrogative Pronoun
 * **+Gram/Pers** = Personal Pronoun
 * **+Gram/Coref** = Reflexive Pronoun
 * **+Gram/Indef** = Indefinitive Pronoun
 
 ### Tags for Other Word Classes
+
 * **+Gram/Dem** = Demonstative pronoun, demonstrative adverb or demonstrative interjection
 * **+Gram/Cong** = Various Pronoun, eg. tamaq, kisi (personkongruensdeklination)
 * **+Gram/Abbr** = Abbreviation
@@ -1533,6 +1537,7 @@ Fil for at generere de centrale morfologiske processer i vor grønlandske analys
 * **+Gram/Adj** = Adjektiver optaget direkte inkl. ubøjet anvendelse før kerne
 
 ### Semantics
+
 anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
 * **+Sem/Be**  <fn:Be> !#náipoĸ
 * **+Sem/dur** tid som periode ulloq=dag/day
@@ -1556,6 +1561,7 @@ anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
 * **+Sem/misse** tag til at markere usikker possessor for misse
 
 ### Grammar
+
 * **+Gram/Comp** = Composita !Særlig tag til NIQ ajor/saper/artor/nalu- konstruktioner ved transitive verber
 * **+Gram/TUT_IP** = Composita !tag til at slette overtallige ip hvis der ikke står tut ved siden af
 * **+Gram/Refl** = Reflexive, reciprocal or passive !asavoq
@@ -1568,6 +1574,7 @@ anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
 *__ +Gram/TransverbNIQ __ = NIQ-former med transitivt verbale egenskaber. PL20210417
 
 ### Derivation
+
 * **+Der/Vok** = Vocative
 * **+Der/Guess** = Guessed lemma and inflection which are not listed in the FST
 * **+Der/Loan** = Guessed stems which are not listed in the FST and contain non-Greenlandic characters or non-Greenlandic final character
@@ -1677,7 +1684,10 @@ That is, they need special treatment in e.g. speech syntesis.
 * **+3PlPoss** = Possessor 3.person plural
 * **+4PlPoss** = Possessor 4.person plural
 
+## Flag diacritics for Greenlandic
+
 Flag diacritics til pluralis tantum subjekter
+
 * **@U.Num.Pl@** 
 * **@U.Num.Sg@** 
 * **@C.Num@** Et forsøg med Clear Feature for at håndtere *qarliuvoq vs. qarleqarpoq
@@ -1765,487 +1775,493 @@ Flags for loan words, which must not go to N+Abs+Sg without derivation.
 
 * **PJAT_FOR_AT_FAA_SKIDTET_TIL_AT_KOMPILERE**  en dummy, der kan kommenteres ind og ud, når make instisterer på 'nothing to do' efter bestemte fejltyper
 
+30.10.23: Trond tok taggane som var deklarert fleire gonger 
+(sannsynlegvis tidlegare taggstrengar A=B=C) ut desse og laga 
+i staden ei liste der kvar tag sto ein gong (nedanfor): docs/tagstrings.md
+
 # List of the so-called Greenlandic *tilhæng*, i.e., derivational affixes
 
-* **+A** = Tilhæng
-* **+AA** = Tilhæng
-* **+AR** = Tilhæng
-* **+AASIILLU** = Tilhæng
-* **+AASIINNGUUQ** = Tilhæng
-* **+AASIIT** = Tilhæng
-* **+AASIT** = Tilhæng
-* **+AAT** = Tilhæng
-* **+ALAAQ** = Tilhæng
-* **+ALAAR** = Tilhæng
-* **+ALLAK** = Tilhæng
-* **+ALLAP** = Tilhæng
-* **+ALUK** = Tilhæng
-* **+ALUP** = Tilhæng
-* **+ARAQ** = Tilhæng
-* **+ARSUK** = Tilhæng
-* **+ARSUP** = Tilhæng
-* **+ATAAR** = Tilhæng
-* **+ATSIAQ** = Tilhæng
-* **+GAJUK** = Tilhæng
-* **+GAJUP** = Tilhæng
-* **+GAJUUQ** = Tilhæng
-* **+GALLAR** = Tilhæng
-* **+GALUAQ** = Tilhæng
-* **+GALUAR** = Tilhæng
-* **+GALUP** = Tilhæng
-* **+GALUTTUAQ** = Tilhæng
-* **+GALUTTUAR** = Tilhæng
-* **+GASAAQ** = Tilhæng
-* **+GASAAR** = Tilhæng
-* **+GASAP** = Tilhæng
-* **+GASUAR** = Tilhæng
-* **+GASUGE** = Tilhæng
-* **+GASURE** = Tilhæng
-* **+GE** = Tilhæng
-* **+GI** = Tilhæng
-* **+GIAQAR** = Tilhæng
-* **+GIAR** = Tilhæng
-* **+GIARTUAAR** = Tilhæng
-* **+GIARTUR** = Tilhæng
-* **+GIIAAQ** = Tilhæng
-* **+GIIAAR** = Tilhæng
-* **+GIIAAT** = Tilhæng
-* **+GIILIP** = Tilhæng
-* **+GIIP** = Tilhæng
-* **+GIIT** = Tilhæng
-* **+GIP** = Tilhæng
-* **+GISSAAR** = Tilhæng
-* **+GUMA** = Tilhæng
-* **+GUMAAR** = Tilhæng
-* **+GUMALLIR** = Tilhæng
-* **+GUMINAALLI** = Tilhæng
-* **+GUMINAR** = Tilhæng
-* **+GUNAR** = Tilhæng
-* **+GUNNAAR** = Tilhæng
-* **+GUNNAIR** = Tilhæng
-* **+GUNNAR** = Tilhæng
-* **+GUNNARSI** = Tilhæng
-* **+GUP** = Tilhæng
-* **+GUSUP** = Tilhæng
-* **+GUUQ** = Tilhæng
-* **+GUURUNA** = Tilhæng
-* **+HTR** = Tilhæng
-* **+IAR** = Tilhæng
-* **+ILATSI** = Tilhæng
-* **+ILIQI** = Tilhæng
-* **+INNANNGUAQ** = Tilhæng
-* **+INNAQ** = Tilhæng
-* **+INNAR** = Tilhæng
-* **+INNARIAA** = Tilhæng
-* **+IP** = Tilhæng
-* **+IR** = Tilhæng
-* **+IRNIAQ** = Tilhæng
-* **+IRNIAR** = Tilhæng
-* **+IRSIR** = Tilhæng
-* **+IRUSSI** = Tilhæng
-* **+IRUTE** = Tilhæng
-* **+IRVIK** = Tilhæng
-* **+ISAP** = Tilhæng
-* **+ISUA** = Tilhæng
-* **+IT** = Tilhæng
-* **+JA** = Tilhæng
-* **+JAALLU** = Tilhæng
-* **+JAAR** = Tilhæng
-* **+JURAR** = Tilhæng
-* **+JURTUR** = Tilhæng
-* **+KAA** = Tilhæng
-* **+KAJAAQ** = Tilhæng
-* **+KANNIQ** = Tilhæng
-* **+KANNIR** = Tilhæng
-* **+KAR** = Tilhæng
-* **+KASIK** = Tilhæng
-* **+KASIP** = Tilhæng
-* **+KASSAK** = Tilhæng
-* **+KASSAP** = Tilhæng
-* **+KATAAR** = Tilhæng
-* **+KATAP** = Tilhæng
-* **+KILLI** = Tilhæng
-* **+KIP** = Tilhæng
-* **+KKAAQ** = Tilhæng
-* **+KKAAR** = Tilhæng
-* **+KKULUK** = Tilhæng
-* **+KKULUP** = Tilhæng
-* **+KKUMINAR** = Tilhæng
-* **+KKUT** = Tilhæng
-* **+KKUUTAAQ** = Tilhæng
-* **+KKUUTAAR** = Tilhæng
-* **+KUJUK** = Tilhæng
-* **+KUJUP** = Tilhæng
-* **+KUJUUQ** = Tilhæng
-* **+KUJUUR** = Tilhæng
-* **+KULA** = Tilhæng
-* **+KULAAR** = Tilhæng
-* **+KULLAK** = Tilhæng
-* **+KULUK** = Tilhæng
-* **+KULUP** = Tilhæng
-* **+KULUUQ** = Tilhæng
-* **+KUQ** = Tilhæng
-* **+KUSUUR** = Tilhæng
-* **+KUTSUUR** = Tilhæng
-* **+LA** = Tilhæng
-* **+LAAQ** = Tilhæng
-* **+LAAR** = Tilhæng
-* **+LI** = Tilhæng
-* **+LIAA** = Tilhæng
-* **+LIAASIIT** = Tilhæng
-* **+LIAQ** = Tilhæng
-* **+LIAR** = Tilhæng
-* **+LIGUUQ** = Tilhæng
-* **+LIK** = Tilhæng
-* **+LIKKAAQ** = Tilhæng
-* **+LIKKIRSAAR** = Tilhæng
-* **+LIMI** = Tilhæng
-* **+LIP** = Tilhæng
-* **+LIR** = Tilhæng
-* **+LIRI** = Tilhæng
-* **+LIRNGUSAATE** = Tilhæng
-* **+LIRSAAR** = Tilhæng
-* **+LIRSUR** = Tilhæng
-* **+LIRTUR** = Tilhæng
-* **+LISAAR** = Tilhæng
-* **+LISAR** = Tilhæng
-* **+LISSAAQ** = Tilhæng
-* **+LIUKU** = Tilhæng
-* **+LIUKUA** = Tilhæng
-* **+LIUNA** = Tilhæng
-* **+LIUR** = Tilhæng
-* **+LIUTE** = Tilhæng
-* **+LIVIK** = Tilhæng
-* **+LLAARE** = Tilhæng
-* **+LLAATAA** = Tilhæng
-* **+LLAMMAK** = Tilhæng
-* **+LLAP** = Tilhæng
-* **+LLAQQIP** = Tilhæng
-* **+LLAR** = Tilhæng
-* **+LLARIP** = Tilhæng
-* **+LLATSIAR** = Tilhæng
-* **+LLATTAA** = Tilhæng
-* **+LLATTAAR** = Tilhæng
-* **+LLATUAR** = Tilhæng
-* **+LLI** = Tilhæng
-* **+LLIQ** = Tilhæng
-* **+LLIR** = Tilhæng
-* **+LLIRPAAQ** = Tilhæng
-* **+LLIUR** = Tilhæng
-* **+LLUAR** = Tilhæng
-* **+LLUINNAQ** = Tilhæng
-* **+LLUINNAQQISSAAQ** = Tilhæng
-* **+LLUINNAR** = Tilhæng
-* **+LU** = Tilhæng
-* **+LUGUUQ** = Tilhæng
-* **+LUINNAR** = Tilhæng
-* **+LUMI** = Tilhæng
-* **+LUMIAASIIT** = Tilhæng
-* **+LUP** = Tilhæng
-* **+LUQA** = Tilhæng
-* **+LUSUUQ** = Tilhæng
-* **+LUUNNIILLI** = Tilhæng
-* **+LUUNNIILLU** = Tilhæng
-* **+LUUNNIIMMI** = Tilhæng
-* **+LUUNNIIT** = Tilhæng
-* **+LUUR** = Tilhæng
-* **+MAA** = Tilhæng
-* **+MAANNA** = Tilhæng
-* **+MAANNAA** = Tilhæng
-* **+MAANNAAJUNA** = Tilhæng
-* **+MAAR** = Tilhæng
-* **+MI** = Tilhæng
-* **+MIAA** = Tilhæng
-* **+MIAASIINNGUUQ** = Tilhæng
-* **+MIAASIIT** = Tilhæng
-* **+MINIQ** = Tilhæng
-* **+MISAAR** = Tilhæng
-* **+MITA** = Tilhæng
-* **+MITAAVA** = Tilhæng
-* **+MITAAVAAKU** = Tilhæng
-* **+MITAAVAANA** = Tilhæng
-* **+MITAAVAMI** = Tilhæng
-* **+MIU** = Tilhæng
-* **+MIUQ** = Tilhæng
-* **+MMIRSUR** = Tilhæng
-* **+NAAR** = Tilhæng
-* **+NAQ** = Tilhæng
-* **+NAR** = Tilhæng
-* **+NASUGE** = Tilhæng
-* **+NASURE** = Tilhæng
-* **+NAVIAR** = Tilhæng
-* **+NAVIIR** = Tilhæng
-* **+NAVIIRSAAR** = Tilhæng
-* **+NGA** = Tilhæng
-* **+NGAAQ** = Tilhæng
-* **+NGAAR** = Tilhæng
-* **+NGAATSIAQ** = Tilhæng
-* **+NGAJAK** = Tilhæng
-* **+NGAJAP** = Tilhæng
-* **+NIAA** = Tilhæng
-* **+NIAALUP** = Tilhæng
-* **+NIAQ** = Tilhæng
-* **+NIAR** = Tilhæng
-* **+NIARIUTAA** = Tilhæng
-* **+NIARSARE** = Tilhæng
-* **+NIINNAR** = Tilhæng
-* **+NIKUQ** = Tilhæng
-* **+NIKUU** = Tilhæng
-* **+NIP** = Tilhæng
-* **+NIQ** = Tilhæng
-* **+NIQAR** = Tilhæng
-* **+NIQ_AJUR** = Tilhæng
-* **+NIR** = Tilhæng
-* **+NIRAR** = Tilhæng
-* **+NIRLIUR** = Tilhæng
-* **+NIRLUP** = Tilhæng
-* **+NIRPAA** = Tilhæng
-* **+NIRPAAQ** = Tilhæng
-* **+NIRPAARPAA** = Tilhæng
-* **+NIRPAARPAAJU** = Tilhæng
-* **+NIRSAQ** = Tilhæng
-* **+NIRU** = Tilhæng
-* **+NIRUJUSSUU** = Tilhæng
-* **+NIRUMAAQ** = Tilhæng
-* **+NIRUMAAR** = Tilhæng
-* **+NISAQ** = Tilhæng
-* **+NISSAQ** = Tilhæng
-* **+NIUP** = Tilhæng
-* **+NIUTAA** = Tilhæng
-* **+NIUTE** = Tilhæng
-* **+NNAAQ** = Tilhæng
-* **+NNAP** = Tilhæng
-* **+NNAR** = Tilhæng
-* **+NNGAANNIIR** = Tilhæng
-* **+NNGAR** = Tilhæng
-* **+NNGIR** = Tilhæng
-* **+NNGIRSAAR** = Tilhæng
-* **+NNGISAANNAR** = Tilhæng
-* **+NNGIT** = Tilhæng
-* **+NNGUALLAARE** = Tilhæng
-* **+NNGUAQ** = Tilhæng
-* **+NNGUAR** = Tilhæng
-* **+NNGUARSI** = Tilhæng
-* **+NNGUASIK** = Tilhæng
-* **+NNGUATSIAR** = Tilhæng
-* **+NNGUJUUR** = Tilhæng
-* **+NNGUR** = Tilhæng
-* **+NNGUUJUIT** = Tilhæng
-* **+PAAQ** = Tilhæng
-* **+PAJAAQ** = Tilhæng
-* **+PAJAAR** = Tilhæng
-* **+PAJUK** = Tilhæng
-* **+PAJUP** = Tilhæng
-* **+PAK** = Tilhæng
-* **+PALAAQ** = Tilhæng
-* **+PALAAR** = Tilhæng
-* **+PALLAK** = Tilhæng
-* **+PALLAP** = Tilhæng
-* **+PALUK** = Tilhæng
-* **+PALUP** = Tilhæng
-* **+PASIP** = Tilhæng
-* **+PIAQ** = Tilhæng
-* **+PIAR** = Tilhæng
-* **+PILUK** = Tilhæng
-* **+PILUP** = Tilhæng
-* **+PILUUR** = Tilhæng
-* **+QANNGIT** = Tilhæng
-* **+QAR** = Tilhæng
-* **+QATE** = Tilhæng
-* **+QATIGIIP** = Tilhæng
-* **+QATIGIIT** = Tilhæng
-* **+QATTAAR** = Tilhæng
-* **+QE** = Tilhæng
-* **+QENA** = Tilhæng
-* **+QINA** = Tilhæng
-* **+QISSAAR** = Tilhæng
-* **+QQA** = Tilhæng
-* **+QQAAQ** = Tilhæng
-* **+QQAAR** = Tilhæng
-* **+QQAJAA** = Tilhæng
-* **+QQAJAR** = Tilhæng
-* **+QQAMMI** = Tilhæng
-* **+QQAMMIQ** = Tilhæng
-* **+QQAMMIR** = Tilhæng
-* **+QQAR** = Tilhæng
-* **+QQARTUR** = Tilhæng
-* **+QQATAR** = Tilhæng
-* **+QQATUR** = Tilhæng
-* **+QQINNAAQ** = Tilhæng
-* **+QQINNAAR** = Tilhæng
-* **+QQIP** = Tilhæng
-* **+QQISSAAQ** = Tilhæng
-* **+QQISSAAR** = Tilhæng
-* **+QQU** = Tilhæng
-* **+QQURTU** = Tilhæng
-* **+QQURTUSI** = Tilhæng
-* **+QQURTUUQ** = Tilhæng
-* **+QQUSAAR** = Tilhæng
-* **+QQUTE** = Tilhæng
-* **+QQUUQE** = Tilhæng
-* **+QQUUTE** = Tilhæng
-* **+R** = Tilhæng
-* **+RAALLAK** = Tilhæng
-* **+RAAR** = Tilhæng
-* **+RALAAQ** = Tilhæng
-* **+RALAK** = Tilhæng
-* **+RAR** = Tilhæng
-* **+RASAAR** = Tilhæng
-* **+RATAAR** = Tilhæng
-* **+RATAR** = Tilhæng
-* **+RIAANNAA** = Tilhæng
-* **+RIAAT** = Tilhæng
-* **+RIANNGUAR** = Tilhæng
-* **+RIAQ** = Tilhæng
-* **+RIAR** = Tilhæng
-* **+RIATAAR** = Tilhæng
-* **+RIIR** = Tilhæng
-* **+RIP** = Tilhæng
-* **+RLAAQ** = Tilhæng
-* **+RRAK** = Tilhæng
-* **+RRATE** = Tilhæng
-* **+RSUR** = Tilhæng
-* **+RUJUK** = Tilhæng
-* **+RUJUP** = Tilhæng
-* **+RUJUUJUTAA** = Tilhæng
-* **+RUJUUR** = Tilhæng
-* **+RUJUURUTAA** = Tilhæng
-* **+RULUP** = Tilhæng
-* **+RULUUR** = Tilhæng
-* **+RUNAR** = Tilhæng
-* **+RUSAAR** = Tilhæng
-* **+RUSAQ** = Tilhæng
-* **+RUSAR** = Tilhæng
-* **+RUTTUR** = Tilhæng
-* **+RUUSAAR** = Tilhæng
-* **+SAAR** = Tilhæng
-* **+SAR** = Tilhæng
-* **+SARE** = Tilhæng
-* **+SI** = Tilhæng
-* **+SIAQ** = Tilhæng
-* **+SII** = Tilhæng
-* **+SILAT** = Tilhæng
-* **+SIMA** = Tilhæng
-* **+SIMAAR** = Tilhæng
-* **+SINNAA** = Tilhæng
-* **+SINNAAA** = Tilhæng
-* **+SINNAANNGUR** = Tilhæng
-* **+SINNAAQ** = Tilhæng
-* **+SINNAR** = Tilhæng
-* **+SIR** = Tilhæng
-* **+SIUR** = Tilhæng
-* **+SIUT** = Tilhæng
-* **+SSA** = Tilhæng
-* **+SSAALIQI** = Tilhæng
-* **+SSAAR** = Tilhæng
-* **+SSAMAAQ** = Tilhæng
-* **+SSAMAAR** = Tilhæng
-* **+SSAQ** = Tilhæng
-* **+SSAQQIP** = Tilhæng
-* **+SSI** = Tilhæng
-* **+SSIP** = Tilhæng
-* **+SSUAQ** = Tilhæng
-* **+SSUSIQ** = Tilhæng
-* **+SUAQ** = Tilhæng
-* **+SUAR** = Tilhæng
-* **+SUATAAR** = Tilhæng
-* **+SUNGAR** = Tilhæng
-* **+SUNNI** = Tilhæng
-* **+SUNNIP** = Tilhæng
-* **+SUR** = Tilhæng
-* **+SURE** = Tilhæng
-* **+T** = Tilhæng
-* **+TA** = Tilhæng
-* **+TAAMA** = Tilhæng
-* **+TAAQ** = Tilhæng
-* **+TAAR** = Tilhæng
-* **+TAAVA** = Tilhæng
-* **+TALLAP** = Tilhæng
-* **+TAQ** = Tilhæng
-* **+TAR** = Tilhæng
-* **+TARE** = Tilhæng
-* **+TARIAARUTE** = Tilhæng
-* **+TARIAQ** = Tilhæng
-* **+TARIAQAR** = Tilhæng
-* **+TARIAR** = Tilhæng
-* **+TASSAA** = Tilhæng
-* **+TE** = Tilhæng
-* **+TIGE** = Tilhæng
-* **+TIP** = Tilhæng
-* **+TIR** = Tilhæng
-* **+TITAAR** = Tilhæng
-* **+TITIR** = Tilhæng
-* **+TSAALI** = Tilhæng
-* **+TSAALIUR** = Tilhæng
-* **+TSAP** = Tilhæng
-* **+TSIALAK** = Tilhæng
-* **+TSIAQ** = Tilhæng
-* **+TSIAR** = Tilhæng
-* **+TSIISAA** = Tilhæng
-* **+TSIP** = Tilhæng
-* **+TSIR** = Tilhæng
-* **+TTAAQ** = Tilhæng
-* **+TTAARLU** = Tilhæng
-* **+TTAARMI** = Tilhæng
-* **+TTUINNAR** = Tilhæng
-* **+TU** = Tilhæng
-* **+TUAQ** = Tilhæng
-* **+TUAR** = Tilhæng
-* **+TUARANNGUU** = Tilhæng
-* **+TUATAAR** = Tilhæng
-* **+TUGAQ** = Tilhæng
-* **+TUKASSAA** = Tilhæng
-* **+TUQ** = Tilhæng
-* **+TUQAQ** = Tilhæng
-* **+TUR** = Tilhæng
-* **+TURSUU** = Tilhæng
-* **+TURUJUSSUANNGUR** = Tilhæng
-* **+TURUJUSSUU** = Tilhæng
-* **+TURUJUSSUUSIMA** = Tilhæng
-* **+TURUJUSSUUSIMAGALUAR** = Tilhæng
-* **+TURUJUSSUUSSA** = Tilhæng
-* **+TURUJUU** = Tilhæng
-* **+TUSSAA** = Tilhæng
-* **+TUSSAAGALUAR** = Tilhæng
-* **+TUSSAANNGIKKALUAR** = Tilhæng
-* **+TUSSAANNGIT** = Tilhæng
-* **+TUSSANNGUR** = Tilhæng
-* **+TUSSAQ** = Tilhæng
-* **+TUU** = Tilhæng
-* **+TUUQ** = Tilhæng
-* **+TUUR** = Tilhæng
-* **+TUUSAAR** = Tilhæng
-* **+TUUSI** = Tilhæng
-* **+U** = Tilhæng
-* **+UAAR** = Tilhæng
-* **+UKU** = Tilhæng
-* **+UKUA** = Tilhæng
-* **+UMA** = Tilhæng
-* **+UMI** = Tilhæng
-* **+UMMI** = Tilhæng
-* **+UMMIR** = Tilhæng
-* **+UNA** = Tilhæng
-* **+UR** = Tilhæng
-* **+URL** = Tilhæng
-* **+USAAQ** = Tilhæng
-* **+USAAR** = Tilhæng
-* **+USAP** = Tilhæng
-* **+USAQ** = Tilhæng
-* **+USAR** = Tilhæng
-* **+USIQ** = Tilhæng
-* **+UTE** = Tilhæng
-* **+UTIGE** = Tilhæng
-* **+VALLAAQ** = Tilhæng
-* **+VALLAAR** = Tilhæng
-* **+VIK** = Tilhæng
-* **+VIP** = Tilhæng
-* **+VISSUAQ** = Tilhæng
-* **+VISSUR** = Tilhæng
-* **+VVAARIK** = Tilhæng
-* **+VVAARIP** = Tilhæng
-* **NIAR=TARE=LIR=GALUAR** = Tilhæng
-* **SIMAAR=VALLAAR=LIR** = Tilhæng
-* **TARIAQAR=LLUAR** = Tilhæng
+* **+A** 
+* **+AA** 
+* **+AR** 
+* **+AASIILLU** 
+* **+AASIINNGUUQ** 
+* **+AASIIT** 
+* **+AASIT** 
+* **+AAT** 
+* **+ALAAQ** 
+* **+ALAAR** 
+* **+ALLAK** 
+* **+ALLAP** 
+* **+ALUK** 
+* **+ALUP** 
+* **+ARAQ** 
+* **+ARSUK** 
+* **+ARSUP** 
+* **+ATAAR** 
+* **+ATSIAQ** 
+* **+GAJUK** 
+* **+GAJUP** 
+* **+GAJUUQ** 
+* **+GALLAR** 
+* **+GALUAQ** 
+* **+GALUAR** 
+* **+GALUP** 
+* **+GALUTTUAQ** 
+* **+GALUTTUAR** 
+* **+GASAAQ** 
+* **+GASAAR** 
+* **+GASAP** 
+* **+GASUAR** 
+* **+GASUGE** 
+* **+GASURE** 
+* **+GE** 
+* **+GI** 
+* **+GIAQAR** 
+* **+GIAR** 
+* **+GIARTUAAR** 
+* **+GIARTUR** 
+* **+GIIAAQ** 
+* **+GIIAAR** 
+* **+GIIAAT** 
+* **+GIILIP** 
+* **+GIIP** 
+* **+GIIT** 
+* **+GIP** 
+* **+GISSAAR** 
+* **+GUMA** 
+* **+GUMAAR** 
+* **+GUMALLIR** 
+* **+GUMINAALLI** 
+* **+GUMINAR** 
+* **+GUNAR** 
+* **+GUNNAAR** 
+* **+GUNNAIR** 
+* **+GUNNAR** 
+* **+GUNNARSI** 
+* **+GUP** 
+* **+GUSUP** 
+* **+GUUQ** 
+* **+GUURUNA** 
+* **+HTR** 
+* **+IAR** 
+* **+ILATSI** 
+* **+ILIQI** 
+* **+INNANNGUAQ** 
+* **+INNAQ** 
+* **+INNAR** 
+* **+INNARIAA** 
+* **+IP** 
+* **+IR** 
+* **+IRNIAQ** 
+* **+IRNIAR** 
+* **+IRSIR** 
+* **+IRUSSI** 
+* **+IRUTE** 
+* **+IRVIK** 
+* **+ISAP** 
+* **+ISUA** 
+* **+IT** 
+* **+JA** 
+* **+JAALLU** 
+* **+JAAR** 
+* **+JURAR** 
+* **+JURTUR** 
+* **+KAA** 
+* **+KAJAAQ** 
+* **+KANNIQ** 
+* **+KANNIR** 
+* **+KAR** 
+* **+KASIK** 
+* **+KASIP** 
+* **+KASSAK** 
+* **+KASSAP** 
+* **+KATAAR** 
+* **+KATAP** 
+* **+KILLI** 
+* **+KIP** 
+* **+KKAAQ** 
+* **+KKAAR** 
+* **+KKULUK** 
+* **+KKULUP** 
+* **+KKUMINAR** 
+* **+KKUT** 
+* **+KKUUTAAQ** 
+* **+KKUUTAAR** 
+* **+KUJUK** 
+* **+KUJUP** 
+* **+KUJUUQ** 
+* **+KUJUUR** 
+* **+KULA** 
+* **+KULAAR** 
+* **+KULLAK** 
+* **+KULUK** 
+* **+KULUP** 
+* **+KULUUQ** 
+* **+KUQ** 
+* **+KUSUUR** 
+* **+KUTSUUR** 
+* **+LA** 
+* **+LAAQ** 
+* **+LAAR** 
+* **+LI** 
+* **+LIAA** 
+* **+LIAASIIT** 
+* **+LIAQ** 
+* **+LIAR** 
+* **+LIGUUQ** 
+* **+LIK** 
+* **+LIKKAAQ** 
+* **+LIKKIRSAAR** 
+* **+LIMI** 
+* **+LIP** 
+* **+LIR** 
+* **+LIRI** 
+* **+LIRNGUSAATE** 
+* **+LIRSAAR** 
+* **+LIRSUR** 
+* **+LIRTUR** 
+* **+LISAAR** 
+* **+LISAR** 
+* **+LISSAAQ** 
+* **+LIUKU** 
+* **+LIUKUA** 
+* **+LIUNA** 
+* **+LIUR** 
+* **+LIUTE** 
+* **+LIVIK** 
+* **+LLAARE** 
+* **+LLAATAA** 
+* **+LLAMMAK** 
+* **+LLAP** 
+* **+LLAQQIP** 
+* **+LLAR** 
+* **+LLARIP** 
+* **+LLATSIAR** 
+* **+LLATTAA** 
+* **+LLATTAAR** 
+* **+LLATUAR** 
+* **+LLI** 
+* **+LLIQ** 
+* **+LLIR** 
+* **+LLIRPAAQ** 
+* **+LLIUR** 
+* **+LLUAR** 
+* **+LLUINNAQ** 
+* **+LLUINNAQQISSAAQ** 
+* **+LLUINNAR** 
+* **+LU** 
+* **+LUGUUQ** 
+* **+LUINNAR** 
+* **+LUMI** 
+* **+LUMIAASIIT** 
+* **+LUP** 
+* **+LUQA** 
+* **+LUSUUQ** 
+* **+LUUNNIILLI** 
+* **+LUUNNIILLU** 
+* **+LUUNNIIMMI** 
+* **+LUUNNIIT** 
+* **+LUUR** 
+* **+MAA** 
+* **+MAANNA** 
+* **+MAANNAA** 
+* **+MAANNAAJUNA** 
+* **+MAAR** 
+* **+MI** 
+* **+MIAA** 
+* **+MIAASIINNGUUQ** 
+* **+MIAASIIT** 
+* **+MINIQ** 
+* **+MISAAR** 
+* **+MITA** 
+* **+MITAAVA** 
+* **+MITAAVAAKU** 
+* **+MITAAVAANA** 
+* **+MITAAVAMI** 
+* **+MIU** 
+* **+MIUQ** 
+* **+MMIRSUR** 
+* **+NAAR** 
+* **+NAQ** 
+* **+NAR** 
+* **+NASUGE** 
+* **+NASURE** 
+* **+NAVIAR** 
+* **+NAVIIR** 
+* **+NAVIIRSAAR** 
+* **+NGA** 
+* **+NGAAQ** 
+* **+NGAAR** 
+* **+NGAATSIAQ** 
+* **+NGAJAK** 
+* **+NGAJAP** 
+* **+NIAA** 
+* **+NIAALUP** 
+* **+NIAQ** 
+* **+NIAR** 
+* **+NIARIUTAA** 
+* **+NIARSARE** 
+* **+NIINNAR** 
+* **+NIKUQ** 
+* **+NIKUU** 
+* **+NIP** 
+* **+NIQ** 
+* **+NIQAR** 
+* **+NIQ_AJUR** 
+* **+NIR** 
+* **+NIRAR** 
+* **+NIRLIUR** 
+* **+NIRLUP** 
+* **+NIRPAA** 
+* **+NIRPAAQ** 
+* **+NIRPAARPAA** 
+* **+NIRPAARPAAJU** 
+* **+NIRSAQ** 
+* **+NIRU** 
+* **+NIRUJUSSUU** 
+* **+NIRUMAAQ** 
+* **+NIRUMAAR** 
+* **+NISAQ** 
+* **+NISSAQ** 
+* **+NIUP** 
+* **+NIUTAA** 
+* **+NIUTE** 
+* **+NNAAQ** 
+* **+NNAP** 
+* **+NNAR** 
+* **+NNGAANNIIR** 
+* **+NNGAR** 
+* **+NNGIR** 
+* **+NNGIRSAAR** 
+* **+NNGISAANNAR** 
+* **+NNGIT** 
+* **+NNGUALLAARE** 
+* **+NNGUAQ** 
+* **+NNGUAR** 
+* **+NNGUARSI** 
+* **+NNGUASIK** 
+* **+NNGUATSIAR** 
+* **+NNGUJUUR** 
+* **+NNGUR** 
+* **+NNGUUJUIT** 
+* **+PAAQ** 
+* **+PAJAAQ** 
+* **+PAJAAR** 
+* **+PAJUK** 
+* **+PAJUP** 
+* **+PAK** 
+* **+PALAAQ** 
+* **+PALAAR** 
+* **+PALLAK** 
+* **+PALLAP** 
+* **+PALUK** 
+* **+PALUP** 
+* **+PASIP** 
+* **+PIAQ** 
+* **+PIAR** 
+* **+PILUK** 
+* **+PILUP** 
+* **+PILUUR** 
+* **+QANNGIT** 
+* **+QAR** 
+* **+QATE** 
+* **+QATIGIIP** 
+* **+QATIGIIT** 
+* **+QATTAAR** 
+* **+QE** 
+* **+QENA** 
+* **+QINA** 
+* **+QISSAAR** 
+* **+QQA** 
+* **+QQAAQ** 
+* **+QQAAR** 
+* **+QQAJAA** 
+* **+QQAJAR** 
+* **+QQAMMI** 
+* **+QQAMMIQ** 
+* **+QQAMMIR** 
+* **+QQAR** 
+* **+QQARTUR** 
+* **+QQATAR** 
+* **+QQATUR** 
+* **+QQINNAAQ** 
+* **+QQINNAAR** 
+* **+QQIP** 
+* **+QQISSAAQ** 
+* **+QQISSAAR** 
+* **+QQU** 
+* **+QQURTU** 
+* **+QQURTUSI** 
+* **+QQURTUUQ** 
+* **+QQUSAAR** 
+* **+QQUTE** 
+* **+QQUUQE** 
+* **+QQUUTE** 
+* **+R** 
+* **+RAALLAK** 
+* **+RAAR** 
+* **+RALAAQ** 
+* **+RALAK** 
+* **+RAR** 
+* **+RASAAR** 
+* **+RATAAR** 
+* **+RATAR** 
+* **+RIAANNAA** 
+* **+RIAAT** 
+* **+RIANNGUAR** 
+* **+RIAQ** 
+* **+RIAR** 
+* **+RIATAAR** 
+* **+RIIR** 
+* **+RIP** 
+* **+RLAAQ** 
+* **+RRAK** 
+* **+RRATE** 
+* **+RSUR** 
+* **+RUJUK** 
+* **+RUJUP** 
+* **+RUJUUJUTAA** 
+* **+RUJUUR** 
+* **+RUJUURUTAA** 
+* **+RULUP** 
+* **+RULUUR** 
+* **+RUNAR** 
+* **+RUSAAR** 
+* **+RUSAQ** 
+* **+RUSAR** 
+* **+RUTTUR** 
+* **+RUUSAAR** 
+* **+SAAR** 
+* **+SAR** 
+* **+SARE** 
+* **+SI** 
+* **+SIAQ** 
+* **+SII** 
+* **+SILAT** 
+* **+SIMA** 
+* **+SIMAAR** 
+* **+SINNAA** 
+* **+SINNAAA** 
+* **+SINNAANNGUR** 
+* **+SINNAAQ** 
+* **+SINNAR** 
+* **+SIR** 
+* **+SIUR** 
+* **+SIUT** 
+* **+SSA** 
+* **+SSAALIQI** 
+* **+SSAAR** 
+* **+SSAMAAQ** 
+* **+SSAMAAR** 
+* **+SSAQ** 
+* **+SSAQQIP** 
+* **+SSI** 
+* **+SSIP** 
+* **+SSUAQ** 
+* **+SSUSIQ** 
+* **+SUAQ** 
+* **+SUAR** 
+* **+SUATAAR** 
+* **+SUNGAR** 
+* **+SUNNI** 
+* **+SUNNIP** 
+* **+SUR** 
+* **+SURE** 
+* **+T** 
+* **+TA** 
+* **+TAAMA** 
+* **+TAAQ** 
+* **+TAAR** 
+* **+TAAVA** 
+* **+TALLAP** 
+* **+TAQ** 
+* **+TAR** 
+* **+TARE** 
+* **+TARIAARUTE** 
+* **+TARIAQ** 
+* **+TARIAQAR** 
+* **+TARIAR** 
+* **+TASSAA** 
+* **+TE** 
+* **+TIGE** 
+* **+TIP** 
+* **+TIR** 
+* **+TITAAR** 
+* **+TITIR** 
+* **+TSAALI** 
+* **+TSAALIUR** 
+* **+TSAP** 
+* **+TSIALAK** 
+* **+TSIAQ** 
+* **+TSIAR** 
+* **+TSIISAA** 
+* **+TSIP** 
+* **+TSIR** 
+* **+TTAAQ** 
+* **+TTAARLU** 
+* **+TTAARMI** 
+* **+TTUINNAR** 
+* **+TU** 
+* **+TUAQ** 
+* **+TUAR** 
+* **+TUARANNGUU** 
+* **+TUATAAR** 
+* **+TUGAQ** 
+* **+TUKASSAA** 
+* **+TUQ** 
+* **+TUQAQ** 
+* **+TUR** 
+* **+TURSUU** 
+* **+TURUJUSSUANNGUR** 
+* **+TURUJUSSUU** 
+* **+TURUJUSSUUSIMA** 
+* **+TURUJUSSUUSIMAGALUAR** 
+* **+TURUJUSSUUSSA** 
+* **+TURUJUU** 
+* **+TUSSAA** 
+* **+TUSSAAGALUAR** 
+* **+TUSSAANNGIKKALUAR** 
+* **+TUSSAANNGIT** 
+* **+TUSSANNGUR** 
+* **+TUSSAQ** 
+* **+TUU** 
+* **+TUUQ** 
+* **+TUUR** 
+* **+TUUSAAR** 
+* **+TUUSI** 
+* **+U** 
+* **+UAAR** 
+* **+UKU** 
+* **+UKUA** 
+* **+UMA** 
+* **+UMI** 
+* **+UMMI** 
+* **+UMMIR** 
+* **+UNA** 
+* **+UR** 
+* **+URL** 
+* **+USAAQ** 
+* **+USAAR** 
+* **+USAP** 
+* **+USAQ** 
+* **+USAR** 
+* **+USIQ** 
+* **+UTE** 
+* **+UTIGE** 
+* **+VALLAAQ** 
+* **+VALLAAR** 
+* **+VIK** 
+* **+VIP** 
+* **+VISSUAQ** 
+* **+VISSUR** 
+* **+VVAARIK** 
+* **+VVAARIP** 
+* **NIAR=TARE=LIR=GALUAR** 
+* **SIMAAR=VALLAAR=LIR** 
+* **TARIAQAR=LLUAR** 
+
+### Grænsesymbol
 
 ## Symbols that need to be escaped on the lower side (towards twolc)
 * »
@@ -2259,7 +2275,9 @@ Flags for loan words, which must not go to N+Abs+Sg without derivation.
 * **+Comp**  Tilfoejet 20100228. Anvendes ved +NIQ paa transitiver for skyld -neq ajor/saper/artor/nalu
 * **+Coll**  Tilfoejet 20100406 til kaldenavne, der ikke er godkendte fx Aaperaat, men Aaperaa+Coll
 * **+Loan**  Tilføjet 20100822 til visse udenlandske ord i hhv. LEXICON V-Loan og LEXICON C-Loan
-Vore morfofonemer
+
+### Vore morfofonemer
+
 * **g2 g3 g4 c2 i2** 
 * **u2**  u som skal stå som u foran r: Puurunen.
 ch til Heinrich/ Heinriup men kvæler alle ch-sekvenser. Udkommenteret 20181008
@@ -2291,7 +2309,7 @@ ch til Heinrich/ Heinriup men kvæler alle ch-sekvenser. Udkommenteret 20181008
 * **%^GEM** 
 * **%^Loan** 
 
-## Flag diacritics
+## Language-independent flag diacritics
 
 We have manually optimised the structure of our lexicon using following
 flag diacritics to restrict morhpological combinatorics - only allow compounds
@@ -2302,6 +2320,7 @@ with verbs if the verb is further derived into a noun again:
 |  @P.NeedNoun.ON@ | (Dis)allow compounds with verbs unless nominalised
 |  @D.NeedNoun.ON@ | (Dis)allow compounds with verbs unless nominalised
 |  @C.NeedNoun@ | (Dis)allow compounds with verbs unless nominalised
+
 For languages that allow compounding, the following flag diacritics are needed
 to control position-based compounding restrictions for nominals. Their use is
 handled automatically if combined with +CmpN/xxx tags. If not used, they will
@@ -2328,17 +2347,17 @@ given the proper use of these flags.
 |  @U.Cap.Obl@ | Allowing downcasing of derived names: deatnulasj.
 |  @U.Cap.Opt@ | Allowing downcasing of derived names: København > københavner.
 
-## LEXICON Root 
-- **  Nomen        ;  ** 
-- **  Verbum       ; ** 
-- **  oqr          ;  **  partikler og pronominer
-- **  ateq         ;  **  proprier (baade personer og steder)
-- **  Punctuation  ; ** 
-- **  Symbols      ; ** 
-- **  numeralier   ; ** 
-- **  Forkortelser ; ** 
-- **  Akronymer    ; ** 
-- **  Pronomen     ; ** 
+## LEXICON Root  pointing to main parts of speech
+- **Nomen ;** 
+- **Verbum ;** 
+- **oqr ;**  partikler og pronominer
+- **ateq ;**  proprier (baade personer og steder)
+- **Punctuation ;** 
+- **Symbols ;** 
+- **numeralier ;** 
+- **Forkortelser ;** 
+- **Akronymer ;** 
+- **Pronomen ;** 
 
 * * *
 
