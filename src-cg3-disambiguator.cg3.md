@@ -1,6 +1,6 @@
 
 
-#    W E S T   G R E E N L A N D I C   D I S A M B I G U A T O R  #
+#    W E S T   G R E E N L A N D I C   D I S A M B I G U A T O R  #
 
 # Delimiters, tags and sets
 
