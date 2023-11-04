@@ -8,7 +8,7 @@
  
 # =================================================================== #
 # =================================================================== #
-#!! #    W E S T   G R E E N L A N D I C   D I S A M B I G U A T O R  #
+#!! #    W E S T   G R E E N L A N D I C   D I S A M B I G U A T O R  #
 # =================================================================== #
 # =================================================================== #
 
@@ -8901,13 +8901,13 @@ REMOVE:8563F (/Gram/TV\ V\ Ind\ 3Pl\ 3PlO/l) IF (0 (/Gram/TV\ V\ Ind\ 3Pl\ 3SgO/
 ##### Nomen eller partikel 14303
 ##### Nomen eller numerale 14271
 ##### Nomen eller verbum   14314
-##### Verbum eller verbum  14800
-##### Enkelte derivativer  15316
-##### Enkelte substantiver 10271
+##### Verbum eller verbum  9394
+##### Enkelte derivativer  9935
+##### Enkelte substantiver 10273
 # 
 # Gram/IV eller Gram/TV eller Gram/Db #
 ##### Specifikke regler til disambiguering af Gram/IV vs. Gram/TV	16756
-##### Specifikke regler til disambiguering af Gram/TV vs. Gram/Db	17040
+##### Specifikke regler til disambiguering af Gram/TV vs. Gram/Db	12020
 # ======================================================================= #
 
 # Nomen eller nomen?
@@ -9784,7 +9784,7 @@ REMOVE:5491B Gram/Exclm IF (0 ("aluunnguaq" Interj)); #PL20221221 ALUUNNGUAQ Naj
 
 # Der/nv eller Der/vv?
 SELECT:5493 QATE + Der/vn + GE - Imp IF (0 QATE + Der/nn + GE)#(NEGATE *-1 HUMAN + @OBJ>) 
-(NEGATE 0 LEKSIKALISERING)
+(NEGATE 0 LEKSIKALISERING OR ("isuma"))
 ;
 #X@X2
 
@@ -9928,6 +9928,9 @@ REMOVE:5578Y (/"isi"\ GIP/l) IF (0 ("isige"));  #Tujormisarnera ISIGINNGITSUUSAA
 
 REMOVE:5578Z (/"pissap"\ Gram/IV\ NGA/l) IF (0 ("pissanga")); #Ulloq nallermat pissangaqaanga.
 
+REMOVE:5578Æ (/"paasi"\ Gram/TV\ Gram/Refl\ QATE/l) IF (0 (/"paasi"\ Gram/TV\ \(iSem/comprehend\ \)?QATE/l));#paaseqatigiinneratigut
+
+REMOVE:5578Ø ("pissap") IF (0 ("pissanga")); #Soraarummiilermammi allaanngilaq uanga Ninimut anaanaasunga, aanaajullunga imaluunniit atsaallunga PISSANGAQATAANGAARAMA.
 # Enkelte derivativer
 REMOVE:Int0401 IR + Der/nv IF (0 V + Der/vv OR ("ila")) ; #'ilaarpaa' ikke 'ila+IR'
 SELECT:Sel0088 ("alla") + U IF (-1 BOS OR ("\,") OR ("ila")) ; #20091108 vaelger alla+U+NNGIT frem for "hun skraever ikke" i begyndelsen af en saetning
@@ -10984,8 +10987,10 @@ REMOVE:9950 SSAQ + LIUR IF ( 0 SIUR) ; # N-SIUR sandsynligere end N-SSAQ=LIUR
 REMOVE:9951 ("iluar") + TUQ + UTE IF ( 0 TUQ + U + TIP ) ; # iluar+TUQ+U+TIP+TAQ frem for iluar+TUQ+UTE+TAAR
 REMOVE:9952 ("sikker") + LIR IF ( 0 ("sikkiler"))(NEGATE *0 ("naasoq")) ;
 REMOVE:9953 ("eqqaap") + 3SgO IF ( 0 ("eqqaa") + 3SgO) ; #beskydning normalt med pluralis objekt
-REMOVE:9954 2Sg IF (0 1Sg)(NEGATE *0 ("illit") OR 2Sg OR 2SgO) ; # Hvis helt uden kontekst inden for rækkevidde er 1Sg nok lidt hyppigere end 2Sg
+REMOVE:9954A Cau + 1Sg IF (*-1 ("quja") + Gram/Exclm BARRIER VERB-NOTCONT); #Qujanaq kalaallisut oqaatsivut SOQUTIGIGAKKIT ilinniarusullugillu.
 
+REMOVE:9954B 2Sg IF (0 1Sg)(NEGATE *0 ("illit") OR 2Sg OR 2SgO) # Hvis helt uden kontekst inden for rækkevidde er 1Sg nok lidt hyppigere end 2Sg
+;
 #Forsøg på at disambiguere taku+SAR fra taku+TAR. Først reddes TAR=TAR+Der/vv+TAQ+vn
 REMOVE:9955 SAR + TAR + TAQ IF (0 TAR + TAR + TAQ) ; #Dette virker næppe nogensinde
 SELECT:9956A ("taku") + SAR IF (-1 Trm)(0 ("taku") + TAR) ; #Hvis terminalis sandsynligvis takusarpaa og ikke taku+TAR
@@ -11677,7 +11682,7 @@ REMOVE:9970FW (Rel 4SgPoss) IF (0 Lok LINK 1 Lok + CONJ-C); #Pituffimmi SAKKUTOO
 
 REMOVE:9970FX (Pl 3SgPoss) IF (*-1 Rel + Sg LINK *1C (Sg 3SgPoss) BARRIER (*) - Adv LINK *1 (Sg 3SgPoss) + CONJ-C BARRIER (*) - 3SgPoss - KOMMA); #Tamatuma kingorna angallatip qanoq ittuunissaanut, ANGISSUSISSAANUT akissaanullu pisariaqartitat inissinneqassapput.
 
-
+REMOVE:9970FY 3SgPoss IF (0 3PlPoss LINK -1 Rel + CONJ-C LINK -1 Rel); #Danmarkip, Savalimmiut Kalaallit Nunaatalu PAASEQATIGIINNERATIGUT aamma suliarineqassaaq.
 #Ambiguøse possessum iflg. sandsynlighed 
 
 REMOVE:9970_3SgPossA (Abs 3SgPoss) IF (-1 CON_CAU + 1SgO LINK 1 (Abs 1SgPoss) + &&IV_SUBJ& LINK *1 V + &&IV_SUBJ& BARRIER V);#Nujuillisarsinnaagummali INUUNERA qaamanerulissagaluarpoq.
@@ -12012,6 +12017,8 @@ REMOVE:9969BW ("nuliaq") + Lok + Sg + 3SgPoss IF (0 Abs + Sg + 4SgPoss); #Nipip 
 REMOVE:9969BX TUU IF (0 TUUR); #Saneqquttorlu erngerlugu uumitsaallugu NILLIAFFIGISUULERPARA: ”NULIAMINUT TOQUTSINIKOQ! KANNGUSUGIT! TOQOQIIT!”
 
 REMOVE:9969BY (/NIQ\ Der/vn\ GE\ Der/nv/l) IF (0 NIR + Par); #Uumigiummingaarakku soqutiginngilaraluunniit qanoq TIGUNERAA.
+
+REMOVE:9969BZ (/"aki"\ Gram/TV\ \(iSem/answer\ \)?TUSSAA/l) IF (0 (/"aki"\ Gram/IV\ \(iSem/answer\ \)?TUQ\ Der/vn\ SSAQ\ Der/nn\ U/l)); #AKISUSSAAQATAANERULERNEQ
 
 ##################################################
 # Specifikke regler til disambiguering af Gram/TV vs. Gram/Db
