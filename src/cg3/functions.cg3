@@ -2,7 +2,7 @@
 
 # =============================================================================== #
 # =============================================================================== #
-#     W E S T   G R E E N L A N D I C   S Y N T A C T I C   F U N C T I O N S     #
+#!!     W E S T   G R E E N L A N D I C   S Y N T A C T I C   F U N C T I O N S     
 # =============================================================================== # 
 # =============================================================================== #
 
@@ -10,73 +10,77 @@
 #     Short table of contents   #
 # ============================= #
 
-# Delimiters (line 47)
-# Tags and sets
-	# Positions and household (line 53)
-	# Parts of speech (line 60)
-	# Derivatives (line 152)
-	# Tilhængspartikler (line 812)
-	# Syntactic and morphological sets
-		# Generelt for alle ordklasser (linie 854)
-		# Verber (linie 862):
-		# Nominer (linie 885)
-		# Partikler (linie 900)
-	# Lexical sets (907)
-		# Verberne (linie 910)
-		# Nominerne (linie 931)
-	# Tags (line 965)
-# RULES
-	# Mapping rules
-		# Verber - De sikre MAP regler (1046)
-		# Nominer - De sikre MAP regler (1054)
-		# Nominer - ADD regler (1062)
-		# Adjektiver - både ADD og MAP regler (line 1087)
-		# Partikler (1120)
-		# Numeralier
-	# Disambiguation rules (linie 1175)
-		# Frequent and safe rules - all wordclasses (1435)
-		# SELECT og REMOVE verber (
-		# SELECT and REMOVE participles (1460)
-		# SELECT og REMOVE nominer (
-                            # One-cohort disambiguation - cycle 0
-
-              # Local disambiguation - cycles 1
-	      # Global disambiguation - cycles 2
-              # Syntactic disambiguation
+#!! - Delimiters (line 47)
+#!! - Tags and sets
+#!! 	- Positions and household (line 53)
+#!! 	- Parts of speech (line 60)
+#!! 	- Derivatives (line 152)
+#!! 	- Tilhængspartikler (line 812)
+#!! 	- Syntactic and morphological sets
+#!! 		- Generelt for alle ordklasser (linie 854)
+#!! 		- Verber (linie 862):
+#!! 		- Nominer (linie 885)
+#!! 		- Partikler (linie 900)
+#!! 	- Lexical sets (907)
+#!! 		- Verberne (linie 910)
+#!! 		- Nominerne (linie 931)
+#!! 	- Tags (line 965)
+#!! - RULES
+#!! 	- Mapping rules
+#!! 		- Verber - De sikre MAP regler (1046)
+#!! 		- Nominer - De sikre MAP regler (1054)
+#!! 		- Nominer - ADD regler (1062)
+#!! 		- Adjektiver - både ADD og MAP regler (line 1087)
+#!! 		- Partikler (1120)
+#!! 		- Numeralier
+#!! 	- Disambiguation rules (linie 1175)
+#!! 		- Frequent and safe rules - all wordclasses (1435)
+#!! 		- SELECT og REMOVE verber (
+#!! 		- SELECT and REMOVE participles (1460)
+#!! 		- SELECT og REMOVE nominer (
+#!!                             - One-cohort disambiguation - cycle 0
+#!! 
+#!!               - Local disambiguation - cycles 1
+#!! 	      - Global disambiguation - cycles 2
+#!!               - Syntactic disambiguation
 
 # ========================================= #
-# Ny indholdsfortegnelse påbegyndt 20201015 #
+#!! Ny indholdsfortegnelse påbegyndt 20201015 
 # ========================================= #
 
 INCLUDE STATIC disambiguator.cg3 ;
 
-# Begyndende udkommentering af REMOVE og SELECT, der kun skal stå i disambiguator. Vil blive udkommenteret med '#DATO' fx '#20210704'. Færdiggjort 20230726.
-# Begyndende sletning hvor REMOVE og SELECT står med #
+#!! Begyndende udkommentering af REMOVE og SELECT, der kun skal stå i disambiguator. Vil blive udkommenteret med '#DATO' fx '#20210704'. Færdiggjort 20230726.
+#!! Begyndende sletning hvor REMOVE og SELECT står med #
 
 
 
 # ============ #
 # ============ #
-# Regelsektion #
+#!! ## Regelsektion 
 # ============ #
 # ============ #
 
 BEFORE-SECTIONS
 
-DELIMIT ("<">") IF (-1W _S_DELIMITERS_) ; #virker tilsyneladende ikke
+DELIMIT:quotedelimit ("<">") IF (-1W _S_DELIMITERS_) ; #virker tilsyneladende ikke #"
+#!! Delimiter
 
 ADD:0302E (Gram/2sml) BEFORE (N) TARGET Abl IF (*1 (NIRU V) BARRIER (*) - Abl) #Taamaalilluni nunanut allanut nuuttut 644-inik nunatsinnut NUUTTUNIT amerlanerusimapput,
-(NEGATE 0 $$NUMERUS LINK -1 Abl + $$NUMERUS)#Inuit qulit inunnit PINGASUNIT amerlanerupput
+(NEGATE 0 $$NUMERUS LINK -1 Abl + $$NUMERUS) #Inuit qulit inunnit PINGASUNIT amerlanerupput
 ;
+#!! @RULENAME@
 
 ADD:0302F (Gram/2sml) BEFORE (N) TARGET Abl IF (*1 Abs + &&IV_SUBJ& BARRIER (*) - Abl LINK *1 (NIRU V) + &&IV_SUBJ& BARRIER V) #.. nunatsinnik MATUSINERMIT periarfissat amerlanerusut, Múte B. Egedep erseqqissaatigaa.
 (NEGATE 0 $$NUMERUS LINK -1 Abl + $$NUMERUS)#Inuit qulit inunnit PINGASUNIT amerlanerupput
 (NEGATE 0 (/QQU\ Der/vv\ Gram/Db\ NIAR\ Der/vv\ Gram/Refl\ NIQ\ Der/vn\ N\ Abl\ Sg/l) LINK -1 Trm)#Angunni saaffiginiarnerusarpaa, Eriulli Anettemut ILUAREQQUNIARNERMIT Jane akuersaarneruniartalerpaa, uffa niviarsiaqqap taassuma soqutiginngikkaani.
 ;
+#!! @RULENAME@
 
 ADD:0302F (Gram/2sml) BEFORE (N) TARGET Abl IF (*1 (NIRU V) BARRIER (*) - PROCENT - Num)#Ukiumi siuliani piffissami pineqartumi ANGALASARTUNIT 31,1 pct.-inik ikinnerupput, 2019-imullu sanilliullugit 71,5 pct.-inik ikinnerullutik.
 (NEGATE 0 Gram/2sml) #forebygger gentagen tagging
 ;
+#!! @RULENAME@
 
 
 #####################################
@@ -85,26 +89,33 @@ ADD:0302F (Gram/2sml) BEFORE (N) TARGET Abl IF (*1 (NIRU V) BARRIER (*) - PROCEN
 
 
 MAP:akoq-speciel @<SUBJ TARGET Abs + &&IV_SUBJ& IF (*-1 ("akoq") + U + &&IV_SUBJ& BARRIER Abs LINK NEGATE *-1 Abs + &&IV_SUBJ&) ;
+#!! @RULENAME@
 
 #Dansk brug af adjektiver
 MAP:DanskSyntaks @>N TARGET Gram/Adj + Abs - Prop IF (1 OLang/DAN - Gram/Adj + Abs) ; #HYPERKINETISK syndrom tassaasoq ingasattumik pissusilik er ikke @SUBJ> @N< @PRED ..
+#!! @RULENAME@
 
 #Appositioner til overbegreb i form af artsbetegnelser. Første eksempel er fugle, men bør kunne udvides til også at dække andre arter vha $$
 MAP:M_specie01 @<APPOS TARGET BIRDS + Sg IF (*-1 ("timmiaq") + Pl BARRIER (*) - BIRDS - KOMMA) ;#Timmissat TUULLIK KIINAALEERARLU Kalaallit Nunaanniinnerat eqqarsaatigalugu piffimmi siamasinngitsumi amerlapput.
 
 #En særlig regel til parentes til komplekse klokkeslet for at sikre korrekt dependenser
 MAP:M_parentes01A @<APPOS TARGET Num + Abs IF (1 (")"))(-1 ("(") LINK *-1 Num + Trm BARRIER (*) - (Num Abs) - ("tanneq"));#Unnuaq ataaseq hotelimi sinippoq aqaguanilu nal. qulinut tanneq qulit (09.50) helikopterimut ilaalluni Sisimiunut aallarpoq.
+#!! @RULENAME@
 
 MAP:M_parentes01B @<APPOS TARGET (*) (-1 ("\(")) (1 ("\)"))  #Narsaamanerit tarajuusut Brayasømi (saamerl.) Hundesømilu (talerperl.).
 (NEGATE 0 CONJ-C + $$KASUS LINK *-1 $$KASUS BARRIER (*) - PUNCT)#Grafikeri oqaloqatigalugu Canva (ALLALUUNNIIT) atorlugu ilusilerneqartarnissaanut siunnersortinnissaq pisariaqarsoraara.
 ;
+#!! @RULENAME@
+
 #taamaali+CONT vist altid CL-ADVL når i position 1 og endnu mere sandsynligt altid hvis sammen med LU, men tagges ofte fejlagtigt som i-ADVL til følgende verbalnomen
 MAP:M_tidlig0030 @CL-ADVL> TARGET ("taamaali") + CONT + LU IF (-1 BOS OR KOMMA);
+#!! @RULENAME@
 
 MAP:M_tidlig0031 @CL-ADVL> TARGET (/NNGIT\ Der/vv\ Gram/IV\ NIQ\ Der/vn\ N\ Lok\ Sg/l) IF (*-1 BOS BARRIER (*) - OBLIQUE); #Qaartartumik QAARTITSINNGINNERMI mittarfik inuerutitinneqariarluni mittarfimmut mittarfimmiillu angallanneq unitsinneqarallarsimavoq.
 
 #En tidlig mapping af den "overflødige" pissutigalugu før Cau for at forebygge, at den tagges som i-ADVL til noget uvedkommende
 MAP:M_tidlig0032 @ADVL> TARGET (/"pissut"\ GE\ Der/nv\ Gram/TV\ V\ Cont\ 3SgO/l) IF (*1 Cau BARRIER VERB-NOTCONT); #Ippassaq tunisineq matusimavarput PISSUTIGALUGU suanniarnermut aallartilersumut piareersaratta, Ikerasaarsummi tunitsiviup pisortaa Lars Karlsen oqarpoq.
+#!! @RULENAME@
 
 #Ny 20200914
 MAP:M_tidlig0033 @CL-ADVL> Sem/Geo + Lok IF (*1 Abs + &&IV_SUBJ& - (/VIK\ Der/vn\ N/l) BARRIER Prop + Lok LINK *1 VFIN + &&IV_SUBJ& OR CON_CAU + &&IV_SUBJ&)(-1 BOS)
@@ -116,29 +127,37 @@ MAP:M_tidlig0033 @CL-ADVL> Sem/Geo + Lok IF (*1 Abs + &&IV_SUBJ& - (/VIK\ Der/vn
 (NEGATE 1 <Hprof> LINK 1 ("siulleq") OR ("kingulleq"))#KALAALLIT NUNANNI professori siulleq Ilisimatusarfiullu rektoria siulleq sivikitsumik napparsimareerluni 93-inik ukioqarluni toquvoq.
 (NEGATE 1 <Lh> OR INSTITUTION)#Københavnimi uumasuusivik
 ;
+#!! @RULENAME@
 
 #Ny 20200914
 MAP:M_tidlig0034 @CL-ADVL> Sem/Geo + Lok + LU IF (*1 Abs + &&IV_SUBJ& LINK *1 VFIN + &&IV_SUBJ& OR CON_CAU + &&IV_SUBJ&)(-1 @CL-ADVL> LINK -1 BOS) #
 ;
+#!! @RULENAME@
 
 MAP:M_tidlig0035A @CL-ADVL> TARGET (/NNGIT\ Der/vv\ Gram/IV\ NIQ\ Der/vn\ N\ Lok\ Sg\ 3SgPoss/l) IF (*-1 BOS BARRIER (*) - Rel - OBLIQUE)(1 N + &&IVTVSUBJ& LINK *1 VFIN + IVTVSUBJ&);#Eqqartuussisup eqqartuussummik nipilimmik ATUAANNGINNERANI unnerluussisussaatitaasup, Anne Clintonip kannguttaatsuliornermik suliaq alla, tusagassiuutitigut aamma saqqumilaangaatsiarsimasoq innersuussutigaa, tassa Siumumi partiimi allattaasimasup, Mikael Petersenip eqqartuunneqarnera.
+#!! @RULENAME@
 
 MAP:M_tidlig0037 @HNOUN TARGET Sem/Geo + Abs IF (-1 BOS)(1 ("-") + PUNCT); #Avisopstilling
+#!! @RULENAME@
 
 #En ny tag 20200818 @>NUM til første led af et talinterval. Svarer nogenlunde til @>N ved nominer
 MAP:M_tidlig0040 @>NUM TARGET Num + Abs IF (1 (/"-"\ PUNCT/l))(2 Num);#Naak 160.000 - 170.000-it missaat Inuit oqaasiinik atuisuugaluartut, illersorneqarnissaat pingaaruteqarluinnarpoq.
+#!! @RULENAME@
 
 #PL20230912 forsøgsvist flyttet fra M_faste0925 hertil: udtrykket Ukiup ataatsip matuma siornatigut
 MAP:M_faste0925 @>N TARGET TIMEUNIT + Rel IF (*1 ("manna" Rel) BARRIER (*) - (Num Rel) LINK 1 ("siuneq") OR ("kinguneq")); 
+#!! @RULENAME@
 
 MAP:M_tidlig0042B @ADVL>N TARGET OTHERTIME OR SEASON IF (*1 ("kinguneq") OR ("siuneq") OR ("siornatigut") BARRIER (*) - Num - ("manna"))(1 Num LINK 1 ("manna") + Rel)
 (NEGATE 0 Rel)
 ;#Demokraatit pilersaarut tassunga assingusoq ULLUT qulit matuma kingorna pinngitsoortippaat.
+#!! @RULENAME@
 
 MAP:M_tidlig0042C @<ADVL TARGET ("kinguneq") OR ("siuneq") OR ("siornatigut") IF (*-1 V)(-1 ("manna") + Rel LINK -1 Num LINK -1 @>N)
 (NEGATE *1 V)#Nickie aamma Rita Kalaallit Nunaannit Danmarkimut nuupput ukiut 28-it matuma SIORNATIGUT.
 (NEGATE *1 NIQ LINK NEGATE *1 V)#Tassa kisima inuusimavunga, ukiut arfinillit matuma SIORNA Saharami maskiinaajarnissama tungaanut.
 ;
+#!! @RULENAME@
 
 MAP:M_tidlig0060 @ADVL> TARGET SEASON + Abs + Pl IF (*1 Abs + Pl - ADJEKTIVISK - CONJ-LU LINK *1 TRANSVERB + TAR + 3PlO BARRIER V) ;#Aappaatigulli tupaallannarpallaanngilaq UKIORPASSUIT suliakka suliarisarsimagakkit
 #
