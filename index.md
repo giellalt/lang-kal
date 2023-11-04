@@ -16,38 +16,40 @@ Central developers have been:
 Per Langgård, Liv Molich, Nani Nilsen, Trond Trosterud, Paneeraq Nielsen,
 Anna Karina Madsen, Beatrine Heilman, Judithe Denbæk, Tino Didriksen and Sjur Moshagen.
 
-The analyser is in use in a Greenlandic spellchecker and in a set
+It is in use in a Greenlandic spellchecker and in a set
 of pedagogical programs for Greenlandic.
 
 # Project documentation
 
--   [Links to source code documentation at the bottom of this page](#in-source-documentation)
+-   [Links to source code documentation at the bottom](#in-source-documentation)
+-   Generation of:  
+    [paradigms](http://giellatekno.uit.no/cgi/p-kal.eng.html) /  
+    [text     ](http://giellatekno.uit.no/cgi/d-kal.eng.html)
 
-## Documentation and information for developers
+# Documentation and information for developers
 
 Here you find the technical documentation of the Greenlandic parser. The
 parser is built in close cooperation with the Sámi language technology
 project, with a file structure and setup close to the Sámi ones. General
-documentation can also be found at [the Sámi project
+documentation can be found at [the Sámi project
 documentation](https://giellalt.uit.no/index.html).
 
 - [Morphology issues](morph.md)
 - [Issues in Greenlandic](IssuesInGreenlandic.md)
 - [Tag strings (taken from the root.lexc file)](tagstrings.md)
 
-## General information for web users
+# General information for web users
 
 In order to analyse Greenlandic text, you may paste in text in the
-window [here](http://giellatekno.uit.no/cgi/d-kal.eng.html). The machine returns
-text with all possible analyses. The tags are listed [here](https://giellalt.github.io/lang-kal/src-fst-root.lexc.html). The parser gives tags for parts of speech, morphosyntactic categories, clitecs, and
+window [here](http://giellatekno.uit.no/cgi/d-kal-eng.html). The machine returns
+text with all possible analyses. The tags are listed in the document **root.lexc** linked to below. The parser gives tags for parts of speech, morphosyntactic categories, clitecs, and
 derivational tags. The derivational affixes have tags carrying the same
 names as the affixes themselves. In addition to giving all possible tags, the analyser also has a
-*disambiguation mode* (see **cg3** below), that gives only analyses appropriate in the given
+*disambiguation mode*, that gives only analyses appropriate in the given
 context.
 
 It is also possible to generate wordforms, by pasting the lemma and
-gramamtical tags [here](http://giellatekno.uit.no/cgi/g-kal-eng.html), or paradigms, by pasting the lemma in [here](http://giellatekno.uit.no/cgi/p-kal.eng.html). 
-
+gramamtical tags [here](http://giellatekno.uit.no/cgi/g-kal-eng.html)
 
 
 
