@@ -4,6 +4,1548 @@ All documents in one file
 
 
 
+#                 West Greenlandic Dependency Parser
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+Den meget sjældne brug af adled til inderiveret N ved GE
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+Amarngivat siulersuisuini ilaasortaasimavoq akissaatikitsullu meeraasa atuanngiffeqarlutik angalanissaannut ANINGAASAATEQARFINNUT qinnuteqaasiornernut ikiuuttarsimalluni.
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+@OUTSIDE RULES@
+
+* * *
+<small>This (part of) documentation was generated from [src/cg3/dependency.cg3](https://github.com/giellalt/lang-kal/blob/main/src/cg3/dependency.cg3)</small>
+
 #    W E S T   G R E E N L A N D I C   D I S A M B I G U A T O R  #
 
 # Delimiters, tags and sets
@@ -286,6 +1828,84 @@ Judithes afsnit start ### påbegyndt 20231006: sorter umulige morfemkombinatione
 
 * * *
 <small>This (part of) documentation was generated from [src/cg3/disambiguator.cg3](https://github.com/giellalt/lang-kal/blob/main/src/cg3/disambiguator.cg3)</small>
+W E S T   G R E E N L A N D I C   S Y N T A C T I C   F U N C T I O N S     
+
+- Delimiters (line 47)
+- Tags and sets
+	- Positions and household (line 53)
+	- Parts of speech (line 60)
+	- Derivatives (line 152)
+	- Tilhængspartikler (line 812)
+	- Syntactic and morphological sets
+		- Generelt for alle ordklasser (linie 854)
+		- Verber (linie 862):
+		- Nominer (linie 885)
+		- Partikler (linie 900)
+	- Lexical sets (907)
+		- Verberne (linie 910)
+		- Nominerne (linie 931)
+	- Tags (line 965)
+- RULES
+	- Mapping rules
+		- Verber - De sikre MAP regler (1046)
+		- Nominer - De sikre MAP regler (1054)
+		- Nominer - ADD regler (1062)
+		- Adjektiver - både ADD og MAP regler (line 1087)
+		- Partikler (1120)
+		- Numeralier
+	- Disambiguation rules (linie 1175)
+		- Frequent and safe rules - all wordclasses (1435)
+		- SELECT og REMOVE verber (
+		- SELECT and REMOVE participles (1460)
+		- SELECT og REMOVE nominer (
+- One-cohort disambiguation - cycle 0
+
+- Local disambiguation - cycles 1
+	      - Global disambiguation - cycles 2
+- Syntactic disambiguation
+
+Ny indholdsfortegnelse påbegyndt 20201015 
+
+Begyndende udkommentering af REMOVE og SELECT, der kun skal stå i disambiguator. Vil blive udkommenteret med '#DATO' fx '#20210704'. Færdiggjort 20230726.
+Begyndende sletning hvor REMOVE og SELECT står med #
+
+## Regelsektion 
+
+Delimiter
+
+ADD
+
+ADD
+
+ADD
+
+ADD
+
+ADD
+
+ADD
+
+ADD
+
+ADD
+
+ADD
+
+ADD
+
+ADD
+
+ADD
+
+ADD
+
+ADD
+
+ADD
+
+ADD
+
+ADD
 
 * * *
 <small>This (part of) documentation was generated from [src/cg3/functions.cg3](https://github.com/giellalt/lang-kal/blob/main/src/cg3/functions.cg3)</small>
@@ -376,23 +1996,38 @@ Set for kasus, possessum, appellativ, ulike nomentyper
 <small>This (part of) documentation was generated from [src/cg3/tagdeclaration.cg3](https://github.com/giellalt/lang-kal/blob/main/src/cg3/tagdeclaration.cg3)</small>
 # Fil for at generere de centrale morfologiske processer i vor grønlandske analysator               
 
+derivations-inflections.lexc
+
 ## Dokumentasjon for leksikonnavne:
 
-* Z = nomen
-* 1 = svag bøjning, p-bøjning
-* 2 = sterk bøjning, up-bøjning
-* P = plurale tantum
-* S = singularis
-* - = sterk bøjing som trunkerer (2-)
-* a, q, ... = gemineringer ved konsonantiske flexiver
-* Z = nomen
-* morf = går til derivationsleksika
-*      = går til flexivleksika
-* tpt  =  
-* tup  = 
-* K    = Direkte til finale klitika
+- Z = nomen
+- 1 = svag bøjning, p-bøjning
+- 2 = sterk bøjning, up-bøjning
+- P = plurale tantum
+- S = singularis
+- ° = sterk bøjing som trunkerer (2-)
+- a, q, ... = gemineringer ved konsonantiske flexiver
+- Z = nomen
+- morf = går til derivationsleksika
+-      = går til flexivleksika
+- tpt  =  
+- tup  = 
+- K    = Direkte til finale klitika
+
+## Nye lexica
+
+PL 20180319
+PL 20180320
+- LEXICON XIiXmorf_UdenTIP, som XIiXmorf, men uden TIP for at blokere rekursive TIP
+
+Debugging lexica
+
+- LEXICON Z2+rPZ # ; = referred to but not declared. Todo: correct or declare.
 
 ## Specielle lexica 
+
+Nyt derivativ-LEX 20190403: GIIT specielt til GIIT+Der/nn for at tillade possesseum.
+De blev tidligere sendt til ZkkutZ, der ikke kan være possessum 
 
 ## KAPITLER TIL fst-DOKUMENTA
 
@@ -400,16 +2035,20 @@ TARIAQAR på transitiver kan både danne transitive, refleksive og passive verbe
 alle forekomster af TARIAQAR ved transitiver startende fra juni 2020 både sendt videre normalt til 
 (i) TV-mod_r og tilføjet taggen Gram/Pass og sendt som ny stamme til (ii) IV_r
 På den måde vil turen via (i) producere
-misissortariaqarpaa	misissor+Gram/TV+TARIAQAR+Der/vv+Gram/TV+V+Ind+3Sg+3Sg, samt
-misissortariaqarpoq	misissor+Gram/TV+TARIAQAR+Der/vv+Gram/Refl+V+Ind+3Sg
+
+- misissortariaqarpaa	misissor+Gram/TV+TARIAQAR+Der/vv+Gram/TV+V+Ind+3Sg+3Sg, samt
+- misissortariaqarpoq	misissor+Gram/TV+TARIAQAR+Der/vv+Gram/Refl+V+Ind+3Sg
+
 og turen via IV_r vil generere
 misissortariaqarpoq	misissor+Gram/TV+TARIAQAR+Der/vv+Gram/Pass+Gram/IV+Gram/IV+V+Ind+3Sg
 
 BLOKERING AF REKURSIV TIP VED TRANSITIVER
 PL20200709
+
 Forkerte læsninger, når IV med TIP viderederiveres i HTR-lexicon, hvor yderligere TIP kan tilføjes som ingerlatitseqqinneq
 ingerla+Gram/IV+TIP+Der/vv+Gram/TV+TIP+Der/vv+Gram/Db+Gram/Refl+QQIP+Der/vv+Gram/IV+NIQ+Der/vn
 blokeres vha. flaget @P.TIP.ON@ i IV-lexicon og blokeres af flaget @D.TIP@ i transitiv derivation.
+
 Ex
 ingerla via IV_voq_stem og får i LEXICON  tilføjet linien
 +TIP@P.TIP.ON@+Der/vv:%>tip@P.TIP.ON@ HTR_C_TAQ_tsi ; 
@@ -423,26 +2062,59 @@ SÆRLIGT OM Gram/Refl VED TRANSITIVERNE (PL20211121 forsøg)
 Foranlediget af ord som 'attorteqqassutigaara', hvor Refl skaber problemer for både oversættelserne
 og videre affingering introduceres strengen +TIP+Der/vv+Gram/Db+Gram/Refl som går til XItX ;
 
+AFSNIT MED EKSEMPLER PÅ DBELTTRANSITIV
+
 SURE er sjældent Db, men  hos Ole Brandt finder vi eksempler som ".. sunaaffa Pikiulinnguarmiut pasillerai (implicit Pikiulinnguarmiunut 
 nukani] pilerngullugu nakkartissimasoralugu.
 
 PLEONASTISKE HTR VED NIAR OG QQIP
+
 medtages i IV-lexica med taggen +HTR+Err/Sub og en bemærkning efter !
 Fx i LEXICON IVschwa2
 +QQIP+Der/vv+HTR+Der/vv+Err/Sub:%>eqqii IV-mod_V ; !Fejl af typen ingerlatitseqqiineq
 
-## Tronds afdeling for debugging.
+NORMALE MISFORSTÅELSE VED GI OG LABIALMETATESE - EN BRUGSANVISNING
+Retningslinier for korrekt behandling af verber med labialmetatese i visse former (-gujoq og gujaa):
 
-Følgende leksika var ikke defineret andetsteds (liste), men her
-definert ad hoc for at få koden til at kompilere. De bør alle
-bli erstattet af de korrekte leksika (eller fjernet).:
+Husk at GI er en principielt normal Der/vv, der skal følge transitivitet mv. som alle andre derivativer. Det er derfor helt forkert, når der i fst-en optræder "endelser" som *gina eller når en form som tikkummisissunniarina optræder i LEXICON XTgujaaX2. Den skal selvfølgelig processeres i XIgujoqX3
 
-- LEXICON Z2+rPZ # ;
+Gør således for at processere fx paarigina (paare+Gram/TV+GI+Der/vv+Gram/Refl+Gram/IV+V+Imp+2Sg) korrekt
 
-Det kan være flere grunder hertil:
-* de er simpelthen ikke definerede
-* det korrekte leksikon er ikke tilføjet, og lexc tar suffikset istedenfor
-* det er en skrivefejl i leksikonnavnet
+paare:paar -> LEXICON HTR_schwa_SAQ_si -> LEXICON TVschwa
++GI+Der/vv:%>igi XTgujaaX ; !verber som paarigujaa og avitikkiuk
+
+XTgujaaX er altså det første derivativ-lexicon, vi møder, så overgangen til refleksiv må muliggøres her. Derfor tilføjes følgende linie til XTgujaaX
++Gram/Refl@U.Refl.On@:@U.Refl.On@ XIgujoqX ;
+
+paare, som nu har formen paare+Gram/TV+GI+Der/vv:paar%>igi har nu to veje at gå:
+
+Uændret som transitiv til LEXICON XTgujaaX - paare+Gram/TV+GI+Der/vv:paar%>igi
+Som refleksiv til LEXICON XIgujoqX i formen paare+Gram/TV+GI+Der/vv+Gram/Refl:paar%>igi
+
+Oprydning:
+I LEXICON XTgujaaX slettes en intransitiv endelse (+Gram/Refl+V+Imp+2Sg:%>ina K_TUQ ; !tikkummisissunniarina), alle -i- først i "endelserne" fjernes og der tilføjes %VTRUNC før labialmetatese på ujaa.*
+LEXICON XIgujoqX gennemrettes for ca. de samme fejl
+
+Derefter har vi de ønskede former og analyser. Fx
+
+```
+echo paarigina | time hfst-lookup -q ~/langtech/kal/src/analyser-disamb-gt-desc.hfstol
+paarigina	paare+Gram/TV+GI+Der/vv+Gram/Refl+Gram/IV+V+Imp+2Sg	0.000000
+echo paarigujaat | time hfst-lookup -q ~/langtech/kal/src/analyser-disamb-gt-desc.hfstol
+paarigujaat	paare+Gram/TV+GI+Der/vv+V+Ind+3Sg+3PlO	0.000000
+
+echo ajunngikkina | time hfst-lookup -q ~/langtech/kal/src/analyser-disamb-gt-desc.hfstol
+ajunngikkina	ajor+Gram/IV+NNGIT+Der/vv+Gram/IV+GI+Der/vv+V+Imp+2Sg	0.000000
+```
+
+Behandlingen af upper-lower indgange i lexc:
+
+Der har i årenes løb ikke været nogen konsekvent procedure for behandlingen af lexemer, der indgår i lexc som upper-lower strukturer.
+Dette har bl.a. ført til at mange verber genereres uden oplysninger om transitivitet eller med Gram/[IT]V gentaget uønsket.
+Fra sommeren 2021 tilstræbes derfor en standardiseret procedure her illustreret ved et intransitivt verbum:
+1. Den komplekse stamme tilføjes med samme analyse, som den ville have fået, hvis den var genereret fra den usammensatte stamme
+2. upper-lower stammen sendes IKKE til de normale indgangslexica, men til det relevante mod-lex
+suli+Gram/IV+NIRLUP+Der/vv:sullerlup IV-mod_C ;
 
 ## DERIVATIONSMORFEMERNES LEKSIKA
 
@@ -477,34 +2149,76 @@ Nogle af dem er dokumenterede, andre ikke.
 * LEXICON Z1+le_UdenPossessumZmorf  derivationsmorfemer til nominer som kalaaleq, der ikke kan tage possessum
 
 * LEXICON Z1eZmorf  derivationsmorfemer til nominer på udlydende schwa
+	*  Z1eZ ;  
 
 * LEXICON Z1tipeZmorf  derivationsmorfemer til nominer på udlydende schwa
+	*  Z1tipeZ ;  
 
 * LEXICON Z1nnguaqZmorf  derivationsmorfemer til nominer på nnguaq
+	*  Z1nnguaqZ ;  
+	* +ALUK+Der/nn:%>%TRUNCaluk tup- ;   
+	* +ALUK+Der/nn+ARAQ+Der/nn:%>%TRUNCaluaraq GEMS ;  
+	* +ALUK+Der/nn+INNAQ+Der/nn:%>%TRUNCaluinnaq tup- ;  
+	* +ALUK+Der/nn+INNAQ+Der/nn+NNGUAQ+Der/nn:%>%TRUNCaluinnannguaq Z1nnguaqZ ;  
+* ...
 
 * LEXICON Z1iZmorf  derivationsmorfemer til nominer med strong i
 
 * LEXICON Z1iqZmorf  derivationsmorfemer til nominer med strong i som qimmeq
+	*  tiqp ;  
+	* +ALUK+Der/nn:%>%TRUNCaluk tup- ;  
+	* +ALUK+Der/nn+ARAQ+Der/nn:%>%TRUNCaluaraq GEMS ;  
+	* +ALUK+Der/nn+INNAQ+Der/nn:%>%TRUNCaluinnaq tup- ;  
 
 * LEXICON Z1+tZmorf  derivationsmorfemer til nominer som pisataq og nivaataq !PL20210519 retableret og stammer fjernet fra GEMS
+	*  Z1+tZ ;  
+	* +ALUK+Der/nn:%>%TRUNCaluk tup- ;  
 
 * LEXICON tptmorf  
+*  tpt ; 
+*  +Err/Sub+N+Abs+Sg:%>eq Krestr ;  
+*  +Err/Sub+N+Abs+Sg+1SgPoss:%>era Krestr ; 
+* +ALUK+Der/nn:%>aaluk tup- ; 
+* +ALUK+Der/nn+ARAQ+Der/nn:%>aaluaraq GEMS ; 
+* +ALUK+Der/nn+INNAQ+Der/nn:%>aaluinnaq tup- ; 
+* ...
 
 * LEXICON ZtiZmorf  taggit
+*  Z1iZ ;  
+*  +Err/Sub+N+Abs+Sg:%>%TRUNCseq Krestr ;   
+*  +Err/Sub+N+Abs+Sg+1SgPoss:%>%TRUNCsera Krestr ;   
 
 * LEXICON ZkkutZmorf  derivativer til typen saki og sakikkut
 
 * LEXICON Z2Zmorf  nominer som erneq
 
 * LEXICON Z2kZmorf  nominer som eqik
+*  tup_k ;  
 
 * LEXICON Z2veqZmorf  derivationsmorfemer til aaveq-typen
+*  Z2veqZ ;  
+* +ALUK+Der/nn:%>vialuk tup- ;  
+* +ALUK+Der/nn+ARAQ+Der/nn:%>vialuaraq GEMS ;  
+* +ALUK+Der/nn+INNAQ+Der/nn:%>vialuinnaq tup- ;  
 
 * LEXICON Z2i2Zmorf  derivationsmorfemer til aleq, ateq
+*  Z2i2Z ;  
+* +ALUK+Der/nn:%>%TRUNCaluk tup- ;  
+* +ALUK+Der/nn+ARAQ+Der/nn:%>%TRUNCaluaraq GEMS ;  
+* +ALUK+Der/nn+INNAQ+Der/nn:%>%TRUNCaluinnaq tup- ;  
 
 * LEXICON Z2tupeqZmorf  derivationsmorfemer tupeq
+*  Z2tupeqZ ;  
+* +ALUK+Der/nn:%>pialuk tup- ;  
+* +ARAQ+Der/nn:%>pi%ProgIaraq GEMS ;  
+* +INNAQ+Der/nn:%>piinnaq tup- ;  
 
 * LEXICON Z2-Zmorf  derivationsmorfemer til tup- paa K. Jf. Z2-qZmorf
+*  tup- ;  
+* +ALUK+Der/nn:%>%TRUNCaluk tup- ;  
+* +ALUK+Der/nn+ARAQ+Der/nn:%>%TRUNCaluaraq GEMS ;  
+* +ALUK+Der/nn+INNAQ+Der/nn:%>%TRUNCaluinnaq tup- ;  
+* +ALUK+Der/nn+INNAQ+Der/nn+NNGUAQ+Der/nn:%>%TRUNCaluinnannguaq Z1nnguaqZ ;  
 
 * LEXICON Z2-uukZmorf  derivationsmorfemer til tup- paa K. Jf. Z2-qZmorf
 
@@ -2385,11 +4099,25 @@ given the proper use of these flags.
 
 ...
 
-* LEXICON Nomen  Nominalstammer
+* LEXICON Nomen  er leksikon for nominalstammer
 
 Leksikonet Nomen inneholder nomenerne.
 
 xxx 20170522 til former, som ikke kan læses men som har brug for en analyse i cg'en. Pluralis og singularis-kataloger er ikke medtaget.
+
+### Retningslinjer for låneord 
+
+Grundformen af ordet er den samme som i lånsproget (uden i):
+emblem N_Loan_GEM ; (og ikke emblemi)
+Er der alternative ikke godkendte stavemåder i endelsen, tilføjes de i næste katalog (fx emblemmi)
+Er der alternative ikke godkendte stavemåder andetsteds, tilføjes de med +OLang/xxx+Err/Sub
+roman+OLang/DAN+Err/Sub:romaani Z1VZmorf ;
+Er der en godkendt form af låneordet, er det også en grundform, og den får ikke +OLang/xxx:
+```
+septembari Z1VZmorf ;
+septembari+Orth/Arch:sivtimpari Z1VZmorf ;
+september N_Loan ;
+enheder sendes til specielt unit-låneordskatalog
 
 * aaffaffak Z2-Zmorf ;              
 * aaffaffak+N+Abs+Sg:aaffaffaq Krestr ; 
@@ -2412,9 +4140,65 @@ xxx 20170522 til former, som ikke kan læses men som har brug for en analyse i c
 
 ---
 
+# Verbstammer !
 
+Oversigt over kontinuationslexica for verber
+
+## Suffix          ! Dokumentation
+- flex-iv	  !
+- flex-iv_voq	  !
+- flex-iv_nngit   !
+- flex-iv_longV	  !
+- flex-iv_schwa   !
+- flex-tv	  !
+- flex-tv_nngit   !
+- gallar-iv	  !
+- IV		  ! Intransitiver
+- IV_long	  !
+- IVschwa	  !
+- IV_voq_stem	  !
+- K		  ! Klitika
+- K_plur	  !
+- TV		  ! Transitiver
+- TVi_vaa	  !
+- TVschwa	  !
+- TV_vaa	  !
+- Verbum	  !
+- XIgujoqX	  ! Suffikser
+- XIiPXmorf	  !
+- XIirPXmorf	  !
+- XIitX_stem		  !
+- XIi_voqXmorf_stem    !
+- XIi_voqX_agentiv  ! utaqqivoq
+- XIiXmorf_stem	  !
+- XIirXmorf_stem !
+- XIPX_nngit      !
+- XItsXmorf_stem	  !
+- XItX		  !
+- XIutePXmorf     ! PL 20180727 Erstattet af flag diacritics dd. og udkommenteret fra derivations-inflections
+- XIuteXmorf      !
+- XIi_utePXmorf	  !
+- XTgujaaX	  !
+- XTirXmorf !
+- XTPXmorf	  !
+- XTtX		  !
+- XTuteXmorf      !
+
+- Transitiver sendes til følgende kataloger
+	- Ved en dokumenteret HTR: det rette HTR-katalog
+	- Uden en dokumenteretet HTR: det mest sandsynlige HTR-katalog
+
+**LEXICON Verbum**
 
 xxx 20170524 til verbalstammer, som ikke kan læses men som har brug for en analyse i cg'en. Pluralis tantum-kataloger er ikke medtaget. !er det nødvendigt også at medtage stammer fra derivationsleksika?
+
+* a'ar IV_r ;  
+* aak+GASAP+Der/nv:aagasap IV_k_stem ; 
+* aak+GASAAR+Der/nv:aagasaar IV_long_stem ; 
+* aagialip IV_k_stem ; 
+* aagiap IV_k_stem ; 
+* aagup HTR_UTE_SSAQ_ssi ; 
+..
 
 * * *
 

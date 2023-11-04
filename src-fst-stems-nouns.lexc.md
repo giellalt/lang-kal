@@ -18,11 +18,25 @@
 
 ...
 
-* LEXICON Nomen  Nominalstammer
+* LEXICON Nomen  er leksikon for nominalstammer
 
 Leksikonet Nomen inneholder nomenerne.
 
 xxx 20170522 til former, som ikke kan læses men som har brug for en analyse i cg'en. Pluralis og singularis-kataloger er ikke medtaget.
+
+### Retningslinjer for låneord 
+
+Grundformen af ordet er den samme som i lånsproget (uden i):
+emblem N_Loan_GEM ; (og ikke emblemi)
+Er der alternative ikke godkendte stavemåder i endelsen, tilføjes de i næste katalog (fx emblemmi)
+Er der alternative ikke godkendte stavemåder andetsteds, tilføjes de med +OLang/xxx+Err/Sub
+roman+OLang/DAN+Err/Sub:romaani Z1VZmorf ;
+Er der en godkendt form af låneordet, er det også en grundform, og den får ikke +OLang/xxx:
+```
+septembari Z1VZmorf ;
+septembari+Orth/Arch:sivtimpari Z1VZmorf ;
+september N_Loan ;
+enheder sendes til specielt unit-låneordskatalog
 
 * aaffaffak Z2-Zmorf ;              
 * aaffaffak+N+Abs+Sg:aaffaffaq Krestr ; 
