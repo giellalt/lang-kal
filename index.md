@@ -36,6 +36,9 @@ documentation](https://giellalt.uit.no/index.html).
 - [Morphology issues](morph.md)
 - [Issues in Greenlandic](IssuesInGreenlandic.md)
 - [Tag strings (taken from the *root.lexc* file below)](tagstrings.md)
+-   The lexicon structure (file *lex.md* missing)
+-   [Morphology issues](morph.md)
+-   [Issues in Greenlandic](IssuesInGreenlandic.md)
 
 ## General information for the web interface
 
