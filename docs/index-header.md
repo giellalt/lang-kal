@@ -13,10 +13,9 @@ sprogsekretariat) and Divvun & Giellatekno, Oqaasileriffik has built
 a full-sized Greenlandic analyser.
 
 Central developers have been:
-Per Langgård, Liv Molich, Nani Nilsen, Trond Trosterud, Paneeraq Nielsen,
-Anna Karina Madsen, Beatrine Heilman, Judithe Denbæk, Tino Didriksen and Sjur Moshagen.
-
-It is in use in a Greenlandic spellchecker and in a set
+*Per Langgård, Liv Molich, Nani Nilsen, Trond Trosterud, Paneeraq Nielsen,
+Anna Karina Madsen, Beatrine Heilman, Judithe Denbæk, Tino Didriksen and Sjur Moshagen.*
+The analyser is in use in a Greenlandic spellchecker and in a set
 of pedagogical programs for Greenlandic.
 
 # Project documentation
@@ -36,9 +35,9 @@ documentation](https://giellalt.uit.no/index.html).
 
 - [Morphology issues](morph.md)
 - [Issues in Greenlandic](IssuesInGreenlandic.md)
-- [Tag strings (taken from the root.lexc file)](tagstrings.md)
+- [Tag strings (taken from the *root.lexc* file below)](tagstrings.md)
 
-# General information for web users
+## General information for the web interface
 
 In order to analyse Greenlandic text, you may paste in text in the
 window [here](http://giellatekno.uit.no/cgi/d-kal-eng.html). The machine returns
@@ -49,7 +48,8 @@ names as the affixes themselves. In addition to giving all possible tags, the an
 context.
 
 It is also possible to generate wordforms, by pasting the lemma and
-gramamtical tags [here](http://giellatekno.uit.no/cgi/g-kal-eng.html)
+gramamtical tags [here](http://giellatekno.uit.no/cgi/g-kal-eng.html), or paradigms, by pasting the lemma in [here](http://giellatekno.uit.no/cgi/p-kal.eng.html).  Other web-based resources may be found at the [Oqaasileriffik webpage](https://oqaasileriffik.gl/).
+
 
 
 
