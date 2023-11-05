@@ -8,16 +8,11 @@ All documents in one file
 
 @OUTSIDE RULES@
 
-"M_parentes01A = En særlig regel til parentes til komplekse klokkeslet for at sikre korrekt dependenser"
 @OUTSIDE RULES@
-
-"M_parentes01B = Parantes er apposisjon med kærne til venstre"
 
 @OUTSIDE RULES@
 
-"taamaali+CONT vist altid CL-ADVL når i position 1 og endnu mere sandsynligt altid hvis sammen med LU, men tagges ofte fejlagtigt som i-ADVL til følgende verbalnomen"
 @OUTSIDE RULES@
-"SETPARENT:D_tidlig0033"
 
 @OUTSIDE RULES@
 
