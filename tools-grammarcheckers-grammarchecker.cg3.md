@@ -47,38 +47,38 @@ add &SUGGESTWF to any spelling suggestion
 that we actually want to suggest to the user.
 The simplest is to just add it to all spelled words:
 
-ADD 
+ADD:spell-it-all 
 
 But perhaps you want to only suggest spellings of words that are not inside "quotes":
 
-ADD 
+ADD:spell-conservatively 
 
 ### Grammatical rules
 
 #### Verb valency rules
 
-ADD 
+ADD:msyn-arg-trm-ins 
 
-ADD 
+ADD:msyn-arg-trm-ins 
 
-ADD 
+ADD:msyn-arg-ins-trm 
 
-ADD 
+ADD:msyn-arg-ins-trm 
 
-ADD  
+ADD:msyn-arg-abs-rel  
 
-ADD 
+ADD:msyn-arg-abs-rel 
 
 ### Simple punctuation rules 
 
 Rules for quotation marks.
 
-ADD 
-ADD 
-ADD 
+ADD:use-guillemets 
+ADD:use-guillemets 
+ADD:use-guillemets 
 
-ADD 
-ADD 
+ADD:use-ellipsis 
+ADD:use-ellipsis 
 
 * * *
 <small>This (part of) documentation was generated from [tools/grammarcheckers/grammarchecker.cg3](https://github.com/giellalt/lang-kal/blob/main/tools/grammarcheckers/grammarchecker.cg3)</small>
