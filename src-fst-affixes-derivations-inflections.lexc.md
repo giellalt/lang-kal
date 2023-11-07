@@ -3,7 +3,7 @@
 
 derivations-inflections.lexc
 
-## Dokumentasjon for leksikonnavne:
+## Dokumentation for leksikonnavne:
 
 - Z = nomen
 - 1 = svag bøjning, p-bøjning
@@ -34,7 +34,7 @@ Debugging lexica
 Nyt derivativ-LEX 20190403: GIIT specielt til GIIT+Der/nn for at tillade possesseum.
 De blev tidligere sendt til ZkkutZ, der ikke kan være possessum 
 
-## KAPITLER TIL fst-DOKUMENTA
+## KAPITLER TIL fst-DOKUMENTATION
 
 TARIAQAR på transitiver kan både danne transitive, refleksive og passive verber. Derfor bliver
 alle forekomster af TARIAQAR ved transitiver startende fra juni 2020 både sendt videre normalt til 
@@ -126,6 +126,12 @@ suli+Gram/IV+NIRLUP+Der/vv:sullerlup IV-mod_C ;
 Her kommer en liste over de ulike leksika.
 Nogle af dem er dokumenterede, andre ikke.
 
+**LEXICON TEST** interim-test af regex i lexc
+* +Num+Sem/dur: # ; 
+
+**LEXICON TEST1** !interim-test af regex i lexc til brug for typen 2015:12ff
+* +Abs+Sem/sem: # ; 
+
 * LEXICON GEMS  = Gennemgangsleksikon til nominer der geminerer til stop-lyd ved fleksion, fx meeqqap
 * 0:^GEMS Z1Zmorf ; 
 
@@ -134,6 +140,7 @@ Nogle af dem er dokumenterede, andre ikke.
 
 * LEXICON Z1Zmorf  Derivationsmorfemer til nominer, viser til **tp** og giver derefter nn-derivationer
 	*  tp ; 
+* +ALUK+Der/nn:%>%TRUNCaluk tup- ; 
 	* +ALUK+Der/nn+INNAQ+Der/nn:%>%TRUNCaluinnaq tup- ; 
 
 - LEXICON Z1VZmorf  Derivationsmorfemer til nominer, der ender med vokal a, i, u 20200916 NN

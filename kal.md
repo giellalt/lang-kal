@@ -2096,7 +2096,7 @@ Set for kasus, possessum, appellativ, ulike nomentyper
 
 derivations-inflections.lexc
 
-## Dokumentasjon for leksikonnavne:
+## Dokumentation for leksikonnavne:
 
 - Z = nomen
 - 1 = svag bøjning, p-bøjning
@@ -2127,7 +2127,7 @@ Debugging lexica
 Nyt derivativ-LEX 20190403: GIIT specielt til GIIT+Der/nn for at tillade possesseum.
 De blev tidligere sendt til ZkkutZ, der ikke kan være possessum 
 
-## KAPITLER TIL fst-DOKUMENTA
+## KAPITLER TIL fst-DOKUMENTATION
 
 TARIAQAR på transitiver kan både danne transitive, refleksive og passive verber. Derfor bliver
 alle forekomster af TARIAQAR ved transitiver startende fra juni 2020 både sendt videre normalt til 
@@ -2219,6 +2219,12 @@ suli+Gram/IV+NIRLUP+Der/vv:sullerlup IV-mod_C ;
 Her kommer en liste over de ulike leksika.
 Nogle af dem er dokumenterede, andre ikke.
 
+**LEXICON TEST** interim-test af regex i lexc
+* +Num+Sem/dur: # ; 
+
+**LEXICON TEST1** !interim-test af regex i lexc til brug for typen 2015:12ff
+* +Abs+Sem/sem: # ; 
+
 * LEXICON GEMS  = Gennemgangsleksikon til nominer der geminerer til stop-lyd ved fleksion, fx meeqqap
 * 0:^GEMS Z1Zmorf ; 
 
@@ -2227,6 +2233,7 @@ Nogle af dem er dokumenterede, andre ikke.
 
 * LEXICON Z1Zmorf  Derivationsmorfemer til nominer, viser til **tp** og giver derefter nn-derivationer
 	*  tp ; 
+* +ALUK+Der/nn:%>%TRUNCaluk tup- ; 
 	* +ALUK+Der/nn+INNAQ+Der/nn:%>%TRUNCaluinnaq tup- ; 
 
 - LEXICON Z1VZmorf  Derivationsmorfemer til nominer, der ender med vokal a, i, u 20200916 NN
@@ -3198,8 +3205,83 @@ Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers
 
 ---
 
+#  Arabiske numeralier 
 
-Inflection and derivation.
+## Inflection and derivation.
+
+** Lexicon **num_C** for numerusmorfologi for ord på konsonant
+- **	%%	num_C ; ** tilfoejet loop 20090306 for at klare former som 83%-ii
+- **	°	num_C ; **  tilfoejet loop 20210502 for at klare former som 5°-imiippoq
+- **+Num+Abs+Sg:%>-%EPENT	indholds-K ; **  
+- **+Num+Abs+Sg: # ; **  
+- **+Num+Abs+Pl:%>-it	Krestr ; **  
+- **+Err/Sub+Num+Abs+Pl:%>-t	Krestr ; **  
+- **+Num+Abs+Sg+3SgPoss:%>-ia	Krestr ; **  
+- **+Err/Sub+Num+Abs+Sg+3SgPoss:%>-a	Krestr ; **  
+
+** Lexicon **num_V** for numerusmorfologi for ord på vokal
+- **	%%	num_C ;  **  tilfoejet 20090306 for at haandtere ord som 49%-ii
+- **+Num+Abs+Sg:%>-	indholds-K ;	 ** 
+- **+Err/Sub+Num+Abs+Sg:%>-i	indholds-K ;	 ** 
+- **+Num+Abs+Sg:	# ;	 ** 
+- **+Num+Abs+Pl:	# ;	 **  PL20220121 45 min.
+- **+Num+Abs+Pl:%>-t	K ;  ** 
+- **+Err/Sub+Num+Abs+Pl:%>-it	K ;  ** 
+- **+Num+Abs+Sg+3SgPoss:%>-a	Krestr ;  ** 
+- **+Err/Sub+Num+Abs+Sg+3SgPoss:%>-ia	Krestr ;  ** 
+- **+Num+Abs+Sg+3PlPoss:%>-at	Krestr ;  ** 
+- ... osb.
+
+** Lexicon **num_C_sub** for numerusmorfologi for ord på konsonant, substandarformer
+- **+Err/Sub+Num+Abs: # ; **  
+- **+Err/Sub+Num+Abs+Pl:%>	Krestr ; **  
+- **+Err/Sub+Num+Abs+Sg+3SgPoss:%>ia	Krestr ; **  
+- **+Err/Sub+Num+Abs+Sg+3SgPoss:%>%TRUNCa	Krestr ; **  
+- **+Err/Sub+Num+Abs+Sg+3PlPoss:%>iat	Krestr ; **  
+- **+Err/Sub+Num+Abs+Sg+3PlPoss:%>%TRUNCat	Krestr ; **   1-at
+- **+Err/Sub+Num+Abs+Pl+3SgPoss:%>%TRUNCi	K_plur ; **  
+- **+Err/Sub+Num+Abs+Pl+3PlPoss:%>%TRUNCi	K_plur ; **  
+- **+Err/Sub+Num+Rel:%>ip	Krestr ; **  
+- **+Err/Sub+Num+Rel:%>%TRUNCp	Krestr ; **  
+- ...
+- **+Err/Sub+Num+Lok:%>imi	LokVb ; **  
+- **+Err/Sub+Num+Lok:%>%TRUNCmi	LokVb ; **  
+- **+Err/Sub+Num+Lok:%>mi	LokVb ; **  
+- **+Err/Sub+Num+Lok:%>ini	LokVb ; **  
+- **+Err/Sub+Num+Lok:%>%TRUNCni	LokVb ; **  
+- **+Err/Sub+Num+Lok:%>ni	LokVb ; **  
+- **+Err/Sub+Num+Lok+Sg+3SgPoss:%>iani	LokVb ; **  
+- **+Err/Sub+Num+Lok+Sg+3SgPoss:%>%TRUNCani	LokVb ; **  
+- **+Err/Sub+Num+Lok+Sg+3PlPoss:%>ianni	LokVb ; **  
+- **+Err/Sub+Num+Lok+Sg+3PlPoss:%>%TRUNCanni	LokVb ; **   1-anni
+- **+Err/Sub+Num+Lok+Pl+3SgPoss:%>iini	LokVb ; **  
+- **+Err/Sub+Num+Lok+Pl+3SgPoss:%>%TRUNCini	LokVb ; **  
+- **+Err/Sub+Num+Lok+Pl+3PlPoss:%>iini	LokVb ; **  
+---
+
+** Lexicon **num_V_sub** for numerusmorfologi for ord på vokal, substandarformer
+- **+Err/Sub+Num+Abs:%>	# ;	 **  
+- **+Err/Sub+Num+Abs:%>	indholds-K ;	 **  
+- **+Err/Sub+Num+Abs+Sg+3SgPoss:%>a	Krestr ; **  
+- **+Err/Sub+Num+Abs+Sg+3SgPoss:%>ia	Krestr ; **  
+- **+Err/Sub+Num+Abs+Sg+3PlPoss:%>at	Krestr ; **  
+- **+Err/Sub+Num+Abs+Sg+3PlPoss:%>iat	Krestr ; **  
+- ...
+
+** Lexicon **ord_V** for ordinalmorfologi for ord på vokal
+- **+Gram/Ord+Abs+Sg+3SgPoss:%>a	Krestr ; **  
+- **+Gram/Ord+Abs+Sg+3PlPoss:%>at	Krestr ; **  
+- **+Gram/Ord+Abs+Pl+3SgPoss:%>i	K_plur ; **  
+- **+Gram/Ord+Abs+Pl+3PlPoss:%>i	K_plur ; **  
+- **+Gram/Ord+Rel:%>p	Krestr ; **  
+- ...
+
+** Lexicon **ord_C** for ordinalmorfologi for ord på konsonant
+ - **+Gram/Ord+Abs+Sg+3SgPoss:%>ia	Krestr ; **  
+- **+Gram/Ord+Abs+Sg+3PlPoss:%>iat	Krestr ; **  
+- **+Gram/Ord+Abs+Pl+3SgPoss:%>ii	K_plur ; **  
+- **+Gram/Ord+Abs+Pl+3PlPoss:%>ii	K_plur ; **  
+- **+Gram/Ord+Rel:%>ip	Krestr ; **  
 
 * * *
 
@@ -3208,6 +3290,11 @@ Inflection and derivation.
 ---
 
 # Propriernes morfologi i grønlandsk
+
+Nyt 20210303: indsættelse af bindestreg og bindestreg+i ved proprier, der samtidig er akronymer
+** Lexicon **Vprop_connector**  DMI
+
+** Lexicon **Cprop_connector**  DHL
 
 * LEXICON ZxxxV   steder og navne på vokal som ikke er i FST'en
 
@@ -3239,8 +3326,12 @@ Navnelexikon er i ateq-kal-lex.txt.
 * LEXICON Z1geo_oqsZ   Finland
 
 * LEXICON Z1geo_oqsetZmorf   Atlanterhavet
+** Lexicon **Z1geo_oqsetZ**  
+
+** Lexicon **Z1geo_oqs-bestZ**  
 
 * LEXICON Z1geo_oqseZ   Thule
+** Lexicon **Z1geo_oqseZ-suf**  
 
 * LEXICON Z2-geoSZ   Ikerasaarsuk og Iqaluit
 
@@ -3258,9 +3349,234 @@ Navnelexikon er i ateq-kal-lex.txt.
 
 * LEXICON Z2geo_aqSZ   Nuussuaq
 
-Et særligt lexicon til literals i citationstegn med placeholder QuotedHyphen (står i acronyms.lexc)
+** Lexicon **ZcitationsformZ**   Et særligt lexicon til literals i citationstegn med placeholder QuotedHyphen (står i acronyms.lexc)
+
+** Lexicon **Bogtitel**  Nyt lex til bogtitler uden citationstegn
+
+** Lexicon **Z1ateqZ**  
+
+** Lexicon **Z1ateq_tptZ**  
+
+** Lexicon **Z1ateq_atZ**  
+
+** Lexicon **Z1ateq_gaqZ**  
+
+** Lexicon **Z1ateq_ngaqZ**  
+
+** Lexicon **Z1ateq_goqZ**  
+
+** Lexicon **Z1ateq_qoqZ**  
+
+** Lexicon **Z1ateq_taqZ**  
+
+** Lexicon **Z1ateq_seqZ**  
+
+** Lexicon **Z1ateq_leqZ**  
+
+** Lexicon **Z1ateq_saqZ**  
+
+** Lexicon **Z1ateq+qaZ**  
+
+** Lexicon **Z1ateq+ĸaZ**  
+
+** Lexicon **Zateq_tptZ**  Atassut
+
+** Lexicon **Z1ateqPZ**  
+
+** Lexicon **Z1ateqPZ-suf**  
+
+** Lexicon **Z2-ateqZ**  
 
 :- Z2-ateqZ-suf ;     !SUB
+
+** Lexicon **Z2-ateqZ-suf**  
+
+** Lexicon **Z1ateqpropVZ**  
+
+** Lexicon **Z1instpropVZ**  
+
+** Lexicon **Z1ateqpropCZ**  
+
+** Lexicon **Z2ateq_niqZ**  
+
+** Lexicon **Z2ateq_neqZ**  
+
+** Lexicon **Z2suaq_ateqZ**  
+
+** Lexicon **Z2-ateq_specielSZ**  Siumut – Siumummi, Siumumi
+
+** Lexicon **Z1nnguaq_ateqZ**  
+
+** Lexicon **Z1nnguaq_possessumZ**  PL20220201 LEX til sekvensen UTE=NNGUAQ + POSSESSUM
+
+** Lexicon **Zateq_oqsZ**  
+** Lexicon **Zateq_oqsZ-suf**  
+
+** Lexicon **Zateq_oqsPZ**  PL20210224 til Kalaallit Airports o.lign. med usikker numerus. I første omgang uden derivation og personendelser
+
+** Lexicon **Zateq_iaqZ**  
+
+** Lexicon **Zateq_iaĸZ**  
+
+** Lexicon **Zateq_ioqZ**  
+
+** Lexicon **Zateq_naqZ**  
+
+** Lexicon **Zateq_noqZ**  
+
+** Lexicon **Zateq_meqZ**  
+
+** Lexicon **Z1geoSZmorf**  Narsaq
+
+** Lexicon **Z1geoPZmorf**  Paamiut og Ivittuut
+
+** Lexicon **Z1geo_nnguaqZmorf**  Quassunnguaq NY 20100410 (PL)
+
+** Lexicon **Z1geo_nnguaqPZmorf**  Kangilinnguit NY 20100319 (PL)
+
+** Lexicon **Z1geo+ssPZmorf**  Ilulissat
+
+** Lexicon **Z1geo_oqsZmorf**  Finland
+
+** Lexicon **Z1geo_oqs-nbestZmorf**  Særlig katalog til lande i bestemt form som Spanien
+
+** Lexicon **Z1geo_oqs-tbestZmorf**  Særlig katalog til lande i bestemt form som Tyrkiet
+
+** Lexicon **Z1geo_oqseZmorf**  Thule
+
+** Lexicon **Z2-geoSZmorf**  Ikerasaarsuk; Korea% Kujalleq
+
+** Lexicon **Z2+lgeoSZmorf**  Nanortalik
+
+** Lexicon **Z2-geo_uukSZmorf**  un til Nuuk
+
+** Lexicon **Z2-geo_specielSZmorf**  til geografiske steder med fleksion såsom Qinngorput – Qinngorpummi, Qinngorpormiu
+
+** Lexicon **Z2geo_aqSZmorf**  Nuussuaq
+
+** Lexicon **Z2-geoqPZmorf**  Saqqarliit:Saqqarleq
+
+** Lexicon **Z2-geolikPZmorf**  Kapisillit:Kapisi
+
+** Lexicon **Z1ateqpropVZmorf**  
+
+** Lexicon **Z1instpropVZmorf**  
+
+** Lexicon **Z1ateqpropCZmorf**  
+
+** Lexicon **Z2-ateqZmorf**  
+
+** Lexicon **Z2ateq_niqZmorf**  
+
+** Lexicon **Z2ateq_neqZmorf**  
+
+** Lexicon **Z2suaq_ateqZmorf**  
+
+** Lexicon **Z1ateqZmorf**  
+
+** Lexicon **Z1ateq_tptZmorf**  
+
+** Lexicon **Z1ateq_atZmorf**  
+
+** Lexicon **Z1ateq_taqZmorf**  
+
+** Lexicon **Z1ateq_saqZmorf**  
+
+** Lexicon **Z1ateq_seqZmorf**  
+
+** Lexicon **Z1ateq_leqZmorf**  
+
+** Lexicon **Z1ateq_gaqZmorf**  
+
+** Lexicon **Z1ateq_ngaqZmorf**  
+
+** Lexicon **Z1ateq_goqZmorf**  
+
+** Lexicon **Z1ateq_qoqZmorf**  
+
+** Lexicon **Z1ateq+qaZmorf**  
+
+** Lexicon **Z1ateq+ĸaZmorf**  
+
+** Lexicon **Zateq_tptZmorf**  
+
+** Lexicon **Z1ateqPZmorf**  
+
+** Lexicon **Z2-ateq_specielSZmorf**  
+
+** Lexicon **Z1nnguaq_ateqZmorf**  
+
+** Lexicon **Zateq_oqsZmorf**  
+
+** Lexicon **Zateq_numCZmorf**   Ny 20191010 til proprier som DR1 og Peugeot 206. Sem/Hum fastholdt i første omgang, for DR og biler kan jo gøre noget aktivt???
+
+** Lexicon **Zateq_numVZmorf**  Ny 20191010 til proprier som DR2 og Peugeot 208
+
+** Lexicon **Z1ateq_iaqZmorf**  
+
+** Lexicon **Z1ateq_iaĸZmorf**  
+
+** Lexicon **Z1ateq_ioqZmorf**  
+
+** Lexicon **Z1ateq_naqZmorf**  
+
+** Lexicon **Z1ateq_noqZmorf**  
+
+** Lexicon **Z1ateq_meqZmorf**  
+
+** Lexicon **Z1geopropZ**  
+
+** Lexicon **Z1geopropPZ**  
+
+** Lexicon **Z1ateqpropZ**  
+
+** Lexicon **Z1ateqpropPZ**  De Konservative
+
+** Lexicon **Z1Fem_ateqZ**  Test af femininum tag med stamme på -e. Tidligere Z1ateqpropZ og Z1ateqZmorf
+
+** Lexicon **Z1Mask_ateqZ**  
+
+** Lexicon **Z1Mask_GrlateqZ**  
+
+** Lexicon **Z1Fem_tptZ**  
+
+** Lexicon **Z1Mask_tptZ**  
+
+** Lexicon **Z1Mask_atZ**  
+
+** Lexicon **Z1Mask_taqZ**  
+
+** Lexicon **Z1Fem_taqZ**  
+
+** Lexicon **Z1Mask_saqZ**  
+
+** Lexicon **Z1Mask_seqZ**  
+
+** Lexicon **Z1Mask_leqZ**  
+
+** Lexicon **Z1Fem_leqZ**  
+
+- Det følgende er et forsøg på et gennemgangsleksikon til fornavne af oqs-typen inkl. køn. Testord = Hans
+- Det påregnes, at taggen Sem/Mask (og senere Sem/Fem) vil overflødiggøre Sem/FirstName (og egentlig også Sem/Hum)
+
+** Lexicon **ZMask_oqsZ**  
+
+** Lexicon **ZFem_oqsZ**  
+
+** Lexicon **Z1Fem_nnguaqZ**  
+Test afkønsopdelte fornavne på NNGUAQ. Tidligere Z1nnguaq_ateqZmorf
+
+** Lexicon **Z1Mask_nnguaqZ**  
+
+** Lexicon **Z1Mask_araqZ**  
+
+** Lexicon **Z1Fem_araqZ**  
+
+** Lexicon **Z1Fem_araĸZ**  
+
+** Lexicon **Z1Mask_gaqZ**  
+
+** Lexicon **Z1Fem_ngaqZ**  
 
 Tidligere Z2-ateqZmorf
 
@@ -4238,57 +4554,72 @@ xxx 20170522 til former, som ikke kan læses men som har brug for en analyse i c
 
 ---
 
-# Verbstammer !
+# Verbstammer 
 
-Oversigt over kontinuationslexica for verber
+## Dokumentation
 
-## Suffix          ! Dokumentation
-- flex-iv	  !
-- flex-iv_voq	  !
-- flex-iv_nngit   !
-- flex-iv_longV	  !
-- flex-iv_schwa   !
-- flex-tv	  !
-- flex-tv_nngit   !
-- gallar-iv	  !
-- IV		  ! Intransitiver
-- IV_long	  !
-- IVschwa	  !
-- IV_voq_stem	  !
-- K		  ! Klitika
-- K_plur	  !
-- TV		  ! Transitiver
-- TVi_vaa	  !
-- TVschwa	  !
-- TV_vaa	  !
-- Verbum	  !
-- XIgujoqX	  ! Suffikser
-- XIiPXmorf	  !
-- XIirPXmorf	  !
-- XIitX_stem		  !
-- XIi_voqXmorf_stem    !
-- XIi_voqX_agentiv  ! utaqqivoq
-- XIiXmorf_stem	  !
-- XIirXmorf_stem !
-- XIPX_nngit      !
-- XItsXmorf_stem	  !
-- XItX		  !
-- XIutePXmorf     ! PL 20180727 Erstattet af flag diacritics dd. og udkommenteret fra derivations-inflections
-- XIuteXmorf      !
-- XIi_utePXmorf	  !
-- XTgujaaX	  !
-- XTirXmorf !
-- XTPXmorf	  !
-- XTtX		  !
-- XTuteXmorf      !
+Oversigt over kontinuationslexika for verber
+(De konkrete leksika står i `affixes/derivations-inflections.lexc` )
+
+| Suffix          | Dokumentation
+| --------------- | --------------
+| flex-iv	      |  
+| flex-iv_voq	  |  
+| flex-iv_nngit   |  
+| flex-iv_longV	  |  
+| flex-iv_schwa   |  
+| flex-tv	      |  
+| flex-tv_nngit   |  
+| gallar-iv	      |  
+| IV		      |   Intransitiver
+| IV_long	      |  
+| IVschwa	      |  
+| IV_voq_stem	  |  
+| K		          |   Klitika
+| K_plur	      |  
+| TV		      |   Transitiver
+| TVi_vaa	      |  
+| TVschwa	      |  
+| TV_vaa	      |  
+| Verbum	      |  
+| XIgujoqX	      |   Suffikser
+| XIiPXmorf	      |  
+| XIirPXmorf	  |  
+| XIitX_stem	  |  
+| XIi_voqXmorf_stem     |  
+| XIi_voqX_agentiv |   utaqqivoq
+| XIiXmorf_stem	   |  
+| XIirXmorf_stem   |  
+| XIPX_nngit       |  
+| XItsXmorf_stem   |  
+| XItX		       |  
+| XIutePXmorf      |   PL 20180727 Erstattet af flag diacritics dd. og udkommenteret fra derivations-inflections
+| XIuteXmorf       |  
+| XIi_utePXmorf	   |  
+| XTgujaaX	       |  
+| XTirXmorf  |  
+| XTPXmorf	   |  
+| XTtX		   |  
+| XTuteXmorf       |  
 
 - Transitiver sendes til følgende kataloger
 	- Ved en dokumenteret HTR: det rette HTR-katalog
 	- Uden en dokumenteretet HTR: det mest sandsynlige HTR-katalog
 
+## Verbleksikonet
+
 **LEXICON Verbum**
 
+### xxx-formerne
+
 xxx 20170524 til verbalstammer, som ikke kan læses men som har brug for en analyse i cg'en. Pluralis tantum-kataloger er ikke medtaget. !er det nødvendigt også at medtage stammer fra derivationsleksika?
+
+* xxxr	IV_r_stem ;   Intransitiver aakkar, aalassap, aalaterusior
+* xxxp	IV_k_stem ;   Intransitiver aakkar, aalassap, aalaterusior
+* xxxoor	IV_long_stem ;   aakassaar, aalakkoor
+... osv. for alle kontinuationsleksika.
+
+### De egentlige verber
 
 * a'ar IV_r ;  
 * aak+GASAP+Der/nv:aagasap IV_k_stem ; 
@@ -4296,7 +4627,7 @@ xxx 20170524 til verbalstammer, som ikke kan læses men som har brug for en anal
 * aagialip IV_k_stem ; 
 * aagiap IV_k_stem ; 
 * aagup HTR_UTE_SSAQ_ssi ; 
-..
+og 26000 andre former
 
 * * *
 
