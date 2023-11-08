@@ -21,7 +21,6 @@ Install proofing tools and [keyboards](https://github.com/giellalt/keyboard-kal)
 for the Kalaallisut language by using the [Divvun Installer](http://divvun.no)
 (some languages are only available via the nightly channel).
 
-
 Download and test speller files
 -------------------------------
 
