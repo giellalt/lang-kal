@@ -2,9 +2,12 @@
 
 #Kørsel med semantik: ~/langtech/kal/tools/shellscripts/kal-tokenise ~/langtech/kal/tools/tokenisers/tokeniser-disamb-gt-desc.pmhfst | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/kal-pre1.cg3 | ~/langtech/kal/tools/shellscripts/kal-hybrid-split | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/kal-pre2.cg3 | bash -l -c ~/langtech/nutserut/dev/kal2eng/bin/long2sem.pl
 
-#Kørsel med semantik på zsh: ~/langtech/kal/tools/shellscripts/kal-tokenise ~/langtech/kal/tools/tokenisers/tokeniser-disamb-gt-desc.pmhfst | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/kal-pre1.cg3 | ~/langtech/kal/tools/shellscripts/kal-hybrid-split | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/kal-pre2.cg3 | zsh -l -c ~/langtech/nutserut/dev/kal2eng/bin/long2sem.pl
+#Kørsel med semantik på zsh: ~/langtech/kal/tools/shellscripts/kal-tokenise ~/langtech/kal/tools/tokenisers/tokeniser-disamb-gt-desc.pmhfst | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/kal-pre1.cg3 | ~/langtech/kal/tools/shellscripts/kal-hybrid-split | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/kal-pre2.cg3 | zsh -l -c ~/langtech/katersat/apply-sems.py
 
-#Opdatering af semantik inkl. gloss-interface: cd ~/langtech/nutserut/dev/kal2eng && bin/update-long2sem.pl && ~/langtech/regtest/inspect.pl && cd ~/langtech/nutserut/dev/kal2eng
+#Opdatering af semantik inkl. gloss-interface: (i): ~/langtech/katersat/update.py
+#(ii); $ ~/langtech/katersat/update.py && cd ~/langtech/nutserut/dev/kal2eng && ~/langtech/regtest/inspect.pl
+
+
  
 # =================================================================== #
 # =================================================================== #
@@ -5458,7 +5461,7 @@ REMOVE:0044F N IF (*-1 Abs + &&IV_SUBJ& LINK *1 _TARGET_ + Par + &&IV_SUBJ& LINK
 REMOVE:0044G1 Par IF (0 (/Sem/be_attribute/l) LINK -1 Abs LINK -1 BOS LINK 3 CLB); #Kalassuit AJORTUT.
 REMOVE:0044G2 Par IF (0 (/Sem/be_attribute/l) LINK -1 TUQ LINK -1 Abs LINK -1 BOS LINK 4 CLB); #Illarneq imaqanngitsoq NILLERTOQ.
 
-SELECT:0045A Gram/Comp IF (1 ("ajor") - NAR OR ("artor") OR ("saper") OR ("nalu"))
+SELECT:0045A Gram/Comp IF (1 ("ajor") - NAR OR ("artor") OR ("saper") OR ("nalu") - NAR)
 (NEGATE 0 (/Gram/IV\ NIQ/l) LINK 1 TRANSVERB - ("ajor") - ("ajore")) #Ikke intransiv NIQ med transitivt verbum
 (NEGATE 1 NIRU LINK NOT 0 NAR)
 ;
@@ -12862,7 +12865,9 @@ REMOVE:Sem0930 ("peqar") + (/^i?Sem/have/r) IF (0 (/^i?Sem/exist/r) LINK NOT *-1
 
 REMOVE:Sem0935 ("oqaaseq") + (/^i?Sem/ac/r) IF (0 (/^i?Sem/ling/r) + Pl LINK -1 (/"kalaaleq"\ Sem/Hnat\ N\ Aeq\ Sg/l) OR ("kalaallisut")); #kalaallisut oqaatsivut
 
-#SUBSTITUTE:Sem0005 (Sem/Hnat) (Sem/ling) TARGET ("kalaaleq" Sem/Hnat N Aeq Sg) IF (1 ("oqaaseq")); 
+REMOVE:Sem0940 ("kalaaleq") + (/^i?Sem/jnat/r) IF (0 (/^i?Sem/ling/r) LINK 1 ("oqaaseq") OR ("allap") OR ("ilinniar") OR ("taagor")); 
+
+REMOVE:Sem0945 ("taagor") + (/^i?Sem/name/r) IF (0 (/^i?Sem/say/r) LINK -1 LANGUAGE); #
 
 ##############
 AFTER-SECTIONS
