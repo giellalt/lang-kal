@@ -4154,6 +4154,7 @@ i staden ei liste der kvar tag sto ein gong (nedanfor): docs/tagstrings.md
 * **+RULUP** 
 * **+RULUUR** 
 * **+RUNAR** 
+* **+RUR** 
 * **+RUSAAR** 
 * **+RUSAQ** 
 * **+RUSAR** 
