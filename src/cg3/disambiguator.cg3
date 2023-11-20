@@ -463,6 +463,7 @@ LIST GUSUP_GALUAR = GUSUP\=GALUAR ;
 LIST GUSUP_NNGIT = GUSUP\=NNGIT ;
 LIST GUSUP_SINNAA = GUSUP\=SINNAA ;
 LIST HTR = HTR  ;
+LIST ILIQI = ILIQI ;
 LIST IR = IR  ;
 LIST IRNIAR = IRNIAR ;
 LIST IRSIR = IRSIR ;
@@ -1984,10 +1985,10 @@ SET UGEDAGE = (/"arfineq"\ NNGUR\ Der/nv\ \(Gram\/IV\)?__/l) | (/__\"ataaseq\"\ 
 ### proprier LISTs ###
 LIST BOGTITEL = "Malersortinneq" ;
 LIST COUNTRY = "Canada" "Danmark" "Finland" "Frankrig" "Grønland" "Island" "Italien" "Japan" "Kalaallit Nunaat" "Norge" "Rusland" "Sverige" "Tuluit Nunaat" "Tyskland" "USA" ;
-LIST Fem = "Anette" "Anna" "Arnaq" "Dagmar" "Emilie" "Gitte" "Hanne" "Jane" "Karen" "Kirsten" "Maliina" "Margrethe" "Meeraq" "Mette" Sem/Fem ;
+LIST Fem = "Anette" "Anna" "Arnaq" "Dagmar" "Emilie" "Gitte" "Hanne" "Jane" "Karen" "Kirsten" "Maliina" "Margrethe" "Meeraq" "Mette" Sem/Fem iSem/Fem ;
 LIST GeoProp = Sem/Geo "Danmark" "Finland" "Gladsaxe" "Mose" "Tåstrup" ;
 LIST Hmyth = "Aningaaq" "Aqissiaq" "Guuti" "Maliina" ; #Proprier, der anvendes som/med vokativ
-LIST Mask = "Aron" "Egon" "Eri" "Erik" "Eskild" "Hans" "Jens" "Manu" "Mik" "Mikkel" "Miki" "Morten" "Niels" "Ole" "Per" "Piitaq" "Rasmus" "Sean" "Trond" Sem/Mask ;
+LIST Mask = "Aron" "Egon" "Eri" "Erik" "Eskild" "Hans" "Jens" "Manu" "Mik" "Mikkel" "Miki" "Morten" "Niels" "Ole" "Per" "Piitaq" "Rasmus" "Sean" "Trond" Sem/Mask iSem/Mask ;
 LIST Mellemnavn = (Borup Sem/Hum) ;
 LIST Sur = "Banke" "Dalloni" "Egede" "Jensen" "Jenseni" "Kleist" "Møller" "Nathanielsen" "Nielsen" "Olsen" "Pedersen" "Rasmussen" "Trosterud" Sem/LastName ;
 LIST UNISEX_MestMask = "Inuk" "Nuka" "Pivik" ;
@@ -5320,6 +5321,8 @@ REMOVE:faste0815 (/N\ Abs\ Sg\ MI/l) IF (0 Lok LINK *1 (/TUQ\ Der/vn\ QAR\ Der/n
 
 REMOVE:faste0820 ("allap") + Par + 3Sg IF (-1 BOS) (*1 Sem/Hum + Prop BARRIER (*) - FIRSTNAME )
 ;
+
+SELECT:faste0825 ("piffik") + Abs + Pl IF (NOT *0 VFIN); #PIFFIILLU qasoqqarujussuarneri nukissaaleqinerilu.
 
 #######
 # MWE #
@@ -9248,6 +9251,8 @@ SELECT:8534DI ("issi") + SUAQ;
 REMOVE:8534DJ ("pup") + NIQ IF (0 ("punneq"));
 REMOVE:8534DK ("aassuk") - UTE IF (0 ("aak") + SUAQ);
 REMOVE:8534DL ("malik") + TAQ IF (0 ("malip") + TE);
+REMOVE:8534DM ("saki") + SSAQ IF (0 ("sakiak"));
+REMOVE:8534DN ("timmik") + SSAQ IF (0 ("timmiaq"));
 REMOVE:8599A TUQ + Aeq - Der/vn IF (0 TUQ + Aeq + Der/vn)(NEGATE 1 ("ip")); #De særlige former af TUQ + Aeq på transitiver fulgt af "ippaa" slettes hvis ikke fulgt af "ippaa"
 REMOVE:8599B (*) - LEX_FULLFORM_NOUN ; #Jude 20230908
 
@@ -9770,7 +9775,7 @@ REMOVE:5490EX ("isumasi") IF (0 (/"isuma"\ SIUR\ Der/nv\ Gram/TV\ HTR/l) LINK *-
 REMOVE:5490EY (/"isuma"\ SI\ Der/nv/l) IF (0 (/"isuma"\ SIUR\ Der/nv\ Gram/TV\ HTR/l) LINK *-1 Ins BARRIER (*) - %Othertime - ("akunneq") - ("qinersisartoq")); 
 REMOVE:5490EZ (/"ila"\ SI\ Der/nv/l) IF (0 (/"ila"\ Gram/TV\ HTR/l) LINK -1 Ins);#- Naalakkersuisut aalajangerput ukiup ingerlanerani pisassiissutinik ILASISOQARTASSANNGITSOQ, Naalakkersuisut tusagassiuutinut taamani allapput.
 REMOVE:5490FA ("kiver") IF (NEGATE 0 3SgO OR 3PlO); #Anaanaga saannut pillunilu, sakissakkut tigullunga KIVIUTIGALUNGA, kavaajara nusoqattaajutigalugu issuttuullunga aallartippaanga. #mennesker udstoppes ikke
-REMOVE:5490FB (/U\ Der/nv\ Gram/IV\ LIR\ Der/vv\ QE\ Der/vv\ Gram/IV/l) IF (0 (ILIQI\ Der/nv\ Gram/IV\ NIQ/l));
+REMOVE:5490FB U + LIR + QE IF (0 ILIQI);
 REMOVE:5490FC (/"ali"\ Gram/IV\ \(iSem/leave\ \)?JA/l) IF (0 ("aliasup"));
 REMOVE:5490FD Gram/TV + PALUK IF (0 Gram/IV + PALUK); #Tungaanut aallartungalu ISUSSUPPALUK allanillu perpaluk soorlumi tusaasinnaagikka.
 REMOVE:5490FE ("ikip") + (/^i?Sem/be_attribute/l) IF (0 (/^i?Sem/activate/l) + TIR);
@@ -9819,7 +9824,7 @@ REMOVE:5490GR (*) - ("iser") (0 ("<isaati.*>"r)) ; #Jude 20230915
 REMOVE:5490GS ("tup") + LLUAR IF (0 ("tulluar"));
 REMOVE:5490GT ("saper") + Gram/TV IF (0 ("saper") + Gram/IV LINK -1 NIQ); #-neq saper-
 REMOVE:5490GU ("ujap") + USIQ IF (0 ("ujaasi"));
-REMOVE:5490GV ("iki") + humverb + VFIN OR ("ikip") + humverb + VFIN IF (0 (/"iki"\ LIR\ Der/nv/l) LINK -*1 Rel - HUM) ;  #Oqussuup IKILERPAANGA, aseruuttoornersuarnillu ulikkaalersillunga.
+REMOVE:5490GV (/"iki"\ Gram/TV/l) + LIR OR ("ikip"\ Gram/TV/l) + LIR IF (0 ("iki") + (/LIR\ Der/nv/l)) ;  #Oqussuup IKILERPAANGA, aseruuttoornersuarnillu ulikkaalersillunga.
 REMOVE:5490GW ("aalajanger") + Gram/TV + SIMA + Gram/Pass IF (0 ("aalajanger") + Gram/IV + SIMA - Gram/Pass); #aalajangersimavoq
 REMOVE:5490GX ("milup") IF (0 ("milor") LINK -1 Trm); #”Qimaaqqissanngilatit,” ataataata siniffianut MILORUJUPPAA, ”qimaaqqikkaluarna!” ingerlallunilu.
 REMOVE:5490GY ("minguer") + SSUSIQ IF (0 ("minguip") + SSUSIQ);
@@ -9844,6 +9849,9 @@ REMOVE:5490HQ ("aalajanger") + Gram/TV + Con IF (0 ("aalajanger") + Gram/IV); #T
 REMOVE:5490HR ("kaa") + TAR + VIK IF (0 ("kaasar") + VIK);
 REMOVE:5490HS ("ani") + JA IF (0 ("ania"));
 REMOVE:5490HT ("puja") IF (0 ("pujap")); #ville være "puja" kun i meget specifik kontekst
+REMOVE:5490HU ("aap") IF (0 ("aa") LINK -1 ("biili") + Ins); #Atuarfimmiit soraarpat biilinik AALLUGU.
+REMOVE:5490HV ("issup") + TUU IF (0 ("issuttuup"));
+REMOVE:5490HW ("iki") + GE IF (0 ("ikige")); #Asulu meerarpassuit anitsiartut eqqanniittut IKIGISASSAANATIK.
 
 # Verbum eller partikel?
 SELECT:5491A ("aarit") IF (-1 BOS);
@@ -9983,7 +9991,7 @@ REMOVE:5578P ("uup") + USAR IF (0 ("uu") + TAR); #Nateq aamaartuinnaavoq atisakk
 REMOVE:5578Q (/TAQ\ Der/vn\ TAQ\ Der/nn\ U/l) IF (0 (/TAQ\ Der/vn\ TAAR/l)) ;
 REMOVE:5578R Gram/Pass IF (0 (/"tunillap"\ Gram/TV\ \(iSem/pollute\ \)?TIP\ Der/vv\ Gram/Refl/l));
 REMOVE:5578S ("tuni") + LLAP IF (0 ("tunillap"));
-REMOVE:5578T ("aap") IF (0 (/"aa"\ Gram/TV\ V\ Cont\ 3SgO\ CONJ-LU/l) LINK -1 ("ingerlap")) #Børnehaviliartalerpat tassunga ingerlassinnaavaa AALLUGULU
+REMOVE:5578T ("aap") IF (0 ("aa") + Gram/TV LINK -1 ("ingerlap")) #Børnehaviliartalerpat tassunga ingerlassinnaavaa AALLUGULU
 (NEGATE *-1 (Abs Sg) + THING BARRIER (Abs Sg) + HUMAN)
 ;
 REMOVE:5578U (/"aalap"\ Gram/TV\ TIR/l) IF (0 (/"aalater"\ Gram/TV/l));#.. tapersersuisut napparsimmaviup silataaniittut tassani AALATERIFFIGALUGIT.
@@ -12417,11 +12425,11 @@ SELECT:Sem0137 ("qiteq") + (/^i?Sem/L$/r) IF (0 POSSESSUM3 + OBLIQUE LINK -1 Rel
 SELECT:Sem0138 ("qiteq") + (/^i?Sem/an/r) IF (0 POSSESSUM3 LINK -1 Rel + HUMAN); #Uima assai anaanama qitiani angalaarput, allaallumi timaani ukioqqortusisimasumi, nuluini eqisaluttuni angalaartarlutik.
 REMOVE:Sem0139 ("qiteq") + (/^i?Sem/ac-sign/r); #lav undtagelser når de kommer
 
-REMOVE:Sem0140 ("aallar") + (/^i?Sem/run/r) IF (0 (/^i?Sem/start_movement/r) + &&IV_SUBJ& LINK *-1 (/^i?Sem/H.*/r) + Abs + &&IV_SUBJ&)
-(NEGATE *-1 ("politeeq") OR (/"qatser"\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TAR\ Der/vv\ \(Gram/IV\ \)?TUQ/l));
-REMOVE:Sem0141 ("aallar") + (/^i?Sem/start_movement/r) IF (0 (/^i?Sem/run/r) + &&IV_SUBJ& LINK NEGATE *-1 (/^i?Sem/H.*/r) + Abs + &&IV_SUBJ&);
-SELECT:Sem0142 ("aallar") + (/^i?Sem/run/r) IF (0 (/^i?Sem/start_movement/r) + &&IV_SUBJ& LINK *-1 ("politeeq") OR (/"qatser"\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TAR\ Der/vv\ \(Gram/IV\ \)?TUQ/l) + Abs + &&IV_SUBJ&);
-REMOVE:Sem0143 ("aallar") +  (/^i?Sem/start_movement.*/r) IF (0 ("aallar") + (/[12][SP][gl]/r) + (/^i?Sem/run.*/r)); 
+REMOVE:Sem0140 ("aallar") + (/^i?Sem/start_movement/r) IF (0 (/^i?Sem/run/r) LINK *0 ("unip")); #Anaanani unittorlu unilluni, AALLARTORLU aallarlunilu.
+REMOVE:Sem0141 ("aallar") + (/^i?Sem/start_movement/r) IF (0 (/^i?Sem/run/r) + &&IV_SUBJ& LINK *-1 ("politeeq") OR (/"qatser"\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TAR\ Der/vv\ \(Gram/IV\ \)?TUQ/l) + Abs + &&IV_SUBJ&);
+REMOVE:Sem0142 ("aallar") + (/^i?Sem/start_movement/r) IF (0 (/^i?Sem/run/r) + &&IV_SUBJ& LINK NEGATE *-1 (/^i?Sem/H.*/r) + Abs + &&IV_SUBJ&);
+REMOVE:Sem0143 ("aallar") + (/^i?Sem/start_movement/r) IF (0 (/^i?Sem/run.*/r) + (/[12][SP][gl]/r));
+REMOVE:Sem0144 ("aallar") + (/^i?Sem/run.*/r); #andre tilfælde
 
 SELECT:Sem0145 ("ulloq") + (/^i?Sem/dur/r) IF (0 ("ulloq") - (/^i?Sem/dur/r) LINK *0 (*))
 #NEGATE må klare de få undtagelser løbende
@@ -12597,7 +12605,7 @@ REMOVE:Sem0391 ("marser") + (/^i?Sem/run/r) IF (0 Int); #Nunamut ujaraaqqanik ti
 #pivoq
 SELECT:Sem0395A ("pi") + (/^i?Sem/reach/r) IF (-1 Trm);
 REMOVE:Sem0395B ("pi") + (/^i?Sem/reach/r) (NEGATE -1 Trm);
-SELECT:Sem0396A ("pi") + (/^i?Sem/get/r) IF (-1 Ins - ("arlaq"));
+SELECT:Sem0396A ("pi") + (/^i?Sem/get/r) IF (-1 Ins - ("arlaq") - (/^i?Sem/be_attribute/r));
 REMOVE:Sem0396B ("pi") + (/^i?Sem/get/r) IF (0 NIQAR + 1Sg); #mennesker kan ikke blive fået
 SELECT:Sem0397A ("pi") + (/^i?Sem/occur/r) IF (*-1 Abs - HUMAN LINK NOT *1 Trm OR Ins LINK *1 _TARGET_); #“1979-imili Inatsisartut eqqunneqarmat aatsaat taamak kanngunartuliat piffissami sivikitsigisumi PIPPUT!”
 REMOVE:Sem0397B ("pi") + (/^i?Sem/occur/r) IF (*-1 Abs + HUMAN OR ("arlaq")); #Arlaat PINNGIKKUNI, arlaat peqqusoq.
@@ -12884,6 +12892,8 @@ REMOVE:Sem0940 ("kalaaleq") + (/^i?Sem/jnat/r) IF (0 (/^i?Sem/ling/r) LINK 1 ("o
 REMOVE:Sem0945 ("taagor") + (/^i?Sem/name/r) IF (0 (/^i?Sem/say/r) LINK -1 LANGUAGE); #
 
 #REMOVE:Sem0950 #Ullumikkut KALAALLIT akuttat pinnersut assigai, immaqaluunniit pinnernerpaat.
+
+REMOVE:Sem0955 ("piffik") + (/^i?Sem/occ/r) IF (0 (/^i?Sem/temp/r)); #lav undtagelser når de kommer
 
 ##############
 AFTER-SECTIONS
