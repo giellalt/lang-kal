@@ -44,3 +44,9 @@ SPLITCOHORT ("<$1>"v "$1"v Num Abs Sg "<$2>"v "$2"v CLB) ("<(\\p{N}{4})([.])>"r 
 #ADDCOHORT ("<.>" "." CLB) AFTER (/"[0123456789]{4}\."/r) IF (1 EOS);
 
 #SUBSTITUTE ("<1960.>" "1960." Num Gram/Ord) ("<1960>" "1960" Num Abs Sg) TARGET ("1960.") IF (1 ("."));
+
+# Heuristic analysis of unrecognized Prop multiwords
+# If a word ends in -imi but there is an upper-case word before it, it's likely a Prop Log
+Substitute (?) (Prop Lok Sg Heur/Prop) ("<\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?imi>"r ?) (-1 ("\\p{Lu}.*"r)) ;
+# Turn remaining upper-case words into Prop if there is a Prop after them
+Substitute (?) (Prop Abs Sg Heur/Prop) ("<\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+>"r ?) (1* Prop BARRIER ("\\p{Ll}.*"r) OR WORD) ;
