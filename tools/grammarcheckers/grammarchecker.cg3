@@ -32,7 +32,7 @@
 #!!  cd tools/grammarcheckers
 #!!  make dev
 #
-#!!   Then test as follows:  
+#!!   Then test as follows:
 #
 #!! echo "e Nerisassiornermut soqutigisaqarpit?|sh modes/trace-kalgram.mode  # from the terminal
 #!!
@@ -46,15 +46,9 @@
 #!! ## Tag declaration
 
 #!! ### Import tag declarations
-#!! We import tag declaration from `../../src/cg3/tagdeclaration.cg3`
-#!! Todo: Make disambiguation.cg3 do the same
+#!! We import tag declaration from `../../src/cg3/disambiguator.cg3`
 
-INCLUDE ../../src/cg3/tagdeclaration.cg3 ;
-
-#!! Declare tags not declared in disambiguation.cg3
-#!! (TODO: Perhaps they should have been declared there as well)
-
-LIST QAR = QAR ; #!!= - @CODE@
+INCLUDE STATIC ../../src/cg3/disambiguator.cg3 ;
 
 #!! ### Tags used only here
 
@@ -84,12 +78,12 @@ SECTION
 #!! The simplest is to just add it to all spelled words:
 
 ADD:spell-it-all (&typo &SUGGESTWF) (<spelled>) ;
-#!! @RULENAME@ 
+#!! @RULENAME@
 
 #!! But perhaps you want to only suggest spellings of words that are not inside "quotes":
 
 ADD:spell-conservatively (&typo &SUGGESTWF) (<spelled>) IF (NEGATE -1 QMARK LINK 2 QMARK);
-#!! @RULENAME@ 
+#!! @RULENAME@
 
 
 #!! ### Grammatical rules
@@ -97,29 +91,29 @@ ADD:spell-conservatively (&typo &SUGGESTWF) (<spelled>) IF (NEGATE -1 QMARK LINK
 #!! #### Verb valency rules
 
 ADD:msyn-arg-trm-ins (&msyn-arg-trm-ins) TARGET Trm IF (1 QAR);
-#!! @RULENAME@ 
+#!! @RULENAME@
 
 COPY:msyn-arg-trm-ins (Ins &SUGGEST) EXCEPT (Trm  &msyn-arg-trm-ins) BEFORE NUMERUS TARGET (&msyn-arg-trm-ins);
-#!! @RULENAME@ 
+#!! @RULENAME@
 
 #err Nerisassiornermut soqutigisaqarpit? # er du interesseret til madlavning
 #ok  Nerisassiornermik soqutigisaqarpit? # er du interesseret i madlavning
 
 
 ADD:msyn-arg-ins-trm (&msyn-arg-ins-trm) TARGET Ins IF (1 Gram/Reci + V);
-#!! @RULENAME@ 
+#!! @RULENAME@
 
 COPY:msyn-arg-ins-trm (Trm &SUGGEST) EXCEPT (Ins  &msyn-arg-ins-trm) BEFORE NUMERUS TARGET (&msyn-arg-ins-trm);
-#!! @RULENAME@ 
+#!! @RULENAME@
 
 
 ADD:msyn-arg-abs-rel (&msyn-arg-abs-rel) TARGET Abs IF (0 Sem/Hum)(*1 (N Abs) - Sem/Hum LINK *1 Gram/TV);
-#!! @RULENAME@  
+#!! @RULENAME@
 	## Judithe nanoq takuaa.
 	#$ {Judithep} nanoq takuaa.
 
 COPY:msyn-arg-abs-rel (Rel &SUGGEST) EXCEPT (Abs &msyn-arg-abs-rel) BEFORE NUMERUS TARGET (&msyn-arg-abs-rel);
-#!! @RULENAME@ 
+#!! @RULENAME@
 
 ADDRELATION:msyn-arg-abs-rel ($2) (V) FROM (*-1 Prop LINK 0 (&msyn-arg-abs-rel)) ;
 
@@ -129,19 +123,19 @@ ADDRELATION:msyn-arg-abs-rel ($2) (V) FROM (*-1 Prop LINK 0 (&msyn-arg-abs-rel))
 # tag too – &-prefixed error tags are ignored when generating, but
 # used to create human-readable messages.
 
-#!! ### Simple punctuation rules 
+#!! ### Simple punctuation rules
 
 #!! Rules for quotation marks.
 
 
 ADD:use-guillemets (&guillemets) TARGET (""");
-#!! @RULENAME@ 
+#!! @RULENAME@
 COPY:left-guillemet ("«" &SUGGEST) EXCEPT (""") TARGET (&guillemets) ;
-#!! @RULENAME@ 
+#!! @RULENAME@
 COPY:right-guillemet ("»" &SUGGEST) EXCEPT (""") TARGET (&guillemets) ;
-#!! @RULENAME@ 
+#!! @RULENAME@
 
 ADD:use-ellipsis (&ellipsis) TARGET ("...");
-#!! @RULENAME@ 
+#!! @RULENAME@
 COPY:use-ellipsis ("…" &SUGGEST) EXCEPT ("...") TARGET (&ellipsis) ;
-#!! @RULENAME@ 
+#!! @RULENAME@
