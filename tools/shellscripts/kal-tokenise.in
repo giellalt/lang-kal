@@ -467,6 +467,7 @@ sub analyze {
                   $merge_ncs->($m);
                   last;
                }
+               $orig = undef;
             }
 
             # Split around hyphens and dashes
@@ -481,6 +482,20 @@ sub analyze {
                   $merge_ncs->("$m1$m2$m3");
                   last;
                }
+               $orig = undef;
+            }
+
+            # Try without hyphens or dashes
+            if ($f =~ /[-\p{Pd}]/) {
+               $orig = $orig || $f;
+               $f =~ s/[-\p{Pd}]+//g;
+               my $m = call_tokenizer($f);
+               if ($m =~ /\t"[^\n]*"[^?\n]+\n/) {
+                  $heur{'Heur/Hyphen'} = 1;
+                  $merge_ncs->($m);
+                  last;
+               }
+               $orig = undef;
             }
 
             # If input doesn't have lower-case letters, try it as first-upper
@@ -496,6 +511,7 @@ sub analyze {
                   }
                   next;
                }
+               $orig = undef;
             }
 
             # If input is first-upper, try it as lower-case
@@ -508,6 +524,7 @@ sub analyze {
                   $merge_ncs->($m);
                   last;
                }
+               $orig = undef;
                next;
             }
 
