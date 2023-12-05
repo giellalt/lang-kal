@@ -4,8 +4,6 @@
 
 # Delimiters, tags and sets
 
-The **tagdeclaration.cg3** file starts here
-
 @OUTSIDE RULES@
 
 ##  Tags and sets #
@@ -353,8 +351,6 @@ Unification set til CONT og kongruente V ved intransitive V
 - **LIST TASSA = "tassa" ("tass" Gram/Dem Interj);**
 
 #### Verbernes leksikalske klasser
-
-The **tagdeclaration.cg3** file ends here
 
 ## Regelsektion 
 

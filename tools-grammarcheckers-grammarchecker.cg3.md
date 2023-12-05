@@ -8,7 +8,7 @@ In the catalogue for kal, do:
 make -j
 cd tools/grammarcheckers
 make dev
-Then test as follows:  
+Then test as follows:
 echo "e Nerisassiornermut soqutigisaqarpit?|sh modes/trace-kalgram.mode  # from the terminal
 Or eventually, write
 `make check`
@@ -16,13 +16,7 @@ Or eventually, write
 ## Tag declaration
 
 ### Import tag declarations
-We import tag declaration from `../../src/cg3/tagdeclaration.cg3`
-Todo: Make disambiguation.cg3 do the same
-
-Declare tags not declared in disambiguation.cg3
-(TODO: Perhaps they should have been declared there as well)
-
-- LIST QAR = QAR ; 
+We import tag declaration from `../../src/cg3/disambiguator.cg3`
 
 ### Tags used only here
 
@@ -47,38 +41,38 @@ add &SUGGESTWF to any spelling suggestion
 that we actually want to suggest to the user.
 The simplest is to just add it to all spelled words:
 
-ADD:spell-it-all 
+ADD:spell-it-all
 
 But perhaps you want to only suggest spellings of words that are not inside "quotes":
 
-ADD:spell-conservatively 
+ADD:spell-conservatively
 
 ### Grammatical rules
 
 #### Verb valency rules
 
-ADD:msyn-arg-trm-ins 
+ADD:msyn-arg-trm-ins
 
-ADD:msyn-arg-trm-ins 
+ADD:msyn-arg-trm-ins
 
-ADD:msyn-arg-ins-trm 
+ADD:msyn-arg-ins-trm
 
-ADD:msyn-arg-ins-trm 
+ADD:msyn-arg-ins-trm
 
-ADD:msyn-arg-abs-rel  
+ADD:msyn-arg-abs-rel
 
-ADD:msyn-arg-abs-rel 
+ADD:msyn-arg-abs-rel
 
-### Simple punctuation rules 
+### Simple punctuation rules
 
 Rules for quotation marks.
 
-ADD:use-guillemets 
-ADD:use-guillemets 
-ADD:use-guillemets 
+ADD:use-guillemets
+ADD:use-guillemets
+ADD:use-guillemets
 
-ADD:use-ellipsis 
-ADD:use-ellipsis 
+ADD:use-ellipsis
+ADD:use-ellipsis
 
 * * *
 <small>This (part of) documentation was generated from [tools/grammarcheckers/grammarchecker.cg3](https://github.com/giellalt/lang-kal/blob/main/tools/grammarcheckers/grammarchecker.cg3)</small>
