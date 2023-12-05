@@ -6,127 +6,118 @@
 
 @OUTSIDE RULES@
 
+* 	N  =
+* 	V  =
+* 	N*  = Præprocessorens tagging af N, der indgår i compounds
+* 	iV  = Præprocessorens tagging af V, som skifter ordklasse senere i ordet.
+* 	iN  = Præprocessorens tagging af N, som skifter ordklasse senere i ordet.
+* 	iProp  = Præprocessorens tagging af Prop, som skifter ordklasse senere i ordet.
+* 	iPron  = Præprocessorens tagging af Pron, som skifter ordklasse senere i ordet.
+* 	Gram/2sml  = ?
+* 	Gram/ImpPos  = eksperimentell
+* 	Gram/Int  = i brug?
+* 	Gram/Indef  = i brug?
+* 	Gram/Cong  =
+* 	Gram/Hyb  = hybridverbum, resultat av Der/nv efter substantivflektion (men er Aeq Sg syntaktisk relevant?, tt)
+* 	Gram/Pers 
+* 	Gram/PersQAR   = Tag til QAR i paratakse med personligt V
+* 	Gram/Coref 
+* 	Gram/Dem 
+* 	Gram/TransverbNIQ   = PL20210417 kun til NIQ, der kan tage direkte objekt
+* 	Gram/ContSubjekt   = "dansk" subjekt tilføjet med ADDCOHORT
+* 	Gram/Upersonlig   = Tag indsat i dep til konstruktioner, der oversættes med "man"
+* 	Gram/Abbr 
+* 	Gram/ACR 
+* 	Gram/Adj  # Adjektiver optaget ubøjet og undertiden anvendt med dansk syntaks
+* 	Gram/Adv-encl 
+* 	Gram/Comp   = 20100228 Ny tag udelukkende til neq ajor/saper/artor/nalu (PL)
+* 	Gram/Conj-encl   = sideordnende enklitiske konjunktioner
+* 	Gram/Db  
+* 	Gram/Exclm 
+* 	Gram/Gaanni 
+* 	Gram/HV 
+* 	Gram/IV 
+* 	Gram/TV 
+* 	Sem/CognitiveMaking  = qinersivoq i modsætning til qinerlerpoq
+* 	Sem/Concessive  = koncessive sætninger
+* 	Sem/event 
+* 	Sem/Fem  = Introduceret som test 20180613. Skal måske ud igen
+* 	Sem/FirstName 
+* 	Sem/Geo iSem/Geo 
+* 	Sem/Hunt  = qinerlerpoq i modsætning til qinersivoq
+* 	Orth/Alt 
+* 	Orth/Arch 
+* 	Orth/Copy  = Alternative append rules
+* 	Orth/Youth  youth language
+- **1SgPoss** =
+- **2SgPoss** =
+- **3SgPoss** =
+- **4SgPoss** =
+- **1PlPoss** =
+- **2PlPoss** =
+- **3PlPoss** =
+- **4PlPoss** =
+- **i1SgPoss** =
+- **i2SgPoss** =
+- **i3SgPoss** =
+- **i4SgPoss** =
+- **i1PlPoss** =
+- **i2PlPoss** =
+- **i3PlPoss** =
+- **i4PlPoss** =
+- **1SgO** =
+- **2SgO** =
+- **3SgO** =
+- **4SgO** =
+- **1PlO** =
+- **2PlO** =
+- **3PlO** =
+- **4PlO** =
+- **A*** =
+- **A** =
+- **ALLAP** =
+- **ARAQ** =
+- **ARSUK** =
+- **GASAAR** =
+- **IAR** =
+- **INNAQ** =
+- **INNAR** =
+
 ##  Tags and sets #
 
-### Positions and household 
+### Positions and household
 
-The following tags: 
+The following tags:
 BOS, EOS, CLB, Symbol, iSymbol, PUNCT, LEFT, RIGHT, COMMONAFFSTRING, EXCLMARK
 
 ### Parts of speech with tags declared as single-membered LISTs
 
-* LIST N = N ;  =
-* LIST V = V ;  =
-* LIST N* = N* ;  = Præprocessorens tagging af N, der indgår i compounds
-* LIST iV = iV ;  = Præprocessorens tagging af V, som skifter ordklasse senere i ordet.
-* LIST iN = iN ;  = Præprocessorens tagging af N, som skifter ordklasse senere i ordet.
-* LIST iProp = iProp ;  = Præprocessorens tagging af Prop, som skifter ordklasse senere i ordet.
-* LIST iPron = iPron ;  = Præprocessorens tagging af Pron, som skifter ordklasse senere i ordet.
-
 ### Grammar tags
 Gram/... and different specifications
 
-* LIST Gram/2sml = Gram/2sml ;  = ?
-* LIST Gram/ImpPos = Gram/ImpPos ;  = eksperimentell
-* LIST Gram/Int = Gram/Int ;  = i brug?
-* LIST Gram/Indef = Gram/Indef ;  = i brug?
 * LIST DivPron = Gram/Cong DivPron ;  = ?
-* LIST Gram/Cong = Gram/Cong ;  =
-* LIST Gram/Hyb = Gram/Hyb ;  = hybridverbum, resultat av Der/nv efter substantivflektion (men er Aeq Sg syntaktisk relevant?, tt)
-* LIST Gram/Pers = Gram/Pers ; 
-* LIST Gram/PersQAR = Gram/PersQAR ;   = Tag til QAR i paratakse med personligt V
-* LIST Gram/Coref = Gram/Coref ; 
-* LIST Gram/Dem = Gram/Dem ; 
-* LIST Gram/TransverbNIQ = Gram/TransverbNIQ ;   = PL20210417 kun til NIQ, der kan tage direkte objekt
-* LIST Gram/ContSubjekt = Gram/ContSubjekt ;   = "dansk" subjekt tilføjet med ADDCOHORT
-* LIST Gram/Upersonlig = Gram/Upersonlig ;   = Tag indsat i dep til konstruktioner, der oversættes med "man"
-* LIST Gram/Abbr = Gram/Abbr ; 
-* LIST Gram/ACR = Gram/ACR ; 
 * LIST Gram/Ord = Gram/Ord Der/Ord ;   =  Ordinaltal #Hedder Der/Ord i den videre kæde.
-* LIST Gram/Adj = Gram/Adj ;  # Adjektiver optaget ubøjet og undertiden anvendt med dansk syntaks
-* LIST Gram/Adv-encl = Gram/Adv-encl ; 
-* LIST Gram/Comp = Gram/Comp ;   = 20100228 Ny tag udelukkende til neq ajor/saper/artor/nalu (PL)
-* LIST Gram/Conj-encl = Gram/Conj-encl ;   = sideordnende enklitiske konjunktioner
-* LIST Gram/Db = Gram/Db ;  
-* LIST Gram/Exclm = Gram/Exclm ; 
-* LIST Gram/Gaanni = Gram/Gaanni ; 
-* LIST Gram/HV = Gram/HV ; 
-* LIST Gram/IV = Gram/IV ; 
-* LIST Gram/TV = Gram/TV ; 
 
 ### Semantic tags
 Gram/... and different specifications
 
-* LIST Sem/CognitiveMaking = Sem/CognitiveMaking;  = qinersivoq i modsætning til qinerlerpoq
-* LIST Sem/Concessive = Sem/Concessive ;  = koncessive sætninger
-* LIST Sem/event = Sem/event ;  
-* LIST Sem/Fem = Sem/Fem ;  = Introduceret som test 20180613. Skal måske ud igen
-* LIST Sem/FirstName = Sem/FirstName ; 
-* LIST Sem/Geo = Sem/Geo ; 
-* LIST iSem/Geo = iSem/Geo ; 
 * LIST Sem/Hum = Sem/Hum <hum> ; 
-* LIST Sem/Hunt = Sem/Hunt;  = qinerlerpoq i modsætning til qinersivoq
 
 ### Orthographic error tags
-* LIST Orth/Alt = Orth/Alt ; 
 * LIST Orth/Append = Orth/Append <append> ;  = readings added by CG (APPEND)
-* LIST Orth/Arch = Orth/Arch ; 
-* LIST Orth/Copy = Orth/Copy ;  = Alternative append rules
-* LIST Orth/Youth = Orth/Youth ;  youth language
 * LIST SUB = Orth/Arch Orth/Alt Orth/Youth ;  common tag for all
 
 ### Grammatical tags
 Sg, Du, Pl, iSg, iDu, iPl, ALL_Sg, ALL_Pl, case forms, verbal inflection
 
-- **LIST 1SgPoss = 1SgPoss ;** = 
-- **LIST 2SgPoss = 2SgPoss ;** = 
-- **LIST 3SgPoss = 3SgPoss ;** = 
-- **LIST 4SgPoss = 4SgPoss ;** = 
-- **LIST 1PlPoss = 1PlPoss ;** = 
-- **LIST 2PlPoss = 2PlPoss ;** = 
-- **LIST 3PlPoss = 3PlPoss ;** = 
-- **LIST 4PlPoss = 4PlPoss ;** = 
-
-- **LIST i1SgPoss = i1SgPoss ;** = 
-- **LIST i2SgPoss = i2SgPoss ;** = 
-- **LIST i3SgPoss = i3SgPoss ;** = 
-- **LIST i4SgPoss = i4SgPoss ;** = 
-- **LIST i1PlPoss = i1PlPoss ;** = 
-- **LIST i2PlPoss = i2PlPoss ;** = 
-- **LIST i3PlPoss = i3PlPoss ;** = 
-- **LIST i4PlPoss = i4PlPoss ;** = 
-
-- **LIST 1SgO = 1SgO ;** = 
-- **LIST 2SgO = 2SgO ;** = 
-- **LIST 3SgO = 3SgO ;** = 
-- **LIST 4SgO = 4SgO ;** = 
-- **LIST 1PlO = 1PlO ;** = 
-- **LIST 2PlO = 2PlO ;** = 
-- **LIST 3PlO = 3PlO ;** = 
-- **LIST 4PlO = 4PlO ;** = 
-
 ### #Diverse tags defineret i kal-pre2 (dog et par hybrider her i disambiguator)
 
-### Derivatives 
+### Derivatives
 
-- **LIST A* = A* ;** = 
-- **LIST A = A ;** = 
-- **LIST ALLAP = ALLAP ;** = 
-- **LIST ARAQ = ARAQ ;** = 
-- **LIST ARSUK = ARSUK ;** = 
-- **LIST GASAAR = GASAAR ;** = 
-- **LIST IAR = IAR ;** = 
-- **LIST IP = IP ("IP") ;** = 
-- **LIST INNAQ = INNAQ ;** = 
-- **LIST INNAR = INNAR ;** = 
-- **LIST INNAR_LIR = INNAR=LIR ;** = 
-- **LIST INNAR_NIAR = INNAR=NIAR ;** = 
-- **LIST INNAR_QE = INNAR=QE ;** = 
-- **LIST INNAR_SIMA = INNAR=SIMA ;** = 
-- wrx. moew od rhw aame
+- **LIST IP = IP ("IP") ;** =
 
 - **LIST Tilhængspartikel = LU LI LUUNNIIT ADV-LU CONJ-LU ADV-LI CONJ-LI ADV-LUUNNIIT CONJ-LUUNNIIT ;** = Sæt af tilhængspartiler
-- **LIST Dobbelttransitiv = NIRAR QQU SURE TIP ;** = 
+- **LIST Dobbelttransitiv = NIRAR QQU SURE TIP ;** =
 
 - **LIST WFORM = "<.*>"r ;** = regulært udtryk
 - **LIST BFORM = ".*"r ;** = regulært udtryk
@@ -148,14 +139,14 @@ Sg, Du, Pl, iSg, iDu, iPl, ALL_Sg, ALL_Pl, case forms, verbal inflection
 
 * LIST KLOKKESLET = ("ataaseq" NNGUR) ("marluk" NNGUR) ("pingasut" NNGUR) ("sisamat" NNGUR) ("tallimat" NNGUR) ("arfineq" NNGUR) ("arfineq-marluk" NNGUR) ("arfineq-pingasut" NNGUR) ("qulingiluat" NNGUR) ("qulaaluat" NNGUR) ("qulit" NNGUR) ("aqqaneq" NNGUR); 
 
-* SET AFFINGERET = ALLAP , ARAQ , ARSUK , IAR  , INNAQ , INNAR , INNAR_LIR 
+* SET AFFINGERET = ALLAP , ARAQ , ARSUK , IAR  , INNAQ , INNAR
 
 ## Verb
 
 Ulike verbtyper.
 
-**TRANSVERB** = 1SgO, 2SgO, 3SgO, 4SgO, 1PlO, 2PlO, 3PlO, 4PlO  
-- **SET INTRANSVERB = V - TRANSVERB ;** = 
+**TRANSVERB** = 1SgO, 2SgO, 3SgO, 4SgO, 1PlO, 2PlO, 3PlO, 4PlO
+- **SET INTRANSVERB = V - TRANSVERB ;** =
 - **VFIN** = Ind, Opt, Int; Imp
 - **SET DOTR = Gram/Db | (/__Gram/TV QQU__/l) | (/__Gram/TV TIP__/l) | (/__Gram/TV SAR__/l) | ("ussersuup") | (/__Gram/TV UTE Gram/vv__/l) ;** =
 - **LIST 3SGSUBJVERB = (V 3Sg) ;** =
@@ -352,7 +343,7 @@ Unification set til CONT og kongruente V ved intransitive V
 
 #### Verbernes leksikalske klasser
 
-## Regelsektion 
+## Regelsektion
 
 ###  BEFORE-SECTIONS
 
