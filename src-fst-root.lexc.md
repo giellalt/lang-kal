@@ -659,6 +659,7 @@ i staden ei liste der kvar tag sto ein gong (nedanfor): docs/tagstrings.md
 * **+SINNAANNGUR** 
 * **+SINNAAQ** 
 * **+SINNAR** 
+* **+SIQ** 
 * **+SIR** 
 * **+SIUR** 
 * **+SIUT** 
