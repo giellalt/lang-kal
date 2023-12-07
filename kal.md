@@ -2968,6 +2968,10 @@ Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers
 
 * LEXICON Z1+naZ  
 
+* LEXICON Z1joqZ  nominer som i qajoq:qa
+
+* LEXICON Z1+ngaZ  
+
 * LEXICON Z1+ngeZ  iviangeq, ivianngit
 
 * LEXICON Z1+ssZmorf  derivationsmorfemer til nominer
@@ -2989,6 +2993,10 @@ Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers
 * LEXICON Z1+loZmorf  derivationsmorfemer til nominer som nuloq
 
 * LEXICON Z1+naZmorf  derivationsmorfemer til nominer med gemination af n
+
+* LEXICON Z1joqZmorf  typen pujoq+Der/nn:pu
+
+* LEXICON Z1+ngaZmorf  typen sapangaq+Der/nn:sapan
 
 * LEXICON Z1+ngeZmorf  typen iviangeq+Der/nn:ivian
 
