@@ -5,7 +5,6 @@
 # Delimiters, tags and sets
 
 @OUTSIDE RULES@
-
 * 	N  =
 * 	V  =
 * 	N*  = Præprocessorens tagging af N, der indgår i compounds
@@ -38,6 +37,7 @@
 * 	Gram/HV 
 * 	Gram/IV 
 * 	Gram/TV 
+* 	Heur/Quote 
 * 	Sem/CognitiveMaking  = qinersivoq i modsætning til qinerlerpoq
 * 	Sem/Concessive  = koncessive sætninger
 * 	Sem/event 

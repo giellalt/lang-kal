@@ -648,7 +648,7 @@ SETPARENT:M0080AZ
 
 SETPARENT:0080AVX
 
-SETPARENT:M0082C
+SETPARENT:M0136XZ
 
 SETPARENT:M0195A
 SETPARENT:M0195A
@@ -997,7 +997,7 @@ SETPARENT:0557C
 SETPARENT:M0560A
 SETPARENT:M0560A
 
-SETPARENT:M0561
+SETPARENT:M0562A
 
 SETPARENT:M0562B
 
@@ -1551,7 +1551,6 @@ SETPARENT:M9970FD
 # Delimiters, tags and sets
 
 @OUTSIDE RULES@
-
 * 	N  =
 * 	V  =
 * 	N*  = Præprocessorens tagging af N, der indgår i compounds
@@ -1584,6 +1583,7 @@ SETPARENT:M9970FD
 * 	Gram/HV 
 * 	Gram/IV 
 * 	Gram/TV 
+* 	Heur/Quote 
 * 	Sem/CognitiveMaking  = qinersivoq i modsætning til qinerlerpoq
 * 	Sem/Concessive  = koncessive sætninger
 * 	Sem/event 
