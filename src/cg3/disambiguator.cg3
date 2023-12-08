@@ -68,7 +68,7 @@
 DELIMITERS = "<.>" "<!>" "<?>" "<:>" "<...>" "<¶>" "<\;>" "<·>" ; #tilføjet semikolon den 6.4. Tilføjet bullit 20210503
 OPTIONS += ordered ;
 #!! @RULENAME@
-
+#PARENTHESES = ("<(>" "<)>") ("<[>" "<]>") ("<{>" "<}>") ;
 # Any LIST X = X ; should just be listed here instead.
 # However, LIST X = Y Z ; must remain as LISTs
 LIST-TAGS +=
@@ -107,6 +107,7 @@ LIST-TAGS +=
 	Gram/HV #!!= * @CODE@
 	Gram/IV #!!= * @CODE@
 	Gram/TV #!!= * @CODE@
+	Heur/Quote #!!= * @CODE@
 	Sem/CognitiveMaking #!!= * @CODE@ = qinersivoq i modsætning til qinerlerpoq
 	Sem/Concessive #!!= * @CODE@ = koncessive sætninger
 	Sem/event #!!= * @CODE@
@@ -1254,6 +1255,7 @@ LIST LEKSIKALISERING =
 ;
 LIST LEX_FULLFORM_NOUN = "aalisagaq" "kusugaq" "qilanngaq" "aasaq"
 ; #Jude 2023 leksikaliserede nominale fuldformer, der sandsynligvis aldrig vil have tilknyttet adled til verbalstammen ELLER nominer der også har usandsynlige Gram/Exclm analyser.
+LIST LOCATIONS = "avannaq" "kangi" "kite" "kujate" ;
 LIST MATERIAL = "ameq" "ukkusissaq" "ulik" "qipik" ;
 LIST MAANED = "januar" "januaari" "februar" "februaari" "marts" "marsi" "april" "apriili" "maj" "maaji" "juni" "juuni" "juli" "juuli" "august" "aggusti" "augusti" "aggustusi" "september" "septembari" "oktober" "oktobari" "november" "novembari" "december" "decembari" ;
 LIST MASK = "aata" "angut" "ani" "aqqaluk" "aqqalu" "ataata" "erneq" ;
@@ -1282,7 +1284,7 @@ LIST SKOLEFAG_LIST =
 (/"pinngor"\ Gram/IV\ TIP\ Der/vv\ Gram/TV\ TAQ\ Der/vn\ LIRI\ Der/nv\ Gram/IV\ NIQ/l)
 (/"uppere"\ Gram/TV\ TAQ\ Der/vn\ LIRI\ Der/nv\ Gram/IV\ NIQ/l)
 ;
-LIST SPATIAL = ("aki"\ N) (/"angi"\ Gram/IV\ NIQ\ Der/vn\ TU\ Der/nv\ Gram/IV\ SSUSIQ/l) "ate" "avannaq" "avate" "illuatunge" "ilu" "eqqaq" "kangisip" "killeq" "killik" "kujate" "qaaq" ("<qeqq.*>"r) "qule" "saaq" "sani" "silate" "siu" "tunge" "tunu" "ungate" (".*kannersoq"r); #PL 20180522 slettet "arlaq". Næppe spatialt indhold og fejlhitter fx på 'Arlaqanngitsut qitipput'
+LIST SPATIAL = ("aki"\ N) (/"angi"\ Gram/IV\ NIQ\ Der/vn\ TU\ Der/nv\ Gram/IV\ SSUSIQ/l) "ate" "avannaq" "avate" "illuatunge" "ilu" "eqqaq" "kangisip" "killeq" "killik" "qaaq" ("<qeqq.*>"r) "qule" "saaq" "sani" "silate" "siu" "tunge" "tunu" "ungate" (".*kannersoq"r); #PL 20180522 slettet "arlaq". Næppe spatialt indhold og fejlhitter fx på 'Arlaqanngitsut qitipput'
 LIST THING = "alussaat" "aqqusineq" ("ati" TAQ) ("atuar" TAQ) "ilullissiaq" "manu" "oqarasuaat" "qinngussuaq" "qulleq" "savik" "siu" "timi" "torsuusaq" "ungaloq" ;
 LIST TITEL = (/"aalisar"\ Gram/IV\ \(TAR\ Der/vv\ Gram/IV\ \)?TUQ/l) "ajoqi" (/"aki"\ Gram/IV\ TUQ\ Der/vn\ SSAQ\ Der/nn\ U\ Der/nv\ Gram/IV\ TUQ/l) (/"allap"\ Gram/HV\ Gram/IV\ TUQ/l) "allatsi" (/"aqup"\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TUQ/l) (/"assi"\ LIR\ Der/nv\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TUQ/l) ("bachelor")
 "borgmester" "direktør" "fru" "Gammel" "hr" "hotel" (/"ilaa"\ Gram/IV\ TUQ\ Der/vn\ TAQ/l) ("ilinniar" TIP HTR TUQ) "inatsisinut atortitsinermut ministeri" "itsarsinisarsiooq" "kunngi" "kunngissaq" "lektor"
@@ -1588,15 +1590,17 @@ LIST PosSem = iSem/ac iSem/cloH ; #Jude 20231018
 LIST PosLex = "illu" ; #Jude 20231018
 SET PosN = PosSem | PosLex | Tag-Sem ; #Jude 20231018
 LIST PosVr = GE GIP GISSAAR IAR IRNIAR IRSIR IRUTE KIP KILLI (/LIR\ Der/nv/l) LIUR LIUTE LUP NIP QAR SI TAAR ; #Jude 20231018
-REMOVE:MorfPos0001 (*) - PosN + (/"\(.*\)"\ \([A-Z]+\)?\ \(Der/nn\)?\ \(iSem/.*\)?\ \([A-Z]+\)\ Der/nv/l) (0 PosVr + (VSTR:$5))
-(NEGATE 0 (/NIQ\ Der/vn\ QAR\ Der/nv/l)) ; #Jude 20231019
+#Regex for dummies: ?: inde i en parentes betyder, at parentesen ikke er en capture
+#illuarartaarpoq
+#REMOVE:MorfPos0001 (*) - PosN + (/".*"\(\ iSem/.*\)?\(?:\ [A-Z]+\)?\(\ Der/nn\)?\(\ iSem/.*\)?\ \([A-Z]+\)\ Der/nv/l) (0 PosVr + (VSTR:$4))
+#(NEGATE 0 (/NIQ\ Der/vn\ QAR\ Der/nv/l)) ; #Jude 20231019
 
 
 #!! - #GIIP
 LIST GiipEx = iSem/Hprof iSem/Hfam Prop QATE ;
 REMOVE:MorfGiip0001 (*) - GiipEx (0 GIIP)
 (NEGATE 0 FossileredeCont) ; #Jude 20231009
-REMOVE:MorfGiip0002 (/GIP\ Der/nv\ Gram/IV\ QATE\ Der/vn\ GIIP\ Der/nv/l) (0 (/GE\ Der/nv\ Gram/TV\ iSem/rely\ QATE\ Der/vn\ GIIP\ Der/nv/l)) ; #Jude 20231028
+#REMOVE:MorfGiip0002 (/GIP\ Der/nv\ Gram/IV\ QATE\ Der/vn\ GIIP\ Der/nv/l) (0 (/GE\ Der/nv\ Gram/TV\ \(iSem/rely\ \)?QATE\ Der/vn\ GIIP\ Der/nv/l)) ; #Jude 20231028
 
 #ILATSI
 
@@ -1706,6 +1710,7 @@ REMOVE:MorfTu0002 iSem/unit (0 TU + iSem/percep-l) ; #Jude 20231030
 
 
 #U
+REMOVE:MorU (/U\ Der/nv\ Gram/IV\ i?Sem/exist/l) IF (0 (/U\ Der/nv\ Gram/IV\ i?Sem/be_copula/l /^iSem/f[^o].*$/r) OR (/U\ Der/nv\ Gram/IV\ i?Sem/be_copula/l /^iSem/f$/r)) ; #Jude 20231208 
 #USAAR
 REMOVE:MorfUsaar0001 (/U\ Der/nv\ Gram/IV\ \(i?Sem/.*\)?SAAR\ Der/vv/l) (0 USAAR)
 (NEGATE 0 ("pitsak")) ; #Jude 20231014
@@ -1870,6 +1875,9 @@ REMOVE:MorfGiit0001 (*) - (/"illuk"\ GIIT/l) (0 (/"illu"\ iSem/build\ GIIT/l)) ;
 #TAAQ
 #TAAQ=SUAQ
 #TAQ
+REMOVE:MorfTAQnn0001 (/iSem/ac\ TAQ\ Der/nn/l) (0 ("pissaq")) ; #Jude 20231208 pissartaanerminnik
+REMOVE:MorfTAQnn0002 (/TAQ\ Der/nn\ iSem/Hattr/l) (0 ("pissaq")) ; #Jude 20231208 pissartaanerminnik
+
 #TAQ=GALUAQ
 #TAQ=GASAAQ
 #TAQ=LIK
@@ -3025,6 +3033,7 @@ SUBSTITUTE:adv40lux (LU)(ADV-LU) TARGET LU + CONT + <fn:Take/Bring> IF (1 V + <f
 SUBSTITUTE:adv41lux (LU)(ADV-LU) TARGET LU IF (0 CONT + 3SgO LINK -1 (Abs Sg) LINK -1 BOS OR KOMMA)
 (NEGATE 0 TAR)
 ; #PL20230118 Matup tigummivia tigoriarlugu kigaatsunnguamik gangi takussallugu, tigummivik TIGULLUGULU assakkut uuvunga tupannermillu nilliavunga.
+SUBSTITUTE:adv42lux (LU) (ADV-LU) TARGET LU IF (0 ("<aallartisa.*>"r) + CONT + 4Pl) ;
 SUBSTITUTE:conj1li (LI)(CONJ-LI) TARGET LI + $$MOOD IF (-*1 $$MOOD BARRIER (*) - KOMMA);
 SUBSTITUTE:conj2li_1 (LI)(CONJ-LI) TARGET LI IF (0 Sem/Hum) (-*1 BOS BARRIER (*) - FIRSTNAME)
 (NEGATE 0 (/LI\ Der/vv/l));
@@ -4801,6 +4810,7 @@ REMOVE:0073 Rel + Pl IF (0 Abs + Pl LINK *1 INTRANSVERB + VFIN + 3Pl - Gram/Refl
 (NEGATE *1 TRANSVERB + 3Pl BARRIER V LINK *-1 _TARGET_ LINK NEGATE *-1 Rel + Pl BARRIER VERB-NOTCONT)#Suliffissaaleqisullu amerlinerunissaat ernummatigisariaqartoq, aningaasarsiornermut tunngasunut immikkut ILISIMASALLIT siulittuutigaat.
 (NEGATE *1 TRANSVERB + VFIN + 3Pl BARRIER (*) - OBLIQUE - Rel - %AmbiguøsN - %AmbiguøsPar)#(NEGATE *-1 Rel + Pl LINK *-1 Par + &&IV_SUBJ& BARRIER (*) - OBLIQUE - KOMMA - Rel - %AmbiguøsN LINK *-1 Abs + &&IV_SUBJ&)#USA-p præsidentiata Donald Trumpip napparsimmavimmit anilluni biiliunneqarnera akisussaassuseqanngitsuliornerusoq, USA-mi præsidentimik paarsisut Secret Servicemeersut peqqinnissaqarfimmilu sulisut OQAATIGAAT.
 (NEGATE *1 CONT + TRANSVERB LINK *1 TRANSVERB + 3Pl BARRIER V)#Niuertorutsip angajullequtaa ARLALLIT nakerigaluarlugu inornartutut isigaat.
+(NEGATE 0 Rel + Pl LINK 1 3PlPoss)#Illut amerlanersaasa qullii ikitersimapput, tarrajukkaluartorlu ILLUT pujui takuneqalaarsinnaapput anorlinngimmat qummorluinnaq pujortut.
 ;
 
 #Følgende kopieret ind fra Nomen eller nomen for ikke at få begge NIQ-former slettet af
@@ -5692,6 +5702,7 @@ REMOVE:0322E1 Gram/Refl  IF (NEGATE *-1 ("immi") BARRIER KOMMA)
 (NEGATE 0 (/"tunillap"\ Gram/TV\ \(iSem/pollute\ \)?TIP\ Der/vv\ Gram/Refl/l) LINK 0 Gram/Pass)
 (NEGATE 0 TIR) #TIP bliver altid slettet, når det også kan være TIR, hvilket det dog kun meget sjældent er.
 (NEGATE 0 Imp + 2Sg LINK 0 Par + 2Sg + 3SgO LINK NOT *0 VFIN)
+(NEGATE 0 2SgO LINK 0 CONT + 4Pl + ADV-LU LINK 1 VFIN + 3Pl) #Nunarsuarmili pissartaanerminnik illersuisut aallartisarlutillu sukkatsipput.
 ;
 
 REMOVE:0322E2 (/Gram/TV\ V\ Ind\ 3Sg\ 1SgO/l) IF (0 (/Gram/Refl\ \(Gram/IV\ \)?V\ Ind\ 1Sg/l) LINK NEGATE *0 V + 3Sg) (-1 Aeq OR ("immi")) #Isumaalliortutut MISIGISIMAQAANGA, nalulerlugulu qanoq qanilleqqissinnaanerlugu, angoqqissanerlugu
@@ -5810,6 +5821,7 @@ REMOVE:0370 Cont + Gram/Refl IF (NEGATE -1 ("immi") OR ("nammineq")) #20091104 -
 (NEGATE 0 (/Gram/Refl\ \(Gram/IV\ \)?V\ Cont\ 1Sg/l) LINK *0 VFIN + 1Sg BARRIER VERB-NOTCONT)#Tamatuma saniatigut pingaartittarpara ullormut angusaqartutut misigisimallunga NAAMMAGISIMAARLUNGALU innassallunga.
 (NEGATE 0 ("qinerter") LINK 0 (/"qiner"\ Gram/TV\ TIP\ Der/vv\ Gram/Db\ \(QQIP\ Der/vv\ \)?Gram/Refl/l))# Aaja Folketingimut 2015-imi qinerneqaqqaarpoq 2019-imilu QINERTEQQILLUNI, qinerneqarnerpaalluni.
 (NEGATE 0 ("oqalup") + UTE) #Nalinginnaasumik OQALUULLUTA aallartippugut.
+(NEGATE 0 2SgO LINK 0 CONT + 4Pl + ADV-LU LINK 1 VFIN + 3Pl) #Nunarsuarmili pissartaanerminnik illersuisut aallartisarlutillu sukkatsipput.
 ;
 
 SELECT:0371 3Pl IF (-1C Rel + Pl)(1 EOS OR ("\,")); #" begraensning til saetningsfinale
@@ -8035,8 +8047,8 @@ REMOVE:8563F (/Gram/TV\ V\ Ind\ 3Pl\ 3PlO/l) IF (0 (/Gram/TV\ V\ Ind\ 3Pl\ 3SgO/
 
 # ======================================================================= #
 # Disambiguering af enkeltord, der ikke kan disambigueres paa anden maade #
-##### Nomen eller nomen    8923
-##### Nomen eller pron     9223
+##### Nomen eller nomen    8060
+##### Nomen eller pron     8367
 ##### Pron eller pron      9229
 ##### Nomen eller proprium 9233
 ##### Proprium eller proprium 9243
@@ -8360,6 +8372,7 @@ REMOVE:8599I ("ittu") IF (0 ("ittoq")) ; #PL20231010 vurderes lidt hyppigere
 REMOVE:8599J (/"umik"\ ARSUK/l) IF (0 (/"umiaq"\ SUAQ/l));
 REMOVE:8599K (/^i?Sem/think/r) + USIQ + Pl IF (0 (/^i?Sem/think/r) + USIQ + Sg) ; #Arlaatigut EQQARSARTAATSIMIKKUT ajoquteqarput, inuttulli nalinginnaasutut pissusilersortaraluarlutik nalunartorujussuupput #Hjalte 20231019, ægte ambiguitet, ren sansynlighed
 REMOVE:8599L (/"ilip"\ Gram/IV\ \(i?Sem/worsen\ \)?NIUTE/l) IF (0 (/"ilinniar"\ Gram/IV\ \(i?Sem/learn\ \)?UTE/l));#ILINNIUTIGALUGU
+REMOVE:8599M ("kujak" /^i?Trm/r) - POSSESSUM3 IF (0 ("kujate" /^i?Trm/r KANNIQ)); #kujammut
 
 # Nomen eller pron
 REMOVE:8600A (/"sukku"\ N/l) IF (0 (/"suna"\ Gram/Int\ Pron\ Via/l) LINK 1 ("ma"));
@@ -11939,9 +11952,13 @@ SELECT:Sem0805 (/^i?Sem/L$/r) + POSSESSUM3 IF (-1 (Num Rel)); #fjerner Sem/an og
 
 #SELECT:Sem0810 (/^i?Sem/anmov/r) + ("time") IF (*1 (/"qaqorsaat"\ iSem/cm-h\ LIR/l) BARRIER V); #TIMIGA tamaat qaqorsaaserpara. #jf Sem0415 #time Sem/anmov eksisterer heller ikke #KW04082023
 
-REMOVE:Sem0815 ("akunneq") + (/^i?Sem/ac/r) IF (0 (/^i?Sem/cc/r) + POSSESSUM); #"mellem", ikke "time"
+REMOVE:Sem0815 ("akunneq") + (/^i?Sem/dur/r) IF (0 (/^i?Sem/cc/r) + POSSESSUM); #"mellem", ikke "time"
 
 REMOVE:Sem0820 ("akunneq") + (/^i?Sem/cc/r) IF (0 (/^i?Sem/L/r) + POSSESSUM3 LINK -1 Rel) ;
+
+REMOVE:Sem0821 ("akunneq" /^i?Sem/L/r) OR ("akunneq" /^i?Sem/cc/r) IF (0 (/^i?Sem/dur/r) LINK 0* ("sekund" /^i?Sem/temp/r) OR ("minut" /^i?Sem/dur/r) OR ("nalunaaqutaq")) ; # om tid og ikke om sted eller mellemstykke
+
+REMOVE:Sem0822 ("akunneq" /^i?Sem/per/r) IF (0 (/^i?Sem/dur/r) LINK 0* ("sekund" /^i?Sem/temp/r) OR ("minut" /^i?Sem/dur/r) OR ("nalunaaqutaq") OR (/^i?Sem/per/r)) ; # om en time og ikke om mellemrum
 
 REMOVE:Sem0825 ("tunniup") + (/^i?Sem/sell/r) IF (0 (/^i?Sem/give/r) + ("tunniup")) ;
 
@@ -12021,6 +12038,11 @@ REMOVE:Sem0991 ("taagor") + (/^i?Sem/act$/r) IF (0 (/^i?Sem/percep-l$/r) LINK -1
 
 REMOVE:Sem0995 ("naalagaq") + (/i?Sem/Hmyth$/r) IF (0 (/"naalagaq"\ \(iSem/Hmyth\ \)?U\ Der/nv\ Gram/IV\ \(iSem/be_copula\ \)?VIK/l)); #Naalagaaffeqatigiittulli tamarmik periusissiami nutaami imminnut ilisarisinnaasariaqartut, Jeppe Kofod isumaqarpoq.
 
+REMOVE:Sem1000 ("sini" RSUR TAR UTE) + (/^i?Sem/geom.*/r) IF (0 (/^i?Sem/Ltip/r)); #sinersortaat
+
+#allanngortinneqarpoq
+REMOVE:Sem1005 (/NNGUR\ Der/nv\ Gram/IV\ i?Sem/changeS\ TIP/l) IF (0 (/NNGUR\ Der/nv\ Gram/IV\ i?Sem/become_be\ TIP/l));
+
 # SEMANTISK DISAMBIGUERING FOR MORFEMER #
 REMOVE:SemMorf0000A TUQ + (/^i?Sem/H/r) + $$KASUS + $$NUMERUS IF (*-1C $$KASUS + $$NUMERUS - (/^i?Sem/H/r)); #Soorlu uumasutut ikilerneqarsimaSUTUT, piginnitsini malittariinnarlugu, qungatsini nakkartillugu, tamatigullu maleruutiinnartutut isikkoqarluni.
 REMOVE:SemMorf0000B TUQ + (/^i?Sem/cc/r) + $$KASUS + $$NUMERUS IF (*-1C $$KASUS + $$NUMERUS + (/^i?Sem/H/r)); #Asulu meerarpassuit anitsiartut eqqanniITTUT ikigisassaanatik.
@@ -12039,6 +12061,8 @@ SELECT:LM0005 ("aalisar") + TAQ + LIRI + VIK + (/^i?Sem/cc-h/r); #aalisakkerivik
 SELECT:LM0006 ("ii") + TAR + TAR + TAQ + (/^i?Sem/food-c-h/r); #iisartagaq
 SELECT:LM0007 ("iga") + VIK + (/^i?Sem/Lh/r); #igaffik
 SELECT:LM0008 ("aallar") + TIP + (/^i?Sem/start/r); #aallartippaa
+#SELECT:LM0009 ("alla") + NNGUR + TIP + (/^iSem/alter/r);
+#REMOVE:LM0009 (/TIP Der/vv Gram/TV iSem/become_be
 
 
 ##############
