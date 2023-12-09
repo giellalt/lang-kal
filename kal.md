@@ -1583,6 +1583,7 @@ SETPARENT:M9970FD
 * 	Gram/HV 
 * 	Gram/IV 
 * 	Gram/TV 
+* 	Heur/Prop 
 * 	Heur/Quote 
 * 	Sem/CognitiveMaking  = qinersivoq i modsætning til qinerlerpoq
 * 	Sem/Concessive  = koncessive sætninger
