@@ -963,6 +963,10 @@ Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers
 
 * LEXICON Z1+qaZ  !### udkommentererede gemineringsleksika, erstattet af GEMS (stop, klusil) og GEMC (kontinuant)
 
+* LEXICON Z1+qoZ  
+
+* LEXICON Z1+qeZ  
+
 * LEXICON ZsaqZ  
 
 * LEXICON Z1+koZ  
@@ -972,6 +976,10 @@ Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers
 * LEXICON Z1+loZ  
 
 * LEXICON Z1+naZ  
+
+* LEXICON Z1+noZ  tilføjet livm 20170522 til nanoq med gemination af n
+
+* LEXICON Z1jaqZ  
 
 * LEXICON Z1joqZ  nominer som i qajoq:qa
 
@@ -993,11 +1001,19 @@ Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers
 
 * LEXICON Z1+qaZmorf  derivationsmorfemer til nominer
 
+* LEXICON Z1+qoZmorf  derivationsmorfemer til nominer
+
+* LEXICON Z1+qeZmorf  derivationsmorfemer til nominer
+
 * LEXICON Z1+laZmorf  derivationsmorfemer til nominer
 
 * LEXICON Z1+loZmorf  derivationsmorfemer til nominer som nuloq
 
 * LEXICON Z1+naZmorf  derivationsmorfemer til nominer med gemination af n
+
+* LEXICON Z1+noZmorf  derivationsmorfemer til nanoq med gemination af n tilføjet 20170522
+
+* LEXICON Z1jaqZmorf  typen nujaq+Der/nn:nu
 
 * LEXICON Z1joqZmorf  typen pujoq+Der/nn:pu
 
