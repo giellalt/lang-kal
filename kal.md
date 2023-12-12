@@ -3933,7 +3933,8 @@ i staden ei liste der kvar tag sto ein gong (nedanfor): docs/tagstrings.md
 * **+NGAAR** 
 * **+NGAATSIAQ** 
 * **+NGAJAK** 
-* **+NGAJAP** 
+* **+NGAJAP**
+* **+NGIR** 
 * **+NIAA** 
 * **+NIAALUP** 
 * **+NIAQ** 
