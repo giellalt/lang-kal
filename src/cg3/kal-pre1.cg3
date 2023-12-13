@@ -47,26 +47,35 @@ SPLITCOHORT ("<$1>"v "$1"v Num Abs Sg "<$2>"v "$2"v CLB) ("<(\\p{N}{4})([.])>"r 
 
 # Heuristic analysis of unrecognized Prop multiwords
 # If a word ends in -imi but there is an upper-case word before it, it's likely a Prop Lok
-Substitute:HeurProp0001 ("\\p{Lu}.*"r ?) ("$1"v Prop Lok Sg Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)imi>"r ?) IF (-1 ("\\p{Lu}.*"r)) ;
+Substitute:HeurProp0001 ("\\p{Lu}.*"r ?) ("$1"v Prop Lok Sg Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)imi>"r ?) IF (-1 ("\\p{Lu}.*"r)) ; #Danske Døve Landsforbundimi qinersisoqarpoq
 # Turn remaining upper-case words into Prop if there is a Prop after them
-Substitute:HeurProp0002 (?) (Prop Abs Sg Heur/Prop) TARGET ("<\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+>"r ?) IF (1* Prop BARRIER ("\\p{Ll}.*"r) OR WORD) ;
+Substitute:HeurProp0002 (?) (Prop Abs Sg Heur/Prop) TARGET ("<\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+>"r ?) IF (1* Prop BARRIER ("\\p{Ll}.*"r) OR WORD) ; #Danske Døve Landsforbundimi qinersisoqarpoq
+
 
 # 20231208 Heur/Prop testing 
 Substitute:HeurProp0003 
-(?) (Sem/Hum Prop Abs Sg Heur/Prop)
+("\\p{Lu}.*"r ?) ("$1"v Sem/Hum Prop Abs Sg Heur/Prop)
 TARGET 
-("<\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+>"r ?) 
+("<\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+sen>"r ?) 
 IF 
 (-1 FIRSTNAME) ; 
 #Jude 20231208 ukendt efternavn test Nunatsinneersunit Ivalu Malakiassen isertitsinerpaavoq.
 
-Substitute:HeurProp0004 
-(?) (Prop Rel VSTR:$1 Heur/Prop) 
+Substitute:HeurProp0004A 
+("\\p{Lu}.*"r ?) ("$1"v Prop Rel VSTR:$2 Heur/Prop) 
 TARGET 
-("<\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+p>"r ?) 
+("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+[aeou])p>"r ?) 
 IF 
-(1* VFIN + (V /^3\([SP][gl]\)$/r /^3[SP][gl]O$/r) BARRIER CLB OR ("<\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+p>"r ?)) ; 
+(1* VFIN + (V /^\(3Sg\)$/r /^3[SP][gl]O$/r) BARRIER CLB OR ("<\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+p>"r ?)) ; 
 #Jude 20231208 ukendt trans subj navn test Holgup Tobiarsi takuaa, ilassinngilaali.
+
+Substitute:HeurProp0004B 
+("\\p{Lu}.*"r ?) ("$1"v Prop Rel VSTR:$2 Heur/Prop) 
+TARGET 
+("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+[^aeiou])ip>"r ?) 
+IF 
+(1* VFIN + (V /^\(3Sg\)$/r /^3[SP][gl]O$/r) BARRIER CLB OR ("<\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+p>"r ?)) ; 
+#Jude 20231208 ukendt trans subj navn test Steinþorip aalisakkat mamarai.
 
 Substitute:HeurProp0005 
 (?) (Prop Abs VSTR:$1 Heur/Prop) 
