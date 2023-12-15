@@ -77,12 +77,13 @@ SECTION
 #!! that we actually want to suggest to the user.
 #!! The simplest is to just add it to all spelled words:
 
-ADD:spell-it-all (&typo &SUGGESTWF) (<spelled>) ;
-#!! @RULENAME@
-
-#!! But perhaps you want to only suggest spellings of words that are not inside "quotes":
-
-ADD:spell-conservatively (&typo &SUGGESTWF) (<spelled>) IF (NEGATE -1 QMARK LINK 2 QMARK);
+#€# = vi slår af får vi tester 
+#€# ADD:spell-it-all (&typo &SUGGESTWF) (<spelled>) ;
+#€# #!! @RULENAME@
+#€# 
+#€# #!! But perhaps you want to only suggest spellings of words that are not inside "quotes":
+#€# 
+#€# ADD:spell-conservatively (&typo &SUGGESTWF) (<spelled>) IF (NEGATE -1 QMARK LINK 2 QMARK);
 #!! @RULENAME@
 
 
@@ -90,7 +91,12 @@ ADD:spell-conservatively (&typo &SUGGESTWF) (<spelled>) IF (NEGATE -1 QMARK LINK
 
 #!! #### Verb valency rules
 
-ADD:msyn-arg-trm-ins (&msyn-arg-trm-ins) TARGET Trm IF (1 QAR);
+ADD:msyn-arg-trm-ins (&msyn-arg-trm-ins) TARGET Trm IF 
+	(NOT 0 ("<ataatsimut>"))
+	(1 QAR LINK NOT 0 (/"pi"\ NGAAR\ Der/vv\ Gram/IV\ Gram/IV\ UTE\ Der/vn\ QAR/l) OR (/"sunner"\ Gram/TV\ UTE\ Der/vn/l) OR (/"oqaaseq"\ SSAQ/l) OR Trm)
+	
+	;
+	
 #!! @RULENAME@
 
 COPY:msyn-arg-trm-ins (Ins &SUGGEST) EXCEPT (Trm  &msyn-arg-trm-ins) BEFORE NUMERUS TARGET (&msyn-arg-trm-ins);
@@ -107,7 +113,11 @@ COPY:msyn-arg-ins-trm (Trm &SUGGEST) EXCEPT (Ins  &msyn-arg-ins-trm) BEFORE NUME
 #!! @RULENAME@
 
 
-ADD:msyn-arg-abs-rel (&msyn-arg-abs-rel) TARGET Abs IF (0 Sem/Hum)(*1 (N Abs) - Sem/Hum LINK *1 Gram/TV);
+ADD:msyn-arg-abs-rel (&msyn-arg-abs-rel) TARGET Abs IF 
+	(0 Sem/Hum)
+	(*1 (N Abs) - Sem/Hum BARRIER (/Gram/IV\ V/l) + Par LINK *1 (/Gram/TV\ V/l) - FossileredeCont BARRIER (/Gram/IV\ V/l) + Par)
+	(NEGATE 1 1SgPoss LINK 1 ContNeg LINK *1 VFIN LINK 0 1Sg)
+	;
 #!! @RULENAME@
 	## Judithe nanoq takuaa.
 	#$ {Judithep} nanoq takuaa.
@@ -127,15 +137,16 @@ ADDRELATION:msyn-arg-abs-rel ($2) (V) FROM (*-1 Prop LINK 0 (&msyn-arg-abs-rel))
 
 #!! Rules for quotation marks.
 
+#€# = vi slår af får vi tester 
 
-ADD:use-guillemets (&guillemets) TARGET (""");
-#!! @RULENAME@
-COPY:left-guillemet ("«" &SUGGEST) EXCEPT (""") TARGET (&guillemets) ;
-#!! @RULENAME@
-COPY:right-guillemet ("»" &SUGGEST) EXCEPT (""") TARGET (&guillemets) ;
-#!! @RULENAME@
-
-ADD:use-ellipsis (&ellipsis) TARGET ("...");
-#!! @RULENAME@
-COPY:use-ellipsis ("…" &SUGGEST) EXCEPT ("...") TARGET (&ellipsis) ;
-#!! @RULENAME@
+#€# ADD:use-guillemets (&guillemets) TARGET (""");
+#€# #!! @RULENAME@
+#€# COPY:left-guillemet ("«" &SUGGEST) EXCEPT (""") TARGET (&guillemets) ;
+#€# #!! @RULENAME@
+#€# COPY:right-guillemet ("»" &SUGGEST) EXCEPT (""") TARGET (&guillemets) ;
+#€# #!! @RULENAME@
+#€# 
+#€# ADD:use-ellipsis (&ellipsis) TARGET ("...");
+#€# #!! @RULENAME@
+#€# COPY:use-ellipsis ("…" &SUGGEST) EXCEPT ("...") TARGET (&ellipsis) ;
+#€# #!! @RULENAME@
