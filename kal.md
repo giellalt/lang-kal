@@ -2965,6 +2965,8 @@ Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers
 
 * LEXICON ZsaqZ  
 
+* LEXICON Z1+kaZ  
+
 * LEXICON Z1+koZ  
 
 * LEXICON Z1+laZ  
@@ -2990,6 +2992,8 @@ Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers
 * LEXICON Z1+maZmorf  derivationsmorfemer til nominer som isuma
 
 * LEXICON Z1+meZmorf  derivationsmorfemer til nominer
+
+* LEXICON Z1+kaZmorf  derivationsmorfemer til nominer
 
 * LEXICON Z1+koZmorf  derivationsmorfemer til nominer
 
