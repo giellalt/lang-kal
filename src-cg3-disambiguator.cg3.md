@@ -4,7 +4,6 @@
 
 # Delimiters, tags and sets
 
-@OUTSIDE RULES@
 * 	N  =
 * 	V  =
 * 	N*  = Præprocessorens tagging af N, der indgår i compounds

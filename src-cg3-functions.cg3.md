@@ -1,5 +1,5 @@
 
-W E S T   G R E E N L A N D I C   S Y N T A C T I C   F U N C T I O N S     
+W E S T   G R E E N L A N D I C   S Y N T A C T I C   F U N C T I O N S
 
 - Delimiters (line 47)
 - Tags and sets
@@ -30,53 +30,18 @@ W E S T   G R E E N L A N D I C   S Y N T A C T I C   F U N C T I O N S
 		- SELECT and REMOVE participles (1460)
 		- SELECT og REMOVE nominer (
 - One-cohort disambiguation - cycle 0
-
 - Local disambiguation - cycles 1
 	      - Global disambiguation - cycles 2
 - Syntactic disambiguation
 
-Ny indholdsfortegnelse påbegyndt 20201015 
+Ny indholdsfortegnelse påbegyndt 20201015
 
 Begyndende udkommentering af REMOVE og SELECT, der kun skal stå i disambiguator. Vil blive udkommenteret med '#DATO' fx '#20210704'. Færdiggjort 20230726.
 Begyndende sletning hvor REMOVE og SELECT står med #
 
-## Regelsektion 
+## Regelsektion
 
 Delimiter
-
-ADD:0302E
-
-ADD:0302F
-
-ADD:0302F
-
-ADD:0302F
-
-ADD:0302F
-
-ADD:0302F
-
-ADD:0302F
-
-ADD:0302F
-
-ADD:0302F
-
-ADD:0302F
-
-ADD:0302F
-
-ADD:0302F
-
-ADD:0302F
-
-ADD:0302F
-
-ADD:0302F
-
-ADD:0302F
-
-ADD:0302F
 
 * * *
 <small>This (part of) documentation was generated from [src/cg3/functions.cg3](https://github.com/giellalt/lang-kal/blob/main/src/cg3/functions.cg3)</small>
