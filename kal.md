@@ -382,6 +382,7 @@ Judithes afsnit start ### påbegyndt 20231006: sorter umulige morfemkombinatione
 
 * * *
 <small>This (part of) documentation was generated from [src/cg3/disambiguator.cg3](https://github.com/giellalt/lang-kal/blob/main/src/cg3/disambiguator.cg3)</small>
+
 W E S T   G R E E N L A N D I C   S Y N T A C T I C   F U N C T I O N S
 
 - Delimiters (line 47)
@@ -2863,6 +2864,7 @@ For example:
 <small>This (part of) documentation was generated from [src/transcriptions/transcriptor-numbers-digit2text.lexc](https://github.com/giellalt/lang-kal/blob/main/src/transcriptions/transcriptor-numbers-digit2text.lexc)</small>
 
 ---
+
 
 
 #      G R E E N L A N D I C   G R A M M A R   C H E C K E R

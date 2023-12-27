@@ -1,4 +1,5 @@
 
+
 W E S T   G R E E N L A N D I C   S Y N T A C T I C   F U N C T I O N S
 
 - Delimiters (line 47)
