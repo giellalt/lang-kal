@@ -1,9 +1,11 @@
-#cg-pre-pipe: ~/langtech/kal/tools/shellscripts/kal-tokenise ~/langtech/kal/tools/tokenisers/tokeniser-disamb-gt-desc.pmhfst | /usr/local/bin/vislcg3 --grammar ~/langtech/kal/src/cg3/kal-pre1.cg3 #
+# -*- cg-pre-pipe: zsh -l -c '~/langtech/kal/tools/shellscripts/kal-analyse --hyb' -*-
+
+# Nutserut kal2eng pre-pipe: zsh -l -c '~/langtech/nutserut/dev/kal2eng/kal2eng.pl --hsplit'
 
 #ADD-reglerne bedst placeret i selvstændig CG, fordi DIRTALE.*-tags ikke er synlige i første no-mappings kørsel (i modsætning til SUBSTITUTE, der kan ses straks, men til gengæld gentages et uskønt antal gange) samt fordi de nye tags ikke kan anvendes i constraints, der peger mod højre. Sidste forbehold gælder også for SUBSTITUTE.
 
 #Der gøres (foreløbig?) ikke forskel på direkte tale modsat opremsninger o.lign. efter kolon. DIRTALE er altså lidt upræcis idet en sætning som " ... paasissutissaaleqilaarpungali: Aqqit nalinginnaarpianngitsut soorlu Agssagiaĸ suiaassuseqartinngilakka taamaammat suliassiissut manna ingerlassinnaanagu." vil få analysen " ... paasissutissaaleqilaarpungali:DIRTALESTART Aqqit nalinginnaarpianngitsut soorlu Agssagiaĸ suiaassuseqartinngilakka taamaammat suliassiissut manna ingerlassinnaanagu.DIRTALESLUT"
- 
+
 
 INCLUDE STATIC disambiguator.cg3 ;
 
@@ -14,7 +16,7 @@ ADD:ContHypotagme3 (%ContHypotagme) TARGET CONT + 3SgO IF (-1 Abs + Sg);
 ADD:ContHypotagme4 (%ContHypotagme) TARGET CONT + 3PlO IF (-1 Abs + Pl);
 ADD:ContHypotagme5 (%ContHypotagme) TARGET Num + Abs IF (1 CONT + 3PlO); #"Fejlen" 18 sinnerlugit ukiullit
 ADD:ContHypotagme6 (%ContHypotagme) TARGET CONT + 3PlO IF (-1 Num + Abs ); #"Fejlen" 18 sinnerlugit ukiullit
-ADD:ContHypotagme7 (%ContHypotagme) TARGET Abs IF (1 Abs + LU LINK 1 CONT + 3PlO);  
+ADD:ContHypotagme7 (%ContHypotagme) TARGET Abs IF (1 Abs + LU LINK 1 CONT + 3PlO);
 
 ADD:NumPossessum1 (%NumPossessum) TARGET ("misse") + 3PlPoss IF (-1 Rel + Num) ;
 ADD:NumPossessum2 (%NumPossessum) TARGET Rel + Num IF (1 ("misse") + 3PlPoss) ;
@@ -46,12 +48,12 @@ ADD:AmbiguøsPar (%AmbiguøsPar) TARGET Par IF (0 TUQ + N);
 #tillad hypotakser med temporal indhold i BARRIER
 ADD:%Othertime1 (%Othertime) TARGET ("ingerla") + &&POSS34_POSS& OR ("naa" NIQ) + &&POSS34_POSS& IF (*-1 TIMENOUN + Rel BARRIER (*) - ADVERBIEL - Der/vn);
 ADD:%Othertime2 (%Othertime) TARGET ADVERBIEL + Rel OR Der/vn + Rel IF (*-1 TIMENOUN + &&POSS34_POSS& BARRIER (*) - ADVERBIEL - Der/vn)(*1 ("ingerla") + &&POSS34_POSS& BARRIER (*) - ADVERBIEL - Der/vn - NUM);
-ADD:%Othertime3 (%Othertime) TARGET TIMENOUN + &&POSS34_POSS& IF (*1 ("ingerla") + &&POSS34_POSS& BARRIER (*) - ADVERBIEL - Der/vn - NUM - %AmbiguøsN); 
-ADD:%Othertime3 (%Othertime) TARGET ("ingerla") + &&POSS34_POSS& IF (*-1 TIMENOUN + &&POSS34_POSS& BARRIER (*) - ADVERBIEL - Der/vn - NUM - %AmbiguøsN); 
+ADD:%Othertime3 (%Othertime) TARGET TIMENOUN + &&POSS34_POSS& IF (*1 ("ingerla") + &&POSS34_POSS& BARRIER (*) - ADVERBIEL - Der/vn - NUM - %AmbiguøsN);
+ADD:%Othertime3 (%Othertime) TARGET ("ingerla") + &&POSS34_POSS& IF (*-1 TIMENOUN + &&POSS34_POSS& BARRIER (*) - ADVERBIEL - Der/vn - NUM - %AmbiguøsN);
 
 #Forstår ikke følgende. Forsøgsvist ud og erstattet af ny regel
-#ADD:%Othertime4 (%Othertime) TARGET TIMENOUN + Rel IF (1 OTHERTIME + Rel LINK 1 OTHERTIME + &&POSS34_POSS& BARRIER (*) - ADVERBIEL - Der/vn); 
-ADD:%Othertime4 (%Othertime) TARGET TIMENOUN + Rel IF (1 OTHERTIME + Rel + &&POSS34_POSS& LINK *1 OTHERTIME + &&POSS34_POSS& BARRIER (*) - ADVERBIEL - Der/vn); 
+#ADD:%Othertime4 (%Othertime) TARGET TIMENOUN + Rel IF (1 OTHERTIME + Rel LINK 1 OTHERTIME + &&POSS34_POSS& BARRIER (*) - ADVERBIEL - Der/vn);
+ADD:%Othertime4 (%Othertime) TARGET TIMENOUN + Rel IF (1 OTHERTIME + Rel + &&POSS34_POSS& LINK *1 OTHERTIME + &&POSS34_POSS& BARRIER (*) - ADVERBIEL - Der/vn);
 ADD:%Othertime5 (%Othertime) TARGET ("kingorna") OR ("kinguneq") + POSSESSUM3 IF (-1 NIQ + Rel);
 
 #Tillad possessor for OBLIQUE i type BARRIER (*) - OBLIQUE - %PossOblique
@@ -70,7 +72,7 @@ ADD:TAQ_POSSESSUM01 (%TaqPossPoss) TARGET Rel - CONJ-C IF (1 TAQ + POSSESSUM3 + 
 ADD:TAQ_POSSESSUM02 (%TaqPossPoss) TARGET TAQ + POSSESSUM3 + $$KASUS + $$NUMERUS IF (-1 Rel - CONJ-C)(-2 $$KASUS + $$NUMERUS)  #meeqqap arnap IKIUGAATA ornippaanga.
 (NEGATE 0 (/"pisiaq"\ GE\ Der/nv\ Gram/TV\ TAQ\ Der/vn\ PAK/l)) #som sandsynligvis er 'pisiarisarpa.*
 (NEGATE 0 (/"asser"\ Gram/TV\ TAQ/l))#sandsynligvis 'assigivaa'
-; 
+;
 
 #PL20210520 Hjælp til at isolere komplekse konstruktioner i BARRIER
 ADD:%2smlNP1 (%2smlNP) TARGET Num IF (-1 $$KASUS + $$NUMERUS LINK 1 Num LINK 1 PROCENT + Abl OR Sem/Unit + Abl LINK 1 <fn:Be> + NIRU + $$KASUS + $$NUMERUS); #Naalakkersuisut Siulittaasuat Kim Kielsen aalajangerpoq imigassat aalakoornartortallit 2,25 PROCENTIMIT KIMITTUNERUSUT tamarmik Nuummi, Kapisilinni Qeqertarsuatsiaanilu tuniniarneqartarneri sassaalliutigineqartarnerilu inerteqqutigineqarallassasut.
@@ -85,11 +87,11 @@ ADD:PartaktiskNP (%ParataktiskNP) TARGET CONT + QAR + 4Pl + CONJ-C IF (1 LIK + N
 #Eksplicit tagging af Hprof så <Hprof> er synlig trods evt. transformationer
 #ADD (<Hprof>) <Hprof> ;
 
-ADD:AappaaAappaa (<aappaq1>) TARGET ("aappaq" 3SgPoss) IF (*1 ("aappaq" 3SgPoss)); 
+ADD:AappaaAappaa (<aappaq1>) TARGET ("aappaq" 3SgPoss) IF (*1 ("aappaq" 3SgPoss));
 
 #Farlige interimregler importeret fra "Livs GCG" mens vi venter på at regressionen gøres kontekstsensitiv
 ADD:DIRSTART_Int1 DIRTALESTART TARGET ("-") + PUNCT OR (""") + PUNCT OR ("”") + (PUNCT RIGHT) OR ("„") + (PUNCT LEFT) IF (-1 BOS) ;
-ADD:DIRSTART_Int2 DIRTALESTART TARGET (":") IF (NEGATE 0 DIRTALESTART OR DIRTALESLUT) 
+ADD:DIRSTART_Int2 DIRTALESTART TARGET (":") IF (NEGATE 0 DIRTALESTART OR DIRTALESLUT)
 (NEGATE -2 BOS LINK 1 ("[A-Z]"r))#Ikke punktopstillinger som A: etc.
 ; #not safe marking
 
@@ -109,7 +111,7 @@ ADD:DIRSLUT01 DIRTALESLUT TARGET ("?") + CLB OR ("!") + CLB OR (".") + CLB IF (*
 (NEGATE *-1 ("?") LINK 1 Prop OR N LINK *1 <fn:Talk> + Ind + 3Sg BARRIER VERB-NOTCONT)#men ikke kommaseparerede inquit jf. DIRSLUT02
  ;
 ADD:DIRSLUT02 DIRTALESLUT TARGET KOMMA + CLB IF (*-1 DIRTALESTART)(1 Prop + Abs LINK *1 ("oqar") + Ind BARRIER VERB-NOTCONT)
-#(NEGATE # 
+#(NEGATE #
 ;#til inquit uden citationstegn slut og uden !, ? eller .
 
 
@@ -131,5 +133,5 @@ SUBSTITUTE Der/LG13 (*) TARGET Der/LG13;
 
 #en test med tagging af særlige konstruktioner, der skal bruges tidligt i næste CG. Virker måske og måske ikke
 #MAP:M1130 (@i-ADVL>) TARGET CONT IF (*1 NIQ - ("inuk" U NIQ) - Gram/Int - Gram/Comp OR (/.*neq"\ N/l) - ("seqineq") - ("aqqusineq") - ("inuk" U NIQ) - Gram/Int - Gram/Comp BARRIER (*) - Adv - ADVERBIEL LINK NOT 1 KOMMA) #Uangalu anorip karrit aqqusaarlugit siorsunnera nuannaringaalissagaluarpara... # Mapping af ledsagemåde til inderiveret verbum
-#(NEGATE *-1 BOS LINK *1 _TARGET_ + QQU BARRIER (*) - Abs - OBLIQUE - Adv LINK 1 TIME)#Panini namminermisut inuunermik taamaattumik ATUGAQAQQUNAGU silattunnginnerani toqoqatigalugu inuunera kipiniaraluarpaa ...! 
+#(NEGATE *-1 BOS LINK *1 _TARGET_ + QQU BARRIER (*) - Abs - OBLIQUE - Adv LINK 1 TIME)#Panini namminermisut inuunermik taamaattumik ATUGAQAQQUNAGU silattunnginnerani toqoqatigalugu inuunera kipiniaraluarpaa ...!
 #;
