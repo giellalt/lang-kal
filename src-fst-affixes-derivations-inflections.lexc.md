@@ -99,6 +99,8 @@ Nogle af dem er dokumenterede, andre ikke.
 
 * LEXICON SIKgemin  derivationsmorfemer til nominer som ikusik:iku
 
+* LEXICON SUKgemin  derivationsmorfemer til nominer som pukusuk:puku
+
 * LEXICON Z1+le_UdenPossessumZmorf  derivationsmorfemer til nominer som kalaaleq, der ikke kan tage possessum
 
 * LEXICON Z1eZmorf  derivationsmorfemer til nominer på udlydende schwa
@@ -530,6 +532,8 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 * LEXICON Z1iZ  taggit
 
 * LEXICON ZsikZ  170306 til ikusik og kiasik
+
+* LEXICON ZsukZ  170306 til pukusuk
 
 * LEXICON Z1+le_UdenPossessumZ  
 
