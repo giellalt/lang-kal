@@ -1417,7 +1417,7 @@ Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers
 
 * LEXICON Z1+noZ  tilføjet livm 20170522 til nanoq med gemination af n
 
-* LEXICON Z1jaqZ  
+* LEXICON Z1nujaqZ  
 
 * LEXICON Z1joqZ  nominer som i qajoq:qa
 
@@ -1455,7 +1455,7 @@ Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers
 
 * LEXICON Z1+noZmorf  derivationsmorfemer til nanoq med gemination af n tilføjet 20170522
 
-* LEXICON Z1jaqZmorf  typen nujaq+Der/nn:nu
+* LEXICON Z1nujaqZmorf  typen nujaq+Der/nn:nu
 
 * LEXICON Z1joqZmorf  typen pujoq+Der/nn:pu
 
