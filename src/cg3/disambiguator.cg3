@@ -512,6 +512,7 @@ LIST ParagrafSlut = "¶" "." ; #To be added in all corpora in order to deal effi
 
 #!! ### Derivatives
 
+LIST DERTEMPORAL = RIIR RIAR UTIGE ;
 LIST IP = IP ("IP") ;		     #!!≈ - **@CODE@** =
 LIST KAR = KAR "KAR" ;
 LIST LIK = LIK "quleriilik"; #quleriilik ikke analyseret som LIK i FST
@@ -971,6 +972,7 @@ SET FossileredeCont =
  (/"siulleq"\ U\ Der/nv\ Gram/IV\ V\ Cont/l) OR
  (/"siulleq"\ U\ Der/nv\ Gram/IV\ V\ ContNeg/l) OR
  (/"taarser"\ Gram/TV\ UTE\ Der/vv\ Gram/TV\ V\ Cont/l) OR
+ (/"tamakker"\ Gram/IV\ V\ Cont/l) OR
  (/"tamakker"\ Gram/TV\ V\ Cont/l) OR
  (/"toqqar"\ Gram/TV\ \(Sem/choose\ \)?V\ Cont/l) OR
  (/"toqqar"\ Gram/TV\ \(Sem/choose\ \)?V\ ContNeg/l) OR
@@ -983,7 +985,7 @@ SET FossileredeContUdenObj =
  (/"toqqar"\ Gram/TV\ \(Sem/choose\ \)?V\ Cont/l) ;
 #kan udvides med flere fra FossileredeCont
 
-LIST AltidAdvlCont = (/"nammineer"\ Gram/IV\ V\ Cont/l) (/"telefoner"\ Gram/IV\ V\ Cont/l);
+LIST AltidAdvlCont = (/"nammineer"\ Gram/IV/l) (/"telefoner"\ Gram/IV/l);
 
 SET DelvistFossileredeCont = FossileredeCont | AltidAdvlCont ;
 
@@ -8868,7 +8870,7 @@ SELECT:5490DM1 ("niller") + (/^i?Sem/be_attribute/r) IF (*-1 (/^i?Sem/wea-wind/r
 SELECT:5490DM2 ("niller") + (/^i?Sem/be_attribute/r) IF (0 Ins LINK 1 ("serpartar")); #Anillannginninni kiinara nillertumik serpartalaarpara.
 SELECT:5490DM3 ("niller") + (/^i?Sem/be_attribute/r) IF (*-1 (/^i?Sem/percep-l/r)); #Illarneq imaqanngitsoq NILLERTOQ.
 SELECT:5490DM4 ("niller") + (/^i?Sem/be_attribute/r) IF (*0 ("qiia")); #Iluatiguuginnaagama NILLEQIMMAT qiiavunga.
-REMOVE:5490DM5 ("niller") + (/^i?Sem/be_attribute/r) IF (0 (/^i?Sem/speak_mnr/r)); #øvrige tilfælde
+REMOVE:5490DM5 (/"niller"\ Gram/IV\ i?Sem/be_attribute/l) IF (0 (/^i?Sem/speak_mnr/r)); #øvrige tilfælde
 REMOVE:5490DN (/"angi"\ Gram/IV\ NIRSAQ\ Der/vn\ U/l) IF (0 (/"anner"\ Gram/IV\ SAR\ Der/vv\ Gram/TV\ HTR/l) LINK 0 (/NIQ\ Der/vn\ \(TAQ\ Der/nn\ \)?LIK/l)); #PL20221229 Nuummi politiit tallimanngormat nalunaaqutaq 21-p missaani ANNERSAANERTALIMMIK saassussinermut takunnissimasinnaasunik ujartuipput.
 REMOVE:5490DO1 ("isaap") OR ("isaar") OR ("isa") + U IF (0 ("iser" A) + &&IV_SUBJ& LINK *-1 Abs + &&IV_SUBJ& - HUMAN); #PL20230108 Soorlumi illup ilua kissakkiartortoq, tipilu ikuallassunni matup ataatigut ISAALERLUNI.
 REMOVE:5490DO1 ("isaap") OR ("isaar") OR ("isa") + U IF (0 ("iser" A) LINK *0 ("ulikkaar")); #Taannaqami isaalerput isaalerput, bussit ulikkaavillutik.
@@ -11344,6 +11346,9 @@ REMOVE:9969BR Gram/TV + TIP + Gram/Db IF (0 Gram/IV + TIP + Gram/TV) #Oqaluttuup
 (NEGATE 0 (/"akiler"\ Gram/TV\ \(iSem/pay\ \)?TIP\ Der/vv\ Gram/Db\ TAR\ Der/vv\ Gram/Refl\ TUQ/l) + $$KASUS + $$NUMERUS LINK -1 ("sakkutooq") + $$KASUS + $$NUMERUS)#Sakkutuut AKILERSITTARTUT siuttuat timmisartup nakkarneratigut toqusimasoq qulakkeerneqartoq
 ;
 
+#måske som sidste regel?
+REMOVE:9969BS Gram/HV + QQU + Gram/TV + Gram/Refl IF (0 Gram/TV + QQU + Gram/Db + Gram/Refl); #Seeqquani qilerua qaamanersalik ilisarnarpoq, soorlumi kisimi TAKOQQUSOQ.
+
 ##################################################
 #Specifikke regler til disambiguering af Gram/Db vs. Gram/Db
 ##################################################
@@ -11849,7 +11854,8 @@ SELECT:Sem0495 ("iner") + (/^i?Sem/excrete.*/r) IF (*0 ("nipaarsaar") OR ("mangu
 SELECT:Sem0500 ("qaller") + (/^i?Sem/speak_mnr/r) IF (0 V LINK *-1 DIRTALESTART); #”Qaquguuna eqqartuussaaniartunga?” QALLERPARA.
 SELECT:Sem0501 ("qaller") + (/^i?Sem/colouring/r) IF (*0 ("qalipap")); #”Usimi!” ammaleriallaraa Arsugap atuarfimmi sanaarisimasaa iganut allequt, kappoqqutit liimmernikunik ammalortuliaq, qaavatigut orangeamik qalipaatilimmik annoraaminermik QALLIGAQ.
 
-REMOVE:Sem0505 ("iser") + (/^i?Sem/substance_emission.*/r); #Lav undtagelser når de kommer.
+REMOVE:Sem0505 ("iser") + (/^i?Sem/substance_emission/r); #Lav undtagelser når de kommer.
+REMOVE:Sem0506 ("iser") + (/^i?Sem/pull/r); #Lav undtagelser når de kommer.
 
 SELECT:Sem0510 ("aki") + (/^i?Sem/Ltop.*/r) IF (0 POSSESSUM)(0 Lok OR Trm OR Abl); #Tunullugit nateq asappara, AKIANIIT AKIANUT kumittarlugu.
 
