@@ -36,18 +36,21 @@
 * 	Gram/HV 
 * 	Gram/IV 
 * 	Gram/TV 
+* 	Gram/Ord 
+* 	Gram/ImpNeg 
 * 	Heur/Prop 
 * 	Heur/Quote 
 * 	Sem/CognitiveMaking  = qinersivoq i modsætning til qinerlerpoq
 * 	Sem/Concessive  = koncessive sætninger
 * 	Sem/event 
-* 	Sem/Fem  = Introduceret som test 20180613. Skal måske ud igen
+* 	Sem/Fem iSem/Fem  = Introduceret som test 20180613. Skal måske ud igen
 * 	Sem/FirstName 
 * 	Sem/Geo iSem/Geo 
 * 	Sem/Hunt  = qinerlerpoq i modsætning til qinersivoq
 * 	Orth/Alt 
 * 	Orth/Arch 
 * 	Orth/Copy  = Alternative append rules
+* 	Orth/Append  = Alternative append rules
 * 	Orth/Youth  youth language
 - **1SgPoss** =
 - **2SgPoss** =
