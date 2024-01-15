@@ -1280,6 +1280,7 @@ LIST LEKSIKALISERING =
 (/"naalagaq"\ LIRSUR\ Der/nv\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TUQ\ Der/vn\ QAR\ Der/nv\ Gram/IV\ VIK/l)
 (/"naatsorsor"\ Gram/TV\ UTE\ Der/vn\ N/l)
 (/"nakorsaq"\ Sem/Hprof\ U\ Der/nv\ Gram/IV\ NIQ/l)
+(/"oqar"\ Gram/IV\ iSem/say\ TUQ\ Der/vn\ iSem/H\ SSAQ\ Der/nn\ iSem/temp\ U\ Der/nv\ Gram/IV\ iSem/be_copula\ SSUSIQ\ Der/vn/l)
 (/QAR\ Der/nv\ Gram/IV\ TIP\ Der/vv\ Gram/TV\ HTR\ Der/vv\ VIK/l)
 (/"sinner"\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TUQ/l)
 (/"siulittar"\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TUQ/l)
@@ -1720,14 +1721,15 @@ REMOVE:MorfQatigiip (*) - iSem/Lciv (0 QATE + GIIP + (/"naalagaq"\ U\ Der/nv\ Gr
 
 #TUR
 LIST ConsSem = iSem/Azo iSem/drink-h iSem/food iSem/fruit-c ; #Jude 20231027 Cons som consume
-LIST ConsLex = "aput" "immiaq" "innaallagiaq" "kaffi" "nutaaq" "tii" "tuttu" ; #Jude 20231027
-SET ConsN = ConsSem | ConsLex ; #Jude 20231027
+LIST ConsLex = "aput" "immiaq" "kaffi" "nutaaq" "tii" "tuttu" ; #Jude 20231027
+LIST ConsLexMeta = "innaallagiaq" ; #Jude 20240115 metaphorical use
+SET ConsN = ConsSem | ConsLex | ConsLexMeta ; #Jude 20231027
 LIST ConsSuf = (/iSem/prepare_food\ INNAR\ Der/vv\ Gram/TV\ TAQ\ Der/vn/l) (/MINIQ\ Der/nn\ iSem/food-m/l) (/Sem/prepare_food\ TAQ\ Der/vn/l) ; #Jude 20231027
 LIST ConsVr = NNGIR TUR ; #Jude 20231027
 REMOVE:MorfCons001 (*) - ConsN (0 ConsVr) ; #Jude 20231027
 REMOVE:MorfCons002 (*) - ConsSuf (0 ConsVr) ; #Jude 20231027
 
-LIST NonConsLex = "pooq" "qaaq" ; #Jude 20231027
+LIST NonConsLex = "pooq" "qaaq" "sallu" ; #Jude 20231027
 LIST NonConsSem = iSem/con iSem/percep-f iSem/percep-l iSem/unit ;
 SET NonConsN = NonConsLex | NonConsSem ; #Jude 20231027
 REMOVE:MorfTur0001 NonConsN (0 (/TUR\ Der/nv/l) OR (/TUGAQ\ Der/nn/l)) ; #Jude 20231027
@@ -1742,6 +1744,7 @@ REMOVE:MorfTur0003 (/TU\ Der/nv\ Gram/IV\ \([A-Z]+\ \)?Der/vv/l) - NonConsN - Tu
 #TU
 REMOVE:MorfTu0001 TUR (0 TU + TuLex) ; #Jude 20231030
 REMOVE:MorfTu0002 iSem/unit (0 TU + iSem/percep-l) ; #Jude 20231030
+REMOVE:MorfTu0003 (/TU\ Der/nv\ Gram/IV\ SSAAR\ Der/vv/l) (0 (/TUQ\ Der/vn\ iSem/H\ SSAQ\ Der/nn\ iSem/temp\ U\ Der/nv/l) + LEKSIKALISERING) ; #Jude 20240115
 
 REMOVE:NoEat (/iSem/drink\ TUR\ Der/nv\ Gram/IV\ iSem/eat/l) ;
 REMOVE:NoEat1 (/iSem/B\ TUR\ Der/nv\ Gram/IV\ iSem/drink/l) ;
@@ -1982,11 +1985,13 @@ REMOVE:MorfTAQnn0002 (/TAQ\ Der/nn\ iSem/Hattr/l) (0 ("pissaq")) ; #Jude 2023120
 #VIK=SUAQ
 
 ### Der/vn ###
+#SSUSIQ
+
 #TAQ
 REMOVE:MorfTAQ (/TAQ\ Der/vn\ iSem/ac/l) (0 (/iSem/listen\ TAQ\ Der/vn/l)) ; #Jude 20231208 tusagassiorfinnut
 
 #TUQ
-
+REMOVE:MorfTUQ (/TUQ\ Der/vn\ iSem/cc/l) (0 ("oqar")) ; #Jude 20240115
 
 #VIK
 REMOVE:MorfVIK (/iSem/cause\ VIK\ Der/vn/l) (0 ("<tusagassi.*>"r SSAQ LIUR)) ; #Jude 20231208 tusagassiorfinnut
@@ -12182,8 +12187,10 @@ REMOVE:SemMorf0000C TUQ + (/^i?Sem/H/r) + $$KASUS + $$NUMERUS IF (*1C $$KASUS + 
 REMOVE:SemMorf0000D TUQ + (/^i?Sem/cc/r) + $$KASUS + $$NUMERUS IF (*1C $$KASUS + $$NUMERUS + (/^i?Sem/H/r));
 SELECT:SemMorf0001 QATE + GE + (/^i?Sem/be_part/r); #QATE=GE
 REMOVE:SemMorf0002A QAR + (/^i?Sem/exist/r) IF (-1 Abs); #Malugisinnaavara anaanaga UTAQQISINNAASSUSEQARPASINNGITSORAASIIT, uangalu ulapileraluttuinnarninni singissartoq suli singikkuminaatsinneruleraluttuinnarlugu.
-REMOVE:SemMorf0002B QAR + (/^i?Sem/exist/r)(NEGATE 0 3Sg);
-REMOVE:SemMorf0002C TUQ + QAR + (/^i?Sem/have/r) (NEGATE -1 Abs); #Anaanaga ungasillilaalereersimagaluarluni tunginnut kamappasilluni allullattaalermat nalunngilara AJORTOQALERSOQ.
+REMOVE:SemMorf0002B QAR + (/^i?Sem/exist/r)(NEGATE 0 3Sg)
+(NEGATE 0 N + LEKSIKALISERING);
+REMOVE:SemMorf0002C TUQ + QAR + (/^i?Sem/have/r) (NEGATE -1 Abs)
+(NEGATE 0 N + LEKSIKALISERING); #Anaanaga ungasillilaalereersimagaluarluni tunginnut kamappasilluni allullattaalermat nalunngilara AJORTOQALERSOQ.
 
 SELECT:SemMorf9999 (/^i?Sem/j/r); #vælg adjektivlæsningen, hvis udisambigueret
 
