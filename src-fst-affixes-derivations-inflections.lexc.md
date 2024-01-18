@@ -894,6 +894,8 @@ Ord som PFAS
 
 * LEXICON N_Loan_V  nominal loanwords ending in a, u, y, æ, ø, å
 
+* LEXICON N_Loan_V_ObligatoriskBindestreg  korte stammer som BA
+
 * LEXICON N_Loan_i  nominal loanwords ending in i
 
 * LEXICON N_Loan_logi  nominal loanwords ending in logi pl20201104 for at tvinge et ekstra i ind i teknologi+Imik modsat teknolog+Imik (via N_Loan_i)
