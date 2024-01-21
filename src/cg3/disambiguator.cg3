@@ -1240,7 +1240,7 @@ LIST BODY = (/^i?Sem/an/r) (/^i?Sem/anzo/r) (/^i?Sem/anost/r) (/^i?Sem/anich/r) 
 LIST CLOTHES = "aqajaqanngitsoq" "kamik" "annoraaq" "kavaajaq" "alersi" "alerseq" "qarlik" "skuu" "tujuuluk" "tuluujuk" <cloH> ;
 LIST COLOUR = "aappaluttoq" ("aak" PALUP TUQ) "qaqortoq" "qaqqorik" "qernertoq" "qorsuk" "sungaartoq" (/"tungujor"\ Gram/IV\ TUQ/l) ;
 LIST DUAL = "isi" "sigguk" "taleq"; #til nominer, som oftest optræder i par
-LIST EDIBLE = "iffiaq" (/"ii"\ Gram/TV\ TAR\ Der/vv\ TAR\ Der/vv\ Gram/TV\ TAQ/l) "issingigassaq" "kaagi" "kaffe" "kaffi" "kalorie" "kissartoq" "kujak" (/"mamar"\ Gram/IV\ KUJUP\ Der/vv\ Gram/IV\ TUQ/l) "mamartoq" "naatitaq" "neqi" "nutaaq" "orsoq" "panertoq" "siku" "sukku" "tarajoq" ;
+LIST EDIBLE = "chili" "iffiaq" (/"ii"\ Gram/TV\ TAR\ Der/vv\ TAR\ Der/vv\ Gram/TV\ TAQ/l) "issingigassaq" "kaagi" "kaffe" "kaffi" "kalorie" "kissartoq" "kujak" (/"mamar"\ Gram/IV\ KUJUP\ Der/vv\ Gram/IV\ TUQ/l) "mamartoq" "naatitaq" "neqi" "nutaaq" "orsoq" "panertoq" "siku" "sukku" "tarajoq" ;
 LIST f-an_SG = "qaneq" "qingaq" ;
 LIST FAM_UNIK = "ui" "nuliaq" ("angut" 3SgPoss) ("angut" 3PlPoss) ("angut" 4SgPoss) "anaana" "arnarsiaq" "ataata" "aana" "aanaq" "aanarsiaq" "ittoq" "aata" "aataq" "aataa" ;
 # betegnelser som sjældent optræder uden for sing.
@@ -4390,6 +4390,10 @@ REMOVE:uløselighed0421 1SgPoss IF (0 (/"taku"\ Gram/IV\ UTE\ Der/vv\ Gram/IV\ \
 
 REMOVE:uløselighed0425 Ind + 2Sg + 3SgO OR Int + 3Pl IF (0 Con + 3Sg)(*1 CONT)(NOT *0 V - CONT)(*-1W V)(NEGATE *-1W 2Sg LINK NOT 0 Con + 3Sg); #Pituannguugamimigooq sunnguamilluunniit nukersortinneqassanngilaq. Ullaamiit unnussuarmut angajoqqaavisa sunik tamanik oqilisaappaat. Unnukkorsiutaanik agguullugu. ATISALERSORPAT kavaajaa siillugu. SKUULERPAT qilersorlugit. Pituannguammiunagooq taanna Arsugaq. Atuarfimmiit SORAARPAT biilinik aallugu.
 
+#Ægte ambiguitet løst ud fra sandsynlighed
+REMOVE:uløselighed0430 (Aeq Sg 2SgPoss) IF (*-1 V + 3Pl + U BARRIER V LINK *1 _TARGET_ + (Aeq Pl) LINK 1 (TIGE Pl) - POSSESSUM LINK NEGATE *0 ("illit"));# LINK NEGATE *0 ("illit") )#Nassuiaappara baobabit orpigaaraanngitsut orpissuusulli OQALUFFITTUT portutigisut allaalluunniit nagguaatsorpassuarnik nassaraluarpat, taakku orpik baobabi ataaseq nungussinnaanavianngikkaalluunniit.
+
+
 #Lok anvendt på MIK-OBJ i stedet for Ins er svær (umulig?) at håndtere. En tidlig og farlig regel, der skal følges op på
 SUBSTITUTE:Sub0008 Lok Ins TARGET (HTR) IF (1 HTR - ("ilar")) #siunnersortit .. Tasiilami inunnik ISUMAGINNINNERMI ingerlatitsivimmi .. ikiuussimapput. Mange fejl pga. ambiguøs ilaivoĸ vs. ilauvoĸ
 (NEGATE 1 Lok + LU)#tassa PEQQISSAANERMI isumaginninnermilu ikiortit
@@ -5076,7 +5080,7 @@ SELECT:0100X2 2SgPoss IF (@0 (*) LINK -1*W 2Sg OR 2SgPoss) (T:alone);
 
 REMOVE:0100Z 2SgPoss IF (*0 V + 3Pl OR V + 3PlO OR 3PlPoss BARRIER V OR KOMMA) #BARRIER tilføjet pga. Naartuersinnissamut maannakkut INNIMINNIINISSAT sakkortuumik inassutigaara, taamaanngippat ernisarfimmi arsaarinninnissarput qularnanngilaq, tamannalu arlaannut iluaqutaanavianngilaq.
 (NEGATE *0SWC 2Sg OR 2SgO OR 2SgPoss)
-(NEGATE *0W ("illit") OR 2Sg + Par)
+(NEGATE *0W ("illit") OR 2Sg + Par OR 2Sg + VFIN)
 (NEGATE *1 EXCLMARK)
 (NEGATE *0 Gram/Exclm)
 (NEGATE 0 NIQ LINK *1 2SgPoss + $$KASUS BARRIER (*) - $$KASUS)#Oqaasiliortuni ilaasortatut SUILNINNI paasissutissat pisariaqartikkumaakkatit ataani takussutissiaraakka najoqqutassallu kakkiullugit.
@@ -7586,7 +7590,8 @@ SELECT:Sel0048 ("kina") IF (-1 BOS)(*1 ("?"));
 	## Kina aniva.
 
 REMOVE:1851C Abs + Pl IF (0 (Rel Pl) LINK 1 (Abs 3PlPoss Pl) LINK *1 VFIN + 3Pl BARRIER (*) - (Abs Pl)); #Linki kopeeriarlugu kalaallisut ALLAGAATIT oqaasertaat misissuiffigineqarsinnaapput https://oqaasileriffik.gl/oqaaserpassualerineq/allagaatinik-katersuivik/
-REMOVE:1851D Aeq + Pl IF (0 Aeq + Sg LINK *1 (/[1234]Sg/r) BARRIER V);#Pendant til Uagut INERSIMASUTUT allanngulaarnerit nalorninartorsiutigisinnaasarpavut.
+REMOVE:1851D Aeq + Pl IF (0 Aeq + Sg LINK *1 (/[1234]Sg/r) BARRIER V)#Pendant til Uagut INERSIMASUTUT allanngulaarnerit nalorninartorsiutigisinnaasarpavut.
+;
 REMOVE:1851E Aeq + Sg IF (0 Aeq + Pl LINK *1C (/[1234]Pl/r) OR Der/vn + N + Pl BARRIER V)#Pendant til Uagut INERSIMASUTUT allanngulaarnerit nalorninartorsiutigisinnaasarpavut.
 (NEGATE 0 LANGUAGE)
 (NEGATE 0 <mat> OR <percep>)#Ileqimisaartorpoq nutsani imusut KUULTITULLI sungaartigisut sumut tamaanga erfatsillugit.
@@ -11029,6 +11034,9 @@ REMOVE:9970FØ (Abs 2SgPoss) IF (0 (Abs Pl) LINK 1 3PlO) #Sunaaffa AQISSIT naamm
 
 REMOVE:9970FÅ (Rel Pl) IF (0 (Abs Pl) LINK 1 (Num Rel) LINK 1 ("misse") LINK *1 (V 3Pl) + INTRANSVERB BARRIER V); #INUIT 50.000-it missaat kalaallisut oqaluttarput, tassa kalaallit Kalaallit Nunaanni, Danmarkimi aamma nunani allani.
 
+REMOVE:9970GA (Sg 2SgPoss) IF (0 Pl + $$KASUS LINK *1 (/i?Num/r) + $$KASUS BARRIER (*) - OBLIQUE); #Suliassani annertooq aallartitsinnagu ilaatigut attaveqarfigeqqaarpai – paasiniaaffigalugillu – meeqqanut angerlarsimaffiit Nunatsinni 22-USUT, anguniagassamisullu aalajangiullugu, allaaserisamini meeqqat oqaatigisaat pingaarnertut qitiutinniarlugit.
+
+
 REMOVE:9970_3SgPossA (Abs 3SgPoss) IF (-1 CON_CAU + 1SgO LINK 1 (Abs 1SgPoss) + &&IV_SUBJ& LINK *1 V + &&IV_SUBJ& BARRIER V);#Nujuillisarsinnaagummali INUUNERA qaamanerulissagaluarpoq.
 
 REMOVE:9970_1SgPossB (Abs 1SgPoss) IF (0 (Abs 3SgPoss) LINK NOT *0W 1Sg OR 1SgPoss OR 1SgO OR ("uanga")); #Ambiguøs, men sandsynligvis upersonlig: Ilami taamani Hansenip annaassiniaraluarluni nakkakattarnera isinneralu takorloorlugit, naamik kingornagut ajorani panertunik atisereermat ILLARNARNERA assissaqanngilaq.
@@ -12212,6 +12220,7 @@ REMOVE:Sem1050 ("pituaq") + (/^i?Sem/Lstar/r) IF (0 (/^i?Sem/H/r)); #meget usand
 
 REMOVE:Sem1055 ("siip") + (/^i?Sem/break/r) IF (*0 (/^i?Sem/cloH/r)); #Atisalersorpat kavaajaa SIILLUGU.
 
+REMOVE:Sem1060 (/TUR\ Der/nv\ Gram/IV\ i?Sem/consume/l) IF (0 (/TUR\ Der/nv\ Gram/IV\ iSem/eat/l) + EDIBLE); 
 
 # SEMANTISK DISAMBIGUERING FOR MORFEMER #
 REMOVE:SemMorf0000A TUQ + (/^i?Sem/H/r) + $$KASUS + $$NUMERUS IF (*-1C $$KASUS + $$NUMERUS - (/^i?Sem/H/r)) #Soorlu uumasutut ikilerneqarsimaSUTUT, piginnitsini malittariinnarlugu, qungatsini nakkartillugu, tamatigullu maleruutiinnartutut isikkoqarluni.
