@@ -4,7 +4,7 @@ xxx 20170524 til verbalstammer, som ikke kan læses men som har brug for en anal
 
 * * *
 
-<small>This (part of) documentation was generated from [src/fst/stems/verbs.lexc](https://github.com/giellalt/lang-kal/blob/main/src/fst/stems/verbs.lexc)</small>
+<small>This (part of) documentation was generated from [src/fst/morphology/stems/verbs.lexc](https://github.com/giellalt/lang-kal/blob/main/src/fst/morphology/stems/verbs.lexc)</small>
 
 ---
 

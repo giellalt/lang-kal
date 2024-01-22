@@ -1045,7 +1045,7 @@ Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers
 
 * * *
 
-<small>This (part of) documentation was generated from [src/fst/affixes/derivations-inflections.lexc](https://github.com/giellalt/lang-kal/blob/main/src/fst/affixes/derivations-inflections.lexc)</small>
+<small>This (part of) documentation was generated from [src/fst/morphology/affixes/derivations-inflections.lexc](https://github.com/giellalt/lang-kal/blob/main/src/fst/morphology/affixes/derivations-inflections.lexc)</small>
 
 ---
 
