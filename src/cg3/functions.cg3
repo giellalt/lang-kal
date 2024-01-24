@@ -88,19 +88,28 @@ ADD:0302F (Gram/2sml) BEFORE (N) TARGET Abl IF (*1 (NIRU V) BARRIER (*) - PROCEN
 # Cleaning special constructions that complicate the rest #
 #####################################
 
-
-MAP:akoq-speciel @<SUBJ TARGET Abs + &&IV_SUBJ& IF (*-1 ("akoq") + U + &&IV_SUBJ& BARRIER Abs LINK NEGATE *-1 Abs + &&IV_SUBJ&) ;
+#KL# 20240123: # uden EX i reg og den har ikke være aktiv i dep
+#MAP:akoq-speciel @<SUBJ TARGET Abs + &&IV_SUBJ& IF (*-1 ("akoq") + U + &&IV_SUBJ& BARRIER Abs LINK NEGATE *-1 Abs + &&IV_SUBJ&) ;
 
 #Dansk brug af adjektiver
-MAP:DanskSyntaks @>N TARGET Gram/Adj + Abs - Prop IF (1 OLang/DAN - Gram/Adj + Abs) ; #HYPERKINETISK syndrom tassaasoq ingasattumik pissusilik er ikke @SUBJ> @N< @PRED ..
+MAP:DanskSyntaks @>N TARGET Gram/Adj + Abs - Prop IF (1 OLang/DAN - Gram/Adj + Abs) ; #HYPERKINETISK syndrom tassaasoq ingasattumik pissusilik er ikke @SUBJ> @N< @PRED ..##KL# 20240123: ideen er måske fin med speciel regel, men resutatet er kaos!! - den er ikke aktiv i dep
 
 #Appositioner til overbegreb i form af artsbetegnelser. Første eksempel er fugle, men bør kunne udvides til også at dække andre arter vha $$
-MAP:M_specie01 @<APPOS TARGET BIRDS + Sg IF (*-1 ("timmiaq") + Pl BARRIER (*) - BIRDS - KOMMA) ;#Timmissat TUULLIK KIINAALEERARLU Kalaallit Nunaanniinnerat eqqarsaatigalugu piffimmi siamasinngitsumi amerlapput.
+#KL# 20240123: fugle er ikke Prop så skal ses som @N< og ikke APPOS - men burde kunne dækkes af bredere regel
+MAP:M_specie01 @N< TARGET BIRDS + Sg IF (*-1 ("timmiaq") + Pl BARRIER (*) - BIRDS - KOMMA) ;#Timmissat TUULLIK KIINAALEERARLU Kalaallit Nunaanniinnerat eqqarsaatigalugu piffimmi siamasinngitsumi amerlapput.
 
 #En særlig regel til parentes til komplekse klokkeslet for at sikre korrekt dependenser
-MAP:M_parentes01A @<APPOS TARGET Num + Abs IF (1 (")"))(-1 ("(") LINK *-1 Num + Trm BARRIER (*) - (Num Abs) - ("tanneq"));#Unnuaq ataaseq hotelimi sinippoq aqaguanilu nal. qulinut tanneq qulit (09.50) helikopterimut ilaalluni Sisimiunut aallarpoq.
+#KL# 20240123: korr fra APPOS til N<
+MAP:M_parentes01A @N< TARGET Num + Abs IF (1 (")"))(-1 ("(") LINK *-1 Num + Trm BARRIER (*) - (Num Abs) - ("tanneq"));#Unnuaq ataaseq hotelimi sinippoq aqaguanilu nal. qulinut tanneq qulit (09.50) helikopterimut ilaalluni Sisimiunut aallarpoq.
 
-MAP:M_parentes01B @<APPOS TARGET (*) (-1 ("\(")) (1 ("\)"))  #Narsaamanerit tarajuusut Brayasømi (saamerl.) Hundesømilu (talerperl.).
+#KL# 20240124 - regel til at skille hvad skal være APPOS fra resten som bliver N< i M_parentes01B9
+MAP:M_parentes01B1 @<APPOS TARGET Prop OR Gram/ACR OR ("\\p{Lu}"r)  IF (-2 Prop) (-1 ("\(")) (1 ("\)") ) ;#Aaja Chemnitz Larsen (IA) Folketingimi oqaaseqartarfimmit oqarpoq.
+
+MAP:M_parentes01B2 @N< TARGET N + Via IF (-*1 N + Via BARRIER (*) - V - ("\(") ) (-1 ("\(")) (1 ("\)") );
+#Kinguartitsisoqarsinnaatinnagu imaluunniit akerliusoqarnissaa ilimaginngikkaanni Oqaasiliortut allakkatigut aalajangiisinnaavoq (e-mailikkut).
+
+#KL# 20240123 - korr fra APPOS til N< 
+MAP:M_parentes01B9 @N< TARGET (*) (-1 ("\(")) (1 ("\)"))  #Narsaamanerit tarajuusut Brayasømi (saamerl.) Hundesømilu (talerperl.).
 (NEGATE 0 CONJ-C + $$KASUS LINK *-1 $$KASUS BARRIER (*) - PUNCT)#Grafikeri oqaloqatigalugu Canva (ALLALUUNNIIT) atorlugu ilusilerneqartarnissaanut siunnersortinnissaq pisariaqarsoraara.
 ;
 
@@ -264,7 +273,7 @@ MAP:M_tidlig0105 @i-N< TARGET Abs + Pl IF (1 EOS)(-1 GE + 3PlO LINK *-1 Abs + Pl
 
 MAP:M_tidlig0110 @<APPOS TARGET NUMHOVED + $$KASUS IF (*-1 ("tassa") - V BARRIER (*) - Num LINK -1 $$KASUS); #Pingajorarterutingajaat tassalu 31 PROCENTIT isumaqarput IA sanngiillisimanngitsoq.
 
-MAP:M_tidlig0111 @<APPOS TARGET Abs + Sg IF (1 VFIN + 3Sg LINK *-2 KOMMA BARRIER (*) - Rel - OBLIQUE LINK -1 Prop + Abs + Sg)#Assigiinngitsunik oqaluuserisassaqassaagut, qularutiginngilaralu Kalaallit Nunaat Issittorlu eqqartorneqartussanut ilaasut, Mette Frederiksen, NATO-p Londonimi ataatsimeersuarneranut PEQATAASOQ oqarpoq.
+MAP:M_tidlig0111 @N< TARGET Abs + Sg IF (1 VFIN + 3Sg LINK *-2 KOMMA BARRIER (*) - Rel - OBLIQUE LINK -1 Prop + Abs + Sg)#Assigiinngitsunik oqaluuserisassaqassaagut, qularutiginngilaralu Kalaallit Nunaat Issittorlu eqqartorneqartussanut ilaasut, Mette Frederiksen, NATO-p Londonimi ataatsimeersuarneranut PEQATAASOQ oqarpoq.
 ;
 
 #NIQ efter copulaverber på siunertaq og pilersaarut er subjekter, ikke subjektsprædikativer
@@ -470,8 +479,8 @@ MAP:M_tidlig0610 @ADVL> TARGET (/"taama"\ IP\ Der/nv\ Gram/IV\ GALUAR\ Der/vv\ G
 (NEGATE -1 Abs + &&IV_SUBJ& LINK 1 _TARGET_ + &&IV_SUBJ& + Par)#Illoqarfeeqqaniit Nuummut aamma nuuttoqartarpoq, pissutsit TAAMAAKKALUARTUT Nuummi ikorfartorneqarnerusoqarsinnaammat sinerissamut sanilliullugu.
 ;
 
-#Appositioner i parentes
-MAP:M_tidlig0615 @<APPOS TARGET $$KASUS IF (1 (")") LINK -1 _TARGET_ + $$KASUS LINK *-1 ("(") BARRIER (*) - Rel LINK -1 $$KASUS) #Illit nammineq SIP-mut (SIK-p IMMIKKORTORTAQARFIANUT) saaffiginnissinnaavutit ilaasortanngornissamullu immersugassaq immersorlugu.
+#Appositioner i parentes #KL# 20240124 men de ses nu som N< hvis ikke selv Prop eller Gram/ACR 
+MAP:M_tidlig0615 @N< TARGET $$KASUS IF (1 (")") LINK -1 _TARGET_ + $$KASUS LINK *-1 ("(") BARRIER (*) - Rel LINK -1 $$KASUS) #Illit nammineq SIP-mut (SIK-p IMMIKKOORTORTAQARFIANUT) saaffiginnissinnaavutit ilaasortanngornissamullu immersugassaq immersorlugu.
 (NEGATE 0 CONJ-C + $$KASUS LINK *-1 $$KASUS BARRIER (*) - PUNCT)#Grafikeri oqaloqatigalugu Canva (ALLALUUNNIIT) atorlugu ilusilerneqartarnissaanut siunnersortinnissaq pisariaqarsoraara.
 
 ;
