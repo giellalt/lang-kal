@@ -1,0 +1,913 @@
+! An attempt at writing a lexc grammar for URL's
+
+Multichar_Symbols
+
+{hash} ! Analysis side symbol for # when used in URL's of the type:
+!
+! http://www.nb.no/nbsok/nb/ac3087f9a76b505c8f8adc7f6f823c6c.nbdigital?lang=no#47
+!
+! This is done to avoid sub-reading analyses of such strings in hfst-tokenise.
+
+ +URL !!≈ The tag used
+
+LEXICON Root
+    protocol ;
+    userdomain ;
+
+LEXICON protocol
+ http     protocolend ;
+ https    protocolend ;
+ ftp      protocolend ;
+ mailto mtprotocolend ;
+ afs      protocolend ;
+ news     protocolend ;
+ wais     protocolend ;
+ prospero protocolend ;
+
+! Initial upper case (not part of the standard, but found in text):
+ Http     protocolend ;
+ Https    protocolend ;
+ Ftp      protocolend ;
+ Mailto mtprotocolend ;
+ Afs      protocolend ;
+ News     protocolend ;
+ Wais     protocolend ;
+ Prospero protocolend ;
+
+LEXICON protocolend
+    %:// userdomain ;
+
+LEXICON mtprotocolend
+    %:   user ;
+
+LEXICON userdomain
+    user ;
+    domain ;
+
+! The user.name part of http://user.name@www.domain.com/file/here.doc
+LEXICON user
+    < [ a | b | c | d | e | f | g | h | i | j | k
+      | l | m | n | o | p | q | r | s | t | u | v
+      | w | x | y | z | A | B | C | D | E | F | G
+      | H | I | J | K | L | M | N | O | P | Q | R
+      | S | T | U | V | W | X | Y | Z |%. |%:
+      |%- |%_
+      |%0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 ]^>1 > userend;
+
+! The @ part of http://user.name@www.domain.com/file/here.doc
+LEXICON userend
+  %@   domain ; ! @ ! - to reset syntax colouring
+ (at)  domain ; ! obfuscation
+ .at.  domain ; ! obfuscation
+% at%  domain ; ! obfuscation
+
+LEXICON domain
+ predomain  ;
+ realdomain ;
+ numericdomain_ipv4 ;
+
+! The www. part of http://user.name@www.domain.com/file/here.doc
+! A . is allowed as part of the predomain to handle domains with more than three
+! parts, e.g. www.bbc.co.uk - www.bbc. is predomain, co. is realdomain, and
+! uk is topdomain.
+LEXICON predomain
+    < [ a | b | c | d | e | f | g | h | i | j | k
+      | l | m | n | o | p | q | r | s | t | u | v
+      | w | x | y | z | A | B | C | D | E | F | G
+      | H | I | J | K | L | M | N | O | P | Q | R
+      | S | T | U | V | W | X | Y | Z |%: |%.
+      |%- |%_
+      |%0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 ]+ %. > realdomain ;
+
+! We require that the domain name must be at least two letters or numbers -
+! no full stop or other delimiter as the last two characters of the
+! domain name. This will prevent strings like "Innst.O.nr" to be parsed
+! as URL's.
+!
+! The domain. part of http://user.name@www.domain.com/file/here.doc
+LEXICON realdomain
+    < [ a | b | c | d | e | f | g | h | i | j | k
+      | l | m | n | o | p | q | r | s | t | u | v
+      | w | x | y | z | A | B | C | D | E | F | G
+      | H | I | J | K | L | M | N | O | P | Q | R
+      | S | T | U | V | W | X | Y | Z |%-
+      |%0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 ]^>1 %. > topdomainlist ;
+
+LEXICON numericdomain_ipv4
+ < [1|2|3|4|5|6|7|8|9] [1|2|3|4|5|6|7|8|9|"0"]^{0,2}
+%. [1|2|3|4|5|6|7|8|9] [1|2|3|4|5|6|7|8|9|"0"]^{0,2}
+%. [1|2|3|4|5|6|7|8|9] [1|2|3|4|5|6|7|8|9|"0"]^{0,2}
+%. [1|2|3|4|5|6|7|8|9] [1|2|3|4|5|6|7|8|9|"0"]^{0,2} > enddomain ;
+
+LEXICON enddomain
+    path   ;
+    endlex ;
+
+LEXICON path
+ %/ endlex      ;
+ %/ pathcontent ;
+
+! The file/here.doc part of http://user.name@www.domain.com/file/here.doc
+LEXICON pathcontent
+    < [ a | b | c | d | e | f | g | h | i | j | k
+      | l | m | n | o | p | q | r | s | t | u | v
+      | w | x | y | z | A | B | C | D | E | F | G
+      | H | I | J | K | L | M | N | O | P | Q | R
+      | S | T | U | V | W | X | Y | Z |%/ |%_ | "{hash}":%#
+      |%0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |%-
+      |%_ |%? |%& |%= |%% |%@ |%. |%/ |%~ ]^>1 > endlex ;
+
+! @ reset sntx clr
+
+! The tag, and then END.
+LEXICON endlex
+ +URL: # ;
+
+! List of all defined topdomains, nothing less, nothing more. Needs to be
+! updated from time to time.
+LEXICON topdomainlist
+! Classical top domains:
+ com                enddomain ;
+ org                enddomain ;
+ net                enddomain ;
+ int                enddomain ;
+ edu                enddomain ;
+ gov                enddomain ;
+ mil                enddomain ;
+ arpa               enddomain ;
+! Country top domains, sorted alphabetically:
+ ac                 enddomain ;
+ ad                 enddomain ;
+ ae                 enddomain ;
+ af                 enddomain ;
+ ag                 enddomain ;
+ ai                 enddomain ;
+ al                 enddomain ;
+ am                 enddomain ;
+ an                 enddomain ;
+ ao                 enddomain ;
+ aq                 enddomain ;
+ ar                 enddomain ;
+ as                 enddomain ;
+ at                 enddomain ;
+ au                 enddomain ;
+ aw                 enddomain ;
+ ax                 enddomain ;
+ az                 enddomain ;
+ ba                 enddomain ;
+ bb                 enddomain ;
+ bd                 enddomain ;
+ be                 enddomain ;
+ bf                 enddomain ;
+ bg                 enddomain ;
+ bh                 enddomain ;
+ bi                 enddomain ;
+ bj                 enddomain ;
+ bl                 enddomain ;
+ bm                 enddomain ;
+ bn                 enddomain ;
+ bo                 enddomain ;
+ bq                 enddomain ;
+ br                 enddomain ;
+ bs                 enddomain ;
+ bt                 enddomain ;
+ bv                 enddomain ;
+ bw                 enddomain ;
+ by                 enddomain ;
+ bz                 enddomain ;
+ ca                 enddomain ;
+ cc                 enddomain ;
+ cd                 enddomain ;
+ cf                 enddomain ;
+ cg                 enddomain ;
+ ch                 enddomain ;
+ ci                 enddomain ;
+ ck                 enddomain ;
+ cl                 enddomain ;
+ cm                 enddomain ;
+ cn                 enddomain ;
+ co                 enddomain ;
+ cr                 enddomain ;
+ cu                 enddomain ;
+ cv                 enddomain ;
+ cw                 enddomain ;
+ cx                 enddomain ;
+ cy                 enddomain ;
+ cz                 enddomain ;
+ de                 enddomain ;
+ dj                 enddomain ;
+ dk                 enddomain ;
+ dm                 enddomain ;
+ do                 enddomain ;
+ dz                 enddomain ;
+ ec                 enddomain ;
+ ee                 enddomain ;
+ eg                 enddomain ;
+ eh                 enddomain ;
+ er                 enddomain ;
+ es                 enddomain ;
+ et                 enddomain ;
+ eu                 enddomain ;
+ fi                 enddomain ;
+ fj                 enddomain ;
+ fk                 enddomain ;
+ fm                 enddomain ;
+ fo                 enddomain ;
+ fr                 enddomain ;
+ ga                 enddomain ;
+ gb                 enddomain ;
+ gd                 enddomain ;
+ ge                 enddomain ;
+ gf                 enddomain ;
+ gg                 enddomain ;
+ gh                 enddomain ;
+ gi                 enddomain ;
+ gl                 enddomain ;
+ gm                 enddomain ;
+ gn                 enddomain ;
+ gp                 enddomain ;
+ gq                 enddomain ;
+ gr                 enddomain ;
+ gs                 enddomain ;
+ gt                 enddomain ;
+ gu                 enddomain ;
+ gw                 enddomain ;
+ gy                 enddomain ;
+ hk                 enddomain ;
+ hm                 enddomain ;
+ hn                 enddomain ;
+ hr                 enddomain ;
+ ht                 enddomain ;
+ hu                 enddomain ;
+ id                 enddomain ;
+ ie                 enddomain ;
+ il                 enddomain ;
+ im                 enddomain ;
+ in                 enddomain ;
+ io                 enddomain ;
+ iq                 enddomain ;
+ ir                 enddomain ;
+ is                 enddomain ;
+ it                 enddomain ;
+ je                 enddomain ;
+ jm                 enddomain ;
+ jo                 enddomain ;
+ jp                 enddomain ;
+ ke                 enddomain ;
+ kg                 enddomain ;
+ kh                 enddomain ;
+ ki                 enddomain ;
+ km                 enddomain ;
+ kn                 enddomain ;
+ kp                 enddomain ;
+ kr                 enddomain ;
+ kw                 enddomain ;
+ ky                 enddomain ;
+ kz                 enddomain ;
+ la                 enddomain ;
+ lb                 enddomain ;
+ lc                 enddomain ;
+ li                 enddomain ;
+ lk                 enddomain ;
+ lr                 enddomain ;
+ ls                 enddomain ;
+ lt                 enddomain ;
+ lu                 enddomain ;
+ lv                 enddomain ;
+ ly                 enddomain ;
+ ma                 enddomain ;
+ mc                 enddomain ;
+ md                 enddomain ;
+ me                 enddomain ;
+ mf                 enddomain ;
+ mg                 enddomain ;
+ mh                 enddomain ;
+ mk                 enddomain ;
+ ml                 enddomain ;
+ mm                 enddomain ;
+ mn                 enddomain ;
+ mo                 enddomain ;
+ mp                 enddomain ;
+ mq                 enddomain ;
+ mr                 enddomain ;
+ ms                 enddomain ;
+ mt                 enddomain ;
+ mu                 enddomain ;
+ mv                 enddomain ;
+ mw                 enddomain ;
+ mx                 enddomain ;
+ my                 enddomain ;
+ mz                 enddomain ;
+ na                 enddomain ;
+ nc                 enddomain ;
+ ne                 enddomain ;
+ nf                 enddomain ;
+ ng                 enddomain ;
+ ni                 enddomain ;
+ nl                 enddomain ;
+ no                 enddomain ;
+ np                 enddomain ;
+ nr                 enddomain ;
+ nu                 enddomain ;
+ nz                 enddomain ;
+ om                 enddomain ;
+ pa                 enddomain ;
+ pe                 enddomain ;
+ pf                 enddomain ;
+ pg                 enddomain ;
+ ph                 enddomain ;
+ pk                 enddomain ;
+ pl                 enddomain ;
+ pm                 enddomain ;
+ pn                 enddomain ;
+ pr                 enddomain ;
+ ps                 enddomain ;
+ pt                 enddomain ;
+ pw                 enddomain ;
+ py                 enddomain ;
+ qa                 enddomain ;
+ re                 enddomain ;
+ ro                 enddomain ;
+ rs                 enddomain ;
+ ru                 enddomain ;
+ rw                 enddomain ;
+ sa                 enddomain ;
+ sb                 enddomain ;
+ sc                 enddomain ;
+ sd                 enddomain ;
+ se                 enddomain ;
+ sg                 enddomain ;
+ sh                 enddomain ;
+ si                 enddomain ;
+ sj                 enddomain ;
+ sk                 enddomain ;
+ sl                 enddomain ;
+ sm                 enddomain ;
+ sn                 enddomain ;
+ so                 enddomain ;
+ sr                 enddomain ;
+ ss                 enddomain ;
+ st                 enddomain ;
+ su                 enddomain ;
+ sv                 enddomain ;
+ sx                 enddomain ;
+ sy                 enddomain ;
+ sz                 enddomain ;
+ tc                 enddomain ;
+ td                 enddomain ;
+ tf                 enddomain ;
+ tg                 enddomain ;
+ th                 enddomain ;
+ tj                 enddomain ;
+ tk                 enddomain ;
+ tl                 enddomain ;
+ tm                 enddomain ;
+ tn                 enddomain ;
+ to                 enddomain ;
+ tp                 enddomain ;
+ tr                 enddomain ;
+ tt                 enddomain ;
+ tv                 enddomain ;
+ tw                 enddomain ;
+ tz                 enddomain ;
+ ua                 enddomain ;
+ ug                 enddomain ;
+ uk                 enddomain ;
+ um                 enddomain ;
+ us                 enddomain ;
+ uy                 enddomain ;
+ uz                 enddomain ;
+ va                 enddomain ;
+ vc                 enddomain ;
+ ve                 enddomain ;
+ vg                 enddomain ;
+ vi                 enddomain ;
+ vn                 enddomain ;
+ vu                 enddomain ;
+ wf                 enddomain ;
+ ws                 enddomain ;
+ ye                 enddomain ;
+ yt                 enddomain ;
+ za                 enddomain ;
+ zm                 enddomain ;
+ zw                 enddomain ;
+! Other top domains, alhpabetically sorted:
+ abogado            enddomain ;
+ academy            enddomain ;
+ accountant         enddomain ;
+ accountants        enddomain ;
+ active             enddomain ;
+ actor              enddomain ;
+ ads                enddomain ;
+ adult              enddomain ;
+ aero               enddomain ;
+ agency             enddomain ;
+ airforce           enddomain ;
+ apartments         enddomain ;
+ app                enddomain ;
+ archi              enddomain ;
+ army               enddomain ;
+ art                enddomain ;
+ associates         enddomain ;
+ attorney           enddomain ;
+ auction            enddomain ;
+ audible            enddomain ;
+ audio              enddomain ;
+ author             enddomain ;
+ auto               enddomain ;
+ autos              enddomain ;
+ aws                enddomain ;
+ baby               enddomain ;
+ band               enddomain ;
+ bank               enddomain ;
+ bar                enddomain ;
+ barefoot           enddomain ;
+ bargains           enddomain ;
+ baseball           enddomain ;
+ beauty             enddomain ;
+ beer               enddomain ;
+ best               enddomain ;
+ bestbuy            enddomain ;
+ bet                enddomain ;
+ bid                enddomain ;
+ bike               enddomain ;
+ bingo              enddomain ;
+ bio                enddomain ;
+ biz                enddomain ;
+ black              enddomain ;
+ blackfriday        enddomain ;
+ blockbuster        enddomain ;
+ blog               enddomain ;
+ blue               enddomain ;
+ bom                enddomain ;
+ boo                enddomain ;
+ book               enddomain ;
+ bot                enddomain ;
+ boutique           enddomain ;
+ box                enddomain ;
+ broker             enddomain ;
+ build              enddomain ;
+ builders           enddomain ;
+ business           enddomain ;
+ buy                enddomain ;
+ buzz               enddomain ;
+ cab                enddomain ;
+ cafe               enddomain ;
+ call               enddomain ;
+ cam                enddomain ;
+ camera             enddomain ;
+ camp               enddomain ;
+ cancerresearch     enddomain ;
+ capital            enddomain ;
+ cards              enddomain ;
+ care               enddomain ;
+ career             enddomain ;
+ careers            enddomain ;
+ cars               enddomain ;
+ casa               enddomain ;
+ case               enddomain ;
+ cash               enddomain ;
+ casino             enddomain ;
+ catering           enddomain ;
+ catholic           enddomain ;
+ center             enddomain ;
+ ceo                enddomain ;
+ cfd                enddomain ;
+ channel            enddomain ;
+ chat               enddomain ;
+ cheap              enddomain ;
+ christmas          enddomain ;
+ church             enddomain ;
+ circle             enddomain ;
+ city               enddomain ;
+ claims             enddomain ;
+ cleaning           enddomain ;
+ click              enddomain ;
+ clinic             enddomain ;
+ clothing           enddomain ;
+ cloud              enddomain ;
+ club               enddomain ;
+ coach              enddomain ;
+ codes              enddomain ;
+ coffee             enddomain ;
+ college            enddomain ;
+ community          enddomain ;
+ company            enddomain ;
+ computer           enddomain ;
+ condos             enddomain ;
+ construction       enddomain ;
+ consulting         enddomain ;
+ contact            enddomain ;
+ contractors        enddomain ;
+ cooking            enddomain ;
+ cool               enddomain ;
+ coop               enddomain ;
+ country            enddomain ;
+ coupon             enddomain ;
+ coupons            enddomain ;
+ courses            enddomain ;
+ credit             enddomain ;
+ creditcard         enddomain ;
+ cricket            enddomain ;
+ cruises            enddomain ;
+ dad                enddomain ;
+ dance              enddomain ;
+ date               enddomain ;
+ dating             enddomain ;
+ day                enddomain ;
+ deal               enddomain ;
+ deals              enddomain ;
+ degree             enddomain ;
+ delivery           enddomain ;
+ democrat           enddomain ;
+ dental             enddomain ;
+ dentist            enddomain ;
+ desi               enddomain ;
+ design             enddomain ;
+ dev                enddomain ;
+ diamonds           enddomain ;
+ diet               enddomain ;
+ digital            enddomain ;
+ direct             enddomain ;
+ directory          enddomain ;
+ discount           enddomain ;
+ diy                enddomain ;
+ doctor             enddomain ;
+ dog                enddomain ;
+ domains            enddomain ;
+ download           enddomain ;
+ duck               enddomain ;
+ earth              enddomain ;
+ eat                enddomain ;
+ eco                enddomain ;
+ education          enddomain ;
+ email              enddomain ;
+ energy             enddomain ;
+ engineer           enddomain ;
+ engineering        enddomain ;
+ enterprises        enddomain ;
+ epost              enddomain ;
+ equipment          enddomain ;
+ esq                enddomain ;
+ estate             enddomain ;
+ events             enddomain ;
+ exchange           enddomain ;
+ expert             enddomain ;
+ exposed            enddomain ;
+ express            enddomain ;
+ fail               enddomain ;
+ faith              enddomain ;
+ family             enddomain ;
+ fan                enddomain ;
+ fans               enddomain ;
+ farm               enddomain ;
+ fashion            enddomain ;
+ fast               enddomain ;
+ feedback           enddomain ;
+ film               enddomain ;
+ final              enddomain ;
+ finance            enddomain ;
+ financial          enddomain ;
+ fire               enddomain ;
+ fish               enddomain ;
+ fishing            enddomain ;
+ fit                enddomain ;
+ fitness            enddomain ;
+ flights            enddomain ;
+ florist            enddomain ;
+ flowers            enddomain ;
+ fly                enddomain ;
+ foo                enddomain ;
+ food               enddomain ;
+ foodnetwork        enddomain ;
+ football           enddomain ;
+ forsale            enddomain ;
+ forum              enddomain ;
+ foundation         enddomain ;
+ free               enddomain ;
+ frontdoor          enddomain ;
+ fun                enddomain ;
+ fund               enddomain ;
+ furniture          enddomain ;
+ futbol             enddomain ;
+ fyi                enddomain ;
+ gallery            enddomain ;
+ game               enddomain ;
+ games              enddomain ;
+ garden             enddomain ;
+ gift               enddomain ;
+ gifts              enddomain ;
+ gives              enddomain ;
+ glass              enddomain ;
+ global             enddomain ;
+ gmbh               enddomain ;
+ gold               enddomain ;
+ golf               enddomain ;
+ gop                enddomain ;
+ graphics           enddomain ;
+ gratis             enddomain ;
+ green              enddomain ;
+ gripe              enddomain ;
+ group              enddomain ;
+ guide              enddomain ;
+ guitars            enddomain ;
+ guru               enddomain ;
+ hair               enddomain ;
+ hangout            enddomain ;
+ haus               enddomain ;
+ health             enddomain ;
+ healthcare         enddomain ;
+ help               enddomain ;
+ here               enddomain ;
+ hiphop             enddomain ;
+ hiv                enddomain ;
+ hockey             enddomain ;
+ holdings           enddomain ;
+ holiday            enddomain ;
+ homegoods          enddomain ;
+ homes              enddomain ;
+ homesense          enddomain ;
+ horse              enddomain ;
+ hospital           enddomain ;
+ host               enddomain ;
+ hosting            enddomain ;
+ hot                enddomain ;
+ hoteles            enddomain ;
+ house              enddomain ;
+ how                enddomain ;
+ ice                enddomain ;
+ immo               enddomain ;
+ immobilien         enddomain ;
+ industries         enddomain ;
+ info               enddomain ;
+ ing                enddomain ;
+ ink                enddomain ;
+ institute          enddomain ;
+ insurance          enddomain ;
+ insure             enddomain ;
+ international      enddomain ;
+ investments        enddomain ;
+ jetzt              enddomain ;
+ jewelry            enddomain ;
+ jobs               enddomain ;
+ joy                enddomain ;
+ juegos             enddomain ;
+ kaufen             enddomain ;
+ kim                enddomain ;
+ kinder             enddomain ;
+ kitchen            enddomain ;
+ land               enddomain ;
+ latino             enddomain ;
+ law                enddomain ;
+ lawyer             enddomain ;
+ lease              enddomain ;
+ legal              enddomain ;
+ lgbt               enddomain ;
+ life               enddomain ;
+ lifeinsurance      enddomain ;
+ lighting           enddomain ;
+ like               enddomain ;
+ limited            enddomain ;
+ limo               enddomain ;
+ link               enddomain ;
+ live               enddomain ;
+ living             enddomain ;
+ loan               enddomain ;
+ loans              enddomain ;
+ locker             enddomain ;
+ lol                enddomain ;
+ lotto              enddomain ;
+ love               enddomain ;
+ ltd                enddomain ;
+ ltda               enddomain ;
+ luxe               enddomain ;
+ luxury             enddomain ;
+ maison             enddomain ;
+ makeup             enddomain ;
+ management         enddomain ;
+ market             enddomain ;
+ marketing          enddomain ;
+ markets            enddomain ;
+ mba                enddomain ;
+ media              enddomain ;
+ meet               enddomain ;
+ meme               enddomain ;
+ memorial           enddomain ;
+ men                enddomain ;
+ menu               enddomain ;
+ mint               enddomain ;
+ mobi               enddomain ;
+ mobily             enddomain ;
+ moda               enddomain ;
+ moe                enddomain ;
+ money              enddomain ;
+ mortgage           enddomain ;
+ motorcycles        enddomain ;
+ mov                enddomain ;
+ movie              enddomain ;
+ museum             enddomain ;
+ name               enddomain ;
+ navy               enddomain ;
+ network            enddomain ;
+ new                enddomain ;
+ news               enddomain ;
+ ngo                enddomain ;
+ ninja              enddomain ;
+ now                enddomain ;
+ off                enddomain ;
+ one                enddomain ;
+ ong                enddomain ;
+ onl                enddomain ;
+ online             enddomain ;
+ ooo                enddomain ;
+ open               enddomain ;
+ organic            enddomain ;
+ origins            enddomain ;
+ page               enddomain ;
+ partners           enddomain ;
+ parts              enddomain ;
+ party              enddomain ;
+ passagens          enddomain ;
+ pay                enddomain ;
+ pet                enddomain ;
+ pharmacy           enddomain ;
+ photo              enddomain ;
+ photography        enddomain ;
+ photos             enddomain ;
+ physio             enddomain ;
+ pics               enddomain ;
+ pictures           enddomain ;
+ pid                enddomain ;
+ pin                enddomain ;
+ pink               enddomain ;
+ pizza              enddomain ;
+ place              enddomain ;
+ plumbing           enddomain ;
+ plus               enddomain ;
+ poker              enddomain ;
+ porn               enddomain ;
+ post               enddomain ;
+ press              enddomain ;
+ prime              enddomain ;
+ pro                enddomain ;
+ productions        enddomain ;
+ prof               enddomain ;
+ promo              enddomain ;
+ properties         enddomain ;
+ property           enddomain ;
+ protection         enddomain ;
+ pub                enddomain ;
+ qpon               enddomain ;
+ racing             enddomain ;
+ radio              enddomain ;
+ read               enddomain ;
+ realestate         enddomain ;
+ realtor            enddomain ;
+ realty             enddomain ;
+ recipes            enddomain ;
+ red                enddomain ;
+ rehab              enddomain ;
+ reise              enddomain ;
+ reisen             enddomain ;
+ reit               enddomain ;
+ ren                enddomain ;
+ rent               enddomain ;
+ rentals            enddomain ;
+ repair             enddomain ;
+ report             enddomain ;
+ republican         enddomain ;
+ rest               enddomain ;
+ restaurant         enddomain ;
+ review             enddomain ;
+ reviews            enddomain ;
+ rich               enddomain ;
+ rip                enddomain ;
+ rocks              enddomain ;
+ rodeo              enddomain ;
+ room               enddomain ;
+ rsvp               enddomain ;
+ run                enddomain ;
+ safe               enddomain ;
+ sale               enddomain ;
+ sarl               enddomain ;
+ save               enddomain ;
+ school             enddomain ;
+ schule             enddomain ;
+ science            enddomain ;
+ secure             enddomain ;
+ security           enddomain ;
+ select             enddomain ;
+ services           enddomain ;
+ sex                enddomain ;
+ sexy               enddomain ;
+ shiksha            enddomain ;
+ shoes              enddomain ;
+ shop               enddomain ;
+ shopping           enddomain ;
+ shouji             enddomain ;
+ show               enddomain ;
+ showtime           enddomain ;
+ silk               enddomain ;
+ singles            enddomain ;
+ site               enddomain ;
+ ski                enddomain ;
+ skin               enddomain ;
+ sky                enddomain ;
+ smile              enddomain ;
+ soccer             enddomain ;
+ social             enddomain ;
+ software           enddomain ;
+ solar              enddomain ;
+ solutions          enddomain ;
+ song               enddomain ;
+ soy                enddomain ;
+ space              enddomain ;
+ spot               enddomain ;
+ spreadbetting      enddomain ;
+ store              enddomain ;
+ stream             enddomain ;
+ studio             enddomain ;
+ study              enddomain ;
+ style              enddomain ;
+ sucks              enddomain ;
+ supplies           enddomain ;
+ supply             enddomain ;
+ support            enddomain ;
+ surf               enddomain ;
+ surgery            enddomain ;
+ systems            enddomain ;
+ talk               enddomain ;
+ tattoo             enddomain ;
+ tax                enddomain ;
+ taxi               enddomain ;
+ team               enddomain ;
+ tech               enddomain ;
+ technology         enddomain ;
+ tel                enddomain ;
+ tennis             enddomain ;
+ theater            enddomain ;
+ theatre            enddomain ;
+ tickets            enddomain ;
+ tienda             enddomain ;
+ tips               enddomain ;
+ tires              enddomain ;
+ today              enddomain ;
+ tools              enddomain ;
+ top                enddomain ;
+ tours              enddomain ;
+ town               enddomain ;
+ toys               enddomain ;
+ trade              enddomain ;
+ trading            enddomain ;
+ training           enddomain ;
+ travel             enddomain ;
+ travelersinsurance enddomain ;
+ trust              enddomain ;
+ tube               enddomain ;
+ tunes              enddomain ;
+ tushu              enddomain ;
+ university         enddomain ;
+ uno                enddomain ;
+ vacations          enddomain ;
+ ventures           enddomain ;
+ versicherung       enddomain ;
+ vet                enddomain ;
+ viajes             enddomain ;
+ video              enddomain ;
+ villas             enddomain ;
+ vin                enddomain ;
+ vip                enddomain ;
+ vision             enddomain ;
+ vodka              enddomain ;
+ vote               enddomain ;
+ voting             enddomain ;
+ voto               enddomain ;
+ voyage             enddomain ;
+ vuelos             enddomain ;
+ wang               enddomain ;
+ wanggou            enddomain ;
+ watch              enddomain ;
+ watches            enddomain ;
+ weather            enddomain ;
+ webcam             enddomain ;
+ website            enddomain ;
+ wed                enddomain ;
+ wedding            enddomain ;
+ weibo              enddomain ;
+ whoswho            enddomain ;
+ wiki               enddomain ;
+ win                enddomain ;
+ wine               enddomain ;
+ winners            enddomain ;
+ work               enddomain ;
+ works              enddomain ;
+ world              enddomain ;
+ wow                enddomain ;
+ wtf                enddomain ;
+ xihuan             enddomain ;
+ xxx                enddomain ;
+ xyz                enddomain ;
+ yoga               enddomain ;
+ you                enddomain ;
+ zero               enddomain ;
+ zone               enddomain ;
