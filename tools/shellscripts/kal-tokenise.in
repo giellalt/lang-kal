@@ -482,7 +482,7 @@ sub analyze {
                $orig = $orig || $f;
                my $m = call_tokenizer("$1-$2");
                if ($m =~ /\t"[^\n]*"[^?\n]+\n/ && $m !~ /^"<.*?>".*?\n"<.*?>"/s && $m !~ /(?:^|\n)[^\n<>"]+(?:\n|$)/s) {
-                  $heur{'Heur/Hyphen'} = 1;
+                  $heur{'Heur/HyphenAdd'} = 1;
                   $merge_ncs->($m);
                   last;
                }
@@ -504,13 +504,24 @@ sub analyze {
                $orig = undef;
             }
 
-            # Try without hyphens or dashes
+            # Try without hyphens or dashes, potentially injecting an 'i' instead
             if ($f =~ /[-\p{Pd}]/) {
                $orig = $orig || $f;
-               $f =~ s/[-\p{Pd}]+//g;
-               my $m = call_tokenizer($f);
+               my $nf = $f;
+               $nf =~ s/[-\p{Pd}]+//g;
+               my $m = call_tokenizer($nf);
                if ($m =~ /\t"[^\n]*"[^?\n]+\n/) {
-                  $heur{'Heur/Hyphen'} = 1;
+                  $f = $nf;
+                  $heur{'Heur/HyphenRem'} = 1;
+                  $merge_ncs->($m);
+                  last;
+               }
+               $nf = $f;
+               $nf =~ s/[-\p{Pd}]+/i/g;
+               my $m = call_tokenizer($nf);
+               if ($m =~ /\t"[^\n]*"[^?\n]+\n/) {
+                  $f = $nf;
+                  $heur{'Heur/HyphenRepI'} = 1;
                   $merge_ncs->($m);
                   last;
                }
