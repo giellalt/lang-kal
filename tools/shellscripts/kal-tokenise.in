@@ -464,6 +464,19 @@ sub analyze {
                }
             }
 
+            # If input has Ųų, try them as Øø
+            if ($f =~ /[Ųų]/) {
+               $orig = $orig || $f;
+               $heur{'Heur/Ų'} = 1;
+               $f =~ s/Ų/Ø/g;
+               $f =~ s/ų/ø/g;
+               my $m = call_tokenizer($f);
+               if ($m =~ /\t"[^\n]*"[^?\n]+\n/) {
+                  $merge_ncs->($m);
+                  last;
+               }
+            }
+
             # If input might be lacking a -, try with one
             if ($f =~ /^([\p{Lu}\pN\pM]+)(\P{Lu}+)$/ && $f !~ /-/) {
                $orig = $orig || $f;
