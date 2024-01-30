@@ -53,6 +53,7 @@ SETPARENT:M0015
 * 	Gram/TV 
 * 	Gram/Ord 
 * 	Gram/ImpNeg 
+* 	Heur/N 
 * 	Heur/Prop 
 * 	Heur/Quote 
 * 	Sem/CognitiveMaking  = qinersivoq i modsætning til qinerlerpoq
@@ -124,6 +125,8 @@ Gram/... and different specifications
 ### Orthographic error tags
 * LIST Orth/Append = Orth/Append <append> ;  = readings added by CG (APPEND)
 * LIST SUB = Orth/Arch Orth/Alt Orth/Youth ;  common tag for all
+
+### Heur Prop case tags
 
 ### Grammatical tags
 Sg, Du, Pl, iSg, iDu, iPl, ALL_Sg, ALL_Pl, case forms, verbal inflection
