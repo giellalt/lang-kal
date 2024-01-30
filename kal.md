@@ -1605,6 +1605,8 @@ Navnelexikon er i ateq-kal-lex.txt.
 
 * LEXICON Z1geo_oqsZ   Finland
 
+* LEXICON Z1geo_oqsZ_MedPlur   Langtbortistan
+
 * LEXICON Z1geo_oqsetZmorf   Atlanterhavet
 ** Lexicon **Z1geo_oqsetZ**  
 
@@ -1715,6 +1717,8 @@ Navnelexikon er i ateq-kal-lex.txt.
 ** Lexicon **Z1geo_nnguaqPZmorf**  Kangilinnguit NY 20100319 (PL)
 
 ** Lexicon **Z1geo+ssPZmorf**  Ilulissat
+
+** Lexicon **Z1geo_oqsZmorf**  Finland
 
 ** Lexicon **Z1geo_oqsZmorf**  Finland
 
