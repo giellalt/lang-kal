@@ -50,7 +50,7 @@ SPLITCOHORT ("<$1>"v "$1"v Num Abs Sg "<$2>"v "$2"v CLB) ("<(\\p{N}{4})([.])>"r 
 # Heuristic analysis of unrecognized Prop multiwords
 # If a word ends in -imi but there is an upper-case word before it, it's likely a Prop Lok
 
-# Specific houristic analysis first
+# Specific heuristic analysis first
 #Heur University of
 SUBSTITUTE (?) (<university-of-> ?) TARGET ("\\p{Lu}.*"r ?) (-1 ("of") LINK -1 ("University")) ; #Jude 20240129
 SUBSTITUTE (Sem/Geo Prop Abs Sg) (Sem/Geo Prop Abs Sg <university-of->) TARGET ("\\p{Lu}.*"r) (-1 ("of") LINK -1 ("University")) ; #Jude 20240129
@@ -137,31 +137,51 @@ IF
 #Jude 20231208 ukendt trans subj navn test Steinþorip aalisakkat mamarai.
 
 # Heur/Prop all cases
+#Heur Abl
 Substitute:HeurAbl ("\\p{Lu}.*"r ?) ("$1"v Prop Abl Sg Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)-?i?mit>"r ?) ; #Jude 20240129
 Substitute:HeurAbl ("\\p{Lu}.*"r ?) ("$1"v Prop Abl Pl Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)-?i?nit>"r ?) ; #Jude 20240129
 COPY:HeurAblAbs ("$1n"v Abs Pl Heur/Prop) EXCEPT ("\\p{Lu}.*"r Abl Pl Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)-?i?nit>"r) + Abl + Pl + Heur/Prop 
 (NEGATE 0 ("<.*ninit>"r)) ; #Jude 20240129
 
+#Heur Aeq
 Substitute:HeurAeq ("\\p{Lu}.*"r ?) ("$1"v Prop Aeq Sg Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)-?i?[st]ut>"r ?) ; #Jude 20240129
 COPY:HeurAeq (Aeq Pl Heur/Prop) EXCEPT (Aeq Sg Heur/Prop) TARGET Aeq + Heur/Prop ; #Jude 20240129
 
-Substitute:HeurAbs ("\\p{Lu}.*"r ?) ("$1"v Prop Abs Sg Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)>"r ?) - HeurOblCase - HeurRel ; #Jude 20240129
-
+#Heur Ins
 Substitute:HeurIns ("\\p{Lu}.*"r ?) ("$1"v Prop Ins Sg Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)-?i?mik>"r ?) ; #Jude 20240129
 Substitute:HeurIns ("\\p{Lu}.*"r ?) ("$1"v Prop Ins Pl Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)-?i?nik>"r ?) ; #Jude 20240129
 
+#Heur  iLok
+Substitute:HeuriLok ("\\p{Lu}.*"r ?) ("$1"v Sem/Geo iProp iLok iSg Gram/Hyb IP Gram/IV SIMA Der/vv V Cont 4Sg LU Heur/iLok) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)-?i?miissimallunilu>"r ?) ; #Jude 20240129
+
+#Heur Lok
 Substitute:HeurLok ("\\p{Lu}.*"r ?) ("$1"v Prop Lok Sg Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)-?i?mi>"r ?) ; #Jude 20240129
+Substitute:HeurLokLu ("\\p{Lu}.*"r ?) ("$1"v Prop Lok Sg LU Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)-?i?milu>"r ?) ; #Jude 20240129
+Substitute:HeurLokLuunniit ("\\p{Lu}.*"r ?) ("$1"v Prop Lok Sg LUUNNIIT Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)-?i?miluunniit>"r ?) ; #Jude 20240129
 Substitute:HeurLok ("\\p{Lu}.*"r ?) ("$1"v Prop Lok Pl Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)-?i?ni>"r ?) ; #Jude 20240129
 
+#Heur Rel
 Substitute:HeurRel ("\\p{Lu}.*"r ?) ("$1"v Prop Rel Sg Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)-?i?p>"r ?) ; #Jude 20240129
+Substitute:HeurRelLi ("\\p{Lu}.*"r ?) ("$1"v Prop Rel Sg LI Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)-?i?lli>"r ?) ; #Jude 20240129
+Substitute:HeurRelLu ("\\p{Lu}.*"r ?) ("$1"v Prop Rel Sg LU Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)-?i?llu>"r ?) ; #Jude 20240129
 
+#Heur Trm
 Substitute:HeurTrm ("\\p{Lu}.*"r ?) ("$1"v Prop Trm Sg Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)-?i?mut>"r ?) ; #Jude 20240129
 Substitute:HeurTrm ("\\p{Lu}.*"r ?) ("$1"v Prop Trm Pl Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)-?i?nut>"r ?) ; #Jude 20240129
 
+#Heur Via
 Substitute:HeurVia ("\\p{Lu}.*"r ?) ("$1"v Prop Via Sg Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)-?i?kkut>"r ?) ; #Jude 20240129
+COPY:HeurViaKkut (KKUT Der/nn Prop Abs Pl Heur/Prop) EXCEPT (Prop Via Sg Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)-?i?kkut>"r) + Via + Sg + Heur/Prop ;
 Substitute:HeurVia ("\\p{Lu}.*"r ?) ("$1"v Prop Via Pl Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)-?i?tigut>"r ?) ; #Jude 20240129
 
+#Heur AbsRel Pl
+Substitute:HeurAbsRelMiu ("\\p{Lu}.*"r ?) ("$1"v Sem/Geo iProp MIU Der/nn N Abs Pl Heur/N) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)-?i?miut>"r ?) ; #Jude 20240129
 Substitute:HeurAbsRel ("\\p{Lu}.*"r ?) ("$1"v Prop Abs Pl Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)-?i?t>"r ?) ; #Jude 20240129
 COPY:HeurAbsRel (Rel Pl Heur/Prop) EXCEPT (Abs Pl Heur/Prop) TARGET Abs + Pl + Heur/Prop ; #Jude 20240129
+COPY:HeurAbsRel (Rel Pl Heur/N) EXCEPT (Abs Pl Heur/N) TARGET Abs + Pl + Heur/N ; #Jude 20240129
 
-
+#Abs Sg
+Substitute:HeurAbsLi ("\\p{Lu}.*"r ?) ("$1"v Prop Abs Sg LI Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)-?i?li>"r ?) - HeurOblCase - HeurRel ; #Jude 20240129
+COPY:HeurAbs-Li ("$1l"v Prop Abs Sg Heur/Prop) EXCEPT ("$1"v Prop Abs Sg LI Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)-?i?li>"r ?) ; #Jude 20240129
+Substitute:HeurAbsLu ("\\p{Lu}.*"r ?) ("$1"v Prop Abs Sg LU Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)-?i?lu>"r ?) - HeurOblCase - HeurRel ; #Jude 20240129
+Substitute:HeurAbs ("\\p{Lu}.*"r ?) ("$1"v Prop Abs Sg Heur/Prop) TARGET ("<(\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?)>"r ?) - HeurOblCase - HeurRel ; #Jude 20240129
