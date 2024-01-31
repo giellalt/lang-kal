@@ -39,6 +39,7 @@
 * 	Gram/Ord 
 * 	Gram/ImpNeg 
 * 	Heur/N 
+* 	Heur/Num 
 * 	Heur/Prop 
 * 	Heur/Quote 
 * 	Sem/CognitiveMaking  = qinersivoq i modsætning til qinerlerpoq
