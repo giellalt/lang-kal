@@ -165,7 +165,50 @@ Substitute:HeurAbsTaaq ("\\p{Lu}.*"r ?) ("$1"v Prop Abs Sg TTAAQ Heur/Prop) TARG
 Substitute:HeurAbsTaaq ("\\p{Lu}.*"r ?) ("$1"v Prop Abs Sg TTAAQ Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)ttaaq>"r ?) - HeurOblCase - HeurRel ; #Jude 20240130
 Substitute:HeurAbsSg ("\\p{Lu}.*"r ?) ("$1"v Prop Abs Sg Heur/Prop) TARGET ("<(\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)-?i?>"r ?) - HeurOblCase - HeurRel - HeurVerb ; #Jude 20240129
 
-#Heur/Num
-Substitute:HeurCoordinate ("<[0-9].*>"r ?) ("$1"v Num Abs Pl Heur/Num) TARGET ("<\(\\d{2}\\u00B0\\d{2}(\\u2032|\\u0027)?([NWSE]|\\d{2})?(\\u0022|\\u2033)?[NWSE]?\)>"r ?) ; #Jude 20240131
 
-Substitute:HeurDegrees ("<[0-9].*>"r ?) ("$1"v Num Abs Pl Heur/Num) TARGET ("<\(\\d+\\u00B0[CF]\)>"r) ; #Jude 20240131
+#Heur/Num
+Substitute:HeurCoordinate ("<[0-9].*>"r ?) ("$1"v Num Abs Pl Heur/Num) TARGET ("<\(\\d{2}(\\u00B0|\\u00BA)\\d{2}(\\u0027|\\u2032)?([NWSE]|\\d{2})?(\\u0022|\\u2033)?[NWSE]?\)>"r ?) ; #Jude 20240131 taken common errors into consideration: Degree Sign -> Masculine Ordinal Indicator, Prime -> Apostrophe, Double Prime -> Quotation Mark
+
+Substitute:HeurDegrees ("<[0-9].*>"r ?) ("$1"v Num Abs Pl Heur/Num) TARGET ("<\(\\d+(\\u00B0|\\u00BA)[CF]?\)>"r) ; #Jude 20240131 taken common error into consideration Degree Sign -> Masculine Ordinal Indicator
+
+END
+#Not ready to be in use yet as of date 20240131 - too many examples from our corpus that shouldnt be in uppercase only: e.g. ARRORSAAT
+#Heur ACR
+#Heur ACR Abl
+Substitute:HeurACRAblSg ("[A-Z]+.*"r ?) ("$1"v N Gram/ACR Abl Heur/ACR) TARGET ("<(\\p{Lu}+)(\\u002D|\\u0027)?i?mit>"r ?) ; #Jude 20240131
+COPY:HeurACRAblSg ("$1"v Prop Abl Sg Heur/Prop) EXCEPT ("$1"v N Gram/ACR Abl Heur/ACR) TARGET ("<\([A-Z]+\)-?'?i?mit>"r) + Heur/ACR ; #Jude 20240131
+
+#Heur ACR Aeq
+
+#Heur ACR Abs
+Substitute:HeurACRAbsSg ("<[A-Z]+>"r ?) ("$1"v N Gram/ACR Abs Heur/ACR) TARGET ("(\\p{Lu}+(\\d+(\\p{Lu})?|\\u003A\\p{Lu}+|\\p{Ll}+)?)i?"r ?) - HeurOblCase - HeurRel - Heur/Excl ; #Jude 20240131
+COPY:HeurACRAbsSg (Prop Abs Sg Heur/Prop) EXCEPT (N Gram/ACR Abs Heur/ACR) TARGET ("\([A-Z]+\)\\u0027?i?"r) + Heur/ACR - HeurOblCase - HeurRel ; #Jude 20240131
+
+Substitute:HeurACRAbsPl ("<[A-Z]+>"r ?) ("$1"v N Gram/ACR Abs Heur/ACR) TARGET ("\([A-Z]+\)\\u0027?i?t"r ?) - HeurOblCase - HeurRel ; #Jude 20240131
+COPY:HeurACRAbsPl (Prop Abs Pl Heur/Prop) EXCEPT (N Gram/ACR Abs Heur/ACR) TARGET ("\([A-Z]+\)\\u0027?i?t"r) + Heur/ACR - HeurOblCase - HeurRel ; #Jude 20240131
+
+#Heur ACR Ins
+Substitute:HeurACRInsSg ("[A-Z]+.*"r ?) ("$1"v N Gram/ACR Ins Heur/ACR) TARGET ("<(\\p{Lu}+)(\\u002D|\\u0027)?i?mik>"r ?) ; #Jude 20240131
+COPY:HeurACRInsSg ("$1"v Prop Ins Sg Heur/Prop) EXCEPT ("$1"v N Gram/ACR Ins Heur/ACR) TARGET ("<\([A-Z]+\)-?'?i?mik>"r) + Heur/ACR ; #Jude 20240131
+
+#Heur ACR Lok
+Substitute:HeurACRLokSg ("[A-Z]+.*"r ?) ("$1"v N Gram/ACR Lok Heur/ACR) TARGET ("<(\\p{Lu}+(\\d+)?)(\\u002D|\\u0027)?i?mi>"r ?) ; #Jude 20240131
+COPY:HeurACRLokSg ("$1"v Prop Lok Sg Heur/Prop) EXCEPT ("$1"v N Gram/ACR Lok Heur/ACR) TARGET ("<\([A-Z]+\)-?'?i?mi>"r) + Heur/ACR ; #Jude 20240131
+
+#Heur ACR Rel
+Substitute:HeurACRRelSgLu ("[A-Z]+.*"r ?) ("$1"v N Gram/ACR Rel LU Heur/ACR) TARGET ("<(\\p{Lu}+)(\\u002D|\\u0027)?i?llu>"r ?) ; #Jude 20240131
+COPY:HeurACRRelSg ("$1"v Prop Rel Sg Heur/Prop) EXCEPT ("$1"v N Gram/ACR Rel LU Heur/ACR) TARGET ("<\([A-Z]+\)-?'?i?llu>"r) + Heur/ACR ; #Jude 20240131
+
+Substitute:HeurACRRelSg ("[A-Z]+.*"r ?) ("$1"v N Gram/ACR Rel Heur/ACR) TARGET ("<(\\p{Lu}+)(\\u002D|\\u0027)?i?p>"r ?) ; #Jude 20240131
+COPY:HeurACRRelSg ("$1"v Prop Rel Sg Heur/Prop) EXCEPT ("$1"v N Gram/ACR Rel Heur/ACR) TARGET ("<\([A-Z]+\)-?'?i?p>"r) + Heur/ACR ; #Jude 20240131
+
+#Heur ACR Trm
+Substitute:HeurACRTrmSg ("[A-Z]+.*"r ?) ("$1"v N Gram/ACR Trm Heur/ACR) TARGET ("<(\\p{Lu}+)(\\u002D|\\u0027)?i?mut>"r ?) ; #Jude 20240131
+COPY:HeurACRTrmSg ("$1"v Prop Trm Sg Heur/Prop) EXCEPT ("$1"v N Gram/ACR Trm Heur/ACR) TARGET ("<\([A-Z]+\)-?'?i?mut>"r) + Heur/ACR ; #Jude 20240131
+
+Substitute:HeurACRTrmPl ("[A-Z]+.*"r ?) ("$1"v N Gram/ACR Trm Heur/ACR) TARGET ("<(\\p{Lu}+)(\\u002D|\\u0027)?i?nut>"r ?) ; #Jude 20240131
+COPY:HeurACRTrmPl ("$1"v Prop Trm Pl Heur/Prop) EXCEPT ("$1"v N Gram/ACR Trm Heur/ACR) TARGET ("<\([A-Z]+\)-?'?i?nut>"r) + Heur/ACR ; #Jude 20240131
+
+#Heur ACR Via
+Substitute:HeurACRViaSg ("[A-Z]+.*"r ?) ("$1"v N Gram/ACR Via Heur/ACR) TARGET ("<(\\p{Lu}+)(\\u002D|\\u0027)?i?kkut>"r ?) ; #Jude 20240131
+COPY:HeurACRViaSg ("$1"v Prop Via Sg Heur/Prop) EXCEPT ("$1"v N Gram/ACR Via Heur/ACR) TARGET ("<\([A-Z]+\)-?'?i?kkut>"r) + Heur/ACR ; #Jude 20240131
