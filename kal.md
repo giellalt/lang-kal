@@ -53,6 +53,7 @@ SETPARENT:M0015
 * 	Gram/TV 
 * 	Gram/Ord 
 * 	Gram/ImpNeg 
+* 	Heur/ACR 
 * 	Heur/N 
 * 	Heur/Num 
 * 	Heur/Prop 
@@ -132,6 +133,8 @@ Gram/... and different specifications
 ### Heur der tags for iCase to block Abs Pl Heur/Prop analysis
 
 ### Heur Verb tags to block Abs Sg Heur/Prop analysis
+
+### Heur Excl tags to block Abs Sg Heur/Prop analysis
 
 ### Grammatical tags
 Sg, Du, Pl, iSg, iDu, iPl, ALL_Sg, ALL_Pl, case forms, verbal inflection
