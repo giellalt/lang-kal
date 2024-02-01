@@ -119,6 +119,12 @@ Gram/... and different specifications
 
 ### Heur Verb tags to block Abs Sg Heur/Prop analysis
 
+### Heur GL final
+
+### Heur FOREIGN final
+
+### Heur scan err
+
 ### Heur Excl tags to block Abs Sg Heur/Prop analysis
 
 ### Grammatical tags
