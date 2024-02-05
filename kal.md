@@ -136,7 +136,9 @@ Gram/... and different specifications
 
 ### Heur GL final
 
-### Heur FOREIGN final
+### Heur FOREIGN final prop
+
+### Heur FOREIGN initial prop
 
 ### Heur scan err
 
