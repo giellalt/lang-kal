@@ -54,6 +54,7 @@ SETPARENT:M0015
 * 	Gram/Ord 
 * 	Gram/ImpNeg 
 * 	Heur/ACR 
+* 	Heur/Abbr 
 * 	Heur/N 
 * 	Heur/Num 
 * 	Heur/Prop 
