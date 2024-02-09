@@ -47,6 +47,12 @@ SPLITCOHORT ("<$1>"v "$1"v Num Abs Sg "<$2>"v "$2"v CLB) ("<(\\p{N}{4})([.])>"r 
 
 #SUBSTITUTE ("<1960.>" "1960." Num Gram/Ord) ("<1960>" "1960" Num Abs Sg) TARGET ("1960.") IF (1 ("."));
 
+#splitting compounded by error
+SPLITCOHORT ("<$1>"v "$1"v "<$2>"v "$2"v) TARGET ("<(\\p{Lu}?\\p{Ll}+)\\u003A(\\p{Lu}\\p{Ll}+)>"r ?) ; #Jude 20240202
+SPLITCOHORT ("<$1>"v "$1"v "<$2>"v "$2"v) TARGET ("<(\\p{Lu}?\\p{Ll}+)(\\p{Lu}\\p{Ll}+)>"r ?) + HeurGLfinal ; #Jude 20240202
+SPLITCOHORT ("<$1>"v "$1"v "<$2>"v "$2"v) TARGET ("<(\\d\\u002D\\p{Ll}+)(\\p{Lu}\\p{Ll}+)>"r ?) + HeurGLfinal ; #Jude 20240202
+SPLITCOHORT ("<$1>"v "$1"v "<$2>"v "$2"v) TARGET ("<(\\p{Lu}?\\p{Ll}+)(\\p{Lu}+)>"r ?) + HeurGLfinal ; #Jude 20240202
+
 # Heuristic analysis of unrecognized Prop multiwords
 # If a word ends in -imi but there is an upper-case word before it, it's likely a Prop Lok
 #Heur LOK
@@ -54,8 +60,12 @@ SPLITCOHORT ("<$1>"v "$1"v Num Abs Sg "<$2>"v "$2"v CLB) ("<(\\p{N}{4})([.])>"r 
 # Turn remaining upper-case words into Prop if there is a Prop after them
 #Substitute:HeurProp0002 (?) (Prop Abs Sg Heur/Prop) TARGET ("<\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+>"r ?) IF (1* Prop BARRIER ("\\p{Ll}.*"r) OR WORD) ; #Danske Døve Landsforbundimi qinersisoqarpoq
 
-#Heur/Exclm
-Substitute:HeurExcl ("<.*>"r ?) ("$1"v Heur/Exclm) TARGET ("<\(.*\)>"r ?) + HeurExcl - HeurGLfinal - HeurGLErr - HeurConsIllGL - RomNum ; #Jude 20240206
+#Heur abbr
+Substitute ("<.*>" ?) ("$1"v N Gram/Abbr Abs Sg Heur/Abbr) TARGET ("\(\\p{Ll}\\p{Ll}\)"r ?) - For2Let ; #Jude 20240208
+Substitute ("<.*>" ?) ("$1"v N Gram/Abbr Abs Sg Heur/Abbr) TARGET ("\(\\p{Lu}\\p{Ll}\)"r ?) - For2Let - HeurExcl ; #Jude 20240208
+Substitute ("<.*>" ?) ("$1"v N Gram/Abbr Abs Sg Heur/Abbr) TARGET ("\(\\p{Ll}\\p{Lu}\)"r ?) - For2Let - HeurExcl ; #Jude 20240208
+#Heur/Excl
+Substitute:HeurExcl ("<.*>"r ?) ("$1"v Heur/Excl) TARGET ("<\(.*\)>"r ?) + HeurExcl - HeurGLfinal - HeurGLErr - HeurConsIllGL - RomNum ; #Jude 20240206
 
 # Specific heuristic analysis first
 #Heur University of
@@ -100,7 +110,7 @@ Substitute:HeurLokNunavut ("\\p{Lu}.*"r ?) ("Nunavut" Prop Lok Sg Heur/Prop) TAR
 Substitute:HeurAblSgLu ("\\p{Lu}.*"r ?) ("$1"v Prop Abl Sg LU Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)-?i?miillu>"r ?) ; #Jude 20240201
 Substitute:HeurAblSg ("\\p{Lu}.*"r ?) ("$1"v Prop Abl Sg Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)?)-?i?mi?it>"r ?) ; #Jude 20240129
 Substitute:HeurAbl ("\\p{Lu}.*"r ?) ("$1"v Prop Abl Pl Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)-?i?nit>"r ?) ; #Jude 20240129
-COPY:HeurAblAbs ("$1n"v Abs Pl Heur/Prop) EXCEPT ("\\p{Lu}.*"r Abl Pl Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)-?i?nit>"r) + Abl + Pl + Heur/Prop 
+COPY:HeurAblAbs ("$1n"v Abs Pl Heur/Prop) EXCEPT ("\\p{Lu}.*"r Abl Pl Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)-?i?nit>"r) + Abl + Pl + Heur/Prop
 (NEGATE 0 ("<.*ninit>"r)) ; #Jude 20240129
 
 #Heur iAbl
@@ -135,7 +145,6 @@ Substitute:HeurLokPl ("\\p{Lu}.*"r ?) ("$1"v Prop Lok Pl Heur/Prop) TARGET ("<(\
 COPY:HeurLokAbs ("$1n"v Prop Abs Sg Heur/Prop) EXCEPT ("$1"v Prop Lok Pl Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)-?i?ni>"r Prop Lok Pl Heur/Prop) - ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?kkun)ni>"r Prop Lok Pl Heur/Prop) ; #Jude 20240130
 
 #Heur Rel
-#Prop Rel Sg GUUQ
 Substitute:HeurRelSgGuuq ("\\p{Lu}.*"r ?) ("$1"v Prop Rel Sg GUUQ Heur/Prop) TARGET ("<(\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?(\\u002D\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)?)\\u002D?i?nngooq>"r ?) ; #Jude 20240201
 Substitute:HeurRelSgLi ("\\p{Lu}.*"r ?) ("$1"v Prop Rel Sg LI Heur/Prop) TARGET ("<(\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?(\\u002D\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)?)\\u002D?i?lli>"r ?) - HeurScnErrF - HeurGLfinal ; #Jude 20240129
 Substitute:HeurRelSgLu ("\\p{Lu}.*"r ?) ("$1"v Prop Rel Sg LU Heur/Prop) TARGET ("<(\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?(\\u002D\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)?)\\u002D?i?llu>"r ?) - ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?(\\u002D\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)?)\\u002D?mullu>"r ?) - ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?(\\u002D\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)?)\\u002D?miillu>"r ?) ; #Jude 20240129
@@ -160,7 +169,7 @@ Substitute:HeurAbsRelKkut ("\\p{Lu}.*"r ?) ("$1"v iProp KKUT N Abs Pl HeurDer He
 Substitute:HeurAbsRelKkutMiu ("\\p{Lu}.*"r ?) ("$1"v iProp KKUT Der/nn MIU Der/nn N Abs Pl HeurDer Heur/N) TARGET ("<(\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?(\\u002D\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)?)\\u002D?i?kkormiut>"r ?) ; #Jude 20240130
 Substitute:HeurAbsRelMiu ("\\p{Lu}.*"r ?) ("$1"v iProp MIU Der/nn N Abs Pl HeurDer Heur/N) TARGET ("<(\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?(\\u002D\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)?)\\u002D?i?miut>"r ?) ; #Jude 20240129
 Substitute:HeurAbsRTarToq ("\\p{Lu}.*"r ?) ("$1"v iProp R Der/nv Gram/IV TAR Der/vv Gram/IV TUQ Der/vn N Abs Pl HeurDer Heur/N) TARGET ("<(\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?(\\u002D\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)?)\\u002D?rtartut>"r ?) ; #Jude 20240201
-Substitute:HeurAbsRel ("\\p{Lu}.*"r ?) ("$1"v Prop Abs Pl Heur/Prop) TARGET ("<(\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?(\\u002D\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)?)\\u002D?i?t>"r ?) - HeurVerb - HeurGLfinal - HeurForFinalT - HeurScnErrF - HeurGLErr - HeurConsIllGL - HeurOblCase
+Substitute:HeurAbsRelPl ("\\p{Lu}.*"r ?) ("$1"v Prop Abs Pl Heur/Prop) TARGET ("<(\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?(\\u002D\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)?)\\u002D?i?t>"r ?) - HeurVerb - HeurGLfinal - HeurForFinalT - HeurScnErrF - HeurGLErr - HeurConsIllGL - HeurOblCase
 (NEGATE 0 ("<(\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?(\\u002D\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)?)\\u002D?aasiit>"r ?)) 
 (NEGATE 0 ("<(\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?(\\u002D\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)?)\\u002D?k?kut>"r ?)) ; #Jude 20240129
 COPY:HeurAbsRel (Rel Pl Heur/Prop) EXCEPT (Abs Pl Heur/Prop) TARGET Abs + Pl + Heur/Prop - HeurDer; #Jude 20240129
@@ -175,19 +184,22 @@ Substitute:HeurAbsLu ("\\p{Lu}.*"r ?) ("$1"v Prop Abs Sg LU Heur/Prop) TARGET ("
 Substitute:HeurAbsTaaq ("\\p{Lu}.*"r ?) ("$1"v Prop Abs Sg TTAAQ Heur/Prop) TARGET ("<(\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?(\\u002D\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)?)\\u002D?issaaq>"r ?) - HeurOblCase - HeurRel ; #Jude 20240130
 Substitute:HeurAbsTaaq ("\\p{Lu}.*"r ?) ("$1"v Prop Abs Sg TTAAQ Heur/Prop) TARGET ("(\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?(\\u002D\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)?)\\u002D?ttaaq>"r ?) - HeurOblCase - HeurRel ; #Jude 20240130
 Substitute:HeurAbsRTarToq ("\\p{Lu}.*"r ?) ("$1"v iProp R Der/nv Gram/IV TAR Der/vv Gram/IV TUQ Der/vn N Abs Sg HeurDer Heur/N) TARGET ("<(\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?(\\u002D\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)?)\\u002D?rtartoq>"r ?) ; #Jude 20240201
-Substitute:HeurAbsSg ("\\p{Lu}.*"r ?) ("$1"v Prop Abs Sg Heur/Prop) TARGET ("<(\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?(\\u002D\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)?(\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?)?)\\u002D?i?>"r ?) - HeurOblCase - HeurRel - HeurVerb - HeurGLfinal - HeurForFinalI - HeurScnErrF - HeurExcl ; #Jude 20240129
+Substitute:HeurAbsSg ("\\p{Lu}.*"r ?) ("$1"v Prop Abs Sg Heur/Prop) TARGET ("<(\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?(\\u002D\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)?(\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?)?\\p{Lu}?)\\u002D?i?>"r ?) - HeurOblCase - HeurRel - HeurVerb - HeurGLfinal - HeurForFinalI - HeurScnErrF - HeurExcl - Heur/Foreign ; #Jude 20240129
 #Substitute:HeurAbsSg ("\\p{Lu}.*"r ?) ("$1"v Prop Abs Sg Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+)\\u002D?i?>"r ?) - HeurOblCase - HeurVerb - HeurForFinalI - HeurScnErrF ; #Jude 20240129
 Substitute:HeurAbsSgFor_i ("\\p{Lu}.*"r ?) ("$1"v Prop Abs Sg Heur/Prop) TARGET ("<(\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?(\\u002D\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)?i)>"r ?) + HeurForFinalI - HeurOblCase - HeurRel - HeurVerb - HeurGLfinal ; #Jude 20240129
 
 #Heur/Num
-Substitute:HeurCoordinate ("<[0-9].*>"r ?) ("$1"v Num Abs Pl Heur/Num) TARGET ("<(\\d{2}(\\u00B0|\\u00BA|\\u02DA)\\d{2}(\\u0027|\\u2032)?([NWSE]|\\d{2})?(\\u0022|\\u2033)?[NWSE]?)>"r ?) ; #Jude 20240131 taken common errors into consideration: Degree Sign -> Masculine Ordinal Indicator or Ring Above, Prime -> Apostrophe, Double Prime -> Quotation Mark
+Substitute:HeurCoordinate ("<[0-9].*>"r ?) ("$1"v Num Abs Pl Heur/Num) TARGET ("<([NV]?\\d{2}(\\u00B0|\\u00BA|\\u02DA|\\u006F)\\d{2}(\\u0027|\\u2032)?([NWSE]|\\d{2})?(\\u0022|\\u2033)?([NWSE]|\\d)?)>"r ?) ; #Jude 20240131 taken common errors into consideration: Degree Sign -> Masculine Ordinal Indicator or Ring Above, Prime -> Apostrophe, Double Prime -> Quotation Mark
 
 Substitute:HeurDegrees ("<[0-9].*>"r ?) ("$1"v Num Abs Pl Heur/Num) TARGET ("<(\\d+(\\u00B0|\\u00BA|\\u02DA)[CF]?)>"r) ; #Jude 20240131 taken common error into consideration Degree Sign -> Masculine Ordinal Indicator or Ring Above
 
-SPLITCOHORT ("<$1>"v "$1"v "<$2>"v "$2"v) TARGET ("<(\\p{Lu}?\\p{Ll}+)\\u003A(\\p{Lu}\\p{Ll}+)>"r ?) ; #Jude 20240202
-SPLITCOHORT ("<$1>"v "$1"v "<$2>"v "$2"v) TARGET ("<(\\p{Lu}?\\p{Ll}+)(\\p{Lu}\\p{Ll}+)>"r ?) + HeurGLfinal ; #Jude 20240202
-SPLITCOHORT ("<$1>"v "$1"v "<$2>"v "$2"v) TARGET ("<(\\d\\u002D\\p{Ll}+)(\\p{Lu}\\p{Ll}+)>"r ?) + HeurGLfinal ; #Jude 20240202
-SPLITCOHORT ("<$1>"v "$1"v "<$2>"v "$2"v) TARGET ("<(\\p{Lu}?\\p{Ll}+)(\\p{Lu}+)>"r ?) + HeurGLfinal ; #Jude 20240202
+Substitute:HeurDimensions ("<[0-9].*>"r ?) ("$1"v Num Abs Pl Heur/Num) TARGET ("<(\\d+\\u0078\\d+)>"r) ;
+
+Substitute:HeurNumRel ("[0-9].*"r ?) ("$1"v Num Rel Pl Heur/Num) TARGET ("<(\\d+)(\\u0027|\\u002D)i?p>"r ?) ;
+Substitute:HeurNumRelPl_t ("[0-9].*"r ?) ("$1"v Num Rel Pl Heur/Num) TARGET ("<(\\d+)(\\u0027|\\u002D)?i?t>"r ?) ;
+COPY:HeurNumRel_t (Num Abs Pl Heur/Num) EXCEPT (Num Rel Pl Heur/Num) TARGET ("<\\d+(\\u0027|\\u002D)?i?t>"r) + Heur/Num ; 
+Substitute:HeurNumAbl ("[0-9].*"r ?) ("$1"v Num Abl Pl Heur/Num) TARGET ("<(\\d+)(\\u0027|\\u002D)?i?mît>"r ?) ;
+Substitute:HeurNum ("[0-9].*"r ?) ("$1"v Num Abs Pl Heur/Num) TARGET ("<(\\d+.*)>"r ?) ;
 
 #Heur ACR
 #Heur ACR Abl
@@ -209,6 +221,8 @@ Substitute:HeurACRRelSgLu ("\\p{Lu}+.*"r ?) ("$1"v N Gram/ACR Rel LU Heur/ACR) T
 COPY:HeurACRRelSg (Prop Rel Sg LU Heur/Prop) EXCEPT (N Gram/ACR Rel LU Heur/ACR) TARGET ("<(\\p{Lu}+(\\d+(\\p{Lu})?|\\u003A\\p{Lu}+|\\p{Ll}+)?)(\\u0027|\\u002D)?i?llu>"r) + Heur/ACR - HeurOblCase ; #Jude 20240206
 Substitute:HeurACRRelSg ("\\p{Lu}+.*"r ?) ("$1"v N Gram/ACR Rel Heur/ACR) TARGET ("<(\\p{Lu}+(\\d+(\\p{Lu})?|\\u003A\\p{Lu}+|\\p{Ll}+^i)?)(\\u0027|\\u002D)?i?p>"r ?) - HeurOblCase - HeurExcl ; #Jude 20240206
 COPY:HeurACRRelSg (Prop Rel Sg Heur/Prop) EXCEPT (N Gram/ACR Rel Heur/ACR) TARGET ("<(\\p{Lu}+(\\d+(\\p{Lu})?|\\u003A\\p{Lu}+|\\p{Ll}+)?)(\\u0027|\\u002D)?i?p>"r) + Heur/ACR - HeurOblCase ; #Jude 20240131
+Substitute:HeurACRRelPl ("\\p{Lu}+.*"r ?) ("$1"v N Gram/ACR Rel Pl Heur/ACR) TARGET ("<(\\p{Lu}+(\\d+(\\p{Lu})?|\\u003A\\p{Lu}+|\\p{Ll}+^i)?)(\\u0027|\\u002D)?i?t>"r ?) - HeurOblCase - HeurExcl - For2Let ; #Jude 20240208
+COPY:HeurACRRelPl (N Gram/ACR Abs Pl Heur/ACR) EXCEPT (N Gram/ACR Rel Pl Heur/ACR) TARGET ("<(\\p{Lu}+(\\d+(\\p{Lu})?|\\u003A\\p{Lu}+|\\p{Ll}+)?)(\\u0027|\\u002D)?i?t>"r) + Heur/ACR - HeurOblCase ; #Jude 20240208
 
 #Heur ACR Trm
 Substitute:HeurACRTrmSg ("\\p{Lu}+.*"r ?) ("$1"v N Gram/ACR Trm Heur/ACR) TARGET ("<(\\p{Lu}+)(\\u0027|\\u002D)?i?mut>"r ?) ; #Jude 20240131
@@ -218,10 +232,11 @@ Substitute:HeurACRTrmPl ("\\p{Lu}+.*"r ?) ("$1"v N Gram/ACR Trm Heur/ACR) TARGET
 COPY:HeurACRTrmPl ("$1"v Prop Trm Pl Heur/Prop) EXCEPT ("$1"v N Gram/ACR Trm Heur/ACR) TARGET ("<(\\p{Lu}+)(\\u0027|\\u002D)?i?nut>"r) + Heur/ACR ; #Jude 20240131
 
 
+#Substitute:Heur/Foreign (".*"r ?) ("$1"v Heur/Foreign) TARGET ("<\(.*\)>"r ?) + Heur/Foreign ;
+
 END
+
 #Not ready to be in use yet as of date 20240131 - too many examples from our corpus that shouldnt be in uppercase only: e.g. ARRORSAAT
-
-
 
 #Heur ACR Aeq
 
@@ -232,7 +247,6 @@ COPY:HeurACRAbsSg (Prop Abs Sg Heur/Prop) EXCEPT (N Gram/ACR Abs Heur/ACR) TARGE
 Substitute:HeurACRAbsPl ("<[A-Z]+>"r ?) ("$1"v N Gram/ACR Abs Heur/ACR) TARGET ("\([A-Z]+\)\\u0027?i?t"r ?) - HeurOblCase - HeurRel ; #Jude 20240131
 COPY:HeurACRAbsPl (Prop Abs Pl Heur/Prop) EXCEPT (N Gram/ACR Abs Heur/ACR) TARGET ("\([A-Z]+\)\\u0027?i?t"r) + Heur/ACR - HeurOblCase - HeurRel ; #Jude 20240131
 
-
 #Heur ACR Rel
 Substitute:HeurACRRelSgLu ("[A-Z]+.*"r ?) ("$1"v N Gram/ACR Rel LU Heur/ACR) TARGET ("<(\\p{Lu}+)(\\u002D|\\u0027)?i?llu>"r ?) ; #Jude 20240131
 COPY:HeurACRRelSgLu ("$1"v Prop Rel Sg Heur/Prop) EXCEPT ("$1"v N Gram/ACR Rel LU Heur/ACR) TARGET ("<\([A-Z]+\)-?'?i?llu>"r) + Heur/ACR ; #Jude 20240131
@@ -241,8 +255,6 @@ COPY:HeurACRRelSg (Prop Rel Sg Heur/Prop) EXCEPT (N Gram/ACR Abs Heur/ACR) TARGE
 
 Substitute:HeurACRRelSg ("[A-Z]+.*"r ?) ("$1"v N Gram/ACR Rel Heur/ACR) TARGET ("<(\\p{Lu}+)(\\u002D|\\u0027)?i?p>"r ?) ; #Jude 20240131
 COPY:HeurACRRelSg ("$1"v Prop Rel Sg Heur/Prop) EXCEPT ("$1"v N Gram/ACR Rel Heur/ACR) TARGET ("<\([A-Z]+\)-?'?i?p>"r) + Heur/ACR ; #Jude 20240131
-
-
 
 #Heur ACR Via
 Substitute:HeurACRViaSg ("[A-Z]+.*"r ?) ("$1"v N Gram/ACR Via Heur/ACR) TARGET ("<(\\p{Lu}+)(\\u002D|\\u0027)?i?kkut>"r ?) ; #Jude 20240131
