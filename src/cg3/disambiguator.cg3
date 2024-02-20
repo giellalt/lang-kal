@@ -455,7 +455,8 @@ LIST EXCLMARK = ("^excl") ("!") ;
 
 SET iALL = iV | iN | iProp ;
 LIST Part = Part Pali Adv ^"ma" ^"av" ^"pav" ^"qav" ^"kan" ^"qam" ^"sam" ^"pik" ^"iv" ^"ik" ^"kig" ^"uv" "aali" (Adv "aamma") "imaluunniit" "kisianni" "naak" "qanorli" "soorli" "tassali" "tassa" "taamaattoq" "unnit";
-LIST Num = Num ("tyve") ;
+LIST Num = Num ("tyve") ; 
+SET iNum = (iNum) | ("ataaseq") - Num ; #ataaseq bliver ofte fejlagtigt læst som N
 
 #!! ### Grammar tags
 	#!! Gram/... and different specifications
@@ -2971,7 +2972,7 @@ SUBSTITUTE:conj8luun (LUUNNIIT)(CONJ-LUUNNIIT) TARGET LUUNNIIT + Cont (NEGATE -1
  ; #hverken eller
 SUBSTITUTE:conj9luun (LUUNNIIT)(CONJ-LUUNNIIT) TARGET LUUNNIIT + ("immikkut") ;
 SUBSTITUTE:conj10luun (LUUNNIIT)(CONJ-LUUNNIIT) TARGET LUUNNIIT + $$KASUS IF (-1 $$KASUS)(NEGATE 0 Gram/Int OR Gram/Indef)
-(NEGATE 0 Num OR iNum + INNAQ) #ataatsimilluunniit
+(NEGATE 0 Num OR iNum) #ataatsimilluunniit
 (NEGATE -1 Gram/Coref LINK NOT 1 Gram/Coref)
 (NEGATE 0 Abs LINK -1 ("ila") + Abs LINK 0 Adv)#ilaatigut TAMANNAANNARLUUNNIIT tunngavigalugu Qorsussuup matuneqannginnissaa angajoqqaat politikerinut eqqarsaatigeqquaat.
 ;
@@ -3678,7 +3679,7 @@ SELECT:0110D FAM + KKUT + Abs IF (*1 V + 3Pl OR V + 3PlO)
 (NEGATE 0 ("angakkoq" Pl) LINK *1 3PlO BARRIER V)
 ;
 
-REMOVE:0111 Via OR iVia (0 NUM + KKUT) ;
+REMOVE:0111 Via OR iVia (0 ("[0123456789]{2,4}"r) + iNum + KKUT) ; #60-ikkunni og 1960-ikkunni
 REMOVE:0130 KKUT + Abs IF
 (NEGATE *1 INTRANSVERB + 3Pl)(NEGATE *0 3PlO) (NEGATE 0 FAM)
 (NEGATE 0 CONJ-LU LINK 1 1PlPoss + Rel LINK 1 POSSESSUM3)#SIUMUKKULLU isumaqatigiissutitta saniatigut.
@@ -5914,6 +5915,7 @@ REMOVE:0322E1 Gram/Refl  IF (NEGATE *-1 ("immi") BARRIER KOMMA)
 (NEGATE 0 2SgO LINK 0 CONT + 4Pl + ADV-LU LINK 1 VFIN + 3Pl) #Nunarsuarmili pissartaanerminnik illersuisut aallartisarlutillu sukkatsipput.
 (NEGATE 0 R + LIR) #BUNDGARNILERFISSARPUT iterlassimaninnguaq kimmut sammisoq sikorsuaalunnguit tippuffigisimagaat pujortuleeqqamik aportarlugit avalakaatillugit kangimut qimmussorteriarlugit – nuliara meeqqavullu nunamut nioriarlugit, pujortuleerarlu kisarteriarlugu – umiaasamik angallatinni ilagisartagaralu bundgarnivut ninginnialerpavut.
 (NEGATE 0 ("skooq") + LIR) #SKUULERPAT qilersorlugit.
+(NEGATE 0 ("pikkorip") + SAR) #Ukiorpassuit, unnuarpassuillu PIKKORISSARFIGISARSIMAVAKKA unnuamut eqqissillunga sinissinnaassanerlunga imaluunniit piareersimaannavillunga iluamik sinissinnaananga unnuaq atussanerlugu.
 ;
 
 REMOVE:0322E2 (/Gram/TV\ V\ Ind\ 3Sg\ 1SgO/l) IF (0 (/Gram/Refl\ \(Gram/IV\ \)?V\ Ind\ 1Sg/l) LINK NEGATE *0 V + 3Sg) (-1 Aeq OR ("immi")) #Isumaalliortutut MISIGISIMAQAANGA, nalulerlugulu qanoq qanilleqqissinnaanerlugu, angoqqissanerlugu
@@ -7657,6 +7659,7 @@ SELECT:1829A Ind IF (NEGATE *-1 Ind)(NEGATE *1 Ind OR ("?"))(NEGATE 0 Par LINK *
 (NEGATE 0 NIR LINK 0 (NIQ Abs) LINK *1 Ind OR Par )#Unnummut inuuneq/toqu pillugu EQQARTUEQATIGIINNERPUT imaqartoq.
 (NEGATE 0 Abs LINK *-1 ("tassa") + Adv) #Tassalu tamanna annerusumik QILANAARINIKUUSIMASARPUT, ilinniartoqatit ataatsimooqatigalugit najoqqaaqatigeerujoornissaq.
 (NEGATE 0 ("pi") + GUMA + TAQ + QAR) #PIUMASAQAATIT uannut kiffaanngissusiiaasut.
+(NEGATE 0 NIR LINK @1< (*) LINK *0 NIR) #Pisuppalunneranit naatsorsorsinnaavara qanoq aalakoortiginersoq. Baajat qassit IMERSIMANERAI.
 ;
 SELECT:1829B Ind + INTRANSVERB + 3Pl IF (-*1 Abs + Pl BARRIER VFIN LINK NEGATE -*1 Rel + Pl BARRIER POSSESSUM)
 (NEGATE 0 3PlO LINK *-1 Abs + Pl BARRIER V)(NEGATE 0 1PlPoss LINK NOT 1 DIRTALESLUT OR EOS OR KOMMA) # Piitakkut ikinngutaat QASOQAAT
@@ -9226,6 +9229,8 @@ REMOVE:5490IH GIP + JAAR IF (0 RIAR + HTR);
 REMOVE:5490II ("uki") + JA IF (0 ("ukiar"));
 REMOVE:5490IJ ("pisaa") IF (0 ("pisaar")); #hvad er "pisaa"? #”Prinsesseminguna PISAARUSUKKALUARAMA.”
 REMOVE:5490IK ("imiip") + NAR IF (0 ("imer") + INNAR);
+REMOVE:5490IL ("angu") + TAAR IF (0 ("angut") + U);
+SELECT:5490IM ("pikkorip") + SAR IF (0 ("pikkorip") + TAR); #Ukiorpassuit, unnuarpassuillu PIKKORISSARFIGISARSIMAVAKKA unnuamut eqqissillunga sinissinnaassanerlunga imaluunniit piareersimaannavillunga iluamik sinissinnaananga unnuaq atussanerlugu.
 
 # Verbum eller partikel?
 SELECT:5491A ("aarit") IF (-1 BOS);
