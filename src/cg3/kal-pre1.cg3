@@ -6,6 +6,8 @@ INCLUDE STATIC disambiguator.cg3 ;
 
 # kal-pre1.cg3 er nødvendig, fordi REMCOHORT fjerner en delimiter, hvilket betyder, at der efterlades et tomt vindue. Bundlinien er, at man ikke kan fjerne delimiters og derefter bruge den i samme CG
 
+
+
 # ============ #
 # Regelsektion #
 # ============ #
@@ -13,27 +15,11 @@ INCLUDE STATIC disambiguator.cg3 ;
 BEFORE-SECTIONS
 
 
-
-#ADD misser i første omgang fordi der står en CLB mellem : og - Den fjernes før ADD
 REMCOHORT:paragraftegn ("¶") + CLB IF (-*1W (":") + EOS OR (".") + EOS BARRIER EOS);
 #BARRIER EOS for at sikre at det kun er den foregående sætning og ikke noget langt til venstre
-#ADD:DIRSTART01 DIRTALESTART TARGET ("-") + PUNCT OR (""") + PUNCT IF (-*1W (":") + EOS BARRIER EOS);
 
-#MERGECOHORTS for at forberede typen 100,- kroner på analysen 169,-@N> etc.
 MergeCohorts ("<$1,->"v "$1,-"v Num Abs Sg) ("<(.+)>"r Num Abs Sg) WITH (1 ("<,>")) (2 ("<->")) ;
 
-#Forsøgt flyttet fra disambiguator.cg3
-#ADDCOHORT ("<->" "-" PUNCT DIRTALESTART) BEFORE @INTERJ OR @VOK (-1 BOS) (NEGATE 0 DIRTALESTART OR DIRTALEMIDDLE OR DIRTALESLUT) (NEGATE *-1W PUNCT - ("-") - (".") - KOMMA) (NEGATE 0 Adv - @INTERJ - @VOK)
-#(NEGATE -*1W CLB + DIRTALEMIDDLE OR CLB + DIRTALESLUT BARRIER EOS)# -Ilami ... ASSISSAQANNGILAQ. ASUMIAA Norgep nunataata maniinnera sungiusimanngikkaa.
-# ;
-
-#20210604: Tinos bud på MERGECOHORT som en mulig vej til telefonnumre uden særlige tiltag i fst-en. Følgende virker, men vi tester først med fst
-
-#MERGECOHORTS ("<+$1 $2 $3 $4 $5>"v "+$1 $2 $3 $4 $5"v CountryDanPhone Abs Sg) ("<+>") WITH (1 ("<(\\d{1,3})>"r Num)) (2 ("<(\\d{2})>"r Num)) (3 ("<(\\d{2})>"r Num)) (4 ("<(\\d{2})>"r Num)) (5 ("<(\\d{2})>"r Num)) ;
-#MERGECOHORTS ("<$1 $2 $3 $4>"v "$1 $2 $3 $4"v DanPhone Abs Sg) ("<(\\d{2})>"r Num) WITH (1 ("<(\\d{2})>"r Num)) (2 ("<(\\d{2})>"r Num)) (3 ("<(\\d{2})>"r Num)) ;
-
-#MERGECOHORTS ("<+$1 $2 $3 $4>"v "+$1 $2 $3 $4"v CountryKalPhone Abs Sg) ("<+>") WITH (1 ("<(\\d{1,3})>"r Num)) (2 ("<(\\d{2})>"r Num)) (3 ("<(\\d{2})>"r Num)) (4 ("<(\\d{2})>"r Num)) ;
-#MERGECOHORTS ("<$1 $2 $3>"v "$1 $2 $3"v KalPhone Abs Sg) ("<(\\d{2})>"r Num Abs Sg) WITH (1 ("<(\\d{2})>"r Num Abs Sg)) (2 ("<(\\d{2})>"r Num Abs Sg)) ;
 
 SPLITCOHORT ("<$1>"v "$1"v Num Abs Sg "<$2>"v "$2"v CLB) ("<(\\p{N}+)([.])>"r Gram/Ord) (-1 BOS) (1 ("<\\p{Lu}.*"r)) (NOT 1 MAANED) ;
 
@@ -43,22 +29,33 @@ REMOVE:kalaallisooq (/"kalaallisooq"\ SSAQ\ Der/nn\ N\ Via\ Sg\ 3SgPoss/l) IF (0
 SPLITCOHORT ("<$1>"v "$1"v Num Abs Sg "<$2>"v "$2"v CLB) ("<(\\p{N}{4})([.])>"r Gram/Ord) (0 EOS) ;
 SPLITCOHORT ("<$1>"v "$1"v Num Abs Sg "<$2>"v "$2"v CLB) ("<(\\p{N}{4})([.])>"r Gram/Ord) (1 ("¶") + EOS) ;
 
-#ADDCOHORT ("<.>" "." CLB) AFTER (/"[0123456789]{4}\."/r) IF (1 EOS);
-
-#SUBSTITUTE ("<1960.>" "1960." Num Gram/Ord) ("<1960>" "1960" Num Abs Sg) TARGET ("1960.") IF (1 ("."));
-
 #splitting compounded by error
 SPLITCOHORT ("<$1>"v "$1"v "<$2>"v "$2"v) TARGET ("<(\\p{Lu}?\\p{Ll}+)\\u003A(\\p{Lu}\\p{Ll}+)>"r ?) ; #Jude 20240202
 SPLITCOHORT ("<$1>"v "$1"v "<$2>"v "$2"v) TARGET ("<(\\p{Lu}?\\p{Ll}+)(\\p{Lu}\\p{Ll}+)>"r ?) + HeurGLfinal ; #Jude 20240202
 SPLITCOHORT ("<$1>"v "$1"v "<$2>"v "$2"v) TARGET ("<(\\d\\u002D\\p{Ll}+)(\\p{Lu}\\p{Ll}+)>"r ?) + HeurGLfinal ; #Jude 20240202
 SPLITCOHORT ("<$1>"v "$1"v "<$2>"v "$2"v) TARGET ("<(\\p{Lu}?\\p{Ll}+)(\\p{Lu}+)>"r ?) + HeurGLfinal ; #Jude 20240202
 
-# Heuristic analysis of unrecognized Prop multiwords
-# If a word ends in -imi but there is an upper-case word before it, it's likely a Prop Lok
-#Heur LOK
-#Substitute:HeurProp0001 ("\\p{Lu}.*"r ?) ("$1"v Prop Lok Sg Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)mi>"r ?) IF (-1 ("\\p{Lu}.*"r)) ; #Danske Døve Landsforbundimi qinersisoqarpoq
-# Turn remaining upper-case words into Prop if there is a Prop after them
-#Substitute:HeurProp0002 (?) (Prop Abs Sg Heur/Prop) TARGET ("<\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+>"r ?) IF (1* Prop BARRIER ("\\p{Ll}.*"r) OR WORD) ; #Danske Døve Landsforbundimi qinersisoqarpoq
+#Heuristics
+#Heur/Prop Heur/Quote
+Substitute (".*"r) ("$1"v <quote-1>) TARGET ("<\(\\p{Lu}.*\)>"r) (-1 ("<(»|„)>"r) LINK 1* ("<(«|“)>"r) LINK 1 ("<(-|mi|ni|imi|ini|imiit|miit|mit|imut|mut|gooq|rooq)>"r)) ;
+Substitute (".*"r) ("$1"v <quote-2>) TARGET ("<\(.*\)>"r) (-1 (<quote-1>)) ; 
+Substitute (".*"r) ("$1"v <quote-3>) TARGET ("<(«|“|i?mi|ni|i?mut|\\p{Ll}+)>"r) (-1 (<quote-2>)) ; 
+Substitute (".*"r) ("$1"v <quote-4>) TARGET ("<(«|“|i?mi|ni|i?mut)>"r) (-1 (<quote-3>)) ;
+Substitute (".*"r) ("$1"v <quote-5>) TARGET ("<(-|«|“|i?mi|ni|i?mut|i?mi?it)>"r) (-1 (<quote-4>)) ;  
+Substitute (".*"r) ("$1"v <quote-6>) TARGET ("<(-|«|“|i?mi|ni|i?mut|i?mi?it)>"r) (-1 (<quote-5>)) ;  
+Substitute:quoteAbsSg (".*"r PUNCT LEFT) ("<„$1$2$3>"v "„$1$2$3"v Prop Abs Sg GUUQ Heur/Prop Heur/Quote) TARGET ("<„>") (1 ("<\(\\p{Lu}.*\)>"r) LINK 1 ("<\(“\)>"r) LINK 1 ("<\((g|r)ooq\)>"r)) ; # „Pharao“gooq 
+Substitute:quoteTrmSg (".*"r PUNCT RIGHT) ("<»$1=$2=$3=$4$5$6>"v "<$1$2$3$4$5$6"v Prop Abl Sg Heur/Prop Heur/Quote) TARGET ("<»>") (1 ("<\(\\p{Lu}.*\)>"r) LINK 1 ("<\(.*\)>"r) LINK 1 ("<\(.*\)>"r) LINK 1 ("<\(«\)>"r) LINK 1 ("<\(-\)>"r) LINK 1 ("<\(i?mi?it\)>"r)) ; # »Fänrik Ståls sägner«-imiit
+Substitute:quoteLokSg (".*"r PUNCT RIGHT) ("<»$1=$2$3$4>"v "»$1=$2$3$4"v Prop Lok Sg Heur/Prop Heur/Quote) TARGET ("<»>") (1 ("<\(\\p{Lu}.*\)>"r) LINK 1 ("<\(.*\)>"r) LINK 1 ("<\(«\)>"r) LINK 1 ("<\(i?mi\)>"r)) ; # »Atuarfiit ilagiillu«mi
+Substitute:quoteLokPl_Sg (".*"r PUNCT RIGHT) ("<»$1=$2$3$4>"v "»$1=$2$3$4"v Prop Lok Pl Heur/Prop Heur/Quote) TARGET ("<»>") (1 ("<\(\\p{Lu}.*\)>"r) LINK 1 ("<\(.*\)>"r) LINK 1 ("<\(«\)>"r) LINK 1 ("<\(ni\)>"r)) ;  
+COPY (Prop Lok Sg Heur/Prop Heur/Quote) EXCEPT (Prop Lok Pl Heur/Prop Heur/Quote) TARGET Lok + Pl + Heur/Prop ; # »Ukiut 300-nngornerat«ni
+Substitute:quoteLokSg (".*"r PUNCT RIGHT) ("<»$1$2$3>"v "<$1$2$3"v Prop Lok Sg Heur/Prop Heur/Quote) TARGET ("<»>") (1 ("<\(\\p{Lu}.*\)>"r) LINK 1 ("<\(«\)>"r) LINK 1 ("<\(i?mi\)>"r)) ; # »Atuarfiit«mi
+Substitute:quoteTrmSg (".*"r PUNCT RIGHT) ("<»$1$2$3>"v "<$1$2$3"v Prop Trm Sg Heur/Prop Heur/Quote) TARGET ("<»>") (1 ("<\(\\p{Lu}.*\)>"r) LINK 1 ("<\(«\)>"r) LINK 1 ("<\(i?mut\)>"r)) ; # »Kamikken«imut
+Remcohort (<quote-1>) ;
+Remcohort (<quote-2>) ;
+Remcohort (<quote-3>) ;
+Remcohort (<quote-4>) ;
+Remcohort (<quote-5>) ;
+Remcohort (<quote-6>) ;
 
 #Heur abbr
 Substitute ("<.*>" ?) ("$1"v N Gram/Abbr Abs Sg Heur/Abbr) TARGET ("\(\\p{Ll}\\p{Ll}\)"r ?) - For2Let ; #Jude 20240208
@@ -135,7 +132,7 @@ Substitute:HeuriLok ("\\p{Lu}.*"r ?) ("$1"v Sem/Geo iProp iLok iSg Gram/Hyb IP G
 
 #Heur Lok
 Substitute:HeurLokSg ("\\p{Lu}.*"r ?) ("$1"v Prop Lok Sg Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)-?i?mi>"r ?) - ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)-?i?mmi>"r ?) - HeurGLErr ; #Jude 20240129
-COPY:HeurLokAbsMi (Prop Abs Sg MI Heur/Prop) EXCEPT (Prop Lok Sg Heur/Prop) TARGET Prop + Lok + Sg + Heur/Prop ; #Jude 20240130
+COPY:HeurLokAbsMi (Prop Abs Sg MI Heur/Prop) EXCEPT (Prop Lok Sg Heur/Prop) TARGET Prop + Lok + Sg + Heur/Prop - Heur/Quote ; #Jude 20240130
 COPY:HeurLokRelMi (Prop Pel Sg MI Heur/Prop) EXCEPT (Prop Lok Sg Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)-?i?mmi>"r) + Prop + Lok + Sg + Heur/Prop ; #Jude 20240130
 Substitute:HeurKkutLok ("\\p{Lu}.*"r ?) ("$1"v KKUT Der/nn Prop Lok Pl Heur/Prop Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)?)i?kkunni>"r ?) ; #Jude 20240130
 Substitute:HeurLokSgLi ("\\p{Lu}.*"r ?) ("$1"v Prop Lok Sg LI Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)-?i?mili>"r ?) ; #Jude 20240130
