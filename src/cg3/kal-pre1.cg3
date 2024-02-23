@@ -37,19 +37,22 @@ SPLITCOHORT ("<$1>"v "$1"v "<$2>"v "$2"v) TARGET ("<(\\p{Lu}?\\p{Ll}+)(\\p{Lu}+)
 
 #Heuristics
 #Heur/Prop Heur/Quote
-Substitute (".*"r) ("$1"v <quote-1>) TARGET ("<\(\\p{Lu}.*\)>"r) (-1 ("<(»|„)>"r) LINK 1* ("<(«|“)>"r) LINK 1 ("<(-|mi|ni|imi|ini|imiit|miit|mit|imut|mut|gooq|rooq)>"r)) ;
+Substitute (".*"r) ("$1"v <quote-1>) TARGET ("<\(\\p{Lu}.*\)>"r) (-1 ("<(»|„)>"r) LINK 1* ("<(«|“)>"r) BARRIER CLB LINK 1* ("<(-|mi|ni|imi|ini|imiit|miit|mit|imut|mut|gooq|rooq)>"r) OR CLB) 
+(NEGATE 0 ("<.*>"r) + WFORM LINK 0 ("$1"v) LINK NEGATE 1* ("<(-|mi|ni|imi|ini|imiit|miit|mit|imut|mut|gooq|rooq)>"r)) 
+(NEGATE 0 TUQ) ;
 Substitute (".*"r) ("$1"v <quote-2>) TARGET ("<\(.*\)>"r) (-1 (<quote-1>)) ; 
 Substitute (".*"r) ("$1"v <quote-3>) TARGET ("<(«|“|i?mi|ni|i?mut|\\p{Ll}+)>"r) (-1 (<quote-2>)) ; 
 Substitute (".*"r) ("$1"v <quote-4>) TARGET ("<(«|“|i?mi|ni|i?mut)>"r) (-1 (<quote-3>)) ;
 Substitute (".*"r) ("$1"v <quote-5>) TARGET ("<(-|«|“|i?mi|ni|i?mut|i?mi?it)>"r) (-1 (<quote-4>)) ;  
 Substitute (".*"r) ("$1"v <quote-6>) TARGET ("<(-|«|“|i?mi|ni|i?mut|i?mi?it)>"r) (-1 (<quote-5>)) ;  
 Substitute:quoteAbsSg (".*"r PUNCT LEFT) ("<„$1$2$3>"v "$1"v Prop Abs Sg GUUQ Heur/Prop Heur/Quote) TARGET ("<„>") (1 ("<\(\\p{Lu}.*\)>"r) LINK 1 ("<\(“\)>"r) LINK 1 ("<\([g|r]ooq\)>"r)) ; # „Pharao“gooq 
+Substitute:quoteAbsSg (".*"r PUNCT RIGHT) ("<»$1 $2$3>"v "$1 $2"v Prop Abs Sg Heur/Prop Heur/Quote) TARGET ("<»>") (1 ("<\(\\p{Lu}.*\)>"r <quote-1>) LINK 1 ("<\(.*\)>"r) LINK 1 ("<\(«\)>"r) LINK 1* 3SGSUBJVERB LINK NEGATE -1* _TARGET_ LINK -1* Abs + Sem/Hum BARRIER Abs - OTHERTIME - SEASON - Sem/dur) ; # »Oqaluttualiaativut taalliaativullu«
 Substitute:quoteTrmSg (".*"r PUNCT RIGHT) ("<»$1 $2 $3$4$5>"v "$1 $2 $3"v Prop Abl Sg Heur/Prop Heur/Quote) TARGET ("<»>") (1 ("<\(\\p{Lu}.*\)>"r) LINK 1 ("<\(.*\)>"r) LINK 1 ("<\(.*\)>"r) LINK 1 ("<\(«\)>"r) LINK 1 ("<->") LINK 1 ("<\(i?mi?it\)>"r)) ; # »Fänrik Ståls sägner«-imiit
 Substitute:quoteLokSg (".*"r PUNCT RIGHT) ("<»$1 $2$3$4>"v "$1 $2"v Prop Lok Sg Heur/Prop Heur/Quote) TARGET ("<»>") (1 ("<\(\\p{Lu}.*\)>"r) LINK 1 ("<\(.*\)>"r) LINK 1 ("<\(«\)>"r) LINK 1 ("<\(i?mi\)>"r)) ; # »Atuarfiit ilagiillu«mi
 Substitute:quoteLokPl_Sg (".*"r PUNCT RIGHT) ("<»$1 $2$3$4>"v "$1 $2"v Prop Lok Pl Heur/Prop Heur/Quote) TARGET ("<»>") (1 ("<\(\\p{Lu}.*\)>"r) LINK 1 ("<\(.*\)>"r) LINK 1 ("<\(«\)>"r) LINK 1 ("<\(ni\)>"r)) ;  
 COPY (Prop Lok Sg Heur/Prop Heur/Quote) EXCEPT (Prop Lok Pl Heur/Prop Heur/Quote) TARGET Lok + Pl + Heur/Prop ; # »Ukiut 300-nngornerat«ni
 Substitute:quoteLokSg (".*"r PUNCT RIGHT) ("<»$1$2$3>"v "$1"v Prop Lok Sg Heur/Prop Heur/Quote) TARGET ("<»>") (1 ("<\(\\p{Lu}.*\)>"r) LINK 1 ("<\(«\)>"r) LINK 1 ("<\(i?mi\)>"r)) ; # »Atuarfiit«mi
-Substitute:quoteTrmSg (".*"r PUNCT RIGHT) ("<»$1$2$3>"v "$1"v Prop Trm Sg Heur/Prop Heur/Quote) TARGET ("<»>") (1 ("<\(\\p{Lu}.*\)>"r) LINK 1 ("<\(«\)>"r) LINK 1 ("<\(i?mut\)>"r)) ; # »Kamikken«imut
+Substitute:quoteTrmSg (".*"r PUNCT RIGHT) ("<»$1$2$3>"v "$1"v Prop Trm Sg Heur/Prop Heur/Quote) TARGET ("<»>") (1 ("<\(\\p{Lu}.*\)>"r <quote-1>) LINK 1 ("<\(«\)>"r) LINK 1 ("<\(i?mut\)>"r)) ; # »Kamikken«imut
 Substitute:quoteTrmSg (".*"r PUNCT RIGHT) ("<»$1 $2$3$4>"v "$1 $2"v Prop Trm Sg Heur/Prop Heur/Quote) TARGET ("<»>") (1 ("<\(\\p{Lu}.*\)>"r) LINK 1 ("<\(.*\)>"r) LINK 1 ("<\(«\)>"r) LINK 1 ("<\(i?mut\)>"r)) ; # »Kamikken«imut
 Remcohort (<quote-1>) ;
 Remcohort (<quote-2>) ;
