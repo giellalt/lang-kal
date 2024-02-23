@@ -1699,6 +1699,7 @@ SET SEM/sem-r = Sem/sem-r OR iSem/sem-r ;
 SET SEM/wea = Sem/wea OR iSem/wea ;
 SET SEM/weather = Sem/weather OR iSem/weather ;
 
+#Regler, som er markeret med #X@X indeholdt tidligere syntaktiske tags, som ikke virker i disambiguatoren. Reglen er derfor ikke længere brugelig til det, den var lavet til. Hvis den rammer forbi, kan det derfor være smart at teste at slette den i stedet for at skrive negates. #KW23022024
 
 #      ============ #
 #      ============ #
@@ -2177,9 +2178,8 @@ REMOVE:0000Test3 (/LIR\ Der/nv\ Gram/IV/l) IF (0 (/LIR\ Der/nv\ Gram/TV\ Gram/Re
 #Arnaq i første position er et reelt problem
 REMOVE:0001L ("\\p{Lu}.*"r) + Prop IF (0 ("([a-z].*)"r))(**0CW (VSTR:"$1"r))(-1 BOS)
 (NEGATE 0 ("Nuna") + 1PlPoss) #vælg den med lille begyndelsesbogstav hvis den samme findes med lille begyndelsesbogstav i nærheden, men må ikke slette Nunarput
-(NEGATE 0 NATIONALITY LINK *1 POSSESSUM3 + Prop BARRIER VFIN) #OR @PRED) #Kalaallit Røde Korsiat
+(NEGATE 0 NATIONALITY LINK *1 POSSESSUM3 + Prop BARRIER VFIN) #Kalaallit Røde Korsiat
 ;
-#X@X2
 
 REMOVE:0001M N + Abs - NÆPPE_FIRSTNAME IF (0 Prop + Sem/Hum LINK -1 BOS OR DIRTALESTART LINK 2 CLB); #ARSUGAQ, sunaana? Oqariarit taamaaginnarnak!”, anaanaa oqarpoq.
 
@@ -2319,12 +2319,10 @@ REMOVE:0003D NIQ + 3SgPoss IF (-1 CONT + 1Sg) ;
 #Næsten sikker disambiguering af 1SgPoss og 3SgPoss ved visse paratakser
 REMOVE:0003E 3SgPoss IF (0 1SgPoss + LU LINK -1C 1SgPoss); #Timera TARNERALU ..
 
-#ADDCOHORT ("<->" "-" PUNCT DIRTALESTART) BEFORE (*) (0 @INTERJ OR @VOK OR Interj - ("tassa") - ("tass") - ("qanoq") - ("ima") - ("taamaattoq") - ("imaattoq") - ("imaap") LINK NOT 0 Adv LINK NOT 0 Conj) (-1 BOS)
 ADDCOHORT ("<->" "-" PUNCT DIRTALESTART) BEFORE (*) (0 Interj - ("tassa") - ("tass") - ("qanoq") - ("ima") - ("taamaattoq") - ("imaattoq") - ("imaap") LINK NOT 0 Adv LINK NOT 0 Conj) (-1 BOS)
 (NEGATE 0 DIRTALESTART OR DIRTALEMIDDLE OR DIRTALESLUT) (NEGATE *-1W PUNCT - ("-") - (".") - KOMMA)
 (NEGATE -*1W CLB + DIRTALEMIDDLE OR CLB + DIRTALESLUT BARRIER EOS)# -Ilami ... ASSISSAQANNGILAQ. ASUMIAA Norgep nunataata maniinnera sungiusimanngikkaa.
 ;
-#X@X2
 
 #Tidlige regler for grammatisk forkerte men sædvanlige formuleringer
 SELECT:0004A SEMANTISKSINGULARIS + Rel + Pl IF (1 3SgPoss); #Sulilu tusaasinnaavara Nipip illartarnera sukkut tamaana sarsuasartoq, uffa BUSSIT natiani nallangagaluartoq.
@@ -3641,9 +3639,8 @@ REMOVE:Int0106 (MIU) - iProp IF (0 (Orth/Copy iProp MIU)) ;
 
 REMOVE:Int0107 (Orth/Copy) OR (<added-prop>) - OLang/DAN IF (-*1 BOS BARRIER (*) - PUNCT)(NEGATE 1 Prop OR iProp)(NEGATE 0 INSTITUTION) ;
 REMOVE:Int0108 (Orth/Copy Prop Pl) IF (-*1 BOS BARRIER (*) - PUNCT - ("nuna"))(1 Prop + Sg - 2SgPoss)
-(NEGATE 0 NATIONALITY LINK *1 POSSESSUM3 + Prop BARRIER VFIN) #OR @PRED) #Kalaallit Røde Korsiat
+(NEGATE 0 NATIONALITY LINK *1 POSSESSUM3 + Prop BARRIER VFIN) #Kalaallit Røde Korsiat
 ;
-#X@X2
 REMOVE:Int0109 (Orth/Copy Prop Sg) IF (-*1 BOS BARRIER (*) - PUNCT)(1C Prop + Pl) ;
 REMOVE:Int0110 (Orth/Copy Prop) IF (0 OBLIQUE) (-*1 BOS BARRIER (*) - PUNCT)(1 Prop) ;
 REMOVE:Int0111 (Orth/Copy Prop) IF (0 SSAQ)(1 Prop)(-1 BOS OR CLB); #Præsidentissaq Obama
@@ -3716,10 +3713,9 @@ REMOVE:0016 TIME - (/"inuk"\ U\ .*\ NIQ/l) + 4SgPoss IF (0 Lok) #Vælger N+Lok f
 (NEGATE 0 Abs LINK 1 3Sg + (/3[SP][gl]O/r) )#Per Rosingip ilinniakkaminik naammassinini nuannaarutigaa, kandidatimullu INGERLAQQINNISSANI mattutinngilaa, massakkulli allanik suliaqarluni ulapinnerarpoq.
 ;
 REMOVE:0017 4SgPoss IF (0 Lok)(-1 TIME + OBLIQUE)
-(NEGATE 0 Sg + Abs LINK *1 TRANSVERB + 3SgO BARRIER VFIN) #OR @PRED) #Vælger N+Lok frem for N+4SgPoss #unnuaqeqqanut naalagiarnermi #skal ikke fravælges: Avataarsualiartartunik ukiut tallimat ingerlannginnerini Qaammammukartitsinissani USA-p pilersaarutigigaa.
+(NEGATE 0 Sg + Abs LINK *1 TRANSVERB + 3SgO BARRIER VFIN) #Vælger N+Lok frem for N+4SgPoss #unnuaqeqqanut naalagiarnermi #skal ikke fravælges: Avataarsualiartartunik ukiut tallimat ingerlannginnerini Qaammammukartitsinissani USA-p pilersaarutigigaa.
 (NEGATE 0 N + &&SUBJTRANSVERB& LINK *1 V + &&SUBJTRANSVERB& BARRIER VERB-NOTCONT) #Malugisimavaami Janep aallarnerata kingornagut ANGUMMI ajunnginnerusumik pisaleraani,
 ;
-#X@X2
 
 SELECT:0025A Abs + Sg IF (1 TempPart + 3SgO) ; #objekt til TempPart
 SELECT:0025B TempPart ; #gælder vist umodificeret
@@ -3932,9 +3928,8 @@ REMOVE:7259 (*) - ("aali") (0 ("aa") + Interj OR ("ai") + Interj) ; #Jude 202310
 #==============#
 #Arnaq i første position er et reelt problem
 REMOVE:0001C ("\\p{Lu}.*"r) + Prop IF (0 ("([a-z].*)"r))(**0CW (VSTR:"$1"r))(-1 BOS)(NEGATE 0 ("Nuna") + 1PlPoss) #vælg den med lille begyndelsesbogstav hvis den samme findes med lille begyndelsesbogstav i nærheden, men må ikke slette Nunarput
-(NEGATE 0 NATIONALITY LINK *1 POSSESSUM3 + Prop BARRIER VFIN) #OR @PRED) #Kalaallit Røde Korsiat
+(NEGATE 0 NATIONALITY LINK *1 POSSESSUM3 + Prop BARRIER VFIN) #Kalaallit Røde Korsiat
 ;
-#X@X2
 
 REMOVE:0001D ("Arnaq" Prop Rel) OR ("Arnaĸ" Prop Rel) IF (-1 BOS)(0 ("arnaq" N Rel) LINK *1 (/U\ Der/nv\ Gram/IV\ NIQ\ Der/vn\ SSAQ\ Der/nn\ N\ Abs\ Sg\ 3SgPoss/l) BARRIER 3SgPoss); #ARNAP nunarsuarmi Qaammammut siulliulluni nunnittup USA-meersuunissaa siunniukkitsik, taassuma ilanngullugu erseqqissaatigaa:
 
@@ -4799,12 +4794,10 @@ REMOVE:0049 Num + MI IF (0 Num + Lok);
 SELECT:0049A ("ataaseq") + Num + Trm IF (1* V) ;
 SELECT:0049B Num OR iNum IF (*1 ("ukioq") BARRIER (*) - Num - iNum - Adv) ;
 
-#SELECT:0049K NUMHOVED IF (*0 Num OR iNum BARRIER @PRED OR VFIN) (NEGATE 0 Gram/ACR) (NEGATE 0 ("ini") + AFFINGERET)
 SELECT:0049K NUMHOVED IF (*0 Num OR iNum BARRIER VFIN) (NEGATE 0 Gram/ACR) (NEGATE 0 ("ini") + AFFINGERET)
 (NEGATE 0 ("nalunaarutige"))
 (NEGATE 0 Rel + Pl LINK 1 3PlPossUdenMWE)#Suliffeqanngitsutut NALUNAARUTIGINNITTUT sapaatip-akunnerisa kingulliit marluk ingerlaneranni 10 millioniupput, 6,6 millioninillu taakku maanna amerlillutik.Er nalunaarut virkelig del af NUMHOVED?
 ;
-#X@X2
 
 SELECT:0050 ("inngili") IF (-1 ("nuiaq") + Rel OR ("naalap") + TAQ + Rel OR ("naalagaq") + Rel) ; #Skal måske udvides til et set??
 
@@ -4864,7 +4857,7 @@ REMOVE:0063B Abs + PROP IF (0 Rel + PROP + CONJ-C LINK -1C Rel + PROP) ; #Nyveji
 #REMOVE:0063B Rel + Pl + FAM_UNIK OR Rel + Pl + PLACE_EXTENDED IF (1C 3PlPoss - VIK - Prop)(0 CONJ-C + Rel + Prop LINK -1 Prop + Rel + Sg) (NEGATE 0 N); #Nyvejip Qingartallu paarlaffianni inigisaqarpoq.
 
 SELECT:0063 Rel + Pl - FAM_UNIK - Num - POSSESSUM12 IF (*1C 3PlPossUdenMWE - %Othertime BARRIER VFIN)
-(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 1 ("assi") + POSSESSUM + CONJ-LU)(NEGATE -1 ("ila") LINK 2 ("ila"))(NEGATE 0 Par LINK *-1 Adv BARRIER V) #OR @PRED) #må ikke hitte på siornatigut og ikke på opremsede participier med assigisaallu og heller ikke på opremsninger med ilaat .. ilaat. Må ikke hitte på fx nuliami pii
+(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 1 ("assi") + POSSESSUM + CONJ-LU)(NEGATE -1 ("ila") LINK 2 ("ila"))(NEGATE 0 Par LINK *-1 Adv BARRIER V) #må ikke hitte på siornatigut og ikke på opremsede participier med assigisaallu og heller ikke på opremsninger med ilaat .. ilaat. Må ikke hitte på fx nuliami pii
 (NEGATE 1 Pl LINK 1 ADVERBIEL + TRANSVERB LINK 1 3Pl - TRANSVERB LINK NEGATE *-4 Rel)
 (NEGATE 0 (TUQ Der/vn N Ins))
 (NEGATE -1 Rel + Pl LINK 1 _TARGET_ + OBLIQUE LINK 1 3PlPossUdenMWE) #Jaakuaraq 1960-ikkunni pissutsit SAKKORTUUMIK allanngulernerannit eqqorneqartunut ilaavoq. #iluaqutaasumik
@@ -4890,7 +4883,6 @@ SELECT:0063 Rel + Pl - FAM_UNIK - Num - POSSESSUM12 IF (*1C 3PlPossUdenMWE - %Ot
 (NEGATE 1 KOMMA)
 (NEGATE 0 Abs + Pl LINK *1 3PlO LINK 1 KOMMA)
 ;
-#X@X2
 
 SELECT:0063B Rel + Pl - FAM_UNIK - 4PlPoss - 4SgPoss IF (1C Rel + Pl - Prop LINK 1C 3PlPoss - Prop - iALL - Hyb/1-2)(NEGATE 1 ("siuneq") + Via)(NEGATE 0 NON_HUMAN LINK 1 humverb)(NEGATE 1 ("assi") + POSSESSUM + CONJ-LU)(NEGATE -1 ("ila") LINK 2 ("ila"))(NEGATE 0 ("assut") OR ("taama"))
 (NEGATE 1 Rel + Pl LINK *1 3PlPoss BARRIER (*) - Rel LINK *1 V + 3Pl BARRIER V)#Aammali neriulluarnerarpoq ILINNIARTITSISUNNGORTUT meeqqat atuarfiannik ineriartortitseqataajumaartut.
@@ -4994,12 +4986,10 @@ REMOVE:0071A Rel + Sg IF
 (NEGATE *1 3SgPoss OR i3SgPoss)
 (NEGATE 1 (".*natigut"r)) #Christian Keldsen Visiobox Consulting ApS-imik ukiut tallimat matuma siornatigut aallartitseqataavoq
 (NEGATE -1 Rel LINK 1 _TARGET_ + LU LINK 1 3PlPoss)#Narsarsuup QAQORTULLU akornanni angallassisuuvoq.
-#(NEGATE *0 TRANSVERB + 3Sg OR TRANSVERB + 4Sg)(NEGATE 0 Gram/Coref + Pron)(NEGATE 0 Ins)(NEGATE *1 NIRMIT + Gram/TV - HTR BARRIER CONJ-C OR @PRED LINK NEGATE 0 Trm LINK *1 TRMVERB BARRIER CONJ-C OR @PRED) #Gram/Coref + Pron må vist håndteres separat
-(NEGATE *0 TRANSVERB + 3Sg OR TRANSVERB + 4Sg)(NEGATE 0 Gram/Coref + Pron)(NEGATE 0 Ins)(NEGATE *1 NIRMIT + Gram/TV - HTR BARRIER CONJ-C LINK NEGATE 0 Trm LINK *1 TRMVERB BARRIER CONJ-C) #Gram/Coref + Pron må vist håndteres separat
+(NEGATE *0 TRANSVERB + 3Sg OR TRANSVERB + 4Sg)(NEGATE 0 Gram/Coref + Pron)(NEGATE 0 Ins)(NEGATE *1 NIRMIT + Gram/TV - HTR BARRIER CONJ-C LINK NEGATE 0 Trm LINK *1 TRMVERB BARRIER CONJ-C) #Gram/Coref + Pron må vist håndteres separat #X@X
 (NEGATE 0 Gram/Abbr + Sem/Unit LINK 1 ("misse"))#Taamaammat illuaqqat 10 km missaannik ungasissuseqassapput.
 (NEGATE 0 CONJ-LUUNNIIT LINK -1 Rel )# Inummummi suliffeqarfimmulluunniit ataasiinnarmut inatsisiliaasoq isumaqatigiissitsiniartartut eqqartuussiVIULLUUNNIIT nalilerpassuk, inatsit taamaattoq inatsisinik unioqqutitsilluni atuutilersinneqarsimasutut isigineqartartoq, taanna nassuiaavoq.
 ;
-#X@X2
 
 REMOVE:0072A Adv + ("siorna") IF (0 ("siuneq") + POSSESSUM3 LINK -1 ("manna" Rel));
 
@@ -5661,9 +5651,7 @@ REMOVE:0186 ("una") + (/__Gram\/Dem\ Interj__/l)	IF (0 ("tassa") + Interj) ;
 
 #Template NexusHøjre =  (*1 Abs LINK *1 INTRANSVERB) OR (*1 Rel LINK *1 TRANSVERB) OR (*1 Abs + Sg LINK *1 TRANSVERB + 3SgO) OR (*1 Abs + Pl LINK *1 TRANSVERB + 3PlO) ;
 REMOVE:0187 ("tassa") + Interj IF (T:NexusHøjre); #Vælger noget adverbielt eller verbalt hvis nexus til højre
-#REMOVE:0187 Interj IF (0 Adv) (1 @PRED OR ("tassa")) ; #qanoq tassa?
-REMOVE:0187 Interj IF (0 Adv) (1 ("tassa")) ; #qanoq tassa?
-#X@X2
+REMOVE:0187 Interj IF (0 Adv) (1 ("tassa")) ; #qanoq tassa? #X@X
 REMOVE:0187 Interj IF (0 Adv) (-1 Adv) ; #qanoq tassa?
 
 REMOVE:0192 ("ila") + 3PlPoss IF (0 ("ilaanni") + Adv)(NEGATE -1 Rel + Pl) ;
@@ -6533,9 +6521,7 @@ REMOVE:0404B N IF (0 Par + TIME)(*1 Abs + &&IV_SUBJ& BARRIER V LINK *1 V + &&IV_
 REMOVE:0404C TUQ + Abs IF (*1 Adv - TIDSPARTIKEL BARRIER V OR CLB LINK *1 Abs BARRIER V OR CLB LINK *1 TRANSVERB) #ANERPALUINNARTOQ tuaviinnaq matu silarleq parnaariartorpara, paarnaareerlugulu uterama ineeqqat tamaasa aqqusaaqattaarlugit misissorlugit allanik inoqarnersut.
 (NEGATE 0 ("naalagaq") + LIRSUR + HTR + TUQ);
 
-#REMOVE:0404H N IF (0 Par + WEATHERVERB) (NEGATE *-1 V - @PRED2 - WEATHERVERB);
-REMOVE:0404H N IF (0 Par + WEATHERVERB) (NEGATE *-1 V - WEATHERVERB);
-#X@X2
+REMOVE:0404H N IF (0 Par + WEATHERVERB) (NEGATE *-1 V - WEATHERVERB); #X@X
 
 REMOVE:0404I N IF (0 Par + &&IV_SUBJ& LINK -1 Pron + &&IV_SUBJ& LINK *-1 ORATIOOBLVERB BARRIER V);#Isumaqarpunga tamanna PITSAAVALLAANNGITSOQ
 
@@ -6649,17 +6635,14 @@ REMOVE:0434 LLAR + TUQ IF (0 Par); #Aqaguani anaana angerlamut ISILERIALLARTOQ q
 
 SELECT:0435 Par + INTRANSVERB IF (*-1 VFIN - ORATIOOBLVERB - Gram/Exclm)
 (NEGATE -*1 VFIN + U OR VFIN + GE)(1 EOS)(*-1 Abs BARRIER KOMMA)
-#(NEGATE *-1 ORATIOOBLVERB LINK NEGATE *1 @CL-<CIT LINK *1 _TARGET_)
-(NEGATE *-1 ORATIOOBLVERB)
+(NEGATE *-1 ORATIOOBLVERB) #X@X
 (NEGATE 0 Abs + $$NUMERUS LINK -*1 Abs + $$NUMERUS BARRIER (*) - ALL_OBLIQUE LINK -*1 IP LINK -1S POSSESSUM BARRIER (*) - Hyb/2-2) #avatinnguaniippoq sissaq nalunnguartorpassuaqartartoq. VS normal ved IP+POSSESSUM konstruktioner i stedet for forventet SV
 (NEGATE 0 TIGE) #Ikaartarfiliortoqassaaq minnermik 5 m-tut angitigisoq.
 (NEGATE 1 EOS LINK -1 _TARGET_ + Abs LINK *-1 U + V BARRIER (*) - OBLIQUE)#ARTEK tassaasoq »Center for Arktisk Teknologi« Sisimiuniippoq issittumullu tunngasumut ingeniøritut ilinniartitaanerulluni Danmarkimi DTU Byg-imut ATASOQ.
 (NEGATE 0 $$KASUS LINK *-1 CONJ-C BARRIER (*) - OBLIQUE LINK -1 $$KASUS)#Inuusuttuni sullinniakkani pineqarput inuusuttut suliffeqanngitsut aammalu suliffissarsiortutut NALUNAARSORSIMANNGITSUT.
 (NEGATE *-1 VFIN LINK 0 N) #Piumasaqaatit uannut KIFFAANNGISSUSIIAASUT.
 #(NEGATE *-1 N + %AmbiguøsPar)#Kattuffiunissaq nukittooq ilaasortani pillugit atasoq ilaasortaminullu pitsaanerpaamik SULLISSISOQ. #Verbal læsning kun mulig hvis ATASOQ er verbal og _TARGET_ Cont #Virker ikke fordi nukittooq har verbal læsning som Grem/Exclm
-
 ;
-#X@X2
 
 #Samme regel for or. obl.
 SELECT:0435A Par + INTRANSVERB IF (*-1 ORATIOOBLVERB BARRIER CLB LINK *1 Abs)(NEGATE -*1 VFIN + U)(1 EOS - ("..."))
@@ -6837,14 +6820,12 @@ SELECT:0476A Par + 3Sg + GALUAR IF (-1 Abs + Sg LINK *-1 BOS BARRIER (*) - Rel)(
 
 REMOVE:0477A N + TUQ IF (0 INTRANSVERB + Par LINK 1 KOMMA)
 (NEGATE *0 ORATIOOBLVERB) (NEGATE *-1 V)
-#(NEGATE *-1 KOMMA BARRIER (*) - (/@i?-?ADVL>/r) - @POSS> - @>N - OBLIQUE - Rel)
-(NEGATE *-1 KOMMA BARRIER (*) - OBLIQUE - Rel)
+(NEGATE *-1 KOMMA BARRIER (*) - OBLIQUE - Rel) #X@X
 (NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER (*) - FIRSTNAME - KOMMA - Rel - (Abl Hyb/1-2))#1800-kkunni OQALUTTUARTARSIMASUT, Aalut Kangermiup Jens Kreutzmannillu Kangaamiuneersup oqaluttuaasa sumi pisarsimaneri nassaariortorpavut, Katersugaasivimmi pisortap tullia, itsarnisarsiooq Claus Andreasen oqarpoq .
 (NEGATE 0 (/"naalagaq"\ LIRSUR\ Der/nv\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TUQ/l) LINK *1 Sem/Hum BARRIER (*) - KOMMA)#Ammaalluni oqaaseqarneq: Nunanut allanut nukissiuuteqarnermullu NAALAKKERSUISOQ, Steen Lynge aamma Inatsisartut siulittaasuat, Vivian Motzfeldt.
 (NEGATE 0 Abs LINK *-1 (/"tassa"\ U\ Der/nv\ Gram/IV\ TUQ/l) + Abs BARRIER (*) - Abs - OBLIQUE)#niuertoruseq, tassaasoq ataataga nappaja Danmarkimi ILINNIARSIMASOQ, taakkununnga ilaavoq
 (NEGATE *-1 $$NUMERUS + $$KASUS - Gram/Dem BARRIER (*) - KOMMA LINK NEGATE *0 VFIN) #Ilagiittarnigut kinertut, PINAVEERSAARTITASSAT.
 ;
-#X@X2
 
 REMOVE:0477B Par + 3Pl IF (0 Abs + Der/vn + Pl LINK *-1 Pl + Abs - Gram/Dem BARRIER (*) - KOMMA LINK NEGATE *0 VFIN);  #Ilagiittarnigut kinertut, PINAVEERSAARTITASSAT.
 
@@ -7140,11 +7121,7 @@ REMOVE:0549C Par + INTRANSVERB IF (0 Prop + &&IV_SUBJ& OR N + &&IV_SUBJ&)(1 ORAT
 (NEGATE 0 PASSIV LINK *-1 Abl BARRIER V)#Kisianni umiarsualiviit pillugit inatsimmit Inatsisartunit 2015-imi akuersissutigineqartumit TUNNGAVISSINNEQAREERSOQ allaqqavoq.
 (NEGATE *-1 Abs + Sg BARRIER V LINK *1 _TARGET_ + Par + 3Sg LINK *1 ORATIOOBLVERB OR OQARPOQ)#Inuk takornartaq sanilerisap angallataanik MISISSUISOQ takugaanni taanna peeqquneqarsinnaavoq.
 (NEGATE 1 (/"nalu"\ Gram/TV\ NAR\ Der/vv\ Gram/IV\ V\ ContNeg\ 4Sg/l) LINK 1 EOS )#Sapaatip akunnera qaangiuttoq Jaaku tikippoq assut qungujulaarluni ILUARUSUTTOQ nalunarani
-
 ;
-#REMOVE:0549D N + TUQ IF (0 Par)(*-1 NEXUS BARRIER @PRED) (NEGATE *-1 N BARRIER (*) - Adv + @ADVL>) ;
-#REMOVE:0549D N + TUQ IF (0 Par)(*-1 NEXUS) (NEGATE *-1 N) ;
-#X@X2
 
 REMOVE:0549E N + TUQ - TAR IF (0 Par LINK 0 UNA OR UKU OR UKUA); #Susoqartoruna er verbal, men timmisartoruna er nominal.
 
@@ -7730,8 +7707,7 @@ REMOVE:1851F Aeq + Pl IF (0 <mat>);
 # ======== #
 # Verber   #
 # ======== #
-REMOVE:Int0230 Par + 3Pl + 4SgO IF (0 Par + 4Sg);#(NEGATE *-1 Sg + @SUBJ>) ;
-#X@X2
+REMOVE:Int0230 Par + 3Pl + 4SgO IF (0 Par + 4Sg); #X@X
 
 #Gram/ACR ikke maerket for numerus. Derfor foelgende saerlige regler
 
@@ -8082,10 +8058,8 @@ REMOVE:Int03315 Opt (0 OTHERTIME) ; #aallaqqaataaniilli
 SELECT:Sel0070 Cont + TRANSVERB + 4Sg IF (1 Cont)(-*1 VFIN); # En meget snaever kontekst for absolutte ledsagemaader som '.. naatinneqartarput silataanit ISIGALUGIT takuminavissarlutik.'
 
 
-REMOVE:Int0317 N + POSSESSUM IF (0 V) (NEGATE *0 V) #OR @PRED OR @HNOUN OR @FOC) #Tulleriipput
-(NEGATE @1 ("tassa"))# LINK NEGATE *0 VFIN)
-;
-#X@X2
+REMOVE:Int0317 N + POSSESSUM IF (0 V) (NEGATE *0 V) #Tulleriipput
+(NEGATE @1 ("tassa")); #X@X
 
 # Numerus
 # -------
@@ -8821,8 +8795,7 @@ REMOVE:Int0382 ("pi") + NIP IF (0 ("piniar")); #fjerner pi+NIP+UTE fra 'piniutit
 SELECT:Sel0086 ("naa") IF (*0 ("naatser")); #'naavoq' sandsynligere end 'naappoq' ved 'vae
 REMOVE:Int0384 ("kivi") IF (NEGATE *0 ("imaq")); #
 REMOVE:Int0385 ("allar") IF (NEGATE *0 ("qilak")) ; #20091103 allar- eller allap-
-REMOVE:Int0386 ("ili") IF (0 ("ilisima")); #(NEGATE *0 THING + @ALLOBJ> OR THING + (@<ALLOBJ)) #20091109
-#X@X2
+REMOVE:Int0386 ("ili") IF (0 ("ilisima")); #20091109 #X@X
 REMOVE:Int0387 ("isigip") IF (-1 Trm) ; #20091112 sandsynligvis "isigaa" i den stilling
 REMOVE:Int0388 ("aak") + LISAR OR ("aaq") + LISAR IF (0 ("aalisar")) ;
 REMOVE:Int0389 ("paap") IF (0 ("paa"))(NEGATE *0 MATERIAL) ;
@@ -8839,8 +8812,7 @@ REMOVE:5454 ("pisar") + RIAQ IF (0 ("pisariaqar")) ;
 REMOVE:5454A (/__\"masser\"\ Gram\/IV\ RIATAAR__/l) IF (0 ("massip") + RIATAAR) ;
 REMOVE:5455 ("nassar") + INTRANSVERB - PASSIV IF (0 ("nassap"))(NEGATE -*1 Ins); #
 REMOVE:5455A (/__\"nassuip\"\ Gram\/IV\ NGAJAP__/l) ;#IF (0 ("nassuer") + NGAJAP) ;
-REMOVE:5456 ("ilap") IF (0 ("ila") + V); #(NEGATE *0 HUMAN + @ALLSUBJ)
-#X@X2
+REMOVE:5456 ("ilap") IF (0 ("ila") + V); #X@X
 REMOVE:5457 ("toqup") + NGA IF (0 ("toqu")) ;
 REMOVE:5458 ("toqup") + INTRANSVERB IF (0 ("toqu"))
 (NEGATE *-1 ("tusar") + INTRANSVERB BARRIER V LINK NEGATE *-1 Ins OR ("taama")); #Kingorna tusaramik Putugormiut toqorarneqanngitsut kingumut nunaminnut uterput.
@@ -8870,16 +8842,14 @@ REMOVE:5478 ("uti") IF (0 ("uter"))(NEGATE *-1 ("ameq"));
 REMOVE:5479 ("ip") IF (0 ("innersuup") ) ; #("ip") + NIQ og eller NIR næppe
 REMOVE:5480 ("inner") + TUQ IF (0 ("innersuup")) ;
 SELECT:5481 ("ukiorissi") IF (0 ("ukiorik") + SI) ;
-REMOVE:5482 ("ingerla") + TRANSVERB; # IF (NEGATE *0 Sem/Unit + @<OBJ OR Sem/Unit + @OBJ> BARRIER VFIN) ;
-#X@X2
+REMOVE:5482 ("ingerla") + TRANSVERB; #X@X
 REMOVE:5483 ("qila") IF ( 0 ("qilap"))(NEGATE *0W ("angakkoq")); #åndemaning stochastisk usandsynlig men dog taget forbehold for en shaman i konteksten
 REMOVE:5484A ("ersip") + Cont IF ( 0 ("ersi") + Cont)(NEGATE *-1 GEOOBJ BARRIER V) ; #"ersip" er sjælden i Cont bortset fra enkelttilfælde, hvor fx en udsigt til noget geografisk omtales
 SELECT:5484B ("ersip") IF (0* ("toqqor")) ; #Naatsiiassalli ersinngitsuupput nunami toqqorlutik sinittartut
 REMOVE:5485 ("quaq") + U IF (0 ("quaap") ) ; #Ren sandsynlighedstænkning
 REMOVE:5486 ("iki") IF (*0 ("qulleq")) ;
 REMOVE:5487 ("tup") + SAAR IF (0 ("tusaa")) ;
-REMOVE:5487B ("tusar") + HTR IF (0 ("tusaa")); # LINK NEGATE *-1 @MIK-OBJ> OR @i-MIK-OBJ> BARRIER CONJ-C OR V) ;
-#X@X2
+REMOVE:5487B ("tusar") + HTR IF (0 ("tusaa")); #X@X
 REMOVE:5488A ("kip") IF (0 (/__"kissar\".*\ UTE__/l))(NOT 0 (/__\"kissar\"\ .*[A-Z][A-Z]+.*\ UTE__/l)) ;
 #REMOVE:0005A (/__SSA\ Der\/vv\ Gram\/IV\ .*TUQ__/l)(NOT 0 (/__SSA\ Der\/vv\ Gram\/IV.*[A-Z][A-Z]+.*\ TUQ__/l)) ; #SSA kan ikke efterfølges af TUQ
 REMOVE:5488B ("iti") IF (0 ("iter"))(*0 ("sinip")) ;
@@ -8900,8 +8870,7 @@ REMOVE:5488P ("imaar") OR ("imar") IF (0 ("imaap") OR ("imaali")) ;
 REMOVE:5488Q ("imaap") + LIR IF (0 ("imaali")) ;
 REMOVE:5488R ("eqqumiip") IF (0 ("eqqumiige")) ;
 REMOVE:5488S ("upper") + JA IF (0 ("uppia")) ;
-REMOVE:5488T ("inniar") IF (0 ("ip") + NIAR); #(NEGATE *-1 ("palasi") + @SUBJ>) ; #disambiguerer [palasi] inuliarpoq fra ip+NIAR
-#X@X2
+REMOVE:5488T ("inniar") IF (0 ("ip") + NIAR); #disambiguerer [palasi] inuliarpoq fra ip+NIAR #X@X
 REMOVE:5488U ("pui") + TIP IF (0 ("puisip") OR ("puisinniar")) ;
 REMOVE:5488V ("titar") + TAR IF (0 ("titartar")) ;
 REMOVE:5488W ("sassartip") IF (0 ("sassarter")) ;
@@ -8911,8 +8880,7 @@ REMOVE:5488Z ("uter") - Gram/IV IF (0 ("uter") + Gram/IV - Gram/Pass) ;
 SELECT:5488AA ("erseqqissar") OR ("erseqqissaap") ;
 REMOVE:5488AB (/\"kukku\"\ Gram\/TV/l) IF (0 (/\"kukku\"\ Gram\/IV/l) - Gram/Refl) ;
 REMOVE:5488AC ("sivikip") + NAAR IF (0 ("sivikinaar")) ;
-REMOVE:5489 ("pissap") + HTR IF (0 ("pissaq") + U);#(NEGATE *-1 @ALLMIK-OBJ) ;
-#X@X2
+REMOVE:5489 ("pissap") + HTR IF (0 ("pissaq") + U); #X@X
 REMOVE:5489B ("masser") IF (0 ("massip"))(NEGATE *0 ("iki")); #mere usikker end A. Fjerner '(sår) læges' fra 'rejse sig'
 REMOVE:5489D ("poor") IF (0 ("puup"))(1 ("kamap") OR ("kamanneq")) ;
 #REMOVE:5489E (*) - HUMVERB IF (1 VFIN + HUMVERB) ; #ataaseq kaalluni innartarpoq
@@ -9225,10 +9193,9 @@ SELECT:5491A ("aarit") IF (-1 BOS);
 REMOVE:5491B Gram/Exclm IF (0 ("aluunnguaq" Interj)); #PL20221221 ALUUNNGUAQ Najannguaq!
 
 # Der/nv eller Der/vv?
-SELECT:5493 QATE + Der/vn + GE - Imp IF (0 QATE + Der/nn + GE)#(NEGATE *-1 HUMAN + @OBJ>)
+SELECT:5493 QATE + Der/vn + GE - Imp IF (0 QATE + Der/nn + GE) #X@X
 (NEGATE 0 LEKSIKALISERING OR ("isuma"))
-;
-#X@X2
+; 
 
 REMOVE:5494 (/__\"pi\"\ LIR\ Der\/nv__/l) IF (0 (/__\"pi\"\ LIR\ Der\/vv__/l))(NEGATE 0 NIQAR); # vaelger pi+LIR=TIP frem for pi+LIR+TIP
 #SELECT:5495 ("pi") + Der/nn ; # ad hoc for at disambiguere pi+Der/nn fra pi+vn #Fungerer ikke efter hensigten
@@ -9236,12 +9203,10 @@ REMOVE:5496 ("pup") + LAAR IF (0 ("pulaar")) ;
 REMOVE:5496B ("pup") + LLAP IF (0 ("pullap")) ;
 REMOVE:5497 ("pulaa") IF (0 ("pulaar")) ; #ad hoc. Hvad betyder 'pulaavoq'??
 REMOVE:5498 ("nalup") + TRANSVERB IF (0 ("nalu") + NNGIT)(NEGATE *-1 ("ajaappiaq")) ;
-REMOVE:5499 ("nalup") IF (0 ("nalu"));#(NEGATE *-1 @ALLMIK-OBJ) ;
-#X@X2
+REMOVE:5499 ("nalup") IF (0 ("nalu")); #X@X
 REMOVE:5500 ("ilunger") + TUQ IF (0 ("ilungersor")); #næppe ilunger=være bundfrossen
 REMOVE:5501 ("taa") + Der/vn OR ("taa") + INTRANSVERB IF (NEGATE -1 ("immi"))(0 ("taar"));
-REMOVE:5503 ("siner") IF (0 ("sinip"));#(NEGATE *0 sinerOBJ + @OBJ> OR @ADVL>);
-#X@X2
+REMOVE:5503 ("siner") IF (0 ("sinip")); #X@X
 REMOVE:5504 ("ajuar") + LLAP IF (0 ("ajor") + ALLAP) ; #pludselige bylder er ikke sandsynlige
 REMOVE:5505 ("akip") IF (0 ("aki")) ;
 REMOVE:5506 ("igaa") + USAR IF (0 ("igip") + USAR) ;
@@ -9295,14 +9260,12 @@ REMOVE:5542 ("isi") + GIP IF ( 0 ("isigaaq") )(-1 Trm); #
 REMOVE:5543 ("anger") + LAAR IF ( 0 ("angi") + LAAR ) ; #sandsynligvis lidt stor frem for lidt ja-sigende
 REMOVE:5544 ("angip") IF (NEGATE *0 ("masak") OR ("imeq")) ; #sandsynligvis stor frem for gennemblødt
 REMOVE:5545 ("suliaq") + TU IF ( 0 ("suli") + GIARTUR ) ; # suliartor- mere sandsynlig end suliaq+TU
-REMOVE:5546 ("toqusar") IF ( 0 ("toqu") + TAR);#NEGATE *-1 @SUBJ> + ANIMAL ) ;
-#X@X2
+REMOVE:5546 ("toqusar") IF (0 ("toqu") + TAR); #X@X
 REMOVE:5547 ("qaar") + QQU IF ( 0 ("qaa") + QQU ) ; #sprænge vs. invitere
 REMOVE:5548 ("paa") + NIAQ IF ( 0 ("paasi") + NIAQ ) ;
 SELECT:5549 ("issor") + RAR IF ( 0 ("issu") OR ("issup") );
 REMOVE:5550 ("sinik") + LIR IF ( 0 ("sinip") + LIR );
-REMOVE:5551 ("sini") + LIR IF ( 0 ("sinip") + LIR );#(NEGATE *-1 @SUBJ> + THING );
-#X@X2
+REMOVE:5551 ("sini") + LIR IF ( 0 ("sinip") + LIR ); #X@X
 REMOVE:5552 ("ip") + LLUAR IF ( 0 ("illuar") ) ;
 REMOVE:5553 ("kaaveq") + LIR + Der/nv IF ( 0 ("kaavip") + LIR + Der/vv );
 REMOVE:5554 ("oqaluut") + LIRI IF ( 0 ("oqalup") + USIQ ) ;
@@ -9496,8 +9459,7 @@ REMOVE:5574 ("kingu") + SI IF (0 ("kingusip")) ;
 SELECT:5575 SURE IF (0 GE)(0 2Sg + 1SgO) ; #'Du mener om mig' mere sandsynlig end 'du har mig'
 REMOVE:5576 IR IF (0 IP)(NEGATE -1 Abl); #Usikker regel, men lokalis må være langt mere frekvent end ablativ
 SELECT:5577 GISSAAR ;
-REMOVE:5578 ("ilip") IF ( 0 ("ili") );#(NEGATE *-1 @SUBJ> + FOOD ) ; #normalt er det kun mad, der brænder på
-#X@X2
+REMOVE:5578 ("ilip") IF (0 ("ili")); #normalt er det kun mad, der brænder på #X@X
 REMOVE:5579 RIAQ + TU IF (0 GIARTUR) ;
 REMOVE:5580 QQAR IF (0 QQA);
 REMOVE:5581 TIR IF (0 TIP) #skal måske blødes lidt op (20150323)
@@ -9630,10 +9592,8 @@ SELECT:5639S HUMAN - FAM IF (0 U + TUQ - HUMAN)
 (NEGATE 0 Sem/Hum + ("Danmark") LINK 0 Sem/Geo + ("Danmark") )
 ;
 REMOVE:5639T ("peqqip") + SSAAR IF (0 ("peqqip") + SAAR) ; #næsten uproduktivt. Enkelte faste som makissaar- må i verbs.lexc
-REMOVE:5639U ("peqqip") + HTR IF (0 ("peqqip") + SAAR);#(NEGATE *0 @ALLMIK-OBJ) ; #
-#X@X2
-REMOVE:5639V ("peqqissar") + HTR IF (0 ("peqqip") + SAAR);#(NEGATE *0 @ALLMIK-OBJ) ;
-#X@X2
+REMOVE:5639U ("peqqip") + HTR IF (0 ("peqqip") + SAAR); #X@X
+REMOVE:5639V ("peqqissar") + HTR IF (0 ("peqqip") + SAAR); #X@X
 REMOVE:5639W (/__UTE\ Der\/vn\ N__/l) - POSSESSUM IF (0 POSSESSUM - (/__UTE\ Der\/vn\ N__/l) LINK -1 BOS) ; #Nuannaarutiginerusaalli tassa kunngertik pitsaasuullunilu uppertuummat.
 REMOVE:5639X VIP IF (0 HTR - VIK) ;
 REMOVE:5639Y NNGUAQ + POSSESSUM IF (0 NNGUARSI) ;
@@ -9746,8 +9706,7 @@ REMOVE:5708 ("aa") + TAQ IF (0 ("aasaq") + SIUR) ;
 REMOVE:5709 ("iseq") + Rel IF (1 POSSESSUM3 + humverb) ;
 REMOVE:5710 POSSESSUM IF (0 ("inuk") + INNAQ) ;
 REMOVE:5711 ("avataq") IF (0 ("avate") LINK -1 Prop + Rel) ;#disambiguerer avataq fra avate
-REMOVE:5711B ("avataq") IF (0 POSSESSUM3);#LINK NOT *-1 @POSS> BARRIER POSSESSUM3)  ;
-#X@X2
+REMOVE:5711B ("avataq") IF (0 POSSESSUM3); #X@X
 REMOVE:5712 ("missaq") IF (0 ("misse") LINK *-1 Num OR NUMHOVED OR Rel BARRIER (*) - Gram/Abbr) ; #næppe Num's stormfugl. BARRIER til m, kg osv.
 REMOVE:5713 ("aqqalu") - Abs IF (0 ("aqqaluk") ) ; #mere eller mindre arbitræt
 REMOVE:5714 FAM_UNIK + Pl IF (0 FAM_UNIK + Sg LINK NEGATE *1 3PlO);
@@ -9852,8 +9811,7 @@ REMOVE:5841 ("Greenland") + geoProp IF (0 humProp LINK -1 ("Air")) ; #Særregel 
 REMOVE:5843A ("Qisuk") + Prop IF (*0 ("ikuma")) ;
 REMOVE:5844A ("Erich") IF (0 ("Erik")); #PL 20190414
 REMOVE:5844B ("Eric") IF (0 ("Erik")); #PL 20190414
-REMOVE:5845 ("anna") + Pron IF (0 ("Anna") + Prop);#(NEGATE 0 @N<) ;
-#X@X2
+REMOVE:5845 ("anna") + Pron IF (0 ("Anna") + Prop); #X@X
 REMOVE:5846A ("aak") + 4SgPoss IF (0 ("Aani") + Prop)(NEGATE *1 (/"aki"\ GE\ Der/nv\ Gram/TV\ V/l)); #aani akigalugu eneste dokumenterede form i corpus
 REMOVE:5846B (/"naaq"\ LIR\ Der/nv/l) IF (0 (/"naa"\ Gram/IV\ LIR\ Der/vv/l)) ; #uden betingelse, da 'mavetildeling' vistnok helt utænkelig
 REMOVE:5846C (/"pilersor"\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TUQ/l) + N IF (0 ("Pilersuisoq") + Prop);
@@ -10036,9 +9994,7 @@ REMOVE:9492F ("nalu") + NNGIT + TAQ + Trm + Sg + 4SgPoss IF (0 Pl); #NALUNNGISAM
 REMOVE:9500A Pl + Lok IF (0 Abs + Pl + 4SgPoss)(1 Abs + Pl LINK *1 3PlO)(NEGATE 1 Lok) ;
 
 # Possessor singularis eller pluralis?
-#REMOVE:5850 3PlPoss IF (-*1 @POSS> + 3SgPoss OR 4SgPoss BARRIER 3PlPoss)(0 3SgPoss); #vælg sing. possessor hvis sing til venstre
-REMOVE:5850 3PlPoss IF (-*1 4SgPoss BARRIER 3PlPoss)(0 3SgPoss); #vælg sing. possessor hvis sing til venstre
-#X@X2
+REMOVE:5850 3PlPoss IF (-*1 4SgPoss BARRIER 3PlPoss)(0 3SgPoss); #vælg sing. possessor hvis sing til venstre #X@X
 REMOVE:5851B Abs + Pl IF (0 Abs + Sg)(1C Abs + Sg - POSSESSUM3) #Ambigiøse possessum ud fra adled eller apposition
 (NEGATE 0 (Abs 2SgPoss) LINK 0 Abs + Pl + Der/vn LINK *-1 Abs + Pl BARRIER (*) - OBLIQUE)#Tamanna isumaqarpoq e-mailisiatit allassimasulluunniit allat takivallaanngitsut kalaallisut qallunaatulluunniit ALLASSIMASUT nutserut atorlugu nutsertissinnaanngoritit.
 (NEGATE 0 (Abs 2SgPoss) LINK 0 (Abs Pl) LINK *1 VFIN + 3Pl BARRIER VERB-NOTCONT)#SIORAASAT et kiilu missiliorlugu sinneqarput.
@@ -10143,8 +10099,7 @@ REMOVE:9939H Rel + Pl + 3SgPoss IF (*-1 Rel + Pl BARRIER (*) - Rel - KOMMA - FIR
 REMOVE:9940 1Sg + 2PlO IF (0 1Pl + 2PlO)(*0 1Pl) ;
 
 #En regel der postulerer at "annaap" vil have +HUM objekt for at adskille fra "annaa"
-REMOVE:9944 ("annaap") IF (0 ("annaa"));#(NEGATE *-1 HUM + @OBJ>);
-#X@X2
+REMOVE:9944 ("annaap") IF (0 ("annaa")); #X@X
 
 # kingunerissavaa aqqusernup ullormut qamutinit 26-init atorneqartarnissaa assigiinnarlugit akunnermut qamutit marluk missaat.
 REMOVE:9944A ("assik") - POSSESSUM3 IF (0 ("assik") + POSSESSUM3) ; #mest sandsynligt. Fejl er meget frekvente
@@ -10352,8 +10307,7 @@ REMOVE:9967G 1SgPoss + OBLIQUE IF (0 2SgPoss + OBLIQUE LINK *1 2SgPoss + $$KASUS
 
 REMOVE:9967J 3PlPoss IF (0 3SgPoss LINK *-1 V + 3Sg BARRIER Rel + Pl - ("aak") - ("aaq"));#Ataasinnguaq appikkaluarlunilu qissaserpoq ilaasali oqaluttuaraat, kikkunnit qinngasaarneqartarsimanersoq, aammalu sunaaffa ANGAJOQQAAVISA avissimanerat meeraqataasa qinngasaarutigisaraat.
 
-REMOVE:9967M ("Nuka") + Sem/Mask IF (0 ("Nuka") + Sem/Fem LINK *1 ("Bisgaard") BARRIER (*) );#- @PROP>); #Lex Nuka Bisgaard fordi hun er en offentligt kendt person
-#X@X2
+REMOVE:9967M ("Nuka") + Sem/Mask IF (0 ("Nuka") + Sem/Fem LINK *1 ("Bisgaard")); #Lex Nuka Bisgaard fordi hun er en offentligt kendt person #X@X
 
 REMOVE:9967N ("Nuka") + Sem/Fem IF (0 ("Nuka") + Sem/Mask); #Ren sandsynlighed. Nuka langt hyppigere som drengenavn end som pigenavn i de seneste generationer
 
@@ -10604,9 +10558,7 @@ REMOVE:9970BZ <ac> + POSSESSUM + Pl IF (0 <ac> + POSSESSUM + Sg); #Taamaammat il
 
 REMOVE:9970BÆ Abl IF (0 Ins LINK 1 Der/vn - PASSIV) (NEGATE 1 ATTRIBUTIV + Abl); #Ilinniakkamillu ingerlatsisut efterskolernermut, inuusuttunut ilinniarfinnut INGERLARIAQQIFFIUSUMILLU ilinniarnermut immikkoortiterneqarput. #Aqqutissaq aappaluttumik nalunaaqutsigaavoq toornermillu aappaluttumit aallartiffeqarluni.
 
-#REMOVE:9970CG Rel + Pl + CONJ-C IF (*1 POSSESSUM3 + Pl BARRIER (*) - @i-ADVL>)(-1 KOMMA LINK -1 VFIN + 3Sg); #Allagaatinik katersuivimmi ujarliutip nanisaani ujagaq qiterliulluni inissisimasassaaq, OQAATSILLU siuliiniittut kinguliiniittullu amerlanngitsuinnaat aamma nuisinneqartassapput. En meget snæver og usikker regel
-REMOVE:9970CG Rel + Pl + CONJ-C IF (*1 POSSESSUM3 + Pl BARRIER (*))(-1 KOMMA LINK -1 VFIN + 3Sg); #Allagaatinik katersuivimmi ujarliutip nanisaani ujagaq qiterliulluni inissisimasassaaq, OQAATSILLU siuliiniittut kinguliiniittullu amerlanngitsuinnaat aamma nuisinneqartassapput. En meget snæver og usikker regel
-#X@X2
+REMOVE:9970CG Rel + Pl + CONJ-C IF (1 POSSESSUM3 + Pl)(-1 KOMMA LINK -1 VFIN + 3Sg); #Allagaatinik katersuivimmi ujarliutip nanisaani ujagaq qiterliulluni inissisimasassaaq, OQAATSILLU siuliiniittut kinguliiniittullu amerlanngitsuinnaat aamma nuisinneqartassapput. En meget snæver og usikker regel #X@X
 
 REMOVE:9970CL Rel + 4PlPoss IF (0 ADJEKTIVISK + Ins LINK 1 V OR Der/vn); #Jaakuaraq 1960-ikkunni pissutsit SAKKORTUUMIK allanngulernerannit eqqorneqartunut ilaavoq.
 
@@ -10989,19 +10941,13 @@ REMOVE:9967E (/NNGUR\ Der\/nv\ Gram\/TV\ QQU__/l) IF (0 (/NNGUR\ Der\/nv\ Gram\/
 REMOVE:9967E (/Gram\/TV\ QQA__/l) IF (0 (/Gram\/IV\ QQA__/l)) ; #nalunaaqqaneratuut
 
 REMOVE:9968D (/\"paasi\"\ Gram\/IV/l) IF (0 AFFINGERET - TUQ) ;
-#REMOVE:9968E (/\"misige\"\ Gram\/TV/l) + TRANSVERB IF (0 (/\"misige\"\ Gram\/IV/l) LINK NOT *-1 @OBJ> OR Rel) ; #ammaanersiornermi
-REMOVE:9968E (/\"misige\"\ Gram\/TV/l) + TRANSVERB IF (0 (/\"misige\"\ Gram\/IV/l) LINK NOT *-1 Rel) ; #ammaanersiornermi
-#X@X2
+REMOVE:9968E (/\"misige\"\ Gram\/TV/l) + TRANSVERB IF (0 (/\"misige\"\ Gram\/IV/l) LINK NOT *-1 Rel) ; #ammaanersiornermi #X@X
 REMOVE:9968F (/\"qui\"\ Gram\/TV\/l) IF (NEGATE *-1 Abs BARRIER V) ; #skal have objekt
 REMOVE:9968G (/\"ata\"\ Gram\/TV\ TIP\ /l) IF (-1 Trm) ; #skal have objekt #Line 429: Suliamut atatillugu inuit arlallit tigusaareerput,
 REMOVE:9968H (/\"pulaar\"\ Gram\/TV/l) IF (-1 Trm) ;
 REMOVE:9968I Gram/TV + Par + 4Sg + 3SgO IF (0 Gram/IV + Par + 4Sg)(NEGATE *0 Abs + Sg BARRIER V) ; #PL 20190410 Par+4Sg og Par+4Sg+3SgO ens semantik så primært stochastisk
 REMOVE:9968J (/\"ajor\"\ Gram\/TV\ NAR__/l) IF (0 (/\"ajor\"\ Gram\/IV\ NAR__/l)) ; #PL 20190412 ajornarpoq ikke Gram/TV
 REMOVE:9968K (/\"nalu\"\ Gram\/IV\ NIRAR__/l) IF (0 (/\"nalu\"\ Gram\/TV\ NIRAR__/l)) ; #PL 20190413 nalu grundliggende primært transitiv
-
-#REMOVE:9968L TRANSVERB + $$MOOD - GAANNI - CONT - (/<.*raat>/r)(0 INTRANSVERB + $$MOOD - Gram/Refl - Gram/Pass)(NEGATE *-1 @OBJ> OR Rel BARRIER VERB-NOTCONT) ;
-#REMOVE:9968L TRANSVERB + $$MOOD - GAANNI - CONT - (/<.*raat>/r)(0 INTRANSVERB + $$MOOD - Gram/Refl - Gram/Pass)(NEGATE *-1 Rel BARRIER VERB-NOTCONT) ;
-#X@X2
 
 REMOVE:9968M ("([^<].*)"r /".*"\ Gram/IV\ NIQ/l) + Gram/Comp IF (0 ("$1"v /Gram/TV\ NIQ/l) + Gram/Comp LINK 1 TRANSVERB + ("ajor"));
 REMOVE:9968N ("([^<].*)"r /".*"\ Gram/TV\ NIQ/l) + Gram/Comp IF (0 ("$1"v /Gram/IV\ NIQ/l) + Gram/Comp LINK 1 INTRANSVERB + ("ajor"));
@@ -12004,7 +11950,6 @@ SELECT:SemMorf9999 (/^i?Sem/j/r); #vælg adjektivlæsningen, hvis udisambigueret
 AFTER-SECTIONS
 
 SUBSTITUTE:Sub0041 (CONJ-LU Gram/Conj-encl)(LU) TARGET CONJ-LU + (Gram/Conj-encl) ;
-
 #SUBSTITUTE:Sub0046 (ADV-LUUNNIIT)(LUUNNIIT) TARGET (Gram/Adv-encl) ;
 #SUBSTITUTE:Sub0047 (CONJ-LUUNNIIT)(LUUNNIIT) TARGET (Gram/Conj-encl) ;
 #SUBSTITUTE:Sub0048 (ADV-LU)(LU) TARGET (Gram/Adv-encl) ;
@@ -12012,8 +11957,3 @@ SUBSTITUTE:Sub0041 (CONJ-LU Gram/Conj-encl)(LU) TARGET CONJ-LU + (Gram/Conj-encl
 #SUBSTITUTE:Sub0050 (/....?-LUUNNIIT/r) (LUUNNIIT) TARGET (*);
 #SUBSTITUTE:Sub0051 (/....?-LU$/r) (LU) TARGET (*);
 #SUBSTITUTE:Sub0052 (/....?-LI/r) (LI) TARGET (*);
-
-SUBSTITUTE:Sub0062 (Der/LG12) (*) TARGET (Der/LG12);# (*0S (/@.*/r)) ;
-#X@X2
-SUBSTITUTE:Sub0063 (Der/LG13) (*) TARGET (Der/LG13);# (*0S (/@.*/r)) ;
-#X@X2
