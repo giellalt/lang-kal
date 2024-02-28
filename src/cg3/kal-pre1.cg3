@@ -36,30 +36,40 @@ SPLITCOHORT ("<$1>"v "$1"v "<$2>"v "$2"v) TARGET ("<(\\d\\u002D\\p{Ll}+)(\\p{Lu}
 SPLITCOHORT ("<$1>"v "$1"v "<$2>"v "$2"v) TARGET ("<(\\p{Lu}?\\p{Ll}+)(\\p{Lu}+)>"r ?) + HeurGLfinal ; #Jude 20240202
 
 #Heuristics
+#num
+#Ins
+MergeCohorts:numInsSg ("<$1$2$3$4>"v "$1$2$3"v Num Ins Sg Heur/Num) ("<(\\d+)>"r) WITH (1 ("<([\\u2013|\\u002D])>"r)) (2 ("<(\\d+)\(\\u002Di?mik\)>"r)) ; #24 – 22-imik, as in soccer games
+MergeCohorts:numInsPl ("<$1$2$3>"v "$1"v Num Ins Pl Heur/Num) ("<(\\d+)>"r) WITH (1 ("<\(\\u002D\)>"r)) (2 ("<\(i?nik\)>"r)) ; #number input with space error 15- inik
+MergeCohorts:numInsPl ("<$1$2$3$4$5>"v "$1$2$3"v Num Ins Pl Heur/Num) ("<(\\d+)>"r) WITH (1 ("<(\\u002D)>"r)) (2 ("<\(\\d+\\u002E?\\d+?\)(\\u002D)\(i?nik\)>"r)) ; # 8 - 10.000-inik
+MergeCohorts:numInsPl ("<$1$2$3$4$5>"v "$1$2$3"v Num Ins Pl Heur/Num) ("<(\\d+)(\\u002E)?(\\d+)>"r) WITH (1 ("<(\\u002D)>"r)) (2 ("\(i?nik\)"r)) ; # input with space/tab error 45.000 - 	inik
+MergeCohorts:numInsPl ("<$1-$2>"v "$1"v Num Ins Pl Heur/Num) ("<(\\d+\\u002D?\\d+?)>"r) WITH (1 ("<\(i?nik\)>"r ?)) ; #number input with case but missing hyphen: 27 inik, 22-20 inik
+#Lok
+MergeCohorts:numKKUTLokPl ("<$1$2$3$4>"v "$1"v iNum KKUT Der/nn Gram/PlurTant N Lok Pl Heur/Num) ("<(\\d{2,4})>"r) WITH (1 ("<([\\u00B4|\\u0027])>"r)) (2 ("([\\u002D|\\u2013])"r)) (3 ("<\(i?kkunni\)>"r ?)) ; #70´-kkunni
+MergeCohorts:numKKUTLokPl ("<$1$2$3>"v "$1"v iNum KKUT Der/nn Gram/PlurTant N Lok Pl Heur/Num) ("<(\\d{2,4})>"r) WITH (1 ("<([\\u00B4|\\u0027|\\u002D])>"r)) (2 ("<\(i?kkunni\)>"r ?)) ; #80´kkunni, 1930 - kkunni
+MergeCohorts:numKKUTLokPlLU ("<$1$2$3$4>"v "$1"v iNum KKUT Der/nn Gram/PlurTant N Lok Pl LU Heur/Num) ("<(\\d{2,4})>"r) WITH (1 ("<([\\u00B4|\\u0027])>"r)) (2 ("([\\u002D|\\u2013])"r)) (3 ("<\(i?kkunnilu\)>"r ?)) ;
+#Rel
+MergeCohorts:numKKUTRelPlLU ("<$1$2$3>"v "$1"v iNum KKUT Der/nn Gram/PlurTant N Rel Pl LU Heur/Num) ("<(\\d{2,4})>"r) WITH (1 ("<([\\u00B4|\\u0027|\\u002D])>"r)) (2 ("<\(i?kkullu\)>"r ?)) ; #1940 - kkullu
+COPY:numKKUTAbsRelPlLU (Abs Pl LU Heur/Num) EXCEPT (Rel Pl LU Heur/Num) TARGET Rel + Pl + LU + Heur/Num ; #1940 - kkullu
+
 #Heur/Prop Heur/Quote
-Substitute (".*"r) ("$1"v <quote-1>) TARGET ("<\(\\p{Lu}.*\)>"r) (-1 ("<(»|„)>"r) LINK 1* ("<(«|“)>"r) BARRIER CLB LINK 1* ("<(-|mi|ni|imi|ini|imiit|miit|mit|imut|mut|gooq|rooq)>"r) OR CLB) 
-(NEGATE 0 ("<.*>"r) + WFORM LINK 0 ("$1"v) LINK NEGATE 1* ("<(-|mi|ni|imi|ini|imiit|miit|mit|imut|mut|gooq|rooq)>"r)) 
-(NEGATE 0 TUQ) ;
-Substitute (".*"r) ("$1"v <quote-2>) TARGET ("<\(.*\)>"r) (-1 (<quote-1>)) ; 
-Substitute (".*"r) ("$1"v <quote-3>) TARGET ("<(«|“|i?mi|ni|i?mut|\\p{Ll}+)>"r) (-1 (<quote-2>)) ; 
-Substitute (".*"r) ("$1"v <quote-4>) TARGET ("<(«|“|i?mi|ni|i?mut)>"r) (-1 (<quote-3>)) ;
-Substitute (".*"r) ("$1"v <quote-5>) TARGET ("<(-|«|“|i?mi|ni|i?mut|i?mi?it)>"r) (-1 (<quote-4>)) ;  
-Substitute (".*"r) ("$1"v <quote-6>) TARGET ("<(-|«|“|i?mi|ni|i?mut|i?mi?it)>"r) (-1 (<quote-5>)) ;  
-Substitute:quoteAbsSg (".*"r PUNCT LEFT) ("<„$1$2$3>"v "$1"v Prop Abs Sg GUUQ Heur/Prop Heur/Quote) TARGET ("<„>") (1 ("<\(\\p{Lu}.*\)>"r) LINK 1 ("<\(“\)>"r) LINK 1 ("<\([g|r]ooq\)>"r)) ; # „Pharao“gooq 
-Substitute:quoteAbsSg (".*"r PUNCT RIGHT) ("<»$1 $2$3>"v "$1 $2"v Prop Abs Sg Heur/Prop Heur/Quote) TARGET ("<»>") (1 ("<\(\\p{Lu}.*\)>"r <quote-1>) LINK 1 ("<\(.*\)>"r) LINK 1 ("<\(«\)>"r) LINK 1* 3SGSUBJVERB LINK NEGATE -1* _TARGET_ LINK -1* Abs + Sem/Hum BARRIER Abs - OTHERTIME - SEASON - Sem/dur) ; # »Oqaluttualiaativut taalliaativullu«
-Substitute:quoteTrmSg (".*"r PUNCT RIGHT) ("<»$1 $2 $3$4$5>"v "$1 $2 $3"v Prop Abl Sg Heur/Prop Heur/Quote) TARGET ("<»>") (1 ("<\(\\p{Lu}.*\)>"r) LINK 1 ("<\(.*\)>"r) LINK 1 ("<\(.*\)>"r) LINK 1 ("<\(«\)>"r) LINK 1 ("<->") LINK 1 ("<\(i?mi?it\)>"r)) ; # »Fänrik Ståls sägner«-imiit
-Substitute:quoteLokSg (".*"r PUNCT RIGHT) ("<»$1 $2$3$4>"v "$1 $2"v Prop Lok Sg Heur/Prop Heur/Quote) TARGET ("<»>") (1 ("<\(\\p{Lu}.*\)>"r) LINK 1 ("<\(.*\)>"r) LINK 1 ("<\(«\)>"r) LINK 1 ("<\(i?mi\)>"r)) ; # »Atuarfiit ilagiillu«mi
-Substitute:quoteLokPl_Sg (".*"r PUNCT RIGHT) ("<»$1 $2$3$4>"v "$1 $2"v Prop Lok Pl Heur/Prop Heur/Quote) TARGET ("<»>") (1 ("<\(\\p{Lu}.*\)>"r) LINK 1 ("<\(.*\)>"r) LINK 1 ("<\(«\)>"r) LINK 1 ("<\(ni\)>"r)) ;  
-COPY (Prop Lok Sg Heur/Prop Heur/Quote) EXCEPT (Prop Lok Pl Heur/Prop Heur/Quote) TARGET Lok + Pl + Heur/Prop ; # »Ukiut 300-nngornerat«ni
-Substitute:quoteLokSg (".*"r PUNCT RIGHT) ("<»$1$2$3>"v "$1"v Prop Lok Sg Heur/Prop Heur/Quote) TARGET ("<»>") (1 ("<\(\\p{Lu}.*\)>"r) LINK 1 ("<\(«\)>"r) LINK 1 ("<\(i?mi\)>"r)) ; # »Atuarfiit«mi
-Substitute:quoteTrmSg (".*"r PUNCT RIGHT) ("<»$1$2$3>"v "$1"v Prop Trm Sg Heur/Prop Heur/Quote) TARGET ("<»>") (1 ("<\(\\p{Lu}.*\)>"r <quote-1>) LINK 1 ("<\(«\)>"r) LINK 1 ("<\(i?mut\)>"r)) ; # »Kamikken«imut
-Substitute:quoteTrmSg (".*"r PUNCT RIGHT) ("<»$1 $2$3$4>"v "$1 $2"v Prop Trm Sg Heur/Prop Heur/Quote) TARGET ("<»>") (1 ("<\(\\p{Lu}.*\)>"r) LINK 1 ("<\(.*\)>"r) LINK 1 ("<\(«\)>"r) LINK 1 ("<\(i?mut\)>"r)) ; # »Kamikken«imut
-Remcohort (<quote-1>) ;
-Remcohort (<quote-2>) ;
-Remcohort (<quote-3>) ;
-Remcohort (<quote-4>) ;
-Remcohort (<quote-5>) ;
-Remcohort (<quote-6>) ;
+
+#Abs
+MergeCohorts:quoteAbsSgGUUQ ("<$1$2$3$4>"v "$2"v Prop Abs Sg GUUQ Heur/Prop Heur/Quote) ("<(\\u201E|\\u00BB|\\u0022|\\u203A|\\u201A)>"r) WITH (1 ("<\(\\p{Lu}.*\)>"r)) (2 ("<(\\u201C|\\u00AB|\\u0022|\\u2039|\\u2018)>"r)) (3 ("<\([g|r]ooq\)>"r)) ; # „Pharao“gooq, »Pharao«gooq, "Pharao"gooq, ›Pharao‹gooq, ‚Pharao‘gooq
+MergeCohorts:quoteAbsSgGUUQ ("<$1$2>"v "$2"v Prop Abs Sg GUUQ Heur/Prop Heur/Quote) ("<(\\u0027)>"r) WITH (1 ("<\(\\p{Lu}\\p{Ll}+\\u0027[g|r]ooq)>"r)) ; # 'Pharao'gooq
+#Ins
+MergeCohorts:quoteInsPl ("<$1$2$3$4>"v "$2"v Prop Ins Pl Heur/Prop Heur/Quote) ("<(\\u201E|\\u00BB|\\u0022|\\u203A|\\u201A)>"r) WITH (1 ("<(\\p{Lu}\\p{Ll}+)>"r)) (2 ("<(\\u201C|\\u00AB|\\u0022|\\u2039|\\u2018)>"r)) (3 ("<\(i?nik\)>"r)) ; # „Ordinances“inik
+#Lok
+MergeCohorts:quoteKKUTLokPl ("<$1$2$3$4$5>"v "$2"v KKUT Der/nn Prop Lok Pl Heur/Prop) ("<([\\u0027|\\u0022])>"r) WITH (1 ("<(\\p{Lu}\\p{Ll}+)>"r)) (2 ("<([\\u0027|\\u0022])>"r)) (3 ("([\\u002D|\\u2013])"r)) (4 ("<\(i?kkunni\)>"r ?)) ;#'Qaaq'-kkunni
+MergeCohorts:quoteKKUTLokPl ("<$1$2$3$4>"v "$2"v KKUT Der/nn Prop Lok Pl Heur/Prop) ("<([\\u0027|\\u0022])>"r) WITH (1 ("<(\\p{Lu}\\p{Ll}+)>"r)) (2 ("<([\\u0027|\\u0022])>"r)) (3 ("<\(i?kkunni\)>"r ?)) ; #"Asuki"kkunni
+MergeCohorts:quoteLokSg ("<$1$2 $3$4$5>"v "$2 $3"v Prop Lok Sg Heur/Prop Heur/Quote) ("<(\\u201E|\\u00BB|\\u0022|\\u203A|\\u201A)>"r) WITH (1 ("<(\\p{Lu}\\p{Ll}+)>"r)) (2 ("<(\\p{Ll}+)>"r)) (3 ("<(\\u201C|\\u00AB|\\u0022|\\u2039|\\u2018)>"r)) (4 ("<\(i?mi\)>"r)) ; # »Atuarfiit ilagiillu«mi  
+MergeCohorts:quoteLokPl_Sg ("<$1$2 $3$4$5>"v "$2 $3"v Prop Lok Pl Heur/Prop Heur/Quote) ("<(\\u201E|\\u00BB|\\u0022|\\u203A|\\u201A)>"r) WITH (1 ("<\(\\p{Lu}.*\)>"r)) (2 ("<\(.*\)>"r)) (3 ("<(\\u201C|\\u00AB|\\u0022|\\u2039|\\u2018)>"r)) (4 ("<\(ni\)>"r)) ;
+COPY (Prop Lok Sg Heur/Prop Heur/Quote) EXCEPT (Prop Lok Pl Heur/Prop Heur/Quote) TARGET Lok + Pl + Heur/Prop - KKUT ; # »Ukiut 300-nngornerat«ni
+MergeCohorts:quoteLokSg ("<$1$2$3$4>"v "$2"v Prop Lok Sg Heur/Prop Heur/Quote) ("<(\\u201E|\\u00BB|\\u0022|\\u203A|\\u201A)>"r) WITH (1 ("<\(\\p{Lu}.*\)>"r)) (2 ("<(\\u201C|\\u00AB|\\u0022|\\u2039|\\u2018)>"r)) (3 ("<\(i?mi\)>"r)) ; # »Atuarfiit«mi
+#Rel
+MergeCohorts:quoteRelSg ("<$1$2$3$4>"v "$2"v Prop Rel Sg Heur/Prop Heur/Quote) ("<(\\u201E|\\u00BB|\\u0022|\\u203A|\\u201A)>"r) WITH (1 ("<\(\\p{Lu}.*\)>"r)) (2 ("<(\\u201C|\\u00AB|\\u0022|\\u2039|\\u2018)>"r)) (3 ("<\(i?p\)>"r)) ; # „Pharao“p
+#Trm
+MergeCohorts:quoteTrmSg ("<$1$2$3$4>"v "$2"v Prop Trm Sg Heur/Prop Heur/Quote) ("<(\\u201E|\\u00BB|\\u0022|\\u203A|\\u201A)>"r) WITH (1 ("<\(\\p{Lu}.*\)>"r)) (2 ("<(\\u201C|\\u00AB|\\u0022|\\u2039|\\u2018)>"r)) (3 ("<\(i?mut\)>"r)) ; # »Kamikken«imut
+MergeCohorts:quoteTrmSg ("<$1$2 $3$4$5>"v "$2 $3"v Prop Trm Sg Heur/Prop Heur/Quote) ("<(\\u201E|\\u00BB|\\u0022|\\u203A|\\u201A)>"r) WITH (1 ("<\(\\p{Lu}.*\)>"r)) (2 ("<([\\p{Lu}|\\p{Ll}].*)>"r)) (3 ("<(\\u201C|\\u00AB|\\u0022|\\u2039|\\u2018)>"r)) (4 ("<\(i?mut\)>"r)) ; # »Hans Egede«mut.
 
 #Heur abbr
 Substitute ("<.*>" ?) ("$1"v N Gram/Abbr Abs Sg Heur/Abbr) TARGET ("\(\\p{Ll}\\p{Ll}\)"r ?) - For2Let ; #Jude 20240208
@@ -129,16 +139,18 @@ COPY:HeurAeq (Aeq Pl Heur/Prop) EXCEPT (Aeq Sg Heur/Prop) TARGET Aeq + Heur/Prop
 Substitute:HeurKkutIns ("\\p{Lu}.*"r ?) ("$1"v KKUT Der/nn Prop Ins Pl Heur/Prop Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)kkunnik>"r ?) ; #Jude 20240130
 Substitute:HeurInsSgLu ("\\p{Lu}.*"r ?) ("$1"v Prop Ins Sg LU Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)-?i?millu>"r ?) ; #Jude 20240130
 Substitute:HeurInsSg ("\\p{Lu}.*"r ?) ("$1"v Prop Ins Sg Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)-?i?mik>"r ?) - HeurGLfinal - HeurGLErr ; #Jude 20240129
+MergeCohorts:HeurHyphenInsPlLu ("<$1$2$3>"v "$1"v Prop Ins Sg LU Heur/Prop) ("<(\\p{Lu}+\\p{Ll}+\\u002D\\d+)>"r) WITH (1 ("<(\\u002D)>"r)) (2 ("<\(i?nillu\)>"r)) ; #Dash-7-nillu
 Substitute:HeurInsPl ("\\p{Lu}.*"r ?) ("$1"v Prop Ins Pl Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)-?i?nik>"r ?) ; #Jude 20240129
 
 #Heur  iLok
-Substitute:HeuriLok ("\\p{Lu}.*"r ?) ("$1"v Sem/Geo iProp iLok iSg Gram/Hyb IP Gram/IV SIMA Der/vv V Cont 4Sg LU Heur/iLok) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)-?i?miissimallunilu>"r ?) ; #Jude 20240129
+Substitute:HeuriLok ("\\p{Lu}.*"r ?) ("$1"v iProp iLok iSg Gram/Hyb IP Gram/IV SIMA Der/vv V Cont 4Sg LU Heur/iLok) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)-?i?miissimallunilu>"r ?) ; #Jude 20240129
 
 #Heur Lok
 Substitute:HeurLokSg ("\\p{Lu}.*"r ?) ("$1"v Prop Lok Sg Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)-?i?mi>"r ?) - ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)-?i?mmi>"r ?) - HeurGLErr ; #Jude 20240129
 COPY:HeurLokAbsMi (Prop Abs Sg MI Heur/Prop) EXCEPT (Prop Lok Sg Heur/Prop) TARGET Prop + Lok + Sg + Heur/Prop - Heur/Quote ; #Jude 20240130
 COPY:HeurLokRelMi (Prop Pel Sg MI Heur/Prop) EXCEPT (Prop Lok Sg Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)-?i?mmi>"r) + Prop + Lok + Sg + Heur/Prop ; #Jude 20240130
-Substitute:HeurKkutLok ("\\p{Lu}.*"r ?) ("$1"v KKUT Der/nn Prop Lok Pl Heur/Prop Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)?)i?kkunni>"r ?) ; #Jude 20240130
+Substitute:HeurKkutLok ("\\p{Lu}.*"r ?) ("$1"v KKUT Der/nn Prop Lok Pl Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)?)i?kkunni>"r ?) ; #Jude 20240130
+MergeCohorts:HeurKkutLok ("<$1$2$3>"v "$1"v KKUT Der/nn Prop Lok Pl Heur/Prop) ("<(\\p{Lu}\\p{Ll}+\\u002D?\\p{Lu}?\\p{Ll}+?)>"r) WITH (1 ("<([\\u002D|\\u2013])>"r)) (2 ("<\(i?kkunni\)>"r ?)) ; #Al-Qaida-kkunni
 Substitute:HeurLokSgLi ("\\p{Lu}.*"r ?) ("$1"v Prop Lok Sg LI Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)-?i?mili>"r ?) ; #Jude 20240130
 Substitute:HeurLokSgLu ("\\p{Lu}.*"r ?) ("$1"v Prop Lok Sg LU Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)-?i?milu>"r ?) ; #Jude 20240129
 Substitute:HeurLokLuunniit ("\\p{Lu}.*"r ?) ("$1"v Prop Lok Sg LUUNNIIT Heur/Prop) TARGET ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)-?i?miluunniit>"r ?) ; #Jude 20240129
@@ -150,6 +162,7 @@ Substitute:HeurRelSgGuuq ("\\p{Lu}.*"r ?) ("$1"v Prop Rel Sg GUUQ Heur/Prop) TAR
 Substitute:HeurRelSgLi ("\\p{Lu}.*"r ?) ("$1"v Prop Rel Sg LI Heur/Prop) TARGET ("<(\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?(\\u002D\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)?)\\u002D?i?lli>"r ?) - HeurScnErrF - HeurGLfinal ; #Jude 20240129
 Substitute:HeurRelSgMiuLu ("\\p{Lu}.*"r ?) ("$1"v iProp MIU Der/nn N Rel Sg LU HeurDer Heur/N) TARGET ("<(\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?(\\u002D\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)?)\\u002D?i?miullu>"r ?) ; #Shemeshimiullu
 Substitute:HeurRelSgLu ("\\p{Lu}.*"r ?) ("$1"v Prop Rel Sg LU Heur/Prop) TARGET ("<(\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?(\\u002D\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)?)\\u002D?i?llu>"r ?) - ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?(\\u002D\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)?)\\u002D?mullu>"r ?) - ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?(\\u002D\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)?)\\u002D?miillu>"r ?) ; #Jude 20240129
+MergeCohorts:HeurHyphenRelSgLu ("<$1$2$3>"v "$1"v Prop Rel Sg LU Heur/Prop) ("<(\\p{Lu}+\\p{Ll}+\\u002D\\d+)>"r) WITH (1 ("<(\\u002D)>"r)) (2 ("<\(illu\)>"r)) ; #Dash-7-illu
 Substitute:HeurRelSgMi ("\\p{Lu}.*"r ?) ("$1"v Prop Rel Sg MI Heur/Prop) TARGET ("<(\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?(\\u002D\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)?)\\u002D?i?mmi>"r ?) ; #Jude 20240130
 Substitute:HeurRelSgMiu ("\\p{Lu}.*"r ?) ("$1"v iProp MIU Der/nn N Rel Sg HeurDer Heur/N) TARGET ("<(\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?(\\u002D\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)?)\\u002D?i?miup>"r ?) ; #Shemeshimiup
 Substitute:HeurRelSg ("\\p{Lu}.*"r ?) ("$1"v Prop Rel Sg Heur/Prop) TARGET ("<(\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?(\\u002D\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)?)\\u002D?i?p>"r ?) - HeurForFinalP - HeurGLfinal - InitErr ; #Jude 20240129
@@ -236,7 +249,10 @@ Substitute:HeurACRTrmPl ("\\p{Lu}+.*"r ?) ("$1"v N Gram/ACR Trm Heur/ACR) TARGET
 COPY:HeurACRTrmPl ("$1"v Prop Trm Pl Heur/Prop) EXCEPT ("$1"v N Gram/ACR Trm Heur/ACR) TARGET ("<(\\p{Lu}+)(\\u0027|\\u002D)?i?nut>"r) + Heur/ACR ; #Jude 20240131
 
 
-#Substitute:Heur/Foreign (".*"r ?) ("$1"v Heur/Foreign) TARGET ("<\(.*\)>"r ?) + Heur/Foreign ;
+#Heur N
+Substitute:HeurNInsPl ("\\p{Ll}.*"r ?) ("$1"v N Ins Pl Heur/N) TARGET ("<(\\p{Ll}+)-i?nik>"r ?) ; # careful, hyphenated only: birk-inik
+MergeCohorts:HeurHyphenNInsSg ("<$1$2$3>"v "$1"v N Ins Sg Heur/N) ("<(\\p{Ll}+)>"r) WITH (1 ("<(\\u002D)>"r)) (2 ("<\(i?mik\)>"r)) ; #input with space error after hyphen: hash- imik
+MergeCohorts ("<$1$2$3>"v "$1"v Prop Ins Pl Heur/Prop) ("<(\\p{Lu}\\p{Ll}+ \\p{Lu}\\p{Ll}+)>"r) WITH (1 ("<(\\u002D)>"r)) (2 ("<\(i?nik\)>"r ?)) ; #proper noun hyphen input with missing case analysis: Winter Cities-inik
 
 END
 
