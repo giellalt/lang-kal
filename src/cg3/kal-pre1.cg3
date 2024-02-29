@@ -72,6 +72,7 @@ MergeCohorts:quoteTrmSg ("<$1$2$3$4>"v "$2"v Prop Trm Sg Heur/Prop Heur/Quote) (
 MergeCohorts:quoteTrmSg ("<$1$2 $3$4$5>"v "$2 $3"v Prop Trm Sg Heur/Prop Heur/Quote) ("<(\\u201E|\\u00BB|\\u0022|\\u203A|\\u201A)>"r) WITH (1 ("<\(\\p{Lu}.*\)>"r)) (2 ("<([\\p{Lu}|\\p{Ll}].*)>"r)) (3 ("<(\\u201C|\\u00AB|\\u0022|\\u2039|\\u2018)>"r)) (4 ("<\(i?mut\)>"r)) ; # »Hans Egede«mut.
 
 #Heur abbr
+Substitute ("<.*>"r ?) ("<$1>"v "$1"v N Gram/Abbr Abs Sg Heur/Abbr) TARGET ("<(\\p{L})>"r ?) ;
 Substitute ("<.*>" ?) ("$1"v N Gram/Abbr Abs Sg Heur/Abbr) TARGET ("\(\\p{Ll}\\p{Ll}\)"r ?) - For2Let ; #Jude 20240208
 Substitute ("<.*>" ?) ("$1"v N Gram/Abbr Abs Sg Heur/Abbr) TARGET ("\(\\p{Lu}\\p{Ll}\)"r ?) - For2Let - HeurExcl ; #Jude 20240208
 Substitute ("<.*>" ?) ("$1"v N Gram/Abbr Abs Sg Heur/Abbr) TARGET ("\(\\p{Ll}\\p{Lu}\)"r ?) - For2Let - HeurExcl ; #Jude 20240208
@@ -253,6 +254,10 @@ COPY:HeurACRTrmPl ("$1"v Prop Trm Pl Heur/Prop) EXCEPT ("$1"v N Gram/ACR Trm Heu
 Substitute:HeurNInsPl ("\\p{Ll}.*"r ?) ("$1"v N Ins Pl Heur/N) TARGET ("<(\\p{Ll}+)-i?nik>"r ?) ; # careful, hyphenated only: birk-inik
 MergeCohorts:HeurHyphenNInsSg ("<$1$2$3>"v "$1"v N Ins Sg Heur/N) ("<(\\p{Ll}+)>"r) WITH (1 ("<(\\u002D)>"r)) (2 ("<\(i?mik\)>"r)) ; #input with space error after hyphen: hash- imik
 MergeCohorts ("<$1$2$3>"v "$1"v Prop Ins Pl Heur/Prop) ("<(\\p{Lu}\\p{Ll}+ \\p{Lu}\\p{Ll}+)>"r) WITH (1 ("<(\\u002D)>"r)) (2 ("<\(i?nik\)>"r ?)) ; #proper noun hyphen input with missing case analysis: Winter Cities-inik
+
+MergeCohorts:AbsSg ("<$1$2>"v "$1$2"v N Abs Sg Heur/N) ("<(\\u002D)>"r) WITH (1 ("<\((i|a|si|rsi|ssi|tsi|nnip)?[pv]oq\)>"r)) ; # Jude 20240229 cut off inflection as in examples: kalaallisut naggatigalugit: -poq, -voq
+MergeCohorts:InsSg ("<$1$2>"v "$1$2"v N Ins Sg Heur/N) ("<(\\u002D)>"r) WITH (1 ("<\((i|a|si|rsi|ssi|tsi|nnip)?[pv](oq|aa)\\u002Dmik\)>"r) ) ; # -poq-mik, -voq-mik, -vaa-mik, -paa-mik
+Substitute:InsSgLu (".*"r ?) ("$1"v N Ins Sg LU Heur/N) TARGET ("(\\p{Ll}+)\\u002D\(millu\)"r ?) ;
 
 END
 
