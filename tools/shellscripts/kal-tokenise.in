@@ -596,49 +596,35 @@ sub propagate_tags {
       return $c;
    }
 
-   my ($b, $t) = ($c =~ m@^(\s+"[^\n]+?"?[^"]*")(\s+.*)$@);
-   my @ts = split(/(?= (?:[A-Z]+|$mp) )/, $t);
+   # Snip duplicate tags
+   my $o = $c;
+   do {
+      $o = $c;
+      $c =~ s@ (Gram/[HTI]V) \1@ $1@g;
+   } while ($o ne $c);
+
+   my @ts = split(/ (?=(?:(?:i?(?:$mp))|(?:\p{Lu}[_\p{Lu}]+)|U)(?: |$))/, $c);
 
    my $gram = '';
-   my $lastm = '';
-   my $block = 0;
-
-   my $prepend = sub {
-      if ($gram && !$block && $ts[0] !~ m@ Gram/[TI]V@) {
-         $ts[0] = $ts[0].' '.$gram;
+   foreach (@ts) {
+      # Stop entirely at hybrid marker, to avoid mangling 2nd part of a hybrid
+      if (m@ Gram/Hyb@) {
+         last;
       }
-      $gram = '';
-      $block = 1;
-   };
-
-   for (my $i=0 ; $i<scalar(@ts) ; ++$i) {
-      $ts[$i] =~ s@(Gram/[TI]V) ?(.*?)(\1)@$2$3@g;
-
-      $_ = " ${ts[$i]} ";
-      if (m@ (?:$mp) @) {
+      # Don't propagate past POS, blocking morphemes, Pass/Refl, or noun morphemes
+      if (m/^(?:$mp)(?: |$)/ || m/^(?:$vb)(?: |$)/ || m@ Gram/(Pass|Refl)@ || m@ Der/[nv]n@) {
          $gram = '';
-         $block = 1;
+         next;
       }
-      elsif (m@ (?:$vb) .*?Der/vv @) {
-         $prepend->();
-      }
-      elsif ($gram && m@ Der/vn @) {
-         if ($i && $ts[$i-1] !~ m@ Gram/[TI]V@) {
-            $ts[$i-1] = $ts[$i-1].' '.$gram;
-            $ts[$i-1] =~ s@( Gram/(?:Pass|Refl).*?) Gram/[TI]V@$1@g;
-         }
-         $prepend->();
-      }
-      elsif (m@Der/(vn|nv|nn)@) {
-         $gram = '';
-         $block = 1;
-      }
-      if (m@ (Gram/[TI]V) @) {
+      if (m@ (Gram/[TI]V)@) {
          $gram = $1;
+      }
+      elsif ($gram && m@ Der/[nv]v@) {
+         $_ .= " $gram";
       }
    }
 
-   return $b.join('', @ts);
+   return join(' ', @ts);
 }
 
 my $out = "\"<¶>\"\n\t\"¶\" CLB\n";
