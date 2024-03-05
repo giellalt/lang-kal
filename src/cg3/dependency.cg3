@@ -85,6 +85,10 @@ SETPARENT:M_tidlig0040 @>NUM + Num + Abs IF (1 (/"-"\ PUNCT/l))
 (NOT p (*))
 TO (2 Num); #Naak 160.000 - 170.000-it missaat Inuit oqaasiinik atuisuugaluartut, illersorneqarnissaat pingaaruteqarluinnarpoq.
 
+SETPARENT:M_tidlig0041 @>N + ("unnuk") + N + Via OR ("ullaaq") + N + Via IF 
+(NOT p (*))
+TO (-1 ("nalunaaqutaq") + N + Abs LINK 1 _TARGET_ LINK 1A Num) ; #Angut nunaqarfimmut Tasiilap avannaaniittumut Tiilerilaamut sapaammik nalunaaqutaq unnukKUT arfineq-pingasut missaanni tikittussaagaluarpoq, angulli tikinnanilu tutsaqanngilaq.
+
 #PL20230912 forsøgsvist flyttet fra M_faste0925 hertil: udtrykket Ukiup ataatsip matuma siornatigut
 SETPARENT:M_faste0925 @>N + TIMEUNIT + Rel IF
 (NOT p (*))
@@ -579,6 +583,10 @@ TO (-1 ("katip") + Cont LINK -1 <con> + $$KASUS);#Nunarput Pfizer/BioNTechimit a
 #MAP:M_tidlig0570 @PRED TARGET Abs + Sg IF (**-1 ("aappaq") LINK 1 (/U\ Der/nv\ Gram/IV\ V/l) LINK *1 ("aappaq") BARRIER (*) - KOMMA LINK 1 _TARGET_);  #Aappaa qaqortuuvoq, aappaa QERNERTOQ.
 
 #MAP:M_tidlig0571 @SUBJ> TARGET ("aappaq") + Abs + Sg IF (*-1 ("aappaq") LINK 1 (/U\ Der/nv\ Gram/IV\ V/l) LINK *1 _TARGET_ BARRIER (*) - KOMMA LINK 1 @PRED);  #Aappaa qaqortuuvoq, AAPPAA qernertoq.
+
+SETPARENT:M_tidlig0572 @ADVL> + ("aappaq") + SSAQ IF 
+(NOT p (*))
+TO (*1 V + TUQ + QAR BARRIER V) ;#Tasiilami ullut marluk ingerlanerinnaanni aappassaa SAR-imik ujaasinermik aallartitsisoqarpoq.
 
 #MAP:M_tidlig0600 @<ADVL TARGET CONT IF (*-1 VFIN + 2Sg OR CON_CAU + 2Sg LINK *1 ("(") BARRIER V LINK *1 _TARGET_ + 2Sg LINK *1 (")") BARRIER V);#Sapaatiuppat mittarfimmit Odensemut toqqaannarniaruit (tassa ataasinngorpat unnuakkut 01 miss. APUULLUTIT) aasinnaassavakkit.
 
@@ -3687,8 +3695,9 @@ SETPARENT:M0017B (@PRED2) + INTRANSVERB + Par + 3Sg IF
 (NOT p (*))
 (NEGATE *0 ORATIOOBLVERB OR OQARPOQ CBARRIER VFIN)(*-1S TIMEVERB OR WEATHERVERB)(NEGATE *-1 UNA OR UKU OR NEXUS) #(1 Abs OR ("\,")) #koncessive saetninger uden konjunktion #Barrier gjort Careful 20180707. #20190311 PRED2 skal ikke omfatte koncessive sætninger.
 (NEGATE *-1 OQARPOQ BARRIER V LINK *1 Abs + Sg BARRIER (*) - Adv LINK *1 _TARGET_ BARRIER V)#PL20221218 Timmisartoq minnermini ajutoorpoq, immikkullu ilisimasallit oqarsimapput timmisartoq sukkavallaartumik minnermini INGERLASIMASOQ, miffigisaminilu unissinnaasimanani. Skal være CL-<CIT
-TO (*1 V)
-;
+TO (*1 VFIN OR @CL-CIT)
+;#Air Greenland kitaata sineriaani anorleraluaqisoq aputeqaraluaqisorlu ullaarnaniit timmisartuussisinnaasimavoq.
+
 #
 #MAP:M0017C @PRED2 TARGET INTRANSVERB + Par + 3Sg + (/__TUQ\ Der/vn\ QAR\ Der/nv\ Gram/IV\ GALUAR__/l) ; #Nunatsinni Nakorsaanerup Henrik L. Hansenip ilisimatitsissutigaa, tunillatsissimasumik ataatsimik Nuummi paasisaqartoqaraluartoq* tuniluuttoqanngitsoq.
 #
@@ -4514,19 +4523,23 @@ TO (-*1A OQARPOQ OR ORATIOOBLVERB - N OR ("taa" 3SgO) BARRIER KOMMA OR ("soorlu"
 ;
 #
 
-#MAP:OrObl0151 @CL-CIT> TARGET Par IF (*1 OQARPOQ BARRIER VFIN LINK NEGATE -*1 ("taama") OR ("nalinginnaq") ) #oo ved oqarpoq aldrig simultan med taama
-#(NEGATE *-1 ORATIOOBLVERB) #Misigisimavunga pisassartik PIGAAT, Erna Vinther AG-mut oqarpoq. Skal være @CL-<CIT
-#(NEGATE *1 DIRTALESTART OR DIRTALESLUT BARRIER CLB - KOMMA) #aldrig oo simultan med anførende sætning
-#(NEGATE *-1W DIRTALESLUT BARRIER CLB - KOMMA) #aldrig oo simultan med anførende sætning
-#(NEGATE *1W BOS BARRIER BOS LINK 1 DIRTALESTART) #aldrig oo simultan med anførende sætning. *1W BOS BARRIER BOS LINK for at ramme næste position 1 og kun den
-#(NEGATE *1 ("oqar") - USIQ LINK *1 CONT) #hvis CONT efter oqarpoq er Par nok Pred2 og efter=CL-<CIT
-##(NEGATE *1 CONT LINK *1 ("oqar") - USIQ) #ganske vist sjælden, men ikke SULIASSAQARALUARLUNI aallarusulluni oqarpoq.
-##(NEGATE 0 UTIGE OR RIAR)
-#(NEGATE *1 KOMMA LINK NEGATE *1 Prop + Abs LINK *1 OQARPOQ)#En tidligere formulering, (*1 OQARPOQ BARRIER KOMMA .. ) må opgives pga mulige <APPOS hvorfor reformuleres til denne NEGATE
-#; #Er dette mon overkill eller skal det med
-#@RULENAME@
+SETPARENT:OrObl0151 @CL-CIT> + Par IF 
+(NOT p (*))
+(NEGATE *-1 ORATIOOBLVERB) #Misigisimavunga pisassartik PIGAAT, Erna Vinther AG-mut oqarpoq. Skal være @CL-<CIT
+(NEGATE *1 DIRTALESTART OR DIRTALESLUT BARRIER CLB - KOMMA) #aldrig oo simultan med anførende sætning
+(NEGATE *-1W DIRTALESLUT BARRIER CLB - KOMMA) #aldrig oo simultan med anførende sætning
+(NEGATE *1W BOS BARRIER BOS LINK 1 DIRTALESTART) #aldrig oo simultan med anførende sætning. *1W BOS BARRIER BOS LINK for at ramme næste position 1 og kun den
+(NEGATE *1 ("oqar") - USIQ LINK *1 CONT) #hvis CONT efter oqarpoq er Par nok Pred2 og efter=CL-<CIT
+#(NEGATE *1 CONT LINK *1 ("oqar") - USIQ) #ganske vist sjælden, men ikke SULIASSAQARALUARLUNI aallarusulluni oqarpoq.
+(NEGATE 0 UTIGE OR RIAR LINK *1 Par OR CONT OR Cau)#Silalu qaammarniariartoq ujaasineq aallartinneqartoq, Malik Olesen oqarpoq.
+(NEGATE *1 KOMMA LINK NEGATE *1 Prop + Abs LINK *1 OQARPOQ)#En tidligere formulering, (*1 OQARPOQ BARRIER KOMMA .. ) må opgives pga mulige <APPOS hvorfor reformuleres til denne NEGATE
+ #Er dette mon overkill eller skal det med
+TO (*1A OQARPOQ BARRIER VFIN LINK NEGATE -*1 ("taama") OR ("nalinginnaq") ) ;#oo ved oqarpoq aldrig simultan med taama
 
-SETPARENT:OrObl0152 @CL-CIT> + Par + NIR
+
+
+SETPARENT:OrObl0152 @CL-CIT> + Par + NIR IF
+(NOT p (*))
 TO (*1 ORATIOOBLVERB + V OR ("misissor") + V BARRIER VERB-NOTCONT); #Pikileraanni napparsimanissaq eqqarsaatini salliusanngikkaluartoq nalaatsortitsissagaluaraanni napparsimasutut ikiorneqarnissamut pisinnaatitaaffiit SUUNERSUT angalatinnani misissussallugu pingaartuuvoq.
 
 ##Det er en tendens, at maluge+Gram/IV tager coref or.obl. især i ældre sprog, men enkelte dokumentationer også for or.obl. med Par efterstillet intransitiv maluge
@@ -11312,7 +11325,8 @@ TO (1C (/\ TAQ\ Der\/vn\ N\ /l) - CONJ-C - (/\"atuar\"\ Gram\/..\ TAQ\ /l))  #" 
 ## PARTICIPIALMÅDER, som danner baggrund for sætningen
 ##Tidssætninger@RULENAME@
 
-SETPARENT:baggrundA @PRED2 + Par - NIR - NIQAR
+SETPARENT:baggrundA @PRED2 + Par - NIR - NIQAR IF 
+(NOT p (*))
 (NEGATE *-1S ("tassa"))
 (NEGATE *-1 ORATIOOBLVERB - N)
 (NEGATE *1 ORATIOOBLVERB - N BARRIER Con OR Cau LINK *-1 Par LINK *-1 _TARGET_)
@@ -11321,7 +11335,7 @@ SETPARENT:baggrundA @PRED2 + Par - NIR - NIQAR
 (NEGATE *-1 V - CONT - Cau)
 (NEGATE *1 OQARPOQ BARRIER Par)#Aalajangernerlu ajugaanertut annertuutut OQAATIGISARIAQARTOQ Atertaq pillugu aallaqqaataaniit ullumimut sulissutiginneqataasoq, Atertamilu najugalik Martin Ben Shalmi oqarpoq.
 (NEGATE *1 CONJ-LU LINK *1 Par )#
-TO (*1 VFIN OR @HNOUN) ;
+TO (*1 VFIN OR @HNOUN OR @CL-CIT>  BARRIER @CL-CIT>) ;#Silalu qaammarniariartoq ujaasineq aallartinneqartoq, Malik Olesen oqarpoq.
 #
 #MAP:baggrund_subjekt @SUBJ> TARGET Abs + &&IV_SUBJ& IF (*1 Par + &&IV_SUBJ& BARRIER (*) - OBLIQUE - Adv LINK *1 VFIN - &&IV_SUBJ& BARRIER VERB-NOTCONT); #UNNUK naanngitsoq assigiinngitsut eqqartugai amerleriivipput. Kravet om følgende VFIN - 3Sg for at gøre reglen lidt sikrere, men måske samtidig lidt for snæver??
 #
@@ -12081,7 +12095,7 @@ SETPARENT:M1380 (@CL-CIT>) + Par + INTRANSVERB + 3Sg OR CONT + INTRANSVERB + 4Sg
 (NEGATE -1 ("nalunaaqutaq") + Abs + @SUBJ> ) #Danmarkip nunanut allanut tunngasunut ministeria Lars Løkke Rasmussen, Folketingimi partiit nunanut allanut tunngasunut oqaaseqartartuinut pissutsit pillugit Danmarkimi ullumi ullaap tungaani nalunaaqutaq qulinngorTOQ ilisimatitsissuteqarpoq.
 (NEGATE 0 Par - GAANNI + SSA LINK *-1 (/"innersuup"\ Gram/TV\ UTE\ Der/vn\ GE/l) + V - Aeq - @SUBJ>  BARRIER ("soorlu") OR ("tassa") OR VFIN)#Biologit innersuussutigaat , aappaagumut tunngatillugu raajanut tunngatillugu siunnersuineq ALLANNGUUTEQARTINNEQASSANNGITSOQ , paasissutissani aalisarnermeersuni takuneqarsinnaammat kalinnermi ataatsimi qaqinneqartartut , aammalu biologit misissuisarnerisa takutimmassuk raajaqassuseq ukiuni tallimani kingullerni agguaqatigiissillugu peqassusiusartunut naapertuutikannersoq .
 (NEGATE -1 ("[0123456789]{4}"r Abs) LINK -1 BOS)#2015-ilu NAAJARTULERSOQ allagaatinik katersuineq aalajangersimasumik akisussaasoqartinneqarluni aallarnerneqarsimavoq.
-
+(NEGATE *1 Aeq LINK *1 (/"nalunaar"\ Gram/IV\ UTE\ Der/vn\ GE\ Der/nv\ Gram/TV/l) BARRIER (*) - OBLIQUE) #Angut 40-t sinnerlugit ukioqartoq Tasiilami maqaasineqartutut sapaammi nalunaarutigineqarpoq.
 
 TO (*1 ORATIOOBLVERB - OQARPOQ - NON_ORATIOOBLVERB + V BARRIER PUNCT OR DIRTALESLUT OR VFIN)(-*1 Abs + Sg);
 
@@ -12460,6 +12474,8 @@ SETPARENT:M1736A @CL-CIT> + Par IF
 (NEGATE -1 BOS LINK 1 OTHERTIME + Par + 3Sg LINK *1 @CL-<CIT) #ULLUINNAASOQ ilimagereerlugu imerniartarfiup matunnginnerani aniumaartoq, aarimmi aqqarnup eqqaani anissalluni pikerpaluleqaaq.
 (NEGATE 0 ADV-LU) #Silammut aallariartormat qamuuna TOQQISSIALLAKKALUARTUNGALU tusaalerpara inip tungaanut nipaarsaarnerulluni aallaqqippaluttoq.
 (NEGATE 0 GALUAR LINK 1 ("nuannare")) #Uanniit ANGAJULLIUNERUGALUAQISOQ nuannarigakku ukiui apeqqutaatinngilakka.
+(NEGATE *1 Aeq LINK *1 (/"nalunaar"\ Gram/IV\ UTE\ Der/vn\ GE\ Der/nv\ Gram/TV/l) BARRIER (*) - OBLIQUE) #Angut 40-t sinnerlugit ukioqartoq Tasiilami maqaasineqartutut sapaammi nalunaarutigineqarpoq.
+
 TO (*1 ORATIOOBLVERB + V - NON_ORATIOOBLVERB OR OQARPOQ BARRIER DIRTALESLUT OR @OBJ> OR KONCESSIV)(NEGATE 1 ("\:"));
 #
 #MAP:M1736B @CL-CIT> TARGET CONT + LU OR LI OR LUUNNIIT IF (*1 VFIN + ORATIOOBLVERB BARRIER V)(-1 Par + @CL-CIT>);#Pisarineqarlutik pisiniarfinnut tunisaasimanersut NERINEQAREERLUTILLU, ilaatigut uannik, nalulluinnarpara.
@@ -12984,6 +13000,7 @@ SETPARENT:M9968E @PRED2 + V
 (NEGATE 0 ORATIOOBLVERB OR OQARPOQ LINK *1 @CL-<CIT BARRIER VFIN)#Cigaretitukkami pujua superujussuarpaa, neriulluni Gitte maanna kisimiitsialaarmat nuannisaaqatigilaarsinnaassallugu.
 (NEGATE -1 KOMMA LINK 1 _TARGET_ LINK 1 KOMMA LINK *1 VFIN OR @PRED )# Juullisiortitsineq iluatsilluarpoq, kaffeqarLUNI, safti, æbleskivit, kaageeqqat aamma mamakujuit sassaalliutigineqarput.
 (NEGATE 0 Cau)
+(NEGATE *1 Aeq LINK *1 (/"nalunaar"\ Gram/IV\ UTE\ Der/vn\ GE\ Der/nv\ Gram/TV/l) BARRIER (*) - OBLIQUE) #Angut 40-t sinnerlugit ukioqartoq Tasiilami maqaasineqartutut sapaammi nalunaarutigineqarpoq.
 TO (*0 @PRED);
 #
 
