@@ -740,6 +740,10 @@ PL 20180718. Følgende er et særligt lexicon til ip i stedet for tidligere LEXI
 
 * LEXICON flex-iv2  
 
+* LEXICON flex-iv_r  
+
+* LEXICON flex-iv_r2  
+
 * LEXICON flex-iv_long  
 
 * LEXICON flex-iv_long2  
@@ -1374,6 +1378,8 @@ Nye gennemgangsleksika specifikt for +UTE+Der/vv tilføjet 20180928 (PL)
 Nye gennemgangsleksika specifikt for +UTE+Der/vv tilføjet 20180928 (PL)
 
 Nye gennemgangsleksika for TAR med følgende morfemer
+
+Gennemgangsleksikon for TAR m. fl.
 
 Gennemgangsleksikon for TAR m. fl.
 
