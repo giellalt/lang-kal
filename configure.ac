@@ -222,6 +222,7 @@ AC_CONFIG_FILES([tools/shellscripts/kal-tokenise], [chmod +x tools/shellscripts/
 AC_CONFIG_FILES([tools/shellscripts/kal-generate], [chmod +x tools/shellscripts/kal-generate])
 AC_CONFIG_FILES([tools/shellscripts/kal-hybrid-split], [chmod +x tools/shellscripts/kal-hybrid-split])
 AC_CONFIG_FILES([tools/shellscripts/kal-lu-prefix], [chmod +x tools/shellscripts/kal-lu-prefix])
+AC_CONFIG_FILES([tools/shellscripts/kal-spell-heur], [chmod +x tools/shellscripts/kal-spell-heur])
 
 ############ END: Language-specific scripts. #############
 

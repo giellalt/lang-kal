@@ -14,4 +14,5 @@ bin_SCRIPTS=ukal-gt.sh \
 	kal-hybrid-merge \
 	kal-lu-prefix \
 	kal-tokenise \
+	kal-spell-heur \
 	# Let this line end the definition
