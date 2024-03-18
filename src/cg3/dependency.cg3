@@ -799,8 +799,13 @@ TO (@0 (*)); #Saperpara, ANNIAATIGA, timima saperluinnarpaa.
 ####################################################################################
 ## Specialiteter ved @>N (prænominale adled, determinativer og juxtapositioner i MWE
 ####################################################################################
-#MAP:M_Juxta0001 @i-MWE>N TARGET PRÆNOM + $$KASUS + $$NUMERUS IF (*1 MWEHOVED + Der/nv BARRIER (*) - KONGRUENSADLED) ; #Pissutissaqarlunga isumaqarpunga ulloriaaraq ataqqinartuaqqap najugaqarfigisaa ulloriaaraq ANGALASOQ B612-iussasoq.
+SETPARENT:M_Juxta0001 @i-MWE>N + PRÆNOM + $$KASUS + $$NUMERUS IF 
+(NOT p (*))
+TO (*1 MWEHOVED + Der/nv BARRIER (*) - KONGRUENSADLED) ; #Pissutissaqarlunga isumaqarpunga ulloriaaraq ataqqinartuaqqap najugaqarfigisaa ulloriaaraq ANGALASOQ B612-iussasoq.
+
+##KL: erstattet af 0440X4
 #MAP:M_Juxta0002 @N< TARGET ("baobab") + $$KASUS + $$NUMERUS IF (-1 ("orpik") + $$KASUS + $$NUMERUS) ;
+
 #MAP:M_Juxta0003 @>N TARGET NUMHOVED + Trm + TIMEUNIT (1 NUMHOVED + Abs) ; #Maannakkut Kalaallit Nunaata Kujataani anorersuarpoq, Qallunaat Nunaanni silasiorfik DMI malillugu anori *sekundimut meterit 50-it angullugit sakkortutigisinnaasassaaq.
 
 SETPARENT:M_Juxta0010 @>N + ("nalunaaqutaq") + Abs IF (*-1 TIME BARRIER (*) - Num)(1 TIME)
@@ -810,18 +815,29 @@ TO (*1 Num BARRIER (*) - ("unnuk") + N + Via OR ("ullaaq") + N + Via );
 #Taamaattumik Naalakkersuisut aalajangerput imigassanik aalakoornartortalinnik tuniniaasarnerit sassaalliuteqartarnerillu marsip ulluisa 28-anni NALUNAAQUTAQ unnukkut arfineq pingasunit apriilip ulluisa 15-iata tungaanut inerteqqutigineqarallassasut.
 
 
-SETPARENT:M_Juxta0011 @>N + ("ippassaq") + Adv OR ("ullumi") + Adv TO (1 UGEDAGE + OBLIQUE); #Nuummi nunaqarfinnilu Kapisilinni Qeqertarsuatsiaanilu imigassanik aalakoornartortalinnik tuniniaasarnerit sassaalliuteqartarnerillu IPPASSAQ arfininngornermit, marsip ulluisa 28-annit apriilip ulluisa 15-iata tungaanut inerteqqutigineqalerput.
+SETPARENT:M_Juxta0011 @>N + ("ippassaq") + Adv OR ("ullumi") + Adv OR ("aqagu")  + Adv  OR ("unnugu") + Adv 
+(NOT p (*))
+TO (1 UGEDAGE + OBLIQUE); #Nuummi nunaqarfinnilu Kapisilinni Qeqertarsuatsiaanilu imigassanik aalakoornartortalinnik tuniniaasarnerit sassaalliuteqartarnerillu IPPASSAQ arfininngornermit, marsip ulluisa 28-annit apriilip ulluisa 15-iata tungaanut inerteqqutigineqalerput.
 #@RULENAME@
 
 SETPARENT:M_Juxta0012 @>N + NUMHOVED IF
+(NOT p (*))
 (NEGATE -1 ("nuna") + Rel LINK 1 _TARGET_ + ("karsi") + 3SgPoss)#NB landskassen er ikke NUMHOVED.. tamanna nunatta KARSIANUT koruuninik milliardilikkaanik isaatitsissutaasinnaallunilu piffimmi suliffinnik pilersitsissutaasinnaalluni.
 (NEGATE 0 ("ini") LINK NOT *1 Sem/Unit BARRIER (*) - Num )#INI 3 meterinik uuttuuteqarpoq
-
 TO (*1 Sem/Unit BARRIER (*) - Num); #Aatsitassarsiorfik saffiugassiassamik ukiumut MILLIONIT pingasut tonsit missaannik piiaaffiusassaaq.;
 
-SETPARENT:M_Juxta0013 @N< + Num TO (-1A NUMHOVED LINK 2 Sem/Unit - V) #Aatsitassarsiorfik saffiugassiassamik ukiumut millionit PINGASUT tonsit missaannik piiaaffiusassaaq.
+SETPARENT:M_Juxta0013 @N< + Num IF
+(NOT p (*))
 (NEGATE -1 ("krone") LINK 2 ("øre"))#Assersuutigalugu ikummatissaq benzina, nunatsinni literimut maanna 4 koruunit 40 øremillu akeqarpoq, Danmarkimi taassuma pingasoriaataa tikillugu maanna akeqarpoq.
+TO (-1A NUMHOVED LINK 2 Sem/Unit - V) #Aatsitassarsiorfik saffiugassiassamik ukiumut millionit PINGASUT tonsit missaannik piiaaffiusassaaq.
+
 ;
+
+##dato og klokkeslet
+SETPARENT:M_Juxta0014 @>N + Num IF (-*1 MAANED BARRIER (*) - ("ulloq") ) 
+(NOT p (*))
+TO (1 ("nalunaaqutaq" @>N) ) ;#Taamaattumik Naalakkersuisut aalajangerput imigassanik aalakoornartortalinnik tuniniaasarnerit sassaalliuteqartarnerillu marsip ulluisa 28-ANNI nalunaaqutaq unnukkut arfineq pingasunit apriilip ulluisa 15-iata tungaanut inerteqqutigineqarallassasut.
+#’Politistationen’-ip immikkoortortaa siulleq sisamanngorpat maajip tallimaani nalunaaqutaq 22.00 KNR-ikkut isiginnaaruk.
 
 
 #### Hybrider@RULENAME@
@@ -1344,7 +1360,6 @@ SETPARENT:M_faste0019 @i-ADVL> + ("nuna") + OBLIQUE + $$KASUS
 (1 Hyb/1-2 + $$KASUS + ("avannarleq") OR ("kujalleq") OR (/"kiap"\ Gram/IV\ TUQ/l) OR (/"issip"\ Gram/IV\ TUQ/l)) #Aningaasaqarnermut ilisimasallit pikkorinnerpaat NUNANIT avannarlerneersut tunniussanik naliliissapput, 2010-milu aasaanerani ajugaasoq toqqassallugu.
 TO (2 Hyb/2-2 + Der/vn + N);#
 
-#MAP:M_faste0021 @>N TARGET ("qernertaq") + Ins IF (1 (".*tassiissut"r) );
 SETPARENT:M_faste0021 @i->N>N + ("qernertaq") + Ins IF 
 (NOT p (*))
 TO (1 ("qilalugartassiissut") OR (/"qilalugaq"\ TAQ\ Der/nn\ SSIP\ Der/nv\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ UTE\ Der/vn/l) );#Uummannamit Qeqertarsuaq ilanngullugu qernertaniK qilalugartassiissutigineqaqqipput 50-it, taakkulu aappaagu juunip naanerata tungaanut pisassiissutigineqarput. 
@@ -1372,14 +1387,16 @@ TO ( *-1A $$KASUS LINK 1 UGEDAGE LINK *1 _TARGET_ BARRIER (*)- MAANED - ("ulloq"
 
 ##Sammenbinding af ugedag med efterfølgende kalenderdag
 SETPARENT:M_faste0029 @>N + UGEDAGE IF 
-(NOT p (*))
+(NOT p (*)) 
 TO (*1 Num BARRIER (*) - KOMMA - MAANED - ("ulloq") );
+
+##KL: # efter omlægning af APPOS
 #SETPARENT:M_faste0030 @<APPOS + Num + $$KASUS IF
 #(NOT p (*))
 #TO (*-1A UGEDAGE + $$KASUS BARRIER (*) - ("ulloq") - MAANED - KOMMA) (NOT 1 NUM)#ippassaq arfininngornermit, marsip ulluisa 28-ANNIT
 #(NEGATE 1 ("[0123456789]{4}"r))
 #;
-
+##OG
 #MAP:M_faste0031 @<APPOS TARGET ("tunge") + Trm IF (*-1 UGEDAGE + Trm BARRIER (*) - ("ulloq") - MAANED - KOMMA - Num);#Som faste0030 men tager også højde for tunge+Trm: pingasunngornermut apriilip ulluisa 15-iata TUNGAANUT
 
 #MAP:M_faste0032A @ADVL> TARGET ("ukioq") + $$KASUS IF (1 ("siuleq") + POSSESSUM3 + $$KASUS) #aali UKIUNUT siuliinut naleqqiullugu appasinnerpaalluni.
@@ -3342,7 +3359,9 @@ TO (@0 (*));
 #
 #MAP:M0001 (@PRED2) TARGET Par IF (@1 Interj)(NEGATE *0 VFIN OR NEXUS); #Ved emfase og udbrud
 
-#MAP:M0002 @PRED2 TARGET KLOKKESLET + Par IF (*-1 ("tanneq")) ;
+SETPARENT:M0002 @PRED2 + KLOKKESLET + Par IF (*-1 ("tanneq")) 
+(NOT p (*))
+TO (*1A V BARRIER V - CONT) ;#Nalunaaqutaq qulinut tanneq ataasinngulerSOQ allartissaaq.
 #
 
 
@@ -7078,8 +7097,11 @@ TO (1 Part LINK 1A TRANSVERB + 3SgO OR Par + 3Pl + 4SgO);
 ##En særregel for at tillade OBJ-tagging i en kontekst, som NEGATE i M0440 ikke tillader
 #MAP:M0440X3 @OBJ> TARGET Der/nv + &&POSS34_POSS& IF (*1 VFIN + &&IV_SUBJ& LINK -*1 CONT + &&TV_OBJ& LINK -1 _TARGET_ + &&TV_OBJ& LINK -1 Rel + &&POSS34_POSS& LINK *-1 Abs + &&IV_SUBJ& BARRIER (*) - Rel)#Kuupik V. Kleist Roskilde Universitetimi socionomitut ilinniarsimasuuvoq, misissuinermilu periuseq taassuma NAILIINERA naapertorlugu nunanut inuttuunut naleqqunneruvoq.
 #;
+##KL: en lidt bredere regel end en tidligere om kun baobab som @N<
 
-#@RULENAME@
+SETPARENT:M0440X4 @N< + N + Abs + $$NUMERUS IF 
+(NOT p (*))
+TO (-1A N + Abs + $$NUMERUS LINK 1 _TARGET_ LINK 1 PILLUGU LINK 1 N + Abs + $$NUMERUS + &&TV_OBJ& LINK *1 V + &&TV_OBJ& ) ;#Taamaalillunga aamma ullut pingajussaanni orpik baoBAB pillugu pisimasoq annilaarnartoq tusarpara.
 
 SETPARENT:M0440 (@OBJ>) + APPELLATIV + Abs + Sg OR Num + Abs - Pl OR Prop + Abs + Sg OR Gram/Dem + Pron + Abs + Sg OR Gram/ACR + Abs IF
 (NOT p (*))
@@ -7100,6 +7122,7 @@ SETPARENT:M0440 (@OBJ>) + APPELLATIV + Abs + Sg OR Num + Abs - Pl OR Prop + Abs 
 (NEGATE 1 FossileredeCont LINK 1 VFIN + 3SgO LINK NEGATE *1 V )#Qinerneqarnera nuannaarutigaara SULLLISSINISSARALU pimoorullugu ingerlatissavara.
 #der skal laves ny regel for at dække sidste negate's EX
 (NEGATE 0 Prop LINK 1 (/"manna"\ Prefix/TA\ Gram/Dem\ Pron\ Abs\ Sg/l) LINK 1 (/"pi"\ Gram/TV\ V\ Cont\ 3SgO/l) LINK *1 VFIN + INTRANSVERB)#Septembarip ulluisa qulingat imminut toqunnermik pinaveersaartitsinermut ullorititaavoq, KNR-ILU tamanna pillugu taavalu imminut toqunnermik nalaataqarneq pillugu nangeqattaartumik ulluni tulliuttuni allaaserisaqartassaaq.
+
 TO (*1A TRANSVERB + 3SgO - FossileredeContUdenObj OR Par + 3Pl + 4SgO BARRIER (*) - Gram/Dem - Cont) #20091109 tilfoejet Par med -gaanni
 ;
 #
