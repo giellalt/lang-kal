@@ -616,7 +616,7 @@ LIST ParagrafSlut = "¶" "." ; #To be added in all corpora in order to deal effi
 
 #!! ### Derivatives
 
-LIST DERTEMPORAL = RIIR (/RIAR\ Der/vv/l) SINNAR UTIGE ;
+LIST DERTEMPORAL = GIAR RIIR (/RIAR\ Der/vv/l) SINNAR UTIGE ;
 LIST IP = IP ("IP") ;		     #!!≈ - **@CODE@** =
 LIST KAR = KAR "KAR" ;
 LIST LIK = LIK "quleriilik"; #quleriilik ikke analyseret som LIK i FST
@@ -2189,6 +2189,15 @@ REMOVE:0000Test1 (/LIAR\ Der/nv\ Gram/IV\ A\ Der/vv/l); #KW27092023 for at forhi
 SELECT:0000Test2 ("uanga") + Pron; #for at forhindre at den overgenerer med Freuds ego.
 
 REMOVE:0000Test3 (/LIR\ Der/nv\ Gram/IV/l) IF (0 (/LIR\ Der/nv\ Gram/TV\ Gram/Refl/l)); #LIR er ikke intransitivt
+
+#Det kræver nogle konsekvensrettelser, fordi fornavne i nogle regler kun bliver læst som sådanne, hvis de står i Abs.
+#SUBSTITUTE:FornavnKasus1 (Abs) (Rel) TARGET Fornavn IF (*1 Efternavn + Rel BARRIER (*) - Fornavn);
+#SUBSTITUTE:FornavnKasus2 (Abs) (Ins) TARGET Fornavn IF (*1 Efternavn + Ins BARRIER (*) - Fornavn);
+#SUBSTITUTE:FornavnKasus3 (Abs) (Lok) TARGET Fornavn IF (*1 Efternavn + Lok BARRIER (*) - Fornavn);
+#SUBSTITUTE:FornavnKasus4 (Abs) (Trm) TARGET Fornavn IF (*1 Efternavn + Trm BARRIER (*) - Fornavn);
+#SUBSTITUTE:FornavnKasus5 (Abs) (Abl) TARGET Fornavn IF (*1 Efternavn + Abl BARRIER (*) - Fornavn);
+#SUBSTITUTE:FornavnKasus6 (Abs) (Via) TARGET Fornavn IF (*1 Efternavn + Via BARRIER (*) - Fornavn);
+#SUBSTITUTE:FornavnKasus7 (Abs) (Aeq) TARGET Fornavn IF (*1 Efternavn + Aeq BARRIER (*) - Fornavn);
 
 #Arnaq i første position er et reelt problem
 REMOVE:0001L ("\\p{Lu}.*"r) + Prop IF (0 ("([a-z].*)"r))(**0CW (VSTR:"$1"r))(-1 BOS)
@@ -8729,8 +8738,8 @@ REMOVE:4913B ("igaq") + LAAQ IF (0 ("igalaaq")) ;
 REMOVE:4913C ("imaq") + Aeq IF (0 ("imatut")) ;
 REMOVE:4913C1 ("imma") IF (0 ("imaq") + Lok + Sg);
 REMOVE:4913D ("arlaaq") IF (0 ("arlaq"))(NEGATE *0 ANIMAL OR BODY - ("arlaaq") OR ANATOMIC - ("arlaaq")) ;
-REMOVE:4913E1 ("sooq") + UNA IF (0 ("sooruna") LINK NOT *1 Par OR CONT) ;
-REMOVE:4913E1 ("sooruna") IF (0 ("sooq") + UNA LINK *1 Par OR CONT) ;
+REMOVE:4913E1 ("sooq") + UNA IF (0 ("sooruna") LINK NOT *1 Par OR CONT OR Int) ;
+REMOVE:4913E2 ("sooruna") IF (0 ("sooq") + UNA LINK *1 Par OR CONT OR Int) ;
 REMOVE:4913F ("ima") + LUUNNIIT IF (0 ("imaluunniit")) ;
 REMOVE:4913G ("aaq") IF (0 (/"aarit"\ Interj/l));
 REMOVE:4913H (/"tamavik"\ N\ Ins\ Sg/l) IF (0 ("tamavimmik") + Adv);
@@ -12134,11 +12143,16 @@ REMOVE:SemMorf0001C TUQ + QAR + (/^i?Sem/have/r) (NEGATE -1 Abs)
 REMOVE:SemMorf0001D (/^i?Sem/have/r) IF (0 (/^i?Sem/H/r) + (/^i?Sem/exist/r) + (/[34]Sg/r)); #Nuummi arnarpassuaQARPOQ 
 REMOVE:SemMorf0002 SIUR + (/^i?Sem/be_place/r)(NEGATE 0 (/^i?Sem/L/r));
 REMOVE:SemMorf0003 (/TUR\ Der/nv\ Gram/IV\ i?Sem/consume/l) IF (0 (/TUR\ Der/nv\ Gram/IV\ iSem/eat/l) + EDIBLE);
+REMOVE:SemMorf0004A (/VIK\ Der/vn\ i?Sem/temp/l)
+(NEGATE *-1 (/^i?Sem/temp/r) + Abs OR (/^i?Sem/dur/r) + Abs OR (/^i?Sem/per/r) + Abs) #Ukiorpassuit, unnuarpassuillu PIKKORISSARFIGISARSIMAVAKKA unnuamut eqqissillunga sinissinnaassanerlunga imaluunniit piareersimaannavillunga iluamik sinissinnaananga unnuaq atussanerlugu.
+(NEGATE *1 ("angu")) #MISILITSIFFISSAKKA angusinngitsoorfigisarlugit.
+;
 
 SELECT:SemMorf9999 (/^i?Sem/j/r); #vælg adjektivlæsningen, hvis udisambigueret
 
 # AFSNIT TIL UNDTAGELSER PÅ LONGEST MATCHES #
 REMOVE:LM_X_0000 ("qaqor") + TUQ + ARAQ + (/^i?Sem/Bflo/r)(NEGATE *0 (/^i?Sem/grow/r) OR (/^i?Sem/B.*/r));
+REMOVE:LM_X_0001 ("innar") + TIP + (/^i?Sem/put/r) IF (0 NNGIT); #Nalunngilara qanittumi innartinnavianngikkaanga. #egentlig ret ambiguøs uden nærmere kontekst ("lade gå i seng" vs. "lægge i seng")
 
 # AFSNIT TIL AT VÆLGE LONGEST MATCHES #
 #Skriv regel, som fjerner morfemets læsninger. Virker kun, hvis der er alternativer, som så bliver valgt. Hvis longest match ikke giver mening, skriv negate og lav undtagelse i forrige afsnit.
