@@ -77,8 +77,9 @@ MergeCohorts:quoteLokSg ("<$1$2$3$4>"v "$2"v Prop Lok Sg Heur/Prop Heur/Quote) (
 MergeCohorts:quoteRelSg ("<$1$2$3$4>"v "$2"v Prop Rel Sg Heur/Prop Heur/Quote) ("<(\\u201E|\\u00BB|\\u0022|\\u203A|\\u201A)>"r) WITH (1 ("<\(\\p{Lu}.*\)>"r)) (2 ("<(\\u201C|\\u00AB|\\u0022|\\u2039|\\u2018)>"r)) (3 ("<\(i?p\)>"r)) ; # „Pharao“p
 #Trm
 MergeCohorts:quoteTrmSg ("<$1$2$3$4>"v "$2"v Prop Trm Sg Heur/Prop Heur/Quote) ("<(\\u201E|\\u00BB|\\u0022|\\u203A|\\u201A)>"r) WITH (1 ("<\(\\p{Lu}.*\)>"r)) (2 ("<(\\u201C|\\u00AB|\\u0022|\\u2039|\\u2018)>"r)) (3 ("<\(i?mut\)>"r)) ; # »Kamikken«imut
-
 MergeCohorts:quoteTrmSg ("<$1$2 $3$4$5>"v "$2 $3"v Prop Trm Sg Heur/Prop Heur/Quote) ("<(\\u201E|\\u00BB|\\u0022|\\u203A|\\u201A)>"r) WITH (1 ("<\(\\p{Lu}.*\)>"r)) (2 ("<([\\p{Lu}|\\p{Ll}].*)>"r)) (3 ("<(\\u201C|\\u00AB|\\u0022|\\u2039|\\u2018)>"r)) (4 ("<\(i?mut\)>"r)) ; # »Hans Egede«mut.
+#Via
+MergeCohorts:quoteViaSg ("<$1$2$3$4>"v "$2"v Prop Via Sg Heur/Prop Heur/Quote) ("<(\\u201E|\\u00BB|\\u0022|\\u203A|\\u201A)>"r) WITH (1 ("<\(.*\)>"r)) (2 ("<(\\u201C|\\u00AB|\\u0022|\\u2039|\\u2018)>"r)) (3 ("<\(kkut\)>"r ?)) ; # „aqqusinersua“kkut
 
 #Heur abbr
 Substitute ("<.*>"r ?) ("<$1>"v "$1"v N Gram/Abbr Abs Sg Heur/Abbr) TARGET ("<(\\p{L})>"r ?) ;
@@ -225,14 +226,17 @@ Substitute:InsSgLu (".*"r ?) ("$1"v N Ins Sg LU Heur/N) TARGET ("(\\p{Ll}+)\\u00
 Substitute:HeurCoordinate ("<[0-9].*>"r ?) ("$1"v Num Abs Pl Heur/Num) TARGET ("<([NV]?\\d{2}(\\u00B0|\\u00BA|\\u02DA|\\u006F)\\d{2}(\\u0027|\\u2032)?([NWSE]|\\d{2})?(\\u0022|\\u2033)?([NWSE]|\\d)?)>"r ?) ; #Jude 20240131 taken common errors into consideration: Degree Sign -> Masculine Ordinal Indicator or Ring Above, Prime -> Apostrophe, Double Prime -> Quotation Mark
 
 Substitute:HeurDegrees ("<[0-9].*>"r ?) ("$1"v Num Abs Pl Heur/Num) TARGET ("<(\\d+(\\u00B0|\\u00BA|\\u02DA)[CF]?)>"r) ; #Jude 20240131 taken common error into consideration Degree Sign -> Masculine Ordinal Indicator or Ring Above
+Substitute:HeruDegreesIns ("\\d.*"r ?) ("$1"v Num Ins Pl Heur/Num) TARGET ("<(\\d+\\u002D?\\d+?\\u00B0)i?nik>"r ?) ; # 1-2°nik
+MergeCohorts:HeurDegreesIns ("<$1$2$3$4>"v "$1$2"v Num Ins Pl Heur/Num) ("<(\\d+\\u002D?\\d+?)>"r) WITH (1 ("(\\u00B0)"r)) (2 ("(\\u002D)"r)) (3 ("<\(nik\)>"r)) ; # 7-8°-nik
 
 Substitute:HeurDimensions ("<[0-9].*>"r ?) ("$1"v Num Abs Pl Heur/Num) TARGET ("<(\\d+\\u0078\\d+)>"r) ;
+
 
 Substitute:HeurNumRel ("[0-9].*"r ?) ("$1"v Num Rel Pl Heur/Num) TARGET ("<(\\d+)(\\u0027|\\u002D)i?p>"r ?) ;
 Substitute:HeurNumRelPl_t ("[0-9].*"r ?) ("$1"v Num Rel Pl Heur/Num) TARGET ("<(\\d+)(\\u0027|\\u002D)?i?t>"r ?) ;
 COPY:HeurNumRel_t (Num Abs Pl Heur/Num) EXCEPT (Num Rel Pl Heur/Num) TARGET ("<\\d+(\\u0027|\\u002D)?i?t>"r) + Heur/Num ; 
 Substitute:HeurNumAbl ("[0-9].*"r ?) ("$1"v Num Abl Pl Heur/Num) TARGET ("<(\\d+)(\\u0027|\\u002D)?i?mît>"r ?) ;
-Substitute:HeurNum ("[0-9].*"r ?) ("$1"v Num Abs Pl Heur/Num) TARGET ("<(\\d+.*)>"r ?) ;
+#Substitute:HeurNum ("[0-9].*"r ?) ("$1"v Num Abs Pl Heur/Num) TARGET ("<(\\d+.*)>"r ?) ;
 
 
 
