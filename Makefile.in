@@ -979,9 +979,14 @@ $(foreach f,$(DOCSRC_XEROX),$(eval $(call make_md_files,$(f))))
 $(foreach f,$(DOCSRC_CG3),$(eval $(call make_md_files_cg3,$(f))))
 
 # Collect all target files into one big MD file:
+# Remove the VPATH prefix to create the header for each file/chapter:
 $(ALLINONE_MD_PAGE): $(VPATH_MDFILES)
-	$(AM_V_GEN)printf "# $(GLANGUAGE) description \n\nAll documents in one file\n\n" \
-	| cat - $(VPATH_MDFILES) > $@
+	$(AM_V_GEN)printf "# $(GLANGUAGE) language model documentation\n\nAll doc-comment documentation in one large file.\n" > $@
+	for f in $(VPATH_MDFILES); do \
+		header=$${f#"$(top_srcdir)/docs/"};\
+		printf "\n---\n\n# $$header \n\n" >> $@ ;\
+		cat $$f >> $@ ;\
+	done
 
 $(LINKS):
 	$(AM_V_GEN)for doc2md in $(DOCSRC_MDFILES) ; do \
