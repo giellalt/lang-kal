@@ -81,11 +81,9 @@ MergeCohorts:quoteTrmSg ("<$1$2 $3$4$5>"v "$2 $3"v Prop Trm Sg Heur/Prop Heur/Qu
 #Via
 MergeCohorts:quoteViaSg ("<$1$2$3$4>"v "$2"v Prop Via Sg Heur/Prop Heur/Quote) ("<(\\u201E|\\u00BB|\\u0022|\\u203A|\\u201A)>"r) WITH (1 ("<\(.*\)>"r)) (2 ("<(\\u201C|\\u00AB|\\u0022|\\u2039|\\u2018)>"r)) (3 ("<\(kkut\)>"r ?)) ; # „aqqusinersua“kkut
 
-#Heur abbr
-Substitute ("<.*>"r ?) ("<$1>"v "$1"v N Gram/Abbr Abs Sg Heur/Abbr) TARGET ("<(\\p{L})>"r ?) ;
-Substitute ("<.*>" ?) ("$1"v N Gram/Abbr Abs Sg Heur/Abbr) TARGET ("\(\\p{Ll}\\p{Ll}\)"r ?) - For2Let ; #Jude 20240208
-Substitute ("<.*>" ?) ("$1"v N Gram/Abbr Abs Sg Heur/Abbr) TARGET ("\(\\p{Lu}\\p{Ll}\)"r ?) - For2Let - HeurExcl ; #Jude 20240208
-Substitute ("<.*>" ?) ("$1"v N Gram/Abbr Abs Sg Heur/Abbr) TARGET ("\(\\p{Ll}\\p{Lu}\)"r ?) - For2Let - HeurExcl ; #Jude 20240208
+
+
+
 #Heur/Excl
 Substitute:HeurExcl ("<.*>"r ?) ("$1"v Heur/Excl) TARGET ("<\(.*\)>"r ?) + HeurExcl - HeurGLfinal - HeurGLErr - HeurConsIllGL - RomNum ; #Jude 20240206
 
@@ -216,11 +214,18 @@ Substitute:HeurNInsPl ("\\p{Ll}.*"r ?) ("$1"v N Ins Pl Heur/N) TARGET ("<(\\p{Ll
 
 MergeCohorts:HeurHyphenNInsSg ("<$1$2$3>"v "$1"v N Ins Sg Heur/N) ("<(\\p{Ll}+)>"r) WITH (1 ("<(\\u002D)>"r)) (2 ("<\(i?mik\)>"r)) ; #input with space error after hyphen: hash- imik
 
-MergeCohorts:AbsSg ("<$1$2>"v "$1$2"v N Abs Sg Heur/N) ("<(\\u002D)>"r) WITH (1 ("<\((i|a|si|rsi|ssi|tsi|nnip)?[pv]oq\)>"r)) ; # Jude 20240229 cut off inflection as in examples: kalaallisut naggatigalugit: -poq, -voq
+MergeCohorts:HeurNAbsSg ("<$1$2>"v "$1$2"v N Abs Sg Heur/N) ("<(\\u002D)>"r) WITH (1 ("<\((i|a|si|rsi|ssi|tsi|nnip)?[pv]oq\)>"r)) ; # Jude 20240229 cut off inflection as in examples: kalaallisut naggatigalugit: -poq, -voq
 
-MergeCohorts:InsSg ("<$1$2>"v "$1$2"v N Ins Sg Heur/N) ("<(\\u002D)>"r) WITH (1 ("<\((i|a|si|rsi|ssi|tsi|nnip)?[pv](oq|aa)\\u002Dmik\)>"r) ) ; # -poq-mik, -voq-mik, -vaa-mik, -paa-mik
+MergeCohorts:HeurNInsSg ("<$1$2>"v "$1$2"v N Ins Sg Heur/N) ("<(\\u002D)>"r) WITH (1 ("<\((i|a|si|rsi|ssi|tsi|nnip)?[pv](oq|aa)\\u002Dmik\)>"r) ) ; # -poq-mik, -voq-mik, -vaa-mik, -paa-mik
 
 Substitute:InsSgLu (".*"r ?) ("$1"v N Ins Sg LU Heur/N) TARGET ("(\\p{Ll}+)\\u002D\(millu\)"r ?) ; #pp-millu
+
+MergeCohorts:HeurNVia ("<$1$2$3>"v "$1"v N Via Sg Heur/N) ("<(\\p{L}+\\u002D\\p{L}+)>"r ?) WITH (1 ("<(\\u002D)>"r)) (2 ("<\(kkut\)>"r ?)) ; # tekst-tv-kkut
+COPY (KKUT Der/nn Gram/PlurTant N Abs Pl Heur/N) EXCEPT (N Via Sg Heur/N) TARGET Heur/N + Via ;
+COPY (KKUT Der/nn Gram/PlurTant N Rel Pl Heur/N) EXCEPT (KKUT Der/nn Gram/PlurTant N Abs Pl Heur/N) TARGET Heur/N + KKUT ;
+
+MergeCohorts:HeurNAbsSgLu ("<$1$2$3>"v "$1"v N Abs Sg LU Heur/N) ("<(\\p{L}+\\u002D\\p{L}+)>"r ?) WITH (1 ("<(\\u002D)>"r)) (2 ("<\(lu\)>"r)) ; # tekst-tv-lu
+
 
 #Heur/Num 20240314 skal beholdes
 Substitute:HeurCoordinate ("<[0-9].*>"r ?) ("$1"v Num Abs Pl Heur/Num) TARGET ("<([NV]?\\d{2}(\\u00B0|\\u00BA|\\u02DA|\\u006F)\\d{2}(\\u0027|\\u2032)?([NWSE]|\\d{2})?(\\u0022|\\u2033)?([NWSE]|\\d)?)>"r ?) ; #Jude 20240131 taken common errors into consideration: Degree Sign -> Masculine Ordinal Indicator or Ring Above, Prime -> Apostrophe, Double Prime -> Quotation Mark
@@ -236,9 +241,18 @@ Substitute:HeurNumRel ("[0-9].*"r ?) ("$1"v Num Rel Pl Heur/Num) TARGET ("<(\\d+
 Substitute:HeurNumRelPl_t ("[0-9].*"r ?) ("$1"v Num Rel Pl Heur/Num) TARGET ("<(\\d+)(\\u0027|\\u002D)?i?t>"r ?) ;
 COPY:HeurNumRel_t (Num Abs Pl Heur/Num) EXCEPT (Num Rel Pl Heur/Num) TARGET ("<\\d+(\\u0027|\\u002D)?i?t>"r) + Heur/Num ; 
 Substitute:HeurNumAbl ("[0-9].*"r ?) ("$1"v Num Abl Pl Heur/Num) TARGET ("<(\\d+)(\\u0027|\\u002D)?i?mît>"r ?) ;
-#Substitute:HeurNum ("[0-9].*"r ?) ("$1"v Num Abs Pl Heur/Num) TARGET ("<(\\d+.*)>"r ?) ;
 
 
+#Heur abbr
+Substitute ("<.*>"r ?) ("<$1>"v "$1"v N Gram/Abbr Abs Sg Heur/Abbr) TARGET ("<(\\p{L})>"r ?) ;
+Substitute ("<.*>" ?) ("$1"v N Gram/Abbr Abs Sg Heur/Abbr) TARGET ("\(\\p{Ll}\\p{Ll}\)"r ?) - For2Let ; #Jude 20240208
+Substitute ("<.*>" ?) ("$1"v N Gram/Abbr Abs Sg Heur/Abbr) TARGET ("\(\\p{Lu}\\p{Ll}\)"r ?) - For2Let - HeurExcl ; #Jude 20240208
+Substitute ("<.*>" ?) ("$1"v N Gram/Abbr Abs Sg Heur/Abbr) TARGET ("\(\\p{Ll}\\p{Lu}\)"r ?) - For2Let - HeurExcl ; #Jude 20240208
+
+#Via + KKUT
+MergeCohorts:AbbrVia1 ("<$1$2$3$4$6>"v "$1$2$3$4"v N Via Sg Gram/Abbr Heur/Abbr) ("<(\\p{Lu}\\u002E)>"r Gram/Abbr) WITH (1 ("<(\\p{Lu}\\u002E)>"r Gram/Abbr)) (2 ("<(\\p{Lu}\\u002E)>"r Gram/Abbr)) (3 ("<(\\p{Lu}\\u002E)>"r Gram/Abbr)) (4 ("<(\\u002D)>"r)) (5 ("<\(kkut\)>"r ?)) ; # N.I.P.E.-kkut
+MergeCohorts:AbbrVia2 ("<$1$2$3$4$5>"v "$1$2$3"v N Via Sg Gram/Abbr Heur/Abbr) ("<(\\p{Lu}\\u002E)>"r Gram/Abbr) WITH (1 ("<(\\p{Lu}\\u002E)>"r Gram/Abbr)) (2 ("<(\\p{Lu}\\u002E)>"r Gram/Abbr)) (3 ("<(\\u002D)>"r)) (4 ("<\(kkut\)>"r ?)) ; # A.T.A.-kkut
+COPY:KKUT (KKUT Der/nn Gram/PlurTant N Abs Pl HeurDer Heur/N) EXCEPT (N Via Sg Gram/Abbr Heur/Abbr) TARGET Via + Heur/Abbr ;
 
 
 
