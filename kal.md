@@ -68,6 +68,7 @@ Amarngivat siulersuisuini ilaasortaasimavoq akissaatikitsullu meeraasa atuanngif
 * 	Heur/Num 
 * 	Heur/Prop 
 * 	Heur/Quote 
+* 	Heur/Url 
 * 	Sem/CognitiveMaking  = qinersivoq i modsætning til qinerlerpoq
 * 	Sem/Concessive  = koncessive sætninger
 * 	Sem/event 
