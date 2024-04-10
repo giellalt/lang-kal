@@ -40,10 +40,12 @@
 * 	Gram/ImpNeg 
 * 	Heur/ACR 
 * 	Heur/Abbr 
+* 	Heur/Mailadresse 
 * 	Heur/N 
 * 	Heur/Num 
 * 	Heur/Prop 
 * 	Heur/Quote 
+* 	Heur/Twittername 
 * 	Heur/Url 
 * 	Sem/CognitiveMaking  = qinersivoq i modsætning til qinerlerpoq
 * 	Sem/Concessive  = koncessive sætninger
