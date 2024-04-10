@@ -228,7 +228,15 @@ MergeCohorts:HeurPropVia ("<$1$2>"v "$1"v N Via Sg Heur/Prop) ("<(\\p{Lu}\\p{L}+
 MergeCohorts:HeurNAbsSgLu ("<$1$2$3>"v "$1"v N Abs Sg LU Heur/N) ("<(\\p{L}+\\u002D\\p{L}+)>"r ?) WITH (1 ("<(\\u002D)>"r)) (2 ("<\(lu\)>"r)) ; # tekst-tv-lu
 
 #Heur/Url
-MergeCohorts:HeurUrlViaSg ("<$1$2$3>"v "$1"v Sem/Url Prop Via Sg Heur/Url Heur/Prop) ("<\(www.\\p{L}+\.\\p{Ll}+\)([\\u002D|\\u2013])>"r Sem/Url) WITH (1 ("<\(i?kkut\)>"r)) ; # www.stotfangerne.dk-kkut, www.stotfangerne.gl-ikkut
+MergeCohorts:HeurUrlViaSg001 ("<$1$2$3>"v "$1"v Sem/Url Prop Via Sg Heur/Url Heur/Prop) ("<(w?w?w?\.?\\p{L}+\.\\p{L}+)([\\u002D|\\u2013])>"r Sem/Url) WITH (1 ("<\(i?kkut\)>"r ?)) ; # Sermitsiaq.ag-kkut
+MergeCohorts:HeurUrlViaSg002 ("<$1$2$3>"v "$1"v Sem/Url Prop Via Sg Heur/Url Heur/Prop) ("<(w?w?w?\.?\\p{L}+\.\\p{L}+\/?\\p{L}+?)>"r Sem/Url) WITH (1 ("<([\\u002D|\\u2013])>"r)) (2 ("<\(i?kkut\)>"r ?)) ; # ROFUS.NU -kkut
+
+#Heur/Mailadresse
+MergeCohorts:HeurMailadresseViaSg ("<$1$2$3$4$5>"v "$1$2$3"v Sem/Mailadresse Prop Via Sg Heur/Mailadresse) ("<(.*)(\\u0040)(\\p{L}+\.\\p{L}+)>"r Sem/Mailadresse) WITH (1 ("<([\\u002D|\\u2013])>"r)) (2 ("<\(i?kkut\)>"r ?))  ; # ahermann@ruc.dk -kkut
+
+#Heur/Twittername
+MergeCohorts:HeurTwittername ("<$1$2>"v "$1$2"v Prop Abs Sg Heur/Twittername) ("<(\\u0040)>"r) WITH (1 ("<(\\p{L}+)>"r) OR ("<(.*)>"r /[?|Heur/.*]/r)) ; # @Newsweek
+
 
 #Heur/Num 20240314 skal beholdes
 Substitute:HeurCoordinate ("<[0-9].*>"r ?) ("$1"v Num Abs Pl Heur/Num) TARGET ("<([NV]?\\d{2}(\\u00B0|\\u00BA|\\u02DA|\\u006F)\\d{2}(\\u0027|\\u2032)?([NWSE]|\\d{2})?(\\u0022|\\u2033)?([NWSE]|\\d)?)>"r ?) ; #Jude 20240131 taken common errors into consideration: Degree Sign -> Masculine Ordinal Indicator or Ring Above, Prime -> Apostrophe, Double Prime -> Quotation Mark
@@ -271,7 +279,7 @@ COPY (KKUT Der/nn N Rel Pl Heur/N) EXCEPT (KKUT Der/nn N Abs Pl Heur/N) TARGET H
 COPY:KKUT (KKUT Der/nn N Abs Pl HeurDer Heur/N) EXCEPT (N Via Sg Gram/Abbr Heur/Abbr) TARGET Via + Heur/Abbr ;
 
 # Prop Via KKUT
-COPY:ViaKkutProp (KKUT Der/nn Prop Abs Pl Heur/Prop) EXCEPT (Prop Via Sg Heur/Prop) TARGET Heur/Prop + Prop + Via ;
+COPY:ViaKkutProp (KKUT Der/nn Prop Abs Pl Heur/Prop) EXCEPT (Prop Via Sg Heur/Prop) TARGET Heur/Prop + Prop + Via - Sem/Url ;
 COPY (KKUT Der/nn Prop Rel Pl Heur/Prop) EXCEPT (KKUT Der/nn Prop Abs Pl Heur/Prop) TARGET Heur/Prop + KKUT + Abs ;
 
 
