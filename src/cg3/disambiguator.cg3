@@ -925,6 +925,7 @@ SET ADVERBIEL = Adv | Pali | %AdverbielHyb |
 (/"aaqqissuup"\ Gram/TV\ TAQ\ Der/vn\ N\ Ins\ Sg/l) |
 (/NIQ\ Der/vn\ TAQ\ Der/nn\ LIK\ Der/nn\ N\ Ins\ Sg/l) |
 (/"akuttu"\ Gram/IV\ \(NIRU\ Der/vv\ Gram/IV\ \)?TUQ\ Der/vn\ N\ Ins\ Sg/l) |
+(/"amerla"\ Gram/IV\ \(iSem/be_attribute\ \)?NIQ\ Der/vn\ \(Sem/part\ \)?N\ Via/l) |
 (/"amigar"\ Gram/IV\ TUQ\ Der/vn\ N\ Ins\ Sg/l) |
 (/"amma"\ Gram/IV\ TUQ\ Der/vn\ N\ Ins\ Sg/l) |
 (/"angi"\ Gram/IV\ NIQ\ Der/vn\ KIP\ Der/nv\ \(Gram\/IV\ \)?TUQ/l) |
@@ -1410,6 +1411,7 @@ LIST LEKSIKALISERING =
 (/"timmi"\ Gram/IV\ TAR\ Der/vv\ Gram/IV\ TUQ/l)
 (/"unior"\ Gram/IV\ QQU\ Der/vv\ Gram/TV\ TIP\ Der/vv\ Gram/Db\ HTR\ Der/vv\ Gram/IV\ NIQ/l)
 (/"utoqqali"\ Gram/IV\ NIQ\ Der/vn\ SIUT/l)
+(/"uuma"\ Gram/IV\ \(iSem/persist\ \)?TUQ/l)
 ;
 LIST LEX_FULLFORM_NOUN = "aalisagaq" "kusugaq" "Nanortalik" "qaleralik" "qamutilik" "qilanngaq" #"aasaq"
 ; #Jude 2023 leksikaliserede fuldformer, der sandsynligvis aldrig vil have tilknyttet adled til verbalstammen ELLER nominer der også har usandsynlige Gram/Exclm analyser.
@@ -1430,7 +1432,7 @@ LIST NOTSPLIT = ("neri" TAQ SSAQ) ; # cannot take i- -arguments.
 LIST NUMCOMP = "hundrede" "tusind" "million" "milliard" ; #anden del af sammensatte tal, famtan milliuuni
 LIST NÆPPE_FIRSTNAME = "naasoq" "niviarsiaraq" "nukappiaq" "nukappiaraq" "nukarleq" "piffik" "pupik" ("qerner" TUQ) "ulloriaq" "una"; #Liste med appellativer, som teoretisk kan være proprier i position 0, men højst usandsynligt er det
 LIST OCCATION = ("ataatsimiip" NIQ) ;
-LIST ONETOONE = "iteq" "kiinaq" "nerilittaq" "niaqoq" "pamioq" "qalaseq" "qaneq" "qingaq" "qiteq" "qungaseq" "sakiak" "tarneq" "timi" "torluk" "uinik" "usuk" ; # Sg possessor - Sg possessed, Pl possessor - Pl possessed
+LIST ONETOONE = "anaana" "ataata" "iteq" "kiinaq" "nerilittaq" "niaqoq" "pamioq" "qalaseq" "qaneq" "qingaq" "qiteq" "qungaseq" "sakiak" "tarneq" "timi" "torluk" "uinik" "usuk" ; # Sg possessor - Sg possessed, Pl possessor - Pl possessed
 LIST ONETOTWO = ("ati" TAQ) ("eqqarsar" /UTE\ Der/vn\ \(Sem/sem-c\ \)?N/l) "isi" "sigguk" "taleq"; #til nominer, som oftest optræder i par eller pluralis
 LIST PERCEPTIVE = "nipi" ;
 LIST PRENUM = "plus" "minus" ;
@@ -2196,6 +2198,8 @@ REMOVE:0000Test1 (/LIAR\ Der/nv\ Gram/IV\ A\ Der/vv/l); #KW27092023 for at forhi
 SELECT:0000Test2 ("uanga") + Pron; #for at forhindre at den overgenerer med Freuds ego.
 
 REMOVE:0000Test3 (/LIR\ Der/nv\ Gram/IV/l) IF (0 (/LIR\ Der/nv\ Gram/TV\ Gram/Refl/l)); #LIR er ikke intransitivt
+
+#SUBSTITUTE:Kalaallit_Nunaanni 3PlPoss (*) TARGET ("Kalaallit Nunaat") - AFFINGERET; #forstyrrer regler, fordi det mangler Rel Pl i "Kalaallit"
 
 #Det kræver nogle konsekvensrettelser, fordi fornavne i nogle regler kun bliver læst som sådanne, hvis de står i Abs.
 #SUBSTITUTE:FornavnKasus1 (Abs) (Rel) TARGET Fornavn IF (*1 Efternavn + Rel BARRIER (*) - Fornavn);
@@ -5767,7 +5771,7 @@ SELECT:0197 DivPron + Nom + $$PERSON IF (*1C INTRANSVERB + $$PERSON BARRIER KOMM
 SELECT:0198 Gram/Pers + Pron + Rel IF (1 Abs LINK 1 POSSESSUM12) ;
 
 REMOVE:0199A (Gram/Pers Pron Rel 1Sg) IF (0 (Gram/Pers Pron Abs 1Sg) LINK *1 INTRANSVERB + 1Sg BARRIER 1SgPoss); #2022 aallarnerfigalugu UANGA Oqaasiliortunut allatsitut atuuffeqassaanga, taamaattumik arlaannik paasissutissanik amigaateqaruit apeqqutissaqaruilluunniit saaffigiinnariaavarma.
-SELECT:0199C Gram/Pers + Pron + Rel IF (*1 POSSESSUM12 BARRIER (*) - OBLIQUE)
+SELECT:0199C Gram/Pers + Pron + Rel + &&PN& IF (*1 POSSESSUM12 + &&PN& BARRIER (*) - OBLIQUE)
 (NEGATE 1 ("aak") + Rel + 1SgPoss)  #mange forkerte hits på aamma
 (NEGATE 0 Abs LINK 1 OBLIQUE + CONJ-C LINK 1 Abs + 1PlPoss LINK *1 INTRANSVERB + 3Pl OR TRANSVERB + 1PlO)#Nuannareqaarput UAGUT suliniutissamillu siunnersuusiarput piffissaqartissinnaagatsigut
 (NEGATE 0 Gram/Pers - CONJ-C LINK 1 CONJ-C)#UANGA nuliaralu aallassaagut.
@@ -10206,7 +10210,7 @@ REMOVE:9942B SPATIAL + Pl + ALL_OBLIQUE IF (0 SPATIAL + Sg + ALL_OBLIQUE) ; #	"s
 REMOVE:9939B 3SgPoss IF (*-1 Rel + Pl LINK 1 Rel + Sg LINK 1 3SgPoss LINK 1 _TARGET_ + 3PlPoss)#politiit toqungasup timaanik MISISSUINERATA takutippaa angut pissusissamisoortunik peqquteqarluni toqusimasoq.
 ;
 
-REMOVE:9939C 3SgPoss IF (0 3PlPoss LINK -*1 Rel + Pl BARRIER (*) - %ContHypotagme - KOMMA - FIRSTNAME)
+REMOVE:9939C 3SgPoss IF (0 3PlPoss LINK -*1 Rel + Pl - ONETOONE BARRIER (*) - %ContHypotagme - KOMMA - FIRSTNAME)
 (NEGATE 0 3SgPoss + Pl LINK *1 3Pl OR 4Pl BARRIER V LINK -*1 _TARGET_ LINK -1 Rel + Sg)#Taamaaliornikkut Nunatsinni suliffissat amerlissapput, aamma aningaasat Nunatsinni kaaviiaartut amerlanerulissapput nunallu INUI namminersortunngorsaanermi peqataatinneqalissallutik, Leif Fontaine allappoq.
 ;
 
