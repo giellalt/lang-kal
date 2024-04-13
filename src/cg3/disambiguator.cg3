@@ -2985,6 +2985,14 @@ REMOVE:tidlig0875 N + Abs + Pl IF (0 N + Rel + Pl LINK 1 N + Rel + Pl LINK 1 3Pl
 
 REMOVE:tidlig0880 ("ilik") + GE IF (0 ("ili") + Par); #Anaanap glassi ILIGAA.
 
+#Asiaq er meget sjælden som personnavn, medens institutionen Asiaq ofte nævnes
+REMOVE:tidlig0885A ("Asiaq") + FIRSTNAME IF (0 ("Asiaq") + Sem/inst)
+(NEGATE 1 Sem/Hum - FIRSTNAME)
+;
+REMOVE:tidlig0885B ("Asiaĸ") + FIRSTNAME IF (0 ("Asiaq") + Sem/inst)
+(NEGATE 1 Sem/Hum - FIRSTNAME)
+;
+REMOVE:tidlig0885C ("Asiaq" Sem/inst) IF (0 ("Asia" Trm) LINK 1 ("niuer")); #ASIAMUT niuernermi Sullualuk aqqutaavoq qaninaariniartarfik. Må kompletteres ad hoc med flere kontekster
 
 ##########################################################################################################
 ## Underafdeling af tidlig til løsning af/ forberedelse af løsning af koncessivsætninger uden KONCESSIV ##
@@ -8373,17 +8381,20 @@ REMOVE:8563F (/Gram/TV\ V\ Ind\ 3Pl\ 3PlO/l) IF (0 (/Gram/TV\ V\ Ind\ 3Pl\ 3SgO/
 
 # ======================================================================= #
 # Disambiguering af enkeltord, der ikke kan disambigueres paa anden maade #
-##### Nomen eller nomen    8161
+##### Nomen eller nomen    8401
 ##### Nomen eller pron     8367
 ##### Pron eller pron      8442
 ##### Nomen eller proprium 8629
-##### Proprium eller proprium 8521
-##### Nomen eller partikel 8525
+##### Proprium eller proprium 8739
+##### Nomen eller partikel 8744
 ##### Nomen eller numerale 9290
 ##### Nomen eller verbum   9380
 ##### Verbum eller verbum  8814
 ##### Enkelte derivativer  9374
 ##### Enkelte substantiver 9719
+##### Appellativ eller proprium
+##### Verbum eller nomen
+##### Proprium eller proprium	10025
 #
 # Gram/IV eller Gram/TV eller Gram/Db #
 ##### Specifikke regler til disambiguering af Gram/IV vs. Gram/TV	11734
@@ -8728,11 +8739,6 @@ REMOVE:8602F ("arnaq") + GIP + TUQ IF (0 ("Arnarissoq"));
 REMOVE:8602G ("Nukappiaraq" Prop) IF (0 ("nukappiaraq" N)); #Sandsynlighed
 # Proprium eller pron?
 REMOVE:8603 ("Kina") + Prop IF (0 ("kina") + Pron LINK *1 ("?")); #KINA?
-
-# Proprium eller proprium?
-REMOVE:8605A ("Arsugaq") + (/^i?Sem/Mask/r) IF (0 ("Arsugaq") + (/^i?Sem/Fem/r)); #PL20230922 hidtil kun registreret i Zombiet nunaat
-REMOVE:8605B ("Egede") + Sem/Mask IF (-1 Efternavn LINK -1 FIRSTNAME); #Múte Bourup EGEDE
-REMOVE:8605C ("Mikili") IF (0 ("Miki") + LI); #Ellers er det nok oftere Mikkili; Miki er mere almindeligt
 
 # Nomen eller partikel?
 SELECT:Sel0081 ("aamma") ; # "aamma" mere sandsynlig end "aak"+Rel
@@ -10019,6 +10025,16 @@ REMOVE:5999AL (*) - ("alussaat") (0 ("<alussaatit>")) ; #Jude 20230907
 REMOVE:5999AM (/"inuk"\ TAQ\ Der/nn\ QAR\ Der/nv\ Gram/IV\ V\ Par/l) IF (0 (/"inuk"\ TAQ\ Der/nn\ QAR\ Der/nv\ Gram/IV\ TUQ\ Der/vn\ N\ Abs\ Sg/l) LINK *-1 N + Abs + Sg BARRIER ("'") - Ins );
 
 #Proprium eller proprium
+REMOVE:8605A ("Arsugaq") + (/^i?Sem/Mask/r) IF (0 ("Arsugaq") + (/^i?Sem/Fem/r)); #PL20230922 hidtil kun registreret i Zombiet nunaat
+REMOVE:8605B ("Egede") + Sem/Mask IF (-1 Efternavn LINK -1 FIRSTNAME); #Múte Bourup EGEDE
+REMOVE:8605C ("Mikili") IF (0 ("Miki") + LI); #Ellers er det nok oftere Mikkili; Miki er mere almindeligt
+REMOVE:8605D ("Asia" Sem/Geo) OR ("Asien" Sem/Geo) IF (0 ("Asiaq" Sem/inst) LINK *1 (/"sila"\ SSAQ/l) BARRIER V);
+#Følgende ren frekvens. Skal udbygges med NEGATE ad hoc efterhånden
+REMOVE:8605E ("Asia" Sem/Geo) OR ("Asien" Sem/Geo) IF (0 ("Asiaq" Sem/inst) )
+(NEGATE 0 Rel LINK 1 LOCATIONS) #som Asiap kujataani
+(NEGATE *0 Sem/Geo)
+;
+
 REMOVE:6000A ("Aqqaluartaaq") IF (0 ("Aqqaluartaa")); #Statistisk begrundet iht corpus
 REMOVE:6000B ("Kreutzmann") + FIRSTNAME IF (0 ("Kreutzmann") - FIRSTNAME LINK NEGATE 1 Prop - FIRSTNAME);
 REMOVE:6000C Prop + Sem/Hum IF (0 Prop + Sem/Geo + Rel LINK 1 SPATIAL); #Washingtonip eqqaani
