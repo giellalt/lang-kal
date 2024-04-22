@@ -3,6 +3,7 @@
 # Nutserut/Gloss kal2eng pre-pipe: zsh -l -c '~/langtech/gloss/kal2eng/kal2eng.pl --fst'
 
 INCLUDE STATIC disambiguator.cg3 ;
+CmdArgs += --num-windows 5 ;
 
 # kal-pre1.cg3 er nødvendig, fordi REMCOHORT fjerner en delimiter, hvilket betyder, at der efterlades et tomt vindue. Bundlinien er, at man ikke kan fjerne delimiters og derefter bruge den i samme CG
 
@@ -13,6 +14,9 @@ INCLUDE STATIC disambiguator.cg3 ;
 # ============ #
 
 BEFORE-SECTIONS
+
+# Merge consecutive sequential punctuation
+MergeCohorts Repeat ("<$1$3>"v "$2"v CLB Heur/Merged) ("<(.*)>"r "([^<].*)"r) + _S_DELIMITERS_ - ("<¶>") With (1W (>>>) LINK 1 ("<(.*)>"r) + _S_DELIMITERS_ - ("<¶>")) ;
 
 
 REMCOHORT:paragraftegn ("¶") + CLB IF (-*1W (":") + EOS OR (".") + EOS BARRIER EOS);
@@ -70,7 +74,7 @@ MergeCohorts:quoteInsPl ("<$1$2$3$4>"v "$2"v Prop Ins Pl Heur/Prop Heur/Quote) (
 #Lok
 MergeCohorts:quoteKKUTLokPl ("<$1$2$3$4$5>"v "$2"v KKUT Der/nn Prop Lok Pl Heur/Prop) ("<([\\u0027|\\u0022])>"r) WITH (1 ("<(\\p{Lu}\\p{Ll}+)>"r)) (2 ("<([\\u0027|\\u0022])>"r)) (3 ("([\\u002D|\\u2013])"r)) (4 ("<\(i?kkunni\)>"r ?)) ;#'Qaaq'-kkunni
 MergeCohorts:quoteKKUTLokPl ("<$1$2$3$4>"v "$2"v KKUT Der/nn Prop Lok Pl Heur/Prop) ("<([\\u0027|\\u0022])>"r) WITH (1 ("<(\\p{Lu}\\p{Ll}+)>"r)) (2 ("<([\\u0027|\\u0022])>"r)) (3 ("<\(i?kkunni\)>"r ?)) ; #"Asuki"kkunni
-MergeCohorts:quoteLokSg ("<$1$2 $3$4$5>"v "$2 $3"v Prop Lok Sg Heur/Prop Heur/Quote) ("<(\\u201E|\\u00BB|\\u0022|\\u203A|\\u201A)>"r) WITH (1 ("<(\\p{Lu}\\p{Ll}+)>"r)) (2 ("<(\\p{Ll}+)>"r)) (3 ("<(\\u201C|\\u00AB|\\u0022|\\u2039|\\u2018)>"r)) (4 ("<\(i?mi\)>"r)) ; # »Atuarfiit ilagiillu«mi  
+MergeCohorts:quoteLokSg ("<$1$2 $3$4$5>"v "$2 $3"v Prop Lok Sg Heur/Prop Heur/Quote) ("<(\\u201E|\\u00BB|\\u0022|\\u203A|\\u201A)>"r) WITH (1 ("<(\\p{Lu}\\p{Ll}+)>"r)) (2 ("<(\\p{Ll}+)>"r)) (3 ("<(\\u201C|\\u00AB|\\u0022|\\u2039|\\u2018)>"r)) (4 ("<\(i?mi\)>"r)) ; # »Atuarfiit ilagiillu«mi
 MergeCohorts:quoteLokPl_Sg ("<$1$2 $3$4$5>"v "$2 $3"v Prop Lok Pl Heur/Prop Heur/Quote) ("<(\\u201E|\\u00BB|\\u0022|\\u203A|\\u201A)>"r) WITH (1 ("<\(\\p{Lu}.*\)>"r)) (2 ("<\(.*\)>"r)) (3 ("<(\\u201C|\\u00AB|\\u0022|\\u2039|\\u2018)>"r)) (4 ("<\(ni\)>"r)) ;
 COPY (Prop Lok Sg Heur/Prop Heur/Quote) EXCEPT (Prop Lok Pl Heur/Prop Heur/Quote) TARGET Lok + Pl + Heur/Prop - KKUT ; # »Ukiut 300-nngornerat«ni
 MergeCohorts:quoteLokSg ("<$1$2$3$4>"v "$2"v Prop Lok Sg Heur/Prop Heur/Quote) ("<(\\u201E|\\u00BB|\\u0022|\\u203A|\\u201A)>"r) WITH (1 ("<\(\\p{Lu}.*\)>"r)) (2 ("<(\\u201C|\\u00AB|\\u0022|\\u2039|\\u2018)>"r)) (3 ("<\(i?mi\)>"r)) ; # »Atuarfiit«mi
@@ -154,7 +158,7 @@ Substitute:HeurTrmLu ("\\p{Lu}.*"r ?) ("$1"v Prop Trm Sg LU Heur/Prop) TARGET ("
 
 Substitute:HeurTrmSg ("\\p{Lu}.*"r ?) ("$1"v Prop Trm Sg Heur/Prop) TARGET ("<(\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?(\\u002D\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)?)\\u002D?i?mut>"r ?) - HeurGLfinal - HeurScnErrF - HeurGLErr ; #Jude 20240129
 # @TinoDidriksen: nogle får ingen analyse ved fjernelse af Substitute:HeurTrmSg (NyAlliancemut) og nogle får epentese /i/ med i baseform (MobilePayi)
-#epentese /i/ mest sandsynlig efter: j, k, l, m, n, p, r, s, t, v, w, x, y, z 
+#epentese /i/ mest sandsynlig efter: j, k, l, m, n, p, r, s, t, v, w, x, y, z
 
 #Heur Via
 Substitute:HeurVia ("\\p{Lu}.*"r ?) ("$1"v Prop Via Sg Heur/Prop) TARGET ("<(\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?(\\u002D\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)?)\\u002D?i?kkut>"r ?) ; #Jude 20240129
@@ -166,7 +170,7 @@ Substitute:HeurAbsRelKkutMiu ("\\p{Lu}.*"r ?) ("$1"v iProp KKUT Der/nn MIU Der/n
 Substitute:HeurAbsRTarToq ("\\p{Lu}.*"r ?) ("$1"v iProp R Der/nv Gram/IV TAR Der/vv Gram/IV TUQ Der/vn N Abs Pl HeurDer Heur/N) TARGET ("<(\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?(\\u002D\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)?)\\u002D?rtartut>"r ?) ; #Jude 20240201
 
 Substitute:HeurAbsRelPl ("\\p{Lu}.*"r ?) ("$1"v Prop Abs Pl Heur/Prop) TARGET ("<(\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?(\\u002D\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)?)\\u002D?i?t>"r ?) - HeurVerb - HeurGLfinal - HeurForFinalT - HeurScnErrF - HeurGLErr - HeurConsIllGL - HeurOblCase
-(NEGATE 0 ("<(\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?(\\u002D\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)?)\\u002D?aasiit>"r ?)) 
+(NEGATE 0 ("<(\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?(\\u002D\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)?)\\u002D?aasiit>"r ?))
 (NEGATE 0 ("<(\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?(\\u002D\\p{Lu}+?[\\p{Ll}\\p{N}\\p{M}]+?\\p{Lu}?[\\p{Ll}\\p{N}\\p{M}]+?)?)\\u002D?k?kut>"r ?)) ; #Jude 20240129
 
 
@@ -198,7 +202,7 @@ MergeCohorts ("<$1$2$3>"v "$1"v Prop Ins Pl Heur/Prop) ("<(\\p{Lu}\\p{Ll}+ \\p{L
 #Heur ACR Lok
 Substitute:HeurACRLokSg ("\\p{Lu}+.*"r ?) ("$1"v N Gram/ACR Lok Heur/ACR) TARGET ("<(\\p{Lu}+(\\d+)?)(\\u002D|\\u0027)?i?mi>"r ?) ; #Jude 20240131
 COPY:HeurACRLokSg ("$1"v Prop Lok Sg Heur/Prop) EXCEPT ("$1"v N Gram/ACR Lok Heur/ACR) TARGET ("<(\\p{Lu}+)(\\u0027|\\u002D)?i?mi>"r) + Heur/ACR ; #Jude 20240131
-# @TinoDidriksen: m'er i baseform: GU'mi. > GU'm 
+# @TinoDidriksen: m'er i baseform: GU'mi. > GU'm
 
 #Heur ACR
 #Heur ACR Abl
@@ -250,7 +254,7 @@ Substitute:HeurDimensions ("<[0-9].*>"r ?) ("$1"v Num Abs Pl Heur/Num) TARGET ("
 
 Substitute:HeurNumRel ("[0-9].*"r ?) ("$1"v Num Rel Pl Heur/Num) TARGET ("<(\\d+)(\\u0027|\\u002D)i?p>"r ?) ;
 Substitute:HeurNumRelPl_t ("[0-9].*"r ?) ("$1"v Num Rel Pl Heur/Num) TARGET ("<(\\d+)(\\u0027|\\u002D)?i?t>"r ?) ;
-COPY:HeurNumRel_t (Num Abs Pl Heur/Num) EXCEPT (Num Rel Pl Heur/Num) TARGET ("<\\d+(\\u0027|\\u002D)?i?t>"r) + Heur/Num ; 
+COPY:HeurNumRel_t (Num Abs Pl Heur/Num) EXCEPT (Num Rel Pl Heur/Num) TARGET ("<\\d+(\\u0027|\\u002D)?i?t>"r) + Heur/Num ;
 Substitute:HeurNumAbl ("[0-9].*"r ?) ("$1"v Num Abl Pl Heur/Num) TARGET ("<(\\d+)(\\u0027|\\u002D)?i?mît>"r ?) ;
 
 #Abs
@@ -306,7 +310,7 @@ MergeCohorts:numInsPl ("<$1$2$3$4$5>"v "$1$2$3"v Num Ins Pl Heur/Num) ("<(\\d+)(
 #Heur University of
 SUBSTITUTE (?) (<university-of-> ?) TARGET ("\\p{Lu}.*"r ?) (-1 ("of") LINK -1 ("University")) ; #Jude 20240129
 SUBSTITUTE (Sem/Geo Prop Abs Sg) (Sem/Geo Prop Abs Sg <university-of->) TARGET ("\\p{Lu}.*"r) (-1 ("of") LINK -1 ("University")) ; #Jude 20240129
-SUBSTITUTE (Sem/Geo Prop Abs Sg) (Sem/Geo Prop Abs Sg <university-of-X->) TARGET ("\\p{Lu}.*"r) (-1 (<university-of->) LINK -1 ("of") LINK -1 ("University")) 
+SUBSTITUTE (Sem/Geo Prop Abs Sg) (Sem/Geo Prop Abs Sg <university-of-X->) TARGET ("\\p{Lu}.*"r) (-1 (<university-of->) LINK -1 ("of") LINK -1 ("University"))
 (NEGATE 0 ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)-?i?[mi|mut]>"r)) ; #Jude 20240129
 
 MergeCohorts:HeurProp_Rel_1 ("<$1=$2=$3$4>"v "$1=$2=$3"v Prop Rel Sg Heur/Prop) ("<\(University\)>"r ?) WITH (1 ("<\(of\)>"r ?) LINK 1 ("<(\\p{Lu}[\\p{Ll}\\p{N}\\p{M}]+?)\(-?i?p\)>"r)) ; #Jude 20240129
