@@ -15,6 +15,9 @@ CmdArgs += --num-windows 5 ;
 
 BEFORE-SECTIONS
 
+# Turn ... into commas if there is a lower-cases word after
+Substitute ("<([.]{2,}|…)>"r) ("<,>" VSTR:CLB/$1) ("<(?:[.]{2,}|…)>"r) IF (1W (>>>) LINK 1 ("<\\p{Ll}.*>"r)) ;
+
 # Merge consecutive sequential punctuation
 MergeCohorts Repeat ("<$1$3>"v "$2"v CLB Heur/Merged) ("<(.*)>"r "([^<].*)"r) + _S_DELIMITERS_ - ("<¶>") With (1W (>>>) LINK 1 ("<(.*)>"r) + _S_DELIMITERS_ - ("<¶>")) ;
 
