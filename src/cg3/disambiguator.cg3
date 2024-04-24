@@ -1727,8 +1727,6 @@ BEFORE-SECTIONS
 
 #DELIMIT ("<">") IF (-1W _S_DELIMITERS_) ; #virker tilsyneladende ikke
 
-#SUBSTITUTE:S0000 ("<,>") ("<...>") TARGET ("<,>") IF (0 ("([.]{2,}|…)"r));
-
 SUBSTITUTE:S0001 ("/" PUNCT) ("/" Gram/Conj-encl Conj) TARGET ("</>") - Conj ;
 
 REMOVE:Symbol Symbol IF (0 PUNCT) ;
@@ -11023,11 +11021,13 @@ REMOVE:9963A (/"\ Gram/IV/l) IF (0 (/"\ Gram/TV\ \(NIAR\ Der/vv\ \)?HTR/l))#paas
 (NEGATE 0 (/"qasser"\ Gram/TV\ HTR/l) LINK 0 ("qasseeriar")) #QASSEERIARLUNGA takuara.
 (NEGATE 0 (/"alli"\ Gram/TV\ HTR/l) LINK 0 ("alliser"))#Hej Aqqaluk, uumaa ALLISINGAARAVIT.
 ;
+
 REMOVE:9963B $$BFORM + (/\"\ Gram\/TV/l) + INTRANSVERB - NIQAR - Gram/Db - NAR IF (0 $$BFORM + (/\"\ Gram\/IV/l) + INTRANSVERB) #supplerer 9965C for verberne. Regressionstestet men meget bred, så bør observeres
 (NEGATE 0 (/Gram/IV\ SI\ Der/vv\ Gram/IV\ TUQ/l) LINK 0 (/HTR\ Der/vv\ Gram/IV\ TUQ/l))#Suliallu ingerlanerani siunnersuutinik arlalinnik ILANNGUSSISOQARPOQ.
 (NEGATE 0 (/Gram/IV\ V\ Cont\ 1Sg/l) LINK *0 VFIN + 1Sg BARRIER VERB-NOTCONT)#Tamatuma saniatigut pingaartittarpara ullormut angusaqartutut misigisimallunga NAAMMAGISIMAARLUNGALU innassallunga.
 (NEGATE 0 Gram/TV + Gram/Refl LINK 0 HTR LINK -1 Ins)#Ilami taamani Hansenip annaassiniaraluarluni nakkakattarnera isinneralu takorloorlugit, naamik kingornagut ajorani panertunik ATISEREERMAT illarnarnera assissaqanngilaq.
 (NEGATE 0 LIRSUR + INTRANSVERB)
+(NEGATE 0 (/"paasi"\ Gram/IV/l))
 ;
 
 REMOVE:9963C (/Gram/IV\ SI\ Der/vv\ Gram/IV\ TUQ/l) IF (0 (/HTR\ Der/vv\ Gram/IV\ TUQ/l)); #Suliallu ingerlanerani siunnersuutinik arlalinnik ILANNGUSSISOQARPOQ.
@@ -11108,9 +11108,10 @@ REMOVE:9967B (/__SIUR\ Der\/nv\ Gram\/TV\ \(Gram\/Pass\ \)?/l) IF (0 (/__SIUR\ D
 REMOVE:9967C (/\"ingerla\"\ Gram\/TV\ \(Gram\/Pass\ \)?NIQ__/l) IF (0 (/\"ingerla\"\ Gram\/IV\ NIQ/l)) ; #ammaanersiornermi
 REMOVE:9967D (/\"ilinniar\"\ \(Gram\/TV\ \Gram\/Pass\ \)?(Gram\/IV\ \Gram\/Refl\ \)?TUQ__/l) IF (0 (/\"ilinniar\"\ Gram\/IV\ TUQ/l)) ; #ilinniartoq
 REMOVE:9967E (/NNGUR\ Der\/nv\ Gram\/TV\ QQU__/l) IF (0 (/NNGUR\ Der\/nv\ Gram\/TV\ QQU__/l)) ; #ilinniartunngoqqullugu
-REMOVE:9967E (/Gram\/TV\ QQA__/l) IF (0 (/Gram\/IV\ QQA__/l)) ; #nalunaaqqaneratuut
+REMOVE:9967F (/Gram\/TV\ QQA__/l) IF (0 (/Gram\/IV\ QQA__/l)) ; #nalunaaqqaneratuut
 
-REMOVE:9968D (/\"paasi\"\ Gram\/IV/l) IF (0 AFFINGERET - TUQ) ;
+REMOVE:9968C (/\"paasi\"\ Gram\/IV/l) IF (0 AFFINGERET - TUQ) ;
+REMOVE:9968D ("paasi") + Gram/Refl + INTRANSVERB IF (0 ("paasi") + TRANSVERB); #PAASINNGILASI nalunaajaatiga tusaaneq saperassiuk.
 REMOVE:9968E (/\"misige\"\ Gram\/TV/l) + TRANSVERB IF (0 (/\"misige\"\ Gram\/IV/l) LINK NOT *-1 Rel) ; #ammaanersiornermi #X@X
 REMOVE:9968F (/\"qui\"\ Gram\/TV\/l) IF (NEGATE *-1 Abs BARRIER V) ; #skal have objekt
 REMOVE:9968G (/\"ata\"\ Gram\/TV\ TIP\ /l) IF (-1 Trm) ; #skal have objekt #Line 429: Suliamut atatillugu inuit arlallit tigusaareerput,
@@ -12207,6 +12208,7 @@ SELECT:SemMorf9999 (/^i?Sem/j/r); #vælg adjektivlæsningen, hvis udisambigueret
 # AFSNIT TIL UNDTAGELSER PÅ LONGEST MATCHES #
 REMOVE:LM_X_0000 ("qaqor") + TUQ + ARAQ + (/^i?Sem/Bflo/r)(NEGATE *0 (/^i?Sem/grow/r) OR (/^i?Sem/B.*/r));
 REMOVE:LM_X_0001 ("innar") + TIP + (/^i?Sem/put/r) IF (0 NNGIT); #Nalunngilara qanittumi innartinnavianngikkaanga. #egentlig ret ambiguøs uden nærmere kontekst ("lade gå i seng" vs. "lægge i seng")
+REMOVE:LM_X_0002 (/LIR\ Der/vv\ Gram/TV\ Sem/gain/l) IF (0 (/QATE\ Der/vn\ GE\ Der/nv\ Gram/TV\ iSem/have/l)); #(QATE+GE)+LIR i stedet for QATE+(GE+LIR)
 
 # AFSNIT TIL AT VÆLGE LONGEST MATCHES #
 #Skriv regel, som fjerner morfemets læsninger. Virker kun, hvis der er alternativer, som så bliver valgt. Hvis longest match ikke giver mening, skriv negate og lav undtagelse i forrige afsnit.
