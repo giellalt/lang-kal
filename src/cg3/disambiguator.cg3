@@ -62,7 +62,7 @@
 #!! # Delimiters, tags and sets
 # ============================== #
 
-DELIMITERS = "<.>" "<!>" "<?>" "<:>" "<...>" "<…>" "<¶>" "<;>" "<·>" "<[.!?:;·…¶]+>"r ;
+DELIMITERS = "<.>" "<!>" "<?>" "<:>" "<…>" "<¶>" "<;>" "<·>" "<[.!?:;·…¶]+>"r ;
 OPTIONS += ordered ;
 
 #PARENTHESES = ("<(>" "<)>") ("<[>" "<]>") ("<{>" "<}>") ;
@@ -1726,6 +1726,8 @@ SET SEM/weather = Sem/weather OR iSem/weather ;
 BEFORE-SECTIONS
 
 #DELIMIT ("<">") IF (-1W _S_DELIMITERS_) ; #virker tilsyneladende ikke
+
+#SUBSTITUTE:S0000 ("<,>") ("<...>") TARGET ("<,>") IF (0 ("([.]{2,}|…)"r));
 
 SUBSTITUTE:S0001 ("/" PUNCT) ("/" Gram/Conj-encl Conj) TARGET ("</>") - Conj ;
 
@@ -7196,7 +7198,7 @@ REMOVE:0520B N + U + TUQ IF (0 Par)(*1 ORATIOOBLVERB - NIQAR - TAQ - Gram/Pass -
 REMOVE:0520C Par IF (*-1 BOS LINK 1 Prop + $$KASUS + $$NUMERUS LINK 1 KOMMA LINK *1 _TARGET_ + $$KASUS + $$NUMERUS BARRIER (*) - OBLIQUE ); #Kommuneqarfik Sermersooq, Nuutoqqami eqqaassutissamut AKISUSSAASUUSOQ, innuttaasunik eqqaassutissap peerneqarnissaanut tassaniiginnarnissaanulluunniit taasititsivoq.
 
 
-REMOVE:0521 Par IF (0 N + $$KASUS + $$NUMERUS LINK *-1 VFIN BARRIER KOMMA OR ORATIOOBLVERB LINK *-1 $$KASUS + $$NUMERUS BARRIER (*) - Hyb/1-2)
+REMOVE:0521 Par IF (0 N + $$KASUS + $$NUMERUS LINK *-1 VFIN BARRIER CLB OR ORATIOOBLVERB LINK *-1 $$KASUS + $$NUMERUS BARRIER (*) - Hyb/1-2)
 (NEGATE 1 ("unner") + CONT)#
 (NEGATE 1 (/"nalu"\ Gram/TV\ NAR\ Der/vv\ Gram/IV\ V\ ContNeg\ 4Sg/l) LINK 1 EOS )#Sapaatip akunnera qaangiuttoq Jaaku tikippoq assut qungujulaarluni ILUARUSUTTOQ nalunarani
 (NEGATE *-1 ORATIOOBLVERB LINK *1 Abs + &&IV_SUBJ& BARRIER VERB-NOTCONT LINK *1 _TARGET_ + Par + &&IV_SUBJ& BARRIER VERB-NOTCONT)#Danglars misigaaq uummanni eqittutut ITTOQ, oqarporlu
