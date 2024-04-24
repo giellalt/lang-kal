@@ -1493,7 +1493,7 @@ LIST DISTANCEVERB = "ungasip" "qanip" ;
 LIST EVALUERENDE_VERBER = "kajungeraa" ; #verber med semantik der betinger objekt efter NIQ+Ins/Abl
 LIST LEX_VERB = "nungullar" (/"anersaar"\ Gram/IV\ TUR/l) ; #Jude 20230908 sikre leksikaliserede verbalstammer
 LIST HVVERB = Gram/HV "neri" "naammattoorsi" "pulaar";
-LIST INSOBJVERB = LIUR (/".*nior"/r) RAAR (/\ SI\ Der\/nv/l) SSIP TAAR SIUR (/\ TUR\ Der\/nv/l);# (/__LIR\ Der\/nv__/l) udkommenteret PL20210314
+LIST INSOBJVERB = LIUR (/".*nior"/r) RAAR (/\ SI\ Der\/nv/l) SSIP TAAR SIUR (/\ TUR\ Der\/nv/l) ("sutor") ;# (/__LIR\ Der\/nv__/l) udkommenteret PL20210314
 LIST IntransTrans = "neri" "ilassior" Gram/HV ; #Set til disambiguering af Ins, VIP vs. HTR mv.
 LIST NAAR_VERBER = "angi" ("aki" KIP) "amerla" "isorartu" "kingusip" "miki" "oqip" "sivikip" "siusip" ; #stammer, der kan tage NAAR. Alle andre slettes
 LIST NONHUMVERB = "uiggiup" ; #Jude 20231002
@@ -3294,7 +3294,9 @@ SUBSTITUTE:adv41lux (LU)(ADV-LU) TARGET LU IF (0 CONT + 3SgO LINK -1 (Abs Sg) LI
 (NEGATE 0 TAR)
 ; #PL20230118 Matup tigummivia tigoriarlugu kigaatsunnguamik gangi takussallugu, tigummivik TIGULLUGULU assakkut uuvunga tupannermillu nilliavunga.
 SUBSTITUTE:adv42lux (LU) (ADV-LU) TARGET LU IF (0 ("<aallartisa.*>"r) + CONT + 4Pl) ;
+
 SUBSTITUTE:conj1li (LI)(CONJ-LI) TARGET LI + $$MOOD IF (-*1 $$MOOD BARRIER (*) - KOMMA);
+
 SUBSTITUTE:conj2li_1 (LI)(CONJ-LI) TARGET LI IF (0 Sem/Hum) (-*1 BOS BARRIER (*) - FIRSTNAME)
 (NEGATE 0 (/LI\ Der/vv/l));
 #Lars ØSTERGAARDILI oqarpoq taamaanngitsoq.
@@ -3303,12 +3305,20 @@ SUBSTITUTE:conj2li_2 (LI)(CONJ-LI) TARGET LI IF (0 N OR Prop OR Pron OR Adv) (-1
 (NEGATE 0 (/LI\ Der/nv/l))#
 (NEGATE 0 Aeq LINK -1 BOS)#UATTULLI uissuummitigaaq.
 ;
+
 SUBSTITUTE:conj3li (LI)(CONJ-LI) TARGET LI IF (-1 KOMMA)
 (NEGATE *-1 $$KASUS LINK *1 _TARGET_ + ("taamani") BARRIER (*) - KOMMA LINK 1 $$KASUS + Der/vn) #Silassorippasigisannik naapitsigaangama titartagara siulleq, TAAMANILI toqqortarisimasara, atorlugu misilittaasarpunga.
 ;
+
 SUBSTITUTE:conj4li (LI)(CONJ-LI) TARGET LI IF (*-1 VFIN BARRIER (*) - PUNCT)(0 V LINK 1 EOS)
 (NEGATE 0 (/LI\ Der/vv/l))
 ;
+
+SUBSTITUTE:conj5li (LI)(CONJ-LI) TARGET LI + ("soorlu") IF (-1  (".") + CLB )
+(NEGATE *1 KOMMA LINK 1 LI + ("soorlu") ) #- Soorluli John F. Kennedy toqutaammat, soorluli Elvis Presley toqummat, erinarsortartoq Celine Dion Michael Jacksonip toqunera nutaarsiassaqartitsivikkut CNN-ikkut oqaaseqarfigigamiuk assersuussivoq. ## nok snarere CAU som giver ADV
+; 
+
+
 
 SUBSTITUTE:adv1lix LI ADV-LI TARGET LI (0 HUMAN + U OR TIME + QAR LINK 0 Cau OR CONT OR Par)  #meeraallunili, ukioqartungali
 (NEGATE *-1 Abs + Sg LINK *1 CONT + 4Sg LINK 1 _TARGET_ + Abs LINK *1 3SgO + 3Sg BARRIER V)#Præsidentissaq Barack Obama nammineq peqataanani PRÆSIDENTINNGORNIUTEQATAASIMASORLI senator John Kerry ataatsimeersuarnermi Poznanimi Polenimi pisumi peqataatippaa.
@@ -3415,6 +3425,7 @@ REMOVE:conjR ("aamma") + Adv IF (-1 Trm LINK *2 Ins - ADVERBIEL BARRIER (*) - OB
 REMOVE:7254 Adv + ("kisianni") IF (-1 BOS) ; #Kisianni aramaannarniarit piffissaatillugu.
 SUBSTITUTE:Sub0001 (LU) (CONJ-LU) TARGET (*) ;
 SUBSTITUTE:Sub0002 (LUUNNIIT) (CONJ-LUUNNIIT Gram/Conj-encl) TARGET (*) IF (NEGATE 0 CONJ-LU OR CONJ-LUUNNIIT OR ADV-LU OR ADV-LUUNNIIT) ; #PL20220926 rettet fra Gram/Unsafe-encl
+
 SUBSTITUTE:Sub0003 (LI) (CONJ-LI) TARGET (*)
 (NEGATE 0 (/LI\ Der/nv/l))
 (NEGATE 0 (/LI\ Der/vv/l))
@@ -3996,6 +4007,11 @@ REMOVE:7256B ("assut") + Interj (NEGATE -1 BOS LINK 2 EOS);
 REMOVE:7257 ("aatsaat") + Interj IF (NEGATE -1 BOS); #Inuit AATSAAT soorlu kamassaakkat.
 REMOVE:7258 Interj IF (0 Adv)(*1 NIQ LINK *-1 V BARRIER CLB); #Ileqqorilersimavarami ulapinngikkaluaraangamaluunniit TUAVIINNAQ angerlartarnissara.
 REMOVE:7259 (*) - ("aali") (0 ("aa") + Interj OR ("ai") + Interj) ; #Jude 20231010
+REMOVE:7260 (/"qaaq"\ N\ Abs\ Sg\ 3SgPoss/l) IF (0 ("qaa") + Interj   ) 
+(NEGATE -1 Rel + Sg)  
+#Neriffissanngungajalermat, Arsugarlu suli qiangalasuusaaginnavilluni, anaanaata ataataa pivaa ”...qaa aalajangeriarlugu qiatilaarniaruk, qiarusuttoruna!”
+;  
+
 
 ### PROPRIUM ###
 #==============#
@@ -4855,7 +4871,9 @@ REMOVE:0044F N IF (*-1 Abs + &&IV_SUBJ& LINK *1 _TARGET_ + Par + &&IV_SUBJ& LINK
 
 REMOVE:0044G1 Par IF (0 (/Sem/be_attribute/l) LINK -1 Abs LINK -1 BOS LINK 3 CLB); #Kalassuit AJORTUT.
 REMOVE:0044G2 Par IF (0 (/Sem/be_attribute/l) LINK -1 TUQ LINK -1 Abs LINK -1 BOS LINK 4 CLB); #Illarneq imaqanngitsoq NILLERTOQ.
-REMOVE:0044G3 Par IF (0 TUQ + Abs + $$NUMERUS LINK *-1 CLB LINK *-1 N + Abs + $$NUMERUS LINK *0 CLB OR BOS BARRIER (*) - Abs)(NEGATE *0 V - %AmbiguøsPar OR NEXUS)(1 (".")); #Tuattunnguaq nallinnartorlu, anaanama inuunerani angutipalaanut ilaasimasunut PILLIUTIGIUMINARTOQ.
+REMOVE:0044G3 Par IF (0 TUQ + Abs + $$NUMERUS LINK *-1 CLB LINK *-1 N + Abs + $$NUMERUS LINK *0 CLB OR BOS BARRIER (*) - Abs)
+(NEGATE *0 V - %AmbiguøsPar OR NEXUS)(1 ("."))
+; #Tuattunnguaq nallinnartorlu, anaanama inuunerani angutipalaanut ilaasimasunut PILLIUTIGIUMINARTOQ.
 
 SELECT:0045A Gram/Comp IF (1 ("ajor") - NAR OR ("artor") OR ("saper") OR ("nalu") - NAR)
 (NEGATE 0 (/Gram/IV\ NIQ/l) LINK 1 TRANSVERB - ("ajor") - ("ajore")) #Ikke intransiv NIQ med transitivt verbum
@@ -7202,7 +7220,11 @@ REMOVE:0521 Par IF (0 N + $$KASUS + $$NUMERUS LINK *-1 VFIN BARRIER CLB OR ORATI
 (NEGATE *-1 ORATIOOBLVERB LINK *1 Abs + &&IV_SUBJ& BARRIER VERB-NOTCONT LINK *1 _TARGET_ + Par + &&IV_SUBJ& BARRIER VERB-NOTCONT)#Danglars misigaaq uummanni eqittutut ITTOQ, oqarporlu
 (NEGATE *-1 ORATIOOBLVERB LINK *1 ("tassa") LINK 1 _TARGET_ + Par)#Amerlasuut ingammik politikkerit isumaqartarput aniguigaangatta tassa AAQQITTARTUGUT, kisianni taamaannginnami.
 (NEGATE -1 VFIN LINK -1 Abs LINK -1 BOS LINK 4 EOS) #Ulloq naaginnaleqaaq PISORPASSUAQARFIUSOQ.
+(NEGATE 0 (/NAVIAR\ Der/vv\ Gram/IV\ NNGIT\ Der/vv\ Gram/IV/l) LINK *1 ORATIOOBLVERB )#”Sueq nuannariivinngilaa ... nunamut taama tunngatigisumi suingaarsinnaanavianngitsoq ataqqinartuaqqap oqaatigisimavaa. Una naasoq kakkaammi peqqummat...”
  ;
+
+REMOVE:0521x N + TUQ IF (0 Par + (/NAVIAR\ Der/vv\ Gram/IV\ NNGIT\ Der/vv\ Gram/IV/l) LINK *1 ORATIOOBLVERB ) ;#”Sueq nuannariivinngilaa ... nunamut taama tunngatigisumi suingaarsinnaanavianngitsoq ataqqinartuaqqap oqaatigisimavaa. Una naasoq kakkaammi peqqummat...”
+
 REMOVE:0522 Par + INTRANSVERB - TIME IF (0 TUQ + N OR Prop)(*1 V - PASSIV - (/[12][SP][gl]/l) BARRIER KOMMA OR V)(NEGATE *-1 UNA OR UKU)(NEGATE *1 ORATIOOBLVERB + TRANSVERB)(NEGATE *1 ORATIOOBLVERB LINK NOT *1 Par)(NEGATE 0 QQU LINK *-1 ORATIOOBLVERB)(NEGATE 0 CONJ-LU LINK NOT -1 KOMMA OR BOS)(NEGATE *-1 BOS LINK *1 _TARGET_ BARRIER Par)
 (NEGATE *-1 Abs + &&IV_SUBJ& LINK *1 _TARGET_ + Par + &&IV_SUBJ& + RIIR OR SSA LINK *1 VFIN + &&IV_SUBJ&)#Kommunimi aningaasaqarnermut ataatsimiititaliaq QNAPP saniatigooralugulu pinialuttartut ATAATSIMEEQAATIGEEREERSULLU isumaqarput qilalukkat qernertartassiissutit 65-t ikippallaartut.
 (NEGATE *1 ORATIOOBLVERB OR OQARPOQ LINK *-1 _TARGET_ + Par + &&IV_SUBJ& LINK *-1 Abs + &&IV_SUBJ& BARRIER V)#Partii Naleqqameersoq Jens NapãtôK taama allagarsisarneq TAKORNARTAANNGITSOQ oqarpoq.
