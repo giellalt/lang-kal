@@ -767,6 +767,8 @@ I Num2 til Num10 er flagging af NNGUR C-et pga. klokken
 
 * LEXICON TaqP  
 
+* LEXICON kTaq  !PL20240426 Nyt LEX til k-stammer som NIRLUP med både gaq og taq 
+
 * LEXICON Saq   passivt nomen af transitive stammer på vokal PL revision 20180409
 
 * LEXICON iSaq  passivt nomen af transitive stammer på vokal med strong i 
