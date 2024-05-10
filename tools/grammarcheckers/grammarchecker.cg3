@@ -66,6 +66,8 @@ LIST &typo = &typo ; #!!= - @CODE@
 LIST &msyn-arg-trm-ins = &msyn-arg-trm-ins ; #!!= - @CODE@
 LIST &msyn-arg-ins-trm = &msyn-arg-ins-trm ; #!!= - @CODE@
 LIST &msyn-arg-abs-rel = &msyn-arg-abs-rel ; #!!= - @CODE@
+LIST &msyn-arg-abs-via = &msyn-arg-abs-via ; #!!= - @CODE@
+LIST &msyn-arg-excl-abl = &msyn-arg-excl-abl ; #!!= - @CODE@
 
 MAPPING-PREFIX = & ; #!!= - @CODE@
 
@@ -87,7 +89,6 @@ SECTION
 #€#
 #€# ADD:spell-conservatively (&typo &SUGGESTWF) (<spelled>) IF (NEGATE -1 QMARK LINK 2 QMARK);
 #!! @RULENAME@
-
 
 #!! ### Grammatical rules
 
@@ -129,6 +130,28 @@ COPY:msyn-arg-abs-rel (Rel &SUGGEST) EXCEPT (Abs &msyn-arg-abs-rel) BEFORE NUMER
 #!! @RULENAME@
 
 ADDRELATION:msyn-arg-abs-rel ($2) (V) FROM (*-1 Prop LINK 0 (&msyn-arg-abs-rel)) ;
+
+## Judithe påbegyndt forsøgsvist 20240510
+
+# Nouns
+
+# Abl
+ADD:msyn-arg-excl-abl &msyn-arg-excl-abl TARGET (Lok Gram/Exclm) (0 ("<.*miik>"r) LINK 0* V) ;
+COPY:msyn-arg-excl-abl (N Abl Sg &SUGGEST) EXCEPT (N Lok Sg Gram/Hyb IP Gram/IV V Ind Gram/Exclm) TARGET &msyn-arg-excl-abl ;
+#Atuartullu anartarfiat atuarfiup tunuaniippoq immikkoorluni [atuarfimmiik].
+#[Illoqarfimmiik] allaminngaanneerlunga ilinniariartuuvunga.
+#Takugamisigummigooq [anartarfimmiik] anillaqatigiittugut. 
+#Aappassaa taamak oqarmat atsamma [sinittarfimmiik] suaamisaarlugu akisimavaa
+#Tassa ungasissumiik seqernup qinngornera atorlugu qaammartitsisaarut.
+#Assulli kamaammerpunga ersinngitsukasimmiik nipangeqquneqarama.
+
+
+# Via
+ADD:msyn-arg-abs-via &msyn-arg-abs-via TARGET Abs (0 Sg LINK 1 Via) (1* VFIN + 1Sg BARRIER V) ;
+COPY:msyn-arg-abs-via (Via &SUGGEST) EXCEPT (Abs &msyn-arg-abs-via) BEFORE NUMERUS TARGET &msyn-arg-abs-via ;
+ADDRELATION:msyn-arg-abs-via ($2) (Via) TO (-1 Via LINK 0 &msyn-arg-abs-via) ;
+#Bussit apuummata [matu] tunorlikkut iserpunga, bussillu tunuaniiginnalerlunga.
+
 
 
 # The method is: Add &SUGGEST to a copied reading to *generate* a
