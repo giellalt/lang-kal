@@ -2991,6 +2991,8 @@ We import tag declaration from `../../src/cg3/disambiguator.cg3`
 - LIST @CODE@msyn-arg-trm-ins = @CODE@msyn-arg-trm-ins ; 
 - LIST @CODE@msyn-arg-ins-trm = @CODE@msyn-arg-ins-trm ; 
 - LIST @CODE@msyn-arg-abs-rel = @CODE@msyn-arg-abs-rel ; 
+- LIST @CODE@msyn-arg-abs-via = @CODE@msyn-arg-abs-via ; 
+- LIST @CODE@msyn-arg-excl-abl = @CODE@msyn-arg-excl-abl ; 
 
 - MAPPING-PREFIX = @CODE@ ; 
 
@@ -3001,7 +3003,7 @@ add &SUGGESTWF to any spelling suggestion
 that we actually want to suggest to the user.
 The simplest is to just add it to all spelled words:
 
-@RULENAME@msyn-arg-abs-rel
+@RULENAME@msyn-arg-excl-abl
 
 ### Grammatical rules
 
