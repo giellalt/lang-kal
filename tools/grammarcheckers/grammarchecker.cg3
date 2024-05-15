@@ -63,6 +63,8 @@ LIST &ellipsis = &ellipsis ; #!!= - @CODE@
 LIST &guillemets = &guillemets ; #!!= - @CODE@
 LIST &typo = &typo ; #!!= - @CODE@
 
+
+LIST &apstr-hyph = &apstr-hyph ; #!!= - @CODE@
 LIST &msyn-arg-trm-ins = &msyn-arg-trm-ins ; #!!= - @CODE@
 LIST &msyn-arg-ins-trm = &msyn-arg-ins-trm ; #!!= - @CODE@
 LIST &msyn-arg-abs-rel = &msyn-arg-abs-rel ; #!!= - @CODE@
@@ -142,17 +144,24 @@ COPY:msyn-arg-excl-abl (N Abl Sg &SUGGEST) EXCEPT (N Lok Sg Gram/Hyb IP Gram/IV 
 #[Illoqarfimmiik] allaminngaanneerlunga ilinniariartuuvunga.
 #Takugamisigummigooq [anartarfimmiik] anillaqatigiittugut. 
 #Aappassaa taamak oqarmat atsamma [sinittarfimmiik] suaamisaarlugu akisimavaa
-#Tassa ungasissumiik seqernup qinngornera atorlugu qaammartitsisaarut.
-#Assulli kamaammerpunga ersinngitsukasimmiik nipangeqquneqarama.
+#Tassa [ungasissumiik] seqernup qinngornera atorlugu qaammartitsisaarut.
+#Assulli kamaammerpunga [ersinngitsukasimmiik] nipangeqquneqarama.
 
+
+LIST human-v = "iser" ;
+LIST nonhuman-n = "matu" ;
 
 # Via
 ADD:msyn-arg-abs-via &msyn-arg-abs-via TARGET Abs (0 Sg LINK 1 Via) (1* VFIN + 1Sg BARRIER V) ;
+ADD:msyn-arg-abs-via &msyn-arg-abs-via TARGET Abs (0 Sg + NON_HUMAN LINK 1 Via) (1* VFIN + 3Sg + human-v BARRIER V) ;
 COPY:msyn-arg-abs-via (Via &SUGGEST) EXCEPT (Abs &msyn-arg-abs-via) BEFORE NUMERUS TARGET &msyn-arg-abs-via ;
 ADDRELATION:msyn-arg-abs-via ($2) (Via) TO (-1 Via LINK 0 &msyn-arg-abs-via) ;
 #Bussit apuummata [matu] tunorlikkut iserpunga, bussillu tunuaniiginnalerlunga.
 
-
+SPLITCOHORT ("<$1>"v "$1"v <acro-apo> "<$2>"v "$2"v <acro-case>) ("<(\\p{Lu}+\\u0027)\(mik\)>"r ?) ;
+SPLITCOHORT ("<$1>"v "$1"v <acro> "<$2>"v "$2"v <apo>) ("<\(CIA\)\('\)>"r) (0 (<acro-apo>)) ;
+ADD:apsthr-hyph (&apo-hyph) (<apo>) ;
+COPY ("-"r <hyph> &SUGGEST) EXCEPT ("'"r <apo> &apo-hyph) TARGET (&apo-hyph) ;
 
 # The method is: Add &SUGGEST to a copied reading to *generate* a
 # suggestion form from that reading. The copy should contain the error
@@ -176,3 +185,6 @@ ADDRELATION:msyn-arg-abs-via ($2) (Via) TO (-1 Via LINK 0 &msyn-arg-abs-via) ;
 #€# #!! @RULENAME@
 #€# COPY:use-ellipsis ("…" &SUGGEST) EXCEPT ("...") TARGET (&ellipsis) ;
 #€# #!! @RULENAME@
+END
+#JD: examples to look at later
+#Oqaluttualiornermi unammisitsinermi Niviaq Korneliussen ajugaasut ilagaat ilaatigut uanga, kalaallillu taalliortartup eqqumiitsuliortartullu Jessie Kleemannip [suleqatiginissaa] eqqugassaalluni.

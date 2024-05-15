@@ -118,6 +118,7 @@ LIST-TAGS +=
 	Heur/Url #!!= * @CODE@
 	Sem/CognitiveMaking #!!= * @CODE@ = qinersivoq i modsætning til qinerlerpoq
 	Sem/Concessive #!!= * @CODE@ = koncessive sætninger
+	Sem/enter #!!= * @CODE@
 	Sem/event #!!= * @CODE@
 	Sem/Fem iSem/Fem #!!= * @CODE@ = Introduceret som test 20180613. Skal måske ud igen
 	Sem/FirstName #!!= * @CODE@
@@ -1174,7 +1175,7 @@ SET DIRTALE = TALE OR OQARnUSIQ ;
 LIST CALL = "atser" "atsiup" "naalap" ; #sandsynlighed for ateq ved disambiguering mellem ateq og ate.
 
 LIST humverb = "allor" (/"attavik"\ GE\ Der/nv/l) "atuar" ("eqqarsar" UTE GE) "eqqartor" (/"iki"\ Gram/TV/l) (/"ikip"\ Gram/TV/l) "innar" (/\"inuk\"\ U\ /l) "iser" "isiginnaar" "kaap" (/"mianersor"\ Gram/IV\ QQU/l) "naalap" "nalunaar" (/"nassip"\ Gram/TV\ UTE/l) (/"oqaaseq"\ QAR\ Der/nv\ Gram/IV\ TIP/l) "oqqap" ("pisiaq" GE) "qiner" (/"qinnut"\ QAR\ Der/nv/l) "sana" Sem/inst "sinip" ("sinnattoq" GE) "suli" (/"tusarnaar"\ Gram/IV\ \(iSem/listen\ \)?TIP/l) "unammi" "uppere" "utertip"; #" Verb der vil ha humane subj, og ikke er i andre set
-
+LIST animateverb = femverb humverb animalverb Sem/enter ;
 LIST femverb = "erni" (/"naaq"\ TU/l) "naartu" "ningar" ; #Verber der kun kan have Sem/Fem som subjekt
 LIST thingverb = "nalunaap" "ersip" ;
 LIST thingobjverb = ("qaammaqqut" GE) ("qaammaqqutige") ("qamip" Gram/TV) (/TIP\ Der/vv\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ UTE\ Der/vn\ GE/l) ; #transitive verb with non-human object
@@ -1416,6 +1417,7 @@ SET NIRMIT = N - POSSESSUM + NIQABL |  N - POSSESSUM + NIQTRM ;
 LIST NON-ADJ = "anaana" "ataata" ; #Jude 20230909
 LIST NON-PROP = ("eqqar" TAQ) ;
 LIST NOTSPLIT = ("neri" TAQ SSAQ) ; # cannot take i- -arguments.
+LIST NOT-OWNED = "alla" ;
 LIST NUMCOMP = "hundrede" "tusind" "million" "milliard" ; #anden del af sammensatte tal, famtan milliuuni
 LIST NÆPPE_FIRSTNAME = "naasoq" "niviarsiaraq" "nukappiaq" "nukappiaraq" "nukarleq" "piffik" "pupik" ("qerner" TUQ) "ulloriaq" "una"; #Liste med appellativer, som teoretisk kan være proprier i position 0, men højst usandsynligt er det
 LIST OCCATION = ("ataatsimiip" NIQ) ;
@@ -1728,7 +1730,6 @@ REMOVE:Gram (/nv\ Gram/IV\ Gram/IV\ V/l) + (/\(.*\)/r) (0 (/nv\ Gram/IV\ V/l) + 
 REMOVE:GramIV0001 (/Der/nv\ Gram/IV\ NIQ\ Der/vn\ \([A-Z]+\ \)?\(Der/nn\ \)?\N\ /l) + $$BFORM (0 (/Der/nv\ NIQ\ Der/vn\ \([A-Z]+\ \)?\(Der/nn\ \)?\N\ /l) + $$BFORM) ; #Jude 20231026
 REMOVE:GramIV0002 (/Der/nv\ Gram/IV\ TUQ/l) + $$BFORM (0 (/Der/nv\ TUQ\ Der/vn\ N\ /l) + $$BFORM) ; #Jude 20231026
 REMOVE:GramIV0003 (/Der/nv\ Gram/IV\ NNGUARSI/l) + $$BFORM (0 (/Der/nv\ Gram/IV\ NNGUARSI/l) + $$BFORM) ; #Jude 20231026
-
 
 #!! ### Disambiguere morfemkombinationer
 
@@ -2126,6 +2127,9 @@ REMOVE:MorfVIK (/iSem/cause\ VIK\ Der/vn/l) (0 ("<tusagassi.*>"r SSAQ LIUR)) ; #
 ### Der/vv ###
 REMOVE:MorfNga0001 ("toqup") + NGA (0 ("toqu") + NGA) ; #Jude 20231026
 REMOVE ("nipip") (0 RUJUUR) ; #Jude20231009
+
+### Der/vv ###
+REMOVE LLIUR + ("taar?"r) (0 ("taallior")) ; #jude 20240515
 ### Judithes afsnit slut ###
 
 
@@ -2183,7 +2187,9 @@ REMOVE:0000F Num + Sem/dur; #alle tal får Sem/dur, men hvorfor? #KW01042024
 
 REMOVE:0000Test1 (/LIAR\ Der/nv\ Gram/IV\ A\ Der/vv/l); #KW27092023 for at forhindre overgenerering. Jeg tager mig af det.
 
-SELECT:0000Test2 ("uanga") + Pron; #for at forhindre at den overgenerer med Freuds ego.
+#SELECT:0000Test2 ("uanga") + Pron; #for at forhindre at den overgenerer med Freuds ego.
+REMOVE:0000G ("uanga") + N (0 ("uanga") + Pron) ; #bedre med en remove regel så tidligt i filen
+REMOVE:0000H ("uap") (0 ("uanga")) ; #[uattulli] uissuummitigaaq.
 
 REMOVE:0000Test3 (/LIR\ Der/nv\ Gram/IV/l) IF (0 (/LIR\ Der/nv\ Gram/TV\ Gram/Refl/l)); #LIR er ikke intransitivt
 
@@ -3842,7 +3848,6 @@ REMOVE:Int0117B ("misse") + Sg IF (0 ("misse") + Abs + Pl LINK *1 INTRANSVERB + 
 
 ### TAL ###
 #=========#
-
 REMOVE:0099num1 Rel (0 Abs) (NEGATE *1 TRANSVERB OR POSSESSUM)
 (NEGATE *-1 Rel + &&POSS34_POSS& LINK 1 &&POSS34_POSS& + &&TV_OBJ& LINK 1 V + &&TV_OBJ& LINK 1 KOMMA LINK 1 Rel LINK 1 ("aamma") LINK 1 EOS)#Eskildip unnussiornera aserorpaa, NAMMINERLUMI aamma.
 (NEGATE 0 UNA OR UKU OR UKUA) #UANGAAKUA.
@@ -3857,6 +3862,7 @@ REMOVE:0099M Num + Orth/Append IF (0 Num - Orth/Append) (NEGATE 0 Rel LINK NEGAT
 REMOVE:0099N ("sisamaaq") OR ("sisamaq") OR ("sisamat") + UTE IF (0 ("sisamat") - UTE);
 
 SELECT:0099Q Gram/Ord IF (0 SSAQ ) ;
+REMOVE Rel + Pl (0 Rel + Sg + CONJ-LU LINK 1 Prop + Abs + Sg LINK 1 Prop + Rel + Sg LINK 1* POSSESSUM) ;
 
 #aappaq Gram/Ord
 SELECT:0099R Gram/Ord - Via IF (-1 MAANED OR TIME)
@@ -3894,6 +3900,8 @@ REMOVE:0036 Par IF (0 N LINK 1 ("[a-z]*li(t|k)"r))
 (NEGATE *-1 BOS BARRIER (*) - Adv LINK *1 _TARGET_ LINK 1 Abs + &&IV_SUBJ& LINK *1 VFIN + &&IV_SUBJ& BARRIER VERB-NOTCONT)#suli SINITTUGUT pujortuleeraq aallarsimavoq.
 (NEGATE 1 Gram/Pers + $$PN LINK 1 V + $$PN)#Assersuut ima misigivunga, IMANNAANNGITSOQ illit pisuullutit ima misigisunga.
 ;
+
+REMOVE:0037 Par + CONJ-LU (0 TUQ + Rel + Sg + LU LINK 1 Prop + Abs + Sg LINK 1 Prop + Rel + Sg LINK 1* POSSESSUM) ; #Oqaluttualiornermi unammisitsinermi Niviaq Korneliussen ajugaasut ilagaat ilaatigut uanga, kalaallillu taalliortartup [ eqqumiitsuliortartullu ] Jessie Kleemannip suleqatiginissarput eqqugassaalluni.
 
 REMOVE:0040B Par + 3Sg IF (-2 N + Sg + $$KASUS LINK 1 ("taamatut") LINK 1 Der/vn + Sg + $$KASUS);
 REMOVE:0040C Par + 3Pl IF (-2 N + Pl + $$KASUS LINK 1 ("taamatut") LINK 1 Der/vn + Pl + $$KASUS);
@@ -4847,7 +4855,6 @@ REMOVE:0044A N - ATTRIBUTIV - HUM IF (0 Par - Orth/Alt)(NEGATE *0 VFIN OR Cau OR
 #Tidlig disambiguering af næsten helt sikker possessor-possessum
 SELECT:0044B Rel + Pl IF (*1 3PlPoss + NIRSAQ BARRIER (*) - Rel) ;
 
-
 #En tidlig regel, der fjerner Par + 3Sg fra kongruensadled i objektsyntagmer forudsat, der ikke findes et inquit. 2SgPoss må undtages
 SELECT:0044C ADJEKTIVISK + Abs + Sg - 2SgPoss IF (-1 Abs + Sg)(*1 3SgO BARRIER V) #Ajutuulernermi kalerrisaarutit NUTAAT atussagaanni radiomik atuisinnaanermut allagartaqartariaqarpoq.
 (NEGATE *0 ORATIOOBLVERB)
@@ -5075,7 +5082,6 @@ SELECT:0069E $$OBLIQUE IF (*-1C $$OBLIQUE BARRIER (*) - CONJ-C LINK NOT 0 KASUS 
 #Den foerste er et specialtilfaelde for også at tage højde for 'Maaniittut ukua ilaasa .. '
 
 #Overflødige relativer
-
 SELECT:0070L Rel + FAM + POSSESSUM IF (0 FAM + Lok - POSSESSUM) #anaanami
 (NEGATE 0 PLACE) #må ikke hitte på illu/illoq
 ;
@@ -5093,12 +5099,14 @@ SELECT:0070 Rel + Pl - Num - POSSESSUM12 IF (1C 3PlPossUdenMWE)(NEGATE 1 ("siune
 
 #Før 0072 for at holde på den før andet gennemløb sletter possessum med regel 0105
 REMOVE:0071A Rel + Sg IF
+(NEGATE 0 CONJ-LU LINK 1C Rel + Sg) # Oqaluttualiornermi unammisitsinermi Niviaq Korneliussen ajugaasut ilagaat ilaatigut uanga, [ kalaallillu ] taalliortartup eqqumiitsuliortartullu Jessie Kleemannip suleqatiginissarput eqqugassaalluni.
 (NEGATE *1 3SgPoss OR i3SgPoss)
 (NEGATE 1 (".*natigut"r)) #Christian Keldsen Visiobox Consulting ApS-imik ukiut tallimat matuma siornatigut aallartitseqataavoq
 (NEGATE -1 Rel LINK 1 _TARGET_ + LU LINK 1 3PlPoss)#Narsarsuup QAQORTULLU akornanni angallassisuuvoq.
 (NEGATE *0 TRANSVERB + 3Sg OR TRANSVERB + 4Sg)(NEGATE 0 Gram/Coref + Pron)(NEGATE 0 Ins)(NEGATE *1 NIRMIT + Gram/TV - HTR BARRIER CONJ-C LINK NEGATE 0 Trm LINK *1 TRMVERB BARRIER CONJ-C) #Gram/Coref + Pron må vist håndteres separat #X@X
 (NEGATE 0 Gram/Abbr + Sem/Unit LINK 1 ("misse"))#Taamaammat illuaqqat 10 km missaannik ungasissuseqassapput.
 (NEGATE 0 CONJ-LUUNNIIT LINK -1 Rel )# Inummummi suliffeqarfimmulluunniit ataasiinnarmut inatsisiliaasoq isumaqatigiissitsiniartartut eqqartuussiVIULLUUNNIIT nalilerpassuk, inatsit taamaattoq inatsisinik unioqqutitsilluni atuutilersinneqarsimasutut isigineqartartoq, taanna nassuiaavoq.
+(NEGATE 0 CONJ-LU LINK 1 Prop + Abs LINK 1 Prop + Rel + Sg) #Oqaluttualiornermi unammisitsinermi Niviaq Korneliussen ajugaasut ilagaat ilaatigut uanga, kalaallillu taalliortartup [ eqqumiitsuliortartullu ] Jessie Kleemannip suleqatiginissarput eqqugassaalluni.
 ;
 
 REMOVE:0072A Adv + ("siorna") IF (0 ("siuneq") + POSSESSUM3 LINK -1 ("manna" Rel));
@@ -5186,6 +5194,7 @@ REMOVE:0076A (/".*\.gl"\ Sem/Url\ Err/Sub/l) IF (0 (/".*\.gl"\ Sem/Hum\ Prop/l))
 
 SELECT:0076B $$KASUS + Pl - POSSESSUM4 IF (1 $$KASUS + (/__Gram\/Dem\ Pron__/l) + Pl) #Tilføjet mulighed for Abs: #QIMMIT ikkua kiivaannga.
 (NEGATE 0 HUM LINK *1 TRANSVERB) #Arnat meerannguit taakku paasitinniaraluarpaat
+(NEGATE 0 NOT-OWNED)
 ;
 
 REMOVE:0076C (Rel Pl) IF (-1 BOS OR KOMMA LINK 1 _TARGET_ + (Abs Pl) LINK *1 (/"tassa"\ U/l) + V + (/[34]Pl/r) BARRIER (*) - Gram/Dem);
@@ -6806,6 +6815,7 @@ SELECT:0435D Par + INTRANSVERB IF (*-1 ORATIOOBLVERB LINK *1 ("qanoq") LINK *1 _
 
 SELECT:0437 Der/vn + Sg IF (-*1 N + Sg)(1 Der/vn + Sg + CONJ-LU LINK *1C Par)
 (NEGATE *-1 (Abs Pl) BARRIER (*) - KOMMA LINK *1 _TARGET_ + (Abs Pl) LINK *1 V + 3Pl BARRIER VERB-NOTCONT)#Naak neriniartarfiit, SUTORNIARTARFIIT imerniartarfiillu inissaqassuseq malillugu isertitseqqissinnaalissagaluartut tamakkiisumik akiuussuserneqarsimanerit uppernarsarsinnaasariaqarpat.
+(NEGATE 0 Orth/Arch)
 ;
 #Specialfald til foelgende hvor Der/vn vn+LU foelges af Par
 
@@ -8422,6 +8432,9 @@ REMOVE:8563F (/Gram/TV\ V\ Ind\ 3Pl\ 3PlO/l) IF (0 (/Gram/TV\ V\ Ind\ 3Pl\ 3SgO/
 ##### Specifikke regler til disambiguering af Gram/TV vs. Gram/Db	12095
 ##### Specifikke regler til disambiguering af Gram/Db vs. Gram/Db 12075
 # ======================================================================= #
+
+# Nomen eller adverbium
+REMOVE NOT-OWNED + (".*"r N Abs Pl 3PlPoss) + ADV-LU OR NOT-OWNED + ADV-LU (0 (".*"r UTE Der/nn)) ;
 
 # Nomen eller nomen?
 REMOVE:8498 ("illoq") + QAR + VIK IF ( 0 ("illu") + QAR + VIK) ;

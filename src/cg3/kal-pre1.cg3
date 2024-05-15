@@ -37,6 +37,7 @@ REMOVE:kalaallisooq (/"kalaallisooq"\ SSAQ\ Der/nn\ N\ Via\ Sg\ 3SgPoss/l) IF (0
 SPLITCOHORT ("<$1>"v "$1"v Num Abs Sg "<$2>"v "$2"v CLB) ("<(\\p{N}{4})([.])>"r Gram/Ord) (0 EOS) ;
 SPLITCOHORT ("<$1>"v "$1"v Num Abs Sg "<$2>"v "$2"v CLB) ("<(\\p{N}{4})([.])>"r Gram/Ord) (1 ("¶") + EOS) ;
 
+
 #splitting compounded by error
 SPLITCOHORT ("<$1>"v "$1"v "<$2>"v "$2"v) TARGET ("<(\\p{Lu}?\\p{Ll}+)\\u003A(\\p{Lu}\\p{Ll}+)>"r ?) ; #Jude 20240202
 SPLITCOHORT ("<$1>"v "$1"v "<$2>"v "$2"v) TARGET ("<(\\p{Lu}?\\p{Ll}+)(\\p{Lu}\\p{Ll}+)>"r ?) + HeurGLfinal ; #Jude 20240202
@@ -44,6 +45,7 @@ SPLITCOHORT ("<$1>"v "$1"v "<$2>"v "$2"v) TARGET ("<(\\d\\u002D\\p{Ll}+)(\\p{Lu}
 SPLITCOHORT ("<$1>"v "$1"v "<$2>"v "$2"v) TARGET ("<(\\p{Lu}?\\p{Ll}+)(\\p{Lu}+)>"r ?) + HeurGLfinal ; #Jude 20240202
 
 REMCOHORT ("<[\\u002D|\\u2013]>"r) (1 ("<[\\u002D|\\u2013]>"r)) (2 ("<kkut>" ?)) ; # double hyphen or hyphen minus + en dash combination plus case IA-–kkut
+
 
 ### 20240314 efter indførsel af spell-heur stadig brug for:
 #Heuristics
@@ -67,6 +69,8 @@ MergeCohorts:numKKUTLokPlLU ("<$1$2$3$4>"v "$1"v iNum KKUT Der/nn N Lok Pl LU He
 #Rel
 MergeCohorts:numKKUTRelPlLU ("<$1$2$3>"v "$1"v iNum KKUT Der/nn N Rel Pl LU Heur/Num) ("<(\\d{2,4})>"r) WITH (1 ("<([\\u00B4|\\u0027|\\u002D])>"r)) (2 ("<\(i?kkullu\)>"r ?)) ; #1940 - kkullu
 COPY:numKKUTAbsRelPlLU (Abs Pl LU Heur/Num) EXCEPT (Rel Pl LU Heur/Num) TARGET Rel + Pl + LU + Heur/Num ; #1940 - kkullu
+
+SUBSTITUTE (".*"r ?) ("$1"v Num KKUT Der/nn Gram/PlurTant N Abs Pl Heur/Num) TARGET ("<(\\d+)\\u0027i?kkut>"r ?) ;
 
 
 #Heur/Prop Heur/Quote
@@ -238,6 +242,8 @@ MergeCohorts:HeurNAbsSgLu ("<$1$2$3>"v "$1"v N Abs Sg LU Heur/N) ("<(\\p{L}+\\u0
 #Heur/Url
 MergeCohorts:HeurUrlViaSg001 ("<$1$2$3>"v "$1"v Sem/Url Prop Via Sg Heur/Url Heur/Prop) ("<(w?w?w?\.?\\p{L}+\.\\p{L}+)([\\u002D|\\u2013])>"r Sem/Url) WITH (1 ("<\(i?kkut\)>"r ?)) ; # Sermitsiaq.ag-kkut
 MergeCohorts:HeurUrlViaSg002 ("<$1$2$3>"v "$1"v Sem/Url Prop Via Sg Heur/Url Heur/Prop) ("<(w?w?w?\.?\\p{L}+\.\\p{L}+\/?\\p{L}+?)>"r Sem/Url) WITH (1 ("<([\\u002D|\\u2013])>"r)) (2 ("<\(i?kkut\)>"r ?)) ; # ROFUS.NU -kkut
+MergeCohorts ("<$1$2$3$4>"v "$1"v ) ("<(w?w?w?\.?\\p{L}+\.\\p{L}+\/?\\p{L}+?)>"r Sem/Url) WITH (1 ("<\\u002E>"r)) (1* ("<([\\u002D|\\u2013])>"r) LINK 1 ("<\(i?kkut\)>"r ?)) ;
+
 
 #Heur/Mailadresse
 MergeCohorts:HeurMailadresseViaSg ("<$1$2$3$4$5>"v "$1$2$3"v Sem/Mailadresse Prop Via Sg Heur/Mailadresse) ("<(.*)(\\u0040)(\\p{L}+\.\\p{L}+)>"r Sem/Mailadresse) WITH (1 ("<([\\u002D|\\u2013])>"r)) (2 ("<\(i?kkut\)>"r ?))  ; # ahermann@ruc.dk -kkut
@@ -262,7 +268,7 @@ COPY:HeurNumRel_t (Num Abs Pl Heur/Num) EXCEPT (Num Rel Pl Heur/Num) TARGET ("<\
 Substitute:HeurNumAbl ("[0-9].*"r ?) ("$1"v Num Abl Pl Heur/Num) TARGET ("<(\\d+)(\\u0027|\\u002D)?i?mît>"r ?) ;
 
 #Abs
-Substitute:numAbs ("<.*>"r ?) ("<$1>"v "$1"v Num Abs Pl Heur/Num) TARGET ("<(\\d+.*)>"r ?) ; # 35e
+#Substitute:numAbs ("<.*>"r ?) ("<$1>"v "$1"v Num Abs Pl Heur/Num) TARGET ("<(\\d+.*)>"r ?) ; # 35e
 
 
 #Heur abbr
