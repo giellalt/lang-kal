@@ -73,6 +73,7 @@ Amarngivat siulersuisuini ilaasortaasimavoq akissaatikitsullu meeraasa atuanngif
 * 	Heur/Url 
 * 	Sem/CognitiveMaking  = qinersivoq i modsætning til qinerlerpoq
 * 	Sem/Concessive  = koncessive sætninger
+* 	Sem/enter 
 * 	Sem/event 
 * 	Sem/Fem iSem/Fem  = Introduceret som test 20180613. Skal måske ud igen
 * 	Sem/FirstName 
@@ -2991,6 +2992,7 @@ We import tag declaration from `../../src/cg3/disambiguator.cg3`
 - LIST @CODE@guillemets = @CODE@guillemets ; 
 - LIST @CODE@typo = @CODE@typo ; 
 
+- LIST @CODE@apstr-hyph = @CODE@apstr-hyph ; 
 - LIST @CODE@msyn-arg-trm-ins = @CODE@msyn-arg-trm-ins ; 
 - LIST @CODE@msyn-arg-ins-trm = @CODE@msyn-arg-ins-trm ; 
 - LIST @CODE@msyn-arg-abs-rel = @CODE@msyn-arg-abs-rel ; 

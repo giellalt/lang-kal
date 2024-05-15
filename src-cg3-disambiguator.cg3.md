@@ -49,6 +49,7 @@
 * 	Heur/Url 
 * 	Sem/CognitiveMaking  = qinersivoq i modsætning til qinerlerpoq
 * 	Sem/Concessive  = koncessive sætninger
+* 	Sem/enter 
 * 	Sem/event 
 * 	Sem/Fem iSem/Fem  = Introduceret som test 20180613. Skal måske ud igen
 * 	Sem/FirstName 
