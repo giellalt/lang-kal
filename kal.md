@@ -389,11 +389,6 @@ Unification set til CONT og kongruente V ved intransitive V
 
 #### Verbernes leksikalske klasser
 
-### Semantic tags
-Gram/... and different specifications
-
-* LIST Sem/Hum = Sem/Hum <hum> ; 
-
 ## Regelsektion
 
 ###  BEFORE-SECTIONS
