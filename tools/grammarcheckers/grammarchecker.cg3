@@ -50,28 +50,8 @@
 #!! ### Import tag declarations
 #!! We import tag declaration from `../../src/cg3/disambiguator.cg3`
 
-INCLUDE STATIC ../../src/cg3/disambiguator.cg3 ;
+INCLUDE STATIC liststemplates.cg3 ;
 
-#!! ### Tags used only here
-
-LIST QMARK = QMARK ; #!!= - @CODE@
-
-
-#!! ## Grammarchecker tags
-
-LIST &ellipsis = &ellipsis ; #!!= - @CODE@
-LIST &guillemets = &guillemets ; #!!= - @CODE@
-LIST &typo = &typo ; #!!= - @CODE@
-
-
-LIST &apstr-hyph = &apstr-hyph ; #!!= - @CODE@
-LIST &msyn-arg-trm-ins = &msyn-arg-trm-ins ; #!!= - @CODE@
-LIST &msyn-arg-ins-trm = &msyn-arg-ins-trm ; #!!= - @CODE@
-LIST &msyn-arg-abs-rel = &msyn-arg-abs-rel ; #!!= - @CODE@
-LIST &msyn-arg-abs-via = &msyn-arg-abs-via ; #!!= - @CODE@
-LIST &msyn-arg-excl-abl = &msyn-arg-excl-abl ; #!!= - @CODE@
-
-MAPPING-PREFIX = & ; #!!= - @CODE@
 
 
 #!! ## Rule section
@@ -134,12 +114,20 @@ COPY:msyn-arg-abs-rel (Rel &SUGGEST) EXCEPT (Abs &msyn-arg-abs-rel) BEFORE NUMER
 ADDRELATION:msyn-arg-abs-rel ($2) (V) FROM (*-1 Prop LINK 0 (&msyn-arg-abs-rel)) ;
 
 ## Judithe påbegyndt forsøgsvist 20240510
+#codes used in structural descriptions:
+#n = noun
+#v = verb stem
+#[ ] = word in question
+#+CASE* cases in agreement
+
 
 # Nouns
 
 # Abl
-ADD:msyn-arg-excl-abl &msyn-arg-excl-abl TARGET (Lok Gram/Exclm) (0 ("<.*miik>"r) LINK 0* V) ;
-COPY:msyn-arg-excl-abl (N Abl Sg &SUGGEST) EXCEPT (N Lok Sg Gram/Hyb IP Gram/IV V Ind Gram/Exclm) TARGET &msyn-arg-excl-abl ;
+
+#-miik -> -miit
+ADD:excl-abl &excl-abl TARGET (Lok Gram/Exclm) (0 ("<.*miik>"r) LINK 0* V) ;
+COPY:excl-abl (N Abl Sg &SUGGEST) EXCEPT (N Lok Sg Gram/Hyb IP Gram/IV V Ind Gram/Exclm) TARGET &excl-abl ;
 #Atuartullu anartarfiat atuarfiup tunuaniippoq immikkoorluni [atuarfimmiik].
 #[Illoqarfimmiik] allaminngaanneerlunga ilinniariartuuvunga.
 #Takugamisigummigooq [anartarfimmiik] anillaqatigiittugut. 
@@ -147,21 +135,35 @@ COPY:msyn-arg-excl-abl (N Abl Sg &SUGGEST) EXCEPT (N Lok Sg Gram/Hyb IP Gram/IV 
 #Tassa [ungasissumiik] seqernup qinngornera atorlugu qaammartitsisaarut.
 #Assulli kamaammerpunga [ersinngitsukasimmiik] nipangeqquneqarama.
 
-
-LIST human-v = "iser" ;
-LIST nonhuman-n = "matu" ;
-
 # Via
-ADD:msyn-arg-abs-via &msyn-arg-abs-via TARGET Abs (0 Sg LINK 1 Via) (1* VFIN + 1Sg BARRIER V) ;
-ADD:msyn-arg-abs-via &msyn-arg-abs-via TARGET Abs (0 Sg + NON_HUMAN LINK 1 Via) (1* VFIN + 3Sg + human-v BARRIER V) ;
-COPY:msyn-arg-abs-via (Via &SUGGEST) EXCEPT (Abs &msyn-arg-abs-via) BEFORE NUMERUS TARGET &msyn-arg-abs-via ;
-ADDRELATION:msyn-arg-abs-via ($2) (Via) TO (-1 Via LINK 0 &msyn-arg-abs-via) ;
+
+#[n]+CASE* n+CASE*
+ADD:abs-via &abs-via TARGET Abs (0 Sg LINK 1 Via) (1* VFIN + 1Sg BARRIER V) ;
+ADD:abs-via &abs-via TARGET Abs (0 Sg + NON_HUMAN LINK 1 Via) (1* VFIN + 3Sg + humverb BARRIER V) ;
+COPY:abs-via (Via &SUGGEST) EXCEPT (Abs &abs-via) BEFORE NUMERUS TARGET &abs-via ;
+ADDRELATION:abs-via ($2) (Via) TO (-1 Via LINK 0 &abs-via) ;
 #Bussit apuummata [matu] tunorlikkut iserpunga, bussillu tunuaniiginnalerlunga.
 
-SPLITCOHORT ("<$1>"v "$1"v <acro-apo> "<$2>"v "$2"v <acro-case>) ("<(\\p{Lu}+\\u0027)\(mik\)>"r ?) ;
-SPLITCOHORT ("<$1>"v "$1"v <acro> "<$2>"v "$2"v <apo>) ("<\(CIA\)\('\)>"r) (0 (<acro-apo>)) ;
-ADD:apsthr-hyph (&apo-hyph) (<apo>) ;
-COPY ("-"r <hyph> &SUGGEST) EXCEPT ("'"r <apo> &apo-hyph) TARGET (&apo-hyph) ;
+
+# Case agreement
+
+#[n]+CASE* taama v+TIGE+TUQ+CASE*
+ADD:abs-taama-case &abs-taama-case TARGET Abs + $$NUMERUS + measurable-n (T:measuring-v) ;
+#Kinalu isersimaniarpa [tupinnartoq] taama angitigisumi
+#[illu] taama angitigisumi asaasoqarpoq
+ADD:abs-taama-case &abs-taama-case TARGET Abs + $$NUMERUS + opinionable-n (T:opinion-v) ;
+#Ilalumi aamma kanngugipajuppara [sila] taama alianaatsigisumi tammartajaarsimalluni uternissaq.
+ADD:abs-taama-case &abs-taama-case TARGET Abs + $$NUMERUS + countable-n (T:quantitative-v) ;
+#[ukiut] taama amerlatigisuni inuusuttunik atuartitsisarsimavoq
+COPY:abs-taama-case (VSTR:$1 &SUGGEST) EXCEPT (Abs &abs-taama-case) BEFORE NUMERUS TARGET &abs-taama-case (2 (/^\(Abs|Rel|Abl|Via|Aeq|Ins|Trm|Lok\)$/r)) ; 
+
+
+END
+#nedenstående virker selvsagt ikke. tegnsætningstegn genereres ikke for sig, og akronymer med heuristisk analyse kan heller ikke genereres.
+#SPLITCOHORT ("<$1>"v "$1"v <acro-apo> "<$2>"v "$2"v <acro-case>) ("<(\\p{Lu}+\\u0027)\(mik\)>"r ?) ;
+#SPLITCOHORT ("<$1>"v "$1"v <acro> "<$2>"v "$2"v <apo>) ("<(\\p{Lu}+)(\\u0027)>"r) (0 (<acro-apo>)) ;
+#ADD:apsthr-hyph (&apo-hyph) (<apo>) ;
+#COPY ("-"r <hyph> &SUGGEST) EXCEPT ("'"r <apo> &apo-hyph) TARGET (&apo-hyph) ;
 
 # The method is: Add &SUGGEST to a copied reading to *generate* a
 # suggestion form from that reading. The copy should contain the error
@@ -185,6 +187,9 @@ COPY ("-"r <hyph> &SUGGEST) EXCEPT ("'"r <apo> &apo-hyph) TARGET (&apo-hyph) ;
 #€# #!! @RULENAME@
 #€# COPY:use-ellipsis ("…" &SUGGEST) EXCEPT ("...") TARGET (&ellipsis) ;
 #€# #!! @RULENAME@
-END
+
+
+===========================================
+
 #JD: examples to look at later
 #Oqaluttualiornermi unammisitsinermi Niviaq Korneliussen ajugaasut ilagaat ilaatigut uanga, kalaallillu taalliortartup eqqumiitsuliortartullu Jessie Kleemannip [suleqatiginissaa] eqqugassaalluni.
