@@ -51,10 +51,10 @@
 * 	Sem/Concessive  = koncessive sætninger
 * 	Sem/enter 
 * 	Sem/event 
-* 	Sem/Fem iSem/Fem  = Introduceret som test 20180613. Skal måske ud igen
+* 	Sem/Fem  = Introduceret som test 20180613. Skal måske ud igen
 * 	Sem/FirstName 
-* 	Sem/Geo iSem/Geo 
 * 	Sem/Hunt  = qinerlerpoq i modsætning til qinersivoq
+
 * 	Orth/Alt 
 * 	Orth/Arch 
 * 	Orth/Copy  = Alternative append rules
@@ -108,11 +108,6 @@ Gram/... and different specifications
 
 * LIST DivPron = Gram/Cong DivPron ;  = ?
 * LIST Gram/Ord = Gram/Ord Der/Ord ;   =  Ordinaltal #Hedder Der/Ord i den videre kæde.
-
-### Semantic tags
-Gram/... and different specifications
-
-* LIST Sem/Hum = Sem/Hum <hum> ; 
 
 ### Orthographic error tags
 * LIST Orth/Append = Orth/Append <append> ;  = readings added by CG (APPEND)
