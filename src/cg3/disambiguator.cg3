@@ -1705,7 +1705,7 @@ LIST INSTITUTION = Sem/inst
 LIST LANDTRANSPORT = "bussi" "biili" "bil" "nivattaassuaq" "pisummik" <Vground> "ATV" ;
 LIST MWE_POSS = "ullaap-tunge" "Kalaallit Illuutaat" "Kalaallit Nunaat" "Kalaallit Røde Korsiat" "nunap inoqqaavi" "Nunatsinni Inuit Innarluutillit Kattuffiat" "Tuluit Nunaat" "Zombiet Nunaat";
 LIST NON-POSSESSUM = "malunnar" "utoqqaq" ; #en klasse af ord, der sjældent eller aldrig har possessor
-LIST NUMHOVED = "cent" "centimeter" "cm" "dollar" "dollari" "euro" "fase" "fod" "franc" "grad" "gram" "hestekræfter" "hjerter" ("immikkoor" TUQ) "ini" "kapitali" "kapitel" "karsi" "kiilu" "kilo" "kilometer" "km" "klasse" "kulooq" "koruuni" "kr" "kr." "krone" "liter" "m" "meter" "milliardi" "milliard" "miliuuni" "mio" "mio." "million" "millioni" ("nalunaar" UTE) "niveau" "nr" "oori" "paragraf" "%" "procent" "procentpoint" "pct" "pct." ("qupper" NIQ) "ruder" "side" "sipaaq" ("titar" NIQ) "ton" (/".*vej/r) "øre"Sem/Unit ;
+LIST NUMHOVED = "cent" "centimeter" "cm" "dollar" "dollari" "euro" "fase" "fod" "franc" "grad" "gram" "hestekræfter" "hjerter" ("immikkoor" TUQ) "ini" "kapitali" "kapitel" "karsi" "kiilu" "kilo" "kilometer" "km" "km/time" "klasse" "kulooq" "koruuni" "kr" "kr." "krone" "kvadratmeter" "liter" "m" "meter" "milliardi" "milliard" "miliuuni" "mio" "mio." "million" "millioni" ("nalunaar" UTE) "niveau" "nr" "oori" "paragraf" "%" "procent" "procentpoint" "pct" "pct." ("qupper" NIQ) "ruder" "side" "sipaaq" ("titar" NIQ) "ton" (/".*vej/r) "øre" Sem/Unit ;
 LIST NÆPPE-SING = (/"naatsorsor"\ Gram/TV\ UTE/l);
 LIST ORGANISATION = "Atassut" "Demokraatit" "De Konservative" "Enhedslisten" "IA" "Inuit Ataqatigiit" "Kalaallit Røde Korsiat" "KNAK" ("Naalakkersuisoq" Pl) "Naalakkersuisut" "Naleraq" "Nunatsinni Inuit Innarluutillit Kattuffiat" "NIIK" "Nunatta Qitornai" "parti" "Partii Naleraq" "peqatigiiffik" "Røde Kors" "S" "Siumut" "Suleqatigiissitsisut" "V";
 SET Efternavn = Sem/Hum - Fornavn - INSTITUTION - ORGANISATION;
@@ -5768,6 +5768,7 @@ REMOVE:0154 Prop IF (-1 BOS)(1 (/__Gram\/Dem\ Pron__/l)) ; #Arnaq eller arnaq f�
 SELECT:0155 (Prop) OR iProp IF (0 ("<\\p{Lu}.*>"r)) (NEGATE *-1 BOS OR RIGHT BARRIER (*) - PUNCT - ROMANNUMBER)
 (NEGATE 0 Orth/Copy LINK 0 N)#Politiit oqaaseqartartuata oqarnera naapertorlugu innuttaasut qimagussorniarneqarnerminni COVID-19-IMIK tunillatsinnissaminnik ernumallutik qimagussorneqarusussimanngikkaluarput.
 (NEGATE -1 BOS OR ("-") OR (/"atuar"\ Gram/TV\ V\ Imp\ 2Sg\ 3SgO/l) )
+(NEGATE 0 Aeq LINK 1 V + 3Sg OR 4Sg)
  ;
 # Select Prop hvis Wordform starter med stort, men ikke hvis første ord i sætning eller i direkte tale
 
@@ -7644,9 +7645,12 @@ REMOVE:1681A 1SgPoss IF (0 Aeq)(NEGATE *1 1Sg) ;
 
 REMOVE:1681B 2SgPoss IF (0 Prop LINK 1 iProp) ;
 REMOVE:1681C Prop + POSSESSUM1 - AFFINGERET - ("Nuna") IF (0 PROP - POSSESSUM) ;
-REMOVE:1681D N IF (0 Prop - POSSESSUM)(NEGATE *-1 BOS BARRIER WORD) (NEGATE -1 RIGHT)
+REMOVE:1681D N IF (0 Prop - POSSESSUM)
+(NEGATE *-1 BOS BARRIER WORD) 
+(NEGATE -1 RIGHT)
 (NEGATE 0 Orth/Copy LINK 0 N)#Politiit oqaaseqartartuata oqarnera naapertorlugu innuttaasut qimagussorniarneqarnerminni COVID-19-IMIK tunillatsinnissaminnik ernumallutik qimagussorneqarusussimanngikkaluarput.
 (NEGATE -1 BOS OR ("-") OR (/"atuar"\ Gram/TV\ V\ Imp\ 2Sg\ 3SgO/l) )
+(NEGATE 0 ("Naalakkersuisut") + Aeq LINK 1 V + 3Sg OR 4Sg)
 ;
 REMOVE:1681E Prop + AFFINGERET IF (0 Prop - AFFINGERET) (NEGATE 0 PROP + Aeq - AFFINGERET LINK 0 PROP + HTR + TUQ + AFFINGERET) ; #Siulersuisut må ikke vælge Siulersuaq+Aeq
 
