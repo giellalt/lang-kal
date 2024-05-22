@@ -1195,7 +1195,9 @@ SET FossileredeCont =
 
 SET FossileredeContUdenObj =
  (/"ataasiaq"\ KKAAR\ Der/nv\ Gram/TV\ V\ Cont/l) OR
+ (/"ingasaap"\ Gram/TV\ \(i?Sem/.*\ \)?\(Gram/Conj-encl\ \)?V\ Cont/l) OR
  (/"katip"\ Gram/TV\ V\ Cont/l) OR
+ (/"naleqqiup"\ Gram/TV\ V\ Cont/l) OR
  (/"piaare"\ Gram/IV\ V\ Cont/l) OR
  (/"toqqar"\ Gram/TV\ \(Sem/move_dir\ \)?V\ Cont/l) ;
 #kan udvides med flere fra FossileredeCont
@@ -1670,7 +1672,7 @@ SET HUMVERB = humverb OR ORATIOOBLVERB OR <fn:Remove> OR <fn:Take/Bring> OR <fn:
 SET HVVERB_UdenLeksikalisering = HVVERB - (/"allap"\ Gram/HV\ Gram/IV\ USIQ\ Der/vn\ GE\ Der/nv\ Gram/TV\ TAQ/l) - (/"atuar"\ Gram/HV\ Gram/IV\ TUQ/l) - (/"atuar"\ Gram/HV\ Gram/IV\ VIK/l); #forebygger hit på ikke-HV, hvori HV-stammer indgår som i allaaserisaqarpoq
 SET TEMPUSVERB = UGEDAGE | ("ilaanneeriar") | (/"imaali"\ Gram/IV\ LLAR\ Der/vv\ Gram/IV\ V\ Par/l) | ("qaanger") | ("qaqutigut" U) | ("qiteqqup") | ("taamaali") | ("ukiar") | ("ukioq" U) | ("unnup") ;
 
-### affixer og eknlitika LISTs ###
+### affixer og enklitika LISTs ###
 LIST DERCLITDER = (/KASIK\ Der/nn/l) (/PALAAQ\ Der/nn/l) ;
 LIST DERCLITCLIT = KASIK PALAAQ ;
 LIST TIMEAFFIX = (/__RIIR\ Der\/vv\ \(Gram\/..\ \)*V__/l) (/__LIR\ Der\/vv\ \(Gram\/..\ \)*V__/l) ;
@@ -11579,6 +11581,8 @@ REMOVE:9969DT Ind + 3Pl + 3SgO IF (0 Ind + 3Pl - 3SgO LINK -1 Abs + CONJ-LU LINK
 
 REMOVE:9969DU Abs + Sg IF (0 Abs + Pl LINK *1 CONT + 3PlO LINK NEGATE *0 V BARRIER CLB)(NEGATE 0 Rel); #Suliassani annertooq aallartitsinnagu ilaatigut attaveqarfigeqqaarpai – paasiniaaffigalugillu – meeqqanut angerlarsimaffiit Nunatsinni 22-usut, anguniagassamisullu aalajangiullugu, allaaserisamini meeqqat OQAATIGISAAT pingaarnertut qitiutinniarlugit.
 
+REMOVE:9969DV Imp IF (0 ContNeg LINK *0 Imp BARRIER CLB); #Oqariarit TAAMAAGINNARNAK!
+
 ##################################################
 # Specifikke regler til disambiguering af Gram/TV vs. Gram/Db
 ##################################################
@@ -11760,6 +11764,8 @@ REMOVE:9999B Gram/TV + Gram/Refl IF (0 Gram/IV - Gram/Refl); #fjern hvis udisamb
 REMOVE:9999C Gram/TV + Gram/Pass IF (0 Gram/IV - Gram/Pass); #fjern hvis udisambigueret indtil her
 
 REMOVE:9999D Gram/ACR; #fjern forkortelser, der stadigvæk har en anden læsning (jf. Sel0049)
+
+#SELECT:9999E Gram/Abbr IF (0 (/\.>"/l)); #læs forkortelser som forkortelser
 
 ####################################################
 ## Nyt afsnit 20220610 - Semantisk disambiguering ##
@@ -12456,6 +12462,7 @@ REMOVE:LM_X_0003 (/LIR\ Der/vv\ Gram/IV\ Sem/get/l) IF (0 (/TUQ\ Der/vn\ \(iSem/
 REMOVE:LM_X_0004 (/LIR\ Der/vv\ Gram/IV\ i?Sem/get/l) - (/QAR\ Der/nv\ Gram/IV\ iSem/have\ LIR/l); #Anaanaga ungasillilaalereersimagaluarluni tunginnut kamappasilluni allullattaalermat nalunngilara AJORTOQALERSOQ.
 REMOVE:LM_X_0005 (/QAR\ Der/nv\ Gram/IV\ iSem/have\ LIR\ Der/vv\ Gram/IV\ i?Sem/get/l) IF (0 QAR - (/^i?Sem/have/r) - (/^i?Sem/exist/r));
 REMOVE:LM_X_0006 TUQ - (/^i?Sem/cc/r) - (/^i?Sem/H/r) IF (0 TUQ + RUJUK + SUAQ + U); #KIAGUTTORUJUSSUUVUNGA.
+REMOVE:LM_X_0007 (/LIR\ Der/vv\ Gram/TV\ Sem/become_be/l) OR (/LIR\ Der/vv\ Gram/TV\ Sem/cause/l) IF (0 TIP - (/TIP\ Der/vv\ Gram/TV\ iSem/cause/l)); #PISARIAQARTILERUKKU, ikioqqugina immamullu aallartillugu.”
 
 # AFSNIT TIL AT VÆLGE LONGEST MATCHES #
 #Skriv regel, som fjerner morfemets læsninger. Virker kun, hvis der er alternativer, som så bliver valgt. Hvis longest match ikke giver mening, skriv negate og lav undtagelse i forrige afsnit.
