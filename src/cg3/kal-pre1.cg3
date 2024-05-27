@@ -37,15 +37,7 @@ REMOVE:kalaallisooq (/"kalaallisooq"\ SSAQ\ Der/nn\ N\ Via\ Sg\ 3SgPoss/l) IF (0
 SPLITCOHORT ("<$1>"v "$1"v Num Abs Sg "<$2>"v "$2"v CLB) ("<(\\p{N}{4})([.])>"r Gram/Ord) (0 EOS) ;
 SPLITCOHORT ("<$1>"v "$1"v Num Abs Sg "<$2>"v "$2"v CLB) ("<(\\p{N}{4})([.])>"r Gram/Ord) (1 ("¶") + EOS) ;
 
-
-#splitting compounded by error
-SPLITCOHORT ("<$1>"v "$1"v "<$2>"v "$2"v) TARGET ("<(\\p{Lu}?\\p{Ll}+)\\u003A(\\p{Lu}\\p{Ll}+)>"r ?) ; #Jude 20240202
-SPLITCOHORT ("<$1>"v "$1"v "<$2>"v "$2"v) TARGET ("<(\\p{Lu}?\\p{Ll}+)(\\p{Lu}\\p{Ll}+)>"r ?) + HeurGLfinal ; #Jude 20240202
-SPLITCOHORT ("<$1>"v "$1"v "<$2>"v "$2"v) TARGET ("<(\\d\\u002D\\p{Ll}+)(\\p{Lu}\\p{Ll}+)>"r ?) + HeurGLfinal ; #Jude 20240202
-SPLITCOHORT ("<$1>"v "$1"v "<$2>"v "$2"v) TARGET ("<(\\p{Lu}?\\p{Ll}+)(\\p{Lu}+)>"r ?) + HeurGLfinal ; #Jude 20240202
-
 REMCOHORT ("<[\\u002D|\\u2013]>"r) (1 ("<[\\u002D|\\u2013]>"r)) (2 ("<kkut>" ?)) ; # double hyphen or hyphen minus + en dash combination plus case IA-–kkut
-
 
 ### 20240314 efter indførsel af spell-heur stadig brug for:
 #Heuristics
@@ -222,6 +214,10 @@ COPY:HeurACRAblSg ("$1"v Prop Abl Sg Heur/Prop) EXCEPT ("$1"v N Gram/ACR Abl Heu
 
 
 #Heur N 20240314 skal beholdes
+
+#Heur/N Lok
+Substitute:HeurNLokPl (".*" ?) ("$1"v N Lok Pl Heur/N) TARGET ("<(\\p{Ll}+)\\u002Di?ni>"r ?) ; # nyhed-ini
+
 Substitute:HeurNInsPl ("\\p{Ll}.*"r ?) ("$1"v N Ins Pl Heur/N) TARGET ("<(\\p{Ll}+)-i?nik>"r ?) ; # careful, hyphenated only: birk-inik
 
 MergeCohorts:HeurHyphenNInsSg ("<$1$2$3>"v "$1"v N Ins Sg Heur/N) ("<(\\p{Ll}+)>"r) WITH (1 ("<(\\u002D)>"r)) (2 ("<\(i?mik\)>"r)) ; #input with space error after hyphen: hash- imik
