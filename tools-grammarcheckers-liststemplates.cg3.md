@@ -13,6 +13,7 @@
 - LIST @CODE@msyn-arg-abs-rel = @CODE@msyn-arg-abs-rel ; 
 
 - LIST @CODE@apstr-hyph = @CODE@apstr-hyph ; 
+- LIST @CODE@abs-rel = @CODE@abs-rel ; 
 - LIST @CODE@abs-taama-case = @CODE@abs-taama-case ; 
 - LIST @CODE@abs-via = @CODE@abs-via ; 
 - LIST @CODE@excl-abl = @CODE@excl-abl ; 
