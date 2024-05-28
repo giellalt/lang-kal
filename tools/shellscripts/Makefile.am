@@ -16,3 +16,4 @@ bin_SCRIPTS=ukal-gt.sh \
 	kal-tokenise \
 	kal-spell-heur \
 	# Let this line end the definition
+include $(top_srcdir)/../giella-core/am-shared/devtest-include.am
