@@ -13,8 +13,7 @@ sprogsekretariat) and Divvun & Giellatekno, Oqaasileriffik has built
 a full-sized Greenlandic analyser.
 
 Central developers have been:
-Per Langgård, Liv Molich, Nani Nilsen, Trond Trosterud, Paneeraq Nielsen,
-Anna Karina Madsen, Beatrine Heilman, Judithe Denbæk, Tino Didriksen and Sjur Moshagen.
+Per Langgård, Liv Molich, Najannguaq Nielsen, Trond Trosterud, Paneeraq Nielsen, Beatrine Heilman, Judithe Denbæk, Tino Didriksen and Sjur Moshagen.
 
 It is in use in a Greenlandic spellchecker and in a set
 of pedagogical programs for Greenlandic.
@@ -42,10 +41,8 @@ documentation](https://giellalt.uit.no/index.html).
 
 In order to analyse Greenlandic text, you may paste in text in the
 window [here](http://giellatekno.uit.no/cgi/d-kal-eng.html). The machine returns
-text with all possible analyses. The tags are listed in the document **root.lexc** linked to below. The parser gives tags for parts of speech, morphosyntactic categories, clitecs, and
-derivational tags. The derivational affixes have tags carrying the same
-names as the affixes themselves. In addition to giving all possible tags, the analyser also has a
-*disambiguation mode*, that gives only analyses appropriate in the given
+text with all possible analyses. The tags are listed in the document **root.lexc** linked to below. The parser gives tags for parts of speech, morphosyntactic categories, clitics, and derivational tags. The derivational affixes have tags carrying the same names as the affixes themselves. In addition to giving all possible tags, the analyser also has a
+ *disambiguation mode*, that gives only analyses appropriate in the given
 context.
 
 It is also possible to generate wordforms, by pasting the lemma and
