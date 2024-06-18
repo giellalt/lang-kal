@@ -62,6 +62,8 @@ Navnelexikon er i ateq-kal-lex.txt.
 
 ** Lexicon **ZcitationsformZ**   Et særligt lexicon til literals i citationstegn med placeholder QuotedHyphen (står i acronyms.lexc)
 
+** Lexicon **ZcitationsformZ_Num**   Copy of ZcitationsformZ, but yielding Num
+
 ** Lexicon **Bogtitel**  Nyt lex til bogtitler uden citationstegn
 
 ** Lexicon **Z1ateqZ**  
