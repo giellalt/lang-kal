@@ -265,10 +265,10 @@ Set for kasus, possessum, appellativ, ulike nomentyper
 - **LIST IV2Pl = (Abs 2Pl) (V 2Pl) ;** =
 - **LIST IV3Pl = (Abs Pl) (V 3Pl) ;** =
 - **LIST IV4Pl = (Abs Pl) (V 4Pl) ;** =
-- **SET IV_SUBJ@CODE@ = IV1Sg OR IV2Sg OR IV3Sg OR IV4Sg OR IV1Pl OR IV2Pl OR IV3Pl OR IV4Pl;** =
+- **SET IV_SUBJ& = IV1Sg OR IV2Sg OR IV3Sg OR IV4Sg OR IV1Pl OR IV2Pl OR IV3Pl OR IV4Pl;** =
 
-- **SET IV_SG_SUBJ@CODE@ = IV1Sg OR IV2Sg OR IV3Sg OR IV4Sg ;**
-- **SET IV_PL_SUBJ@CODE@ = IV1Pl OR IV2Pl OR IV3Pl OR IV4Pl;**
+- **SET IV_SG_SUBJ& = IV1Sg OR IV2Sg OR IV3Sg OR IV4Sg ;**
+- **SET IV_PL_SUBJ& = IV1Pl OR IV2Pl OR IV3Pl OR IV4Pl;**
 
 - **LIST POSS34Sg_POSSSg = (Rel Sg) (3SgPoss Sg) ;**
 - **LIST POSS34Sg_POSSPl = (Rel Sg) (3SgPoss Pl) ;**
@@ -277,7 +277,7 @@ Set for kasus, possessum, appellativ, ulike nomentyper
 - **LIST NUM34POSSSg = (Rel Num) (3SgPoss) ;**
 - **LIST NUM34POSSPl = (Rel Num) (3PlPoss) ;**
 
-- **SET POSS34_POSS@CODE@ = POSS34Sg_POSSSg OR POSS34Sg_POSSPl OR POSS34Pl_POSSSg OR POSS34Pl_POSSPl OR NUM34POSSSg OR NUM34POSSPl;**
+- **SET POSS34_POSS& = POSS34Sg_POSSSg OR POSS34Sg_POSSPl OR POSS34Pl_POSSSg OR POSS34Pl_POSSPl OR NUM34POSSSg OR NUM34POSSPl;**
 
 Objekts-set introduceret 20170416 - virkede ikke
 
@@ -348,12 +348,12 @@ SUBJTRANSVERB er alle ovenfor
 - **LIST NÆPPE_KOMPARATIV = (/"eqquup" Gram/IV TIP Der/vv Gram/TV HTR Der/vv Gram/IV NIQ/l) (/"unioqqup" Gram/IV TIP Der/vv Gram/TV HTR Der/vv Gram/IV NIQ/l);** Leksikaliseringer som normalt analyseres som NIQ+U frem for NIRU
 - **LIST AGENS_NOUN = ("katersugaq") ;**
 
-- **SET IVTVSUBJ@CODE@ = IV_SUBJ@CODE@ | SUBJTRANSVERB@CODE@ ;**
+- **SET IVTVSUBJ& = IV_SUBJ& | SUBJTRANSVERB& ;**
 
 Unification set til CONT og subjekter, kun for intransitive CONT.
 - **LIST ContSg = (Sg Abs) 4Sg ;**
 - **LIST ContPl = (Pl Abs) 4Pl ;**
-- **SET Cont@CODE@ = ContSg OR ContPl ;**
+- **SET Cont& = ContSg OR ContPl ;**
 
 Unification set til CONT og kongruente V ved intransitive V
 

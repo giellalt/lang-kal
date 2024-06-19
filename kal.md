@@ -285,10 +285,10 @@ Set for kasus, possessum, appellativ, ulike nomentyper
 - **LIST IV2Pl = (Abs 2Pl) (V 2Pl) ;** =
 - **LIST IV3Pl = (Abs Pl) (V 3Pl) ;** =
 - **LIST IV4Pl = (Abs Pl) (V 4Pl) ;** =
-- **SET IV_SUBJ@CODE@ = IV1Sg OR IV2Sg OR IV3Sg OR IV4Sg OR IV1Pl OR IV2Pl OR IV3Pl OR IV4Pl;** =
+- **SET IV_SUBJ& = IV1Sg OR IV2Sg OR IV3Sg OR IV4Sg OR IV1Pl OR IV2Pl OR IV3Pl OR IV4Pl;** =
 
-- **SET IV_SG_SUBJ@CODE@ = IV1Sg OR IV2Sg OR IV3Sg OR IV4Sg ;**
-- **SET IV_PL_SUBJ@CODE@ = IV1Pl OR IV2Pl OR IV3Pl OR IV4Pl;**
+- **SET IV_SG_SUBJ& = IV1Sg OR IV2Sg OR IV3Sg OR IV4Sg ;**
+- **SET IV_PL_SUBJ& = IV1Pl OR IV2Pl OR IV3Pl OR IV4Pl;**
 
 - **LIST POSS34Sg_POSSSg = (Rel Sg) (3SgPoss Sg) ;**
 - **LIST POSS34Sg_POSSPl = (Rel Sg) (3SgPoss Pl) ;**
@@ -297,7 +297,7 @@ Set for kasus, possessum, appellativ, ulike nomentyper
 - **LIST NUM34POSSSg = (Rel Num) (3SgPoss) ;**
 - **LIST NUM34POSSPl = (Rel Num) (3PlPoss) ;**
 
-- **SET POSS34_POSS@CODE@ = POSS34Sg_POSSSg OR POSS34Sg_POSSPl OR POSS34Pl_POSSSg OR POSS34Pl_POSSPl OR NUM34POSSSg OR NUM34POSSPl;**
+- **SET POSS34_POSS& = POSS34Sg_POSSSg OR POSS34Sg_POSSPl OR POSS34Pl_POSSSg OR POSS34Pl_POSSPl OR NUM34POSSSg OR NUM34POSSPl;**
 
 Objekts-set introduceret 20170416 - virkede ikke
 
@@ -368,12 +368,12 @@ SUBJTRANSVERB er alle ovenfor
 - **LIST NÆPPE_KOMPARATIV = (/"eqquup" Gram/IV TIP Der/vv Gram/TV HTR Der/vv Gram/IV NIQ/l) (/"unioqqup" Gram/IV TIP Der/vv Gram/TV HTR Der/vv Gram/IV NIQ/l);** Leksikaliseringer som normalt analyseres som NIQ+U frem for NIRU
 - **LIST AGENS_NOUN = ("katersugaq") ;**
 
-- **SET IVTVSUBJ@CODE@ = IV_SUBJ@CODE@ | SUBJTRANSVERB@CODE@ ;**
+- **SET IVTVSUBJ& = IV_SUBJ& | SUBJTRANSVERB& ;**
 
 Unification set til CONT og subjekter, kun for intransitive CONT.
 - **LIST ContSg = (Sg Abs) 4Sg ;**
 - **LIST ContPl = (Pl Abs) 4Pl ;**
-- **SET Cont@CODE@ = ContSg OR ContPl ;**
+- **SET Cont& = ContSg OR ContPl ;**
 
 Unification set til CONT og kongruente V ved intransitive V
 
@@ -3019,23 +3019,23 @@ Rules for quotation marks.
 
 ## Grammarchecker tags
 - LIST QMARK = QMARK ; 
-- MAPPING-PREFIX = @CODE@ ; 
+- MAPPING-PREFIX = & ; 
 
-- LIST @CODE@ellipsis = @CODE@ellipsis ; 
-- LIST @CODE@guillemets = @CODE@guillemets ; 
-- LIST @CODE@typo = @CODE@typo ; 
+- LIST &ellipsis = &ellipsis ; 
+- LIST &guillemets = &guillemets ; 
+- LIST &typo = &typo ; 
 
-- LIST @CODE@msyn-arg-trm-ins = @CODE@msyn-arg-trm-ins ; 
-- LIST @CODE@msyn-arg-ins-trm = @CODE@msyn-arg-ins-trm ; 
-- LIST @CODE@msyn-arg-abs-rel = @CODE@msyn-arg-abs-rel ; 
+- LIST &msyn-arg-trm-ins = &msyn-arg-trm-ins ; 
+- LIST &msyn-arg-ins-trm = &msyn-arg-ins-trm ; 
+- LIST &msyn-arg-abs-rel = &msyn-arg-abs-rel ; 
 
-- LIST @CODE@apstr-hyph = @CODE@apstr-hyph ; 
-- LIST @CODE@abs-rel = @CODE@abs-rel ; 
-- LIST @CODE@abs-taama-case = @CODE@abs-taama-case ; 
-- LIST @CODE@abs-trm = @CODE@abs-trm ; 
-- LIST @CODE@abs-via = @CODE@abs-via ; 
-- LIST @CODE@excl-abl = @CODE@excl-abl ; 
-- LIST @CODE@ins-abl = @CODE@ins-abl ; 
+- LIST &apstr-hyph = &apstr-hyph ; 
+- LIST &abs-rel = &abs-rel ; 
+- LIST &abs-taama-case = &abs-taama-case ; 
+- LIST &abs-trm = &abs-trm ; 
+- LIST &abs-via = &abs-via ; 
+- LIST &excl-abl = &excl-abl ; 
+- LIST &ins-abl = &ins-abl ; 
 
 * * *
 
