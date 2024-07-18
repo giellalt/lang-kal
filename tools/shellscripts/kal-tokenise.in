@@ -418,6 +418,35 @@ sub analyze {
             }
          }
 
+         # Try to merge sequential un-analyzed chunks
+         if ($cs[$i]->[1] =~ / \?/) {
+            my $j = $i;
+            my $e = $i;
+            for ( ; $j<scalar(@cs) ; ++$j) {
+               if ($cs[$j]->[0] !~ /^[\s\pZ]*$/ && $cs[$j]->[1] !~ / \?/) {
+                  last;
+               }
+               $e = $j;
+            }
+            $j = $i;
+            while ($j != $e) {
+               my $combo = '';
+               for ( ; $j<=$e ; ++$j) {
+                  if ($cs[$j]->[0] =~ /^"<(.+)>"/) {
+                     $combo .= $1;
+                  }
+               }
+               my $m = call_tokenizer($combo);
+               if ($m =~ /\t"[^\n]*"[^?\n]+\n/) {
+                  my @ncs = parse_cohorts($m);
+                  splice(@cs, $i, $e - $i + 1, @ncs);
+                  last;
+               }
+               $j = $i;
+               --$e;
+            }
+         }
+
          if ($cs[$i]->[1] !~ / \?/) {
             next;
          }
