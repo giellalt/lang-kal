@@ -19,6 +19,7 @@
 - LIST &msyn-abs-via = &abs-via ; 
 - LIST &msyn-excl-abl = &excl-abl ; 
 - LIST &msyn-ins-abl = &ins-abl ; 
+- LIST &syn-abs-wordorder = &syn-abs-wordorder ; 
 
 * * *
 
