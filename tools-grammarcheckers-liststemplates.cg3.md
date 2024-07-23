@@ -13,12 +13,12 @@
 - LIST &msyn-arg-abs-rel = &msyn-arg-abs-rel ; 
 
 - LIST &apstr-hyph = &apstr-hyph ; 
-- LIST &abs-rel = &abs-rel ; 
-- LIST &abs-taama-case = &abs-taama-case ; 
-- LIST &abs-trm = &abs-trm ; 
-- LIST &abs-via = &abs-via ; 
-- LIST &excl-abl = &excl-abl ; 
-- LIST &ins-abl = &ins-abl ; 
+- LIST &msyn-abs-rel = &abs-rel ; 
+- LIST &msyn-abs-taama-case = &abs-taama-case ; 
+- LIST &msyn-abs-trm = &abs-trm ; 
+- LIST &msyn-abs-via = &abs-via ; 
+- LIST &msyn-excl-abl = &excl-abl ; 
+- LIST &msyn-ins-abl = &ins-abl ; 
 
 * * *
 
