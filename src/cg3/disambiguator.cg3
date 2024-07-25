@@ -27,7 +27,7 @@
 # 		- Verber (linie 862):
 # 		- Nominer (linie 885)
 # 		- Partikler (linie 900)
-# 	- Lexical sets (907)
+# 	- Lexical sets (907)L
 # 		- Verberne (linie 910)
 # 		- Nominerne (linie 931)
 # 	- Tags (line 965)
@@ -1718,7 +1718,7 @@ LIST DERCLITCLIT = KASIK PALAAQ ;
 LIST TIMEAFFIX = (/__RIIR\ Der\/vv\ \(Gram\/..\ \)*V__/l) (/__LIR\ Der\/vv\ \(Gram\/..\ \)*V__/l) ;
 
 ### mix LISTs (lister med blandede slags elementer) ###
-LIST AIRTRANSPORT = "timmi" "helikopter" "helikopteri" "qulimiguulik" "timmisartoq" "zeppeliner" ;
+LIST AIRTRANSPORT = "timmi" (/"timmi"\ Gram/IV\ TAR\ Der/vv\ Gram/IV\ TUQ\ Der/vn\ N/l) "helikopter" "helikopteri" "qulimiguulik" "timmisartoq" "zeppeliner" ;
 LIST COMPOUND_N = "Windows" "Linux" "program" ;
 LIST DISEASE = "corona" "coronavirus" "COVID" "COVID-19" "COVID19" "gigt";
 LIST EVENT = "Avannaata Qimussersua" "løb" "marathon" "Nuuk International Filmfestival" "stafet" "stafetløb" ; #DHL stafet, CPH Marathon
@@ -1892,6 +1892,8 @@ BEFORE-SECTIONS
 
 SUBSTITUTE:S0001 ("/" PUNCT) ("/" Gram/Conj-encl Conj) TARGET ("</>") - Conj ;
 
+REMOVE:tidligX (/NIR\ Der/vv\ \(Gram/IV\ \)?TUQ/l) IF (0 (/NIR\ Der/vv\ Gram/IV\ V\ Par/l));#En meget tidlig regel, der reparerer noget af REMOVE:MorfLoc0005, der sletter alt for mange Par  ##KL: minus NIR EX #Tassa Paul Watson *Japaniliaanneqassanersoq eqqartuussivimmi aalajangerneqartinnagu Kalaallit Nunaanni aggustip 15-iata tungaanut tigummigallagaassaaq.
+
 REMOVE:Symbol Symbol IF (0 PUNCT) ;
 REMOVE:MIUQ1 (MIUQ) IF (0 (MIU)) ;
 REMOVE:MIUQ2 ("(.*)mioq"r) IF (0 (VSTR:"$1miu.*"r) + N );
@@ -1964,9 +1966,11 @@ REMOVE:MorfLoc0002 (*) - LOCSEM (0 LocVr)
 (NEGATE 0 POSSESSUM1) ; #Jude 20231016
 REMOVE:MorfLoc0003 (*) - LocLex (0 LocVr) ; #Jude 20231013
 REMOVE:MorfLoc0004 (*) - LOCSEM (1 LocVr) ; #Jude 20231013
-REMOVE:MorfLoc0005 (*) - LocSuf (0 LocVr) #Jude 20231013
+REMOVE:MorfLoc0005 (*) - LocSuf  (0 LocVr ) #Jude 20231013
 (NEGATE 0 POSSESSUM1) #Jude 20231016
-(NEGATE 0 ("aallakaatip") OR ("aallar") + KAR + A + TIP); #KW18052024
+(NEGATE 0 ("aallakaatip") OR ("aallar") + KAR + A + TIP)#KW18052024
+##KL: minus NIR EX #Tassa Paul Watson *Japaniliaanneqassanersoq eqqartuussivimmi aalajangerneqartinnagu Kalaallit Nunaanni aggustip 15-iata tungaanut tigummigallagaassaaq.
+; 
 REMOVE:MorfLoc0006 (*) - SEM/L (1 LocB) #Jude 20231013
 (NEGATE 0 ("iga") + VIK)
 (NEGATE 0 ("immiaq") + TUR + VIK)
@@ -3393,7 +3397,7 @@ SUBSTITUTE:adv3lux (LU)(ADV-LU) TARGET LU + Pron OR LU + iPron
 SUBSTITUTE:adv4lux (LU)(ADV-LU) TARGET LU IF (-1S ("qanoq") OR ("sussa"))
 (NEGATE 0 CONT + 4Pl LINK 1 NIQ + Pl) #taakkunani takuneqarsinnaassaaq oqaatsit qanoq ALLANNEQARLUTILLU naanilersorneqarnissaat.
 (NEGATE 1 Adv)
-(NEGATE -1 CONT LINK 1 _TARGET_ LINK 1 CONT + NIR)#Tassa qanoq imaqartissanerlugu QANORLU qalipaasersussanerlugu nammineerluta aalajangigassaraarput.
+(NEGATE -1 $$MODUS LINK 1 _TARGET_ LINK 1 $$MODUS + NIR)#Tassa qanoq imaqartissanerlugu QANORLU qalipaasersussanerlugu nammineerluta aalajangigassaraarput.
 ;
 SUBSTITUTE:adv5lux (LU)(ADV-LU) TARGET LU + GALUAR + Cont IF (1 VFIN) ; #SUBJ APPIKKALUARLUNILU qissaserpoq
 SUBSTITUTE:adv5luxX (LU)(ADV-LU) TARGET LU + GALUAR + Con ;
@@ -3421,8 +3425,9 @@ SUBSTITUTE:adv18lux (LU)(ADV-LU) TARGET LU (-1 Adv)
 ;
 SUBSTITUTE:adv19lux (LU)(ADV-LU) TARGET LU + VFIN (-1 V - VFIN - CONJ-LU - CONJ-C) ;
 #SUBSTITUTE:adv20lux (LU)(ADV-LU) TARGET LU (-1 (/\ NIQ\ Der\/vn\ N\ /l)) ;
-SUBSTITUTE:adv21lux (LU)(ADV-LU) TARGET LU (0 OTHERTIME - ("piffik") - (/"kingulleq"\ ARSUK/l) - POSSESSUM12)
+SUBSTITUTE:adv21lux (LU)(ADV-LU) TARGET LU (0 OTHERTIME - ("piffik") - (/"kingulleq"\ ARSUK/l) - POSSESSUM12 - ("kingorna" Adv) )
 (NEGATE 0 OTHERTIME LINK -1 OTHERTIME)#Ilisimatuut oqaatigaat, Kalaallit Nunaanni appat upernaakkut AASAMILU piniarneqartarnertik nungukkiartuutigigaat.
+(NEGATE 0 ("kingorna" Adv))
  ;
 #SUBSTITUTE:adv22lux (LU)(ADV-LU) TARGET LU (0 Aeq) ;
 SUBSTITUTE:adv23lux (LU)(ADV-LU) TARGET LU (0 ("taamaali") + CONT) ; #taamaalillunga ...
@@ -7897,6 +7902,8 @@ SELECT:1689 Adv + ("ima") (NEGATE 0 ("imaluunniit")) ;#IF (1 ("isikku")) ; #For 
 REMOVE:1690A ONETOTWO + Abs + Sg + 4SgPoss IF (0 ONETOTWO + Abs + Pl + 4SgPoss)(NEGATE 1 Abs + Sg); #Kavaajani GUMMERSUANILU natermiittut tigugamigit sinittarfinniit anivoq.
 
 SELECT:1690B (/"mattup"\ Gram/IV\ SIMA\ Der/vv\ Orth/Arch\ Gram/IV/l) IF (-1 (/"angerlar"\ Gram/IV\ SIMA/l) + CONT) ;#Idiosynkratisk brug af archaisk sandhi i officiel 'angerlarsimalluni mattusimaneq/ hjemmekarantæne
+
+REMOVE:1690Cx ( "kinguneq" N Abs Sg 3SgPoss CONJ-LU ) IF ( 0 ("kingorna" CONJ-LU)  ) ;
 
 SELECT:1690C Abs + Sg - 2SgPoss - Sem/Unit - SUB IF (*1C INTRANSVERB + 3Sg BARRIER Cont + 3SgO OR KOMMA)
 (NEGATE 0 Abs + Pl LINK *1 3Pl OR 4Pl BARRIER VFIN)
