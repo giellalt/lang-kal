@@ -1110,7 +1110,7 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 | --- 
 | --- 
 
-* LEXICON tup_k_reduceret  nalik og assik
+* LEXICON tup_k_reduceret  nalik
 
 | --- 
 | --- 
