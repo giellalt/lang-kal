@@ -3032,12 +3032,12 @@ Rules for quotation marks.
 - LIST &msyn-arg-abs-rel = &msyn-arg-abs-rel ; 
 
 - LIST &apstr-hyph = &apstr-hyph ; 
-- LIST &msyn-abs-rel = &abs-rel ; 
-- LIST &msyn-abs-taama-case = &abs-taama-case ; 
-- LIST &msyn-abs-trm = &abs-trm ; 
-- LIST &msyn-abs-via = &abs-via ; 
-- LIST &msyn-excl-abl = &excl-abl ; 
-- LIST &msyn-ins-abl = &ins-abl ; 
+- LIST &msyn-abs-rel = &msyn-abs-rel ; 
+- LIST &msyn-abs-taama-case = &msyn-abs-taama-case ; 
+- LIST &msyn-abs-trm-atatillugu = &msyn-abs-trm-atatillugu ; 
+- LIST &msyn-abs-via = &msyn-abs-via ; 
+- LIST &msyn-excl-abl = &msyn-excl-abl ; 
+- LIST &msyn-ins-abl = &msyn-ins-abl ; 
 - LIST &syn-abs-wordorder = &syn-abs-wordorder ; 
 
 * * *
