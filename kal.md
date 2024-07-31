@@ -3038,7 +3038,8 @@ Rules for quotation marks.
 - LIST &msyn-abs-via = &msyn-abs-via ; 
 - LIST &msyn-excl-abl = &msyn-excl-abl ; 
 - LIST &msyn-ins-abl = &msyn-ins-abl ; 
-- LIST &msyn-abs-agreement = &msyn-abs-agreement ; 
+- LIST &msyn-obj-marking-abs-3PlO = &msyn-obj-marking-abs-3PlO ; 
+- LIST &msyn-subj-marking-abs-HTR = &msyn-subj-marking-abs-HTR ; 
 - LIST &syn-abs-wordorder = &syn-abs-wordorder ; 
 - LIST &syn-TUQ-wordorder = &syn-TUQ-wordorder ; 
 
