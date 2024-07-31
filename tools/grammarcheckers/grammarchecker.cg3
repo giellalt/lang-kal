@@ -185,8 +185,33 @@ ADD:msyn-2Pl1Pl0-1Pl3SgO &msyn-con-2Pl1Pl0-1Pl3SgO  (2Pl 1PlO) + Con (-1 (Abs Sg
 COPY (1Pl 3SgO &SUGGEST) EXCEPT (2Pl 1PlO &msyn-con-2Pl1Pl0-1Pl3SgO) TARGET &msyn-con-2Pl1Pl0-1Pl3SgO ; 
 #Taaguullu skærm [pigereersimagutsigut], assut utersaarfigitikkusukkaluarpunga taajutaanik.
 
+### agreement ###
+ADD:msyn-abs-agreement &msyn-abs-agreement TARGET (HTR Der/vv Gram/IV) IF (*-1 Abs BARRIER (*) - Abs LINK *-1 Rel BARRIER (*) - Rel);
+
+
+#FEJL
+#ilinniartitsisup meeqqat ilinniartitsivoq
+#KORREKTIONER
+#ilinniartitsisup meeqqat {ilinniartippai}
+#{ilinniartisisoq meeqqanik} ilinniartitsivoq
+
+COPY (&SUGGEST) EXCEPT (HTR Der/vv Gram/IV) AFTER NUMERUS TARGET &msyn-abs-agreement ;
+
+SUBSTITUTE (&msyn-abs-agreement) (co&msyn-abs-agreement) TARGET (&SUGGEST);
+MAP:LOCK_READING (&SUGGEST) (&SUGGEST);
+
+ADD:msyn-abs-agreement &msyn-abs-agreement TARGET Abs IF (*1 (HTR Der/vv Gram/IV &msyn-abs-agreement)) ;
+
+
+ADDRELATION ($2 LEFT) (HTR Der/vv Gram/IV &msyn-abs-agreement) TO (*-1 (Abs &msyn-abs-agreement));
+
+
+ADD:msyn-abs-agreement &msyn-abs-agreement TARGET Rel IF (*1 (Abs &msyn-abs-agreement)) ;
+
+ADDRELATION ($3 LEFT) (HTR Der/vv Gram/IV &msyn-abs-agreement) TO (*-1 (Rel &msyn-abs-agreement));
+
 ### word order ###
-ADD:syn-abs-wordorder &syn-abs-wordorder TARGET (N Abs) + $$NUMERUS IF (*-1 (3SgPoss Abs) + $$NUMERUS BARRIER (*) - Abs LINK *-1 (N Rel Sg));
+ADD:syn-abs-wordorder &syn-abs-wordorder TARGET (N Abs) + $$NUMERUS IF (*-1 (3SgPoss Abs) + $$NUMERUS BARRIER (*) - Abs LINK *-1 (N Rel Sg))(NEGATE *0 &msyn-abs-agreement)(NEGATE 0  &msyn-abs-agreement);
 
 MOVE:syn-abs-wordorder (N &syn-abs-wordorder) AFTER (*-1 (N Rel) LINK -1 BOS);
 
@@ -194,7 +219,7 @@ MOVE:syn-abs-wordorder (N &syn-abs-wordorder) AFTER (*-1 (N Rel) LINK -1 BOS);
 # Nakutitseriarnerisa nallinnaannartut {tunuanniittoq iluarinninnera} takusinnaasimasariaqaraluarpara. > Nakutitseriarnerisa nallinnaannartut  iluarinninnera tunuanniittoq takusinnaasimasariaqaraluarpara.
 
 ## adjektivisk nomen substantivisk nomen > substantivisk nomen adjektivisk nomen ##
-ADD:syn-TUQ-wordorder &syn-TUQ-wordorder TARGET (/TUQ\ Der/vn\ N\ /l) + $$NUMERUS IF (1 N + $$NUMERUS LINK NEGATE 0 TUQ);
+ADD:syn-TUQ-wordorder &syn-TUQ-wordorder TARGET (/TUQ\ Der/vn\ N\ /l) + $$NUMERUS IF (1 N + $$NUMERUS LINK NEGATE 0 TUQ)(NEGATE *0 &msyn-abs-agreement)(NEGATE 0  &msyn-abs-agreement);
 # Gangersuarmi pisuttuarujoortalerpunga, inuk kisima nipangissananga nipikitsumik {niaqunniittut nipit} eqqumiitsut oqaluuterujoortalerlugit.
 
 MOVE:syn-TUQ-wordorder (N &syn-TUQ-wordorder) AFTER (1 N - TUQ);
