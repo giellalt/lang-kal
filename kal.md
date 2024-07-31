@@ -3039,6 +3039,7 @@ Rules for quotation marks.
 - LIST &msyn-excl-abl = &msyn-excl-abl ; 
 - LIST &msyn-ins-abl = &msyn-ins-abl ; 
 - LIST &syn-abs-wordorder = &syn-abs-wordorder ; 
+- LIST &syn-TUQ-wordorder = &syn-TUQ-wordorder ; 
 
 * * *
 
