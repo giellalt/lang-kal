@@ -186,32 +186,72 @@ COPY (1Pl 3SgO &SUGGEST) EXCEPT (2Pl 1PlO &msyn-con-2Pl1Pl0-1Pl3SgO) TARGET &msy
 #Taaguullu skærm [pigereersimagutsigut], assut utersaarfigitikkusukkaluarpunga taajutaanik.
 
 ### agreement ###
-ADD:msyn-abs-agreement &msyn-abs-agreement TARGET (HTR Der/vv Gram/IV) IF (*-1 Abs BARRIER (*) - Abs LINK *-1 Rel BARRIER (*) - Rel);
+ADD:msyn-obj-marking-abs-3PlO &msyn-obj-marking-abs-3PlO TARGET (HTR Der/vv Gram/IV) IF (*-1 Abs BARRIER (*) - Abs LINK *-1 Rel BARRIER (*) - Rel);
 
 
 #FEJL
-#ilinniartitsisup meeqqat ilinniartitsivoq
+#ilinniartitsisup meeqqat ilinniartitsivoq REL ABS HTR
 #KORREKTIONER
-#ilinniartitsisup meeqqat {ilinniartippai}
-#{ilinniartisisoq meeqqanik} ilinniartitsivoq
+#ilinniartitsisup meeqqat {ilinniartippai} (objektsmarkering på verbet + fjerne heltransitivitet) REL ABS (*HTR 3PlO)
+#{ilinniartisisoq meeqqanik} ilinniartitsivoq (instrumentalis på objektet og subjektet til absolutiv) --- ABS INS HTR
 
-COPY (&SUGGEST) EXCEPT (HTR Der/vv Gram/IV) AFTER NUMERUS TARGET &msyn-abs-agreement ;
-
-SUBSTITUTE (&msyn-abs-agreement) (co&msyn-abs-agreement) TARGET (&SUGGEST);
-MAP:LOCK_READING (&SUGGEST) (&SUGGEST);
-
-ADD:msyn-abs-agreement &msyn-abs-agreement TARGET Abs IF (*1 (HTR Der/vv Gram/IV &msyn-abs-agreement)) ;
+#PERS/NUM AGREEMENT ABS-3PlO - msyn-obj-marking-abs-3PlO
+#HTR-SUBJ-ABS - msyn-subj-marking-abs-HTR
 
 
-ADDRELATION ($2 LEFT) (HTR Der/vv Gram/IV &msyn-abs-agreement) TO (*-1 (Abs &msyn-abs-agreement));
+#ilinniartitsisoq angajukkunnik ilinniartitsivoq
+#rettelse 1: ilinniartitsisup angajukkut ilinniartippai
+#rettelse 2: ilinniartitsisoq angajukkunnik ilinniartitsivoq
+
+#COPY:msyn-abs-agreement (3PlO &SUGGEST) EXCEPT (HTR Der/vv Gram/IV) TARGET &msyn-abs-agreement IF (*-1 (Pl Abs));
+
+COPY:msyn-obj-marking-abs-3PlO (VSTR:3$1O &SUGGEST) EXCEPT (HTR Der/vv Gram/IV) TARGET &msyn-obj-marking-abs-3PlO IF (*-1 (/\([PS][lg]\)/r Abs));
+
+#ilinniar+TIP+Gram/TV+V+Ind+3Sg
+#"ilinniar" Gram/IV TIP Der/vv Gram/TV Gram/TV V Ind 3Sg 3PlO
 
 
-ADD:msyn-abs-agreement &msyn-abs-agreement TARGET Rel IF (*1 (Abs &msyn-abs-agreement)) ;
+ADD:msyn-obj-marking-abs-3PlO &msyn-obj-marking-abs-3PlO TARGET Abs IF (*1 (HTR Der/vv Gram/IV &msyn-obj-marking-abs-3PlO)) ;
 
-ADDRELATION ($3 LEFT) (HTR Der/vv Gram/IV &msyn-abs-agreement) TO (*-1 (Rel &msyn-abs-agreement));
+
+ADDRELATION ($2 LEFT) (HTR Der/vv Gram/IV &msyn-obj-marking-abs-3PlO) TO (*-1 (Abs &msyn-abs-agreement));
+
+#COPY:msyn-obj-marking-abs-3PlO (SUGGEST) TARGET (Abs &msyn-obj-marking-abs-3PlO) ;
+
+ADD:msyn-obj-marking-abs-3PlO &msyn-obj-marking-abs-3PlO TARGET Rel IF (*1 (Abs &msyn-obj-marking-abs-3PlO)) ;
+
+ADDRELATION ($3 LEFT) (HTR Der/vv Gram/IV &msyn-obj-marking-abs-3PlO) TO (*-1 (Rel &msyn-obj-marking-abs-3PlO));
+
+#COPY:msyn-obj-marking-abs-3PlO (SUGGEST) TARGET (Rel &msyn-obj-marking-abs-3PlO) ;
+
+SUBSTITUTE (&msyn-obj-marking-abs-3PlO) (co&msyn-obj-marking-abs-3PlO) TARGET (SUGGEST);
+MAP:LOCK_READING (SUGGEST) (SUGGEST);
+
+# forslag 2
+
+ADD:msyn-subj-marking-abs-HTR &msyn-subj-marking-abs-HTR TARGET (HTR Der/vv Gram/IV)  IF (*-1 Abs BARRIER (*) - Abs LINK *-1 Rel BARRIER (*) - Rel) ;
+
+COPY:msyn-subj-marking-abs-HTR (SUGGEST) TARGET (HTR Der/vv Gram/IV &msyn-subj-marking-abs-HTR);
+
+ADD:msyn-subj-marking-abs-HTR &msyn-subj-marking-abs-HTR TARGET Abs IF (*1 (HTR Der/vv Gram/IV &msyn-subj-marking-abs-HTR)) ;
+
+ADDRELATION ($2 LEFT) (HTR Der/vv Gram/IV &msyn-subj-marking-abs-HTR) TO (*-1 (Abs &msyn-subj-marking-abs-HTR));
+
+COPY:&msyn-subj-marking-abs-HTR (Ins SUGGEST) EXCEPT (Abs) BEFORE NUMERUS TARGET (Abs &msyn-subj-marking-abs-HTR);
+
+ADD:msyn-subj-marking-abs-HTR &msyn-subj-marking-abs-HTR TARGET Rel IF (*1 (Abs &msyn-subj-marking-abs-HTR) BARRIER (*) - Abs);
+
+ADDRELATION ($3 LEFT) (HTR Der/vv Gram/IV &msyn-subj-marking-abs-HTR) TO (*-1 (Rel &msyn-subj-marking-abs-HTR));
+
+COPY:msyn-subj-marking-abs-HTR (Abs SUGGEST) EXCEPT (Rel) BEFORE NUMERUS TARGET (Rel &msyn-subj-marking-abs-HTR);
+
+
+SUBSTITUTE (&msyn-subj-marking-abs-HTR) (co&msyn-subj-marking-abs-HTR) TARGET (SUGGEST);
+MAP:LOCK_READING (SUGGEST) (SUGGEST);
+
 
 ### word order ###
-ADD:syn-abs-wordorder &syn-abs-wordorder TARGET (N Abs) + $$NUMERUS IF (*-1 (3SgPoss Abs) + $$NUMERUS BARRIER (*) - Abs LINK *-1 (N Rel Sg))(NEGATE *0 &msyn-abs-agreement)(NEGATE 0  &msyn-abs-agreement);
+ADD:syn-abs-wordorder &syn-abs-wordorder TARGET (N Abs) + $$NUMERUS IF (*-1 (3SgPoss Abs) + $$NUMERUS BARRIER (*) - Abs LINK *-1 (N Rel Sg))(NEGATE *0 &msyn-obj-marking-abs-3PlO)(NEGATE 0  &msyn-obj-marking-abs-3PlO);
 
 MOVE:syn-abs-wordorder (N &syn-abs-wordorder) AFTER (*-1 (N Rel) LINK -1 BOS);
 
@@ -219,7 +259,7 @@ MOVE:syn-abs-wordorder (N &syn-abs-wordorder) AFTER (*-1 (N Rel) LINK -1 BOS);
 # Nakutitseriarnerisa nallinnaannartut {tunuanniittoq iluarinninnera} takusinnaasimasariaqaraluarpara. > Nakutitseriarnerisa nallinnaannartut  iluarinninnera tunuanniittoq takusinnaasimasariaqaraluarpara.
 
 ## adjektivisk nomen substantivisk nomen > substantivisk nomen adjektivisk nomen ##
-ADD:syn-TUQ-wordorder &syn-TUQ-wordorder TARGET (/TUQ\ Der/vn\ N\ /l) + $$NUMERUS IF (1 N + $$NUMERUS LINK NEGATE 0 TUQ)(NEGATE *0 &msyn-abs-agreement)(NEGATE 0  &msyn-abs-agreement);
+ADD:syn-TUQ-wordorder &syn-TUQ-wordorder TARGET (/TUQ\ Der/vn\ N\ /l) + $$NUMERUS IF (1 N + $$NUMERUS LINK NEGATE 0 TUQ)(NEGATE *0 &msyn-obj-marking-abs-3PlO)(NEGATE 0 &msyn-obj-marking-abs-3PlO);
 # Gangersuarmi pisuttuarujoortalerpunga, inuk kisima nipangissananga nipikitsumik {niaqunniittut nipit} eqqumiitsut oqaluuterujoortalerlugit.
 
 MOVE:syn-TUQ-wordorder (N &syn-TUQ-wordorder) AFTER (1 N - TUQ);
