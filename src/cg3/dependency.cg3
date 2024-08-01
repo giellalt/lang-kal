@@ -9,7 +9,7 @@
 # ===================================================================== #
 # ===================================================================== #
 
-#XXXX  XXXXX    XXXXX
+
 
 
 
@@ -74,18 +74,22 @@ SETPARENT:D_tidlig0033 @CL-ADVL> + Sem/Geo + Lok IF (-1 BOS)
 (NEGATE 1 <Lh> OR INSTITUTION)#Københavnimi uumasuusivik
 (NEGATE 1 N + INDERIVERENDE_TITEL)
 
-TO (*1 Abs + &&IV_SUBJ& - (/VIK\ Der/vn\ N/l) LINK *1 VFIN + &&IV_SUBJ& OR CON_CAU + &&IV_SUBJ&);
+TO (*1 Abs + &&IV_SUBJ& - (/VIK\ Der/vn\ N/l) LINK *1A VFIN + &&IV_SUBJ& OR CON_CAU + &&IV_SUBJ&);
 
-#Ny 20200914
-#MAP:M_tidlig0034 @CL-ADVL> Sem/Geo + Lok + LU IF (*1 Abs + &&IV_SUBJ& LINK *1 VFIN + &&IV_SUBJ& OR CON_CAU + &&IV_SUBJ&)(-1 @CL-ADVL> LINK -1 BOS) #
-#;
+#Ny 20200914 - aktiveret 20240801
+SETPARENT:M_tidlig0034 @CL-ADVL> + Sem/Geo + Lok + LU IF (-1 @CL-ADVL> LINK -1 BOS) 
+(NOT p (*))
+TO (*1 Abs + &&IV_SUBJ& LINK *1A VFIN + &&IV_SUBJ& OR CON_CAU + &&IV_SUBJ&)
+;
 
 SETPARENT:M_tidlig0035A @CL-ADVL> + (/NNGIT\ Der/vv\ Gram/IV\ NIQ\ Der/vn\ N\ Lok\ Sg\ 3SgPoss/l) IF
 (NOT p (*))
 (*-1 BOS BARRIER (*) - Rel - OBLIQUE)
 TO (1 N + &&IVTVSUBJ& LINK *1A VFIN + IVTVSUBJ&);#Eqqartuussisup eqqartuussummik nipilimmik ATUAANNGINNERANI unnerluussisussaatitaasup, Anne Clintonip kannguttaatsuliornermik suliaq alla, tusagassiuutitigut aamma saqqumilaangaatsiarsimasoq innersuussutigaa, tassa Siumumi partiimi allattaasimasup, Mikael Petersenip eqqartuunneqarnera.
 
-#MAP:M_tidlig0037 @HNOUN TARGET Sem/Geo + Abs IF (-1 BOS)(1 ("-") + PUNCT); #Avisopstilling
+SETPARENT:M_tidlig0037 @HNOUN + Sem/Geo + Abs IF (-1 BOS)(1 ("-") + PUNCT LINK NOT *1 ("-") + PUNCT)
+(NOT p (*))
+TO (@0 (*)); #Avisopstilling
 #
 ##En ny tag 20200818 @>NUM til første led af et talinterval. Svarer nogenlunde til @>N ved nominer
 SETPARENT:M_tidlig0040 @>NUM + Num + Abs IF (1 (/"-"\ PUNCT/l))
@@ -5311,6 +5315,12 @@ SETPARENT:M0082C @CONJ + ("soorlu" Conj) TO (*1A Par BARRIER V  LINK 1 TTAAQ LIN
 
 #MAP:M0194 (@SUBJ>) TARGET Prop + Rel IF (-*1 TRANSVERB - OBJVERB LINK *-1 Rel LINK *1 Abs LINK *1 KOMMA)(*1 Abs BARRIER V)(NEGATE 1 POSSESSUM3) ; # 20101014 Opremsning uden transitive verber men må ikke tagge possessor-possessum
 
+SETPARENT:M0194A @SUBJ> + Prop + Abs + Sg + &&IV_SUBJ& IF (-1 ("-") + PUNCT) 
+(NOT p (*))
+TO (*1A V + &&IV_SUBJ& + CON_CAU + 3Sg LINK *1 ("-") + PUNCT ) 
+;
+#Danmarki - *Basim marsimi qallunaat melodi grand prix-ianni ajugaammalli - eqquiniaasitsisartunit ilimagineerukkiartorsimavoq, isumaqatigiippulli 21-nik ukiulik angusarissaarnerit qulit akornanniissasoq.
+
 ##efter at Prop er appos og ikke kerne udkommenteres reglen##KL20240731
 #SETPARENT:M0195A (@SUBJ>) + Prop + Rel IF
 #(NOT p (*))
@@ -8716,7 +8726,7 @@ SETPARENT:M0608D2 (@POSS>) + Rel + Sg - Pron  IF
 #(NEGATE 0 N - POSSESSUM LINK  -*1 Rel + $$NUMERUS - POSSESSUM BARRIER POSSESSUM OR (*) - (Num Abs) - OBLIQUE) #Eqqumiitsulianik saqqummersitsiviup 3.000 kvadratmeterinik *angissuseqartussap Nuummi sanaartorneqarnissaanut aningaasat amigaataasut 1 millionit koruunit ukioq manna katersorneqarnissaat aningaasaateqarfiup naatsorsuutigaa.
 
 
-TO (*1A 3SgPoss - iProp - MWE_POSS BARRIER TRANSVERB + 3Sg OR TRANSVERB + 4Sg OR ("akunneq"))(NEGATE -1 Rel - _TARGET_ + 3Sg LINK 2 TRANSVERB + 3Sg);
+TO (*1A 3SgPoss - iProp - MWE_POSS BARRIER TRANSVERB + 3Sg OR TRANSVERB + 4Sg OR ("akunneq") OR Rel + Sg)(NEGATE -1 Rel - _TARGET_ + 3Sg LINK 2 TRANSVERB + 3Sg);
 
 SETPARENT:M0608F @POSS> + Prop + Rel
 (NOT p (*))
@@ -8965,7 +8975,8 @@ TO (*1 TRANSVERB + 3Sg - OBJVERB BARRIER OBJVERB);#Per Rosing Nuummiinngimmat QA
 
 SETPARENT:M0640A @SUBJ> + Rel + Sg IF
 (NOT p (*))
-(NEGATE *1 POSSESSUM3 BARRIER (*) - (Rel Sg) - KOMMA - Adv - OBLIQUE - Conj)(NEGATE 0 Sem/Geo LINK *1 POSSESSUM LINK NOT -1 Rel)
+(NEGATE *1 POSSESSUM3 BARRIER (*) - (Rel Sg) - KOMMA - Adv - OBLIQUE - Conj)
+(NEGATE 0 Sem/Geo LINK *1 POSSESSUM LINK NOT -1 Rel)
 (NEGATE 0 &&POSS34_POSS& LINK *1 POSSESSUM + &&POSS34_POSS& BARRIER (*) - Adv - Pali - OBLIQUE - CONT_INTRANS)#Ilami taamani HANSENIP annaassiniaraluarluni nakkakattarnera isinneralu takorloorlugit ..
 (NEGATE *-1 VFIN + INTRANSVERB + 3Sg BARRIER Abs + Sg LINK *1 _TARGET_ LINK *1 3SgPoss BARRIER VERB-NOTCONT)#Siunnersuutaavoq Inatsisartut INATSISAATA 1. juni 1998 aallarnerfigalugu atortuulernissaa.
 (NEGATE *1 3SgPoss BARRIER VERB-NOTCONT LINK NEGATE *1 3SgO BARRIER V)#38-nik ukiulik Katti Frederiksen, Ane Lone BAGGERIP (S) peqqissutsini ilaquttanilu ukkatariniarlugit juulip qaammataata naanerani tunuarnerata kingorna, Ilinniartitaanermut, Kultureqarnermut Ilageeqarnermullu Naalakkersuisunngortinneqarpoq. Men ikke RASMUSIP, maanna saamarpasilluni qungujulananili tuiisigut eqillugu nangippoq:
