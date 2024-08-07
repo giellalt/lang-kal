@@ -23,6 +23,7 @@
 - LIST &msyn-subj-marking-abs-HTR = &msyn-subj-marking-abs-HTR ; 
 - LIST &syn-abs-wordorder = &syn-abs-wordorder ; 
 - LIST &syn-TUQ-wordorder = &syn-TUQ-wordorder ; 
+- LIST &ADDED = &ADDED ; 
 
 * * *
 
