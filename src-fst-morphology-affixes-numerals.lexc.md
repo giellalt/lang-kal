@@ -32,8 +32,6 @@
 - **+Err/Sub+Num+Abs+Sg+3SgPoss:%>%TRUNCa	Krestr ; **  
 - **+Err/Sub+Num+Abs+Sg+3PlPoss:%>iat	Krestr ; **  
 - **+Err/Sub+Num+Abs+Sg+3PlPoss:%>%TRUNCat	Krestr ; **   1-at
-- **+Err/Sub+Num+Abs+Pl+3SgPoss:%>%TRUNCi	K_plur ; **  
-- **+Err/Sub+Num+Abs+Pl+3PlPoss:%>%TRUNCi	K_plur ; **  
 - **+Err/Sub+Num+Rel:%>ip	Krestr ; **  
 - **+Err/Sub+Num+Rel:%>%TRUNCp	Krestr ; **  
 - ...
