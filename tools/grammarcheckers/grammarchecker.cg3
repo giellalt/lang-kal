@@ -251,11 +251,24 @@ MAP:LOCK_READING (SUGGEST) (SUGGEST);
 
 
 ### word order ###
-ADD:syn-abs-wordorder &syn-abs-wordorder TARGET (N Abs) + $$NUMERUS IF (*-1 (3SgPoss Abs) + $$NUMERUS BARRIER (*) - Abs LINK *-1 (N Rel Sg))(NEGATE *0 &msyn-obj-marking-abs-3PlO)(NEGATE 0  &msyn-obj-marking-abs-3PlO);
 
-MOVE:syn-abs-wordorder (N &syn-abs-wordorder) AFTER (*-1 (N Rel) LINK -1 BOS);
- #
-#ADDRELATION ($3 LEFT) (&syn-abs-wordorder) TO (*-1 (co&syn-abs-wordorder));
+WITH (N Abs) + $$NUMERUS IF
+    (*-1 (3SgPoss Abs) + $$NUMERUS BARRIER (*) - Abs LINK *-1 (N Rel Sg) LINK -1 BOS) # _C1_
+    (NEGATE *0 &msyn-obj-marking-abs-3PlO) # _C2_
+    (NEGATE 0  &msyn-obj-marking-abs-3PlO) # _C3_
+{
+  ADD:syn-abs-wordorder (&syn-abs-wordorder DELETE) (*);
+
+  COPYCOHORT:syn-abs-wordorder (&ADDED co&syn-abs-wordorder) # These tags will be added to the copy
+     EXCEPT (DELETE &syn-abs-wordorder)    # We don't include this tag in the copy
+     TARGET    (*)       # Copy from the main WITH target
+     TO AFTER  (jC1 (*)) # The copy ends up before the first WITH context
+     ;
+
+  ADDRELATION:syn-abs-wordorder ($3 LEFT) (*) TO (jC1 (*));
+};
+
+
 
 # {Uunnaaviup sanianiittoq igalaaq} qiverseriarlugu uunnaavik qamissallugu, eqqarsaammerujussuarpunga. >  Igalaaq uunnaaviup sanianiittoq qiverseriarlugu uunnaavik qamissallugu, eqqarsaammerujussuarpunga. # the.kettle which.is.next.to the.window > the.window the.kettle is.next.to
 # Nakutitseriarnerisa nallinnaannartut {tunuanniittoq iluarinninnera} takusinnaasimasariaqaraluarpara. > Nakutitseriarnerisa nallinnaannartut  iluarinninnera tunuanniittoq takusinnaasimasariaqaraluarpara.
