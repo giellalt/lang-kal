@@ -424,7 +424,7 @@ Judithes afsnit start ### påbegyndt 20231006: sorter umulige morfemkombinatione
 
 W E S T   G R E E N L A N D I C   S Y N T A C T I C   F U N C T I O N S
 
-- Delimiters (line 47)
+- Delimiters (line 47)"inuk" N Rel Sg 3SgPoss
 - Tags and sets
 	- Positions and household (line 53)
 	- Parts of speech (line 60)
