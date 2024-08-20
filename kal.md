@@ -553,9 +553,6 @@ Nogle af dem er dokumenterede, andre ikke.
 * LEXICON GEMS  = Gennemgangsleksikon til nominer der geminerer til stop-lyd ved fleksion, fx meeqqap
 * 0:^GEMS Z1Zmorf ; 
 
-* LEXICON GEMC  = Gennemgangsleksikon til nominer der geminerer til kontinuant-lyd ved fleksion, fx nannup
-* 0:^GEMC Z1Zmorf ; 
-
 * LEXICON Z1Zmorf  Derivationsmorfemer til nominer, viser til **tp** og giver derefter nn-derivationer
 	*  tp ; 
 	* +ALUK+Der/nn+INNAQ+Der/nn:%>%TRUNCaluinnaq tup- ; 
