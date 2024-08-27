@@ -2016,7 +2016,7 @@ anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
 * **+Sem/HH** = Organisationer
 * **+Sem/Hprof** = Menneske erhverv
 * **+Sem/Hum** = Non-geographical Propernoun
-* **+Sem/Hmyth** = Human Myhtological
+* **+Sem/Hmyth** = Human Mythological
 * **+Sem/LastName**  Efternavne
 * **+Sem/Mailadresse** tag til adresser af typen cccc@cccc.cc
 * **+Sem/Mask** Forsøg med en ny tag til fornavne af maskulinum
