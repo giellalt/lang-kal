@@ -290,6 +290,10 @@ Flags for loan words, which must not go to N+Abs+Sg without derivation.
 * **@U.prop.norm@** = Prop + vanlig
 * **@C.prop.norm@**
 
+* **@U.acro.poss.epent.v@** = acro + possessor + epenthetic v
+* **@U.acro.norm@** = acro + vanlig
+* **@C.acro.norm@**
+
 * **PJAT_FOR_AT_FAA_SKIDTET_TIL_AT_KOMPILERE**  en dummy, der kan kommenteres ind og ud, når make instisterer på 'nothing to do' efter bestemte fejltyper
 
 30.10.23: Trond tok taggane som var deklarert fleire gonger 
