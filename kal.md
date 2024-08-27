@@ -2242,7 +2242,7 @@ Flags for loan words, which must not go to N+Abs+Sg without derivation.
 * **@C.Loan.i@** 
 
 * **@U.prop.poss@** = Prop + possessor
-* **@U.prop.norm@**
+* **@U.prop.norm@** = Prop + vanlig
 * **@C.prop.norm@**
 
 * **PJAT_FOR_AT_FAA_SKIDTET_TIL_AT_KOMPILERE**  en dummy, der kan kommenteres ind og ud, når make instisterer på 'nothing to do' efter bestemte fejltyper
