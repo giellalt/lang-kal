@@ -61,6 +61,7 @@ anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
 * **+Sem/HH** = Organisationer
 * **+Sem/Hprof** = Menneske erhverv
 * **+Sem/Hum** = Non-geographical Propernoun
+* **+Sem/Hmyth** = Human Myhtological
 * **+Sem/LastName**  Efternavne
 * **+Sem/Mailadresse** tag til adresser af typen cccc@cccc.cc
 * **+Sem/Mask** Forsøg med en ny tag til fornavne af maskulinum
@@ -284,6 +285,10 @@ Flags for loan words, which must not go to N+Abs+Sg without derivation.
 * **@P.Loan.i@** 
 * **@D.Loan.i@** disallow test
 * **@C.Loan.i@** 
+
+* **@U.prop.poss@** = Prop + possessor
+* **@U.prop.norm@**
+* **@C.prop.norm@**
 
 * **PJAT_FOR_AT_FAA_SKIDTET_TIL_AT_KOMPILERE**  en dummy, der kan kommenteres ind og ud, når make instisterer på 'nothing to do' efter bestemte fejltyper
 

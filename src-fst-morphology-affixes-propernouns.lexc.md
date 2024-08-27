@@ -187,7 +187,7 @@ Navnelexikon er i ateq-kal-lex.txt.
 
 ** Lexicon **Z2suaq_ateqZmorf**  
 
-** Lexicon **Z1ateqZmorf**  
+** Lexicon **Z1ateqZmorf_all**  
 
 ** Lexicon **Z1ateq_tptZmorf**  
 
