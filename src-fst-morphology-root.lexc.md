@@ -813,27 +813,26 @@ ch til Heinrich/ Heinriup men kvæler alle ch-sekvenser. Udkommenteret 20181008
 
 ### Vore magiske symboler
 
-* **%TRUNC**  minus-suffikser, trunkerer
+* **%ALTINF** Alternerende infinitiver ved rpoq
 * **%CLIT**  Klitika
-* **%STRUNC**  trunkerer både vokal og konsonant
-* **%PRONTRUNC** 
-* **%POSSESSORTRUNC** 
-* **%likTRUNC** 
-* **%VCTRUNC** 
 * **%CVqTRUNC** 
+* **%EPENT** Epentetisk vokal mellem konsonant og clitis i fremmedord
+* **%GEMEQ** gemineringskode til p-bøjede på seq og leq
+* **%POSSESSORTRUNC** 
+* **%PRONTRUNC** 
+* **%PROP** Blokering mod vokalreglerne
+* **%ProgI** Tilfoejet 20100117 for at haandtere progressiv i-assimilation ved ARAQ og UTIGE
+* **%STRUNC**  trunkerer både vokal og konsonant
+* **%TRUNC**  minus-suffikser, trunkerer
+* **%VCTRUNC** 
 * **%VTRUNC** 
+* **%^GEM** 
+* **%^GEMC** 
+* **%^GEMS** 
+* **%^Loan** 
+* **%likTRUNC** 
 * **%qaGEMIN** 
 * **%qoGEMIN** 
-* **%EPENT** Epentetisk vokal mellem konsonant og clitis i fremmedord
-* **%PROP** Blokering mod vokalreglerne
-* **%ALTINF** Alternerende infinitiver ved rpoq
-* **%ProgI** Tilfoejet 20100117 for at haandtere progressiv i-assimilation ved ARAQ og UTIGE
-
-* **%GEMEQ** gemineringskode til p-bøjede på seq og leq
-* **%^GEMS** 
-* **%^GEMC** 
-* **%^GEM** 
-* **%^Loan** 
 
 ## Language-independent flag diacritics
 
