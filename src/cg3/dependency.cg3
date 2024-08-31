@@ -27,10 +27,11 @@ SETPARENT:DanskSyntaks @>N + OLang/DAN + Gram/Adj + Abs - Prop IF
 TO (1 OLang/DAN - Gram/Adj + Abs) ; #HYPERKINETISK syndrom tassaasoq ingasattumik pissusilik 
 #
 
-#En særlig regel til parentes til komplekse klokkeslet for at sikre korrekt dependenser
-SETPARENT:M_parentes01A @<APPOS + Num + Abs IF (1 (")"))
+#En særlig regel til  parentes med cifre - for at sikre korrekte dependenser i klokkeslet
+SETPARENT:M_parentes01A @N< + Num + Abs IF (1 (")"))
 TO (-1 ("(") LINK *-1A Num + Trm BARRIER (*) - (Num Abs) - ("tanneq"));#Unnuaq ataaseq hotelimi sinippoq aqaguanilu nal. qulinut tanneq qulit (09.50) helikopterimut ilaalluni Sisimiunut aallarpoq.
 
+##Regel til at klare parentes med partinavne, partibogstaver og akronymer
 SETPARENT:M_parentes01B1 @<APPOS + Prop OR Gram/ACR  OR ("\\p{Lu}"r) IF  (-1 ("\(")) (1 ("\)") )
 (NOT p (*))
 TO (-2A Prop) ;#Aaja Chemnitz Larsen (IA) Folketingimi oqaaseqartarfimmit oqarpoq.
@@ -148,7 +149,7 @@ SETPARENT:M_tidlig0043 @ADVL> + ("kinguneq") + Abs + 3SgPoss OR ("siuneq") + Abs
 (NOT p (*))
 TO (*1A V) ;# Inuup allap coronavirusimik tunillatsissimanerata pingasunngornermi tusarliutigineqarnerata kingorna Nuuk pingasunngornermi nalunaaqutaq 16.00 matuvoq.
 
-SETPARENT:M_tidlig0050 @<APPOS + Num IF
+SETPARENT:M_tidlig0050 @N< + Num IF
 (NOT p (*))
 TO (-1 ("oqarasuaat")); #Annertunerusumik paasisaqarnerorusuttut Anders Blaabjerg oqarasuaat 34 57 81 (toqqaannartoq) atorlugu saaffigisinnaavaat.
 
@@ -778,7 +779,7 @@ SETPARENT:M_tidlig0660A @<ADVL + Abs
 TO (-1 ("”") LINK *-1A ("atser") + TRANSVERB) #Soorlu atsersinnaavaa ULLORIAARAQ angalasoq 3251”.
 ;
 
-SETPARENT:M_tidlig0660B @<APPOS + Num + TAL IF
+SETPARENT:M_tidlig0660B @N< + Num + TAL IF
 (NOT p (*))
 TO (*-1 ("ulloriaq")); #Soorlu atsersinnaavaa ”ulloriaaraq angalasoq 3251”.
 
@@ -1540,9 +1541,22 @@ SETPARENT:M_uløselighed0435 @N< + Abs + Pl IF
 (NOT p (*))
 TO (*-1A Abs + Sg + CONJ-C BARRIER (*) - CONT LINK -1 Abs + Sg); #Manu atuartuugami aasami atuanngiffeqarnermini aanani aatanilu pinialullutik ANGALASUT ilagiuartarpai.
 
+SETPARENT:M_uløselighed0435A @N< + Abs + Pl + CONJ-LU IF 
+(NOT p (*))
+TO (-*1 Abs + Pl + @N< BARRIER (*) - (Abs Pl) - CONJ-LU LINK *-1A Abs + Sg LINK -1 Abs + Sg) ; #Ole Evalu atisarluttut *illuluttullu *pissaasuangaartartullu angajoqqaarigini naluippai,
+
+SETPARENT:M_uløselighed0435B @N< + Abs + Pl IF 
+(NOT p (*))
+TO (-1A @N< + Abs + Pl LINK -1 Prop + Abs + Sg + CONJ-LU LINK -1 Prop + Abs) ;#Ole Kaalilu nukappiaqqat sapiitsut aallarput
+
+
 SETPARENT:M_uløselighed0436 @N< + Abs + Pl - Prop IF
 (NOT p (*))
 TO (*-1A Abs + Sg BARRIER (*) - CONT LINK -1 Conj LINK -1 Abs + Sg); #aajuku nukappiaraq aamma niviarsiaraq NIKORFASUT.
+
+SETPARENT:M_uløselighed0436A @N< + Abs + Pl - CONJ-LU IF 
+(NOT p (*))
+TO (-1A @N< + Abs + Pl  LINK -1 Prop + Abs + Sg LINK -1 Conj LINK -1 Prop + Abs) ;#Ole aamma Kaali nukappiaqqat sapiitsut aallarput
 
 #Regel til tal efter dansk syntaks
 SETPARENT:M_uløselighed0440 @>N + Num + Abs IF
@@ -2739,7 +2753,7 @@ SETPARENT:M_faste1105 @i-ADVL> + ("tikip") + Cont IF
 (NOT p (*))
 TO (*-1 Num LINK *1A Der/vn + N BARRIER V - _TARGET_); #Ilulissat Sermiat ukiumut 7 kilometerit TIKILLUGIT sukkassuseqartoq sermip qanoq sukkatigisumik ingerlaarsinnaaneranut takussutissaalluarpoq.
 
-SETPARENT:M_faste1115 @<APPOS + BIRDS + $$KASUS IF
+SETPARENT:M_faste1115 @N< + BIRDS + $$KASUS IF
 (NOT p (*))
 TO (*-1 ("timmiaq") BARRIER (*) - $$KASUS); #Timmissat TUULLIK KIINAALEERARLU Kalaallit Nunaanniinnerat eqqarsaatigalugu piffimmi siamasinngitsumi amerlapput.
 
@@ -4686,8 +4700,8 @@ SETPARENT:M0032A2 @<APPOS + Prop IF
 TO (-1 PUNCT + LEFT LINK *-1A Prop + Hyb/1-2 BARRIER (*) - Hyb/2-2);
 #Taakkununnga ilaapput eqqumiitsuliortut Anne Birthe Hoveugaluup aamma Arnannguaq Høeghiugaluup suliaat Nuummi Eqqumiitsulianik Saqqummersitsivimmiisinneqarallartut (NUUK KUNSTMUSEUM, aaqq.).
 
-#særtilfælde "taaguut" med N
-SETPARENT:M0032A3 @<APPOS + N + $$KASUS - TUQ IF
+#særtilfælde "taaguut"/"oqaaseq" med N - var APPOS men ændret til N<
+SETPARENT:M0032A3 @N< + N + $$KASUS - TUQ IF
 (NOT p (*))
 TO (-1 ("taagor") + UTE + $$KASUS OR ("oqaaseq") + Sg + $$KASUS); #Taaguut NAALAKKERSUISOQ kiffartuussisumik taarserli. #Oqaaseq BILITSI eqqumiiginermik puigunnginnamiuk.
 
@@ -4730,7 +4744,7 @@ SETPARENT:M0032D @<APPOS + Gram/ACR + $$KASUS IF
 (NOT p (*))
 TO (-1 KOMMA OR PUNCT LINK -1A Prop + $$KASUS); #Oqaasiliortunut ilaasortanngorfik: 2016-imi ilaasortanngorpunga Tusagassiuinermi Sulisut Peqatigiiffiannit, *TP-mit, Naalakkersuisunut innersuunneqarlunga.
 
-#Særtilfælde hvor titlen opfattes mere som @>N
+##KL: ja reglen stryges - der er lavet regler for PRÆNOMINALER som er de titler der forbliver Abs selv om Prop bliver fx Rel (20240830)
 #SETPARENT:M0032E @<APPOS + PROP + Abs + CONJ-LU IF
 #(NOT p (*))
 #TO (-1 TITEL - AFFINGERET); #Kunngi Frederik dronning MARYLU nunani avannarlerni tikeraarnerminnut atatillugu Savalimmiunut juunip ulluisa aqqaneq aappaanniit 14-iata tungaanut tikeraartussaagaluarput.
@@ -4746,6 +4760,8 @@ TO (-1 KOMMA LINK -1A ("qulequtaq")); #Saqqummersitsinerup qulequtaa, ISSITTUP Q
 ##Der kan tilføjes OR andre enkeltord
 
 #Disse syv regler erstatter nu alle ca. 50 andre regler til appositioner, som var der før. #KW04072024
+##KL: Jeg ser ikke fordele ved APPOS_NOUN og ADLED som er oprettet i sommeren 2024 - men det må der ses på senere (20240830)
+##KL- efter en hastig gennemgang og en del tilføjelser: best practice er, at de udkommenterede regler skal blive stående minimum et halvt år indtil vi har set de nye fungere. Det er ikke sket denne gang - men det bør ske fremover -- denne note her til at belyse forløbet hvis der viser sig nogle uhensigtsmæssigheder omkring APPOS - og ved evt afskaffelse af APPOS_NOUN og ADLED senere
 
 ##Prædikativer
 #MAP:M0034A @<SUBJ TARGET Abs + Sg IF (-1 ("tassa") + U + 3Sg )(NEGATE *1 INTRANSVERB + 3Sg OR TRANSVERB + 3SgO)(NEGATE -2 Abs + Sg); #sidste NEGATE for skyld SUBJ> tassaa- @SUBJ_COMP

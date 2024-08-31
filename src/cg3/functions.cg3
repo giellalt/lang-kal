@@ -97,17 +97,15 @@ ADD:0302F (Gram/2sml) BEFORE (N) TARGET Abl IF (*1 (NIRU V) BARRIER (*) - PROCEN
 #Dansk brug af adjektiver
 MAP:DanskSyntaks @>N TARGET OLang/DAN + Gram/Adj + Abs - Prop IF (1 OLang/DAN - Gram/Adj + Abs) ; #HYPERKINETISK syndrom tassaasoq ingasattumik pissusilik 
 
-#En særlig regel til parentes til komplekse klokkeslet for at sikre korrekt dependenser
-#KL# 20240123: korr fra APPOS til N<
+#En særlig regel til  parentes med cifre - for at sikre korrekte dependenser i klokkeslet
 MAP:M_parentes01A @N< TARGET Num + Abs IF (1 (")"))(-1 ("(") LINK *-1 Num + Trm BARRIER (*) - (Num Abs) - ("tanneq"));#Unnuaq ataaseq hotelimi sinippoq aqaguanilu nal. qulinut tanneq qulit (09.50) helikopterimut ilaalluni Sisimiunut aallarpoq.
 
-#KL# 20240124 - regel til at skille hvad skal være APPOS fra resten som bliver N< i M_parentes01B9
+##Regel til at klare parentes med partinavne, partibogstaver og akronymer
 MAP:M_parentes01B1 @<APPOS TARGET Prop OR Gram/ACR OR ("\\p{Lu}"r)  IF (-2 Prop) (-1 ("\(")) (1 ("\)") ) ;#Aaja Chemnitz Larsen (IA) Folketingimi oqaaseqartarfimmit oqarpoq.
 
 MAP:M_parentes01B2 @N< TARGET N + Via IF (-*1 N + Via BARRIER (*) - V - ("\(") ) (-1 ("\(")) (1 ("\)") );
 #Kinguartitsisoqarsinnaatinnagu imaluunniit akerliusoqarnissaa ilimaginngikkaanni Oqaasiliortut allakkatigut aalajangiisinnaavoq (e-mailikkut).
 
-#KL# 20240123 - korr fra APPOS til N< 
 MAP:M_parentes01B9 @N< TARGET (*) (-1 ("\(")) (1 ("\)"))  #Narsaamanerit tarajuusut Brayasømi (saamerl.) Hundesømilu (talerperl.).
 (NEGATE 0 CONJ-C + $$KASUS LINK *-1 $$KASUS BARRIER (*) - PUNCT)#Grafikeri oqaloqatigalugu Canva (ALLALUUNNIIT) atorlugu ilusilerneqartarnissaanut siunnersortinnissaq pisariaqarsoraara.
 ;
@@ -160,7 +158,8 @@ MAP:M_tidlig0042C @<ADVL TARGET ("kinguneq") OR ("siuneq") OR ("siornatigut") IF
 
 MAP:M_tidlig0043 @ADVL> TARGET ("kinguneq") + Abs + 3SgPoss OR ("siuneq") + Abs + 3SgPoss IF (-1 NIQ + Rel) (1 Prop + Abs + &&IV_SUBJ& LINK *1 V + &&IV_SUBJ&) (*1 V) ;# Inuup allap coronavirusimik tunillatsissimanerata pingasunngornermi tusarliutigineqarnerata kingorna Nuuk pingasunngornermi nalunaaqutaq 16.00 matuvoq.
 
-MAP:M_tidlig0050 @<APPOS TARGET Num IF (-1 ("oqarasuaat")); #Annertunerusumik paasisaqarnerorusuttut Anders Blaabjerg oqarasuaat 34 57 81 (toqqaannartoq) atorlugu saaffigisinnaavaat.
+#tlf nummer
+MAP:M_tidlig0050 @N< TARGET Num IF (-1 ("oqarasuaat")); #Annertunerusumik paasisaqarnerorusuttut Anders Blaabjerg oqarasuaat 34 57 81 (toqqaannartoq) atorlugu saaffigisinnaavaat.
 
 MAP:M_tidlig0060 @ADVL> TARGET SEASON + Abs + Pl IF (*1 Abs + Pl - ADJEKTIVISK - CONJ-LU LINK *1 TRANSVERB + TAR + 3PlO BARRIER V) ;#Aappaatigulli tupaallannarpallaanngilaq UKIORPASSUIT suliakka suliarisarsimagakkit
 #
@@ -582,7 +581,7 @@ MAP:M_tidlig0660A @<ADVL TARGET Abs IF (-1 ("”") LINK *-1 ("atser") + TRANSVER
 (NEGATE *-1 Abs)
 ;
 
-MAP:M_tidlig0660B @<APPOS TARGET Num + TAL IF (*-1 ("ulloriaq")); #Soorlu atsersinnaavaa ”ulloriaaraq angalasoq 3251”.
+MAP:M_tidlig0660B @N< TARGET Num + TAL IF (*-1 ("ulloriaq")); #Soorlu atsersinnaavaa ”ulloriaaraq angalasoq 3251”.
 
 MAP:M_tidlig0665 @i-<ADVL TARGET Lok IF (*-1 ("(") BARRIER (*) - Lok LINK -1 (/RIAR\ Der/vv\ Gram/IV\ USIQ\ Der/vn\ N/l));#Siornatigut atsersueriaaseq (KULTURIMI OQALUTTUARISAANERMILU) naapertorlugu atsiunniakkat akuerineqarsinnaapput.
 
@@ -1319,7 +1318,14 @@ MAP:M_uløselighed0430 @N< TARGET ("tamaq") + $$KASUS IF (-1 $$KASUS - ("suna"))
 
 MAP:M_uløselighed0435 @N< TARGET Abs + Pl IF (*-1 Abs + Sg + CONJ-C BARRIER (*) - CONT LINK -1 Abs + Sg); #Manu atuartuugami aasami atuanngiffeqarnermini aanani aatanilu pinialullutik ANGALASUT ilagiuartarpai.
 
+MAP:M_uløselighed0435A @N< TARGET Abs + Pl + CONJ-LU IF (-*1 Abs + Pl + @N< BARRIER (*) - (Abs Pl) - CONJ-LU LINK *-1 Abs + Sg LINK -1 Abs + Sg) ; #Ole Evalu atisarluttut *illuluttullu *pissaasuangaartartullu angajoqqaarigini naluippai,
+
+MAP:M_uløselighed0435B @N< TARGET Abs + Pl IF (-1 @N< + Abs + Pl LINK -1 Prop + Abs + Sg + CONJ-LU LINK -1 Prop + Abs) ;#Ole Kaalilu nukappiaqqat sapiitsut aallarput
+
 MAP:M_uløselighed0436 @N< TARGET Abs + Pl - Prop IF (*-1 Abs + Sg BARRIER (*) - CONT LINK -1 Conj LINK -1 Abs + Sg); #aajuku nukappiaraq aamma niviarsiaraq NIKORFASUT.
+
+MAP:M_uløselighed0436A @N< TARGET Abs + Pl - CONJ-LU IF (-1 @N< + Abs + Pl  LINK -1 Prop + Abs + Sg LINK -1 Conj LINK -1 Prop + Abs) ;#Ole aamma Kaali nukappiaqqat sapiitsut aallarput
+
 
 #Regel til tal efter dansk syntaks
 MAP:M_uløselighed0440 @>N TARGET Num + Abs IF (1 Abs + Pl) #4454 allornerit pisussimavai.
@@ -2066,7 +2072,7 @@ MAP:M_faste1100 @N< TARGET ("aningaasaq") IF (-1 ("utoqqali") + NIQ + SIUT); #Ko
 
 MAP:M_faste1105 @i-ADVL> TARGET ("tikip") + Cont IF (*-1 Num LINK *1 Der/vn + N BARRIER V - _TARGET_); #Ilulissat Sermiat ukiumut 7 kilometerit TIKILLUGIT sukkassuseqartoq sermip qanoq sukkatigisumik ingerlaarsinnaaneranut takussutissaalluarpoq.
 
-MAP:M_faste1115 @<APPOS TARGET BIRDS + $$KASUS IF (*-1 ("timmiaq") BARRIER (*) - $$KASUS); #Timmissat TUULLIK KIINAALEERARLU Kalaallit Nunaanniinnerat eqqarsaatigalugu piffimmi siamasinngitsumi amerlapput.
+MAP:M_faste1115 @N< TARGET BIRDS + $$KASUS IF (*-1 ("timmiaq") BARRIER (*) - $$KASUS); #Timmissat TUULLIK KIINAALEERARLU Kalaallit Nunaanniinnerat eqqarsaatigalugu piffimmi siamasinngitsumi amerlapput.
 
 MAP:M_faste1120 @N< TARGET NIQ + Abs IF (*-1 Abs - NIQ BARRIER (*) - Abs LINK NEGATE *0 V); #Piffiillu QASOQQARUJUSSUARNERI NUKISSAALERIQNERILU.
 
@@ -2074,7 +2080,7 @@ MAP:M_faste1125 @N< TARGET ("qaammat") + $$KASUS - Rel IF (-1 MAANED + $$KASUS);
 
 MAP:M_faste1130 @N< TARGET ("salip") + UTE + $$KASUS IF (*-1 ("sprit") + $$KASUS); #Nakorsaaneqarfiup innuttaasut errortorluartarnissaannik sprittimillu assammut SALIGUMMIK atuisarnissaannik siunnersuuteqarfigai.
 
-#Egentlig mere en apposition
+#Egentlig mere en apposition. ##men skrives også med småt ...
 MAP:M_faste1135 @N< TARGET (/"[A-Za-z]"/r) + $$KASUS IF (-1 N + $$KASUS); #nipi A sekundimut 880-inik maligaasaqarpoq.
 
 MAP:M_faste1140 @N< TARGET ("rock") + $$KASUS IF (-1 ("qitigiaq") + $$KASUS); #Qitigissat ROCKIT nutaajunerpaat nipitoorujussuarmik kipissaanngitsumillu båndini kaavitinneqarmata aammalu oqallittut illartullu nipangissanatik, torlulaanngikkaanni tusaasaqarfiunngillat.
@@ -3538,8 +3544,8 @@ MAP:M0032A1x @<APPOS TARGET PROP + $$KASUS IF (-1 CONJ-LU OR Conj LINK -*1 PROP 
 MAP:M0032A2 @<APPOS TARGET Prop IF (-1 PUNCT + LEFT LINK *-1 Prop + Hyb/1-2 BARRIER (*) - Hyb/2-2);
 #Taakkununnga ilaapput eqqumiitsuliortut Anne Birthe Hoveugaluup aamma Arnannguaq Høeghiugaluup suliaat Nuummi Eqqumiitsulianik Saqqummersitsivimmiisinneqarallartut (NUUK KUNSTMUSEUM, aaqq.).
 
-#særtilfælde "taaguut"/"oqaaseq" med N
-MAP:M0032A3 @<APPOS TARGET N + $$KASUS - TUQ IF (-1 ("taagor") + UTE + $$KASUS OR ("oqaaseq") + Sg + $$KASUS); #Taaguut NAALAKKERSUISOQ kiffartuussisumik taarserli. #Oqaaseq BILITSI eqqumiiginermik puigunnginnamiuk.
+#særtilfælde "taaguut"/"oqaaseq" med N - var APPOS men ændret til N<
+MAP:M0032A3 @N< TARGET N + $$KASUS - TUQ IF (-1 ("taagor") + UTE + $$KASUS OR ("oqaaseq") + Sg + $$KASUS); #Taaguut NAALAKKERSUISOQ kiffartuussisumik taarserli. #Oqaaseq BILITSI eqqumiiginermik puigunnginnamiuk.
 
 #nunarsuaq er de facto et proprium, men tagges ikke sådan
 MAP:M0032A4 @<APPOS TARGET ("nuna") + SUAQ + $$KASUS IF (*-1 ("ulloriaq") + $$KASUS BARRIER (*) - KOMMA - PUNCT - $$KASUS - Conj - OBLIQUE - ("soorlu")); #Nalunngereerpara ullorissat annerit atserneqarsimasut, soorlu NUNARSUUP, Jupiterip, Marsip Venusillu saniatigut untritilinnik allanik ulloriaqarmat, ilaallu mikingaaramik qinngussuarmilluunniit takuneqarsinnaanngingajattut.
@@ -3549,7 +3555,7 @@ MAP:M0032A5 @<APPOS TARGET OLang/DAN + $$KASUS IF (-1 KOMMA OR PUNCT LINK -1 N +
 (NEGATE *1 CONJ-C BARRIER V) #Tamanna inuit, PARTIIT suliniaqatigiiffiillu assigiinngitsut qisuariaateqarfigaat.
 ; #Timmisartoq minnermini ajutoorpoq, immikkullu ilisimasallit, EKSPERTIT oqarsimapput timmisartoq sukkavallaartumik minnermini ingerlasimasoq, miffigisaminilu unissinnaasimanani.
 
-#i anførselstegn
+#i anførselstegn - en værk-titel
 MAP:M0032A6 @<APPOS TARGET Heur/Quote + $$KASUS IF (-1 APPOS_NOUN + $$KASUS); #Laila Kristiansen atuakkiamini "MALERSORTINNEQ"-IMI 2001-imi saqqummersinneqartumi ilaatigut taama allappoq.
 
 #@<APPOS @<APPOS-LU
@@ -3571,16 +3577,17 @@ MAP:M0032C @<APPOS TARGET Prop + $$KASUS - CONJ-C IF (*-1 N + ADLED - NIQ + $$KA
 MAP:M0032D @<APPOS TARGET Gram/ACR + $$KASUS IF (-1 KOMMA OR PUNCT LINK -1 Prop + $$KASUS); #Oqaasiliortunut ilaasortanngorfik: 2016-imi ilaasortanngorpunga Tusagassiuinermi Sulisut Peqatigiiffiannit, *TP-mit, Naalakkersuisunut innersuunneqarlunga.
 
 #Særtilfælde hvor titlen opfattes mere som @>N
-##KL: så skal reglen stryges
+##KL: ja reglen stryges - der er lavet regler for PRÆNOMINALER som er de titler der forbliver Abs selv om Prop bliver fx Rel (20240830)
 #MAP:M0032E @<APPOS TARGET PROP + Abs + CONJ-LU IF (-1 TITEL - AFFINGERET); #Kunngi Frederik dronning MARYLU nunani avannarlerni tikeraarnerminnut atatillugu Savalimmiunut juunip ulluisa aqqaneq aappaanniit 14-iata tungaanut tikeraartussaagaluarput.
 
 MAP:M0032F @<APPOS TARGET PROP + $$KASUS IF (*-1 ("ila") + POSSESSUM + $$KASUS BARRIER (*) - KOMMA - ("soorlu")); #Suleqataasut ilaat soorlu PER ungasippallaanngitsukkut soraarninngussapput.
 
-#Appositioner til specifikke ord, hvor kasusoverensstemmelse er usikker #Skal så alle titler på et eller andet tilføjes som proprier???
+#Appositioner til specifikke ord, hvor kasusoverensstemmelse er usikker #Skal så alle titler på et eller andet tilføjes som proprier??? KL: ja værktitler
 MAP:M0032G @<APPOS TARGET Prop IF (-1 KOMMA LINK -1 ("qulequtaq")); #Saqqummersitsinerup qulequtaa, ISSITTUP QULLII, marloqiusamik isumaqarnera Kunngip oqaatsinik pinnguallaqqinneranit pilersinneqarpoq. ##Der kan tilføjes OR andre enkeltord
 
 #Disse syv regler erstatter nu alle ca. 50 andre regler til appositioner, som var der før. #KW04072024
-##KL- efter en hastig gennemgang og en del tilføjelser: best practice er, at de udkommenterede regler skal blive stående minimum et halvt år indtil vi har set de nye fungere. Det er ikke sket denne gang - men det bør ske fremover -- denne note her til at belyse forløbet hvis der viser sig nogle uhensigtsmæssigheder omkring APPOS
+##KL: Jeg ser ikke fordele ved APPOS_NOUN og ADLED som er oprettet i sommeren 2024 - men det må der ses på senere (20240830)
+##KL- efter en hastig gennemgang og en del tilføjelser: best practice er, at de udkommenterede regler skal blive stående minimum et halvt år indtil vi har set de nye fungere. Det er ikke sket denne gang - men det bør ske fremover -- denne note her til at belyse forløbet hvis der viser sig nogle uhensigtsmæssigheder omkring APPOS - og evt afskaffelse af APPOS_NOUN og ADLED
 
 #Prædikativer
 MAP:M0034A @<SUBJ TARGET Abs + Sg IF (-1 ("tassa") + U + 3Sg )
@@ -4827,7 +4834,7 @@ MAP:M0353 @N< TARGET N + $$KASUS + $$NUMERUS IF (-1 ("arlaq") + $$KASUS + $$NUME
 #måned og år
 MAP:M0355 @N< TARGET Num + Lok + Sg IF (-1 MAANED + Lok); #juulimi 1969-imi
 
-#Appositionslignende
+#Appositionslignende i den forstand at det ville de kunne ses som på dansk
 MAP:M0471 @N< TARGET N + $$KASUS + $$NUMERUS IF (NEGATE *0 V BARRIER ("–"))(*-1 ("–") LINK *-1 N + $$KASUS + $$NUMERUS - @N< BARRIER (*) - $$KASUS); #Bonnie Jensenip, sulisut – FORSTANDERIT imaluunniit sulisuni QAFFASINNERIT – isornartorsiunnginnamigit erseqqissarniartuarpaa.
 
 MAP:M0472 @N< TARGET N + Rel + $$NUMERUS IF (-1 ("ila") + Rel + $$NUMERUS); #Jaaku tassa nunaqqatimik ilaata NUKAPPIATOQQAP Suulup nukarigalua siornaammat napparsimmavimmi toqusoq suli atsiunneqanngitsoq
@@ -4963,7 +4970,7 @@ MAP:M0408X @i->N TARGET NUMHOVED (1 LIK - NUM) (-1 NUM) ; #Angut 17-init missaan
 
 MAP:M0409 @HNOUN TARGET Num + Abs IF (-1 BOS) (1 KOMMA LINK 1 Abs LINK *1 Abs BARRIER (*) - Abs LINK NOT *0 V) ;#Pingasut, inersuaq ineeraq sinittarfillu.
 
-#Det er jo ikke rigtigt et adled, mere en apposition, fordi det ikke er et "stue-tretal" etc. #KW16072024
+#Det er jo ikke rigtigt et adled, mere en apposition, fordi det ikke er et "stue-tretal" etc. #KW16072024 ##KL: ja i dansk analyse (20240830)
 MAP:M0409x @N< TARGET APPELLATIV + Abs IF (-*1 BOS BARRIER (*) - Abs - KOMMA LINK 1 Num + @HNOUN LINK NOT *0 V);#Pingasut, inersuaq ineeraq sinittarfillu.
 
 MAP:M0409A @HNOUN TARGET N OR Gram/Abbr OR Num IF
