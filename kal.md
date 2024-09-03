@@ -1444,9 +1444,6 @@ TIR og TITIR
 
 Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers Mac
 
-| --- 
-| --- 
-
 * LEXICON Z1+qaZ  !### udkommentererede gemineringsleksika, erstattet af GEMS (stop, klusil) og GEMC (kontinuant)
 
 * LEXICON Z1+qoZ  
