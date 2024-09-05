@@ -1650,7 +1650,7 @@ LIST SKOLEFAG_LIST =
 ;
 LIST SPATIAL = (/"aki"\ N/l) "akunneq" (/"angi"\ Gram/IV\ NIQ\ Der/vn\ TU\ Der/nv\ Gram/IV\ SSUSIQ/l) "ate" "avannaq" "avate" "illuatunge" "ilu" "eqqaq" "kangisip" "killeq" "killik" "kite" "nale" "qaaq" ("<qeqq.*>"r) "qule" "saaq" "sani" "silate" "siu" "tunge" "tunu" "ungate" (".*kannersoq"r); #PL 20180522 slettet "arlaq". Næppe spatialt indhold og fejlhitter fx på 'Arlaqanngitsut qitipput'
 LIST THING = "alussaat" "aqqusineq" ("ati" TAQ) ("atuar" TAQ) "cd" "dvd" "ilullissiaq" "manu" "oqarasuaat" "qinngussuaq" "qulleq" "savik" "siu" "timi" "torsuusaq" "ungaloq" ;
-LIST PRÆNOMINAL = "dronning" "fru" "hr" "kong" "kunngi" "prins" "prinsesse" "præsident" ;
+LIST PRÆNOMINAL = "dronning" "fru" "hr" "kong" "kunngi" "prins" "prinsesse" "præsident" "MS" ;
 LIST IDENTIFICERENDE_TITEL = "dronning" "kunngi" "statsminister" ;  
 LIST TITEL = (/"aalisar"\ Gram/IV\ \(TAR\ Der/vv\ Gram/IV\ \)?TUQ/l) "ajoqi" (/"aki"\ Gram/IV\ TUQ\ Der/vn\ SSAQ\ Der/nn\ U\ Der/nv\ Gram/IV\ TUQ/l) (/"allap"\ Gram/HV\ Gram/IV\ TUQ/l) "allatsi" (/"aqup"\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TUQ/l) (/"assi"\ LIR\ Der/nv\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ TUQ/l)
 ("bachelor") "bioanalytiker" "biskop" "borgmester"
@@ -1917,6 +1917,8 @@ BEFORE-SECTIONS
 SUBSTITUTE:S0001 ("/" PUNCT) ("/" Gram/Conj-encl Conj) TARGET ("</>") - Conj ;
 
 REMOVE:tidligX (/NIR\ Der/vv\ \(Gram/IV\ \)?TUQ/l) IF (0 (/NIR\ Der/vv\ Gram/IV\ V\ Par/l));#En meget tidlig regel, der reparerer noget af REMOVE:MorfLoc0005, der sletter alt for mange Par  ##KL: minus NIR EX #Tassa Paul Watson *Japaniliaanneqassanersoq eqqartuussivimmi aalajangerneqartinnagu Kalaallit Nunaanni aggustip 15-iata tungaanut tigummigallagaassaaq.
+
+REMOVE:tidligXX (/TUQ\ Der/vn\ QAR\ Der/nv/l) + (/TUQ\ Der/vn\ N\ Abs/l) IF (0 (/TUQ\ Der/vn\ QAR\ Der/nv/l) + Par );
 
 REMOVE:Symbol Symbol IF (0 PUNCT) ;
 REMOVE:MIUQ1 (MIUQ) IF (0 (MIU)) ;
@@ -2651,7 +2653,9 @@ REMOVE:tidlig0020A Rel + Pl - Prop - KKUT IF (0 Abs + Pl LINK NEGATE *0 3PlPoss 
 REMOVE:tidlig0020B Abs IF (*-1 ("ima") OR ("imak") LINK 1 TIGE + VFIN LINK 1 _TARGET_ + Rel LINK *1 CONT + TRANSVERB BARRIER V LINK 1 EOS);#En meget snæver "at-sætning": Sammisallu ima pingaaruteqartigaat ILAQUTARIIPPASSUIT aningaasat sulinermikkut pissarsiarisimasatik piniarnermut, aallaaniarnermut aalisarnermullu atorusuttarlugit.
 
 #En smal tidlig specialitet før tidlig0021 når der er parataktiske appositioner mellem Rel+Pl og 3PlPoss
-REMOVE:tidlig0020B Abs + Pl IF (*1 3PlPoss - ("Kalaallit Nunaat") LINK *-1 Sem/Hum + Rel + LU BARRIER (*) - Der/vn - OBLIQUE LINK -*1 Sem/Hum + Rel BARRIER (*) - FIRSTNAME LINK *-1 _TARGET_ + Rel + Pl BARRIER (*) - KOMMA - FIRSTNAME); #1800-kkunni OQALUTTUARTARSIMASUT, Aalut Kangermiup Jens Kreutzmannillu Kangaamiuneersup oqaluttuaasa sumi pisarsimaneri nassaariortorpavut, Katersugaasivimmi pisortap tullia, itsarnisarsiooq Claus Andreasen oqarpoq .
+REMOVE:tidlig0020B1 Abs + Pl IF (*1 3PlPoss - ("Kalaallit Nunaat") LINK *-1 Sem/Hum + Rel + LU BARRIER (*) - Der/vn - OBLIQUE LINK -*1 Sem/Hum + Rel BARRIER (*) - FIRSTNAME LINK *-1 _TARGET_ + Rel + Pl BARRIER (*) - KOMMA - FIRSTNAME); #1800-kkunni OQALUTTUARTARSIMASUT, Aalut Kangermiup Jens Kreutzmannillu Kangaamiuneersup oqaluttuaasa sumi pisarsimaneri nassaariortorpavut, Katersugaasivimmi pisortap tullia, itsarnisarsiooq Claus Andreasen oqarpoq .
+
+REMOVE:tidlig0020C (/N\ Via\ Pl/l) IF (0 (/N\ Via\ Sg\ 3PlPoss/l) OR (/N\ Via\ Sg\ 3SgPoss/l)  LINK -1 Rel );#Nutaatut kattuffiup siulittaasua Peter Olsen ullaakkut nal. 7.00-p *kinguninnguatigut KNR-Radiukkut oqaaseqassaaq.
 
 REMOVE:tidlig0020D Rel + Pl - Prop - KKUT IF (0 Abs + Pl LINK *1 3PlO BARRIER (*) - (Abs Pl) - (2SgPoss Sg) - (%AmbiguøsN Pl) - %AmbiguøsPar)#Præsidentip biilii aqerlumit pitarneqarsinnaanngillat, assersuutigaluguli AKOORUTISSAT toqunartut atorlugit saassunneqaratarsinnaanissaanut illersuutilerneqarsimavoq, tamannalu pillugu matoqqalluinnarlutik.
 (NEGATE *1 3PlPoss OR TRANSVERB - CONT + 3Pl - (3Pl 3PlO Orth/Alt))
@@ -6752,6 +6756,7 @@ SELECT:0409B1 Abs + Sg + 4SgPoss - Orth/Arch IF (0 Lok + Pl)(*1C Abs + Sg BARRIE
 (NEGATE 0 (/"attavik"\ QAR\ Der/nv\ UTE/l) LINK -1 (/"inuk"\ QATE\ Der/nn\ N\ Trm\ Pl/l) )#Ikke udrykket 'sociale medier' Politikkerit arlallit inoqatinut ATTAVEQAATINI sakkortuumik allaffigitinneq misigisarpaat.
 (NEGATE 0 (/ip"\ Gram/IV\ TUQ/l) LINK -1 ("ima"))#Unnerluussisussaatitaasup, Anne Clintonip suliani ima ITTUNI paasissutissanik assersuutigalugu nakkutilliinermi assinik imaluunniit teknikkikkut paasissutissanik tigussaasoqarpiartannginnera erseqqissaatigaa.
 (NEGATE 0 (/"Naalakkersuisoq"\ N\ Abs\ Sg\ 4SgPoss/l) )#Naalakkersuisuni ilaasortat Inatsisartunut ilaasortanut pasinarsaaralutik oqaaseqarnerata Múte B. Egedemit qisuariarfigineqannginnera pissutigalugu tatiginninnginnermik taasititsinissaq siunnersuutigineqarpoq.
+(NEGATE *1 (/TUQ\ Der/vn\ QAR\ Der/nv/l) + Par BARRIER V - CONT)
 ;
 
 REMOVE:0409B2 4SgPoss IF (0 (/"ip"\ Gram/IV\ TUQ/l) + Lok + Pl LINK -1 ("ima"));#Unnerluussisussaatitaasup, Anne Clintonip suliani ima ITTUNI paasissutissanik assersuutigalugu nakkutilliinermi assinik imaluunniit teknikkikkut paasissutissanik tigussaasoqarpiartannginnera erseqqissaatigaa.
@@ -9213,6 +9218,7 @@ REMOVE:8599R (/"siu"\ LIAQ/l) IF (0 ("siuleq"));
 REMOVE:8599S (/"assit"\ N\ Abs\ Sg/l) IF (0 (/"assi"\ N\ Abs\ Pl/l) LINK -1 N + Pl );
 REMOVE:8599T (/"ima"\ N\ Via\ Sg\ 3PlPoss/l) IF (0 (/"imaq"\ N\ Via\ Sg\ 3PlPoss/l)  ) ;#Tamanna nunami radarit qaammataasiallu atorlugit taavalu imaatigut nakkutilliinikkut anguniarneqarniarpoq.
 REMOVE:8599U (/"su"\ LIRI\ Der/nv\ \(Gram/IV\ \)?USIQ/l) IF (0 (/"suli"\ Gram/IV\ RIAR\ Der/vv\ \(Gram/IV\ \)?USIQ/l));
+REMOVE:8599V (/"kinguninnguaq"/l) IF (0 (/"kinguneq"\ NNGUAQ\ Der/nn\ N/l) );
 
 #Nomen eller pron
 REMOVE:8600A (/"sukku"\ N/l) IF (0 (/"suna"\ Gram/Int\ Pron\ Via/l) LINK 1 ("ma"));
