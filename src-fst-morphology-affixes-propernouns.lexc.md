@@ -66,7 +66,7 @@ Navnelexikon er i ateq-kal-lex.txt.
 
 ** Lexicon **Bogtitel**  Nyt lex til bogtitler uden citationstegn
 
-** Lexicon **Z1ateqZ**  
+** Lexicon **Z1ateqZ_infl**  
 
 ** Lexicon **Z1ateq_tptZ**  
 
