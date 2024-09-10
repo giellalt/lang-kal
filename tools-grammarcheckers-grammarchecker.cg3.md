@@ -44,6 +44,10 @@ ADD:msyn-arg-abs-rel
 
 ADD:msyn-arg-abs-rel
 
+ADD:msyn-subj-rel-abs
+
+ADD:msyn-subj-rel-abs
+
 ### Simple punctuation rules
 
 Rules for quotation marks.
