@@ -382,15 +382,9 @@ Judithes afsnit start ### påbegyndt 20231006: sorter umulige morfemkombinatione
 
 -  #GIP #GISSAAR #IAR #IRNIAR #IRSIR #IRUTE #KIP #KILLI #LIR #LIRSUR #LUP #NIP #QAR
 
-- #GIIP
-
 - #IRNIAR #SI
 
-- #KKAAR
-
 - #LIAR
-
-- #LIR
 
 * * *
 

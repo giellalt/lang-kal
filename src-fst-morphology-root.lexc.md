@@ -11,6 +11,7 @@ Fil for at generere de centrale morfologiske processer i vor grønlandske analys
 
 ### Main Word Classes
 
+* **+encl** = clitic to separate clitics from suffixes with identical upper form in disambiguator.cg3 (TTAAQ)
 * **+N** = Noun
 * **+V** = Verb
 * **+Pali** = Particle-like - partikellignende
