@@ -274,12 +274,25 @@ WITH (N Abs) + $$NUMERUS IF
 # Nakutitseriarnerisa nallinnaannartut {tunuanniittoq iluarinninnera} takusinnaasimasariaqaraluarpara. > Nakutitseriarnerisa nallinnaannartut  iluarinninnera tunuanniittoq takusinnaasimasariaqaraluarpara.
 
 ## adjektivisk nomen substantivisk nomen > substantivisk nomen adjektivisk nomen ##
-ADD:syn-TUQ-wordorder &syn-TUQ-wordorder TARGET (/TUQ\ Der/vn\ N\ /l) + $$NUMERUS + $$KASUS IF (1 N + $$NUMERUS + $$KASUS - TUQ - ADJEKTIVISK)(NEGATE *0 &msyn-obj-marking-abs-3PlO)(NEGATE 0 &msyn-obj-marking-abs-3PlO);
+WITH (/TUQ\ Der/vn\ N\ /l) + $$NUMERUS + $$KASUS IF
+     (1 N + $$NUMERUS + $$KASUS - TUQ - ADJEKTIVISK)
+     (NEGATE *0 &msyn-obj-marking-abs-3PlO)
+     (NEGATE 0 &msyn-obj-marking-abs-3PlO)
+{
+  ADD:syn-TUQ-wordorder (&syn-TUQ-wordorder DELETE) (*);
+  
+  COPYCOHORT:syn-TUQ-wordorder (&ADDED co&syn-TUQ-wordorder)
+  	EXCEPT (&syn-TUQ-wordorder DELETE)
+  	TARGET (*)
+  	TO AFTER (jC1 (*))
+  	;
+
+  ADDRELATION:syn-TUQ-wordorder ($2 RIGHT) (*) TO (jC1 (*) LINK 1 (&ADDED));
+};
+  
 # Gangersuarmi pisuttuarujoortalerpunga, inuk kisima nipangissananga {nipikitsumik niaqunniittut nipit} eqqumiitsut oqaluuterujoortalerlugit.
 
-MOVE:syn-TUQ-wordorder (N &syn-TUQ-wordorder) AFTER (1 N - TUQ);
-#
-#ADDRELATION ($3 LEFT) (&syn-TUQ-wordorder) TO (*-1 (co&syn-TUQ-wordorder));
+
 
 END
 #nedenstående virker selvsagt ikke. tegnsætningstegn genereres ikke for sig, og akronymer med heuristisk analyse kan heller ikke genereres.
