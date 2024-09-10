@@ -98,7 +98,8 @@ ADD:msyn-arg-ins-trm (&msyn-arg-ins-trm) TARGET Ins IF (1 Gram/Reci + V);
 COPY:msyn-arg-ins-trm (Trm &SUGGEST) EXCEPT (Ins  &msyn-arg-ins-trm) BEFORE NUMERUS TARGET (&msyn-arg-ins-trm);
 #!! @RULENAME@
 
-
+	# absolutive > relative case
+	
 ADD:msyn-arg-abs-rel (&msyn-arg-abs-rel) TARGET Abs IF
 	(0 Sem/Hum LINK NEGATE 0 FIRSTNAME)
 	(*1 (N Abs) - Sem/Hum BARRIER (/Gram/IV\ V/l) + Par LINK *1 (/Gram/TV\ V/l) - GE - FossileredeCont BARRIER (/Gram/IV\ V/l) + Par)
@@ -112,6 +113,27 @@ COPY:msyn-arg-abs-rel (Rel &SUGGEST) EXCEPT (Abs &msyn-arg-abs-rel) BEFORE NUMER
 #!! @RULENAME@
 
 ADDRELATION:msyn-arg-abs-rel ($2) (V) FROM (*-1 Prop LINK 0 (&msyn-arg-abs-rel)) ;
+
+	# relative > absolutive case
+	
+ADD:msyn-subj-rel-abs (&msyn-subj-rel-abs) TARGET Rel IF
+	(*1 (/Gram/IV\ V\ /l) BARRIER POSSESSUM)
+	(0 (/[1-3][SP][gl]Poss/r))
+	;
+#!! @RULENAME@
+	## Qilanaarilluinnakkama PIVIUSUNNGULERPOQ.
+	#$ {Qilanaarilluinnagara} PIVIUSUNNGULERPOQ.
+	## {Qilanaarilluinnakkavit} PIVIUSUNNGULERPOQ
+
+#COPY:msyn-subj-rel-abs (Abs VSTR:$1 &SUGGEST) EXCEPT (Rel /[SP][gl]/r &msyn-subj-rel-abs) BEFORE (/[1-3][SP][gl]Poss/r) TARGET (&msyn-subj-rel-abs) (*1 (/Gram/IV\ V\ /l) LINK 0 (/\([SP][gl]\)/r));
+
+COPY:msyn-subj-rel-abs (Abs Sg &SUGGEST) EXCEPT (Rel Sg &msyn-subj-rel-abs) BEFORE (/[1-3][SP][gl]Poss/r) TARGET (&msyn-subj-rel-abs) (*1 (/Gram/IV\ V\ /l) LINK 0 3Sg);
+
+COPY:msyn-subj-rel-abs (Abs Pl &SUGGEST) EXCEPT (Rel Pl &msyn-subj-rel-abs) BEFORE (/[1-3][SP][gl]Poss/r) TARGET (&msyn-subj-rel-abs) (*1 (/Gram/IV\ V\ /l) LINK 0 3Pl);
+#!! @RULENAME@
+
+#ADDRELATION:msyn-subj-rel-abs ($2) (V) FROM (*-1 Prop LINK 0 (&msyn-subj-rel-abs)) ;
+
 
 #=========================================
 # Judithe påbegyndt forsøgsvist 20240510 #
