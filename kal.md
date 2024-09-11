@@ -2857,11 +2857,30 @@ given the proper use of these flags.
 * tup  = 
 * K    = Direkte til finale klitika
 
+De mest alminderlige nomenleksika:
+
+- 10227 Z1Zmorf = Nomen, svag bøjning, går til derivationsleksika
+- 2295 tptmorf = 
+- 1675 Z2-Zmorf = Nomen, sterk bøjning som trunkerer, går til derivationsleksika
+- 1446 Z2Zmorf = Nomen, svak bøjning, går til derivationsleksika
+-  969 N_Loan
+-  632 Z1VZmorf
+-  429 Z1+kaZmorf
+-  325 Krestr
+-  301 Z2+lZmorf
+-  247 Z1+ssZmorf
+-  245 Z1+qaZmorf
+-  240 N_Loan_GEM
+-  237 SEQgemin
+-  231 N_Loan_e
+-  225 Z2aqZmorf
+-  193 Z2-qZmorf
+-  164 Z1eZmorf
+-  133 Z1nnguaqZmorf
+
 ...
 
-* LEXICON Nomen  er leksikon for nominalstammer
-
-Leksikonet Nomen inneholder nomenerne.
+Leksikonet **Nomen** inneholder nomenstammerne.
 
 xxx 20170522 til former, som ikke kan læses men som har brug for en analyse i cg'en. Pluralis og singularis-kataloger er ikke medtaget.
 
