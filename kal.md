@@ -469,98 +469,30 @@ Delimiter
 # src-fst-morphology-affixes-derivations-inflections.lexc.md 
 
 
-# Fil for at generere de centrale morfologiske processer i vor grønlandske analysator               
-
-## Dokumentasjon for leksikonnavne:
-
-* Z = nomen
-* 1 = svag bøjning, p-bøjning
-* 2 = sterk bøjning, up-bøjning
-* P = plurale tantum
-* S = singularis
-* - = sterk bøjing som trunkerer (2-)
-* a, q, ... = gemineringer ved konsonantiske flexiver
-* Z = nomen
-* morf = går til derivationsleksika
-*      = går til flexivleksika
-* tpt  =  
-* tup  = 
-* K    = Direkte til finale klitika
-
-## Specielle lexica 
-
-## KAPITLER TIL fst-DOKUMENTA
-
-TARIAQAR på transitiver kan både danne transitive, refleksive og passive verber. Derfor bliver
-alle forekomster af TARIAQAR ved transitiver startende fra juni 2020 både sendt videre normalt til 
-(i) TV-mod_r og tilføjet taggen Gram/Pass og sendt som ny stamme til (ii) IV_r
-På den måde vil turen via (i) producere
-misissortariaqarpaa	misissor+Gram/TV+TARIAQAR+Der/vv+Gram/TV+V+Ind+3Sg+3Sg, samt
-misissortariaqarpoq	misissor+Gram/TV+TARIAQAR+Der/vv+Gram/Refl+V+Ind+3Sg
-og turen via IV_r vil generere
-misissortariaqarpoq	misissor+Gram/TV+TARIAQAR+Der/vv+Gram/Pass+Gram/IV+Gram/IV+V+Ind+3Sg
-
-BLOKERING AF REKURSIV TIP VED TRANSITIVER
-PL20200709
-Forkerte læsninger, når IV med TIP viderederiveres i HTR-lexicon, hvor yderligere TIP kan tilføjes som ingerlatitseqqinneq
-ingerla+Gram/IV+TIP+Der/vv+Gram/TV+TIP+Der/vv+Gram/Db+Gram/Refl+QQIP+Der/vv+Gram/IV+NIQ+Der/vn
-blokeres vha. flaget @P.TIP.ON@ i IV-lexicon og blokeres af flaget @D.TIP@ i transitiv derivation.
-Ex
-ingerla via IV_voq_stem og får i LEXICON  tilføjet linien
-+TIP@P.TIP.ON@+Der/vv:%>tip@P.TIP.ON@ HTR_C_TAQ_tsi ; 
-I HTR_C_TAQ_tsi tilføjes der yderligere TIP.
-For at forebygge dette tagges derivativkæder med TIP som første element med @D.TIP@
-
-Bemærk at D-flaget principielt kun skal anvendes når TIP er første derivativ i kæden. Det kan nemlig ikke udelukkes, at der på et senere
-tidspunkt kan tilføjes yderligere TIP-er 
-
-SÆRLIGT OM Gram/Refl VED TRANSITIVERNE (PL20211121 forsøg)
-Foranlediget af ord som 'attorteqqassutigaara', hvor Refl skaber problemer for både oversættelserne
-og videre affingering introduceres strengen +TIP+Der/vv+Gram/Db+Gram/Refl som går til XItX ;
-
-SURE er sjældent Db, men  hos Ole Brandt finder vi eksempler som ".. sunaaffa Pikiulinnguarmiut pasillerai (implicit Pikiulinnguarmiunut 
-nukani] pilerngullugu nakkartissimasoralugu.
-
-PLEONASTISKE HTR VED NIAR OG QQIP
-medtages i IV-lexica med taggen +HTR+Err/Sub og en bemærkning efter !
-Fx i LEXICON IVschwa2
-+QQIP+Der/vv+HTR+Der/vv+Err/Sub:%>eqqii IV-mod_V ; !Fejl af typen ingerlatitseqqiineq
-
-## Tronds afdeling for debugging.
-
-Følgende leksika var ikke defineret andetsteds (liste), men her
-definert ad hoc for at få koden til at kompilere. De bør alle
-bli erstattet af de korrekte leksika (eller fjernet).:
 
 - LEXICON Z2+rPZ # ;
-
-Det kan være flere grunder hertil:
-* de er simpelthen ikke definerede
-* det korrekte leksikon er ikke tilføjet, og lexc tar suffikset istedenfor
-* det er en skrivefejl i leksikonnavnet
-
-## DERIVATIONSMORFEMERNES LEKSIKA
-
-Her kommer en liste over de ulike leksika.
-Nogle af dem er dokumenterede, andre ikke.
 
 * LEXICON GEMS  = Gennemgangsleksikon til nominer der geminerer til stop-lyd ved fleksion, fx meeqqap
 * 0:^GEMS Z1Zmorf ; 
 
 * LEXICON Z1Zmorf  Derivationsmorfemer til nominer, viser til **tp** og giver derefter nn-derivationer
 	*  tp ; 
-	* +ALUK+Der/nn+INNAQ+Der/nn:%>%TRUNCaluinnaq tup- ; 
-
-- LEXICON Z1VZmorf  Derivationsmorfemer til nominer, der ender med vokal a, i, u 20200916 NN
-	 -  tpV ;   !PL20221117 nyt fortsættelseslex
 
 * LEXICON Z1eqZmorf  Derivationsmorfemer til nominer på seq og leq
-	  * Z1eqZ ; 
-... osv.
+	  *  Z1eqZ ; 
 
 * LEXICON nuliaqmorf  derivationsmorfemer til typen *nuliaq*
 
 * LEXICON SEQgemin  derivationsmorfemer til nominer
+
+* LEXICON Z1+le_UdenPossessumZmorf  derivationsmorfemer til nominer som kalaaleq, der ikke kan tage possessum
+
+* LEXICON Z1+tZmorf  derivationsmorfemer til nominer som pisataq og nivaataq !PL20210519 retableret og stammer fjernet fra GEMS
+
+* LEXICON Z2kZmorf  nominer som eqik
+
+- LEXICON Z1VZmorf  Derivationsmorfemer til nominer, der ender med vokal a, i, u 20200916 NN
+	 -  tpV ;   !PL20221117 nyt fortsættelseslex
 
 * LEXICON ZseqZ  qalaseq
 
@@ -568,19 +500,13 @@ Nogle af dem er dokumenterede, andre ikke.
 
 * LEXICON SUKgemin  derivationsmorfemer til nominer som pukusuk:puku
 
-* LEXICON Z1+le_UdenPossessumZmorf  derivationsmorfemer til nominer som kalaaleq, der ikke kan tage possessum
-
 * LEXICON Z1eZmorf  derivationsmorfemer til nominer på udlydende schwa
 
 * LEXICON Z1tipeZmorf  derivationsmorfemer til nominer på udlydende schwa
 
-* LEXICON Z1nnguaqZmorf  derivationsmorfemer til nominer på nnguaq
-
 * LEXICON Z1iZmorf  derivationsmorfemer til nominer med strong i
 
 * LEXICON Z1iqZmorf  derivationsmorfemer til nominer med strong i som qimmeq
-
-* LEXICON Z1+tZmorf  derivationsmorfemer til nominer som pisataq og nivaataq !PL20210519 retableret og stammer fjernet fra GEMS
 
 * LEXICON tptmorf  
 
@@ -589,8 +515,6 @@ Nogle af dem er dokumenterede, andre ikke.
 * LEXICON ZkkutZmorf  derivativer til typen saki og sakikkut
 
 * LEXICON Z2Zmorf  nominer som erneq
-
-* LEXICON Z2kZmorf  nominer som eqik
 
 * LEXICON Z2veqZmorf  derivationsmorfemer til aaveq-typen
 
@@ -662,8 +586,6 @@ gennemgangskatalog for up-stammer, der kræver replaciv sandhi
 
 * LEXICON IV_r2 
 
-Uku qanoq IV-mod_C-imi ilanngunneqassappat?
-
 * LEXICON IV_k_stem   
 
 * LEXICON IV_k_agentiv  PL 20210111 type allappoq
@@ -731,8 +653,6 @@ Uku qanoq IV-mod_C-imi ilanngunneqassappat?
 * LEXICON XItsXmorf  
 
 * LEXICON XItsXmorf2  
-
-PL 20180718. Følgende er et særligt lexicon til ip i stedet for tidligere LEXICON IV_k_stem med default flex-iv, der producerede enorm overgenerering. Samtidig er transitiv ip flyttet fra TV til flex-tv, men der skal nok tilføjes enkelte transitive ip som upper-under efterhånden som de dokumenteres.
 
 * LEXICON TV  Forudsættes tagget via HTR
 
@@ -931,72 +851,34 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 * LEXICON XTgujaaX2  
 
 * LEXICON tp_uden_derivativer  
-| --- 
-| --- 
-| --- 
-| --- 
 
 * LEXICON tp  obs 20200623: fleksionsmorfemgrænse er %< og ikke %>
-| --- 
-
-| --- 
-| --- 
-| --- 
-| --- 
 
 * LEXICON tpV  obs 20200623: fleksionsmorfemgrænse er %< og ikke %> 
-| --- 
-
-| --- 
-| --- 
-| --- 
-| --- 
 
 * LEXICON tp_Gram/Ord  obs 20200623: fleksionsmorfemgrænse er %< og ikke %> Ny PL20220522 kun til ordenstal
-
-| --- 
-| --- 
-| --- 
-| --- 
 
 * LEXICON Z1+tZ   !PL20210519 retableret og stammer fjernet fra GEMS
 
 * LEXICON tp_possessum3   Til "stammer" som inuup-normu
 
 * LEXICON nuliaq  
-| --- 
-| --- 
-| --- 
-| --- 
 
 * LEXICON tp_speciel  specialitet for at haandtere diatese ved NIQ=SSAQ
-| --- 
-| --- 
-| --- 
-| --- 
 
 * LEXICON Z1eZ  
-| --- 
 
 * LEXICON Z1tipeZ  
 
 * LEXICON Z1nnguaqZ  
-| --- 
 
 * LEXICON Z1nnguaqSZ  
-| --- 
 
 * LEXICON tpP  
 
 * LEXICON tip  kuulti
-| --- 
-| --- 
-| --- 
 
 * LEXICON tiqp  qimmeq
-| --- 
-| --- 
-| --- 
 
 * LEXICON tpt  
 
@@ -1011,110 +893,30 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 * LEXICON Z1+le_UdenPossessumZ  
 
 * LEXICON tup-uuk  nuuk, kuuk
-| --- 
-| --- 
-| --- 
-| ---
-| ---  
-| ---
-| ---
-| --- 
-| --- 
 
 * LEXICON tup-  
-| --- 
-| --- 
-| ---
-| ---  
-| ---
-| ---  
-| --- 
-| --- 
 
 * LEXICON tup-2  
-| --- 
-| --- 
-| --- 
-| ---
-| --- 
-| ---
-| --- 
-| --- 
-| --- 
 
 * LEXICON GIIT  
-| --- 
-| --- 
-| ---
-| --- 
-| ---
-| --- 
-| --- 
-| --- 
 
 * LEXICON Z2aqZ  
-| --- 
 
 * LEXICON UGALUAQ  
 
 * LEXICON GEGALUAQ  
-| --- 
 
 * LEXICON Z2+lZ  
 
 * LEXICON tup  
-| --- 
-| --- 
-| ---
-| --- 
-| ---
-| --- 
-| --- 
-| --- 
 
 * LEXICON tup_speciel  Kun til brug for NIQ som passiv ved transitive stammer
-| --- 
-| --- 
-| ---
-| --- 
-| ---
-| --- 
-| --- 
-| --- 
 
 * LEXICON tup_k  
-| --- 
-| --- 
-| --- 
-| --- 
-| --- 
-| ---
-| --- 
-| ---
-| --- 
-| ---
-| --- 
-| ---
-| --- 
-| --- 
-| --- 
-| --- 
-| --- 
 
 * LEXICON tup_k_reduceret  nalik
 
-| --- 
-| --- 
-
 * LEXICON Z2+rZ  
-| --- 
-| ---
-| --- 
-| ---
-| --- 
-| --- 
-| --- 
-| --- 
 
 * LEXICON Z2veqZ  iliveq:ili
 
@@ -1179,8 +981,6 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 * LEXICON ZkkutZ  kkut og giit
 
 * LEXICON Num1  
-
-I Num2 til Num10 er flagging af NNGUR C-et pga. klokken
 
 * LEXICON Num2  
 
@@ -1332,8 +1132,6 @@ I Num2 til Num10 er flagging af NNGUR C-et pga. klokken
 
 * LEXICON HTR_longi_GAQ_nnip   20101125 særligt leksikon til lange vokaler som -saar (arsaarinnippoq)
 
-flex-tv ;
-
 * LEXICON HTR_k_GAQ_i  til de faa stammer med fusionerende passivt nomen som atornerlugaq, atornerluppaa, atornerluivoq
 
 * LEXICON N_Loan_ACR_V  = bøjelige acronymer med appellativ-betydning som *en BMW*, der skal have bindestreg, men ikke i før videredannelse 
@@ -1386,14 +1184,6 @@ Ord som PFAS
 
 * LEXICON V_Loan_tr  verbal transitive loanwords
 
-Nye gennemgangsleksika specifikt for +UTE+Der/vv tilføjet 20180118 (PL)
-
-Nye gennemgangsleksika specifikt for +UTE+Der/vv tilføjet 20180928 (PL)
-
-Nye gennemgangsleksika specifikt for +UTE+Der/vv tilføjet 20180928 (PL)
-
-Nye gennemgangsleksika for TAR med følgende morfemer
-
 Gennemgangsleksikon for TAR m. fl.
 
 Gennemgangsleksikon for TAR m. fl.
@@ -1435,8 +1225,6 @@ Gennemgangsleksikon for TAR m. fl. !tilføjet 20170501
 efter GUMALLIR GUNNAIR LIR QQAMMIR RIIR UMMIR etc. !Ny default + post_-lexica PL 20180416
 
 TIR og TITIR
-
-Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers Mac
 
 * LEXICON Z1+qaZ  !### udkommentererede gemineringsleksika, erstattet af GEMS (stop, klusil) og GEMC (kontinuant)
 
