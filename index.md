@@ -8,6 +8,7 @@
 
 This page documents the work on the [Kalaallisut language model](http://github.com/giellalt/lang-kal). 
 
+
 Based upon a cooperation between Oqaasileriffik (Grønlands
 sprogsekretariat) and Divvun & Giellatekno, Oqaasileriffik has built
 a full-sized Greenlandic analyser.
