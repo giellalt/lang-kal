@@ -549,18 +549,22 @@ Nogle af dem er dokumenterede, andre ikke.
 
 * LEXICON Z1Zmorf  Derivationsmorfemer til nominer, viser til **tp** og giver derefter nn-derivationer
 	*  tp ; 
-	* +ALUK+Der/nn+INNAQ+Der/nn:%>%TRUNCaluinnaq tup- ; 
-
-- LEXICON Z1VZmorf  Derivationsmorfemer til nominer, der ender med vokal a, i, u 20200916 NN
-	 -  tpV ;   !PL20221117 nyt fortsættelseslex
 
 * LEXICON Z1eqZmorf  Derivationsmorfemer til nominer på seq og leq
-	  * Z1eqZ ; 
-... osv.
+	  *  Z1eqZ ; 
 
 * LEXICON nuliaqmorf  derivationsmorfemer til typen *nuliaq*
 
 * LEXICON SEQgemin  derivationsmorfemer til nominer
+
+* LEXICON Z1+le_UdenPossessumZmorf  derivationsmorfemer til nominer som kalaaleq, der ikke kan tage possessum
+
+* LEXICON Z1+tZmorf  derivationsmorfemer til nominer som pisataq og nivaataq !PL20210519 retableret og stammer fjernet fra GEMS
+
+* LEXICON Z2kZmorf  nominer som eqik
+
+- LEXICON Z1VZmorf  Derivationsmorfemer til nominer, der ender med vokal a, i, u 20200916 NN
+	 -  tpV ;   !PL20221117 nyt fortsættelseslex
 
 * LEXICON ZseqZ  qalaseq
 
@@ -568,19 +572,13 @@ Nogle af dem er dokumenterede, andre ikke.
 
 * LEXICON SUKgemin  derivationsmorfemer til nominer som pukusuk:puku
 
-* LEXICON Z1+le_UdenPossessumZmorf  derivationsmorfemer til nominer som kalaaleq, der ikke kan tage possessum
-
 * LEXICON Z1eZmorf  derivationsmorfemer til nominer på udlydende schwa
 
 * LEXICON Z1tipeZmorf  derivationsmorfemer til nominer på udlydende schwa
 
-* LEXICON Z1nnguaqZmorf  derivationsmorfemer til nominer på nnguaq
-
 * LEXICON Z1iZmorf  derivationsmorfemer til nominer med strong i
 
 * LEXICON Z1iqZmorf  derivationsmorfemer til nominer med strong i som qimmeq
-
-* LEXICON Z1+tZmorf  derivationsmorfemer til nominer som pisataq og nivaataq !PL20210519 retableret og stammer fjernet fra GEMS
 
 * LEXICON tptmorf  
 
@@ -589,8 +587,6 @@ Nogle af dem er dokumenterede, andre ikke.
 * LEXICON ZkkutZmorf  derivativer til typen saki og sakikkut
 
 * LEXICON Z2Zmorf  nominer som erneq
-
-* LEXICON Z2kZmorf  nominer som eqik
 
 * LEXICON Z2veqZmorf  derivationsmorfemer til aaveq-typen
 
@@ -708,7 +704,7 @@ Uku qanoq IV-mod_C-imi ilanngunneqassappat?
 
 * LEXICON XIirXmorf2   til iR såsom *er*
 
-* LEXICON XItX  type imaappoq, kaavippoq (NB ikke kâvigpoĸ, men kâvípoĸ)
+* LEXICON XItX  type imaappoq, kaavippoq (NB ikke kâvigpo?, men kâvípo?)
 
 * LEXICON XItX2  
 
