@@ -1,5 +1,7 @@
 
 # Fil for at generere de centrale morfologiske processer i vor grønlandske analysator               
+## September 2024
+## branch: (testing), regressionstest: regression (branch: testing - kaltesting)
 
 ## Dokumentasjon for leksikonnavne:
 
@@ -93,6 +95,50 @@ Nogle af dem er dokumenterede, andre ikke.
 
 * LEXICON Z2kZmorf  nominer som eqik
 
+* LEXICON Z2Zmorf  nominer som erneq
+
+* LEXICON Z2i2Zmorf  derivationsmorfemer til aleq, ateq
+
+* LEXICON Z2-Zmorf  derivationsmorfemer til tup- paa K. Jf. Z2-qZmorf
+
+* LEXICON Z2-uukZmorf  derivationsmorfemer til tup- paa K. Jf. Z2-qZmorf
+
+* LEXICON Z2-qZmorf  Nyt leksikon til tup- paa Q 7.9.2007 for at haandtere forskelle som ..fiksuaq vs. ..aqsuaq
+
+* LEXICON Z2-eqZmorf  Nyt leksikon til tup-2, magen til Z2-qZmorf, men har andre fleksioner til tulleq og qiterleq
+
+* LEXICON Z2aqZmorf  derivationsmorfemer til nominer
+
+* LEXICON Z2+rZmorf  derivationsmorfemer til nominer
+
+* LEXICON Z1+ssZmorf  derivationsmorfemer til nominer
+
+* LEXICON Z1+meZmorf  derivationsmorfemer til nominer
+
+* LEXICON Z1+kaZmorf  derivationsmorfemer til nominer
+
+* LEXICON Z1+keZmorf  derivationsmorfemer til nominer atigeq
+
+* LEXICON Z1+koZmorf  derivationsmorfemer til nominer
+
+* LEXICON ZsaqZmorf  derivationsmorfemer til nominer
+
+* LEXICON Z1+qaZmorf  derivationsmorfemer til nominer
+
+* LEXICON Z1+qoZmorf  derivationsmorfemer til nominer
+
+* LEXICON Z1+qeZmorf  derivationsmorfemer til nominer
+
+* LEXICON Z1+laZmorf  derivationsmorfemer til nominer
+
+* LEXICON Z1+loZmorf  derivationsmorfemer til nominer som nuloq
+
+* LEXICON Z1+naZmorf  derivationsmorfemer til nominer med gemination af n
+
+* LEXICON Z1+noZmorf  derivationsmorfemer til nanoq med gemination af n tilføjet 20170522
+
+	* +ALUK+Der/nn+INNAQ+Der/nn:%>%TRUNCaluinnaq tup- ; 
+
 - LEXICON Z1VZmorf  Derivationsmorfemer til nominer, der ender med vokal a, i, u 20200916 NN
 	 -  tpV ;   !PL20221117 nyt fortsættelseslex
 
@@ -116,29 +162,13 @@ Nogle af dem er dokumenterede, andre ikke.
 
 * LEXICON ZkkutZmorf  derivativer til typen saki og sakikkut
 
-* LEXICON Z2Zmorf  nominer som erneq
-
 * LEXICON Z2veqZmorf  derivationsmorfemer til aaveq-typen
 
-* LEXICON Z2i2Zmorf  derivationsmorfemer til aleq, ateq
-
 * LEXICON Z2tupeqZmorf  derivationsmorfemer tupeq
-
-* LEXICON Z2-Zmorf  derivationsmorfemer til tup- paa K. Jf. Z2-qZmorf
-
-* LEXICON Z2-uukZmorf  derivationsmorfemer til tup- paa K. Jf. Z2-qZmorf
-
-* LEXICON Z2-qZmorf  Nyt leksikon til tup- paa Q 7.9.2007 for at haandtere forskelle som ..fiksuaq vs. ..aqsuaq
-
-* LEXICON Z2-eqZmorf  Nyt leksikon til tup-2, magen til Z2-qZmorf, men har andre fleksioner til tulleq og qiterleq
-
-* LEXICON Z2aqZmorf  derivationsmorfemer til nominer
 
 * LEXICON Z2+lZmorf  derivationsmorfemer til nominer korrigeret februar 2017 med hensyn til additive og recessive morfemer.
 
 gennemgangskatalog for up-stammer, der kræver replaciv sandhi
-
-* LEXICON Z2+rZmorf  derivationsmorfemer til nominer
 
 * LEXICON Z2-PZmorf  derivationsmorfemer til tup-nominer pluralis tantum
 
@@ -994,35 +1024,9 @@ Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers
 
 * LEXICON Z1+ngeZ  iviangeq, ivianngit
 
-* LEXICON Z1+ssZmorf  derivationsmorfemer til nominer
-
 * LEXICON Z1+niuZmorf  derivationsmorfemer til niu
 
 * LEXICON Z1+maZmorf  derivationsmorfemer til nominer som isuma
-
-* LEXICON Z1+meZmorf  derivationsmorfemer til nominer
-
-* LEXICON Z1+kaZmorf  derivationsmorfemer til nominer
-
-* LEXICON Z1+keZmorf  derivationsmorfemer til nominer atigeq
-
-* LEXICON Z1+koZmorf  derivationsmorfemer til nominer
-
-* LEXICON ZsaqZmorf  derivationsmorfemer til nominer
-
-* LEXICON Z1+qaZmorf  derivationsmorfemer til nominer
-
-* LEXICON Z1+qoZmorf  derivationsmorfemer til nominer
-
-* LEXICON Z1+qeZmorf  derivationsmorfemer til nominer
-
-* LEXICON Z1+laZmorf  derivationsmorfemer til nominer
-
-* LEXICON Z1+loZmorf  derivationsmorfemer til nominer som nuloq
-
-* LEXICON Z1+naZmorf  derivationsmorfemer til nominer med gemination af n
-
-* LEXICON Z1+noZmorf  derivationsmorfemer til nanoq med gemination af n tilføjet 20170522
 
 * LEXICON Z1nujaqZmorf  typen nujaq+Der/nn:nu
 
