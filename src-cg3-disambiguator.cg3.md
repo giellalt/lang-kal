@@ -376,6 +376,8 @@ Gram/... and different specifications
 
 ### Disambiguere morfemkombinationer
 
+Judithes afsnit start ### påbegyndt 20231006: sorter umulige morfemkombinationer fra
+
 - GASAAR
 
 -  #GIP #GISSAAR #IAR #IRNIAR #IRSIR #IRUTE #KIP #KILLI #LIR #LIRSUR #LUP #NIP #QAR

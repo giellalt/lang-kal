@@ -8,12 +8,13 @@
 
 This page documents the work on the [Kalaallisut language model](http://github.com/giellalt/lang-kal). 
 
+
 Based upon a cooperation between Oqaasileriffik (Grønlands
 sprogsekretariat) and Divvun & Giellatekno, Oqaasileriffik has built
 a full-sized Greenlandic analyser.
 
 Central developers have been:
-Per Langgård, Liv Molich, Najannguaq Nielsen, Trond Trosterud, Paneeraq Nielsen, Beatrine Heilman, Judithe Denbæk, Tino Didriksen and Sjur Moshagen.
+Per Langgård, Liv Molich, Najannguaq Nielsen, Trond Trosterud, Paneeraq Nielsen, Beatrine Heilman, Judithe Denbæk, Onu Didriksen, Tino Didriksen and Sjur Moshagen.
 
 It is in use in a Greenlandic spellchecker and in a set
 of pedagogical programs for Greenlandic.
