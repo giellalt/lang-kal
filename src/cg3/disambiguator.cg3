@@ -1937,6 +1937,9 @@ REMOVE:GramIV0003 (/Der/nv\ Gram/IV\ NNGUARSI/l) + $$BFORM (0 (/Der/nv\ Gram/IV\
 #!! ### Disambiguere morfemkombinationer
 ###
 ### 20240917 kaltesting (testing)
+#not FST related
+REMOVE ("taamaattoq" Interj) ;
+
 #FST implementation list Der/nn SECTION
 #list of nonsensical/unlikely combinations to be blocked in kaltesting (testing) fst
 #sems section
@@ -1959,13 +1962,16 @@ REMOVE (/"siulleq"\ PAK\ Der/nn/l) ;
 REMOVE (/"kingulleq"\ PAK\ Der/nn/l) ; 
 
 #about TAQ
-REMOVE (/"piffik"\ TAQ/l) (0 ("piffik"\ SSAQ/l)) ;
+REMOVE TAQ + Orth/Arch ; # "ukkusik" Orth/Arch TAQ Der/nn
+REMOVE (/"piffik"\ TAQ/l) (0 (/"piffik"\ SSAQ/l)) ;
 REMOVE (/"eqqaq"\ TAQ\ Der/nn\ N\ /l) (0 ("<[Ee]qqarsaat.*>"r)) ;
 REMOVE TAQ (0 (/".*"\ TAQ\ Der/nn/l)) (0 ("<.*ssa.*>"r)) 
 (NEGATE 0 (/TAQ\ Der/nn\ SSAQ\ Der/nn/l)) ; #PRIORITY look into TAQ
-REMOVE TAQ (0 (/VIK\ Der/vn\ TAQ\ Der/nn/l)) ; #PRIORITY
-REMOVE TAQ (0 SSAQ)
-(NEGATE 0 (/TAQ\ Der/nn\ SSAQ\ Der/nn/l) OR (/TAQ\ Der/vn\ SSAQ\ Der/nn/l)) ;
+REMOVE TAQ (0 (/VIK\ Der/vn\ TAQ\ Der/nn/l)) #PRIORITY
+(NEGATE 0 PLACE + 3SgPoss LINK -1 Sem/Geo + Prop + Rel); #Sisimiut illoqarfittaani
+REMOVE (/^\(TAQ\)$/r) (0 (/^\(SSAQ\)$/r))
+(NEGATE 0 (/TAQ\ Der/nn\ SSAQ\ Der/nn/l) OR (/TAQ\ Der/vn\ SSAQ\ Der/nn/l)) 
+(NEGATE 0 (VSTR:$1) LINK 0 (VSTR:$2)) ;
 REMOVE TAQ (0 (/".*neq"\ TAQ\ Der/nn\ /l) OR (/NIQ\ Der/vn\ TAQ\ Der/nn/l)) (0 (NIRSAQ)) ; #utoqqaanersaq
 REMOVE (/NIAQ\ Der/vn\ TAQ\ Der/nn/l) ;
 REMOVE (/"angi"\ Gram/IV\ NIQ\ Der/vn\ TAQ\ Der/nn/l) (0 (/"anner"\ Gram/IV\ SAR\ Der/vv/l)) ;
@@ -1995,15 +2001,18 @@ REMOVE (/"kinguaaq"\ SSAQ\ Der/nn\ LIUR\ Der/nv\ UTE\ Der/vn/l) ; #Derived lexic
 #Gram/Exclm
 REMOVE ("kinguaaq"\ SSAQ\ Der/nn\ LIUR\ Der/nv\ Gram/IV\ V\ Ind\ 3Pl\ Gram/Exclm/l) ; # just LIUR + Gram/Exclm or get rid of Gram/Exclm entirely as a productive entry (mentioned 72 times in dis)
 
-
 # FST implementation list INFLECTION SECTION
 REMOVE (/"pi"\ Gram/IV\ SIMA\ Der/vv\ Gram/IV\ TUQ\ Der/vn/l) + 3SgPoss ; # 3SgPoss not possible for this noun stem. furthermore "pi"\ Gram/IV\ SIMA\ Der/vv\ Gram/IV\ TUQ\ Der/vn = lexicalized 
 REMOVE (/"uuma"\ Gram/IV\ TUQ\ Der/vn\ PALAAQ\ Der/nn\ N\ /l) + 3SgPoss (0 ("<[Uu]umasupalaanut>"r)) ; #even though possible, no epenthetic v is Arch and unlikely
 REMOVE ("oqaq") (0 ("<[Oo]qarput>"r)) ;
 
+#FST implementation list verbs
+#Der/vv
+REMOVE (/"akuere"\ Gram/TV\ TAAR\ Der/vv\ Gram/TV\ LIR\ Der/vv/l) ; #akuerisaalernissaannut
 
-#non fst
-REMOVE ("taamaattoq" Interj) ;
+#Der/vn
+REMOVE (/"tigu"\ Gram/TV\ TARE\ Der/vv\ Gram/TV\ NIQ\ Der/vn\ Gram/TransverbNIQ\ QAR\ Der/nv/l) ;
+
 ###
 ###
 
@@ -7394,7 +7403,7 @@ REMOVE:0520A Par IF (0 Abs) (*1 ORATIOOBLVERB + IV_PL_SUBJ& BARRIER V OR CLB) (*
 (NEGATE 1 ORATIOOBLVERB + 3SgO)
 ;
 
-REMOVE:0520B N + U + TUQ IF (0 Par)(*1 ORATIOOBLVERB - NIQAR - TAQ - Gram/Pass - Gram/Refl BARRIER CONJ-C OR VFIN)
+REMOVE:0520B N + U + TUQ IF (0 Par)(*1 ORATIOOBLVERB - NIQAR - TAQ - Gram/Pass - Gram/Refl BARRIER CONJ-C OR VFIN OR POSSESSUM)
 (NEGATE 1 Gram/Cong)
 (NEGATE 0 HUMAN + &&IV_SUBJ& LINK *1 humverb + &&IV_SUBJ& BARRIER (*) - Sem/Hum - KOMMA)#Kalaallit Nunaalli eqqarsarluartariaqartoq, nunanut allanut tunngasunut MINISTERIUSIMASOQ, Martin Lidegaard mianersoqqusivoq.
 (NEGATE *-1 Sg + Abs BARRIER (*) LINK *1 _TARGET_ + Rel + Pl LINK *1 VFIN + 3Pl + 3SgO)#Inuit pissaanillit imminnut qanoq atorluartarnerat INNUTTAASUT paasisinnaasariaqarpaat, taanna oqarpoq.
