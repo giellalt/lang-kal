@@ -1253,6 +1253,7 @@ LIST ORATIOOBLVERBnOQAR = "aalajanger" "aalianger" (/"aarleqqut"\ GE/l) (/"aki"\
 ("nuannaar" UTE GE) ("nuannare") "uparuar" ("oqalup" UTE) ("oqar" UTE GE) "oqaatige" "oqaluttuar" (/"oqalup"\ Gram/IV\ TUAR/l) (/"oqariartuut"\ QAR\ Der/nv\ Gram/IV/l)
 ("oqar" VIK GE) #måske selvstændig LIST, da både objekt og inquit
 ("oqar" TAR)
+#(/"nassuiar"\ Gram/TV\ UTE\ Der/vv/l)
 #(/"oqalup"\ Gram/IV\ USIQ\ Der/vn\ GE\ Der/nv\ Gram/TV\ NIQAR/l) #vist kun inquit i passiv?
 "paasi" "paasinar" "paasinarsi" "paasissutisser" (/"paasissutissiissut"\ GE\ Der/nv/l) ("pasitsaap") ("pi" GUMA VIK GE) ("pi" GUMA TAQ GE) (/"pi"\ NGAAR\ Der/vv\ Gram/IV\ TIP/l) (/"pilersaar"\ Gram/HV\ UTE\ Der/vn\ GE/l) (/"pilersaar"\ Gram/HV\ UTE\ Der/vn\ U/l) "pinngitsaali" ("piumaffik" GE) "puigor" "puior" "qulakkeer" "qular" "qulare" "qularnar" "qularutige" "qinnuige"
  (/"saqqummer"\ Gram/TV\ UTE/l) (/"saqqummer"\ Gram/IV\ UTE/l) (/"saqqummer"\ UTE\ Der/vv\ Gram/TV/l)
@@ -1939,13 +1940,15 @@ REMOVE:GramIV0003 (/Der/nv\ Gram/IV\ NNGUARSI/l) + $$BFORM (0 (/Der/nv\ Gram/IV\
 ### 20240917 kaltesting (testing)
 #not FST related
 REMOVE ("taamaattoq" Interj) ;
+REMOVE TUQ (-1* (/"nassuiar"\ Gram/TV\ UTE\ Der/vv/l)) ;
+
 
 #FST implementation list Der/nn SECTION
 #list of nonsensical/unlikely combinations to be blocked in kaltesting (testing) fst
 #sems section
 REMOVE (/"imaq"\ TAAQ\ Der/nn/l) ; #sems
 REMOVE (/"umik"\ ATSIAQ\ Der/nn/l) ; # sems
-#NISAQ
+#about NISAQ
 REMOVE (/"nuak"\ NISAQ/l) ;
 #about TUGAQ
 REMOVE (/"pooq"\ TUGAQ/l) ;
@@ -1968,9 +1971,7 @@ REMOVE (/"eqqaq"\ TAQ\ Der/nn\ N\ /l) (0 ("<[Ee]qqarsaat.*>"r)) ;
 REMOVE TAQ (0 (/".*"\ TAQ\ Der/nn/l)) (0 ("<.*ssa.*>"r)) 
 (NEGATE 0 (/TAQ\ Der/nn\ SSAQ\ Der/nn/l)) ; #PRIORITY look into TAQ
 REMOVE TAQ (0 (/VIK\ Der/vn\ TAQ\ Der/nn/l)) #PRIORITY
-(NEGATE 0 PLACE + 3SgPoss LINK -1 Sem/Geo + Prop + Rel); #Sisimiut illoqarfittaani
-REMOVE (/^\(TAQ\)$/r) (0 (/^\(SSAQ\)$/r))
-(NEGATE 0 (/TAQ\ Der/nn\ SSAQ\ Der/nn/l) OR (/TAQ\ Der/vn\ SSAQ\ Der/nn/l)) 
+(NEGATE 0 PLACE + 3SgPoss LINK -1 Sem/Geo + Prop + Rel) #Sisimiut illoqarfittaani
 (NEGATE 0 (VSTR:$1) LINK 0 (VSTR:$2)) ;
 REMOVE TAQ (0 (/".*neq"\ TAQ\ Der/nn\ /l) OR (/NIQ\ Der/vn\ TAQ\ Der/nn/l)) (0 (NIRSAQ)) ; #utoqqaanersaq
 REMOVE (/NIAQ\ Der/vn\ TAQ\ Der/nn/l) ;
@@ -4876,6 +4877,7 @@ REMOVE:opremsning04 (Abs Pl) IF (-1 Num LINK 1 _TARGET_ + Rel + Pl LINK *1 3PlPo
 
 #Possessorer med mange deltagere. ADJEKTIVISK undtaget fra 3PlPoss for at nedbringe antallet af fejlanalyserede tup- pluralis fx INNAQ
 REMOVE:opremsning05 Abs + Pl - Num IF (0 Rel + Pl LINK *1 3PlPoss - ("Kalaallit Nunaat") - ("nuna" 3PlPoss) - Orth/Arch BARRIER (*) - KOMMA - %AmbiguøsN - CONJ-C - OBLIQUE)#Atuarfiit, paaqqinnittarfiit, neriniartarfiit imerniartarfiillu kiisalu kulturikkut aaqqissuussat matuneqarnerisa nalaanni angerlarsimaffinni imigassamik atuineq oqartussanit qanimut malinnaaffigineqarpoq.
+(NEGATE 1 ("<pikkorinnerpaat>"))
 (NEGATE 1 LU + 3PlPoss LINK *1 3PlO BARRIER V)#Taamaammat innuttaasut suliffeqarfiillu politiinit piumaffigineqarput ATORTUT assigisinnaasaallu isumannaatsumik inisseqqullugit anorersuarmiit tingitaaqqunagit, inunnut allanullu eqqaaniittunut navianarsinnaammat
 (NEGATE *1 3PlPoss LINK 0 CONJ-C )#Nassuiaappara baobabit orpigaaraanngitsut orpissuusulli oqaluffittut PORTUTIGISUT allaalluunniit nagguaatsorpassuarnik nassaraluarpat, taakku orpik baobabi ataaseq nungussinnaanavianngikkaalluunniit.
 (NEGATE 1 Num LINK 1 ("misse") + 3PlPoss)#Timmisartuutileqatigiiffiulli suli naatsorsuutigaa ILAASUSSAT 900-t missaanniittut kinguaattooqqasut tamaasa apuuffissaannut sapaatip-akunnerata naanerani apuukkumaarlugit .
@@ -6722,6 +6724,7 @@ REMOVE:Int0171 Abs IF (1 CONJ-C + Rel LINK 1 ADVERBIEL + POSSESSUM OR SPATIAL + 
 
 #Disambiguerer først et par sikre Par vs. TUQ. Jf. de tilsvarende MAP-regler
 SELECT:OrObl0100 Par IF (-*1 OQARPOQ BARRIER VFIN LINK NEGATE -*1 ("taama") OR ("nalinginnaq")) #oo ved oqarpoq aldrig simultan med taama
+(NEGATE 0 TUQ LINK 1 NIQ + SSAQ + 3PlPoss)
 (NEGATE *-1 DIRTALESLUT) #aldrig oo simultan med anførende sætning
 (NEGATE 0 UTIGE OR RIAR) #Er dette mon overkill eller skal det med. Et modeksempel, hvortil bemærkes, at RIAR ikke står umiddelbart ved modusmærket. Taava allatut ikiuuteriarsinnaanani paasigamiuk pigisanik annissuisunut ikiuutilunnialerpoq.
 (NEGATE -1 Ins LINK 1 _TARGET_ + CONJ-LU LINK *1 Par)
