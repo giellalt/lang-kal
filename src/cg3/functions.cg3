@@ -58,7 +58,52 @@ INCLUDE STATIC disambiguator.cg3 ;
 #!! Begyndende udkommentering af REMOVE og SELECT, der kun skal stå i disambiguator. Vil blive udkommenteret med '#DATO' fx '#20210704'. Færdiggjort 20230726.
 #!! Begyndende sletning hvor REMOVE og SELECT står med #
 
+#kaltesting beginning
+#@MAINVERB		verb in superordinate mood
+#@adv-compl>	adverbial complement to verb with suffix TIGE
 
+#LIST supmood = Ind Int Imp Opt ;
+#LIST submood = Con Par Cont ContNeg Cau IteCau ;
+#LIST <mainverb> = <mainverb> ;
+#LIST <intrans> = <intrans> ;
+#LIST <trans> = <trans> ;
+LIST objectmarking = (/[1-4][SP][gl]O/r) ;
+#LIST prop-noun-numerus = (Noun /^\([SP][gl]\)$/r) (Prop /^\([SP][gl]\)$/r) ;
+#LIST @ADV-compl> = @adv-compl> ;
+#LIST adv-compl-TIGE = Aeq "ima" "imak" "qanoq" "taama" ;
+#
+##mainverb
+##regressiontest OFF
+#ADD <intrans> V - objectmarking ;
+##MAINCLAUSE
+#MAP <mainverb> supmood ;
+#MAP <mainverb> submood (NEGATE 0* supmood) ;
+#
+##adverbial complement
+##regressiontest OFF
+#WITH:kaltesting adv-compl-TIGE
+#(*1 TIGE - N BARRIER (*) - Adv - Conj)
+#(NOT p (*))
+#{
+#MAP:adv-compl-TIGE @ADV-compl> (*) ;
+#SETPARENT:adv-compl-TIGE (*)
+#TO (jC1 (*)) ;
+#} ;
+##orpissuartut portutigisut
+
+##SUBJECT
+##regressiontest OFF
+#WITH Sem/Hum + Abs + prop-noun-numerus
+#(1* <intrans> + (VSTR:3$1))
+#(NOT p (*))
+#{
+#MAP @SUBJ> (*) ;
+#SETPARENT (*)
+#TO (jC1 (*)) ;
+#} ;
+#
+
+#kaltesting ending
 
 # ============ #
 # ============ #
@@ -67,6 +112,7 @@ INCLUDE STATIC disambiguator.cg3 ;
 # ============ #
 
 BEFORE-SECTIONS
+#ADD:kaltesting <trans> objectmarking ;
 
 DELIMIT:quotedelimit ("<">") IF (-1W _S_DELIMITERS_) ; #virker tilsyneladende ikke #"
 #!! Delimiter
@@ -90,6 +136,17 @@ ADD:0302F (Gram/2sml) BEFORE (N) TARGET Abl IF (*1 (NIRU V) BARRIER (*) - PROCEN
 #####################################
 # Cleaning special constructions that complicate the rest #
 #####################################
+
+#regressiontest ON
+WITH:kaltesting ("taama") OR ("qanoq") OR ("ima") OR ("imak") OR Aeq
+(*1 TIGE - N BARRIER (*) - Adv - Conj)
+(NOT p (*))
+{
+MAP @>V (*) ;
+SETPARENT (*)
+TO (jC1 (*)) ;
+} ;
+#orpissuartut portutigisut
 
 #KL# 20240123: # uden EX i reg og den har ikke være aktiv i dep
 #MAP:akoq-speciel @<SUBJ TARGET Abs + &&IV_SUBJ& IF (*-1 ("akoq") + U + &&IV_SUBJ& BARRIER Abs LINK NEGATE *-1 Abs + &&IV_SUBJ&) ;
@@ -1697,7 +1754,25 @@ MAP:M_faste0500 @HNOUN TARGET ("ila") + Abs + 3PlPoss + Pl IF (-2 ("ila") + Abs 
 ;
 
 #såvel .. som
-MAP:M_faste0505 @i-ADVL> TARGET (QAR Cont 4Pl) + CONJ-C IF (1 (LIK N Pl)); #Nunat qaarsortarasaat UJARAARAQARLUTILLU ujaraalullit aamma piffiussapput atortussat amerlanerpaartaannik piiaaffissat, aqqusinniassamut atugassanik.
+WITH:kaltesting (QAR Cont 4Pl) + CONJ-C
+(1 (LIK N Abs Pl))
+(NOT p (*))
+{
+MAP @i-ADVL> (*) ;
+SETPARENT (*)
+TO (jC1 (*)) ;
+} ;
+
+WITH:kaltesting LIK + N + Abs + Pl
+(-3 ("nuna") + N + Abs + Pl)
+(-1 QAR + Cont + 4Pl)
+(NOT p (*))
+{
+MAP @N< (*) ;
+SETPARENT (*)
+TO (jC1 (*)) ;
+} ;
+#MAP:M_faste0505 @i-ADVL> TARGET (QAR Cont 4Pl) + CONJ-C IF (1 (LIK N Pl)); #Nunat qaarsortarasaat UJARAARAQARLUTILLU ujaraalullit aamma piffiussapput atortussat amerlanerpaartaannik piiaaffissat, aqqusinniassamut atugassanik.
 
 
 #Ugenumre og ugedage
@@ -2592,6 +2667,14 @@ MAP:M0253 @FOC>V TARGET ("tassa") + Adv IF (*-1 $$MODUS + $$PERSON - VFIN BARRIE
 
 #MAP:M0253A @FOC>N TARGET ("tassa") + U + Abs IF (-*1 N + Abs +  &&IV_SUBJ& BARRIER (*) - KOMMA - &&IV_SUBJ& ) (*1 N + Abs BARRIER (*) - KOMMA - (N Abs) - OBLIQUE - CONJ-LU ) ;#Ernisarfeqassagaanni inuit immikkut ilinniarsimasut pinngitsoorneqarsinnaanngillat, tassaasut nakorsaq immikkut ilinniarsimasoq, sinitsitsisartoq, bioanalytikeri, juumooq peqqissaanermillu ikiorti. 
 
+WITH:kaltesting Cont + (/^\([1-3][SP][gl]\)$/r) - objectmarking
+(-1* ("ilisima") + (VSTR:$1)) #ORATIOOBLVERB was ruining the regressiontest
+(NEGATE -1* Trm BARRIER Conj LINK -1* ("ilisima"))
+{
+MAP @CL-<CIT (*) ;
+SETPARENT (*)
+TO (jC1 (*)) ;
+} ;
 
 MAP:M0254A @FOC>N TARGET ("tassa") - UNA - UKU - AFFINGERET IF (*-1 $$KASUS - ORATIOOBLVERB BARRIER (*) - KOMMA - PUNCT)(*1 $$KASUS - @PROP> BARRIER (*) - PUNCT - KOMMA - OBLIQUE) #Tamaani tassa Nunatsinni nalunaaqutaq ukiuuneranit aasaaneranut nalunaaquttamut sapaatiuppat marsip ulluisa 31-ianni unnukkut nalunaaqutaq quliniit aqqanermut siuartinneqassaaq.
 (NEGATE *-1 ORATIOOBLVERB + V OR OQARPOQ + V BARRIER V OR KOMMA LINK *1 Abs + &&IV_SUBJ& LINK *1 _TARGET_ + Par + &&IV_SUBJ&)#Radioaviisimiilli paasineqarpoq umiarsuarnut talittarfiit piukkunneqarsinnaasut TASSAASUT talittarfik Esbjerg-miittoq, Århus-miittoq Ålborgimiittorlu.
@@ -3162,7 +3245,11 @@ MAP:M0003A @PRED TARGET Cau IF (*-1 ("tassa") - UNA LINK -1 BOS OR CLB OR PUNCT 
 (NEGATE *1 Cau BARRIER CLB) #Tassami aamma pulaartuni ISEQQAARMATA nipilersorfigalugit ilassereeramigit.
 ; #Tassa ualikkut 14.-ni aaniarlunga ALLAKKAMI, DHL stafetimut pisuttussanut ilanngussimagaminga ualikkut 16:45 aaniarlunga.
 
-MAP:M0003B @PRED TARGET Cau IF (NEGATE *0 @PRED BARRIER KONCESSIV OR CONJ-LU - LU-N OR ("tassa"))(NEGATE *0 VFIN)(NEGATE 0 Cau - ORATIOOBLVERB LINK *1 V BARRIER ("tassa") OR CONJ-C)(NEGATE 1 Cau)
+MAP:M0003B @PRED TARGET Cau IF
+(NEGATE *0 Par + @PRED) 
+(NEGATE *0 @PRED BARRIER KONCESSIV OR CONJ-LU - LU-N OR ("tassa"))
+(NEGATE *0 VFIN)(NEGATE 0 Cau - ORATIOOBLVERB LINK *1 V BARRIER ("tassa") OR CONJ-C)
+(NEGATE 1 Cau)
 (NEGATE *-1 ORATIOOBLVERB + CONT BARRIER CLB LINK -1 BOS) #Eqqaamallugu unnugu nalunaaqutaq SIUARTINNEQASSAMMAT.
 (NEGATE *-1 ("tassa") + @PRED) #Nuannaarutiginerusaalli tassa kunngertik pitsaasuullunilu UPPERTUUMMAT.
 (NEGATE 1 CLB LINK *1 CONT BARRIER CONJ-C LINK 1 CLB) #”Mikisuullutit siggutit INEQUNARALLARMATA, assassuatit oqummiartarnikuugakkit siggutit tasillugit!”
@@ -3171,6 +3258,7 @@ MAP:M0003B @PRED TARGET Cau IF (NEGATE *0 @PRED BARRIER KONCESSIV OR CONJ-LU - L
 
 #Sætninger kun med Con
 MAP:M0004 @PRED TARGET Con IF (NEGATE *0 V - Con); #Ilaanni IKILIGUNIK, ilaanni AMERLIGUNIK.
+
 
 #@PRED til CONT ved paratakse
 
@@ -3190,7 +3278,10 @@ MAP:M0005B @PRED TARGET CONT + CONJ-LU - FossileredeCont - ("taamaasi") IF (*1 @
 ; #Ulloq taanna aamma kommunimut QINERSISOQARLUNILU ilagiinnut qinersisoqassaaq.
 
 #VFIN OBJ-LU CONT
-MAP:M0005C @PRED TARGET CONT + TRANSVERB - DERTEMPORAL IF (*-1 CONJ-C - LU-N - ("aamma") - @PRED - KONCESSIV BARRIER (*) - OBLIQUE - Abs - Rel - Akk - CONT - Par - IteCau - Cau - Con - KOMMA - PUNCT - Adv OR @PRED LINK *-1 @PRED)(NEGATE *1 V - CONJ-C - QQU OR VFIN BARRIER V OR CLB) #Uanga ippassaq ullaakkut iterpunga aamma taamaalisimallunga, toqqusaarluppunga, nuappunga puakkalu ANNIARALUGIT kissarneqarlungalu, iluaalliornermit sinippiannginnama iiseriarlunga sininniaqqilerpunga ajorpallaanngikkuma testertikkiartorniarpugut.
+MAP:M0005C @PRED TARGET CONT + TRANSVERB - DERTEMPORAL - QQU IF 
+(*-1 CONJ-C - LU-N - ("aamma") - @PRED - KONCESSIV 
+BARRIER (*) - OBLIQUE - Abs - Rel - Akk - CONT - Par - IteCau - Cau - Con - KOMMA - PUNCT - Adv OR @PRED LINK *-1 @PRED)
+(NEGATE *1 V - CONJ-C - QQU OR VFIN BARRIER V OR CLB) #Uanga ippassaq ullaakkut iterpunga aamma taamaalisimallunga, toqqusaarluppunga, nuappunga puakkalu ANNIARALUGIT kissarneqarlungalu, iluaalliornermit sinippiannginnama iiseriarlunga sininniaqqilerpunga ajorpallaanngikkuma testertikkiartorniarpugut.
 (NEGATE *-1 CONJ-C - LU-N LINK 0 ORATIOOBLVERB + V OR OQARPOQ + V)
 (NEGATE *-1 CONJ-C LINK -1 CONT) #Oqaaserpassualeriffiup suliassaatut pingaarneq tassaavoq qarasaasiaq atorlugu kalaallisut oqaasilerissutit tamanut atuuttut ineriartortissallugit piffissallu ingerlanerani oqaasilerinermut sakkut assigiinngitsut tamakkiisumik pigilernissaat anguniassallugu, nutserutit ILANNGULLUGIT.
 ;
@@ -3902,7 +3993,7 @@ MAP:OrObl0152 @CL-<CIT TARGET Par IF (*-1 V + ORATIOOBLVERB - SPEAK_MNR BARRIER 
 ;
 
 
-MAP:OrObl0153 @CL-<CIT TARGET CONT - FossileredeCont - DERTEMPORAL IF (*-1 V + ORATIOOBLVERB BARRIER VFIN OR ("tassa"))
+MAP:OrObl0153 @CL-<CIT TARGET CONT - FossileredeCont - DERTEMPORAL IF (*-1 V + ORATIOOBLVERB BARRIER VFIN OR ("tassa") OR @CL-<CIT)
 #Undtagelser, som går til andet verbum
 (NEGATE *1 V - CONT - Cau BARRIER CONJ-C - V OR KOMMA OR GUUQ)
 (NEGATE *1 V - CONT LINK *-1 _TARGET_ LINK *-1 KOMMA LINK *-1 ORATIOOBLVERB) #Uggoraa Piitarlu qiteqatigiillualeruttorlutik nukappissat marluk ilungersorpalullutik oqaluuttut, Piitaq oqaloqatigiinnerminnut AKULERUNNIARLUGU tiguarmassuk.
@@ -4144,6 +4235,16 @@ MAP:M_0225F @i-ADVL> TARGET ("aamma") + Adv IF (-*1 Sem/Hum BARRIER (*) - KOMMA)
 
 #KonjunktionerX1
 #en konjunktion er en konjunktion når den sideordner to nexus eller to kongruente N
+WITH:kaltesting KONJUNKTION 
+(1 N + Rel)
+(1* NIQ + SSAQ + 3PlPoss)
+(Not p (*))
+{
+MAP @CONJ (*) ;
+SETPARENT (*)
+TO (jC1 (*)) ;
+} ;
+#Qanoq iliornissaq qanorluunniit oqaaseqarnissaq nalornissutigigaanni isumassarsiatsialaasinnaavoq ilaquttat ikinngutillu, kiisalu sulisut qanitarisat oqaloqatiginissaat, taanna erseqqissaavoq.
 
 #Konjunktioner er konjunktioner, når de indleder en sætning, ellers er de adverbier
 MAP:M0230 @CONJ TARGET KONJUNKTION - Adv IF (-1 BOS OR KOMMA)(*1 @PRED)
@@ -4292,14 +4393,6 @@ MAP:M0291A @i->V TARGET ("taama") OR ("qanoq") OR ("ima") OR ("imak") OR Aeq IF 
 
  ;
 
-WITH:kaltesting ("taama") OR ("qanoq") OR ("ima") OR ("imak") OR Aeq
-(*1 TIGE - N BARRIER (*) - Adv - Conj)
-(NOT p (*))
-{
-MAP @>V (*) ;
-SETPARENT (*)
-TO (jC1 (*)) ;
-} ;
 
 #MAP:M0291B @>V TARGET ("taama") OR ("qanoq") OR ("ima") OR ("imak") OR Aeq IF (*1 TIGE BARRIER (*) - Adv - Conj LINK NEGATE 0 N) ; #Også Aeq mappes @>V når head er TIGE.
 
@@ -6860,6 +6953,17 @@ MAP:M0633B @SUBJ> TARGET Rel + Sg IF (*1 ("suli") + QATE + GE + Cont LINK *1 V -
 
 MAP:M0633C @SUBJ> TARGET Rel + Sg + CONJ-C IF (*1 V - CONT + (/[34]Pl/l) BARRIER 3SgPoss); #Tamanna ERIULLU oqqassutigisartorujussuanngorpaat.
 
+WITH:kaltesting Sem/Hum + Rel + Sg
+(*1 objectmarking + 3Pl)
+(2 Sem/Hum + Rel + Sg + CONJ-LU)
+(NOT p (*))
+{
+MAP @SUBJ> (*) ;
+SETPARENT (*)
+TO (jC1 (*)) ;
+} ;
+#Kunngi Frederiup dronning Maryllu Savalimmiut naalakkersuisuisa aalajangernerat paasisinnaalluaraat , kunngikkormiut tusagassiorfinnut nalunaarumminni allapput .
+
 #Rel+Pl 1Pl
 MAP:M0634 @SUBJ> TARGET Rel + Pl IF (*1 TRANSVERB - CONT + 1Pl BARRIER V - CONT OR 3PlPoss); #SULEQATIGIIT eqqartueqatigeereerluta isumaqatigiissutigaarput mailikkut allagarisartakkatta katersornissaat pisariuallaassasoq. Tassa piffissaq annertuneq ujaasinermut atussallutigu allakkalli annikitsuinnaat pissarsiaralugit.
 
@@ -8410,7 +8514,11 @@ MAP:M1155C @ADVL> TARGET CONT IF (*-1 VFIN + $$PN LINK *1 _TARGET_ + $$PN BARRIE
 (NEGATE -1 Adv + CONJ-C LINK 1 ORATIOOBLVERB LINK *1 @CL-<CIT) #Nakorsiartariaqartutut misigisimavunga, aappaatigulli misigisimallunga nakorsiaruma Nipi soorlu toqussallugu.
 ;
 
-MAP:M1160A @<ADVL TARGET Cont + 1Sg OR ContNeg + 1Sg IF (*-1 VFIN + 1Sg BARRIER DIRTALESTART LINK NEGATE *1 CONJ-C BARRIER (*) - KOMMA)(NEGATE 0 CONJ-C)(NEGATE *1 V BARRIER KOMMA)
+MAP:M1160A @<ADVL TARGET Cont + 1Sg OR ContNeg + 1Sg 
+IF 
+(*-1 VFIN + 1Sg - ORATIOOBLVERB BARRIER DIRTALESTART LINK NEGATE *1 CONJ-C BARRIER (*) - KOMMA)
+(NEGATE 0 CONJ-C)
+(NEGATE *1 V BARRIER KOMMA)
 ;
 
 MAP:M1160A_paratakse @<ADVL TARGET Cont + 1Sg + CONJ-C OR ContNeg + 1Sg + CONJ-C IF (-1 CONT + @<ADVL + 1Sg) ; #Nammineq soqutigisakka aallutsillugit kalaaliminernik pilinialuttarpunga, ass. panertitsillunga TARAJORTERILLUNGALU il.il. asimiitsillungalu pilluarnerpaasarlunga.
@@ -10223,7 +10331,8 @@ REMOVE:9940B (/Hyb/2-2\ \(%AmbiguøsPar\ \)?@CL-CIT>/l) IF (0 @SUBJ> + &&IV_SUBJ
 
 
 #Cont uden kontekst som ikke allerede er mappet
-MAP:M0999B @<ADVL TARGET CONT IF (1 CLB)(-*1 VFIN  )
+MAP:M0999B @<ADVL TARGET CONT IF (1 CLB)
+(-*1 VFIN)
 (NEGATE *-1 VFIN LINK *1 Abs + Pl LINK *1 _TARGET_ BARRIER V)#Kan også være erstatning for finit: Amerlanerit nuannaarunarput uumasunik illersuisut takornariartitsisartullu kisimik PINNATIK.
 (NEGATE 1 EOS LINK -1 _TARGET_ + 4Sg LINK *-1 Abs + Sg BARRIER VERB-NOTCONT LINK *-1 KOMMA LINK *-1 VFIN)#Må ikke overskrive @PRED: Saassussineq Oles Varehusip Maximutillu akornanni pivoq, angut 50-it sinnerlugit ukiulik angutinit inuusuttunit pingasunit saassunneqarluni ajallugu UPPITINNEQARSIMALLUNI.
 (NEGATE 0 NUM + NNGUR LINK -1 CONT + 3PlO LINK -1 Abs + Pl LINK *-1 CONJ-C OR KOMMA) #Coronavirusimillu toqquteqartutut nalunaarsorneqartut pingasunik ilapput, coronavirusimik toqquteqartut katillugit 697-INNGORLUTIK.
@@ -10964,7 +11073,9 @@ MAP:9970FS @i-ADVL> TARGET CONT IF (1 Der/vn LINK 1 CLB OR EOS LINK NOT *0 V - _
 
 MAP:9970FT @ADVL> TARGET CONT + $$PERSON IF (1 Par + @PRED2 + CONJ-C LINK 1 VFIN + $$PERSON); #Sukkut tamaana innersuaq altanimit ersertarpoq, SILAMIIKKALUARLUNGA anorersuaraluartorlu qiianngilanga, kissalaartorlu malugisinnaaneruara.
 
-MAP:9970FU @<ADVL TARGET CONT IF (*-1 VFIN)(1 CLB OR CONJ-C); #Sammisallu ima pingaaruteqartigaat ilaqutariippassuit aningaasat sulinermikkut pissarsiarisimasatik piniarnermut, aallaaniarnermut aalisarnermullu ATORUSUTTARLUGIT. #Arsugap inuusami nujai qiortarsimavai, niui talii niaquilu PIIARLUGIT.
+MAP:9970FU @<ADVL TARGET CONT IF (*-1 VFIN  - ORATIOOBLVERB)
+(1 CLB OR CONJ-C)
+; #Sammisallu ima pingaaruteqartigaat ilaqutariippassuit aningaasat sulinermikkut pissarsiarisimasatik piniarnermut, aallaaniarnermut aalisarnermullu ATORUSUTTARLUGIT. #Arsugap inuusami nujai qiortarsimavai, niui talii niaquilu PIIARLUGIT.
 
 MAP:M9970FV @<ADVL TARGET CONT + &&CONT_V& IF (-1 &&CONT_V&)(NEGATE *1 V); #Ukiassakkut taartuarsaartaleraangat illoqarfinnguat aatsaat alianaallilluinnartarpoq, unnoriartoq inui imminnut pulaaqattaatilersaramik OQALUNGUSIULLUTIK nalinginnarnik.
 
