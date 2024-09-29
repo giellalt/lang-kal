@@ -750,8 +750,6 @@ I Num2 til Num10 er flagging af NNGUR C-et pga. klokken
 
 * LEXICON web  
 
-* LEXICON Gaq  transitive stammer med a, u og schwa som stammevokal
-
 * LEXICON iGaq  transitive r-stammer med i som stammevokal NY PL 20180416
 
 * LEXICON GaqP  
