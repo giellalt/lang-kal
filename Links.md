@@ -3,6 +3,7 @@
         * [dependency.cg3](src-cg3-dependency.cg3.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/cg3/dependency.cg3))
         * [disambiguator.cg3](src-cg3-disambiguator.cg3.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/cg3/disambiguator.cg3))
         * [functions.cg3](src-cg3-functions.cg3.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/cg3/functions.cg3))
+        * [valency.cg3](src-cg3-valency.cg3.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/cg3/valency.cg3))
     * `fst/`
         * `morphology/`
             * `affixes/`
