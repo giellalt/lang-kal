@@ -33,12 +33,29 @@
 
 INCLUDE STATIC disambiguator.cg3 ;
 
+#semantic tags begin with part of speech: <V: , <A: etc. and provided with semantic frame or role after colon, which are as consistent with semantic classification in Katersat as possible (a semantic classification developed by Grammarsoft Aps).
+
+#POS sem tag overview
+# <A: adverb (particle)
+# <N: noun
+# <V: verb
+
 LIST-TAGS +=
+	<A:temp>	
+	<N:wea>
+	<V:be_attribute_temp>
+	<V:be_attribute_temp_wea>
+	<V:be_attribute_wea>
 	<V:weather>
+	<§TH=@SUBJ=[Sem/Geo|"sila"]>
+	<§LOC=@ADV=[Sem/Geo]>
+	<§LOC-TMP=@ADV=[<A:temp>]>
 	<mainverb>
-	<temporal>
+
 	§LOC
 	§LOC-TMP
+	§TH
+
 	<§TH=@SUBJ-NULL>
 	@ADV>
 	;
@@ -51,18 +68,76 @@ BEFORE-SECTIONS
 
 SECTION
 
-LIST weather-verb = "aalanguser" "aalaqqajup" "aggiasoor" "allaaqqip" "allaaqqissuu" "allarneerup" "allarnerasaar" "allar" "anisarner" "anoraasuar" "anoraasua" "anoreqarluanngilaq" "anoreqar" "anorersuar" "anorleqaaq" "anorler" "anorlikulanngilaq" "anorlikula" "anorliler" "anorlior" "anorsarip" "anorsarissi" "apilaar" "apinnguatsiar" "assarnaannguar" "assarnaar" "assarnaartorsuu" "assarner" "assarnersorsuu" "inoriaqqor" "issangiarpalup" "issippallaanngilaq" "issippallaaqaaq" "issip" "isugutser" "kaavikajaar" "kaner" "kanersorsuu" "kiap" "kuussarner" "maasunnar" "major" "malialup" "maliaqi" "maller" "mini" "nakkisaar" "nakkisaartar" "nakkisaartorsuu" "nakkisaartukasinngor" "nakkisatsip" "nataqqornar" "natsimaasar" "natsima" "nigger" "nilap" "nipaalli" "nittaakkunnaar" "nittaalaannguar" "nittaalannguatsiar" "nittaalar" "nittaalarunnaar" "nittaap" "nittaatsorsuu" "nittangajap" "nittanger" "nittar" "nittarsima" "nittavip" "nitta" "nuisser" "pitorar" "pujuala" "qaajornar" "qanialaar" "qanner" "qannilaar" "qanninnguatsiar" "qaqornap" "qaqunnap" "qinu" "quli" "sanipip" "sialleqqajaaler" "sialler" "silagip" "silaqqip" "silaqqissi" "silarlup" "suer" "suialaannguar" "taar" "tamakkii" "tamaleqisap" "tamaloqisaar" "tappikanngar" "ukiorip" "unerisimanngilaq" "ussarner" "uteriar" 
+#VERBs
+LIST weather-verb = 
+"aggiasoor" 
+"anisarner" 										#wea-wind
+"anoraasuar" 										#wea-wind
+"anoraasua" 										#wea-wind
+(/"anori"\ QAR\ Der/nv\ /l)					#wea-wind
+"anorersuar" 										#wea-wind
+"anorler" 											#wea-wind
+"anorsarip" 										#wea-wind
+"api"													#precip
+"assarnaar" 
+"assarner" 
+(/"kussar"\ Gram/IV\ NIR\ Der/vv\ /l)
+"mini" 
+"nakkisaar" 
+"nakkisatsip" 
+"nataqqornar" 
+"natsima" 
+"nigger" 
+"nittaalar" 
+"nittaap"  
+"nittanger" 
+"nittar" 
+"nitta" 
+"nuisser" 
+"pitorar" 
+"qanialaar" 
+"qanner" 											#precip
+"sanipip" 
+"sialler" 											#precip
+(/"tamakker"\ Gram/TV\ HTR\ Der/vv\ /l) 	#wea-wind
+"tappikanngar" 									#wea-wind
+"ukiorip" 
+"ussarner"
 #added here (different or missing in Katersat)
 (/"anori"\ QAR\ Der/nv/l)
 "seqinner" #diff. fr. in Katersat
 ;
 
-###############
-#TO DO(!!): cleanup the list. Fetched from database + stripped for inflection and added here.
-#1) add inflection again and run though fst + fetch stem OR stem+suffix
-#2) check if each entry really belongs to this frame
-###############
+LIST be_attribute_wea = 
+"allaaqqip"
+"allar"
+"nitta"
+(/"sila"\ GIP\ Der/nv\ /l)
+"silaqqip"
+"silarlup"
+(/"suer"\ Gram/IV\ /l)
+"unerip"
+;
 
+LIST be_attribute_temp =
+"kiap" 
+; # 3p only, wea, space, non-hum (if hum: metaphoric only + w/suff), non-mat
+
+LIST be_attribute_temp_wea = #weather specific
+"issip"
+"maasunnar"
+"qaajornar"
+;
+
+LIST become_be_wea =
+"inoriaqqor" 		#wea-wind 
+"issangiar"
+"nilap"
+"quli"
+"uteriar" 			#wea-wind 
+;
+
+#ADVERBs
 LIST temporal-adverbial = "ullumi" ;
 
 #adding general tags
@@ -73,55 +148,85 @@ ADD <mainverb> sup-mood ;
 ADD <mainverb> sub-mood (NEGATE 0* sup-mood) ;
 SETPARENT <mainverb> TO (@0 (*)) ;
 
-#adverbial
-ADD <temporal> temporal-adverbial ;
 
 #adding specific tags
 #IMPERSONAL weather verbs
-ADD (<V:weather>) weather-verb ;
+ADD <V:weather> weather-verb ;
+REMCOHORT (<V:weather>) (0 (/[1-2][SP][gl]/r) OR 3Pl) ; # !! SEPARATE inflection lexicon in fst w/o these options
 
-ADD <§TH=@SUBJ-NULL> <V:weather> (NOT 0* Abs) ;
+#be_attribute: temp weather
+ADD <V:be_attribute_temp> be_attribute_temp ;
+
+#be_attribute: weather
+ADD <V:be_attribute_wea> be_attribute_wea ;
+
+ADD <§TH=@SUBJ-NULL> <V:weather> OR <V:be_attribute_temp> OR <V:be_attribute_wea> (NOT 0* Abs) ;
 #Seqinnerpoq.
+#Issippoq.
 
 WITH Sem/Geo + Abs + Sg OR ("sila") + Abs + Sg
-(*1 <V:weather>)
+(*1 <V:weather> OR <V:be_attribute_temp>)
 (NOT p (*))
 {
-ADD (§LOC @SUBJ>) (*) ;
+MAP (§TH @SUBJ>) (*) ;
 SETPARENT (*)
 TO (jC1 (*)) ;
 } ;
+ADD <§TH=@SUBJ=[Sem/Geo|"sila"]> <V:weather> OR <V:be_attribute_temp_wea> (c @SUBJ> + §TH) ;
 #Kangerlussuaq seqinnerpoq.
 
 WITH Sem/Geo + Lok
 (*1 <V:weather>)
 (NOT p (*))
 {
-ADD (§LOC @ADV>) (*) ;
+MAP (§LOC @ADV>) (*) ;
 SETPARENT (*)
 TO (jC1 (*)) ;
 } ;
 #Kangerlussuarmi seqinnerpoq.
 
-###
-#SUFFIX section for <V:weather>
-#morphotactics overview
-###
 
 
 ##GENERAL
-#ADVERBIAL
-WITH <temporal>
-(1 V)
+#ADVERBs
+#temporal
+ADD <A:temp> temporal-adverbial ;
+WITH <A:temp>
+(*1 V)
 (NOT p (*))
 {
-ADD (§LOC-TMP @ADV>) (*) ;
+MAP (§LOC-TMP @ADV>) (*) ;
 SETPARENT (*)
 TO (jC1 (*)) ;
 } ;
+
+ADD <§LOC-TMP=@ADV=[<A:temp>]> V (c §LOC-TMP + @ADV> + <A:temp>) ;
 #Ullumi seqinnerpoq.
+ADD <§LOC=@ADV=[Sem/Geo]> V (c @ADV> + §LOC + Sem/Geo) ;
+#Kangerlussuarmi seqinnerpoq.
 
 END
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
