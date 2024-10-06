@@ -7,6 +7,7 @@
         * `morphology/`
             * `affixes/`
                 * [derivations-inflections.lexc](src-fst-morphology-affixes-derivations-inflections.lexc.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/fst/morphology/affixes/derivations-inflections.lexc))
+                * [noun_to_noun.lexc](src-fst-morphology-affixes-noun_to_noun.lexc.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/fst/morphology/affixes/noun_to_noun.lexc))
                 * [numerals.lexc](src-fst-morphology-affixes-numerals.lexc.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/fst/morphology/affixes/numerals.lexc))
                 * [propernouns.lexc](src-fst-morphology-affixes-propernouns.lexc.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/fst/morphology/affixes/propernouns.lexc))
                 * [symbols.lexc](src-fst-morphology-affixes-symbols.lexc.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/fst/morphology/affixes/symbols.lexc))
