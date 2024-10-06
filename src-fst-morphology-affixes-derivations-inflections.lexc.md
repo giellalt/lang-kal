@@ -1,5 +1,7 @@
 
 # Fil for at generere de centrale morfologiske processer i vor grønlandske analysator               
+## September 2024
+## branch: (testing), regressionstest: regression (branch: testing - kaltesting)
 
 ## Dokumentasjon for leksikonnavne:
 
@@ -73,6 +75,9 @@ Det kan være flere grunder hertil:
 
 Her kommer en liste over de ulike leksika.
 Nogle af dem er dokumenterede, andre ikke.
+
+* LEXICON GEMS  = Gennemgangsleksikon til nominer der geminerer til stop-lyd ved fleksion, fx meeqqap
+* 0:^GEMS Z1Zmorf ; 
 
 * LEXICON ZseqZ  qalaseq
 
@@ -162,7 +167,7 @@ Uku qanoq IV-mod_C-imi ilanngunneqassappat?
 
 * LEXICON XIirXmorf2   til iR såsom *er*
 
-* LEXICON XItX  type imaappoq, kaavippoq (NB ikke kâvigpoĸ, men kâvípoĸ)
+* LEXICON XItX  type imaappoq, kaavippoq (NB ikke kâvigpo?, men kâvípo?)
 
 * LEXICON XItX2  
 
@@ -673,6 +678,8 @@ I Num2 til Num10 er flagging af NNGUR C-et pga. klokken
 * LEXICON Naalsuf  livm 20171211 tilføjet pluralisbøjning
 
 * LEXICON web  
+
+* LEXICON Gaq  transitive stammer med a, u og schwa som stammevokal
 
 * LEXICON iGaq  transitive r-stammer med i som stammevokal NY PL 20180416
 
