@@ -42,6 +42,7 @@ GT_LEXC_SRCS_L1_L2=\
 			stems/propernouns.lexc               \
 			stems/verbs.lexc                     \
 			affixes/derivations-inflections.lexc \
+			affixes/noun-to-noun.lexc \
 			affixes/numerals.lexc                \
 			affixes/symbols.lexc                 \
 			affixes/propernouns.lexc
