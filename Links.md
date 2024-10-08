@@ -3,12 +3,11 @@
         * [dependency.cg3](src-cg3-dependency.cg3.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/cg3/dependency.cg3))
         * [disambiguator.cg3](src-cg3-disambiguator.cg3.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/cg3/disambiguator.cg3))
         * [functions.cg3](src-cg3-functions.cg3.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/cg3/functions.cg3))
-        * [valency.cg3](src-cg3-valency.cg3.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/cg3/valency.cg3))
     * `fst/`
         * `morphology/`
             * `affixes/`
                 * [derivations-inflections.lexc](src-fst-morphology-affixes-derivations-inflections.lexc.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/fst/morphology/affixes/derivations-inflections.lexc))
-                * [noun-to-noun.lexc](src-fst-morphology-affixes-noun-to-noun.lexc.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/fst/morphology/affixes/noun-to-noun.lexc))
+                * [noun_to_noun.lexc](src-fst-morphology-affixes-noun_to_noun.lexc.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/fst/morphology/affixes/noun_to_noun.lexc))
                 * [numerals.lexc](src-fst-morphology-affixes-numerals.lexc.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/fst/morphology/affixes/numerals.lexc))
                 * [propernouns.lexc](src-fst-morphology-affixes-propernouns.lexc.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/fst/morphology/affixes/propernouns.lexc))
                 * [symbols.lexc](src-fst-morphology-affixes-symbols.lexc.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/fst/morphology/affixes/symbols.lexc))
