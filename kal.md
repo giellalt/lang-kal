@@ -396,8 +396,6 @@ Gram/... and different specifications
 
 ### Disambiguere morfemkombinationer
 
-Judithes afsnit start ### påbegyndt 20231006: sorter umulige morfemkombinationer fra
-
 - GASAAR
 
 -  #GIP #GISSAAR #IAR #IRNIAR #IRSIR #IRUTE #KIP #KILLI #LIR #LIRSUR #LUP #NIP #QAR
@@ -466,10 +464,93 @@ Delimiter
 
 ---
 
+# src-cg3-valency.cg3.md 
+
+
+
+* * *
+
+<small>This (part of) documentation was generated from [src/cg3/valency.cg3](https://github.com/giellalt/lang-kal/blob/main/src/cg3/valency.cg3)</small>
+
+---
+
 # src-fst-morphology-affixes-derivations-inflections.lexc.md 
 
 
 # Fil for at generere de centrale morfologiske processer i vor grønlandske analysator               
+## September 2024
+## branch: (testing), regressionstest: regression (branch: testing - kaltesting)
+
+## Dokumentasjon for leksikonnavne:
+
+* Z = nomen
+* 1 = svag bøjning, p-bøjning
+* 2 = sterk bøjning, up-bøjning
+* P = plurale tantum
+* S = singularis
+* - = sterk bøjing som trunkerer (2-)
+* a, q, ... = gemineringer ved konsonantiske flexiver
+* Z = nomen
+* morf = går til derivationsleksika
+*      = går til flexivleksika
+* tpt  =  
+* tup  = 
+* K    = Direkte til finale klitika
+
+## Specielle lexica 
+
+## KAPITLER TIL fst-DOKUMENTA
+
+TARIAQAR på transitiver kan både danne transitive, refleksive og passive verber. Derfor bliver
+alle forekomster af TARIAQAR ved transitiver startende fra juni 2020 både sendt videre normalt til 
+(i) TV-mod_r og tilføjet taggen Gram/Pass og sendt som ny stamme til (ii) IV_r
+På den måde vil turen via (i) producere
+misissortariaqarpaa	misissor+Gram/TV+TARIAQAR+Der/vv+Gram/TV+V+Ind+3Sg+3Sg, samt
+misissortariaqarpoq	misissor+Gram/TV+TARIAQAR+Der/vv+Gram/Refl+V+Ind+3Sg
+og turen via IV_r vil generere
+misissortariaqarpoq	misissor+Gram/TV+TARIAQAR+Der/vv+Gram/Pass+Gram/IV+Gram/IV+V+Ind+3Sg
+
+BLOKERING AF REKURSIV TIP VED TRANSITIVER
+PL20200709
+Forkerte læsninger, når IV med TIP viderederiveres i HTR-lexicon, hvor yderligere TIP kan tilføjes som ingerlatitseqqinneq
+ingerla+Gram/IV+TIP+Der/vv+Gram/TV+TIP+Der/vv+Gram/Db+Gram/Refl+QQIP+Der/vv+Gram/IV+NIQ+Der/vn
+blokeres vha. flaget @P.TIP.ON@ i IV-lexicon og blokeres af flaget @D.TIP@ i transitiv derivation.
+Ex
+ingerla via IV_voq_stem og får i LEXICON  tilføjet linien
++TIP@P.TIP.ON@+Der/vv:%>tip@P.TIP.ON@ HTR_C_TAQ_tsi ; 
+I HTR_C_TAQ_tsi tilføjes der yderligere TIP.
+For at forebygge dette tagges derivativkæder med TIP som første element med @D.TIP@
+
+Bemærk at D-flaget principielt kun skal anvendes når TIP er første derivativ i kæden. Det kan nemlig ikke udelukkes, at der på et senere
+tidspunkt kan tilføjes yderligere TIP-er 
+
+SÆRLIGT OM Gram/Refl VED TRANSITIVERNE (PL20211121 forsøg)
+Foranlediget af ord som 'attorteqqassutigaara', hvor Refl skaber problemer for både oversættelserne
+og videre affingering introduceres strengen +TIP+Der/vv+Gram/Db+Gram/Refl som går til XItX ;
+
+SURE er sjældent Db, men  hos Ole Brandt finder vi eksempler som ".. sunaaffa Pikiulinnguarmiut pasillerai (implicit Pikiulinnguarmiunut 
+nukani] pilerngullugu nakkartissimasoralugu.
+
+PLEONASTISKE HTR VED NIAR OG QQIP
+medtages i IV-lexica med taggen +HTR+Err/Sub og en bemærkning efter !
+Fx i LEXICON IVschwa2
++QQIP+Der/vv+HTR+Der/vv+Err/Sub:%>eqqii IV-mod_V ; !Fejl af typen ingerlatitseqqiineq
+
+## Tronds afdeling for debugging.
+
+Følgende leksika var ikke defineret andetsteds (liste), men her
+definert ad hoc for at få koden til at kompilere. De bør alle
+bli erstattet af de korrekte leksika (eller fjernet).:
+
+Det kan være flere grunder hertil:
+* de er simpelthen ikke definerede
+* det korrekte leksikon er ikke tilføjet, og lexc tar suffikset istedenfor
+* det er en skrivefejl i leksikonnavnet
+
+## DERIVATIONSMORFEMERNES LEKSIKA
+
+Her kommer en liste over de ulike leksika.
+Nogle af dem er dokumenterede, andre ikke.
 
 * LEXICON ZseqZ  qalaseq
 
@@ -559,7 +640,7 @@ Uku qanoq IV-mod_C-imi ilanngunneqassappat?
 
 * LEXICON XIirXmorf2   til iR såsom *er*
 
-* LEXICON XItX  type imaappoq, kaavippoq (NB ikke kâvigpoĸ, men kâvípoĸ)
+* LEXICON XItX  type imaappoq, kaavippoq (NB ikke kâvigpo?, men kâvípo?)
 
 * LEXICON XItX2  
 
@@ -1023,10 +1104,6 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 
 * LEXICON ZoqsZ  landsfoged
 
-* LEXICON ZoqseZ  landslaege
-
-* LEXICON ZoqsieZ  linolie
-
 * LEXICON ZkkutZ  kkut og giit
 
 * LEXICON Num1  
@@ -1070,6 +1147,8 @@ I Num2 til Num10 er flagging af NNGUR C-et pga. klokken
 * LEXICON Naalsuf  livm 20171211 tilføjet pluralisbøjning
 
 * LEXICON web  
+
+* LEXICON Gaq  transitive stammer med a, u og schwa som stammevokal
 
 * LEXICON iGaq  transitive r-stammer med i som stammevokal NY PL 20180416
 
@@ -1334,8 +1413,7 @@ Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers
 
 ---
 
-# src-fst-morphology-affixes-noun_to_noun.lexc.md 
-
+# src-fst-morphology-affixes-noun-to-noun.lexc.md 
 
 
 * LEXICON GEMS  = Gennemgangsleksikon til nominer der geminerer til stop-lyd ved fleksion, fx meeqqap
@@ -1343,52 +1421,26 @@ Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers
 
 * LEXICON Z1Zmorf  Derivationsmorfemer til nominer, viser til **tp** og giver derefter nn-derivationer
 	*  tp ; 
-	* +ALUK+Der/nn+INNAQ+Der/nn:%>%TRUNCaluinnaq tup- ; 
 
 - LEXICON Z1VZmorf  Derivationsmorfemer til nominer, der ender med vokal a, i, u 20200916 NN
 	 -  tpV ;   !PL20221117 nyt fortsættelseslex
 
 * LEXICON Z1eqZmorf  Derivationsmorfemer til nominer på seq og leq
-	  * Z1eqZ ; 
-... osv.
+	  *  Z1eqZ ; 
 
 * LEXICON nuliaqmorf  derivationsmorfemer til typen *nuliaq*
 
 * LEXICON SEQgemin  derivationsmorfemer til nominer
 
-* LEXICON SIKgemin  derivationsmorfemer til nominer som ikusik:iku
-
-* LEXICON SUKgemin  derivationsmorfemer til nominer som pukusuk:puku
-
 * LEXICON Z1+le_UdenPossessumZmorf  derivationsmorfemer til nominer som kalaaleq, der ikke kan tage possessum
-
-* LEXICON Z1eZmorf  derivationsmorfemer til nominer på udlydende schwa
-
-* LEXICON Z1tipeZmorf  derivationsmorfemer til nominer på udlydende schwa
-
-* LEXICON Z1nnguaqZmorf  derivationsmorfemer til nominer på nnguaq
-
-* LEXICON Z1iZmorf  derivationsmorfemer til nominer med strong i
-
-* LEXICON Z1iqZmorf  derivationsmorfemer til nominer med strong i som qimmeq
 
 * LEXICON Z1+tZmorf  derivationsmorfemer til nominer som pisataq og nivaataq !PL20210519 retableret og stammer fjernet fra GEMS
 
-* LEXICON tptmorf  
-
-* LEXICON ZtiZmorf  taggit
-
-* LEXICON ZkkutZmorf  derivativer til typen saki og sakikkut
+* LEXICON Z2kZmorf  nominer som eqik
 
 * LEXICON Z2Zmorf  nominer som erneq
 
-* LEXICON Z2kZmorf  nominer som eqik
-
-* LEXICON Z2veqZmorf  derivationsmorfemer til aaveq-typen
-
 * LEXICON Z2i2Zmorf  derivationsmorfemer til aleq, ateq
-
-* LEXICON Z2tupeqZmorf  derivationsmorfemer tupeq
 
 * LEXICON Z2-Zmorf  derivationsmorfemer til tup- paa K. Jf. Z2-qZmorf
 
@@ -1400,25 +1452,9 @@ Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers
 
 * LEXICON Z2aqZmorf  derivationsmorfemer til nominer
 
-* LEXICON Z2+lZmorf  derivationsmorfemer til nominer korrigeret februar 2017 med hensyn til additive og recessive morfemer.
-
-gennemgangskatalog for up-stammer, der kræver replaciv sandhi
-
 * LEXICON Z2+rZmorf  derivationsmorfemer til nominer
 
-* LEXICON Z2-PZmorf  derivationsmorfemer til tup-nominer pluralis tantum
-
-* LEXICON ZoqsZmorf2  
-
-* LEXICON ZoqseZmorf  
-
-* LEXICON ZoqsieZmorf  
-
 * LEXICON Z1+ssZmorf  derivationsmorfemer til nominer
-
-* LEXICON Z1+niuZmorf  derivationsmorfemer til niu
-
-* LEXICON Z1+maZmorf  derivationsmorfemer til nominer som isuma
 
 * LEXICON Z1+meZmorf  derivationsmorfemer til nominer
 
@@ -1444,6 +1480,38 @@ gennemgangskatalog for up-stammer, der kræver replaciv sandhi
 
 * LEXICON Z1+noZmorf  derivationsmorfemer til nanoq med gemination af n tilføjet 20170522
 
+* LEXICON SIKgemin  derivationsmorfemer til nominer som ikusik:iku
+
+* LEXICON SUKgemin  derivationsmorfemer til nominer som pukusuk:puku
+
+* LEXICON Z1eZmorf  derivationsmorfemer til nominer på udlydende schwa
+
+* LEXICON Z1tipeZmorf  derivationsmorfemer til nominer på udlydende schwa
+
+* LEXICON Z1iZmorf  derivationsmorfemer til nominer med strong i
+
+* LEXICON Z1iqZmorf  derivationsmorfemer til nominer med strong i som qimmeq
+
+* LEXICON tptmorf  !vist nok mest ute stammer ??
+
+* LEXICON ZtiZmorf  taggit
+
+* LEXICON ZkkutZmorf  derivativer til typen saki og sakikkut
+
+* LEXICON Z2veqZmorf  derivationsmorfemer til aaveq-typen
+
+* LEXICON Z2tupeqZmorf  derivationsmorfemer tupeq
+
+* LEXICON Z2+lZmorf  derivationsmorfemer til nominer korrigeret februar 2017 med hensyn til additive og recessive morfemer.
+
+gennemgangskatalog for up-stammer, der kræver replaciv sandhi
+
+* LEXICON Z2-PZmorf  derivationsmorfemer til tup-nominer pluralis tantum
+
+* LEXICON Z1+niuZmorf  derivationsmorfemer til niu
+
+* LEXICON Z1+maZmorf  derivationsmorfemer til nominer som isuma
+
 * LEXICON Z1nujaqZmorf  typen nujaq+Der/nn:nu
 
 * LEXICON Z1joqZmorf  typen pujoq+Der/nn:pu
@@ -1452,9 +1520,11 @@ gennemgangskatalog for up-stammer, der kræver replaciv sandhi
 
 * LEXICON Z1+ngeZmorf  typen iviangeq+Der/nn:ivian
 
+	* +ALUK+Der/nn+INNAQ+Der/nn:%>%TRUNCaluinnaq tup- ; 
+
 * * *
 
-<small>This (part of) documentation was generated from [src/fst/morphology/affixes/noun_to_noun.lexc](https://github.com/giellalt/lang-kal/blob/main/src/fst/morphology/affixes/noun_to_noun.lexc)</small>
+<small>This (part of) documentation was generated from [src/fst/morphology/affixes/noun-to-noun.lexc](https://github.com/giellalt/lang-kal/blob/main/src/fst/morphology/affixes/noun-to-noun.lexc)</small>
 
 ---
 
