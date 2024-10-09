@@ -1,4 +1,5 @@
 
+
 * LEXICON GEMS  = Gennemgangsleksikon til nominer der geminerer til stop-lyd ved fleksion, fx meeqqap
 * 0:^GEMS Z1Zmorf ; 
 
@@ -103,7 +104,7 @@ gennemgangskatalog for up-stammer, der kræver replaciv sandhi
 
 * LEXICON Z1+ngeZmorf  typen iviangeq+Der/nn:ivian
 
-	* +ALUK+Der/nn+INNAQ+Der/nn:%>%TRUNCaluinnaq tup- ; 
+	* +ALUK+Der/nn+INNAQ+Der/nn:aluinnaq tup- ; 
 
 * * *
 
