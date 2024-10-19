@@ -56,6 +56,15 @@ INCLUDE STATIC liststemplates.cg3 ;
 
 #!! ## Rule section
 
+BEFORE-SECTIONS
+#heuristic tags in order to correct other parts of sentence
+ADD <heur-prop> ("\\p{Lu}.*"r ?) ;
+ADD <heur-Abs-Sg> ("\\p{Lu}.*a"r ?) (-1 (/UTE\ Der/vn\ N\ Abs\ Sg/l)) ;
+#[Aqqama]: Inuit aqqinik qinnuteqaat Aqqama ilissinnut akuerisassatut ingerlateqqippara. Tunngavilersuutingineqarneri taajuutaavoq aammalu allattaasitaamut naapertuulluni.
+
+ADD <sem-personalname> ("ateq") (0 (/3[SP][gl]Poss/r)) (-1 ("inuk" Rel)) ;
+
+
 SECTION
 
 #!! ### Speller suggestions rule
@@ -75,6 +84,7 @@ SECTION
 #!! ### Grammatical rules
 
 #!! #### Verb valency rules
+
 
 
 ADD:msyn-arg-trm-ins (&msyn-arg-trm-ins) TARGET Trm IF
@@ -200,6 +210,23 @@ ADD:msyn-abs-taama-case &msyn-abs-taama-case TARGET Abs + $$NUMERUS + countable-
 #[ukiut] taama amerlatigisuni inuusuttunik atuartitsisarsimavoq
 COPY:msyn-abs-taama-case (VSTR:$1 &SUGGEST) EXCEPT (Abs &msyn-abs-taama-case) BEFORE NUMERUS TARGET &msyn-abs-taama-case (2 (/^\(Rel|Abl|Via|Aeq|Ins|Trm|Lok\)$/r)) ; 
 
+# Number agreement
+WITH ("inuk") + Rel + Pl 
+(1 ("ateq") + Pl + 3PlPoss + <sem-personalname>)
+(*1 ("qinnut" QAR UTE) + $$KASUS + $$NUMERUS) 
+(*1 <heur-prop> + <heur-Abs-Sg> + $$KASUS + $$NUMERUS OR Prop + $$KASUS + $$NUMERUS LINK NOT 1 Conj)
+{
+ADD:xmsyn-personalname-Pl-Sg 
+co&msyn-personalname-Pl-Sg (*) ;
+COPY:xmsyn-personalname-Pl-Sg 
+(Rel Sg &SUGGEST) EXCEPT (Rel Pl &msyn-Pl-Sg) OR (Rel Pl 2SgPoss &msyn-Pl-Sg) AFTER WORDCLASS TARGET (*) ;
+ADD:xmsyn-personalname-Pl-Sg 
+&msyn-personalname-Pl-Sg (_C2_) ;
+COPY:xmsyn-personalname-Pl-Sg 
+(Sg 3SgPoss &SUGGEST) EXCEPT (Pl 3SgPoss &msyn-Pl-Sg) AFTER KASUS TARGET (_C2_) ;
+ADDRELATION ($2) (_C1_) (0 <sem-personalname>) TO (1* <heur-prop>) ;
+} ;
+#[Inuit aqqinik -> Inuup aqqanik]: Inuit aqqinik qinnuteqaat Aqqama ilissinnut akuerisassatut ingerlateqqippara.
 
 ### verbs ###
 #Con
