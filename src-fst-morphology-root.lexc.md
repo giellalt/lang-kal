@@ -76,6 +76,8 @@ anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
 
 ### 20241022 semtag lexicon migration checklist
 ### taglist: Katersat
+Verbs
+Nouns
 
 ### Grammar
 

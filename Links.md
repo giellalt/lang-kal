@@ -16,9 +16,11 @@
             * `stems/`
                 * [nouns.lexc](src-fst-morphology-stems-nouns.lexc.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/fst/morphology/stems/nouns.lexc))
                 * [propernouns.lexc](src-fst-morphology-stems-propernouns.lexc.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/fst/morphology/stems/propernouns.lexc))
+                * `semtagged/`
                 * [verbs.lexc](src-fst-morphology-stems-verbs.lexc.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/fst/morphology/stems/verbs.lexc))
         * `transcriptions/`
             * [transcriptor-abbrevs2text.lexc](src-fst-transcriptions-transcriptor-abbrevs2text.lexc.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/fst/transcriptions/transcriptor-abbrevs2text.lexc))
+                * `/`
             * [transcriptor-numbers-digit2text.lexc](src-fst-transcriptions-transcriptor-numbers-digit2text.lexc.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/fst/transcriptions/transcriptor-numbers-digit2text.lexc))
 * `tools/`
     * `grammarcheckers/`
