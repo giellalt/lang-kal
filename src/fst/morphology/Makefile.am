@@ -36,6 +36,7 @@ GT_LEXC_SRCS_L1_L2=\
 			stems/abbreviations.lexc             \
 			stems/acronyms.lexc                  \
 			stems/nouns.lexc                     \
+			stems/semtagged/nouns_sem.lexc \
 			stems/numerals.lexc                  \
 			stems/particles.lexc                 \
 			stems/pronouns.lexc                  \
