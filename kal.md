@@ -396,6 +396,8 @@ Gram/... and different specifications
 
 ### Disambiguere morfemkombinationer
 
+Judithes afsnit start ### påbegyndt 20231006: sorter umulige morfemkombinationer fra
+
 - GASAAR
 
 -  #GIP #GISSAAR #IAR #IRNIAR #IRSIR #IRUTE #KIP #KILLI #LIR #LIRSUR #LUP #NIP #QAR
@@ -464,93 +466,10 @@ Delimiter
 
 ---
 
-# src-cg3-valency.cg3.md 
-
-
-
-* * *
-
-<small>This (part of) documentation was generated from [src/cg3/valency.cg3](https://github.com/giellalt/lang-kal/blob/main/src/cg3/valency.cg3)</small>
-
----
-
 # src-fst-morphology-affixes-derivations-inflections.lexc.md 
 
 
 # Fil for at generere de centrale morfologiske processer i vor grønlandske analysator               
-## September 2024
-## branch: (testing), regressionstest: regression (branch: testing - kaltesting)
-
-## Dokumentasjon for leksikonnavne:
-
-* Z = nomen
-* 1 = svag bøjning, p-bøjning
-* 2 = sterk bøjning, up-bøjning
-* P = plurale tantum
-* S = singularis
-* - = sterk bøjing som trunkerer (2-)
-* a, q, ... = gemineringer ved konsonantiske flexiver
-* Z = nomen
-* morf = går til derivationsleksika
-*      = går til flexivleksika
-* tpt  =  
-* tup  = 
-* K    = Direkte til finale klitika
-
-## Specielle lexica 
-
-## KAPITLER TIL fst-DOKUMENTA
-
-TARIAQAR på transitiver kan både danne transitive, refleksive og passive verber. Derfor bliver
-alle forekomster af TARIAQAR ved transitiver startende fra juni 2020 både sendt videre normalt til 
-(i) TV-mod_r og tilføjet taggen Gram/Pass og sendt som ny stamme til (ii) IV_r
-På den måde vil turen via (i) producere
-misissortariaqarpaa	misissor+Gram/TV+TARIAQAR+Der/vv+Gram/TV+V+Ind+3Sg+3Sg, samt
-misissortariaqarpoq	misissor+Gram/TV+TARIAQAR+Der/vv+Gram/Refl+V+Ind+3Sg
-og turen via IV_r vil generere
-misissortariaqarpoq	misissor+Gram/TV+TARIAQAR+Der/vv+Gram/Pass+Gram/IV+Gram/IV+V+Ind+3Sg
-
-BLOKERING AF REKURSIV TIP VED TRANSITIVER
-PL20200709
-Forkerte læsninger, når IV med TIP viderederiveres i HTR-lexicon, hvor yderligere TIP kan tilføjes som ingerlatitseqqinneq
-ingerla+Gram/IV+TIP+Der/vv+Gram/TV+TIP+Der/vv+Gram/Db+Gram/Refl+QQIP+Der/vv+Gram/IV+NIQ+Der/vn
-blokeres vha. flaget @P.TIP.ON@ i IV-lexicon og blokeres af flaget @D.TIP@ i transitiv derivation.
-Ex
-ingerla via IV_voq_stem og får i LEXICON  tilføjet linien
-+TIP@P.TIP.ON@+Der/vv:%>tip@P.TIP.ON@ HTR_C_TAQ_tsi ; 
-I HTR_C_TAQ_tsi tilføjes der yderligere TIP.
-For at forebygge dette tagges derivativkæder med TIP som første element med @D.TIP@
-
-Bemærk at D-flaget principielt kun skal anvendes når TIP er første derivativ i kæden. Det kan nemlig ikke udelukkes, at der på et senere
-tidspunkt kan tilføjes yderligere TIP-er 
-
-SÆRLIGT OM Gram/Refl VED TRANSITIVERNE (PL20211121 forsøg)
-Foranlediget af ord som 'attorteqqassutigaara', hvor Refl skaber problemer for både oversættelserne
-og videre affingering introduceres strengen +TIP+Der/vv+Gram/Db+Gram/Refl som går til XItX ;
-
-SURE er sjældent Db, men  hos Ole Brandt finder vi eksempler som ".. sunaaffa Pikiulinnguarmiut pasillerai (implicit Pikiulinnguarmiunut 
-nukani] pilerngullugu nakkartissimasoralugu.
-
-PLEONASTISKE HTR VED NIAR OG QQIP
-medtages i IV-lexica med taggen +HTR+Err/Sub og en bemærkning efter !
-Fx i LEXICON IVschwa2
-+QQIP+Der/vv+HTR+Der/vv+Err/Sub:%>eqqii IV-mod_V ; !Fejl af typen ingerlatitseqqiineq
-
-## Tronds afdeling for debugging.
-
-Følgende leksika var ikke defineret andetsteds (liste), men her
-definert ad hoc for at få koden til at kompilere. De bør alle
-bli erstattet af de korrekte leksika (eller fjernet).:
-
-Det kan være flere grunder hertil:
-* de er simpelthen ikke definerede
-* det korrekte leksikon er ikke tilføjet, og lexc tar suffikset istedenfor
-* det er en skrivefejl i leksikonnavnet
-
-## DERIVATIONSMORFEMERNES LEKSIKA
-
-Her kommer en liste over de ulike leksika.
-Nogle af dem er dokumenterede, andre ikke.
 
 * LEXICON ZseqZ  qalaseq
 
@@ -640,7 +559,7 @@ Uku qanoq IV-mod_C-imi ilanngunneqassappat?
 
 * LEXICON XIirXmorf2   til iR såsom *er*
 
-* LEXICON XItX  type imaappoq, kaavippoq (NB ikke kâvigpo?, men kâvípo?)
+* LEXICON XItX  type imaappoq, kaavippoq (NB ikke kâvigpoĸ, men kâvípoĸ)
 
 * LEXICON XItX2  
 
@@ -1104,6 +1023,10 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 
 * LEXICON ZoqsZ  landsfoged
 
+* LEXICON ZoqseZ  landslaege
+
+* LEXICON ZoqsieZ  linolie
+
 * LEXICON ZkkutZ  kkut og giit
 
 * LEXICON Num1  
@@ -1147,8 +1070,6 @@ I Num2 til Num10 er flagging af NNGUR C-et pga. klokken
 * LEXICON Naalsuf  livm 20171211 tilføjet pluralisbøjning
 
 * LEXICON web  
-
-* LEXICON Gaq  transitive stammer med a, u og schwa som stammevokal
 
 * LEXICON iGaq  transitive r-stammer med i som stammevokal NY PL 20180416
 
@@ -1413,7 +1334,7 @@ Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers
 
 ---
 
-# src-fst-morphology-affixes-noun-to-noun.lexc.md 
+# src-fst-morphology-affixes-noun_to_noun.lexc.md 
 
 
 
@@ -1422,12 +1343,14 @@ Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers
 
 * LEXICON Z1Zmorf  Derivationsmorfemer til nominer, viser til **tp** og giver derefter nn-derivationer
 	*  tp ; 
+	* +ALUK+Der/nn+INNAQ+Der/nn:%>%TRUNCaluinnaq tup- ; 
 
 - LEXICON Z1VZmorf  Derivationsmorfemer til nominer, der ender med vokal a, i, u 20200916 NN
 	 -  tpV ;   !PL20221117 nyt fortsættelseslex
 
 * LEXICON Z1eqZmorf  Derivationsmorfemer til nominer på seq og leq
-	  *  Z1eqZ ; 
+	  * Z1eqZ ; 
+... osv.
 
 * LEXICON nuliaqmorf  derivationsmorfemer til typen *nuliaq*
 
@@ -1443,13 +1366,15 @@ Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers
 
 * LEXICON Z1tipeZmorf  derivationsmorfemer til nominer på udlydende schwa
 
+* LEXICON Z1nnguaqZmorf  derivationsmorfemer til nominer på nnguaq
+
 * LEXICON Z1iZmorf  derivationsmorfemer til nominer med strong i
 
 * LEXICON Z1iqZmorf  derivationsmorfemer til nominer med strong i som qimmeq
 
 * LEXICON Z1+tZmorf  derivationsmorfemer til nominer som pisataq og nivaataq !PL20210519 retableret og stammer fjernet fra GEMS
 
-* LEXICON tptmorf  !vist nok mest ute stammer ??
+* LEXICON tptmorf  
 
 * LEXICON ZtiZmorf  taggit
 
@@ -1482,6 +1407,12 @@ gennemgangskatalog for up-stammer, der kræver replaciv sandhi
 * LEXICON Z2+rZmorf  derivationsmorfemer til nominer
 
 * LEXICON Z2-PZmorf  derivationsmorfemer til tup-nominer pluralis tantum
+
+* LEXICON ZoqsZmorf2  
+
+* LEXICON ZoqseZmorf  
+
+* LEXICON ZoqsieZmorf  
 
 * LEXICON Z1+ssZmorf  derivationsmorfemer til nominer
 
@@ -1521,11 +1452,9 @@ gennemgangskatalog for up-stammer, der kræver replaciv sandhi
 
 * LEXICON Z1+ngeZmorf  typen iviangeq+Der/nn:ivian
 
-	* +ALUK+Der/nn+INNAQ+Der/nn:aluinnaq tup- ; 
-
 * * *
 
-<small>This (part of) documentation was generated from [src/fst/morphology/affixes/noun-to-noun.lexc](https://github.com/giellalt/lang-kal/blob/main/src/fst/morphology/affixes/noun-to-noun.lexc)</small>
+<small>This (part of) documentation was generated from [src/fst/morphology/affixes/noun_to_noun.lexc](https://github.com/giellalt/lang-kal/blob/main/src/fst/morphology/affixes/noun_to_noun.lexc)</small>
 
 ---
 
@@ -2025,11 +1954,6 @@ anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
 * **+Sem/Unit** = Unit !Til besværlige låneord som 'time' etc., der optræder absolut
 * **+Sem/Url** tag til adresser af typen www.ccc.cc
 * **+Sem/misse** tag til at markere usikker possessor for misse
-
-### 20241022 semtag lexicon migration checklist
-### taglist: Katersat
-Verbs
-Nouns
 
 ### Grammar
 
@@ -2932,38 +2856,6 @@ xxx 20170522 til former, som ikke kan læses men som har brug for en analyse i c
 
 ---
 
-# src-fst-morphology-stems-semtagged-verbs_sem.lexc.md 
-
-
-
-V.1.1	:be_copula, Be
-V.1.2	:be_place, Be
-V.1.3	:consist, Be
-V.1.4	:be_name, Be
-V.1.5	:be_part, Be
-V.1.6	:be_like, Be
-V.1.7.1	:be_attribute, Be
-V.1.7.2	:be_valid, Be
-V.1.8.1	:abound, Be
-V.1.8.2	:lack_itr, Be
-
-V.2.1	:become, Become
-V.2.3	:become_be, Become
-V.2.4	:become_part, Become
-V.2.5	:get_part, Become
-
-V.5.0	:have, Have
-V.5.1	:have_attr, Have
-V.5.2	:have_part, Have
-V.5.3	:lack, Have
-V.5.4	:contain_have, Have
-
-* * *
-
-<small>This (part of) documentation was generated from [src/fst/morphology/stems/semtagged/verbs_sem.lexc](https://github.com/giellalt/lang-kal/blob/main/src/fst/morphology/stems/semtagged/verbs_sem.lexc)</small>
-
----
-
 # src-fst-morphology-stems-verbs.lexc.md 
 
 
@@ -3050,9 +2942,7 @@ The simplest is to just add it to all spelled words:
 
 #### Verb valency rules
 
-ADD:msyn-arg-trm-ins
-
-ADD:msyn-arg-trm-ins
+@OUTSIDE RULES@
 
 ADD:msyn-arg-ins-trm
 
@@ -3092,18 +2982,24 @@ Rules for quotation marks.
 - LIST &msyn-arg-ins-trm = &msyn-arg-ins-trm ; 
 - LIST &msyn-arg-abs-rel = &msyn-arg-abs-rel ; 
 
-- LIST &apstr-hyph = &apstr-hyph ; 
-- LIST &msyn-abs-rel = &msyn-abs-rel ; 
-- LIST &msyn-abs-taama-case = &msyn-abs-taama-case ; 
-- LIST &msyn-abs-trm-atatillugu = &msyn-abs-trm-atatillugu ; 
-- LIST &msyn-abs-via = &msyn-abs-via ; 
-- LIST &msyn-excl-abl = &msyn-excl-abl ; 
-- LIST &msyn-ins-abl = &msyn-ins-abl ; 
-- LIST &msyn-obj-marking-abs-3PlO = &msyn-obj-marking-abs-3PlO ; 
-- LIST &msyn-subj-marking-abs-HTR = &msyn-subj-marking-abs-HTR ; 
-- LIST &syn-abs-wordorder = &syn-abs-wordorder ; 
-- LIST &syn-TUQ-wordorder = &syn-TUQ-wordorder ; 
-- LIST &ADDED = &ADDED ; 
+- 	&apstr-hyph						
+- 	&msyn-abs-rel					
+- 	&msyn-abs-taama-case			
+- 	&msyn-abs-trm-atatillugu	
+- 	&msyn-abs-via					
+- 	&msyn-con-rel					
+- 	&msyn-excl-abl					
+- 	&msyn-ins-abl					
+- 	&msyn-obj-marking-abs-3PlO	
+- 	&msyn-subj-marking-abs-HTR	
+- 	&syn-abs-wordorder			
+- 	&syn-TUQ-wordorder			
+- 	&ADDED							
+- 	&msyn-personalname-Pl-Sg	
+- 	co&msyn-personalname-Pl-Sg	
+- 	<sem-personalname>			
+- 	<heur-prop>						
+- 	<heur-Abs-Sg>					
 
 * * *
 

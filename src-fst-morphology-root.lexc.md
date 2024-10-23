@@ -74,11 +74,6 @@ anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
 * **+Sem/Url** tag til adresser af typen www.ccc.cc
 * **+Sem/misse** tag til at markere usikker possessor for misse
 
-### 20241022 semtag lexicon migration checklist
-### taglist: Katersat
-Verbs
-Nouns
-
 ### Grammar
 
 * **+Gram/Comp** = Composita !Særlig tag til NIQ ajor/saper/artor/nalu- konstruktioner ved transitive verber
