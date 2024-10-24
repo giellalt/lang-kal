@@ -5,14 +5,12 @@
 
 * LEXICON Z1Zmorf  Derivationsmorfemer til nominer, viser til **tp** og giver derefter nn-derivationer
 	*  tp ; 
-	* +ALUK+Der/nn+INNAQ+Der/nn:%>%TRUNCaluinnaq tup- ; 
 
 - LEXICON Z1VZmorf  Derivationsmorfemer til nominer, der ender med vokal a, i, u 20200916 NN
 	 -  tpV ;   !PL20221117 nyt fortsættelseslex
 
 * LEXICON Z1eqZmorf  Derivationsmorfemer til nominer på seq og leq
-	  * Z1eqZ ; 
-... osv.
+	  *  Z1eqZ ; 
 
 * LEXICON nuliaqmorf  derivationsmorfemer til typen *nuliaq*
 
@@ -28,15 +26,13 @@
 
 * LEXICON Z1tipeZmorf  derivationsmorfemer til nominer på udlydende schwa
 
-* LEXICON Z1nnguaqZmorf  derivationsmorfemer til nominer på nnguaq
-
 * LEXICON Z1iZmorf  derivationsmorfemer til nominer med strong i
 
 * LEXICON Z1iqZmorf  derivationsmorfemer til nominer med strong i som qimmeq
 
 * LEXICON Z1+tZmorf  derivationsmorfemer til nominer som pisataq og nivaataq !PL20210519 retableret og stammer fjernet fra GEMS
 
-* LEXICON tptmorf  
+* LEXICON tptmorf  !vist nok mest ute stammer ??
 
 * LEXICON ZtiZmorf  taggit
 
@@ -69,12 +65,6 @@ gennemgangskatalog for up-stammer, der kræver replaciv sandhi
 * LEXICON Z2+rZmorf  derivationsmorfemer til nominer
 
 * LEXICON Z2-PZmorf  derivationsmorfemer til tup-nominer pluralis tantum
-
-* LEXICON ZoqsZmorf2  
-
-* LEXICON ZoqseZmorf  
-
-* LEXICON ZoqsieZmorf  
 
 * LEXICON Z1+ssZmorf  derivationsmorfemer til nominer
 
@@ -114,6 +104,8 @@ gennemgangskatalog for up-stammer, der kræver replaciv sandhi
 
 * LEXICON Z1+ngeZmorf  typen iviangeq+Der/nn:ivian
 
+	* +ALUK+Der/nn+INNAQ+Der/nn:aluinnaq tup- ; 
+
 * * *
 
-<small>This (part of) documentation was generated from [src/fst/morphology/affixes/noun_to_noun.lexc](https://github.com/giellalt/lang-kal/blob/main/src/fst/morphology/affixes/noun_to_noun.lexc)</small>
+<small>This (part of) documentation was generated from [src/fst/morphology/affixes/noun-to-noun.lexc](https://github.com/giellalt/lang-kal/blob/main/src/fst/morphology/affixes/noun-to-noun.lexc)</small>
