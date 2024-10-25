@@ -8,6 +8,9 @@
         * `morphology/`
             * `affixes/`
                 * [derivations-inflections.lexc](src-fst-morphology-affixes-derivations-inflections.lexc.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/fst/morphology/affixes/derivations-inflections.lexc))
+                * [inflections-NUM.lexc](src-fst-morphology-affixes-inflections-NUM.lexc.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/fst/morphology/affixes/inflections-NUM.lexc))
+                * [inflections-nouns.lexc](src-fst-morphology-affixes-inflections-nouns.lexc.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/fst/morphology/affixes/inflections-nouns.lexc))
+                * [inflections-verbs-TV.lexc](src-fst-morphology-affixes-inflections-verbs-TV.lexc.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/fst/morphology/affixes/inflections-verbs-TV.lexc))
                 * [noun-to-noun.lexc](src-fst-morphology-affixes-noun-to-noun.lexc.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/fst/morphology/affixes/noun-to-noun.lexc))
                 * [numerals.lexc](src-fst-morphology-affixes-numerals.lexc.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/fst/morphology/affixes/numerals.lexc))
                 * [propernouns.lexc](src-fst-morphology-affixes-propernouns.lexc.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/fst/morphology/affixes/propernouns.lexc))
