@@ -1,3 +1,5 @@
+
+
 * LEXICON Num1morf  nyt katalog tilføjet livm 20170505
 
 * LEXICON Num2morf  
@@ -59,6 +61,8 @@ I Num2 til Num10 er flagging af NNGUR C-et pga. klokken
 * LEXICON Num6Ord  
 
 * LEXICON Num10Ord  
+
+* LEXICON tp_Gram/Ord  obs 20200623: fleksionsmorfemgrænse er %< og ikke %> Ny PL20220522 kun til ordenstal
 
 * * *
 
