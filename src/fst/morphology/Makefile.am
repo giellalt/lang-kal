@@ -36,14 +36,15 @@ GT_LEXC_SRCS_L1_L2=\
 			stems/abbreviations.lexc             \
 			stems/acronyms.lexc                  \
 			stems/nouns.lexc                     \
-			stems/semtagged/nouns_sem.lexc \
 			stems/numerals.lexc                  \
 			stems/particles.lexc                 \
 			stems/pronouns.lexc                  \
 			stems/propernouns.lexc               \
 			stems/verbs.lexc                     \
+			stems/semtagged/nouns_sem.lexc \
 			stems/semtagged/verbs_sem.lexc \
-			affixes/enclitics.lexc \
+			affixes/semtagged/noun-to-noun_sem.lexc \
+			affixes/semtagged/pre-inflections-nouns.lexc \
 			affixes/loanwords.lexc \
 			affixes/noun-to-noun.lexc \
 			affixes/noun-to-verb.lexc \
@@ -56,7 +57,8 @@ GT_LEXC_SRCS_L1_L2=\
 			affixes/inflections-nouns.lexc \
 			affixes/inflections-verbs-IV.lexc \
 			affixes/inflections-verbs-TV.lexc \
-			affixes/inflections-NUM.lexc
+			affixes/inflections-NUM.lexc \
+			affixes/enclitics.lexc
 
 # If you are building an error-detecting L2 analyser, specify the lexc files
 # that differ between the regular L1 and the L2 analysers below, in L1 and
