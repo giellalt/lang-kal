@@ -43,8 +43,13 @@ GT_LEXC_SRCS_L1_L2=\
 			stems/propernouns.lexc               \
 			stems/verbs.lexc                     \
 			stems/semtagged/verbs_sem.lexc \
-			affixes/derivations-inflections.lexc \
+			affixes/enclitics.lexc \
+			affixes/loanwords.lexc \
 			affixes/noun-to-noun.lexc \
+			affixes/noun-to-verb.lexc \
+			affixes/verb-to-verb.lexc \
+			affixes/verb-to-noun.lexc \
+			affixes/mixed.lexc \
 			affixes/numerals.lexc                \
 			affixes/symbols.lexc                 \
 			affixes/propernouns.lexc \
