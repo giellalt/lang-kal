@@ -47,7 +47,11 @@ GT_LEXC_SRCS_L1_L2=\
 			affixes/noun-to-noun.lexc \
 			affixes/numerals.lexc                \
 			affixes/symbols.lexc                 \
-			affixes/propernouns.lexc
+			affixes/propernouns.lexc \
+			affixes/inflections-nouns.lexc \
+			affixes/inflections-verbs-IV.lexc \
+			affixes/inflections-verbs-TV.lexc \
+			affixes/inflections-NUM.lexc
 
 # If you are building an error-detecting L2 analyser, specify the lexc files
 # that differ between the regular L1 and the L2 analysers below, in L1 and
