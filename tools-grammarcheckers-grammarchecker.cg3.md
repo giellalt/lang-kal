@@ -32,9 +32,7 @@ The simplest is to just add it to all spelled words:
 
 #### Verb valency rules
 
-ADD:msyn-arg-trm-ins
-
-ADD:msyn-arg-trm-ins
+@OUTSIDE RULES@
 
 ADD:msyn-arg-ins-trm
 
