@@ -25,6 +25,7 @@
 - 	&syn-abs-wordorder			
 - 	&syn-TUQ-wordorder			
 - 	&ADDED							
+- 	&msyn-Opt-1Sg-2SgO			
 - 	&msyn-personalname-Pl-Sg	
 - 	co&msyn-personalname-Pl-Sg	
 - 	<sem-personalname>			
