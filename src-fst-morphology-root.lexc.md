@@ -784,17 +784,12 @@ i staden ei liste der kvar tag sto ein gong (nedanfor): docs/tagstrings.md
 * **+VISSUR** 
 * **+VVAARIK** 
 * **+VVAARIP** 
-* **NIAR=TARE=LIR=GALUAR** 
-* **SIMAAR=VALLAAR=LIR** 
-* **TARIAQAR=LLUAR** 
 
 ### Grænsesymbol
 
 ## Symbols that need to be escaped on the lower side (towards twolc)
 * »
 * « ()
-* > (written with square brackets as stem, to avoid collision with the morpheme boundary marker)
-* < (written with square brackets as stem, to avoid collision with the morpheme boundary marker)
 
 * **%ROD** morfemgraense ved pegeroedderne
 * **+SUB**  Ungdomsformer
