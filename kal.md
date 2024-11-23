@@ -2982,17 +2982,18 @@ Rules for quotation marks.
 - 	&msyn-abs-taama-case			
 - 	&msyn-abs-trm-atatillugu	
 - 	&msyn-abs-via					
+- 	&msyn-ins-abl					
 - 	&msyn-con-rel					
 - 	&msyn-excl-abl					
-- 	&msyn-ins-abl					
 - 	&msyn-obj-marking-abs-3PlO	
 - 	&msyn-subj-marking-abs-HTR	
-- 	&syn-abs-wordorder			
-- 	&syn-TUQ-wordorder			
-- 	&ADDED							
 - 	&msyn-Opt-1Sg-2SgO			
 - 	&msyn-personalname-Pl-Sg	
 - 	co&msyn-personalname-Pl-Sg	
+- 	&syn-abs-wordorder			
+- 	&syn-TUQ-wordorder			
+- 	&ADDED							
+
 - 	<sem-personalname>			
 - 	<heur-prop>						
 - 	<heur-Abs-Sg>					
