@@ -100,8 +100,6 @@ Navnelexikon er i ateq-kal-lex.txt.
 
 ** Lexicon **Z2-ateqZ**  
 
-:- Z2-ateqZ-suf ;     !SUB
-
 ** Lexicon **Z2-ateqZ-suf**  
 
 ** Lexicon **Z1ateqpropVZ**  
