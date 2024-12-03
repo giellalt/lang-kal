@@ -19,9 +19,6 @@ REMOVE Num + U + Int + 2Sg ;
 REMOVE OBLIQUE OR 3PlPoss OR U + Int (0 ("<\\d+\\u002Dut>"r) + <spelled>) ; 
 #300-ut
 
-## Case
-REMOVE OBLIQUE - Trm (0 ("<.*[mn]ut>"r)) ; #remove suggestions with other case forms other than the case indicated by input
-
 ## Stem specific: alphabetical
 # A
 REMOVE (/"aa"\ Gram/IV\ NIQ\ Der/vn\ ARAQ/l) ;
@@ -32,12 +29,15 @@ REMOVE ("amar") + TAQ ;
 # G
 REMOVE GI (0 ("isaar")) ; #isaarilillu
 # I
-REMOVE ("ilaqutaq") (0 (/"\(.*\)"\ \(.*\)\ Der/nv/l) + SI | LIR | GE | TU) ;
-#mispelling: ilaqutariinermut -> ilaqutariinnermut
+REMOVE (/"\(.*\)"\ \(.*\)\ Der/nv/l) + SI | LIR | GE | TU (0 ("ilaqutaq")) ;
+#misspelling: ilaqutariinermut -> ilaqutariinnermut
 REMOVE  (/"\ [LV]IK\ Der/nn\ LIUTE\ Der/nv/l) (0 ("illuatungeq")) ;
 REMOVE (/"illuatungeq"\ KUQ\ Der/nn\ LIR\ Der/nv/l) ;
 REMOVE (/"illuatungeq"\ LIUR\ Der/nv/l) ;
 REMOVE (/"[iu]m[ei][pr]"\ Gram/[IT]V\ \(RI\)?\([TS]\)?\(A\)?\(I\)?R\ Der/vv\ \(Gram/TV\ \)?TAQ\ Der/vn/l) (0 ("<[Aa]me.*>"r ?)) ; #when mispelled: Amerikkap
+REMOVE (/"ima\(q\)?"\ \(KUQ|LIK\)\ Der/nn/l) + (/[12]SgPoss/r) ;
+REMOVE (/"ima\(q\)?"\ LUP\ Der/nv\ Gram/IV\ Gram/IV\ NIQ\ Der/vn/l) + 2SgPoss ;
+REMOVE ("inalu\(k\)?"r) + (/[12]SgPoss/r) ;
 REMOVE (/"isa\(p\)?"\ Gram/IV\ UMI\ Der/vv/l) ;
 # K
 REMOVE (/"krans"\ ARAQ\ Der/nn/l) (0 ("Hans.*"r)) ;
@@ -54,17 +54,18 @@ REMOVE (/"saap"\ Gram/IV\ Gram/IV\ NIQ\ Der/vn\ ARAQ/l) ;
 REMOVE (/"taa\(p\)?"\ \(Gram/IV\ \)?Gram/IV\ NIQ\ Der/vn\ ARAQ/l) ;
 
 ## Suffix specific
-# IT
-LIST IT = IT ;
+# A
+REMOVE (/"\ ALUK\ Der/nn/l) + (/"\(ima|imeq\)"/l) ; #imialuk, imaaluk
+# I
 REMOVE (/"\(.*\)"\ Gram/IV\ IT\ Der/vv/l) (0 ("[a|n|s]ala"r)) ; 
-#mispelling: Kalalalit -> Kalaallit aalaallit, nalaallit
+#misspelling: Kalalalit -> Kalaallit aalaallit, nalaallit
 #REMOVE (/"aala"\ Gram/IV\ IT\ Der/vv/l) ;
 # K
 REMOVE (/KUQ\ Der/nn\ LIUTE\ Der/nv/l) ;
 #illuatungikuliuttut
 # L
 REMOVE (/"\(.*\)"\ \(LAAQ\ Der/nn\ \)?LIK\ Der/nn/l) + ("aalaq") | ("alaaq") | ("alla") | ("kalak") | ("malaq") ; 
-# mispelling: kalalalit -> kalaallit
+# misspelling: kalalalit -> kalaallit
 REMOVE (/LIK\ Der/nn\ U\ Der/nv\ Gram/IV\ VIP\ Der/vv/l) ;
 #illuatungiliuvittut
 REMOVE (/LIR\ Der/vv\ Gram/IV\ USIQ\ Der/vn/l) ;
@@ -73,6 +74,14 @@ REMOVE (/LIR\ Der/nv\ Gram/TV\ UTE\ Der/vv/l) + ("illuatungeq") ;
 #illuatungiliuttut
 REMOVE LIUTE (0 ("illuatungeq")) (0 ("illuatunge")) ;
 REMOVE (/"\(.*\)" LUP Der/nv/l) + ("qalak") ;
+REMOVE (/LUP\ Der/nv\ Gram/IV\ Gram/IV\ NI\(A\)?Q\ Der/vn\ \(UTE\ Der/nn\)?/l) ;
+#misspelling: imalunniit
+#imalunniut
+#imalunniat
+REMOVE (/LUP\ Der/nv\ Gram/IV\ Gram/IV\ NIUTE\ Der/vn/l) ;
+#imalunniut
+# M
+REMOVE ("mamaq") + 2PlPoss ; # mamarsimi
 # N
 REMOVE (/Gram/\(Refl\)?\(Pass\)?\(TV\)?\ NIQ\ Der/vn\ \(Gram/TransverbNIQ\ \)?ARAQ/l) ; 
 #misspelling: Haanseeqqap
@@ -94,13 +103,16 @@ REMOVE (/UTE\ Der/nn\ LIUTE\ Der/nv/l) ;
 REMOVE (/[LV]IK\ Der/nn\ LIR\ Der/nv\ Gram/TV\ UTE\ Der/vv/l) ; 
 #illuatungiviliuttut
 
+## Case
+REMOVE OBLIQUE - Trm (0 ("<.*[mn]ut>"r)) ; #remove suggestions with other case forms other than the case indicated by input
+
 ### Orth/Arch ###
 ### in the lexicon, but possible spelling errors [eg. archaic forms]
 ADD &typo Orth/Arch (0 (/"arnap"\ Orth/Arch\ Gram/IV\ PALUP\ Der/vv\ Gram/IV\ TUQ\ Der/vn\ N/l)) ;
 COPY ("arnaq" PALUP Der/nv Gram/IV Gram/IV TUQ Der/vn N &SUGGEST) EXCEPT ("arnap" Orth/Arch Gram/IV PALUP Der/vv Gram/IV TUQ Der/vn N &typo) BEFORE KASUS TARGET Orth/Arch (0 ("arnap" Orth/Arch Gram/IV PALUP Der/vv Gram/IV TUQ Der/vn N &typo)) ;
 #arnappaluttumik
 
-REMOVE ("mamaq") + 2PlPoss ; # mamarsimi
+
 REMOVE V + Gram/Exclm ;
 #REMOVE (<W:3.*>r) + N OR V ;
 REMOVE (/"\(.*\)"S/r) - NIQ (0 (VSTR:"$1"S) + NIQ) ;
