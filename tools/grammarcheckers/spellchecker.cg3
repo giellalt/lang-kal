@@ -6,18 +6,108 @@
 
 INCLUDE STATIC liststemplates.cg3 ;
 
+BEFORE-SECTIONS
 
+### REMOVE ILLEGAL MORPHEME COMBINATIONS ###
+# EMERGENCY SOLUTION until a better spellchecker generator is available
 
+## Numerals
+REMOVE (<W:2[5-9].*>r) OR (<W:3[0-9].*>r) (0 Num) ; 
+#100-jut, 20't, 200-ut,
+REMOVE Num + U + Int + 2Sg ; 
+#200-uit
+REMOVE OBLIQUE OR 3PlPoss OR U + Int (0 ("<\\d+\\u002Dut>"r) + <spelled>) ; 
+#300-ut
 
+## Case
+REMOVE OBLIQUE - Trm (0 ("<.*[mn]ut>"r)) ; #remove suggestions with other case forms other than the case indicated by input
 
-#======
-# 2024may
+## Stem specific: alphabetical
+# A
+REMOVE (/"aa"\ Gram/IV\ NIQ\ Der/vn\ ARAQ/l) ;
+REMOVE (/"aa[kq]"\ LAAQ\ Der/nn/l) ;
+REMOVE (/"\(.*\)"\ ARAQ/l) + ("aaneq") | ("aassik") ;
+REMOVE (/"amer"\ Gram/TV\ RIAR\ Der/vv\ Gram/TV\ TAQ\ Der/vn/l) ;
+REMOVE ("amar") + TAQ ;
+# G
+REMOVE GI (0 ("isaar")) ; #isaarilillu
+# I
+REMOVE ("ilaqutaq") (0 (/"\(.*\)"\ \(.*\)\ Der/nv/l) + SI | LIR | GE | TU) ;
+#mispelling: ilaqutariinermut -> ilaqutariinnermut
+REMOVE  (/"\ [LV]IK\ Der/nn\ LIUTE\ Der/nv/l) (0 ("illuatungeq")) ;
+REMOVE (/"illuatungeq"\ KUQ\ Der/nn\ LIR\ Der/nv/l) ;
+REMOVE (/"illuatungeq"\ LIUR\ Der/nv/l) ;
+REMOVE (/"[iu]m[ei][pr]"\ Gram/[IT]V\ \(RI\)?\([TS]\)?\(A\)?\(I\)?R\ Der/vv\ \(Gram/TV\ \)?TAQ\ Der/vn/l) (0 ("<[Aa]me.*>"r ?)) ; #when mispelled: Amerikkap
+REMOVE (/"isa\(p\)?"\ Gram/IV\ UMI\ Der/vv/l) ;
+# K
+REMOVE (/"krans"\ ARAQ\ Der/nn/l) (0 ("Hans.*"r)) ;
+# L
+REMOVE (/"lama"\ R/l) ;
+# U
+REMOVE (/"\(u\)?aa"\ Gram/IV\ NIQ\ Der/vn\ ARAQ\ Der/nn/l) ;
+#misspelling: Haanseeqqap - aaneeraq, uaaneeraq
+# S
+REMOVE (/"saa"\ Orth/Arch \Gram/TV\ Gram/Pass\ NIQ/l) ;
+REMOVE (/"saani\(k\)?"\ ARAQ/l) ;
+REMOVE (/"saap"\ Gram/IV\ Gram/IV\ NIQ\ Der/vn\ ARAQ/l) ;
+# T
+REMOVE (/"taa\(p\)?"\ \(Gram/IV\ \)?Gram/IV\ NIQ\ Der/vn\ ARAQ/l) ;
+
+## Suffix specific
+# IT
+LIST IT = IT ;
+REMOVE (/"\(.*\)"\ Gram/IV\ IT\ Der/vv/l) (0 ("[a|n|s]ala"r)) ; 
+#mispelling: Kalalalit -> Kalaallit aalaallit, nalaallit
+#REMOVE (/"aala"\ Gram/IV\ IT\ Der/vv/l) ;
+# K
+REMOVE (/KUQ\ Der/nn\ LIUTE\ Der/nv/l) ;
+#illuatungikuliuttut
+# L
+REMOVE (/"\(.*\)"\ \(LAAQ\ Der/nn\ \)?LIK\ Der/nn/l) + ("aalaq") | ("alaaq") | ("alla") | ("kalak") | ("malaq") ; 
+# mispelling: kalalalit -> kalaallit
+REMOVE (/LIK\ Der/nn\ U\ Der/nv\ Gram/IV\ VIP\ Der/vv/l) ;
+#illuatungiliuvittut
+REMOVE (/LIR\ Der/vv\ Gram/IV\ USIQ\ Der/vn/l) ;
+#illuatungiuliutsit
+REMOVE (/LIR\ Der/nv\ Gram/TV\ UTE\ Der/vv/l) + ("illuatungeq") ;
+#illuatungiliuttut
+REMOVE LIUTE (0 ("illuatungeq")) (0 ("illuatunge")) ;
+REMOVE (/"\(.*\)" LUP Der/nv/l) + ("qalak") ;
+# N
+REMOVE (/Gram/\(Refl\)?\(Pass\)?\(TV\)?\ NIQ\ Der/vn\ \(Gram/TransverbNIQ\ \)?ARAQ/l) ; 
+#misspelling: Haanseeqqap
+REMOVE (/Orth/Arch\ Gram/IV\ NIQ\ Der/vn/l) ;
+# S
+REMOVE (/\ [A|U]\ Der/[vn]v\ Gram/IV\ SII\ Der/vv\ Gram/Refl\ V\ Opt/l) ;
+# U
+REMOVE (/U\ Der/nv\ Gram/IV\ LIR\ Der/vv\ VIP\ Der/vv/l) + ("illuatungeq") ;
+REMOVE (/U\ Der/nv\ Gram/IV\ NIUTE\ Der/vv/l) (0 ("illuatungeq")) ;
+#illuatungiuniuttut
+REMOVE (/U\ Der/nv\ Gram/IV\ TUUQ\ Der/vn/l) ;
+#illuatungiutuuttut
+REMOVE (/Orth/Arch\ UTE\ Der/nn/l) ;
+REMOVE (/UTE\ Der/nn\ LIR\ Der/nv\ Gram/TV\ UTE\ Der/vv/l) ;
+#illuatungiusiuttut
+REMOVE (/UTE\ Der/nn\ LIUTE\ Der/nv/l) ;
+#illuatungiusiuttut
+# V
+REMOVE (/[LV]IK\ Der/nn\ LIR\ Der/nv\ Gram/TV\ UTE\ Der/vv/l) ; 
+#illuatungiviliuttut
 
 ### Orth/Arch ###
 ### in the lexicon, but possible spelling errors [eg. archaic forms]
 ADD &typo Orth/Arch (0 (/"arnap"\ Orth/Arch\ Gram/IV\ PALUP\ Der/vv\ Gram/IV\ TUQ\ Der/vn\ N/l)) ;
 COPY ("arnaq" PALUP Der/nv Gram/IV Gram/IV TUQ Der/vn N &SUGGEST) EXCEPT ("arnap" Orth/Arch Gram/IV PALUP Der/vv Gram/IV TUQ Der/vn N &typo) BEFORE KASUS TARGET Orth/Arch (0 ("arnap" Orth/Arch Gram/IV PALUP Der/vv Gram/IV TUQ Der/vn N &typo)) ;
 #arnappaluttumik
+
+REMOVE ("mamaq") + 2PlPoss ; # mamarsimi
+REMOVE V + Gram/Exclm ;
+#REMOVE (<W:3.*>r) + N OR V ;
+REMOVE (/"\(.*\)"S/r) - NIQ (0 (VSTR:"$1"S) + NIQ) ;
+#misspelling: Haanseeqqap, xxx+NIQ vs xxxneq. no reason to have identical forms
+REMOVE (".*i"r) + Prop (0 consprop) ;
+
+SECTION
 
 ### possible suffix errors, error corrections offered even though the form is in the lexicon
 
