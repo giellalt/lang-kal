@@ -2279,7 +2279,8 @@ i staden ei liste der kvar tag sto ein gong (nedanfor): docs/tagstrings.md
 * **+KASSAK** 
 * **+KASSAP** 
 * **+KATAAR** 
-* **+KATAP** 
+* **+KATAP**
+* **+KATTAR** 
 * **+KILLI** 
 * **+KIP** 
 * **+KKAAQ** 
