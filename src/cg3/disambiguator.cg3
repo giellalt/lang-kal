@@ -2331,6 +2331,11 @@ SET Cases = Lok | Ins | Abl | Trm | Aeq | Via ;
 REMOVE:miss ("miss.*"r) + Abs (0 Cases) (1 ("miss.*"r Adv)) ;
 REMOVE:Nal ("Nal") + Prop + Gram/Abbr IF (0 ("nalunaaqutaq") LINK 1 Num + Rel LINK 1 ("misse") OR ("missaa") OR ("miss." Adv)) ;
 
+REMOVE:Nal2 (/"nalunaaqutaq"\ N\ Gram/Abbr/l) OR (/"Nal"\ Prop\ Gram/Abbr/l) IF (0 (/"nalunaaqutaq"\ N\ Abs\ Sg\ %AmbiguøsN/l) ) ;
+REMOVE:Nal3 (/"nalunaaqutaq"\ N\ Rel\ Sg\ %AmbiguøsN/l) IF (0 (/"nalunaaqutaq"\ N\ Abs\ Sg\ %AmbiguøsN/l) )
+(NEGATE 0 Rel LINK 1 N + POSSESSUM) 
+;
+
 REMOVE:tidlig0002A ("assit") IF (-1 BOS OR DIRTALESTART)(1 (":")); #PL20240401 "netmave" usandsynlig i denne stilling
 REMOVE:tidlig0002B ("ilaat") IF (0 ("ila")); #PL20240401 ilaut/isøse lavfrekvent. Evt. undtagelsermå negeres senere
 REMOVE:tidlig0002C ("amu") + UTE IF (0 ("ate") + Trm); #Kaali AMMUT pisippoq (ikke 'ophalerline')
@@ -3475,7 +3480,8 @@ SUBSTITUTE:Sub0003 (LI) (CONJ-LI) TARGET (*)
 ### Usandsynlige morfemkombinationer ###
 #======================================#
 REMOVE:0005A (/__SSA\ Der\/vv\ Gram\/IV\ .*TUQ__/l)(NOT 0 (/__SSA\ Der\/vv\ Gram\/IV.*[A-Z][A-Z]+.*\ TUQ__/l)) ; #SSA kan ikke efterfølges af TUQ
-REMOVE:0005B (/__NIAQ\ Der\/vn.*\ IR__/l) OR (/__NIAQ\ Der\/vn.*\ U__/l)(NOT 0 (/__NIAQ\ Der\/vn.*[A-Z][A-Z]+.*\ IR__/l)) (0 NIAR + HTR) ; # NIAQ og IR skal være NIAR og HTR.
+REMOVE:0005B (/__NIAQ\ Der\/vn.*\ IR__/l) OR (/__NIAQ\ Der\/vn.*\ U__/l)(NOT 0 (/__NIAQ\ Der\/vn.*[A-Z][A-Z]+.*\ IR__/l)) (0 NIAR + HTR) ; # NIAQ og IR skal være NIAR og HTR.#
+REMOVE:0005B1 (/NIAQ\ Der/vn\ QATE\ Der/nn\ U\ Der/nv/l) IF (0 (/NIAR\ Der/vv\ Gram/IV\ QATE\ Der/vn\ U\ Der/nv/l) ) ;#FN-ip nunarsuarmi piujuaannartitsinissamut anguniagai 17-iusut pillugit suliffeqarfiit, kattuffiit pisortallu suliffeqarfiutaat arlallit suliniaqataallutik periuusissanut pilersaarutinik suliaqarput.
 REMOVE:0005C (/__SINNAAQ\ Der\/vn.*[A-Z][A-Z]+\ Der\/..__/l) (0 SINNAA); # SINNAAQ skal ikke viderederiveres #immikkoortissinnaaleraanni
 REMOVE:0005D (/TARIAQ\ Der\/vn\ QAR\ /l) IF (0 TARIAQAR) ;
 REMOVE:0005E (/TAQ\ Der\/vn\ IR\ /l) IF (0 TAQ + U OR TAAR) ; #savaatitaarusunnermi
@@ -8654,15 +8660,20 @@ SELECT:8538A 3PlO IF
 
 REMOVE:8538B (/QE\ Der/vv\ Gram/[IT]V\ V\ Ind/l) IF (0 Abs + Pl LINK *1 3PlO BARRIER V); #Kalaallit Nunaannut tikittut Ilisimatusarfimmukarsinnaapput aatsaat angerlarsimaannarnissamik PIUMASAQAATIT atuuttut maleruareerunikkit.
 
-
 #En sen disambiguering af Par + 3Pl fra Abs + Pl, hvis der ikke står inquit til venstre i samme ledsætning. Baseres på at inquit normalt kommer før CL-CIT og at inquit oftest vil have 3SgO, så 3PlO altså sandsynliggør et objekt
-REMOVE:8554 Par + 3Pl IF (*1 3PlO)(NEGATE *-1 ORATIOOBLVERB BARRIER KOMMA)
+REMOVE:8554A Par + 3Pl IF (*1 3PlO)
+(NEGATE *1 ("tusaa") + ORATIOOBLVERB + V + 3PlO - CONJ-LU  OR ("maluge") + ORATIOOBLVERB + V + 3PlO - CONJ-LU)#Akiligassat pillugit anaana ataatalu isumaqatigiinngippaluttut tusaasinnaavai.
+(NEGATE *-1 ORATIOOBLVERB BARRIER KOMMA)
 (NEGATE *-1 Abs + Pl LINK *1 _TARGET_ + Par + 3Pl BARRIER (*) - OBLIQUE LINK 1 ("misige") + 3PlO - 3Pl)#Den farlige attraktion: Kalaallit inuussutissarsiornikkut aningaasaliisussanut aningaasaqarnermillu ineriartortitsinissamut SOQUTIGINNITTUT misigisimavakka
 (NEGATE 0 U LINK *-1 BOS BARRIER (*) - ("suli" Adv))#Suli MEERAASUT angutaat inupiluup Saqup inuartarai.
 (NEGATE *-1 Abs + &&IV_SUBJ& LINK *1 _TARGET_ + Par + &&IV_SUBJ& LINK *1 ORATIOOBLVERB + INTRANSVERB OR ORATIOOBLVERB + TRANSVERB + 3SgO)#Danmarkimi inuit 859-it coronavirusimik tunillatsissimasutut ullup ataatsip ingerlanerinnaani NALUNAARSORNEQARTUT, Statens Serum Institutimit (SSI) kisitsisit takutippaat.
 (NEGATE *-1 Abs + &&IV_SUBJ& LINK *1 _TARGET_ + Par + &&IV_SUBJ& BARRIER V LINK *1 ORATIOOBLVERB + 3SgO OR ORATIOOBLVERB + INTRANSVERB)#inuit 859-it coronavirusimik tunillatsissimasutut NALUNAARSORNEQARTUT kisitsisit takutippaat.
 (NEGATE 0 (/VIP\ Der/vv\ NNGIT\ Der/vv/l)) #Bussit UNGASILLIVINNGITSUT naggammik qiviarpakka.
 ;
+
+REMOVE:8554B Abs + Pl IF (0 (/V\ Par\ 3Pl/l) LINK 1 VFIN + ("tusaa") + ORATIOOBLVERB + V + 3PlO - CONJ-LU  OR VFIN + ("maluge") + ORATIOOBLVERB + V + 3PlO - CONJ-LU) ;#Akiligassat pillugit anaana ataatalu isumaqatigiinngippaluttut tusaasinnaavai. 
+
+
 
 #Sene disambigueringer af resterende Abs + Pl fra Rel + Pl
 #Objekt med kongruensadled med possessor
