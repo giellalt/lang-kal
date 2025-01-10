@@ -658,7 +658,8 @@ i staden ei liste der kvar tag sto ein gong (nedanfor): docs/tagstrings.md
 * **+RUSAQ** 
 * **+RUSAR** 
 * **+RUTTUR** 
-* **+RUUSAAR** 
+* **+RUUSAAR**
+* **+RUUSAQ** 
 * **+SAAR** 
 * **+SAR** 
 * **+SARE** 
