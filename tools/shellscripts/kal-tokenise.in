@@ -422,8 +422,13 @@ sub analyze {
          if ($cs[$i]->[1] =~ / \?/) {
             my $j = $i;
             my $e = $i;
+            my $len = 0;
             for ( ; $j<scalar(@cs) ; ++$j) {
                if ($cs[$j]->[0] !~ /^[\s\pZ]*$/ && $cs[$j]->[1] !~ / \?/) {
+                  last;
+               }
+               # Avoid geometric slowdown
+               if ($len + length($cs[$j]->[0]) - 4 >= 50) {
                   last;
                }
                $e = $j;
@@ -493,6 +498,16 @@ sub analyze {
                }
             }
 
+            # Split numeric from alphabetic and retry them separately
+            if ($f =~ /^([^\pL\pM]+)(\pN+)$/ || $f =~ /^(\pN+?)([^\pL\pM]+)$/) {
+               my ($f1,$f2) = ($1, $2);
+               my $m = call_tokenizer($f1).call_tokenizer($f2);
+               if ($m =~ /\t"[^\n]*"[^?\n]+\n/) {
+                  $merge_ncs->($m);
+                  last;
+               }
+            }
+
             # If input has Ųų, try them as Øø
             if ($f =~ /[Ųų]/) {
                $orig = $orig || $f;
@@ -531,6 +546,17 @@ sub analyze {
                   last;
                }
                $orig = undef;
+            }
+
+            # If input might be lacking a space, try with one
+            if ($f =~ /^([\pL\pN\pM]+?)(\p{Lu}+[\p{Ll}\pN\pM]+)$/) {
+               my ($f1,$f2) = ($1, $2);
+               #print STDERR "DEBUG: $f1 $f2\n";
+               my $m = call_tokenizer($f1).call_tokenizer($f2);
+               if ($m =~ /\t"[^\n]*"[^?\n]+\n/) {
+                  $merge_ncs->($m);
+                  last;
+               }
             }
 
             # Try without hyphens or dashes, potentially injecting an 'i' instead
