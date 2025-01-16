@@ -54,6 +54,8 @@
 
 * LEXICON Z2-Zmorf  derivationsmorfemer til tup- paa K. Jf. Z2-qZmorf
 
+* LEXICON aak_morf  PL20250116 kopi af Z2-Zmorf udelukkende til aak. Bør gennemgås og morfemer, der er utænkelige på 'aak' skal slettes !!!! 
+
 * LEXICON Z2-uukZmorf  derivationsmorfemer til tup- paa K. Jf. Z2-qZmorf
 
 * LEXICON Z2-qZmorf  Nyt leksikon til tup- paa Q 7.9.2007 for at haandtere forskelle som ..fiksuaq vs. ..aqsuaq

@@ -882,6 +882,8 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 | --- 
 | --- 
 
+* LEXICON aak_infl  !PL20250116 nyt LEX specielt til 'aak'. Bør gennemgås og renses for umuligheder herunder alle pluralis-bøjninger
+
 * LEXICON tup-2  
 | --- 
 | --- 
@@ -1391,6 +1393,8 @@ Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers
 * LEXICON Z2tupeqZmorf  derivationsmorfemer tupeq
 
 * LEXICON Z2-Zmorf  derivationsmorfemer til tup- paa K. Jf. Z2-qZmorf
+
+* LEXICON aak_morf  PL20250116 kopi af Z2-Zmorf udelukkende til aak. Bør gennemgås og morfemer, der er utænkelige på 'aak' skal slettes !!!! 
 
 * LEXICON Z2-uukZmorf  derivationsmorfemer til tup- paa K. Jf. Z2-qZmorf
 

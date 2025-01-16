@@ -412,6 +412,8 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 | --- 
 | --- 
 
+* LEXICON aak_infl  !PL20250116 nyt LEX specielt til 'aak'. Bør gennemgås og renses for umuligheder herunder alle pluralis-bøjninger
+
 * LEXICON tup-2  
 | --- 
 | --- 
