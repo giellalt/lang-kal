@@ -10,7 +10,7 @@ pkgconfig_DATA = giella-$(GTLANG).pc
 
 configure: banner
 
-.PHONY: banner test
+.PHONY: banner test dev
 banner:
 	@echo
 	@echo "*** Compiling $(GLANG) - $(GLANGUAGE). ***"
