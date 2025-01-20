@@ -1,0 +1,80 @@
+#!/usr/bin/env perl
+# -*- mode: cperl; indent-tabs-mode: nil; tab-width: 3; cperl-indent-level: 3; -*-
+use strict;
+use warnings;
+use utf8;
+
+BEGIN {
+	$| = 1;
+	binmode(STDIN, ':encoding(UTF-8)');
+	binmode(STDOUT, ':encoding(UTF-8)');
+}
+use open qw( :encoding(UTF-8) :std );
+use feature 'unicode_strings';
+
+# Prefixes from root.lexc ca. lines 14-15
+my @p = qw(AA TA);
+
+# Main POS tags from root.lexc ca. lines 19-29
+my @m = qw(N V Pali Conj Adv Interj Pron Prop Num Symbol);
+
+# List of tags that should block Gram/TV and Gram/IV propagation
+my @v_block = qw(
+   NIQAR HTR NAR GUMINAR SIMA TARIAQAR
+   UTE
+   SAAR SAR TIP NIRAR SURE SUGE GASUGE GASURE NASUGE NASURE TSAALI TIR TITIR QQU
+   );
+
+my $pp = join('|', @p);
+my $mp = join('|', @m);
+my $vb = join('|', @v_block);
+
+sub propagate_tags {
+   my ($c) = @_;
+
+   if ($c !~ m@^\s+"@ || $c !~ m@Gram/[TI]V@) {
+      return $c;
+   }
+
+   # Snip duplicate tags
+   my $o = $c;
+   do {
+      $o = $c;
+      $c =~ s@ (Gram/[HTI]V) \1@ $1@g;
+      $c =~ s@ (Gram/[HTI]V) (Der/[nv][nv]) \1@ $2 $1@g;
+   } while ($o ne $c);
+
+   my @ts = split(/ (?=(?:(?:i?(?:$mp))|(?:\p{Lu}[_\p{Lu}]+)|U)(?: |$))/, $c);
+
+   my $gram = '';
+   foreach (@ts) {
+      # Stop entirely at hybrid marker, to avoid mangling 2nd part of a hybrid
+      if (m@ Gram/Hyb@) {
+         last;
+      }
+      # Don't propagate past POS, blocking morphemes, Pass/Refl, or noun morphemes
+      if (m/^(?:$mp)(?: |$)/ || m/^(?:$vb)(?: |$)/ || m@ Gram/(Pass|Refl)@ || m@ Der/[nv]n@) {
+         $gram = '';
+         next;
+      }
+      if (m@ (Gram/[TI]V)@) {
+         $gram = $1;
+      }
+      elsif ($gram && m@ Der/[nv]v@) {
+         $_ .= " $gram";
+      }
+   }
+
+   return join(' ', @ts);
+}
+
+while (<STDIN>) {
+   chomp;
+
+   # Move prefixes after the base form
+   $_ =~ s@^(\s+)($pp) (".+?" )@$1$3Prefix/$2 @mg;
+
+   $_ = propagate_tags($_);
+
+   print "$_\n";
+}
