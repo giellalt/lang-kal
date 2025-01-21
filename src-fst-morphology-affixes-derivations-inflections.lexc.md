@@ -231,6 +231,8 @@ PL 20180718. Følgende er et særligt lexicon til ip i stedet for tidligere LEXI
 
 * LEXICON flex-tv2  
 
+* LEXICON flex-tv_NIQAR=TUSSANNGUR  PL20250121 LEX udelukkende til transitiv TUSSANNGUR efter passiv. Forekommer kun i Cont
+
 * LEXICON flex-tv2_ute  
 
 * LEXICON flex-tv_NIQ_AJUR  !PL20230706 kopi af flex-tv2 men uden derivativer
