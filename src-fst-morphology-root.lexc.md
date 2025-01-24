@@ -106,9 +106,9 @@ Citerede ordformer  jf. Kleinschmidt ^rpoĸ
 * **+Dial/Egr** = Eastern dialect
 * **+Dial/Vgr** = Western dialect (such as rng for rn)
 
-### Phonetic
+### Phonetic / morphophonological
 * **+Phon/GEMss** = latent konsonant j gemineret (ergo GEM) som ss, tag brugt til at generere form til Katersat, kikiak -> kikissap (og ikke kikiap, kikiaap)
-PL20250124 tilføjet efter mange fejl i regressionen. Hvad er det?
+* **+Phon/strong** = for at kunne vælge en bestemt form til Katersat, aagiak -> aagiaap, ikke aagiap
 
 ### Tags to mark loan word entries with a diverting orthography
 That is, they need special treatment in e.g. speech syntesis.
