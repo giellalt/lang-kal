@@ -1994,6 +1994,7 @@ Citerede ordformer  jf. Kleinschmidt ^rpoĸ
 
 ### Phonetic
 * **+Phon/GEMss** = latent konsonant j gemineret (ergo GEM) som ss, tag brugt til at generere form til Katersat, kikiak -> kikissap (og ikke kikiap, kikiaap)
+PL20250124 tilføjet efter mange fejl i regressionen. Hvad er det?
 
 ### Tags to mark loan word entries with a diverting orthography
 That is, they need special treatment in e.g. speech syntesis.
