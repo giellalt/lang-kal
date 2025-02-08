@@ -20,6 +20,7 @@
 - 	&msyn-ins-abl					
 - 	&msyn-con-rel					
 - 	&msyn-excl-abl					
+- 	&msyn-excl-abl-prop				
 - 	&msyn-obj-marking-abs-3PlO	
 - 	&msyn-subj-marking-abs-HTR	
 - 	&msyn-Opt-1Sg-2SgO			
