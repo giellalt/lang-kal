@@ -216,7 +216,7 @@ Set for kasus, possessum, appellativ, ulike nomentyper
 
 - **SET KASUS = Abs OR Rel OR Trm OR Abl OR Lok OR Aeq OR Ins OR Via ;** =
 - **SET NOT-REL = KASUS - Rel ;** =
-- **SET OBLIQUE = Trm OR Abl OR Lok OR Aeq OR Ins OR Via ;** =
+- **SET OBLIQUE = Trm OR Abl OR Lok OR Aeq OR Ins OR Via OR (".*[mn]iit"r Adv) ;** =
 - **SET iOBLIQUE = iTrm OR iAbl OR iLok OR iAeq OR iIns OR iVia OR Trm + Hyb/1-2 OR Abl + Hyb/1-2 OR Lok + Hyb/1-2 OR Aeq + Hyb/1-2 OR Ins + Hyb/1-2 OR Via + Hyb/1-2 ;** =
 - **SET NUMERUS = Sg OR Pl ;** =
 - **SET KONGRUENSADLED = N + $$KASUS + $$NUMERUS ;** =
