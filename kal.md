@@ -559,7 +559,7 @@ Uku qanoq IV-mod_C-imi ilanngunneqassappat?
 
 * LEXICON XIirXmorf2   til iR såsom *er*
 
-* LEXICON XItX  type imaappoq, kaavippoq (NB ikke kâvigpoĸ, men kâvípoĸ)
+* LEXICON XItX  type imaappoq, kaavippoq (NB ikke kâvigpo?, men kâvípo?)
 
 * LEXICON XItX2  
 
@@ -2952,9 +2952,9 @@ ADD:msyn-arg-abs-rel
 
 ADD:msyn-arg-abs-rel
 
-ADD:msyn-subj-rel-abs
+ADD:msyn-subj-rel-abs-poss
 
-ADD:msyn-subj-rel-abs
+ADD:msyn-subj-rel-abs-poss
 
 ### Simple punctuation rules
 

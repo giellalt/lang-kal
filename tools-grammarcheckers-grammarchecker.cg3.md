@@ -42,9 +42,9 @@ ADD:msyn-arg-abs-rel
 
 ADD:msyn-arg-abs-rel
 
-ADD:msyn-subj-rel-abs
+ADD:msyn-subj-rel-abs-poss
 
-ADD:msyn-subj-rel-abs
+ADD:msyn-subj-rel-abs-poss
 
 ### Simple punctuation rules
 
