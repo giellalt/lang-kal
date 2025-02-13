@@ -123,10 +123,26 @@ COPY:msyn-arg-abs-rel (Rel &SUGGEST) EXCEPT (Abs &msyn-arg-abs-rel) BEFORE NUMER
 
 ADDRELATION:msyn-arg-abs-rel ($2) (V) FROM (*-1 Prop LINK 0 (&msyn-arg-abs-rel)) ;
 
-	# relative > absolutive case
+
+### relative > absolutive case, object w/poss - transitive verb
+WITH Rel + (/\([SP][gl]\)/r) + (/[1-3][SP][gl]Poss/r) - Gram/Cong
+(1* sub-mood + objectmarking)
+(-1* Rel)
+(NEGATE 1 (/^3$1Poss$/v))
+{
+ADD:msyn-obj-rel-abs-poss &msyn-obj-rel-abs-poss (*) ;
+COPY (Abs VSTR:$1 VSTR:3$2Poss &SUGGEST) EXCEPT (Rel /[SP][gl]/r /[1-3][SP][gl]Poss/r &msyn-obj-rel-abs-poss) AFTER WORDCLASS (*) (1* (/[1-4]\([SP][gl]\)O/r)) (-1* Rel + (/\([SP][gl]\)/r)) ;
+ADDRELATION ($2 RIGHT) (*) TO (jC1 (*)) ;
+} ;
+#Oqarasuaatit sukkanerusumik [aaqqiiffigineqarnerisa] peqqutigalugu 701448 attaveerutissanngilaq.
+#aaqqiiffigineqarnerisa -> aaqqiiffiginerarnerat
+
+
+
+### relative > absolutive case, subject w/poss - intransitive verb
 	
-ADD:msyn-subj-rel-abs (&msyn-subj-rel-abs) TARGET Rel + (/[1-3][SP][gl]Poss/r) IF
-	(*1 (/Gram/IV\ V\ /l) BARRIER POSSESSUM)
+ADD:msyn-subj-rel-abs-poss &msyn-subj-rel-abs-poss TARGET Rel + (/[1-3][SP][gl]Poss/r) IF
+	(*1 (/Gram/IV\ V\ /l) BARRIER POSSESSUM OR TRANSVERB)
 	;
 #!! @RULENAME@
 	## Qilanaarilluinnakkama PIVIUSUNNGULERPOQ.
@@ -135,7 +151,7 @@ ADD:msyn-subj-rel-abs (&msyn-subj-rel-abs) TARGET Rel + (/[1-3][SP][gl]Poss/r) I
 
 #COPY:msyn-subj-rel-abs (Abs VSTR:$1 &SUGGEST) EXCEPT (Rel /[SP][gl]/r &msyn-subj-rel-abs) BEFORE (/[1-3][SP][gl]Poss/r) TARGET (&msyn-subj-rel-abs) (*1 (/Gram/IV\ V\ /l) LINK 0 (/\([SP][gl]\)/r));
 
-COPY:msyn-subj-rel-abs (N Abs VSTR:$1 &SUGGEST) EXCEPT (N Rel VSTR:$1 &msyn-subj-rel-abs) BEFORE (/[1-3][SP][gl]Poss/r) TARGET (&msyn-subj-rel-abs) (0 (/[SP][gl]/r)) (*1 (/Gram/IV\ V\ /l) LINK 0 (/^3\([SP][gl]\)$/r));
+COPY:msyn-subj-rel-abs (N Abs VSTR:$1 &SUGGEST) EXCEPT (N Rel VSTR:$1 &msyn-subj-rel-abs-poss) BEFORE (/[1-3][SP][gl]Poss/r) TARGET (&msyn-subj-rel-abs-poss) (0 (/[SP][gl]/r)) (*1 (/Gram/IV\ V\ /l) LINK 0 (/^3\([SP][gl]\)$/r));
 
 #COPY:msyn-subj-rel-abs (Abs Pl &SUGGEST) EXCEPT (Rel Pl &msyn-subj-rel-abs) BEFORE (/[1-3][SP][gl]Poss/r) TARGET (&msyn-subj-rel-abs) (*1 (/Gram/IV\ V\ /l) LINK 0 3Pl);
 #!! @RULENAME@
