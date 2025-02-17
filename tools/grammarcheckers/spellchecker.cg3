@@ -28,6 +28,7 @@ REMOVE (/"\(.*\)"\ ARAQ/l) + ("aaneq") | ("aassik") ;
 REMOVE (/"amer"\ Gram/TV\ RIAR\ Der/vv\ Gram/TV\ TAQ\ Der/vn/l) ;
 REMOVE ("amar") + TAQ ;
 REMOVE (*) - ("aallasap") (0 ("<[Aa]allasakkama>"r)) ; #aallasakkama Pl 1SgPoss skal ikke videre til grammarchecker.cg3
+REMOVE (*) - ("aamma") (0 ("aamma")) (NEGATE 1 ("naqip")) ; 
 # G
 REMOVE GI (0 ("isaar")) ; #isaarilillu
 # I
@@ -42,6 +43,11 @@ REMOVE (/"ima\(q\)?"\ LUP\ Der/nv\ Gram/IV\ Gram/IV\ NIQ\ Der/vn/l) + 2SgPoss ;
 REMOVE ("inalu\(k\)?"r) + (/[12]SgPoss/r) ;
 REMOVE (/"isa\(p\)?"\ Gram/IV\ UMI\ Der/vv/l) ;
 REMOVE (*) - ("ila" 3PlPoss) (0 ("<ilaat>") LINK -1 Rel) ; 
+WITH ("<ilagalu>")
+{
+ADD &typo (*) ;
+COPY ("ila" GE Der/nv Gram/TV Gram/TV V Cont 3SgO &SUGGEST) EXCEPT ("ila" N Abs Sg 1SgPoss LU &typo) (*) ;
+} ;
 # K
 REMOVE (/"krans"\ ARAQ\ Der/nn/l) (0 ("Hans.*"r)) ;
 # L
@@ -113,6 +119,9 @@ REMOVE (/Gram/TV\ Gram/Refl\ NIQ\ Der/vn\ QAR\ Der/nv/l) ;
 REMOVE (/QQU\ Der/vv\ Gram/TV\ Gram/Pass\ NIQ\ Der/vn\ QAR\ Der/nv/l) ;
 REMOVE (/TIP\ Der/vv\ Gram/TV\ Gram/Refl\ NIQ Der/vn\ QAR\ Der/nv/l) ;
 REMOVE (/TIP\ Der/vv\ Gram/TV\ Gram/TV\ Gram/Pass\ NIQ\ Der/vn\ QAR Der/nv/l) ;
+REMOVE (/GE\ Der/nv\ Gram/TV\ Gram/TV\ NIQ\ Der/vn\ Gram/TransverbNIQ\ QAR\ Der/nv\ Gram/IV\ Gram/IV\ NIQ\ Der/vn\ N\ /l) ;
+REMOVE (/GE\ Der/nv\ Gram/TV\ Gram/Refl\ Gram/IV\ NIQ\ Der/vn\ QAR\ Der/nv\ Gram/IV\ Gram/IV\ NIQ\ Der/vn\ N\ /l) ;
+REMOVE (/GE Der/nv\ Gram/TV\ Gram/Refl\ Gram/IV\ NIQ\ Der/vn\ QAR\ Der/nv\ Gram/IV\ Gram/IV\ NIQ\ Der/vn\ N\ /l) ;
 
 ## Case
 REMOVE OBLIQUE - Trm (0 ("<.*[mn]ut>"r)) ; #remove suggestions with other case forms other than the case indicated by input
@@ -123,12 +132,17 @@ ADD &typo Orth/Arch (0 (/"arnap"\ Orth/Arch\ Gram/IV\ PALUP\ Der/vv\ Gram/IV\ TU
 COPY ("arnaq" PALUP Der/nv Gram/IV Gram/IV TUQ Der/vn N &SUGGEST) EXCEPT ("arnap" Orth/Arch Gram/IV PALUP Der/vv Gram/IV TUQ Der/vn N &typo) BEFORE KASUS TARGET Orth/Arch (0 ("arnap" Orth/Arch Gram/IV PALUP Der/vv Gram/IV TUQ Der/vn N &typo)) ;
 #arnappaluttumik
 
+## Mood
+REMOVE Imp (0 (/[1-4][SP][gl]Poss/r)) ;
 
 REMOVE V + Gram/Exclm ;
 #REMOVE (<W:3.*>r) + N OR V ;
 REMOVE (/"\(.*\)"S/r) - NIQ (0 (VSTR:"$1"S) + NIQ) ;
 #misspelling: Haanseeqqap, xxx+NIQ vs xxxneq. no reason to have identical forms
 REMOVE (".*i"r) + Prop (0 consprop) ;
+
+## Person + Number OR Poss
+REMOVE 4PlPoss (0 Ins + (<STEM:f:be_attribute_.*>r)) ;
 
 SECTION
 
