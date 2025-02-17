@@ -125,21 +125,24 @@ ADDRELATION:msyn-arg-abs-rel ($2) (V) FROM (*-1 Prop LINK 0 (&msyn-arg-abs-rel))
 
 
 ### relative > absolutive case, object w/poss - transitive verb
-WITH Rel + (/\([SP][gl]\)/r) + (/3\([SP][gl]\)Poss/r) - Gram/Cong
-(1* sub-mood + objectmarking OR sub-mood + objectmarking + &SUGGEST LINK 0 (/[3-4]\([SP][gl]\)O/r)) #CM
+WITH Rel + (/\([SP][gl]\)/r) + (/3\([SP][gl]\)Poss/r) - Gram/Cong - ("ila") #CM1
+(1* sub-mood + objectmarking OR sub-mood + objectmarking + &SUGGEST LINK 0 (/[3-4]\([SP][gl]\)O/r) - GE) #CM2
 (-1* Rel + (VSTR:$2))
-(NEGATE 1 (VSTR:3$1Poss))
+(NEGATE 1 (VSTR:3$1Poss) OR (VSTR:3$1Poss) + &SUGGEST)
 (NEGATE 1 NIQ + Pl LINK 1 (/"ila"\ GE\ Der/nv/l)) #PV
 (NEGATE -1 Abs + (VSTR:$3)) #FO
+(NEGATE 0 &typo)
 {
 ADD:msyn-obj-rel-abs-poss &msyn-obj-rel-abs-poss (*) ;
-COPY (Abs VSTR:$2 VSTR:3$1Poss &SUGGEST) EXCEPT (Rel /[SP][gl]/r /3[SP][gl]Poss/r &msyn-obj-rel-abs-poss) AFTER WORDCLASS (*) (-1* Rel + (/\([SP][gl]\)/r) LINK *1 (/[1-4]\([SP][gl]\)O/r)) ; #COPY $2
+COPY (Abs VSTR:$2 VSTR:3$1Poss &SUGGEST) EXCEPT (Rel /[SP][gl]/r /3[SP][gl]Poss/r &msyn-obj-rel-abs-poss) AFTER WORDCLASS (*) (-1* Rel + (/\([SP][gl]\)/r) + N LINK *1 (/[1-4]\([SP][gl]\)O/r)) ; #COPY $2
 ADDRELATION ($2 RIGHT) (*) TO (jC1 (*)) ;
 } ;
 #Oqarasuaatit sukkanerusumik [aaqqiiffigineqarnerisa] peqqutigalugu 701448 attaveerutissanngilaq.
 #aaqqiiffigineqarnerisa -> aaqqiiffiginerarnerat
 #---#
-#CM comment: 1st and 2nd person likely to be implicit, so be careful not to offer corrections
+#CM1 comment 1: "ila" in Rel possible subject
+#CM2 comment 2: 1st and 2nd person likely to be implicit, so be careful not to offer corrections
+#GE = possessive verb, "ullup qeqqata eqqarigunarmagu"
 #PV possessive verb + comparative
 #FO = fronted ("heavy") object
 #COPY $2 fixing (number) agreement error at the same time
@@ -150,8 +153,10 @@ ADDRELATION ($2 RIGHT) (*) TO (jC1 (*)) ;
 
 ### relative > absolutive case, subject w/poss - intransitive verb
 	
-ADD:msyn-subj-rel-abs-poss &msyn-subj-rel-abs-poss TARGET Rel + (/[1-3][SP][gl]Poss/r) IF
-	(*1 (/Gram/IV\ V\ /l) BARRIER POSSESSUM OR TRANSVERB)
+ADD:msyn-subj-rel-abs-poss &msyn-subj-rel-abs-poss TARGET Rel + (/\([SP][gl]\)/r) + (/[1-3][SP][gl]Poss/r) IF
+	(*1 ITR_pers BARRIER POSSESSUM OR TRANSVERB)
+	(NEGATE 1 (VSTR:3$1Poss))
+	(NEGATE *1 TRANSVERB)
 	;
 #!! @RULENAME@
 	## Qilanaarilluinnakkama PIVIUSUNNGULERPOQ.
@@ -268,8 +273,7 @@ ADD:msyn-2Pl1Pl0-1Pl3SgO &msyn-con-2Pl1Pl0-1Pl3SgO  (2Pl 1PlO) + Con (-1 (Abs Sg
 COPY (1Pl 3SgO &SUGGEST) EXCEPT (2Pl 1PlO &msyn-con-2Pl1Pl0-1Pl3SgO) TARGET &msyn-con-2Pl1Pl0-1Pl3SgO ; 
 #Taaguullu skærm [pigereersimagutsigut], assut utersaarfigitikkusukkaluarpunga taajutaanik.
 
-### agreement ###
-ADD:msyn-obj-marking-abs-3PlO &msyn-obj-marking-abs-3PlO TARGET (HTR Der/vv Gram/IV) IF (*-1 Abs BARRIER (*) - Abs LINK *-1 Rel BARRIER (*) - Rel);
+
 
 #CASE, PERSON, NUMBER
 WITH (1Sg 2SgO) + Opt
@@ -280,6 +284,72 @@ COPY (LAAR Der/vv Gram/TV V Imp 2Sg 3PlO &SUGGEST) EXCEPT (V Opt 1Sg 2SgO &msyn-
 ADDRELATION ($2 LEFT) (_C1_) TO (1 &msyn-Opt-1Sg-2SgO) ;
 } ;
 # [takulakkit -> takulaakkit] Immaqa to pillugu ilitsersuummik allassimasoqanngilaq, kisianni uku takulakkit.
+
+
+#Verb to noun
+WITH Con + 3Sg + UGEDAGE
+(1 ("tunge") + 3SgPoss)
+{
+ADD:msyn-con-rel &msyn-con-rel (*) ;
+COPY:msyn-con-rel ("ataaseq" NNGUR Der/nv Gram/IV Gram/IV Gram/IV NIQ Der/vn N Rel Sg &SUGGEST) EXCEPT ("ataaseq" NNGUR Der/nv Gram/IV Gram/IV Gram/IV V Con 3Sg &msyn-con-rel) (*) ;
+#ADD
+ADDRELATION:msyn-con-rel ($2) (*) TO (jC1 (*) LINK 0 ("tunge")) ; #virker ikke uden LINK 0 ("tunge") :(
+} ;
+#ataasinngorpat->ataasinngornerup: Kisianni aalisartut aallartinnginnerminni ataasinngorpat tungaanut naammagittaqqaalaartariaqassapput.
+
+### word order ###
+
+WITH (N Abs) + $$NUMERUS - ADJEKTIVISK IF
+    (*-1 (3SgPoss Abs) + $$NUMERUS + ADJEKTIVISK BARRIER (*) - Abs LINK *-1 BOS LINK 1 (N Rel Sg)) # _C1_
+    (NEGATE *0 &msyn-obj-marking-abs-3PlO) # _C2_
+    (NEGATE 0  &msyn-obj-marking-abs-3PlO) # _C3_
+{
+  ADD:syn-abs-wordorder (&syn-abs-wordorder DELETE) (*);
+  COPYCOHORT:syn-abs-wordorder (&ADDED co&syn-abs-wordorder) # These tags will be added to the copy
+     EXCEPT (DELETE &syn-abs-wordorder)    # We don't include this tag in the copy
+     TARGET    (*)       # Copy from the main WITH target
+     TO BEFORE (jC1 Rel) # The copy ends up before the first WITH context
+     ;
+  ADDRELATION:syn-abs-wordorder ($3 LEFT) (*) TO (jC1 (*) LINK -1 (&ADDED));
+};
+
+SUBSTITUTE ("<\\p{Lu}.*>"r) ("<$2$1>"v) TARGET ("<\\p{Lu}\(.*\)>"r) (0 ("\(\\p{Ll}\).*"r)) (-1 (co&syn-abs-wordorder &ADDED)) ; #downcase ex -1 BOS if baseform is not a propernoun
+
+# {Uunnaaviup sanianiittoq igalaaq} qiverseriarlugu uunnaavik qamissallugu, eqqarsaammerujussuarpunga. >  Igalaaq uunnaaviup sanianiittoq qiverseriarlugu uunnaavik qamissallugu, eqqarsaammerujussuarpunga. # the.kettle which.is.next.to the.window > the.window the.kettle is.next.to
+# Nakutitseriarnerisa nallinnaannartut {tunuanniittoq iluarinninnera} takusinnaasimasariaqaraluarpara. > Nakutitseriarnerisa nallinnaannartut  iluarinninnera tunuanniittoq takusinnaasimasariaqaraluarpara.
+
+## adjektivisk nomen substantivisk nomen > substantivisk nomen adjektivisk nomen ##
+WITH (/TUQ\ Der/vn\ N\ /l) + $$NUMERUS + $$KASUS + ADJEKTIVISK IF
+     (1 N + $$NUMERUS + $$KASUS - TUQ - ADJEKTIVISK - LU)
+     (NEGATE *0 &msyn-obj-marking-abs-3PlO)
+     (NEGATE 0 &msyn-obj-marking-abs-3PlO)
+     (NEGATE 0 SUBSTANTIVISK_TUQ)
+     (NEGATE 1 (&syn-abs-wordorder))
+{
+  ADD:syn-TUQ-wordorder (&syn-TUQ-wordorder DELETE) (*);
+  
+  COPYCOHORT:syn-TUQ-wordorder (&ADDED co&syn-TUQ-wordorder)
+  	EXCEPT (&syn-TUQ-wordorder DELETE)
+  	TARGET (*)
+  	TO AFTER (jC1 N)
+  	;
+
+  ADDRELATION:syn-TUQ-wordorder ($2 RIGHT) (*) TO (jC1 (*) LINK 1 (&ADDED));
+};
+  
+# Gangersuarmi pisuttuarujoortalerpunga, inuk kisima nipangissananga {nipikitsumik niaqunniittut nipit} eqqumiitsut oqaluuterujoortalerlugit.
+
+
+
+END
+
+#These rules created a nightmare situation, check out later:
+
+#check out with sentence:
+#Ukiut tallimat qaagiummata aasit aatakassama attaava unnuami ilani sinilereersut mersorusaarluni silami qeraarpaluk tusaaleriannguarlugu tassa issiffarmi nikissinnaajunnaarsimavoq, uffalu eqqumalluni.
+
+### agreement ###
+ADD:msyn-obj-marking-abs-3PlO &msyn-obj-marking-abs-3PlO TARGET (HTR Der/vv Gram/IV) IF (*-1 Abs BARRIER (*) - Abs LINK *-1 Rel BARRIER (*) - Rel);
 
 #FEJL
 #ilinniartitsisup meeqqat ilinniartitsivoq REL ABS HTR
@@ -341,62 +411,15 @@ COPY:msyn-subj-marking-abs-HTR (Abs SUGGEST) EXCEPT (Rel) BEFORE NUMERUS TARGET 
 SUBSTITUTE (&msyn-subj-marking-abs-HTR) (co&msyn-subj-marking-abs-HTR) TARGET (SUGGEST);
 MAP:LOCK_READING (SUGGEST) (SUGGEST);
 
-#Verb to noun
-WITH Con + 3Sg + UGEDAGE
-(1 ("tunge") + 3SgPoss)
-{
-ADD:msyn-con-rel &msyn-con-rel (*) ;
-COPY:msyn-con-rel ("ataaseq" NNGUR Der/nv Gram/IV Gram/IV Gram/IV NIQ Der/vn N Rel Sg &SUGGEST) EXCEPT ("ataaseq" NNGUR Der/nv Gram/IV Gram/IV Gram/IV V Con 3Sg &msyn-con-rel) (*) ;
-#ADD
-ADDRELATION:msyn-con-rel ($2) (*) TO (jC1 (*) LINK 0 ("tunge")) ; #virker ikke uden LINK 0 ("tunge") :(
-} ;
-#ataasinngorpat->ataasinngornerup: Kisianni aalisartut aallartinnginnerminni ataasinngorpat tungaanut naammagittaqqaalaartariaqassapput.
-
-### word order ###
-
-WITH (N Abs) + $$NUMERUS - ADJEKTIVISK IF
-    (*-1 (3SgPoss Abs) + $$NUMERUS + ADJEKTIVISK BARRIER (*) - Abs LINK *-1 BOS LINK 1 (N Rel Sg)) # _C1_
-    (NEGATE *0 &msyn-obj-marking-abs-3PlO) # _C2_
-    (NEGATE 0  &msyn-obj-marking-abs-3PlO) # _C3_
-{
-  ADD:syn-abs-wordorder (&syn-abs-wordorder DELETE) (*);
-  COPYCOHORT:syn-abs-wordorder (&ADDED co&syn-abs-wordorder) # These tags will be added to the copy
-     EXCEPT (DELETE &syn-abs-wordorder)    # We don't include this tag in the copy
-     TARGET    (*)       # Copy from the main WITH target
-     TO BEFORE (jC1 Rel) # The copy ends up before the first WITH context
-     ;
-  ADDRELATION:syn-abs-wordorder ($3 LEFT) (*) TO (jC1 (*) LINK -1 (&ADDED));
-};
-
-SUBSTITUTE ("<\\p{Lu}.*>"r) ("<$2$1>"v) TARGET ("<\\p{Lu}\(.*\)>"r) (0 ("\(\\p{Ll}\).*"r)) (-1 (co&syn-abs-wordorder &ADDED)) ; #downcase ex -1 BOS if baseform is not a propernoun
-
-# {Uunnaaviup sanianiittoq igalaaq} qiverseriarlugu uunnaavik qamissallugu, eqqarsaammerujussuarpunga. >  Igalaaq uunnaaviup sanianiittoq qiverseriarlugu uunnaavik qamissallugu, eqqarsaammerujussuarpunga. # the.kettle which.is.next.to the.window > the.window the.kettle is.next.to
-# Nakutitseriarnerisa nallinnaannartut {tunuanniittoq iluarinninnera} takusinnaasimasariaqaraluarpara. > Nakutitseriarnerisa nallinnaannartut  iluarinninnera tunuanniittoq takusinnaasimasariaqaraluarpara.
-
-## adjektivisk nomen substantivisk nomen > substantivisk nomen adjektivisk nomen ##
-WITH (/TUQ\ Der/vn\ N\ /l) + $$NUMERUS + $$KASUS + ADJEKTIVISK IF
-     (1 N + $$NUMERUS + $$KASUS - TUQ - ADJEKTIVISK - LU)
-     (NEGATE *0 &msyn-obj-marking-abs-3PlO)
-     (NEGATE 0 &msyn-obj-marking-abs-3PlO)
-     (NEGATE 0 SUBSTANTIVISK_TUQ)
-     (NEGATE 1 (&syn-abs-wordorder))
-{
-  ADD:syn-TUQ-wordorder (&syn-TUQ-wordorder DELETE) (*);
-  
-  COPYCOHORT:syn-TUQ-wordorder (&ADDED co&syn-TUQ-wordorder)
-  	EXCEPT (&syn-TUQ-wordorder DELETE)
-  	TARGET (*)
-  	TO AFTER (jC1 N)
-  	;
-
-  ADDRELATION:syn-TUQ-wordorder ($2 RIGHT) (*) TO (jC1 (*) LINK 1 (&ADDED));
-};
-  
-# Gangersuarmi pisuttuarujoortalerpunga, inuk kisima nipangissananga {nipikitsumik niaqunniittut nipit} eqqumiitsut oqaluuterujoortalerlugit.
+### end of nightmare situation
 
 
 
-END
+
+
+
+
+
 #nedenstående virker selvsagt ikke. tegnsætningstegn genereres ikke for sig, og akronymer med heuristisk analyse kan heller ikke genereres.
 #SPLITCOHORT ("<$1>"v "$1"v <acro-apo> "<$2>"v "$2"v <acro-case>) ("<(\\p{Lu}+\\u0027)\(mik\)>"r ?) ;
 #SPLITCOHORT ("<$1>"v "$1"v <acro> "<$2>"v "$2"v <apo>) ("<(\\p{Lu}+)(\\u0027)>"r) (0 (<acro-apo>)) ;
