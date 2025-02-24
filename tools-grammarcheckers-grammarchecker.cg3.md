@@ -32,16 +32,6 @@ The simplest is to just add it to all spelled words:
 
 #### Verb valency rules
 
-@OUTSIDE RULES@
-
-ADD:msyn-arg-ins-trm
-
-ADD:msyn-arg-ins-trm
-
-ADD:msyn-arg-abs-rel
-
-ADD:msyn-arg-abs-rel
-
 ADD:msyn-subj-rel-abs-poss
 
 ADD:msyn-subj-rel-abs-poss
