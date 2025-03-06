@@ -22,7 +22,7 @@
 - **+Err/Sub+Num+Abs+Pl:%>-it	K ;  ** 
 - **+Num+Abs+Sg+3SgPoss:%>-a	Krestr ;  ** 
 - **+Err/Sub+Num+Abs+Sg+3SgPoss:%>-ia	Krestr ;  ** 
-- **+Num+Abs+Sg+3PlPoss:%>-at	Krestr ;  ** 
+- **+Num+Gram/Ord+Abs+Sg+3PlPoss:%>-at	Krestr ;  ** 
 - ... osb.
 
 ** Lexicon **num_C_sub** for numerusmorfologi for ord på konsonant, substandarformer

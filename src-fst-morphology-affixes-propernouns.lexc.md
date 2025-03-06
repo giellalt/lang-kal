@@ -1,4 +1,4 @@
-# Propriernes morfologi i grønlandsk
+
 
 Nyt 20210303: indsættelse af bindestreg og bindestreg+i ved proprier, der samtidig er akronymer
 ** Lexicon **Vprop_connector**  DMI

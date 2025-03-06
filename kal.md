@@ -1485,7 +1485,7 @@ gennemgangskatalog for up-stammer, der kræver replaciv sandhi
 - **+Err/Sub+Num+Abs+Pl:%>-it	K ;  ** 
 - **+Num+Abs+Sg+3SgPoss:%>-a	Krestr ;  ** 
 - **+Err/Sub+Num+Abs+Sg+3SgPoss:%>-ia	Krestr ;  ** 
-- **+Num+Abs+Sg+3PlPoss:%>-at	Krestr ;  ** 
+- **+Num+Gram/Ord+Abs+Sg+3PlPoss:%>-at	Krestr ;  ** 
 - ... osb.
 
 ** Lexicon **num_C_sub** for numerusmorfologi for ord på konsonant, substandarformer
@@ -1545,7 +1545,7 @@ gennemgangskatalog for up-stammer, der kræver replaciv sandhi
 
 # src-fst-morphology-affixes-propernouns.lexc.md 
 
-# Propriernes morfologi i grønlandsk
+
 
 Nyt 20210303: indsættelse af bindestreg og bindestreg+i ved proprier, der samtidig er akronymer
 ** Lexicon **Vprop_connector**  DMI
