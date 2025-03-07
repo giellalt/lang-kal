@@ -537,6 +537,8 @@ Uku qanoq IV-mod_C-imi ilanngunneqassappat?
 
 * LEXICON IV_voq2   skal få 200 medl.
 
+* LEXICON IV_cop   skal få 200 medl.
+
 * LEXICON XIi_voqXmorf_stem   som tallivoq
 
 * LEXICON XIi_voqXmorf  
@@ -615,9 +617,13 @@ PL 20180718. Følgende er et særligt lexicon til ip i stedet for tidligere LEXI
 
 * LEXICON flex-iv_long2  
 
-* LEXICON flex-iv_voq  
+* LEXICON flex-iv_voq 
 
 * LEXICON flex-iv_voq2  
+
+* LEXICON flex-iv_cop 
+
+* LEXICON flex-iv_cop2  
 
 * LEXICON pi_flex-iv_refl  Et særligt lex til pivaa + Refl for at begrænse overgenerering. Udkommenteringer må fjernes efterhånden som formerne faktisk dokumenteres
 
@@ -1253,6 +1259,8 @@ Gennemgangsleksikon for TAR m. fl.
 Gennemgangsleksikon for TAR m. fl. efter /i/ f.eks. GUMALLIR GUNNAIR LIR LLAQQIP PASIP QQAMMIR QQIP RIIR UMMIR VIP
 
 Gennemgangsleksikon for TAR m. fl. efter /i/ f.eks. GUMALLIR GUNNAIR LIR LLAQQIP PASIP QQAMMIR QQIP RIIR UMMIR VIP
+
+Gennemgangsleksikon for TAR m. fl.
 
 Gennemgangsleksikon for TAR m. fl.
 
