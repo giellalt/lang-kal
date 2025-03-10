@@ -1938,7 +1938,7 @@ Fil for at generere de centrale morfologiske processer i vor grønlandske analys
 * **+Gram/Adj** = Adjektiver optaget direkte inkl. ubøjet anvendelse før kerne
 
 ### Semantics
-
+værdi i spillekort
 anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
 * **+Sem/Be**  <fn:Be> !#náipoĸ
 * **+Sem/dur** tid som periode ulloq=dag/day
