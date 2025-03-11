@@ -1822,6 +1822,8 @@ LIST LANDTRANSPORT = "bussi" "biili" "bil" "lastbiili" "nivattaassuaq" "pisummik
 LIST MWE_POSS = "ullaap-tunge" "Kalaallit Illuutaat" "Kalaallit Nunaat" "Kalaallit Røde Korsiat" "nunap inoqqaavi" "Nunatsinni Inuit Innarluutillit Kattuffiat" "Tuluit Nunaat" "Zombiet Nunaat";
 LIST NON-POSSESSUM = "malunnar" "utoqqaq" ; #en klasse af ord, der sjældent eller aldrig har possessor
 LIST NUMHOVED = "cent" "centimeter" "cm" "dollar" "dollari" "euro" "fase" "fod" "franc" "grad" "gram" "hestekræfter" "hjerter" ("immikkoor" TUQ) "ini" "kapitali" "kapitel" "kiilu" "kilo" "kilometer" "km" "km/time" "klasse" "kulooq" "koruuni" "kr" "kr." "krone" "kvadratmeter" "liter" "m" "meter" "milliardi" "milliard" "miliuuni" "mio" "mio." "million" "millioni" ("nalunaar" UTE) "niveau" "nr" "oori" "paragraf" "%" "procent" "procentpoint" "pct" "pct." ("qupper" NIQ) "ruder" "side" "sipaaq" ("titar" NIQ Abs) "ton" (/".*vej/r) "øre" Sem/Unit ;
+#Prænominaler, der ofte tager et tal i Sg som hoved 
+LIST N_NUMHOVED = "blok" "sipaaq" "hjerteri" "kippari" "kulooq" ; 
 LIST NÆPPE-SING = (/"naatsorsor"\ Gram/TV\ UTE/l);
 LIST ORGANISATION = "Atassut" "Demokraatit" "De Konservative" "Enhedslisten" "IA" "Inuit Ataqatigiit" "Kalaallit Røde Korsiat" "KNAK" ("Naalakkersuisoq" Pl) "Naalakkersuisut" "Naleraq" "Nunatsinni Inuit Innarluutillit Kattuffiat" "NIIK" "Nunatta Qitornai" "parti" "Partii Naleraq" "peqatigiiffik" "Røde Kors" "S" "Siumut" "Suleqatigiissitsisut" "V";
 SET Efternavn = Sem/Hum - Fornavn - INSTITUTION - ORGANISATION;
@@ -2140,7 +2142,10 @@ ADD:AdvHyb1 (%AdverbielHyb) TARGET (/"pisortaq"\ N\ Via\ Pl\ Hyb/1-2/l) IF (1 (/
 ADD:AdvHyb2 (%AdverbielHyb) TARGET (/"UR"\ Gram/IV\ TUQ\ Der/vn\ N\ Ins\ Sg/l) IF (-1 (/"pisortaq"\ N\ Via\ Pl\ Hyb/1-2/l));
 
 
-REMOVE:interim (/"[0-9]+"/l) + N IF (0 Num)(NEGATE 0 (/[1,2][0-9]{3}/l) - ("1000"));
+REMOVE:interim (/"[0-9]+"/l) + N IF (0 Num)
+(NEGATE 0 (/[1,2][0-9]{3}/l) - ("1000"))
+(NEGATE -1 N_NUMHOVED + Abs) #Blok 4-MI najugaqarpoq
+;
 
 REMOVE:00000A (Gram/Hyb) IF (0 (/\"ataatsim.*\"/r)) ; #ataatsimiippoq, ataatsimoorpoq osv. er aldrig hybrider
 REMOVE:00000B (URL) IF (0 Sem/Url) ; #dobbeltgenerering fra FST'ens url.lexc
@@ -2222,6 +2227,7 @@ REMOVE:0001P N - AFFINGERET - POSSESSUM - ("SAS") IF (0 Num - AFFINGERET)
 (NEGATE 0 ("[0123456789]{4}"r))#Kommuneqarfik Sermersuup inissianik 2015-IMILI attartortitseqqiisalersimanera inatsisinik unioqqutitsinerunersoq, Namminersorlutik Oqartussat misissuleruttorpaat
 (NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER (*) - %AmbiguøsN - %AmbiguøsPar - OBLIQUE - 4PlPoss)#Oqaaserpassualeriffiup suliassaatut pingaarneq tassaavoq qarasaasiaq atorlugu kalaallisut oqaasilerissutit tamanut atuuttut ineriartortissallugit piffissallu ingerlanerani oqaasilerinermut SAKKUT assigiinngitsut tamakkiisumik pigilernissaat anguniassallugu, nutserutit ilanngullugit.
 (NEGATE 0 ("COVID-19" N) LINK 0 ("COVID19" Num))#Angerlarsimaannassaatit inuit COVID-19-IMIK tunillatsissimasutut paasineqartut qanillisimagukkit. 
+(NEGATE -1 N_NUMHOVED + Abs) #Blok 4-MI najugaqarpoq
 ;
 
 REMOVE:0001Q ("sooq") + LU IF (0 ("soorlu")) ;
@@ -5595,7 +5601,8 @@ SELECT:0101X Abs + 2SgPoss - PLACE_MORE IF (*1 Ind + 3Sg + INTRANSVERB - ORATIOO
 
 REMOVE:8599S ("akit") IF (0 ("aki") );#KL: bør negates i passende kontekster, når de dukker op i EX
 
-REMOVE:Int0140 (Pl) - Prop (0 $$KASUS + (N Sg)) (*-1 (Pron Sg) + $$KASUS BARRIER (*) - PUNCT) 
+REMOVE:Int0140 (Pl) - Prop (0 $$KASUS + (N Sg)) (*-1 (Pron Sg) + $$KASUS BARRIER (*) - PUNCT)
+(NEGATE 0 Num LINK 1 NUMHOVED)#Ingerlaarfik taanna 2400 kilometerisut isorartutigivoq, nunamilu uumasut ingerlaarfiini takinersaalluni. 
 ; # Sumiippalu taanna ”najugaqarfiit”?
 
 REMOVE:Int0141 Pl IF (0 Sg - POSSESSUM LINK *-1C Gram/Dem + Pron + Sg BARRIER (*) - PUNCT)(NEGATE *1 Pl BARRIER (*) - PUNCT) ;
@@ -8017,6 +8024,8 @@ SELECT:1690C Abs + Sg - 2SgPoss - Sem/Unit - SUB IF (*1C INTRANSVERB + 3Sg BARRI
 (NEGATE *-1 ORATIOOBLVERB LINK *1 _TARGET_ + (/"tassa"\ U/l) LINK *1 Par)#MIPI-p 2008-mut ukiumoortumik nalunaarutaani erserpoq, siulersuisut takusinnaasaat TASSAASOQ Kalaallit Nunaanni meeqqat inuusuttullu pillugit ilisimasaqarnermik siaruarterinermillu inuiaqatigiinni suli pisariaqartitsisoqaqisoq. #PL20231010 Pas på! Skrøbelig regel
 (NEGATE 0 ("siner") + TUR) #sinersortaat
 (NEGATE -1 Abs LINK 1 _TARGET_ LINK 1 Abs - Der/vn LINK NOT 1 Abs + CONJ-LU)#Silatitsinni aput *aatsitertoq imeq isaariaannanngormat Iserit A/S-ip vagtianut sianeqqammerpugut.
+(NEGATE 0 Num LINK 1 NUMHOVED)#Ingerlaarfik taanna 2400 kilometerisut isorartutigivoq, nunamilu uumasut ingerlaarfiini takinersaalluni. 
+
 #(NEGATE *1 N + Abs + Sg LINK 1 V + Gram/IV + Sg )
 ;
 
@@ -9343,11 +9352,13 @@ REMOVE:4914B Num IF (0 N - Num)(NEGATE -1 N + $$KASUS LINK 1 Num + $$KASUS)
  ;
 REMOVE:4914C N IF (0 Num LINK 1 PROCENT);#Allatulluunniit oqaatigalugu: Misissorneqarsimasut 0,33 procentii tunillanneqarsimasutut nalunaarsorneqarsimapput.
 REMOVE:4914D (/"ataaseq"\ iNum\ INNAQ\ Der/nn\ NNGUR/l) IF (0 (/"ataaseq"\ INNAQ\ Der/nn\ NNGUR/l));
+REMOVE:4914E (Num Sg) IF (0 AAR + N + Sg);#Blok 5-imi 1970-IMI marsip ulluisa 14-ianni gassimik qaartoortoqarpoq.
 
 SELECT:4915Ax Num + Abs IF (1 NUMCOMP) ;#Inuit 1 millioninit amerlanerusut seqernup pulanera takuniarlugu ornigunnissaat ilimagineqarpoq.
 
 SELECT:4915A Num + $$KASUS IF (-1 N + $$KASUS - ("nalunaaqutaq")) (NOT 1 ("miss.+"r))
 (NEGATE 1 Num + Rel + CONJ-C LINK 1 3PlPoss)#2019-ip naanerani Kalaallit Nunaanni inuusuttut 16-IT 25-llu akornanni ukiullit 5.268-it imaluunniit 67 pct.-ii ilinniarfinnut suliffeqarfinnulluunniit atassuteqarput.
+(NEGATE -1 N_NUMHOVED + Abs) #Blok 4-MI najugaqarpoq
 #(NEGATE -1 (Rel Pl) LINK 1 _TARGET_ + (Rel Pl) LINK 1* (Rel Pl 3PlPoss) BARRIER (*) - OBLIQUE - (Rel Pl)) #Inatsisartunilu ilaasortat SISAMAT partiinit tamaneersut siunnersuutaasa affaat itigartinneqarput. Inatsisartunilu ilaasortat partiinit tamaneersut peqataassapput. VIRKER IKKE
 ;
 
@@ -11155,8 +11166,12 @@ REMOVE:9967BA (Abs Pl) IF (0 (Rel Pl) LINK 1 Hyb/1-2 LINK *1 3PlPossUdenMWE BARR
 
 #Oratio obliqua, som endnu ikke er fanget, men først @<N trods ORATIOOBLVERB
 SELECT:9968AX Abs + Sg IF (*-1 BOS LINK 1 Abs + Sg LINK 1 _TARGET_ LINK 1 3SgO)
-(NEGATE *1 ORATIOOBLVERB BARRIER KOMMA); #Takkuteriasaarnera TUPINNARTOQ paasiniassallugu
+(NEGATE *1 ORATIOOBLVERB BARRIER KOMMA) #Takkuteriasaarnera TUPINNARTOQ paasiniassallugu
+(NEGATE -1 N_NUMHOVED + Abs) #Blok 4-MI najugaqarpoq
+;
 
+REMOVE:9968AX Num IF (0 Sem/ac-cat LINK -1 N_NUMHOVED + Abs); #Blok 4-MI najugaqarpoq
+#
 SELECT:9968H NIQAR IF (0 (/NIQ\ Der/vn\ QAR/l)) ; #stochastisk gæt på de sidste ikke-disambiguerede V
 
 #pi+Ind+3Pl+3SgO vs. pi+Par+3Pl+3SgO
