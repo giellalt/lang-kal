@@ -37,7 +37,7 @@
 
 * LEXICON IV_r_stem  aallar, oqar
 
-* LEXICON IV_r   
+* LEXICON IV_r 
 
 * LEXICON IV_r_agentiv  PL 20180726 type atuarpoq
 
