@@ -87,6 +87,11 @@ anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
 * **+Gram/Hyb** = Følger hybriderne for at bestemme stederne hvor strengene kan klippes i to ord ved hybriderne
 *__ +Gram/TransverbNIQ __ = NIQ-former med transitivt verbale egenskaber. PL20210417
 
+* **+Gram/Sh** = Ablative short form -mit/-nit
+* **+Gram/Lo** = Ablative long form -miit/-niit
+* **+Gram/Alt** = Ablative alternative form -minngaanniit/-ninngaanniit 
+* **+Gram/Alt2** = Ablative alternative form 2 -minngarnit/-ninngarnit
+
 ### Derivation
 
 * **+Der/Vok** = Vocative
@@ -143,11 +148,11 @@ That is, they need special treatment in e.g. speech syntesis.
 * **+Abs** = Absolutive
 * **+Rel** = Relative
 * **+Trm** = Terminalis
-* **+Abl** = Ablative
 * **+Lok** = Locative
 * **+Aeq** = Aequalis
 * **+Ins** = Instrumentalis
 * **+Via** = Vialis
+* **+Abl** = Ablative
 
 ### Særlige 3./4. persons kasus med DivPron (Gram/Cong)
 * **+Nom** = Nominative
