@@ -1979,6 +1979,8 @@ anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
 * **+Gram/Lo** = Ablative long form -miit/-niit
 * **+Gram/Alt** = Ablative alternative form -minngaanniit/-ninngaanniit 
 * **+Gram/Alt2** = Ablative alternative form 2 -minngarnit/-ninngarnit
+* **+Gram/Repl** = replaciv, for at kunne generere replaciv form til Katersat, aappinngilaa framfor aappalinngilaa, når opslaget er aapperpaa
+* **+Gram/Assib** = assibileret, for at kunne generere en bestemt form til Katersat
 
 ### Derivation
 
