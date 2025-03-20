@@ -93,6 +93,11 @@ anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
 * **+Gram/Alt2** = Ablative alternative form 2 -minngarnit/-ninngarnit
 * **+Gram/Repl** = replaciv, for at kunne generere replaciv form til Katersat, aappinngilaa framfor aappalinngilaa, når opslaget er aapperpaa
 * **+Gram/Assib** = assibileret, for at kunne generere en bestemt form til Katersat
+* **+Gram/liup** = trunkativ, stærk bøjning
+* **+Gram/llup** = final vokal + konsonant trunkering, stærk bøjning, geminering
+* **+Gram/llip** = trunkativ, gemination
+* **+Gram/schwa** = med schwa, angerlaatinngilaa
+* **+Gram/-schwa** = minus schwa, angerlaanngilaa
 
 ### Derivation
 
