@@ -107,6 +107,9 @@ anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
 
 * **+Gram/GEMss** = latent konsonant j gemineret (ergo GEM) som ss, tag brugt til at generere form til Katersat, kikiak -> kikissap (og ikke kikiap, kikiaap)
 * **+Gram/str** = stærk bøjning for at kunne vælge en bestemt form til Katersat, aagiak -> aagiaap, ikke aagiap
+* **+Orth/longi** = long i, benziina versus benzina
+* **+Orth/shorti** = short i, benzina versus benziina  
+* **+Orth/ztos** = s used instead of z, bensiina
 
 ### Derivation
 
