@@ -798,12 +798,6 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 * LEXICON tp  obs 20200623: fleksionsmorfemgrænse er %< og ikke %>
 
 * LEXICON tpV  obs 20200623: fleksionsmorfemgrænse er %< og ikke %> 
-| --- 
-
-| --- 
-| --- 
-| --- 
-| --- 
 
 * LEXICON tp_Gram/Ord  obs 20200623: fleksionsmorfemgrænse er %< og ikke %> Ny PL20220522 kun til ordenstal
 
@@ -929,7 +923,6 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 | --- 
 
 * LEXICON tup_speciel  Kun til brug for NIQ som passiv ved transitive stammer
-| --- 
 | --- 
 | ---
 | --- 
@@ -2024,6 +2017,8 @@ That is, they need special treatment in e.g. speech syntesis.
 * **+Orth/Arch** = Archaic language, (stem, morpheme, flexion, or sandhi): tikisimavoq, asallutigik, agpâ (for anípâ)
 * **+Orth/Youth** = Youth language: asallutigu
 * **+Orth/Alt** = Substandard language (hyphens among other things…): isissavoq, Qaanaaq-mut, fabrikki, poor’lu
+* **+Orth/Hyph** = bindestreg ved låneord, for at kunne generere en bestemt form til Katersat
+* **+Orth/-Hyph** = uden bindestreg ved låneord, for at kunne generere en bestemt form til Katersat
 
 ### Usage/error
 * **+Use/-Spell** = Do not include in speller

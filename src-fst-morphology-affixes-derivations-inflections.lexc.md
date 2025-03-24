@@ -328,12 +328,6 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 * LEXICON tp  obs 20200623: fleksionsmorfemgrænse er %< og ikke %>
 
 * LEXICON tpV  obs 20200623: fleksionsmorfemgrænse er %< og ikke %> 
-| --- 
-
-| --- 
-| --- 
-| --- 
-| --- 
 
 * LEXICON tp_Gram/Ord  obs 20200623: fleksionsmorfemgrænse er %< og ikke %> Ny PL20220522 kun til ordenstal
 
@@ -459,7 +453,6 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 | --- 
 
 * LEXICON tup_speciel  Kun til brug for NIQ som passiv ved transitive stammer
-| --- 
 | --- 
 | ---
 | --- 
