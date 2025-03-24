@@ -102,6 +102,11 @@ anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
 * **+Gram/schwa** = med schwa, angerlaatinngilaa
 * **+Gram/-schwa** = minus schwa, angerlaanngilaa
 * **+Gram/fus** = fusionerende, t+l -> s, iggit+LIR -> iggiser
+* **+Gram/epen** = epentese i ved låneord, der ender på en konsonant 
+* **+Gram/-epen** = ingen epentese ved låneord, så der kan genereres en bestemt form til Katersat. batteriip versus batterip
+
+* **+Gram/GEMss** = latent konsonant j gemineret (ergo GEM) som ss, tag brugt til at generere form til Katersat, kikiak -> kikissap (og ikke kikiap, kikiaap)
+* **+Gram/str** = stærk bøjning for at kunne vælge en bestemt form til Katersat, aagiak -> aagiaap, ikke aagiap
 
 ### Derivation
 
@@ -121,10 +126,6 @@ Citerede ordformer  jf. Kleinschmidt ^rpoĸ
 * **+Dial/Sgr** = Southern dialect (such as VVC for VVCC), aneeqavoq (and not aneeqqavoq)
 * **+Dial/Egr** = Eastern dialect
 * **+Dial/Vgr** = Western dialect (such as rng for rn)
-
-### Phonetic / morphophonological
-* **+Phon/GEMss** = latent konsonant j gemineret (ergo GEM) som ss, tag brugt til at generere form til Katersat, kikiak -> kikissap (og ikke kikiap, kikiaap)
-* **+Phon/strong** = for at kunne vælge en bestemt form til Katersat, aagiak -> aagiaap, ikke aagiap
 
 ### Tags to mark loan word entries with a diverting orthography
 That is, they need special treatment in e.g. speech syntesis.
