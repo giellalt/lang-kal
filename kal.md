@@ -1976,8 +1976,9 @@ anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
 * **+Gram/fus** = fusionerende, t+l -> s, iggit+LIR -> iggiser
 * **+Gram/epen** = epentese i ved låneord, der ender på en konsonant 
 * **+Gram/-epen** = ingen epentese ved låneord, så der kan genereres en bestemt form til Katersat. batteriip versus batterip
-
+* **+Gram/GEM** = gemineret
 * **+Gram/GEMss** = latent konsonant j gemineret (ergo GEM) som ss, tag brugt til at generere form til Katersat, kikiak -> kikissap (og ikke kikiap, kikiaap)
+* **+Gram/GEMloan** = geminering af sidste konsonant i låneord
 * **+Gram/str** = stærk bøjning for at kunne vælge en bestemt form til Katersat, aagiak -> aagiaap, ikke aagiap
 * **+Orth/longi** = long i, benziina versus benzina
 * **+Orth/shorti** = short i, benzina versus benziina  
