@@ -660,13 +660,13 @@ AC_PATH_PROG([GTGRAMTOOL], [gtgramtool], [false])
 AS_IF([test "x$enable_grammarchecker" != "xno"],
     AX_PYTHON_MODULE(pip)
     AC_MSG_CHECKING([whether we have gtgramtool])
-    AS_IF([test x$GTGRAMTOOL = xfalse], 
+    AS_IF([test x$GTGRAMTOOL = xfalse],
     [AC_MSG_ERROR([gtgramtool is needed for --enable grammarchecker.
         on debian/ubuntu: sudo apt update; sudo apt install pipx; pipx ensurepath
         on macbrew: brew install pipx; pipx ensurepath
         then: pipx install git+https://github.com/divvun/giellaltgramtools
       ])]),
-    AC_MSG_RESULT(yes))
+    AC_MSG_RESULT([yes]))
 _gtgramtool_min_version=0.7.0
 gtgramtool_too_old_message="gtgramtool needs to be updated.
     If you installed it with pipx, run:
@@ -676,12 +676,12 @@ AS_IF([test "x${GTGRAMTOOL}" != xno],
         [_gtgramtool_version=$( "${GTGRAMTOOL}" --version | sed -e 's/^.*version //')],
         [_gtgramtool_version=0])
 AC_MSG_RESULT([$_gtgramtool_version])
+AC_MSG_CHECKING([whether the gtgramtool version is at least $_gtgramtool_min_version])
+AX_COMPARE_VERSION([$_gtgramtool_version], [ge], [$_gtgramtool_min_version],
+                   [gtgramtool_version_ok=yes], [gtgramtool_version_ok=no])
+AC_MSG_RESULT([$gtgramtool_version_ok])
 AS_IF([test "x$enable_grammarchecker" != "xno"], 
-      AC_MSG_CHECKING([whether the gtgramtool version is at least $_gtgramtool_min_version])
-      AX_COMPARE_VERSION([$_gtgramtool_version], [ge], [$_gtgramtool_min_version],
-                         [gtgramtool_version_ok=yes], [gtgramtool_version_ok=no])
-    AS_IF([test "x${gtgramtool_version_ok}" != xno],
-          [AC_MSG_RESULT([$gtgramtool_version_ok])],
+    AS_IF([test "x${gtgramtool_version_ok}" != xno],,
           [AC_MSG_ERROR([$gtgramtool_too_old_message])]))
 
 
@@ -1103,18 +1103,27 @@ cd $gt_SHARED_FAILS
 ./autogen.sh && ./configure && make])])
 AS_IF([test "x$gt_need_gnu_make" = xyes],
       [tput setaf 1
-       AC_MSG_WARN([GNU make 4+ will be required to build giellalt from now on (Feb 2025):
+       AC_MSG_ERROR([GNU make 4+ is required to build giellalt:
 
-if you are using a MacOS do:
+if you are using a MacOS and homebrew do:
     brew install make
 and setup following the instructions given or at https://formulae.brew.sh/formula/make:
     PATH="\$HOMEBREW_PREFIX/opt/make/libexec/gnubin:\$PATH"
 into your .zshrc or .bashrc.
+
+if you are using a MacOS and macports do:
+    sudo port install gmake
+and setup following instructions given:
+    PATH="/opt/local/libexec/gnubin:\$PATH"
 See https://github.com/giellalt/giella-core/issues/79 for background and further instructions
 
-If you see this message it means that we have detected old GNU make or apple’s
-make on your system and you will need to fix this or the make will likely fail.
-also this message will be turned into fatal error soon...
+If you updated gnu make but still get this error–the PATH setting has probably not worked;
+    make --version
+should print something like:
+    GNU Make 4.4.1
+if it shows you:
+    GNU Make 3.81
+it means that it uses Apple's make version. (sometimes restart after changing zshrc or bashrc can help)
 ])
        tput sgr0])
 ]) # gt_PRINT_FOOTER
