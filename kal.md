@@ -1964,6 +1964,7 @@ anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
 * **+Gram/GEMloan** = geminering af sidste konsonant i låneord
 * **+Gram/str** = stærk bøjning + trunkering for at kunne vælge en bestemt form til Katersat, aagiak -> aagiaap, ikke aagiap
 * **+Gram/strnasal** = stærk bøjning, stammefinal k nasaleret
+* **+Gram/meta** = metatese, imeq, ermup
 * **+Orth/longi** = long i, benziina versus benzina
 * **+Orth/shorti** = short i, benzina versus benziina  
 * **+Orth/ztos** = s used instead of z, bensiina
