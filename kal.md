@@ -1969,6 +1969,11 @@ anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
 * **+Orth/shorti** = short i, benzina versus benziina  
 * **+Orth/ztos** = s used instead of z, bensiina
 
+* **+Gram/GAQ** = TAQ allomorf i formen gaq, for at kunne generere en bestemt form til Katersat, opslag: maligaq -> malikkap, ikke malitap
+
+* **+Gram/additive** = den additive form af et suffiks, som både kan være additiv og truncativ, SIMA ved t-stammer
+* **+Gram/truncative** = den truncative form af et suffiks, som både kan være additiv og truncativ, SIMA ved t-stammer
+
 ### Derivation
 
 * **+Der/Vok** = Vocative
