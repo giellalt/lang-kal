@@ -153,7 +153,6 @@ AM_CONDITIONAL([LEXREF_IN_PHONOLOGY], [test "x$LEXREF_IN_XFSCRIPT" != "x"])
 # they want to compile theirs stuff with
 AC_SUBST([DEFAULT_FOMA], [no])
 AC_SUBST([DEFAULT_HFST], [yes])
-AC_SUBST([DEFAULT_XFST], [no])
 AC_SUBST([DEFAULT_HYPERMIN], [yes])
 AC_SUBST([DEFAULT_REVERCI], [yes])
 AC_SUBST([DEFAULT_HFST_BACKEND], [foma])
@@ -168,8 +167,6 @@ gt_PROG_SCRIPTS_PATHS
 # kal uses m4 to process
 AC_PATH_PROGS([M4], [m4 gm4])
 
-# Tests and sets up XFST
-gt_PROG_XFST
 
 # Tests and sets up FOMA
 gt_PROG_FOMA
