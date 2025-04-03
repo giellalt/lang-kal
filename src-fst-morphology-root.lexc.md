@@ -107,8 +107,9 @@ anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
 * **+Gram/GEM** = gemineret
 * **+Gram/GEMss** = latent konsonant j gemineret (ergo GEM) som ss, tag brugt til at generere form til Katersat, kikiak -> kikissap (og ikke kikiap, kikiaap)
 * **+Gram/GEMloan** = geminering af sidste konsonant i låneord
-* **+Gram/str** = stærk bøjning + trunkering for at kunne vælge en bestemt form til Katersat, aagiak -> aagiaap, ikke aagiap
+* **+Gram/str** = stærk bøjning + trunkering, -up for at kunne vælge en bestemt form til Katersat, aagiak -> aagiaap, ikke aagiap
 * **+Gram/strnasal** = stærk bøjning, stammefinal k nasaleret
+* **+Gram/wea** = svag bøjning, -p
 * **+Gram/meta** = metatese, imeq, ermup
 * **+Orth/longi** = long i, benziina versus benzina
 * **+Orth/shorti** = short i, benzina versus benziina  
@@ -118,6 +119,8 @@ anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
 
 * **+Gram/additive** = den additive form af et suffiks, som både kan være additiv og truncativ, SIMA ved t-stammer
 * **+Gram/truncative** = den truncative form af et suffiks, som både kan være additiv og truncativ, SIMA ved t-stammer
+
+* **+Gram/inchoative** = inchoativt suffiks
 
 ### Derivation
 
@@ -759,7 +762,7 @@ i staden ei liste der kvar tag sto ein gong (nedanfor): docs/tagstrings.md
 * **+TSIAQ** 
 * **+TSIAR** 
 * **+TSIISAA** 
-* **+TSIP** 
+* **+T(S)IP** = sukkatsippoq, men: nillertippoq
 * **+TSIR** 
 * **+TTAAQ** 
 * **+TTAARLU** 
