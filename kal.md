@@ -1944,7 +1944,7 @@ anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
 
 * **+Gram/Sh** = Ablative short form -mit/-nit
 * **+Gram/Lo** = Ablative long form -miit/-niit
-* **+Gram/Alt** = Ablative alternative form -minngaanniit/-ninngaanniit 
+* **+Gram/Alt** = Ablative alternative form -minngaanniit/-ninngaanniit. Eller uregelmæssig pujoq->puggup 
 * **+Gram/Alt2** = Ablative alternative form 2 -minngarnit/-ninngarnit
 * **+Gram/Repl** = replaciv, for at kunne generere replaciv form til Katersat, aappinngilaa framfor aappalinngilaa, når opslaget er aapperpaa
 * **+Gram/tr** = truncativ, for at skelne mellem replaciv og truncativ, til generering af en bestemt form til Katersat, iggisingilaa versus iggisilinngilaa
@@ -1957,8 +1957,8 @@ anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
 * **+Gram/schwa** = med schwa, angerlaatinngilaa
 * **+Gram/-schwa** = minus schwa, angerlaanngilaa
 * **+Gram/fus** = fusionerende, t+l -> s, iggit+LIR -> iggiser
-* **+Gram/epen** = epentese i ved låneord, der ender på en konsonant 
-* **+Gram/-epen** = ingen epentese ved låneord, så der kan genereres en bestemt form til Katersat. batteriip versus batterip
+* **+Gram/epen** = epentese i ved låneord, der ender på en konsonant. ELLER ved vokaler aa+u -> aa (nutaajunngilaq) 
+* **+Gram/-epen** = ingen epentese ved låneord, så der kan genereres en. bestemt form til Katersat. batteriip versus batterip. ELLER ved vokaler aa+u -> aaju (nutaanngilaq)
 * **+Gram/GEM** = gemineret
 * **+Gram/GEMss** = latent konsonant j gemineret (ergo GEM) som ss, tag brugt til at generere form til Katersat, kikiak -> kikissap (og ikke kikiap, kikiaap)
 * **+Gram/GEMloan** = geminering af sidste konsonant i låneord
