@@ -1277,7 +1277,7 @@ Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers
 
 * LEXICON Z1+laZ  
 
-* LEXICON Z1+loZ  
+* LEXICON Z1+loZ 
 
 * LEXICON Z1+naZ  
 
@@ -1946,9 +1946,8 @@ anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
 * **+Gram/Lo** = Ablative long form -miit/-niit
 * **+Gram/Alt** = Ablative alternative form -minngaanniit/-ninngaanniit. Eller uregelmæssig pujoq->puggup 
 * **+Gram/Alt2** = Ablative alternative form 2 -minngarnit/-ninngarnit
-* **+Gram/Repl** = replaciv, for at kunne generere replaciv form til Katersat, aappinngilaa framfor aappalinngilaa, når opslaget er aapperpaa
-* **+Gram/tr** = truncativ, for at skelne mellem replaciv og truncativ, til generering af en bestemt form til Katersat, iggisingilaa versus iggisilinngilaa
-* **+Gram/Assib** = assibileret, for at kunne generere en bestemt form til Katersat
+* **+Gram/repl** = replaciv, for at kunne generere replaciv form til Katersat, aappinngilaa framfor aappalinngilaa, når opslaget er aapperpaa
+* **+Gram/assib** = assibileret, for at kunne generere en bestemt form til Katersat
 * **+Gram/gem** = gemineret, ilisivik versus ilitsivik
 * **+Gram/-gem** = ikke gemineret, ilisivik versus ilitsivik 
 * **+Gram/liup** = trunkativ, stærk bøjning

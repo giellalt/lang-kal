@@ -807,7 +807,7 @@ Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers
 
 * LEXICON Z1+laZ  
 
-* LEXICON Z1+loZ  
+* LEXICON Z1+loZ 
 
 * LEXICON Z1+naZ  
 
