@@ -110,6 +110,7 @@ anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
 * **+Gram/strnasal** = stærk bøjning, stammefinal k nasaleret
 * **+Gram/wea** = svag bøjning, -p
 * **+Gram/meta** = metatese, imeq, ermup
+* **+Gram/regass** = sidste vokal fjernet, dernæst regressiv assimilation, aaveq->aarrit
 * **+Orth/longi** = long i, benziina versus benzina
 * **+Orth/shorti** = short i, benzina versus benziina  
 * **+Orth/ztos** = s used instead of z, bensiina
