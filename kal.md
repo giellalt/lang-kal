@@ -1942,40 +1942,38 @@ anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
 * **+Gram/Hyb** = Følger hybriderne for at bestemme stederne hvor strengene kan klippes i to ord ved hybriderne
 *__ +Gram/TransverbNIQ __ = NIQ-former med transitivt verbale egenskaber. PL20210417
 
-* **+Gram/Sh** = Ablative short form -mit/-nit
-* **+Gram/Lo** = Ablative long form -miit/-niit
+* **+Gram/-epen** = ingen epentese ved låneord, så der kan genereres en. bestemt form til Katersat. batteriip versus batterip. ELLER ved vokaler aa+u -> aaju (nutaanngilaq)
+* **+Gram/-gem** = ikke gemineret, ilisivik versus ilitsivik 
+* **+Gram/-schwa** = minus schwa, angerlaanngilaa
 * **+Gram/Alt** = Ablative alternative form -minngaanniit/-ninngaanniit. Eller uregelmæssig pujoq->puggup 
 * **+Gram/Alt2** = Ablative alternative form 2 -minngarnit/-ninngarnit
-* **+Gram/repl** = replaciv, for at kunne generere replaciv form til Katersat, aappinngilaa framfor aappalinngilaa, når opslaget er aapperpaa
-* **+Gram/assib** = assibileret, for at kunne generere en bestemt form til Katersat
-* **+Gram/gem** = gemineret, ilisivik versus ilitsivik
-* **+Gram/-gem** = ikke gemineret, ilisivik versus ilitsivik 
-* **+Gram/liup** = trunkativ, stærk bøjning
-* **+Gram/llup** = final vokal + konsonant trunkering, stærk bøjning, geminering
-* **+Gram/llip** = trunkativ, gemination
-* **+Gram/schwa** = med schwa, angerlaatinngilaa
-* **+Gram/-schwa** = minus schwa, angerlaanngilaa
-* **+Gram/fus** = fusionerende, t+l -> s, iggit+LIR -> iggiser
-* **+Gram/epen** = epentese i ved låneord, der ender på en konsonant. ELLER ved vokaler aa+u -> aa (nutaajunngilaq) 
-* **+Gram/-epen** = ingen epentese ved låneord, så der kan genereres en. bestemt form til Katersat. batteriip versus batterip. ELLER ved vokaler aa+u -> aaju (nutaanngilaq)
+* **+Gram/GAQ** = TAQ allomorf i formen gaq, for at kunne generere en bestemt form til Katersat, opslag: maligaq -> malikkap, ikke malitap
 * **+Gram/GEM** = gemineret
-* **+Gram/GEMss** = latent konsonant j gemineret (ergo GEM) som ss, tag brugt til at generere form til Katersat, kikiak -> kikissap (og ikke kikiap, kikiaap)
 * **+Gram/GEMloan** = geminering af sidste konsonant i låneord
-* **+Gram/str** = stærk bøjning + trunkering, -up for at kunne vælge en bestemt form til Katersat, aagiak -> aagiaap, ikke aagiap
-* **+Gram/strnasal** = stærk bøjning, stammefinal k nasaleret
-* **+Gram/wea** = svag bøjning, -p
+* **+Gram/GEMss** = latent konsonant j gemineret (ergo GEM) som ss, tag brugt til at generere form til Katersat, kikiak -> kikissap (og ikke kikiap, kikiaap)
+* **+Gram/Lo** = Ablative long form -miit/-niit
+* **+Gram/Sh** = Ablative short form -mit/-nit
+* **+Gram/additive** = den additive form af et suffiks, som både kan være additiv og truncativ, SIMA ved t-stammer
+* **+Gram/assib** = assibileret, for at kunne generere en bestemt form til Katersat
+* **+Gram/epen** = epentese i ved låneord, der ender på en konsonant. ELLER ved vokaler aa+u -> aa (nutaajunngilaq) 
+* **+Gram/fus** = fusionerende, t+l -> s, iggit+LIR -> iggiser
+* **+Gram/gem** = gemineret, ilisivik versus ilitsivik
+* **+Gram/inchoative** = inchoativt suffiks
+* **+Gram/liup** = trunkativ, stærk bøjning LIK
+* **+Gram/llip** = trunkativ, gemination LIK
+* **+Gram/llup** = final vokal + konsonant trunkering, stærk bøjning, geminering LIK
 * **+Gram/meta** = metatese, imeq, ermup
 * **+Gram/regass** = sidste vokal fjernet, dernæst regressiv assimilation, aaveq->aarrit
+* **+Gram/repl** = replaciv, for at kunne generere replaciv form til Katersat, aappinngilaa framfor aappalinngilaa, når opslaget er aapperpaa
+* **+Gram/schwa** = med schwa, angerlaatinngilaa
+* **+Gram/str** = stærk bøjning + trunkering, -up for at kunne vælge en bestemt form til Katersat, aagiak -> aagiaap, ikke aagiap
+* **+Gram/strnasal** = stærk bøjning, stammefinal k nasaleret
+* **+Gram/truncative** = den truncative form af et suffiks, som både kan være additiv og truncativ, SIMA ved t-stammer
+* **+Gram/wea** = svag bøjning, -p
+
 * **+Orth/longi** = long i, benziina versus benzina
 * **+Orth/shorti** = short i, benzina versus benziina  
 * **+Orth/ztos** = s used instead of z, bensiina
-
-* **+Gram/GAQ** = TAQ allomorf i formen gaq, for at kunne generere en bestemt form til Katersat, opslag: maligaq -> malikkap, ikke malitap
-
-* **+Gram/additive** = den additive form af et suffiks, som både kan være additiv og truncativ, SIMA ved t-stammer
-* **+Gram/truncative** = den truncative form af et suffiks, som både kan være additiv og truncativ, SIMA ved t-stammer
-
-* **+Gram/inchoative** = inchoativt suffiks
 
 ### Derivation
 
