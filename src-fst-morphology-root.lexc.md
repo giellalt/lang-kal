@@ -64,6 +64,7 @@ anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
 * **+Sem/Hum** = Non-geographical Propernoun
 * **+Sem/Hmyth** = Human Mythological
 * **+Sem/LastName**  Efternavne
+* **+Sem/Lciv** = Location, civilized
 * **+Sem/Mailadresse** tag til adresser af typen cccc@cccc.cc
 * **+Sem/Mask** Forsøg med en ny tag til fornavne af maskulinum
 * **+Sem/ModeOfMovement** <fn:ModeOfmovement> !#nâgpoĸ

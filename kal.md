@@ -611,7 +611,7 @@ PL 20180718. Følgende er et særligt lexicon til ip i stedet for tidligere LEXI
 
 * LEXICON flex-iv_r  
 
-* LEXICON flex-iv_r2  
+* LEXICON flex-iv_r2 
 
 * LEXICON flex-iv_long  
 
@@ -1919,6 +1919,7 @@ anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
 * **+Sem/Hum** = Non-geographical Propernoun
 * **+Sem/Hmyth** = Human Mythological
 * **+Sem/LastName**  Efternavne
+* **+Sem/Lciv** = Location, civilized
 * **+Sem/Mailadresse** tag til adresser af typen cccc@cccc.cc
 * **+Sem/Mask** Forsøg med en ny tag til fornavne af maskulinum
 * **+Sem/ModeOfMovement** <fn:ModeOfmovement> !#nâgpoĸ
@@ -2813,7 +2814,6 @@ De mest alminderlige nomenleksika:
 -  245 Z1+qaZmorf
 -  240 N_Loan_GEM
 -  237 SEQgemin
--  231 N_Loan_e
 -  225 Z2aqZmorf
 -  193 Z2-qZmorf
 -  164 Z1eZmorf

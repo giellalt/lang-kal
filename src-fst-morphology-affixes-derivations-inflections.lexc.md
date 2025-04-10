@@ -141,7 +141,7 @@ PL 20180718. Følgende er et særligt lexicon til ip i stedet for tidligere LEXI
 
 * LEXICON flex-iv_r  
 
-* LEXICON flex-iv_r2  
+* LEXICON flex-iv_r2 
 
 * LEXICON flex-iv_long  
 
