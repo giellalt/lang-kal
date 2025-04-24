@@ -2000,6 +2000,8 @@ LIST SBVr = IRNIAR (/SI\ Der/nv/l) ; #Jude 20231018
 REMOVE:MorfSB0001 (*) - SBN (0 SBVr) #Jude 20231009
 (NEGATE 0 ("paasi")); #fjerner "paasi", men beholder "paa"+SI #KW15032024
 
+SELECT:MorfLIKKIRSAAR (/LIKKIRSAAR\ Der/nv\ Gram/IV/l) IF (0 (/LIR\ Der/nv\ Gram/TV\ TAQ\ Der/vn\ LIR\ Der/nv\ Gram/IV\ SAAR\ Der/vv\ Gram/TV/l) );#Unnuaq iteqattaarpallaarnanga ullaaq iterama iluaq, ingerlaannaq suliartornialikkersaaleraluaqaanga ...
+
 #!! - #LIAR
 SET LOCSEM = SEM/build | SEM/furn | SEM/Geo | SEM/HH | SEM/HHinst | SEM/HHorg | SEM/Hprof | SEM/inst | SEM/L | SEM/Lciv | SEM/Lcountry | SEM/Lh | SEM/Ltip | SEM/Ltop | SEM/Ltown | SEM/Lwater | Sem/Hum ; #Jude
 LIST LocLex = (/"aningaaseri"\ Gram/IV\ VIK\ Der/vn/l) "iggavik" "nuna" (/"qule"\ LLIQ\ Der/nn\ TAQ\ Der/nn/l) iProp ; #Jude 20231013 in case of missing sem tag
@@ -2449,7 +2451,9 @@ REMOVE:tidlig0019B2 ("kingorna") + Adv IF (0 (/"kinguneq"\ N\ Abs\ Sg\ 3SgPoss/l
 
 SELECT:tidlig0019C Rel + Num IF (1 ("misse") OR ("missaa") OR ("miss." Adv) LINK -2 ("nalunaaqutaq"));
 
-#SELECT:tidlig0019D (/TAQ\ Der/nn\ SSIP\ Der/nv\ Gram/TV\ HTR\ Der/vv\ Gram/IV\ UTE\ Der/vn/) IF  ;
+#REMOVE:tidlig0020Ax ("sakkutooq" 2SgPoss)  IF (0 ("sakkutooq") + Rel + Pl ) ;
+
+#REMOVE:tidlig0020Axx ("sakkutooq" Abs Pl)  IF (0 ("sakkutooq") + Rel + Pl LINK 1 POSSESSUM ) ;
 
 REMOVE:tidlig0020A Rel + Pl - Prop - KKUT IF (0 Abs + Pl LINK NEGATE *0 3PlPoss OR i3PlPoss OR TRANSVERB + 3Pl OR TRANSVERB + 4Pl) #TAAKKUA TV-mut allamullu INGERLASUSSAT misissoqqissavakka.
 (NEGATE 0 Num LINK 1 ("qiteq") + POSSESSUM3 OR ("tunge") + POSSESSUM3)#Skal acceptere både 3SgPoss og 3PlPoss: Ministeriuneq nunatta nalunaaqutaa malillugu ualimut PINGASUT qeqqanut tusagassiortunik katersortitsinissamut qaaqqusivoq;
@@ -3518,8 +3522,9 @@ REMOVE:conjE1 ("aamma") + Adv IF (0 ("aamma" Conj) LINK -1 CONT + TRANSVERB LINK
 (NEGATE -2 BOS LINK 1 ("taamaali" Gram/TV) LINK 0 ("taamaali" Gram/IV) )#Taamaalillunga AAMMA ullut pingajussaanni orpik baobab pillugu pisimasoq annilaarnartoq tusarpara.
 ;
 
-REMOVE:conjE2 ("aamma") + Adv IF (*-1 CON_CAU BARRIER V LINK *1 _TARGET_ + Conj LINK *1 CON_CAU BARRIER V) #Sinnakikkama AAMMA silaannaap nillataartup timiga qiiaammertimmagu nukikka sukaterpakka.
-;
+REMOVE:conjE2 ("aamma") + Adv IF (*-1 CON_CAU BARRIER V LINK *1 _TARGET_ + Conj LINK *1 CON_CAU BARRIER V)
+(NEGATE -1 OBLIQUE LINK 1 _TARGET_ LINK 1 V)#Ippassaq unnuisarfiit tamarmik ulikkaaqqammata Air Greenlandip Minihalimut *aamma inissikkamisigut, uanga naammatsikkama ...
+;#Sinnakikkama AAMMA silaannaap nillataartup timiga qiiaammertimmagu nukikka sukaterpakka.
 
 
 REMOVE:conjF ("aamma") + Conj IF (-1 BOS)(1 NIQ) ; #så plejer aamma at være i-ADVL>
@@ -7578,11 +7583,7 @@ REMOVE:0519A Par IF (0 TUQ - POSSESSUM)
 (NEGATE 0 Par + 3Sg + ADV-LU) #SANEQQUTTORLU erngerlugu uumitsaallugu nilliaffigisuulerpara:
 ;
 
-#REMOVE:0519A1 Abs + Pl IF (0 Par + 3Pl LINK -*1 Abs + Pl LINK *1 _TARGET_ LINK 1 KOMMA LINK *1 V + ORATIOOBLVERBnOQAR BARRIER V - CONT) 
-#;#Systemimi taamak ittumi inissisimalissagaluarutta aningaasaateqarluaraanni atugarissaaraannilu ajornartorsiutaanavianngilaq, kisianni inuit ikiorneqarnissamik pisariaqartitsisut *ajornartorsiornerulersinnaasut, lektorip ilanngullugu oqaatigaa.
 
-#REMOVE:0519A2 Par + 3Pl IF (0 Abs + Pl) (1 Par + 3Pl - CONJ-LU LINK 1 KOMMA LINK *1 ORATIOOBLVERBnOQAR BARRIER Par OR CONJ-LU) ;#Systemimi taamak ittumi inissisimalissagaluarutta aningaasaateqarluaraanni atugarissaaraannilu ajornartorsiutaanavianngilaq, kisianni inuit ikiorneqarnissamik *pisariaqartitsisut ajornartorsiornerulersinnaasut, lektorip ilanngullugu oqaatigaa.
-##KL: minus CONJ-LU: Ilinniakkammi taakkua aningaasaliiffigineqarsimanngitsut akuerineqarsimanngitsullu paasinarsivoq.
 
 #Den mest generelle regel. NB forudsætter at 0320A først har fjernet 3PlO og at 0519A har fjernet %AmbiguøsPar
 REMOVE:0519B Abs + Pl - OTHERTIME IF (*1 TRANSVERB + 3Pl OR 3PlPoss - Orth/Arch BARRIER CLB OR ("\(") OR ("\)") )
@@ -7615,7 +7616,12 @@ REMOVE:0520B N + U + TUQ IF (0 Par)(*1 ORATIOOBLVERB - NIQAR - TAQ - Gram/Pass -
 (NEGATE **-1 Prop + $$KASUS + $$NUMERUS LINK 1 KOMMA LINK *1 _TARGET_ + $$KASUS + $$NUMERUS BARRIER (*) - OBLIQUE )#Kommuneqarfik Sermersooq, Nuutoqqami eqqaassutissamut AKISUSSAASUUSOQ, innuttaasunik eqqaassutissap peerneqarnissaanut tassaniiginnarnissaanulluunniit taasititsivoq.
 ;
 
-REMOVE:0520C Par IF (*-1 BOS LINK 1 Prop + $$KASUS + $$NUMERUS LINK 1 KOMMA LINK *1 _TARGET_ + $$KASUS + $$NUMERUS BARRIER (*) - OBLIQUE ); #Kommuneqarfik Sermersooq, Nuutoqqami eqqaassutissamut AKISUSSAASUUSOQ, innuttaasunik eqqaassutissap peerneqarnissaanut tassaniiginnarnissaanulluunniit taasititsivoq.
+REMOVE:0520C Aeq - VIK IF (0 Par LINK *0 ORATIOOBLVERB + V)  
+;#- Politiit angallataat sulinitsinni atortarsimasagut nutaaliaallutillu suli pitsaasut naqissusissallugu pingaartippara.
+
+REMOVE:0520D Par IF (*-1 BOS LINK 1 Prop + $$KASUS + $$NUMERUS LINK 1 KOMMA LINK *1 _TARGET_ + $$KASUS + $$NUMERUS BARRIER (*) - OBLIQUE ); #Kommuneqarfik Sermersooq, Nuutoqqami eqqaassutissamut AKISUSSAASUUSOQ, innuttaasunik eqqaassutissap peerneqarnissaanut tassaniiginnarnissaanulluunniit taasititsivoq.
+
+REMOVE:0520E Aeq + Pl + 3SgPoss IF (0 N + TUQ + Pl LINK -*1 ("aamma") + Conj OR CONJ-LU LINK *1 N + Abs ) ;#Sulisut qasuersaarfissaat aamma timmisartup uteqqinnissaanut *piffissarititaasut maleruartussaavagut.
 
 
 REMOVE:0521 Par IF (0 N + $$KASUS + $$NUMERUS LINK *-1 VFIN BARRIER CLB OR ORATIOOBLVERB LINK *-1 $$KASUS + $$NUMERUS BARRIER (*) - Hyb/1-2)
@@ -8169,7 +8175,8 @@ SELECT:1701 Abl + CONJ-LU IF (-1 Abl)
 (NEGATE 0 Ins LINK *1 QAR BARRIER (*) - Ins)#Isugutasunilli issorasaartunillu nunaminertaqartiterportaaq.
 ;
 SELECT:1702 Ins + CONJ-LU IF (-1 Ins);
-REMOVE:1703 Aeq + Pl + 3SgPoss IF (NEGATE *-1 Rel + Sg BARRIER (*) - Hyb/1-2);
+
+
 REMOVE:1704 Aeq + Pl + 3PlPoss IF (NEGATE *-1 Rel + Pl BARRIER (*) - Hyb/1-2);
 REMOVE:1705 (TUQ INNAQ N) + Abs + Pl + POSSESSUM IF (NEGATE *-1C Rel + Pl BARRIER (*) - Hyb/1-2); #annikitsuinnaat er ikke Poss men Pl
 
@@ -9974,6 +9981,7 @@ REMOVE:5491JI (/"siani"\ Gram/IV\ QQAMMIR/l) IF (0 (/"sianer"\ Gram/IV\ QQAMMIR/
 REMOVE:5491JJ (/"siani"\ Gram/IV\ GUSUP/l) IF (0 (/"sianer"\ Gram/IV\ GUSUP/l) ) ;
 REMOVE:5491JK (/"ujar"\ Gram/TV\ TUAR\ Der/vv\ Gram/TV\ IT\ Der/vv/l) IF (0 (/"ujartor"\ Gram/TV\ HTR\ Der/vv/l) );#Ujartueqatigiit atornerluisut aamma angerlarsimaffeqanngitsut nanisassavaat
 REMOVE:5491JL (/"nallip"\ Gram/TV/l) IF (0 (/"naller"\ Gram/TV/l) LINK -1 Sem/Geo + Abs) ;#Siullermik ataasinngornermi marsip qulingani Tuukkaq Tasiilaq nallinngilaarlugu Københavnimut uterpoq. 
+REMOVE:5491JM (/"sianiip"\ Gram/IV\ NAR\ Der/vv\ SSA\ Der/vv/l) OR (/"siani"\ Gram/IV\ INNAR\ Der/vv\ Gram/IV\ SSA\ Der/vv/l) IF (0 (/"sianer"\ Gram/IV\ INNAR\ Der/vv\ Gram/IV\ SSA\ Der/vv/l) );
 
 # Verbum eller partikel?
 SELECT:5491A ("aarit") IF (-1 BOS);
@@ -10784,15 +10792,23 @@ SELECT:9490C Pl + POSSESSUM IF (0 ONETOTWO)(0 Sg)(NEGATE 0 Abs LINK 1 3SgO)(NEGA
 (NEGATE 0 Lok - ("eqqarsar" UTE) LINK *0 Abs + Sg LINK *0 ("ip") OR ("IP")) #Nammattagaq saninniippoq, puiaasarlu ASSANNI.
 ;
 
-SELECT:9490C ("inuiaqat") + Rel + Pl + 1SgPoss IF (0 Rel + Pl); #Qaqikkakkilli oqimaassusersuisa misigitippaannga nunama taamaallaat artukkertaraanga, INUIAQATIMA qanoq uannut oqimaaloqutaatigineri. #dem har man sandsynligvis flere af
+SELECT:9490C1 ("inuiaqat") + Rel + Pl + 1SgPoss IF (0 Rel + Pl); #Qaqikkakkilli oqimaassusersuisa misigitippaannga nunama taamaallaat artukkertaraanga, INUIAQATIMA qanoq uannut oqimaaloqutaatigineri. #dem har man sandsynligvis flere af
 
-SELECT:9491D ("ila") + Sg + 3PlPoss IF (-1 ("ulloq") + Rel + Pl) ; #Ullut ilaat næsten garanteret Sg
-SELECT:9491C ("ila") + Pl + POSSESSUM IF (*1 3Pl OR 4Pl BARRIER N + Abs) #9491B må ikke slette subjektet i 'Ilaat qitipput'
+SELECT:9491A ("ila") + Sg + 3PlPoss IF (-1 ("ulloq") + Rel + Pl) ; #Ullut ilaat næsten garanteret Sg
+
+SELECT:9491B Par + 3Pl IF (-*1 Abs + Pl BARRIER (*) - OBLIQUE LINK -1 Par)  ; #Nakkuppaanga kaataq tigullugu nikorfasunga assakka tarnummik qernertuinnaasut, suunersumut kusanaagingaagaanut sikingallunga.
+
+SELECT:9491C ("ila") + Pl + POSSESSUM - Aeq IF (*1 3Pl OR 4Pl BARRIER N + Abs) #9491B må ikke slette subjektet i 'Ilaat qitipput'
 (NEGATE 0 Abs + Sg LINK 1 3SgO)
+(NEGATE 0 Abs + Pl LINK 1 3PlO )
 ;
-REMOVE:9491D Sg + PERCEPTIVE + POSSESSUM IF (*-1 Rel + Pl);
+#minus Aeq EX: #Timmisartumulli ataasinngornermi decembarip ulluisa 20-anni tikittussamut ilaasut juullernissaanut ullunik sisamaannarnik periarfissaqarput.
 
-REMOVE:9491E Num + Abs IF (0 Num + Rel LINK 1 ("qiteq") + 3SgPoss);
+REMOVE:9491D ("ila" Aeq) IF (0 Abs + Pl LINK *1 V + 3Pl) ;
+
+REMOVE:9491E Sg + PERCEPTIVE + POSSESSUM IF (*-1 Rel + Pl);
+
+REMOVE:9491F Num + Abs IF (0 Num + Rel LINK 1 ("qiteq") + 3SgPoss);
 
 REMOVE:9492Ax (/QATE\ Der/nn\ GIIP\ Der/nv\ Gram/Reci\ Gram/IV\ TUQ\ Der/vn\ N/l) IF (0 (/QATE\ Der/nn\ GIIP\ Der/nv\ Gram/Reci\ Gram/IV\ UTE\ Der/vn\ N\ Abs\ Sg/l) LINK 1 V + 3Sg )  ;#Jensen-ip Det Hvide Husimi ataasinngornermi pulaarnerani isumaqatigiissut saqqummiunneqarpoq.
 
