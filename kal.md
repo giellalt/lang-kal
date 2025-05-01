@@ -1317,6 +1317,7 @@ Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers
 
 * LEXICON Z1Zmorf  Derivationsmorfemer til nominer, viser til **tp** og giver derefter nn-derivationer
 	*  tp ; 
+
 	* +ALUK+Der/nn+INNAQ+Der/nn:%>%TRUNCaluinnaq tup- ; 
 
 - LEXICON Z1VZmorf  Derivationsmorfemer til nominer, der ender med vokal a, i, u 20200916 NN
@@ -2866,7 +2867,7 @@ xxx 20170522 til former, som ikke kan læses men som har brug for en analyse i c
 
 
 
-xxx 20170524 til verbalstammer, som ikke kan læses men som har brug for en analyse i cg'en. Pluralis tantum-kataloger er ikke medtaget. !er det nødvendigt også at medtage stammer fra derivationsleksika?
+xxx 20170524 til verbalstammer, som ikke kan læses men som har brug for en analyse i cg'en. Pluralis tantum-kataloger er ikke medtaget. ! er det nødvendigt også at medtage stammer fra derivationsleksika?
 
 * * *
 
