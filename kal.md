@@ -2159,6 +2159,9 @@ Flag til forebyggelse af manglende assibilering. P sættes i stem-filerne og C i
 * **@P.UsikkerAssibilering.ON@**  positive setting of UsikkerAssibilering = ON
 * **@C.UsikkerAssibilering@**  clear the UsikkerAssibilering feature back to neutral
 
+* **@U.epen.ON@** epentese
+* **@U.epen.OFF@** ingen epentese
+
 Ad hoc til test af alternativ flag diacritics ved præfikser. Husk også den udkommenterede linie 'Kingumoorutit ;' i LEXICON Root
 
 Test af P- og D-flag til forebyggelse af rekusivitet ved TIP
