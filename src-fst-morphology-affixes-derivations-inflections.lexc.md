@@ -341,10 +341,6 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 * LEXICON tp_possessum3   Til "stammer" som inuup-normu
 
 * LEXICON nuliaq  
-| --- 
-| --- 
-| --- 
-| --- 
 
 * LEXICON tp_speciel  specialitet for at haandtere diatese ved NIQ=SSAQ
 | --- 
