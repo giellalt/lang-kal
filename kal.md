@@ -843,8 +843,6 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 
 * LEXICON tpt  
 
-* LEXICON tptP  
-
 * LEXICON Z1iZ  taggit
 
 * LEXICON ZsikZ  170306 til ikusik og kiasik
