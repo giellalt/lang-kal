@@ -789,12 +789,6 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 
 * LEXICON XTgujaaX2  
 
-* LEXICON tp_uden_derivativer  
-| --- 
-| --- 
-| --- 
-| --- 
-
 * LEXICON tp  obs 20200623: fleksionsmorfemgrænse er %< og ikke %>
 
 * LEXICON tpV  obs 20200623: fleksionsmorfemgrænse er %< og ikke %> 
