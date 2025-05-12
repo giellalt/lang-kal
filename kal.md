@@ -795,11 +795,6 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 
 * LEXICON tp_Gram/Ord  obs 20200623: fleksionsmorfemgrænse er %< og ikke %> Ny PL20220522 kun til ordenstal
 
-| --- 
-| --- 
-| --- 
-| --- 
-
 * LEXICON Z1+tZ   !PL20210519 retableret og stammer fjernet fra GEMS
 
 * LEXICON tp_possessum3   Til "stammer" som inuup-normu
