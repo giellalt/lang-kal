@@ -802,10 +802,6 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 * LEXICON nuliaq  
 
 * LEXICON tp_speciel  specialitet for at haandtere diatese ved NIQ=SSAQ
-| --- 
-| --- 
-| --- 
-| --- 
 
 * LEXICON Z1eZ  
 | --- 
@@ -821,9 +817,6 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 * LEXICON tpP  
 
 * LEXICON tip  kuulti
-| --- 
-| --- 
-| --- 
 
 * LEXICON tiqp  qimmeq
 | --- 
@@ -1913,6 +1906,13 @@ anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
 * **+Sem/Unit** = Unit !Til besværlige låneord som 'time' etc., der optræder absolut
 * **+Sem/Url** tag til adresser af typen www.ccc.cc
 * **+Sem/misse** tag til at markere usikker possessor for misse
+
+* **+Sem/Bveg** =  Plant, vegetable   
+* **+Sem/cc-h** =  Object Countable, human-made  
+* **+Sem/domain** =  Domain    
+* **+Sem/therapy** =  Therapy    
+* **+Sem/inst** =  Institution    
+* **+Sem/sick** =  Disease    
 
 ### Grammar
 

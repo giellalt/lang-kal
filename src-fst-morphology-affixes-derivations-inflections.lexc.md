@@ -332,10 +332,6 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 * LEXICON nuliaq  
 
 * LEXICON tp_speciel  specialitet for at haandtere diatese ved NIQ=SSAQ
-| --- 
-| --- 
-| --- 
-| --- 
 
 * LEXICON Z1eZ  
 | --- 
@@ -351,9 +347,6 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 * LEXICON tpP  
 
 * LEXICON tip  kuulti
-| --- 
-| --- 
-| --- 
 
 * LEXICON tiqp  qimmeq
 | --- 
