@@ -334,7 +334,6 @@ Et særligt leksikon til tilhæng som RIANNGUAR+Der/vv
 * LEXICON tp_speciel  specialitet for at haandtere diatese ved NIQ=SSAQ
 
 * LEXICON Z1eZ  
-| --- 
 
 * LEXICON Z1tipeZ  
 
