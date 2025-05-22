@@ -75,6 +75,7 @@ anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
 * **+Sem/Url** tag til adresser af typen www.ccc.cc
 * **+Sem/misse** tag til at markere usikker possessor for misse
 
+* **+Sem/Aich** =  Animal, water   
 * **+Sem/Bveg** =  Plant, vegetable   
 * **+Sem/cc-h** =  Object Countable, human-made  
 * **+Sem/domain** =  Domain    
