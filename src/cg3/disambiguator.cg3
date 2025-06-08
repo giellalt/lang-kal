@@ -1158,6 +1158,13 @@ SET ADV-PARTIKEL = Tilhængspartikel - CONJ-C ;
 #Et sæt til hypotaktiske tidsudtryk i BARRIER
 LIST TIDSPOSSESSOR = ("ulloq" Rel) ("ukioq" Rel) ;
 
+#!! !!! Numeralier
+#       ========== ##
+LIST KAL_TLF_C = ("[123456789][%0123456789] [%0123456789][%0123456789] [56789][%012345678]"r) ("[123456789][%0123456789][%0123456789][%0123456789][56789][%012345678]"r);
+
+LIST KLOKKESLET2 = ("[%012456789]%. [%015][%0123456789]"r) ("[%0123456789]%. [234][%0123456789]"r) ("9.15"); #Regex fejl. Mail til Tino 20250608 ("9.15") interim for at få regressionen i nul
+
+
 # Syntaktiske sets
 # ============
 #SET NEXUS = (Rel LINK *1 TRANSVERB) OR (Abs LINK 1* INTRANSVERB) ;
@@ -2166,6 +2173,7 @@ ADD:AdvHyb2 (%AdverbielHyb) TARGET (/"UR"\ Gram/IV\ TUQ\ Der/vn\ N\ Ins\ Sg/l) I
 REMOVE:interim (/"[0-9]+"/l) + N IF (0 Num)
 (NEGATE 0 (/[1,2][0-9]{3}/l) - ("1000"))
 (NEGATE -1 N_NUMHOVED + Abs) #Blok 4-MI najugaqarpoq
+(NEGATE 0 KAL_TLF_C)
 ;
 
 REMOVE:00000A (Gram/Hyb) IF (0 (/\"ataatsim.*\"/r)) ; #ataatsimiippoq, ataatsimoorpoq osv. er aldrig hybrider
@@ -2256,6 +2264,7 @@ REMOVE:0001P N - AFFINGERET - POSSESSUM - ("SAS") IF (0 Num - AFFINGERET)
 (NEGATE 0 Rel + Pl LINK *1 3PlPoss BARRIER (*) - %AmbiguøsN - %AmbiguøsPar - OBLIQUE - 4PlPoss)#Oqaaserpassualeriffiup suliassaatut pingaarneq tassaavoq qarasaasiaq atorlugu kalaallisut oqaasilerissutit tamanut atuuttut ineriartortissallugit piffissallu ingerlanerani oqaasilerinermut SAKKUT assigiinngitsut tamakkiisumik pigilernissaat anguniassallugu, nutserutit ilanngullugit.
 (NEGATE 0 ("COVID-19" N) LINK 0 ("COVID19" Num))#Angerlarsimaannassaatit inuit COVID-19-IMIK tunillatsissimasutut paasineqartut qanillisimagukkit. 
 (NEGATE -1 N_NUMHOVED + Abs) #Blok 4-MI najugaqarpoq
+(NEGATE 0 KAL_TLF_C OR KLOKKESLET2)
 ;
 
 REMOVE:0001Q ("sooq") + LU IF (0 ("soorlu")) ;
@@ -5370,6 +5379,18 @@ SELECT:0069E $$OBLIQUE IF (*-1C $$OBLIQUE BARRIER (*) - CONJ-C LINK NOT 0 KASUS 
 
 REMOVE:0069F $$OBLIQUE + SINNAA + Pl + LU IF (0 $$OBLIQUE + SINNAA + Sg + CONJ-LU LINK -1 $$OBLIQUE + SINNAA + Sg )
 ;
+
+### Numeralier ###
+#================#
+
+REMOVE:0069H (Num Abs Pl) IF (0 (Num Abs Sg) LINK -1 ("nalunaaqutaq") OR ("nal.) OR ("Nal.") OR ("§") OR ("imm.") OR ("KAPITALI") OR ("kapitel")); #Ullumi nal. 12-13 bankimiittussaavunga.
+
+REMOVE:0069I (Num Abs Pl) IF (0 ("1") LINK 0 (Num Abs Sg));
+
+REMOVE:0069J (/"[012][0-9]:[0-5][0-9]"/r) + (Num Abs Pl) IF (0 (/"[012][0-9]:[0-5][0-9]"/r) + (Num Abs Pl)); #13:16
+
+#Telefonnumre er Sg
+REMOVE:0069K (Num Abs) IF (0 KAL_TLF_C + Abs + Sg);
 
 ### Sikre possessorer ###
 #=======================#
