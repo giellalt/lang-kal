@@ -359,6 +359,8 @@ Unification set til CONT og kongruente V ved intransitive V
 
 !!! Partikler
 
+!!! Numeralier
+
 ### Lexical sets
 
 - **LIST TASSA = "tassa" ("tass" Gram/Dem Interj);**

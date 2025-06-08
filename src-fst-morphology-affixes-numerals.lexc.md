@@ -6,7 +6,7 @@
 - **	%%	num_C ; ** tilfoejet loop 20090306 for at klare former som 83%-ii
 - **	°	num_C ; **  tilfoejet loop 20210502 for at klare former som 5°-imiippoq
 - **+Num+Abs+Sg:%>-%EPENT	indholds-K ; **  
-- **+Num+Abs+Sg: # ; **  
+- **+Num+Abs+Pl: # ; **  !PL20250606 90+Num kan aldrig være Sg
 - **+Num+Abs+Pl:%>-it	Krestr ; **  
 - **+Err/Sub+Num+Abs+Pl:%>-t	Krestr ; **  
 - **+Num+Abs+Sg+3SgPoss:%>-ia	Krestr ; **  
