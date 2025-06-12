@@ -327,8 +327,9 @@ MAP:M_tidlig0087 @N< TARGET N + $$KASUS + $$NUMERUS IF (-1  N + $$KASUS + $$NUME
 
 MAP:M_tidlig0100 @i-ADVL> TARGET Trm IF (*1 TRM_NOUN + Der/vn - V - TAQ BARRIER (*) - Trm - KOMMA) ;#Kontu *illumut, *ilinniagaqarnermut *inuussutissarsiornermulluunniit ileqqaarnermut atorneqassaaq.
 
-MAP:M_tidlig0100A @ADVL>N TARGET Trm IF (*1 TRM_NOUN - Der/vn - V BARRIER (N Der/vn) OR (*) - Trm - KOMMA) 
-;#Avatangiisinut *sunniutinut skema assersuutitut.
+##reglen er forkert fordi nogle er Der/vn - og andre ikke
+#MAP:M_tidlig0100A @ADVL>N TARGET Trm IF (*1 TRM_NOUN - Der/vn - V BARRIER (N Der/vn) OR (*) - Trm - KOMMA) 
+#;#Avatangiisinut *sunniutinut skema assersuutitut.
 
 MAP:M_tidlig0101 @i-ADVL> TARGET Ins IF (1 (/"periar"\ Gram/IV\ VIK\ Der/vn\ SSAQ\ Der/nn\ N/l)) ;#- Najukkami ilinniarnissamik suliffittaarnissaMILluunniit periarfissat killeqartuusinnaapput, imaluunniit ilinniakkamik naammassinninnissaq ajornakusoorsinnaalluni.
 
@@ -425,13 +426,26 @@ MAP:M_tidlig202 @N< TARGET $$OBLIQUE + Hyb/1-2 IF (*-1 $$OBLIQUE - OTHERTIME - N
 ##KL: minus NUM:#Qaammatini marlunni maaniissaanga.
 
 ##NB gælder kun oblique kasus, da nom og akk ikke laver kasuskongr
-MAP:M_tidlig202A @N< TARGET ("tamaq") + $$KASUS + $$NUMERUS IF (-1 ("suna" Pron) + $$KASUS + $$NUMERUS );#- Nakkutiginnittoqarpugut sunik tamanik nakkutilliisunik,   
+MAP:M_tidlig0202A @N< TARGET ("tamaq") + $$KASUS + $$NUMERUS IF (-1 ("suna" Pron) + $$KASUS + $$NUMERUS );#- Nakkutiginnittoqarpugut sunik tamanik nakkutilliisunik,   
 
 #;
-MAP:M_tidlig203 @i-ADVL> TARGET $$OBLIQUE IF (*1 $$OBLIQUE + @N< + Hyb/1-2 BARRIER (*) - ("qanoq") LINK 1 Der/vn) #Bakteeriat neqimit NERPIMMILLUUNNIIT ooqanngitsumeersut aammattaaq assanniissinnaapput
+MAP:M_tidlig0203 @i-ADVL> TARGET $$OBLIQUE IF (*1 $$OBLIQUE + @N< + Hyb/1-2 BARRIER (*) - ("qanoq") LINK 1 Der/vn)
 (NEGATE 1 Sem/Geo + $$KASUS + Hyb/1-2 LINK 1 $$KASUS)#Nuka KAFFISORNIARTARFIMMI Nuummiittumi Pascuccimi kaffisorujoorpoq.
 (NEGATE 0 (/"takornar"\ Gram/IV\ RIAR\ Der/vv\ Gram/IV\ TAR\ Der/vv\ Gram/IV\ UTE/l) LINK -1 ("umiarsuaq"))#Nunarput takornariaqarnerulissappat assersuutigalugu umiarsuarnut TAKORNARIARTAATINUT nunatsinnukartunut malittarisassat qasukkarneqarsinnaasut, Atassutip siulittaasuata Demokraatillu siunnersuutiginikuuaat. Jf. faste0760
 ;
+ #Bakteeriat neqimit NERPIMMILLUUNNIIT ooqanngitsumeersut aammattaaq assanniissinnaapput
+
+##struktur N + SSAQ + Lok og så N + Lok og så N + SSAQ + Lok + Der/vn
+MAP:M_tidlig0204xA @N< TARGET N + SSAQ + Lok + Der/vn - CONJ-LU IF (-1 N + Lok - SSAQ - CONJ-LU LINK  -1 N + SSAQ + Lok ) ;#Siumummi Partii Naleqqamilu allattaanerusimasoq, Mikael Petersen, Eqqartuussisoqarfik Sermersuumi suliassami oqaluttuarisaanermi *eqqaamasassami ulloq taanna sassassaaq.
+
+##struktur N + SSAQ + Lok og så N + Lok og så N + SSAQ + Lok + Der/vn
+MAP:M_tidlig0204xB @i-ADVL> TARGET N + Lok - SSAQ (-1 N + SSAQ + Lok)  (1 N + SSAQ + Lok) ;##Siumummi Partii Naleqqamilu allattaanerusimasoq, Mikael Petersen, Eqqartuussisoqarfik Sermersuumi suliassami *oqaluttuarisaanermi eqqaamasassami ulloq taanna sassassaaq.
+
+##struktur N + SSAQ + Lok og så N + Lok og så N + SSAQ + Lok + Der/vn
+MAP:M_tidlig0204xC @ADVL> TARGET N + Lok + SSAQ IF (1 N + Lok - SSAQ LINK 1 N + Lok + SSAQ + Der/vn LINK *1 VFIN BARRIER V OR (N Der/vn) ) ;##Siumummi Partii Naleqqamilu allattaanerusimasoq, Mikael Petersen, Eqqartuussisoqarfik Sermersuumi *suliassami oqaluttuarisaanermi eqqaamasassami ulloq taanna sassassaaq.
+
+##struktur med TUGAQ + SSAQ og Trm for tidspunkt
+MAP:M_tidlig0205 @i-ADVL> TARGET Trm + OTHERTIME OR Trm + UGEDAGE IF (*1 TUGAQ + SSAQ + N BARRIER (*) - Rel ) ;#*Marlunngornermut puisip neqitugassaq nillertumut nivinngarneqassaaq.
 
 #parataktiske NP-er, hvor første led er implicit possessor for andet led
 
@@ -617,6 +631,8 @@ MAP:M_tidlig0640 @HNOUN TARGET ("§ [123456789]."r); #Punktopstilling med §
 
 MAP:M_tidlig0645 @>N TARGET Num + Abs IF (1 PROCENT);
 
+MAP:M_tidlig0646 @ADVL> TARGET PROCENT + N + Abs + Sg  IF ( -1 Num LINK *-1 Abs + &&IV_SUBJ& ) (1 VFIN + &&IV_SUBJ&);#Europalitsi atoreersimasoq nutaamut sanilliullugu 25 % akikinneruvoq.
+
 MAP:M_tidlig0650 @i->N>N TARGET Ins IF (*1 TUQ + QAR + NIQ + N + Lok + 3SgPoss BARRIER (*) - OBLIQUE - CONT LINK 1 TUQ + QAR + NIQ + SSAQ + Abs) ; #Kunngikkormiunik suliumajunnaartoqaleruttornerani tikeraartoqarnissartik tulluartuunngitsoq, Savalimmiut naalakkersuisuisa siulittaasuat isumaqarpoq. 
 
 
@@ -776,7 +792,7 @@ MAP:M_tidlig0775 @ADVL> TARGET Trm IF (1 ("sanilliup"))
 #Hvad er den rigtige analyse her?
 MAP:M_tidlig0780 @>N TARGET TIMEUNIT + Abs IF (1 iNum + NNGUR + Der/vn + Abs); #Ullumi ulloq tassaavoq Qeqertarsuarmi Angakkussarfiup tunngavilerneqarneraniit UKIUT 100-nngortorsiorneq.
 
-MAP:M_tidlig0781 @>N TARGET N_NUMHOVED + Abs IF (1 ("[0-9]+"r) + N); #BLOK 4-mi najugaqarpoq/SIPAAQ 4 igippaa.
+MAP:M_tidlig0781 @>N TARGET N_NUMHOVED + Abs IF (1 ("[0-9]+"r) + N); #BLOK 4-mi najugaqarpoq #SIPAAQ 4 igippaa.
 
 MAP:M_tidlig0785 @PRED TARGET LIK IF (-1 ("qanoq") + Adv + UNA OR UKU) (NOT 0* V) (1 ("?") ); #Ateq "Poorsimaaq", qanoq-una isumalik?
 ## LIK = QAR + TOQ = Par og Par udløst her af UNA/UKU
@@ -1686,13 +1702,46 @@ MAP:M_uløselighed0520 @SUBJ> TARGET Rel + Sg + FAM_UNIK IF (1 FAM_UNIK + Abs + 
 
 #Faste fraser med @ADVL>N
 
-MAP:M_faste0014 @ADVL>N TARGET <drink> (1 ("karsi")) ; ##mangler EX
+##Nogle nominer er egl nominaliseringer, men det er vanskeligt at se (inatsit) eller hvis de analyseres morfologisk sker der en voldsom overgenerering, som giver analyseproblemer (EX pisortaq) - atter andre har nok aldrig haft en verbalstame inderiveret men forbindes alligevel i visse sammenhænge med oblique kasusformer (EX aqqut)
+##Nogle titler /jobsbetegnelser/relationer er låneord uden nogen verbalstamme i sig eller kan være uanalyserede som ovenfor nævnt - dvs til nogle af de ord som står i titel-listen burde egl få ADVL>N men får det i-ADVL> 
 
+MAP:M_faste0001 @ADVL>N TARGET Trm + $$NUMERUS - OTHERTIME IF (1 ("inatsit") + N - Der/nv OR ("skema") - Der/nv OR ("suliaq") - Der/nv OR ("qinnut") - Der/nv OR ("ateq") - Der/nv OR ("angajoqqaaq") - Der/nv)
+(NEGATE 0 Num + Trm + $$NUMERUS OR ADJEKTIVISK + Trm + $$NUMERUS LINK -1 Trm + $$NUMERUS) #Kevin Federline meeqqaminnut *marlunnut angajoqqaatut akisussaaffimmik tigumminnittunngorpoq, eqqartuussisut Britney Spears Sean-imut marlunnik ukiulimmut Jayden-imullu ataatsimik ukiulimmut akisussaaffianik arsaarmassuk. 
+;
+#Oqaasileriffik ilisimasaqarfigilluarpaa, Oqaasileriffiullu *ingerlannissaanut suliassat, piumasaqaatit anguniakkallu nalunngilluinnarlugit, kultureqarnermut naalakkersuisoqarfik taama allappoq.
+#minus Der/nv: #Sanaartugassanik suliassinneqartartut Qaqortumi mittarfiliornissamut suliariumannittuuniarsinnaaqqilerput. 
+
+MAP:M_faste0001x1 @ADVL>N TARGET PILLUGU IF (1 ("inatsit") ) ;#Kisianni umiarsualiviit *pillugit inatsimmit Inatsisartunit 2015-imi akuersissutigineqartumit tunngavissinneqareersoq allaqqavoq.
+
+MAP:M_faste0002 @ADVL>N TARGET N + Trm + $$NUMERUS - OTHERTIME IF (*1 ("angajoqqaaq") - Der/nv BARRIER (*) - $$NUMERUS ) ;#Kevin Federline *meeqqaminnut marlunnut angajoqqaatut akisussaaffimmik tigumminnittunngorpoq, eqqartuussisut Britney Spears Sean-imut marlunnik ukiulimmut Jayden-imullu ataatsimik ukiulimmut akisussaaffianik arsaarmassuk.
 
 #Lok til suliaq
 ##forudsat at suliaq ikke ses som inderiverende
-MAP:M_faste0020x @ADVL>N TARGET N + VIK + Lok OR ("eqqartuussivik") + Lok IF (1 ("suliaq")); #Nivi Olsenimut toqutsinissamik sioorasaarineq pillugu eqqartuussivimmi suliassaq kinguartinneqartoq
+MAP:M_faste0003 @ADVL>N TARGET N + VIK + Lok  IF (1 ("suliaq")); #Nivi Olsenimut toqutsinissamik sioorasaarineq pillugu eqqartuussivimmi suliassaq kinguartinneqartoq
 #Angerlarsimaffitsinni suliassat kisima isumagisarpakka.
+
+
+
+#Trm til aqqut
+MAP:M_faste1360 @ADVL>N TARGET Sem/Geo + Trm IF (1 ("aqqut") + N - Hyb/1-2 ) ; #*USA-mulli aqqutit nutaat amerikamiut oqartussaasuinit aamma erseqqissarneqaqqaassapput.
+##minus Hyb/1-2: 
+
+#Trm og Abl til aqqut
+MAP:M_faste1360x1 @ADVL>N TARGET Sem/Geo + Trm OR Sem/Geo + Abl IF (*1 ("aqqut") + N - Hyb/1-2 BARRIER (*) - Sem/Geo - CONT  ) ;#Assimi umiarsuup *Nuummiit *Ilulissanut uterlugulu aqqutaa takuneqarsinnaavoq.
+
+#og retur ved aqqut
+MAP:M_faste1361x2 @ADVL>N TARGET ("uter") + Cont + 3SgO  + CONJ-LU IF (-1 Sem/Geo + Trm ) (1 ("aqqut") + N - Hyb/1-2);#Assimi umiarsuup Nuummiit Ilulissanut *uterlugulu aqqutaa takuneqarsinnaavoq.
+
+#Via til aqqut
+MAP:M_faste1361x3 @ADVL>N TARGET Via IF (1 ("aqqut") ) ;
+
+
+
+
+MAP:M_faste0014 @ADVL>N TARGET <drink> (1 ("karsi")) ; ##mangler EX
+
+
+
 
 
 MAP:M_faste0022 @ADVL>N TARGET Pron + Abl + Pl IF (1 Num + Abs ) ;#Maannamut inuit 83-it misissortissimanerminnik akissutissarsisimalerput, TAAKKUNANNGALU marluk coronavirusimik tunillatsissimallutik.
@@ -1707,22 +1756,22 @@ MAP:M_faste1355 @ADVL>N TARGET ("oqaaseq") + N + Via + Pl IF (1 ("teknologi") ) 
 MAP:M_faste0090 @ADVL>N TARGET (/"ilitsoqqup"\ Gram/TV\ TAQ\ Der/vn\ GE\ Der/nv\ Gram/TV\ V\ Cont/l) IF (1 ("oqaaseq")); #Taamaammat nammineq oqaatsivut pillugit ataatsimoortariaqarpugut, ullumikkullu ILITSOQQUSSARALUGU oqaatsit ulluanni oqaatsivut nalliuttorsiutigalutigit, Inatsisartunut siulittaasoq Josef Tuusi Motzfeldt knr.gl-imut oqarpoq.
 
 #lokalpolitik
-MAP:M_faste0140 @ADVL>N TARGET (/"najor"\ Gram/TV\ TAQ\ Der/vn\ N\ Lok\ Sg/l) IF (1 ("politik")); #Inuiaqatigiinnik soqutigisaqarnini tunngavigalugu NAJUKKAMI politikkimik aamma suliaqalerpoq - altså 'lokalpolitik'
+MAP:M_faste0140 @ADVL>N TARGET (/"najor"\ Gram/TV\ TAQ\ Der/vn\ N\ Lok\ Sg/l) IF (1 ("politik")); #Inuiaqatigiinnik soqutigisaqarnini tunngavigalugu NAJUKKAMI politikkimik aamma suliaqalerpoq 
 
 #ildebrandsrøg
 MAP:M_faste0141 @ADVL>N TARGET (/"ikuallap"\ Gram/IV\ NIQ\ Der/vn\ N\ Abl\ Sg/l) IF (1 ("pujoq") ); #IKUALLANNERMIT putsup nunatsinnut ulluni makkunani anngusimaarnera seqernup nuinerani tarrinneranilu nunatta qilaata aappillersimaartaarneranut peqqutaavoq.
 
-#fast udtryk for arktisk ingeniør
+#fast udtryk for arktisk ingeniør - ississtumut
 MAP:M_faste0175 @ADVL>N TARGET ("tunnga") + Trm IF (1 ("ingeniør"));
 #ARTEK tassaasoq »Center for Arktisk Teknologi« Sisimiuniippoq issittumullu tunngasumut ingeniøritut ilinniartitaanerulluni Danmarkimi DTU Byg-imut atasoq.
 
-#fra en organisation, parti etc
+#fra en organisation, parti etc til efternavn
 MAP:faste0300 @ADVL>N TARGET ORGANISATION + Abl IF (*1 Sem/Hum - FIRSTNAME BARRIER (*) - FIRSTNAME); #DEMOKRAATINIT Nivi Olsen inoqatinut attaveqaatitigut pissuserissaartoqarnissaanik qaammarsaasoqarnissaanik siunnersuuteqarpoq.
 
-#fra en organisation, parti etc
+#fra en organisation, parti etc til fornavn
 MAP:faste0301 @ADVL>N TARGET ORGANISATION + Abl IF (*1 Sem/Hum BARRIER (*) - FIRSTNAME); #DEMOKRAATINIT Nivi inoqatinut attaveqaatitigut pissuserissaartoqarnissaanik qaammarsaasoqarnissaanik siunnersuuteqarpoq.
 
-#fra organisation, institution
+#fra organisation, institution til politiker
 MAP:M_faste0651 @ADVL>N TARGET Abl + ORGANISATION OR Abl + INSTITUTION IF (-1 BOS LINK 1 _TARGET_ LINK 1 Prop + Sem/Hum OR ("politiker")) ;#Inuit Ataqatigiinnit politikerip nunaqarfinnik matusinissamik siunnersuut sammisamik mianernartumik eqquisoq nassuerutigaa.
 
 #det grønlandske sprog
@@ -1734,6 +1783,8 @@ MAP:M_faste0480 @ADVL>N TARGET ("kalaaleq") + N + Aeq + Sg IF (1 ("ordbog") OR (
 
 ## skriftsprog
 MAP:M_faste0895 @ADVL>N TARGET (/"allap"\ Gram/HV\ Gram/IV\ NIQ\ Der/vn\ N\ Lok\ Sg/l) (1 ("oqaaseq")) ;#allannermi oqaatsit
+
+
 
 #lovtekst
 MAP:M_faste0520 @ADVL>N TARGET <conv> IF (1 <sem-r>); #Angallannermut INATSIMMI paragraffi 118 naapertorlugu angut taanna unioqqutitsisimasutut aamma unnerluutigineqalerpoq. ##KL inatsit er egl en nominalisering, men opfattes ikke som sådan, derfor denne analyse
@@ -1758,6 +1809,10 @@ MAP:M_faste0916 @ADVL>N TARGET Lok + 3SgPoss IF (1 ("qileroq")); #SEEQQUANI qile
 #nunarsuarmi aningaasat kaaviiaartut
 MAP:M_faste0917 @ADVL>N TARGET Lok + ("nuna") + SUAQ IF (1 ("aningaasaq") + N + $$KASUS + $$NUMERUS LINK 1 (/"kaaviiaar"\ Gram/IV\ TUQ\ Der/vn\ N/l)  + $$KASUS + $$NUMERUS) ;
 #Taakkua tusaannarlugit aningaasarpassuartut isikkoqaraluarput, kisianni nunarsuaq tamakkerlugu aningaasarsiorneq qiviaraanni taakkua nunarsuarmi aningaasat kaaviiaartut ilamininnguaannaraat, Kirsten Halsnæs oqarpoq.
+
+
+#nunarsuarmi til pissartaq
+MAP:M_faste1315 @ADVL>N TARGET (/"nuna"\ SUAQ\ Der/nn\ N\ Lok\ Sg/l) OR (Sem/Geo Prop Lok) IF (1 (/"pissaq"\ TAQ\ Der/nn\ N/l)) ;#Futsalimi kalaallit nunanut allanut unammisartut *nunarsuarmi pissartanut Brasiliamiunut pingasunngornermi unnukkut unammipput. 
 
 ##NB hvis naalliuut analyseres morf så regel overflødig og lig i-ADVL>
 MAP:M_faste0960 @ADVL>N TARGET ("inuk" U NIQ) + Lok IF (1 ("naalliuut")); #Toqunissaanut ikiussagaluarukku, INUUNERMINI naalliuutai tamaanga kipiinnassagakkit, taamatullu ikiorusunngilara.
@@ -1802,22 +1857,6 @@ MAP:M_faste1290 @ADVL>N TARGET Abl + $$NUMERUS IF (*1 ("sinneq" KUQ ) BARRIER (*
 (NEGATE 0  N + Abl + $$NUMERUS LINK -1 N + Abl + $$NUMERUS) 
 ;#Ukiuni 37-ni *aatsitassarsiornermit sinnikut 111 millionit tonsiussapput qaarsorlu (*qaarsumit piiarneqartumit sinnikut ) 111 millionit tonsiussalluni.
 
-#nunarsuarmi til pissartaq
-MAP:M_faste1315 @ADVL>N TARGET (/"nuna"\ SUAQ\ Der/nn\ N\ Lok\ Sg/l) OR (Sem/Geo Prop Lok) IF (1 (/"pissaq"\ TAQ\ Der/nn\ N/l)) ;#Futsalimi kalaallit nunanut allanut unammisartut *nunarsuarmi pissartanut Brasiliamiunut pingasunngornermi unnukkut unammipput. 
-
-
-#Trm til aqqut
-MAP:M_faste1360 @ADVL>N TARGET Sem/Geo + Trm IF (1 ("aqqut") + N - Hyb/1-2 ) ; #*USA-mulli aqqutit nutaat amerikamiut oqartussaasuinit aamma erseqqissarneqaqqaassapput.
-##minus Hyb/1-2: 
-
-#Trm og Abl til aqqut
-MAP:M_faste1360x1 @ADVL>N TARGET Sem/Geo + Trm OR Sem/Geo + Abl IF (*1 ("aqqut") + N - Hyb/1-2 BARRIER (*) - Sem/Geo - CONT  ) ;#Assimi umiarsuup *Nuummiit *Ilulissanut uterlugulu aqqutaa takuneqarsinnaavoq.
-
-#og retur
-MAP:M_faste1361x2 @ADVL>N TARGET ("uter") + Cont + 3SgO  + CONJ-LU IF (-1 Sem/Geo + Trm ) (1 ("aqqut") + N - Hyb/1-2);#Assimi umiarsuup Nuummiit Ilulissanut *uterlugulu aqqutaa takuneqarsinnaavoq.
-
-#Via til aqqut
-MAP:M_faste1361x3 @ADVL>N TARGET Via IF (1 ("aqqut") ) ;
 
 
 #Trm til kisitsit
@@ -2803,6 +2842,8 @@ MAP:M_faste1440 @ADVL> TARGET (/"pi"\ Gram/TV\ V\ Cont\ 3SgO/l) IF (-1 (/"pi"\ G
 #Pisoq pillugu konservativineersup, Rasmus Jarlovip amerikamiut Nuummi sinniisoqarfiata matuneqarnissaa kaammattuutigaa.
 ##BARRIER betyder i-ADVL i EX:- Pisoq pillugu paasissutissanik katersivugut, 
 
+#MAP:M_faste1445 @
+
 #####
 #######
 
@@ -3628,49 +3669,49 @@ MAP:M0408H @ADVL> TARGET Aeq IF (*1 ("Naalakkersuisoq" N) BARRIER (*) - Trm - In
 #Aalajangiineq tusarniaanermi akissutitut Ilaqutariinnermut Peqqissutsimullu Naalakkersuisoqarfimmut nassiunneqassaaq, nuuk.gl allappoq.
 
 #Reglen har alt for mange negates, men rammer kun 8 sætninger i regressionen
-MAP:M0408O @i-ADVL> TARGET $$OBLIQUE - ("<(S|s)aniatigut>"r) - ("kingu") - Adv IF (*1 N + INDERIVERENDE_SUBSTANTIV_BEGRÆNSET - U - GE - NIAR - SIUR - POSSESSUM12 - ORATIOOBLVERB - (/"pisortaq"\ N\ Via\ Pl\ Hyb/1-2/l) - ("isuma" N) - CONJ-LU BARRIER (Der/vn N) OR (*) - CONT - Abs - @i-POSS> - Conj - KOMMA - Ins - Via LINK NOT 1 HVVERB)
-#BARRIER Der/vn pga. ...  2015-IMILI attartortitseqqiisalersimanera inatsisinik ... NB - ("isuma" N) ad hoc for at undgå hit på isumaginninneq. Skal klares i SET-et
-(NEGATE 0 $$KASUS - Rel - Abs - Ins LINK 1 $$KASUS - Rel - Abs - Ins LINK NEGATE 1 Gram/Db)
-(NEGATE 0 CONJ-LU + $$KASUS LINK -1 $$KASUS)
-(NEGATE 0 $$KASUS LINK 1 $$KASUS + CONJ-LU)
-(NEGATE 1 VFIN LINK 1 EOS)
-(NEGATE *1 KOMMA BARRIER V OR INDERIVERENDE_SUBSTANTIV)
-(NEGATE 0 $$KASUS LINK *-1 $$KASUS - @i-ADVL> - @N< BARRIER (*) - Adv - Pali - Interj - @POSS> - (/@i-.*/r) - @N<)
-(NEGATE *0 ("isikku") - QAR - V)
-(NEGATE 0 Gram/Dem)
-(NEGATE 1 INSOBJVERB OR LIK_QAR OR LIRSUR)
-(NEGATE 0 Abl LINK *1 NIQAR BARRIER V)
-#(NEGATE 0 Lok + PLACE LINK 1 HUMAN)(NEGATE 0 Trm - Gram/Pers LINK 1 Trm) #Lok + PLACE for at hindre inderivation ved fx nunaqarfimmi inuusuttoq pikkorippoq. #Kopi af M0869 #Stjernekontekst tilføjet.
-(NEGATE 0 Ins LINK *1 HTR BARRIER (*) - OBLIQUE - Sem/Temporal - TIME)#Portørit NAPPARSIMASUMIK mittarfimmut talimanngornermi unnuttoq aallernerat Facebookkikkut siammarterneqangaatsiarpoq
-(NEGATE 1 FossileredeCont)#Biologit Pinngortitaleriffimminngaanneersut ukiup SIULIANUT sanilliullugu , piujuartitsiniarnermik tunngaveqarluni aaffanniartoqartarnera nalunaarutigaat .
-(NEGATE 0 Aeq LINK *1 INDERIVERENDE_SUBSTANTIV + ("isi"))#Margrethe parnaarussivimmiitillugu ajortup saqqummerfigaa UUMASUPILUTTUT innermik isilittut qanerujussuaqartutullu isikkoqarluni.
-(NEGATE 0 COUNTRY + Lok LINK -1 BOS)#Danmarkimi amerlasuut aqerlumik sanaat qangali inerteqqutaapput, Norgemilu ukiortaamit inerteqqutigineqalissallutik.
-(NEGATE 0 (/NNGIT\ Der/vv\ Gram/IV\ NIQ\ Der/vn\ N\ Lok\ Sg/l) LINK *-1 BOS BARRIER (*) - OBLIQUE)#Qaartartumik QAARTITSINNGINNERMI mittarfik inuerutitinneqariarluni mittarfimmut mittarfimmiillu angallanneq unitsinneqarallarsimavoq.
-(NEGATE 0 (/"ingerla"\ Gram/IV\ INNAR\ Der/vv\ Gram/IV\ NGAJAP\ Der/vv\ Gram/IV\ TUQ/l) + Ins LINK 1 Abs LINK *1 3SgO BARRIER (*) - OBLIQUE - Abs)#Piitaq taamani nunatsinni ilinniarfiit annersaat, ilinniarfissuaq, aqqusaarsinnarlugu Danmarkimi ukiut marluk ilinniaqqereerluni inerami INGERLAANNANGAJATTUMIK politikki ilinniartuugallarnerminili alapernaassimasani pullavigalugu landsrådimi ilaasortanngorpoq.
-(NEGATE 1 Abs + &&TV_OBJ& LINK 1 INDERIVERENDE_SUBSTANTIV + OBLIQUE LINK 1 V + &&TV_OBJ&)#Avataarsualiartartut Amerikameersut Qaammammut ukiut tallimat INGERLANNGINNERINI uternissaat politikkikkut sulissutiginiarparput, Mike Pence, USA-mi naalagaaffeeqqami Alabamami illoqarfimmi Huntsvillemi oqalugiartilluni oqarpoq.
-(NEGATE 0 Lok LINK *1 ("isuma") + Abs BARRIER (*) - Gram/Dem LINK *1 (/3..O/r) BARRIER V)#Kisimiileraangamili pingaartumik INEEQQAMINI tamakku isumapiluit qaffakaatittoortarpai. Ad hoc, men jeg kan ikke formulere en generel løsning
-(NEGATE 0 Ins LINK *1 HTR BARRIER V)#Kommuneqarfik Sermersooq, Nuutoqqami eqqaassutissamut akisussaasuusoq, INNUTTAASUNIK eqqaassutissap peerneqarnissaanut tassaniiginnarnissaanulluunniit taasititsivoq. FARLIG UNDTAGELSE. SKAL GENOVERVEJES
-(NEGATE *1 @i-ADVL> - $$OBLIQUE - ("saper" NNGIT TAQ Ins Sg) BARRIER INDERIVERENDE_SUBSTANTIV LINK *1 INDERIVERENDE_SUBSTANTIV LINK NEGATE *1 INDERIVERENDE_SUBSTANTIV)
-(NEGATE 0 TIMENOUN + Via LINK NEGATE 1 Der/vn)#Tamatuma KINGORNAGUT atuakkiat, taalliat, aviisit, atuagassiat, nittartakkat inatsisillu oqaasertaat katersorneqarput.
-(NEGATE 0 Aeq LINK 1 Conj LINK *1 Aeq BARRIER (*) - Rel - OBLIQUE LINK 1 VFIN)#Angut mittarfeqarfimmut inatsimmik UNIOQQUTITSISIMASUTUT aammalu pisortat sulisuinut ajuallatsitsisimasutut unnerluutigineqarpoq
-(NEGATE 0 Num + $$KASUS LINK *-1 N + $$KASUS BARRIER (*) - $$KASUS)#Aningaasat taakku nunatsinni peqqinnissaqarfimmut ukiumi ATAATSIMI aningaasartuutaasartut 67 %-it misseripajaarpaat.
-(NEGATE 0 Lok LINK *1 VFIN BARRIER V OR Der/vn)#SUNNGIFFINNI ilaqutserisarpunga akuttugaluartunillu ikinngutikka  ataatsimooqatigisarlugit.
-(NEGATE -1 BOS LINK 1 _TARGET_ + (/"taama"\ Aeq\ Adv\ TTAAQ/l))#TAAMATUTTAAQ nioqqutissat nillataartitsivimmiittut qerititsivimmiittullu taarserneqartarput,
-(NEGATE 0 Trm LINK -1 Abl) #Ullaamiit UNNUSSUARMUT angajoqqaavisa sunik tamanik oqilisaappaat.
-(NEGATE 1 Abs + Pl LINK *1 VFIN + 3PlO BARRIER (*) - (Abs Pl))#Statsministerip ammaanersiornermi OQALUGIAAMMINI kalaallit innuttaasut qutsavigai Namminersornerup eqqunneqarnerani ulloq nuannersoq pillugu.
-(NEGATE 0 TIMENOUN + Lok LINK -1 BOS OR DIRTALESTART)#AASAANERANI angallatit atorlugit angalaartarneq inuppassuarnut nuannersorujussuusarpoq.
-(NEGATE 0 Aeq OR Via LINK 1 ("politeeq") )# Ataasinngormat ullaakkut arnap 30-ikkunni ukiullip nukappiaraq 15-inik ukiulik pinngitsaaliisimasuTUT politiinut nalunaarutigaa,
-(NEGATE 0 Lok + Sem/inst LINK 1 ("inatsit") LINK 1 PILLUGU LINK 1 N + INDERIVERENDE_TITEL) #Aarhus Universitetimi inatsisit pillugit lektori, Caroline Adolphsen aamma taama isumaqarpoq.
-(NEGATE 1 ("ator") + V)#Allagaatinik katersuivik pingaarnertut kalaallisut oqaatsinik misissuinermut atugassanngorlugu suliaavoq.
-(NEGATE 0 Abl LINK *1 ABLVERB) #INEEQQAMIIT politiit annikkaminnga talikkut illuttut paarivaannga.
-(NEGATE 0 Trm LINK *1 ("suli") + TUQ LINK *1 V + TRMVERB) #Naak inuit oqquminngaanniit meterialuinnarnik biilinut ikaarsinnaagaluartut tamanna anorersuup ajornakusoortippaa, taamaalillutillu najugaqartut aniareersimasut AMBULANCENUT politiillu biiliinut sulisunit ikaassorneqarput.
-(NEGATE 0 $$KASUS + $$NUMERUS - HTR - CONJ-LU - POSSESSUM - (/"tunnga"\ Gram/IV\ TUQ\ Der/vn\ N/l) LINK -1 $$KASUS + $$NUMERUS - NIQ )#”Usimi!” ammaleriallaraa Arsugap atuarfimmi sanaarisimasaa iganut allequt, kappoqqutinik *liimmernikunik ammalortuliaq, qaavatigut orangeamik qalipaatilimmik annoraaminermik qalligaq.
-(NEGATE 0 Ins OR Aeq LINK 1 ("politeeq") ) #Arfininngormat ualikkut 16.47 Aqqusinersuarmi *savilersortoqarsimaneranik politiit nalunaarfigineqarput. 
-(NEGATE *1 ("Naalakkersuisoq" N) BARRIER (*) - Trm)#Aalajangiineq tusarniaanermi akissutitut Ilaqutariinnermut Peqqissutsimullu Naalakkersuisoqarfimmut nassiunneqassaaq, nuuk.gl allappoq.
-(NEGATE 0 Lok LINK 1 ("inatsit") )#Paasissutissallu taakku isertortumik paasiniaasartut *suliaqarneranni inatsisit malillugit suliaqarnermi pissarsiarineqarsinnaapput.
+#MAP:M0408O @i-ADVL> TARGET $$OBLIQUE - ("<(S|s)aniatigut>"r) - ("kingu") - Adv IF (*1 N + INDERIVERENDE_SUBSTANTIV_BEGRÆNSET - U - GE - NIAR - SIUR - POSSESSUM12 - ORATIOOBLVERB - (/"pisortaq"\ N\ Via\ Pl\ Hyb/1-2/l) - ("isuma" N) - CONJ-LU BARRIER (Der/vn N) OR (*) - CONT - Abs - @i-POSS> - Conj - KOMMA - Ins - Via LINK NOT 1 HVVERB)
+##BARRIER Der/vn pga. ...  2015-IMILI attartortitseqqiisalersimanera inatsisinik ... NB - ("isuma" N) ad hoc for at undgå hit på isumaginninneq. Skal klares i SET-et
+#(NEGATE 0 $$KASUS - Rel - Abs - Ins LINK 1 $$KASUS - Rel - Abs - Ins LINK NEGATE 1 Gram/Db)
+#(NEGATE 0 CONJ-LU + $$KASUS LINK -1 $$KASUS)
+#(NEGATE 0 $$KASUS LINK 1 $$KASUS + CONJ-LU)
+#(NEGATE 1 VFIN LINK 1 EOS)
+#(NEGATE *1 KOMMA BARRIER V OR INDERIVERENDE_SUBSTANTIV)
+#(NEGATE 0 $$KASUS LINK *-1 $$KASUS - @i-ADVL> - @N< BARRIER (*) - Adv - Pali - Interj - @POSS> - (/@i-.*/r) - @N<)
+#(NEGATE *0 ("isikku") - QAR - V)
+#(NEGATE 0 Gram/Dem)
+#(NEGATE 1 INSOBJVERB OR LIK_QAR OR LIRSUR)
+#(NEGATE 0 Abl LINK *1 NIQAR BARRIER V)
+##(NEGATE 0 Lok + PLACE LINK 1 HUMAN)(NEGATE 0 Trm - Gram/Pers LINK 1 Trm) #Lok + PLACE for at hindre inderivation ved fx nunaqarfimmi inuusuttoq pikkorippoq. #Kopi af M0869 #Stjernekontekst tilføjet.
+#(NEGATE 0 Ins LINK *1 HTR BARRIER (*) - OBLIQUE - Sem/Temporal - TIME)#Portørit NAPPARSIMASUMIK mittarfimmut talimanngornermi unnuttoq aallernerat Facebookkikkut siammarterneqangaatsiarpoq
+#(NEGATE 1 FossileredeCont)#Biologit Pinngortitaleriffimminngaanneersut ukiup SIULIANUT sanilliullugu , piujuartitsiniarnermik tunngaveqarluni aaffanniartoqartarnera nalunaarutigaat .
+#(NEGATE 0 Aeq LINK *1 INDERIVERENDE_SUBSTANTIV + ("isi"))#Margrethe parnaarussivimmiitillugu ajortup saqqummerfigaa UUMASUPILUTTUT innermik isilittut qanerujussuaqartutullu isikkoqarluni.
+#(NEGATE 0 COUNTRY + Lok LINK -1 BOS)#Danmarkimi amerlasuut aqerlumik sanaat qangali inerteqqutaapput, Norgemilu ukiortaamit inerteqqutigineqalissallutik.
+#(NEGATE 0 (/NNGIT\ Der/vv\ Gram/IV\ NIQ\ Der/vn\ N\ Lok\ Sg/l) LINK *-1 BOS BARRIER (*) - OBLIQUE)#Qaartartumik QAARTITSINNGINNERMI mittarfik inuerutitinneqariarluni mittarfimmut mittarfimmiillu angallanneq unitsinneqarallarsimavoq.
+#(NEGATE 0 (/"ingerla"\ Gram/IV\ INNAR\ Der/vv\ Gram/IV\ NGAJAP\ Der/vv\ Gram/IV\ TUQ/l) + Ins LINK 1 Abs LINK *1 3SgO BARRIER (*) - OBLIQUE - Abs)#Piitaq taamani nunatsinni ilinniarfiit annersaat, ilinniarfissuaq, aqqusaarsinnarlugu Danmarkimi ukiut marluk ilinniaqqereerluni inerami INGERLAANNANGAJATTUMIK politikki ilinniartuugallarnerminili alapernaassimasani pullavigalugu landsrådimi ilaasortanngorpoq.
+#(NEGATE 1 Abs + &&TV_OBJ& LINK 1 INDERIVERENDE_SUBSTANTIV + OBLIQUE LINK 1 V + &&TV_OBJ&)#Avataarsualiartartut Amerikameersut Qaammammut ukiut tallimat INGERLANNGINNERINI uternissaat politikkikkut sulissutiginiarparput, Mike Pence, USA-mi naalagaaffeeqqami Alabamami illoqarfimmi Huntsvillemi oqalugiartilluni oqarpoq.
+#(NEGATE 0 Lok LINK *1 ("isuma") + Abs BARRIER (*) - Gram/Dem LINK *1 (/3..O/r) BARRIER V)#Kisimiileraangamili pingaartumik INEEQQAMINI tamakku isumapiluit qaffakaatittoortarpai. Ad hoc, men jeg kan ikke formulere en generel løsning
+#(NEGATE 0 Ins LINK *1 HTR BARRIER V)#Kommuneqarfik Sermersooq, Nuutoqqami eqqaassutissamut akisussaasuusoq, INNUTTAASUNIK eqqaassutissap peerneqarnissaanut tassaniiginnarnissaanulluunniit taasititsivoq. FARLIG UNDTAGELSE. SKAL GENOVERVEJES
+#(NEGATE *1 @i-ADVL> - $$OBLIQUE - ("saper" NNGIT TAQ Ins Sg) BARRIER INDERIVERENDE_SUBSTANTIV LINK *1 INDERIVERENDE_SUBSTANTIV LINK NEGATE *1 INDERIVERENDE_SUBSTANTIV)
+#(NEGATE 0 TIMENOUN + Via LINK NEGATE 1 Der/vn)#Tamatuma KINGORNAGUT atuakkiat, taalliat, aviisit, atuagassiat, nittartakkat inatsisillu oqaasertaat katersorneqarput.
+#(NEGATE 0 Aeq LINK 1 Conj LINK *1 Aeq BARRIER (*) - Rel - OBLIQUE LINK 1 VFIN)#Angut mittarfeqarfimmut inatsimmik UNIOQQUTITSISIMASUTUT aammalu pisortat sulisuinut ajuallatsitsisimasutut unnerluutigineqarpoq
+#(NEGATE 0 Num + $$KASUS LINK *-1 N + $$KASUS BARRIER (*) - $$KASUS)#Aningaasat taakku nunatsinni peqqinnissaqarfimmut ukiumi ATAATSIMI aningaasartuutaasartut 67 %-it misseripajaarpaat.
+#(NEGATE 0 Lok LINK *1 VFIN BARRIER V OR Der/vn)#SUNNGIFFINNI ilaqutserisarpunga akuttugaluartunillu ikinngutikka  ataatsimooqatigisarlugit.
+#(NEGATE -1 BOS LINK 1 _TARGET_ + (/"taama"\ Aeq\ Adv\ TTAAQ/l))#TAAMATUTTAAQ nioqqutissat nillataartitsivimmiittut qerititsivimmiittullu taarserneqartarput,
+#(NEGATE 0 Trm LINK -1 Abl) #Ullaamiit UNNUSSUARMUT angajoqqaavisa sunik tamanik oqilisaappaat.
+#(NEGATE 1 Abs + Pl LINK *1 VFIN + 3PlO BARRIER (*) - (Abs Pl))#Statsministerip ammaanersiornermi OQALUGIAAMMINI kalaallit innuttaasut qutsavigai Namminersornerup eqqunneqarnerani ulloq nuannersoq pillugu.
+#(NEGATE 0 TIMENOUN + Lok LINK -1 BOS OR DIRTALESTART)#AASAANERANI angallatit atorlugit angalaartarneq inuppassuarnut nuannersorujussuusarpoq.
+#(NEGATE 0 Aeq OR Via LINK 1 ("politeeq") )# Ataasinngormat ullaakkut arnap 30-ikkunni ukiullip nukappiaraq 15-inik ukiulik pinngitsaaliisimasuTUT politiinut nalunaarutigaa,
+#(NEGATE 0 Lok + Sem/inst LINK 1 ("inatsit") LINK 1 PILLUGU LINK 1 N + INDERIVERENDE_TITEL) #Aarhus Universitetimi inatsisit pillugit lektori, Caroline Adolphsen aamma taama isumaqarpoq.
+#(NEGATE 1 ("ator") + V)#Allagaatinik katersuivik pingaarnertut kalaallisut oqaatsinik misissuinermut atugassanngorlugu suliaavoq.
+#(NEGATE 0 Abl LINK *1 ABLVERB) #INEEQQAMIIT politiit annikkaminnga talikkut illuttut paarivaannga.
+#(NEGATE 0 Trm LINK *1 ("suli") + TUQ LINK *1 V + TRMVERB) #Naak inuit oqquminngaanniit meterialuinnarnik biilinut ikaarsinnaagaluartut tamanna anorersuup ajornakusoortippaa, taamaalillutillu najugaqartut aniareersimasut AMBULANCENUT politiillu biiliinut sulisunit ikaassorneqarput.
+#(NEGATE 0 $$KASUS + $$NUMERUS - HTR - CONJ-LU - POSSESSUM - (/"tunnga"\ Gram/IV\ TUQ\ Der/vn\ N/l) LINK -1 $$KASUS + $$NUMERUS - NIQ )#”Usimi!” ammaleriallaraa Arsugap atuarfimmi sanaarisimasaa iganut allequt, kappoqqutinik *liimmernikunik ammalortuliaq, qaavatigut orangeamik qalipaatilimmik annoraaminermik qalligaq.
+#(NEGATE 0 Ins OR Aeq LINK 1 ("politeeq") ) #Arfininngormat ualikkut 16.47 Aqqusinersuarmi *savilersortoqarsimaneranik politiit nalunaarfigineqarput. 
+#(NEGATE *1 ("Naalakkersuisoq" N) BARRIER (*) - Trm)#Aalajangiineq tusarniaanermi akissutitut Ilaqutariinnermut Peqqissutsimullu Naalakkersuisoqarfimmut nassiunneqassaaq, nuuk.gl allappoq.
+#(NEGATE 0 Lok LINK 1 ("inatsit") )#Paasissutissallu taakku isertortumik paasiniaasartut *suliaqarneranni inatsisit malillugit suliaqarnermi pissarsiarineqarsinnaapput.
 
 
-;
+#;
 ## + N:#Suliaq Lars-Emil Johansenip Kommuneqarfik Sermersuumi 2019-imi novembarimi *qaammammut 25.000 *koruuninik akissarsialerlugu atorfinitsinneqarneranut tunngavoq.
 
 MAP:0408O_paratakse @i-ADVL> TARGET Trm IF (1 Conj OR Trm + CONJ-C LINK *1 INDERIVERENDE_SUBSTANTIV_BEGRÆNSET - NIAR - POSSESSUM12 - ORATIOOBLVERB - (/"pisortaq"\ N\ Via\ Pl\ Hyb/1-2/l) - CONJ-LU BARRIER (*) - Trm);#Tamatuma saniatigut siunnersuutip imaraa aatsitassarsiornermut akuersissutinik KILLILERSUINISSAMUT aamma utertitsinissamut toqqammavissaq.
@@ -6114,11 +6155,13 @@ MAP:M0329D @N< TARGET ADLED + Lok + $$NUMERUS - CONJ-C - LEKSIKALISERING - (/"[0
 ;
 
 #Almen regel til Trm
-MAP:M0329E @N< TARGET Trm + $$NUMERUS - CONJ-C - LEKSIKALISERING IF (0 ADLED LINK *-1 Trm + $$NUMERUS - @N< - Gram/Dem BARRIER (*) - KOMMA - OBLIQUE - Rel - Adv OR CONJ-C - LU-N)
+MAP:M0329E @N< TARGET Trm + $$NUMERUS - CONJ-C - LEKSIKALISERING  IF (0 ADLED LINK *-1 Trm + $$NUMERUS - @N< - Gram/Dem BARRIER (*) - KOMMA - OBLIQUE - Rel - Adv OR CONJ-C - LU-N)
 (NEGATE 0 TRMVERB - ("ila" U) LINK -1 Trm) #Skal ikke ramme "Tuattunnguaq nallinnartorlu, anaanama inuunerani angutipalaanut ILAASIMASUNUT pilliutigiuminartoq."
 (NEGATE -1 KOMMA LINK *1 CONJ-LU) #Tamanna pinngortitamut, AALISARTUMUT, niuertarfimmullu iluaqutitaqassasoq, pisortaq oqaluttuarpoq.
 (NEGATE 0 (/"ataatsimiip"\ Gram/IV\ TIP\ Der/vv\ Gram/TV\ TAQ\ Der/vn\ LIAQ\ Der/nn\ N\ Trm/l) )#Naalakkersuisulli aningaasaqarnermut akileraartarnermullu  *ataatsimiititaliamut siunnersuummik nassiussaqarput.
 (NEGATE 0 N - POSSESSUM LINK -1 Rel + Pl LINK 1 _TARGET_ LINK *1 3PlPoss BARRIER (*) - Trm - Adv)
+(NEGATE 0 (/VIK\ Der/vn\ N/l) LINK -1 NIQ + N + Trm )#Nunatsinni nunani allamiunut akuulersitsiniarnermullu *oqartussaaffimmut inatsiseqanngilagut taamaammat angut Ukrainemiu Nunatsinni innuttaasutut pineqassaaq.
+
 
 ;
 
@@ -8781,22 +8824,21 @@ MAP:M0793 @OBJ> TARGET N + Abs IF (*1 KOMMA BARRIER (*) - @N< LINK *1C N + Abs +
 
 # AGENS
 
-MAP:M0868A @i-AGENS TARGET Abl IF (*1 (/TIP\ Der/vv\ Gram/TV\ TAQ\ /l) + N BARRIER V - CONT );#*USA-mit aallartitat Kalaallit Nunaanniinneranni angallassisussat timmisartunut Herculesinut marlunnut, inunnik ilaasoqarnerup saniatigut aamma biilinik sisamanik usisut, ilaallutik tikipput.
+MAP:M0868A @i-AGENS TARGET Abl IF (*1 (/TIP\ Der/vv\ Gram/TV\ TAQ\ /l) + N BARRIER V - CONT )
+(NEGATE *1 Rel LINK 1 TAQ + N + POSSESSUM) #Tusagassiorfimmit ilanngutassiap kingunerisaanik Danmarkip nunanut allanut ministeriata, Lars Løkke Rasmussenip amerikamiut aallartitaannut tullersortaagallartoq ataatsimiigiaqquaa.
+;#*USA-mit aallartitat Kalaallit Nunaanniinneranni angallassisussat timmisartunut Herculesinut marlunnut, inunnik ilaasoqarnerup saniatigut aamma biilinik sisamanik usisut, ilaallutik tikipput.
+
+MAP:M0868Ax1 @i-AGENS TARGET Abl - LIVIK IF (1 N + TAQ - POSSESSUM - CONJ-LU ) ;#(NEGATE *1 Rel LINK 1 TAQ + N + POSSESSUM) #Tusagassiorfimmit ilanngutassiap kingunerisaanik Danmarkip nunanut allanut ministeriata, Lars Løkke Rasmussenip amerikamiut aallartitaannut tullersortaagallartoq ataatsimiigiaqquaa.
+##minus LIVIK: #Ingikkami *atuagaasivimminit poortugaq tiguaa anaanaminullu tunniullugu.
 
 MAP:M0868B @AGENS TARGET Abl IF (*1 (/".*"\ Gram/TV\ TIP/l) + Gram/Refl + V BARRIER V OR OTHERTIME);#Sapaatip akunnerani matumani tigusiffigitissimasuni 57 procentit coronavirusimit Tuluit Nunaanneersumit *tunillatsissimasuupput.
 #Barrier OTHERTIME: #Nunatsinnut tikinnermit ullut tallimaanni misissorteqqittoqartartussaavoq.
 
-## M0868 var fejlagtig fordi AGENS til nominalisering
-#MAP:M0868 @AGENS TARGET Abl IF (*1 (/TIP\ Der/vv\ Gram/TV\ TAQ\ /l) - <mon> - GE OR (/".*"\ Gram/TV\ TIP/l) + Gram/Refl - GE BARRIER V - CONT) #-GE pga Nunatsinni qanoq pisoqarnera pillugu ilisimatinneqartarnissarput NUNATTA QITORNAANIT pingaartitaraarput
-#(NEGATE 0 NIQ LINK *1 NUM + Lok OR Trm BARRIER (*) - TIDSPOSSESSOR)#Nunatsinnut TIKINNERMIT ullut tallimassaani misissorteqqittup tunillatsissimanera paasineqartoq, Naalakkersuisut siulittaasuata, Kim Kielsenip (S) oqaatigaa.
-#(NEGATE *1 Der/vn + <fn:Appear> BARRIER V)#Taannami nunatsinni namminiilivinnissaq pillugu NAGGUEQATIGIINNIT inunnit kingoqqisut kisimik taasisinnaatitaasariaqartut Berlingskimi apersorneqarnermini oqarpoq.
-#(NEGATE 0 (/"nateq"\ N\ Abl\ Sg\ 3SgPoss/l) )#Nutserut kalaallisut qallunaatullu akornanni siullermeerluni qarasaasiaq atorlugu nutserusiaavoq NAQQANIIT pilersitaq, taamaammat suliarineqarnera ilutigalugu misilittakkanik nutaanik pilersitsisuulluni.
-#(NEGATE *1 (/TIP\ Der/vv\ Gram/TV\ TAQ\ Der/vn\ N\ Ins\ Sg\ @MIK-OBJ>/l) LINK 1 ("toqqar" HTR)) #Danmark naggueqatigiinNIT inunnit issittoq pillugu aallartitamik toqqaasariaqaraluarpoq
-#;
 
-MAP:M0513A @i-ADVL> TARGET N + $$KASUS + $$NUMERUS - Gram/Cong - Rel OR Prop + $$KASUS + $$NUMERUS - Rel IF (*1C $$KASUS + $$NUMERUS + @N< + Der/vn - Hyb/2-2 BARRIER CLB OR CONJ-C OR V + ADVERBIEL OR V - CONT OR @PRED LINK NOT 1 $$KASUS)(*-1C $$KASUS + $$NUMERUS BARRIER VFIN OR @PRED OR $$KASUS OR CONJ-C)(NEGATE 1 $$KASUS)
-(NEGATE *-1 $$KASUS LINK 1 ("soorlu") LINK 1 _TARGET_ + $$KASUS)#Tamanna pigajuttarpoq tusagassiornermik ingerlatsivinni soorlu ATUAGASSIANI internettimullu isertarfinni imaluunniit quppernerni nittartakkani,
-;
+#MAP:M0513A @i-ADVL> TARGET N + $$KASUS + $$NUMERUS - Gram/Cong - Rel OR Prop + $$KASUS + $$NUMERUS - Rel IF (*1C $$KASUS + $$NUMERUS + @N< + Der/vn - Hyb/2-2 BARRIER CLB OR CONJ-C OR V + ADVERBIEL OR V - CONT OR @PRED LINK NOT 1 $$KASUS)(*-1C $$KASUS + $$NUMERUS BARRIER VFIN OR @PRED OR $$KASUS OR CONJ-C)
+#(NEGATE 1 $$KASUS)
+#(NEGATE *-1 $$KASUS LINK 1 ("soorlu") LINK 1 _TARGET_ + $$KASUS)#Tamanna pigajuttarpoq tusagassiornermik ingerlatsivinni soorlu ATUAGASSIANI internettimullu isertarfinni imaluunniit quppernerni nittartakkani,
+#;
 
 
 #Nomen i oblik kasus kan være adverbalt adled
@@ -8988,6 +9030,8 @@ MAP:M0870E @i-ADVL> TARGET Lok + INSTITUTION IF (*1 Der/vn + N - TIDSPARTIKEL - 
 
 MAP:M0870F @i-ADVL> TARGET Lok + PLACE OR Lok + Sem/Geo IF (-1 INSTITUTION + @i-ADVL>) (*1A Der/vn BARRIER (*) - @N< );#Ullumimiit qarasaasiami nittartakkakkut takuneqarsinnaalerpoq, meeqqat atuarfiini ILLOQARFINNI assigiinngitsuni atuartut angusarisartagaat qanoq isikkoqarnersut.
 
+
+
 MAP:M0870H @i-AGENS TARGET Abl IF (*1 PASSIV + N BARRIER VFIN LINK NOT 0 Par )#Umiarsuillu ORSERNERANNIT isertitat illoqarfiup pingaartumik iluanaarutiginngitsoorpai. Men må ikke hitte på ambiguøse Par
 (NEGATE 0 ("[0123456789]{4}"r))#Pisortallu 1997-IMIIT naatsorsuisalermata inuartarineqartut aatsaat taama amerlatigipput.
 (NEGATE 0 LANGUAGE OR Num LINK 1 LANGUAGE + Trm OR Num + Trm)#Hans-Pavia Rosing ilaatigut KALAALLISUUMIIT tuluttuumut translatøritut ilinniarsimavoq, aaqqissuisuusimasorlu Jørgen Fleischer naapertorlugu kalaallit ikittuinnaat akornanni oqaatsinut nunarsuarmioqatigiinnit atorneqarnerpaanut piginnaasaqarpoq.
@@ -9001,6 +9045,7 @@ MAP:M0870H @i-AGENS TARGET Abl IF (*1 PASSIV + N BARRIER VFIN LINK NOT 0 Par )#U
 (NEGATE *1 (/TIP\ Der/vv\ Gram/TV\ TAQ\ Der/vn\ N\ Ins\ Sg\ @MIK-OBJ>/l) LINK 1 ("toqqar" HTR)) #Danmark naggueqatigiinNIT inunnit issittoq pillugu aallartitamik toqqaasariaqaraluarpoq.
 (NEGATE 0 NIQ LINK *1 N + Ins + Pl LINK 1 PASSIV + N + Ins + Pl )#Piareersalernermiit ukioq ataaseq qaangiutilillartorlu nipilersoqatigiinnik nuannarineqarluartunik Sumekkunnik nersorinninniarluni Nuummi kulturip illorsua Katuami unnummut kiisami tusarnaartitsisoqassaaq.
 (NEGATE 1 Trm LINK 1 ("kingornup")) #Nakorsap ilimatsaappaa qasusooqqanerata KINGUAATIINNIIT kinguaariinnut kingornuttagaasimanissaa.
+(NEGATE 1 Abl + Prop)#Kisianni umiarsualiviit pillugit *inatsimmit Inatsisartunit 2015-imi akuersissutigineqartumit tunngavissinneqareersoq allaqqavoq.
 ;
 
 MAP:M0870J @i-AGENS TARGET Abl IF (*1 <fn:Exist> + TAQ + N BARRIER (*) - Abl)#KALAALLIT RØDE KORSIANNIT katersukkat tamarmik Dansk Røde Korsimut tunniunneqassapput.
@@ -9135,11 +9180,13 @@ MAP:M0919 @i-AGENS TARGET Abl - iV - OCCATION - THING IF (*1 PASSIV_ALTERNATIV +
 (NEGATE 0 ("[0123456789]{4}"r) + N + Sg)#Pisortallu 1997-IMIIT naatsorsuisalermata inuartarineqartut aatsaat taama amerlatigipput.
 (NEGATE 0 MEDIER LINK 1 <fn:Give/Get>)#TIMARIT.IS-IMIT pissarsiarineqartut ilaat katersuinermi aallarniutigineqarsimapput
 (NEGATE 0 NIQ LINK *1 N + Ins + Pl LINK 1 PASSIV + N + Ins + Pl )#Piareersalernermiit ukioq ataaseq qaangiutilillartorlu nipilersoqatigiinnik nuannarineqarluartunik Sumekkunnik nersorinninniarluni Nuummi kulturip illorsua Katuami unnummut kiisami tusarnaartitsisoqassaaq.
+(NEGATE 1 Abl + Prop)#Kisianni umiarsualiviit pillugit *inatsimmit Inatsisartunit 2015-imi akuersissutigineqartumit tunngavissinneqareersoq allaqqavoq.
 ;
 
 # AGENS
 
-MAP:M0920A @AGENS TARGET Abl - iV - OCCATION - THING - ("[0123456789]{4}"r) - (/Gram/IV\ VIK\ Der/vn\ N/l) IF (*1 PASSIV_ALTERNATIV - N BARRIER VFIN OR CON_CAU OR GAANNI OR ("tunngavik") + QAR - (/"tunngavik"\ SSIP\ Der/nv\ Gram/TV\ NIQAR/l))
+
+MAP:M0920B @AGENS TARGET Abl - iV - OCCATION - THING - ("[0123456789]{4}"r) - (/Gram/IV\ VIK\ Der/vn\ N/l) IF (*1 PASSIV_ALTERNATIV - N BARRIER VFIN OR CON_CAU OR GAANNI OR ("tunnga") + VIK + QAR - (/"tunnga"\ Gram/IV\ VIK\ Der/vn\ SSIP\ Der/nv\ Gram/TV\ NIQAR/l))
 (NEGATE 0 TIME OR NUM OR ("ataaseq") )
 (NEGATE 0 WEATHER LINK NOT *0 WEATHERVERB)
 (NEGATE *-1 Trm + Sem/Geo BARRIER V OR @PRED) #Tidsadverbaler må ikke blive agens. -V for at forhindre hit på verber med IR og IP
@@ -9238,9 +9285,9 @@ MAP:M0900A_paratakse @i-ADVL> TARGET $$KASUS IF (1 CONJ-C + $$KASUS + @i-ADVL>)(
 MAP:M0929A @ADVL> TARGET Trm IF (1 KOMMA)(2 Trm + @ADVL>)(3 KOMMA);
 MAP:M0929B @ADVL> TARGET Trm IF (1 KOMMA)(2 Trm OR Ins)(3 Trm)(4 KOMMA);
 
-#Den gamle M0930 havde uoverskueligt mange NEGATE og fejlede alligevel ca. hver anden gang. Nyt forsøg 20191017
+
 MAP:M0930_VIK_paratakse1 @i-ADVL> TARGET Trm IF (*1 Trm + CONJ-C BARRIER (*) - Adv - Pali - OBLIQUE LINK *1 VIK + N BARRIER V); #Britney Spears SEAN-IMUT marlunnik ukiulimmut Jayden-imullu ataatsimik ukiulimmut akisussaaffianik arsaarmassuk.
-MAP:M0930_VIK_paratakse2 @i-ADVL> TARGET Trm + CONJ-C IF (*1 Trm BARRIER (*) - Adv - Pali - OBLIQUE LINK *1 VIK + N BARRIER V); #Britney Spears Sean-imut marlunnik ukiulimmut JAYDEN-IMULLU ataatsimik ukiulimmut akisussaaffianik arsaarmassuk.
+MAP:M0930_VIK_paratakse2 @i-ADVL> TARGET Trm + CONJ-C IF (*-1 Trm BARRIER (*) - Adv - Pali - OBLIQUE LINK *1 _TARGET_ LINK *1 VIK + N BARRIER V); #Britney Spears Sean-imut marlunnik ukiulimmut JAYDEN-IMULLU ataatsimik ukiulimmut akisussaaffianik arsaarmassuk.
 
 
 MAP:M0930_paratakse1 @i-ADVL> TARGET $$OBLIQUE IF (*1 $$OBLIQUE + CONJ-C BARRIER (*) - Adv - Pali LINK *1 Der/vn + N + Pl - Hyb/2-2 BARRIER V OR Der/vn - Pl)#Taakkua TV-MUT ALLAMULLU ingerlasussat misissoqqissavakka. ... cave: inunnut allanullu eqqaaniittunut navianarsinnaammat.
