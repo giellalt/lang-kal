@@ -48,7 +48,7 @@ GT_LEXC_SRCS_L1_L2=\
 			affixes/loanwords.lexc \
 			affixes/noun-to-noun.lexc \
 			affixes/noun-to-verb.lexc \
-			affixes/verb-to-verb.lexc \
+			affixes/Der_vv_IV.lexc \
 			affixes/verb-to-noun.lexc \
 			affixes/mixed.lexc \
 			affixes/numerals.lexc                \
