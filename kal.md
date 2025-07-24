@@ -2794,7 +2794,7 @@ De mest alminderlige nomenleksika:
 -  301 Z2+lZmorf
 -  247 Z1+ssZmorf
 -  245 Z1+qaZmorf
--  240 N_Loan_GEM
+-  240 N_Loan_GE
 -  237 SEQgemin
 -  225 Z2aqZmorf
 -  193 Z2-qZmorf
