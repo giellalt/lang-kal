@@ -60,7 +60,6 @@ anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
 * **+Sem/Geo** = Geographical Propernoun
 * **+Sem/H** = Menneske
 * **+Sem/HH** = Organisationer
-* **+Sem/Hprof** = Menneske erhverv
 * **+Sem/Hum** = Non-geographical Propernoun
 * **+Sem/Hmyth** = Human Mythological
 * **+Sem/LastName**  Efternavne
@@ -77,6 +76,7 @@ anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
 
 * **+Sem/Aich** =  Animal, water   
 * **+Sem/Bveg** =  Plant, vegetable   
+* **+Sem/Hprof** =  Human, profession   
 * **+Sem/cc-h** =  Object Countable, human-made  
 * **+Sem/domain** =  Domain    
 * **+Sem/therapy** =  Therapy    
