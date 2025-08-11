@@ -2680,7 +2680,7 @@ i staden ei liste der kvar tag sto ein gong (nedanfor): docs/tagstrings.md
 ch til Heinrich/ Heinriup men kvæler alle ch-sekvenser. Udkommenteret 20181008
 * **í á ú î â û ê ô ĩ ã ũ** vokaler i gammel retskrivning
 
-* **+CLB +PUNCT +LEFT +RIGHT** 
+* **+CLB +PUNCT +LEFT +RIGHT +MIDDLE** 
 
 ### Vore magiske symboler
 
