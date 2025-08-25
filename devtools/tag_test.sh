@@ -12,6 +12,12 @@ comm -23 lexctags roottags
 echo '\nChecking for double semicolon in stem files:'
 cat src/fst/morphology/stems/*lexc |cut -d '!' -f1 |grep ';.*;'|egrep -v '(SCND|THRD|FRTH|FFTH|ACRO|anl)'
 
+echo '\nChecking for category mismatches in Der-tags .v-n.'
+cat src/fst/morphology/stems/*lexc |cut -d '!' -f1 | ggrep -E '\+[A-Z]+\+Der/.v\+[A-Z]+\+Der/n.'
+
+echo '\nChecking for category mismatches in Der-tags .n-v.'
+cat src/fst/morphology/stems/*lexc |cut -d '!' -f1 | ggrep -E '\+[A-Z]+\+Der/.n\+[A-Z]+\+Der/v.'
+
 #echo 'Checking for missing Der-tags:'
 #cat src/fst/stems/*lexc |cut -d '!' -f1 |grep '\+Der/.*;' |egrep -v 'Der([1234]|\+)'
 
