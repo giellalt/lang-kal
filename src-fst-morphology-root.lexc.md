@@ -835,6 +835,9 @@ i staden ei liste der kvar tag sto ein gong (nedanfor): docs/tagstrings.md
 * **+VVAARIK** 
 * **+VVAARIP** 
 
+* **+TEL** = pga. ~/langtech/shared-mul/src/fst/stems/telephone.lexc
+* **+Use/Circ** = pga. ~/langtech/shared-mul/src/fst/stems/telephone.lexc
+
 ### Grænsesymbol
 
 ## Symbols that need to be escaped on the lower side (towards twolc)
