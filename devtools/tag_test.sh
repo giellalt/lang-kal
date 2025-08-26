@@ -13,7 +13,10 @@ echo '\nChecking for double semicolon in stem files:'
 cat src/fst/morphology/stems/*lexc |cut -d '!' -f1 |grep ';.*;'|egrep -v '(SCND|THRD|FRTH|FFTH|ACRO|anl)'
 
 echo '\nChecking for mismatches in Der-tags .v-n.'
-git ls-files -- "*.lexc" | xargs -n1 git blame | grep -P '\+[A-Z]+\+Der/.v\+[A-Z]+\+Der/n.'
+git ls-files -- "*.lexc" | xargs -n1 git blame | grep -P '\+[A-Z]+\+Der/.v(\+Gram/.V)?\+[A-Z]+\+Der/n.'
+
+echo '\nChecking for mismatches in Der-tags .n-v.'
+git ls-files -- "*.lexc" | xargs -n1 git blame | grep -P '\+[A-Z]+\+Der/.n\+[A-Z]+\+Der/v.'
 
 echo '\nChecking for mismatches in Der-tags .n-v.'
 git ls-files -- "*.lexc" | xargs -n1 git blame | grep -P '\+[A-Z]+\+Der/.n\+[A-Z]+\+Der/v.'
