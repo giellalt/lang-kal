@@ -16,7 +16,10 @@ echo '\nChecking for mismatches in Der-tags .v-n.'
 git ls-files -- "*.lexc" | xargs -n1 git blame | grep -P '\+[A-Z]+\+Der/.v\+[A-Z]+\+Der/n.'
 
 echo '\nChecking for mismatches in Der-tags .n-v.'
-git ls-files -- "*.lexc" | xargs -n1 git blame | grep -P '\+[A-Z]+\+Der/.v\+[A-Z]+\+Der/n.'
+git ls-files -- "*.lexc" | xargs -n1 git blame | grep -P '\+[A-Z]+\+Der/.n\+[A-Z]+\+Der/v.'
+
+echo '\nChecking for plus sign duplicates'
+git ls-files -- "*.lexc" | xargs -n1 git blame | grep -P '\+\+([A-Z]+|Der)'
 
 #echo 'Checking for missing Der-tags:'
 #cat src/fst/stems/*lexc |cut -d '!' -f1 |grep '\+Der/.*;' |egrep -v 'Der([1234]|\+)'
