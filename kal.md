@@ -1847,6 +1847,7 @@ Fil for at generere de centrale morfologiske processer i vor grønlandske analys
 * **+Prop** = Propernoun
 * **+Num** = Numeral
 * **+Symbol** = independent symbols in the text stream, like £, €, ©
+* **+Arab** = pga- brug i ~/langtech/shared-mul/src/fst/stems/telephone.lexc 
 
 ## Secondary tags
 
