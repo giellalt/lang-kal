@@ -19,13 +19,22 @@ GIELLA_GC_WHSPACE_ANAL_SRC=analyser-gt-whitespace.regex \
 GIELLA_GC_DISAMBIGUATOR_SRC=disambiguator.cg3
 
 # If a valency file is used, specify its name here:
-GIELLA_GC_VALENCY_SRC=valency.cg3
+GIELLA_GC_VALENCY_SRC=
+## NB! This can not be used due to the include statement, and out-of-source builds.
+## Instead we define a separate target below that changes the include statement to
+## the correct path, and use the LOCAL_GC_ZIP_FILES variable to make sure the new
+## file is included in the grammar checker.
 
 # If there are additional, language specific files used in the GC archive,
 # specify here:
-LOCAL_GC_ZIP_FILES=
+LOCAL_GC_ZIP_FILES=gen-valency.bin
 
 #### BEGIN: Local build targets: ####
+
+# Override valency source processing:
+gen-valency.cg3: $(top_srcdir)/src/cg3/valency.cg3 \
+				 $(top_srcdir)/tools/grammarcheckers/liststemplates.cg3
+	$(AM_V_GEN)sed 's|../../tools/grammarcheckers/liststemplates.cg3|$(top_srcdir)/tools/grammarcheckers/liststemplates.cg3|g' $< > $@
 
 #### END: Local build targets:   ####
 
