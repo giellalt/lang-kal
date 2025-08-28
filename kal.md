@@ -1858,7 +1858,6 @@ Fil for at generere de centrale morfologiske processer i vor grønlandske analys
 * **+Gram/HV** = Non-marked agentive Verb (used as Half-transitive)
 * **+Gram/Db** = Double-transitive Verb. PL tilføjet 20180319
 * **+Gram/Exclm** = Exclamation !Flyttet fra primære tags 20180420 PL
-* **+Gram/Upersonlig** = upersonlig CONT med NAR+3Sg til højre 
 
 ### Tags for Pronouns
 
@@ -1877,8 +1876,6 @@ Fil for at generere de centrale morfologiske processer i vor grønlandske analys
 
 ### Semantics
 værdi i spillekort
-anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
-* **+Sem/Be**  <fn:Be> !#náipoĸ
 * **+Sem/dur** tid som periode ulloq=dag/day
 * **+Sem/event** fx Avannaata Qimussersua
 * **+Sem/Fem** Forsøg med femininum sml. Sem/Mask
@@ -1889,12 +1886,8 @@ anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
 * **+Sem/Hum** = Non-geographical Propernoun
 * **+Sem/Hmyth** = Human Mythological
 * **+Sem/LastName**  Efternavne
-* **+Sem/Lciv** = Location, civilized
 * **+Sem/Mailadresse** tag til adresser af typen cccc@cccc.cc
 * **+Sem/Mask** Forsøg med en ny tag til fornavne af maskulinum
-* **+Sem/ModeOfMovement** <fn:ModeOfmovement> !#nâgpoĸ
-* **+Sem/Remove** = atserivoq mods. atsiivoq
-* **+Sem/temp** tid som punkt ulloq=dato/date
 * **+Sem/Time** = Temporal particle !The random adverbial 'phrases' like -riutaa -isaa etc.
 * **+Sem/Unit** = Unit !Til besværlige låneord som 'time' etc., der optræder absolut
 * **+Sem/Url** tag til adresser af typen www.ccc.cc
@@ -1912,7 +1905,6 @@ anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
 ### Grammar
 
 * **+Gram/Comp** = Composita !Særlig tag til NIQ ajor/saper/artor/nalu- konstruktioner ved transitive verber
-* **+Gram/TUT_IP** = Composita !tag til at slette overtallige ip hvis der ikke står tut ved siden af
 * **+Gram/Refl** = Reflexive, reciprocal or passive !asavoq
 * **+Gram/Reci** = Reciprocal !naapipput
 * **+Gram/Pass** = Passive !used when a derivational morpheme not explicitely denotes a passivisation, or when intransitive flexion changes an active verb into a passive
@@ -1923,7 +1915,6 @@ anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
 *__ +Gram/TransverbNIQ __ = NIQ-former med transitivt verbale egenskaber. PL20210417
 
 * **+Gram/-epen** = ingen epentese ved låneord, så der kan genereres en. bestemt form til Katersat. batteriip versus batterip. ELLER ved vokaler aa+u -> aaju (nutaanngilaq)
-* **+Gram/-gem** = ikke gemineret, ilisivik versus ilitsivik 
 * **+Gram/-schwa** = minus schwa, angerlaanngilaa
 * **+Gram/Alt** = Ablative alternative form -minngaanniit/-ninngaanniit. Eller uregelmæssig pujoq->puggup 
 * **+Gram/Alt2** = Ablative alternative form 2 -minngarnit/-ninngarnit
@@ -1937,7 +1928,6 @@ anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
 * **+Gram/assib** = assibileret, for at kunne generere en bestemt form til Katersat
 * **+Gram/epen** = epentese i ved låneord, der ender på en konsonant. ELLER ved vokaler aa+u -> aa (nutaajunngilaq) 
 * **+Gram/fus** = fusionerende, t+l -> s, iggit+LIR -> iggiser
-* **+Gram/gem** = gemineret, ilisivik versus ilitsivik
 * **+Gram/inchoative** = inchoativt suffiks
 * **+Gram/liup** = trunkativ, stærk bøjning LIK
 * **+Gram/llip** = trunkativ, gemination LIK
@@ -1958,8 +1948,6 @@ anatomical. Adskiller qiteq+Sem/an+3SgPoss = qitia fra qiteq+3SgPoss = qeqqa
 ### Derivation
 
 * **+Der/Vok** = Vocative
-* **+Der/Guess** = Guessed lemma and inflection which are not listed in the FST
-* **+Der/Loan** = Guessed stems which are not listed in the FST and contain non-Greenlandic characters or non-Greenlandic final character
 * **+Der/Unk** = Ukendt morfem !Ukendte morfemer i ellers analyserede stammer for at få rigtig lemmaanalyse, som orsoq+NNAP+nv+UNK+vn:orsunnattaaq
 * **+Der/vv** = verb to verb
 * **+Der/nn** = noun to noun
@@ -1978,7 +1966,6 @@ Citerede ordformer  jf. Kleinschmidt ^rpoĸ
 That is, they need special treatment in e.g. speech syntesis.
 * **+OLang/DAN** = Danish stem: profet
 * **+OLang/ENG** = English stem: game
-* **+OLang/DEU** = German stem: bier
 
 ### Orthograhy
 * **+Orth/Arch** = Archaic language, (stem, morpheme, flexion, or sandhi): tikisimavoq, asallutigik, agpâ (for anípâ)
@@ -1993,10 +1980,6 @@ That is, they need special treatment in e.g. speech syntesis.
 * **+Err/Sub** = Not authorized spelling: 2-imik
 * **+Err/Orth !!**  tag, vi ikke bruger, men som optræder i de delte filer
 ≈ * **+Err/Orth !!**  tag, vi ikke bruger, men som optræder i de delte filer
-
-### Ekstra vedr. LG
-* **+Der/LG12** 
-* **+Der/LG13** 
 
 ## Tags for Inflection
 
@@ -2041,9 +2024,6 @@ That is, they need special treatment in e.g. speech syntesis.
 * **+3Pl** = Subject 3.person plural
 * **+4Pl** = Subject 4.person plural
 * **+1Du** = Subject 1.person dual
-* **+2Du** = Subject 2.person dual
-* **+3Du** = Subject 3.person dual
-* **+4Du** = Subject 4.person dual
 
 * **+1SgO** = Object 1.person singular
 * **+2SgO** = Object 2.person singular
@@ -2053,10 +2033,6 @@ That is, they need special treatment in e.g. speech syntesis.
 * **+2PlO** = Object 2.person plural
 * **+3PlO** = Object 3.person plural
 * **+4PlO** = Object 4.person plural
-* **+1DuO** = Object 1.person dual
-* **+2DuO** = Object 2.person dual
-* **+3DuO** = Object 3.person dual
-* **+4DuO** = Object 4.person dual
 
 ### Possesive tags - Possessormarkering i possessum
 * **+1SgPoss** = Possessor 1.person singular
@@ -2179,8 +2155,6 @@ i staden ei liste der kvar tag sto ein gong (nedanfor): docs/tagstrings.md
 * **+A** 
 * **+AA** 
 * **+AR** 
-* **+AASIILLU** 
-* **+AASIINNGUUQ** 
 * **+AASIIT** 
 * **+AASIT** 
 * **+AAT** 
@@ -2195,13 +2169,11 @@ i staden ei liste der kvar tag sto ein gong (nedanfor): docs/tagstrings.md
 * **+ARSUP** 
 * **+ATAAR** 
 * **+ATSIAQ** 
-* **+GAJUK** 
 * **+GAJUP** 
 * **+GAJUUQ** 
 * **+GALLAR** 
 * **+GALUAQ** 
 * **+GALUAR** 
-* **+GALUP** 
 * **+GALUTTUAQ** 
 * **+GALUTTUAR** 
 * **+GASAAQ** 
@@ -2219,7 +2191,6 @@ i staden ei liste der kvar tag sto ein gong (nedanfor): docs/tagstrings.md
 * **+GIIAAQ** 
 * **+GIIAAR** 
 * **+GIIAAT** 
-* **+GIILIP** 
 * **+GIIP** 
 * **+GIIT** 
 * **+GIP** 
@@ -2230,14 +2201,11 @@ i staden ei liste der kvar tag sto ein gong (nedanfor): docs/tagstrings.md
 * **+GUMINAALLI** 
 * **+GUMINAR** 
 * **+GUNAR** 
-* **+GUNNAAR** 
 * **+GUNNAIR** 
 * **+GUNNAR** 
-* **+GUNNARSI** 
 * **+GUP** 
 * **+GUSUP** 
 * **+GUUQ** 
-* **+GUURUNA** 
 * **+HTR** 
 * **+IAR** 
 * **+ILATSI** 
@@ -2253,8 +2221,6 @@ i staden ei liste der kvar tag sto ein gong (nedanfor): docs/tagstrings.md
 * **+IRSIR** 
 * **+IRUSSI** 
 * **+IRUTE** 
-* **+IRVIK** 
-* **+ISAP** 
 * **+ISUA** 
 * **+IT** 
 * **+JA** 
@@ -2277,6 +2243,7 @@ i staden ei liste der kvar tag sto ein gong (nedanfor): docs/tagstrings.md
 * **+KATTAR** 
 * **+KILLI** 
 * **+KIP** 
+* **+KISAR** 
 * **+KKAAQ** 
 * **+KKAAR** 
 * **+KKULUK** 
@@ -2294,7 +2261,8 @@ i staden ei liste der kvar tag sto ein gong (nedanfor): docs/tagstrings.md
 * **+KULLAK** 
 * **+KULUK** 
 * **+KULUP** 
-* **+KULUUQ** 
+* **+KULUUQ**
+* **+KULUUR**
 * **+KUQ** 
 * **+KUSUUR** 
 * **+KUTSUUR** 
@@ -2302,15 +2270,11 @@ i staden ei liste der kvar tag sto ein gong (nedanfor): docs/tagstrings.md
 * **+LAAQ** 
 * **+LAAR** 
 * **+LI** 
-* **+LIAA** 
-* **+LIAASIIT** 
 * **+LIAQ** 
 * **+LIAR** 
-* **+LIGUUQ** 
 * **+LIK** 
 * **+LIKKAAQ** 
 * **+LIKKIRSAAR** 
-* **+LIMI** 
 * **+LIP** 
 * **+LIR** 
 * **+LIRI** 
@@ -2320,10 +2284,6 @@ i staden ei liste der kvar tag sto ein gong (nedanfor): docs/tagstrings.md
 * **+LIRTUR** 
 * **+LISAAR** 
 * **+LISAR** 
-* **+LISSAAQ** 
-* **+LIUKU** 
-* **+LIUKUA** 
-* **+LIUNA** 
 * **+LIUR** 
 * **+LIUTE** 
 * **+LIVIK** 
@@ -2348,34 +2308,20 @@ i staden ei liste der kvar tag sto ein gong (nedanfor): docs/tagstrings.md
 * **+LLUINNAQQISSAAQ** 
 * **+LLUINNAR** 
 * **+LU** 
-* **+LUGUUQ** 
-* **+LUINNAR** 
-* **+LUMI** 
-* **+LUMIAASIIT** 
 * **+LUP** 
 * **+LUQA** 
 * **+LUSUUQ** 
-* **+LUUNNIILLI** 
-* **+LUUNNIILLU** 
-* **+LUUNNIIMMI** 
 * **+LUUNNIIT** 
 * **+LUUR** 
 * **+MAA** 
 * **+MAANNA** 
 * **+MAANNAA** 
-* **+MAANNAAJUNA** 
-* **+MAAR** 
+* **+MAAR**
+* **+MASSA**
 * **+MI** 
-* **+MIAA** 
-* **+MIAASIINNGUUQ** 
-* **+MIAASIIT** 
+* **+MINAATSIAQ**
 * **+MINIQ** 
 * **+MISAAR** 
-* **+MITA** 
-* **+MITAAVA** 
-* **+MITAAVAAKU** 
-* **+MITAAVAANA** 
-* **+MITAAVAMI** 
 * **+MIU** 
 * **+MIUQ** 
 * **+MMIRSUR** 
@@ -2393,8 +2339,8 @@ i staden ei liste der kvar tag sto ein gong (nedanfor): docs/tagstrings.md
 * **+NGAATSIAQ** 
 * **+NGAJAK** 
 * **+NGAJAP**
+* **+NGAJASSAA**
 * **+NGIR** 
-* **+NIAA** 
 * **+NIAALUP** 
 * **+NIAQ** 
 * **+NIAR** 
@@ -2414,22 +2360,15 @@ i staden ei liste der kvar tag sto ein gong (nedanfor): docs/tagstrings.md
 * **+NIRPAA** 
 * **+NIRPAAQ** 
 * **+NIRPAARPAA** 
-* **+NIRPAARPAAJU** 
 * **+NIRSAQ** 
 * **+NIRU** 
-* **+NIRUJUSSUU** 
 * **+NIRUMAAQ** 
 * **+NIRUMAAR** 
 * **+NISAQ** 
-* **+NISSAQ** 
-* **+NIUP** 
 * **+NIUTAA** 
 * **+NIUTE** 
 * **+NNAAQ** 
 * **+NNAP** 
-* **+NNAR** 
-* **+NNGAANNIIR** 
-* **+NNGAR** 
 * **+NNGIR** 
 * **+NNGIRSAAR** 
 * **+NNGISAANNAR** 
@@ -2462,16 +2401,13 @@ i staden ei liste der kvar tag sto ein gong (nedanfor): docs/tagstrings.md
 * **+PILUK** 
 * **+PILUP** 
 * **+PILUUR** 
-* **+QANNGIT** 
 * **+QAR** 
 * **+QATE** 
 * **+QATIGIIP** 
 * **+QATIGIIT** 
 * **+QATTAAR** 
 * **+QE** 
-* **+QENA** 
 * **+QINA** 
-* **+QISSAAR** 
 * **+QQA** 
 * **+QQAAQ** 
 * **+QQAAR** 
@@ -2526,11 +2462,9 @@ i staden ei liste der kvar tag sto ein gong (nedanfor): docs/tagstrings.md
 * **+RUJUURUTAA** 
 * **+RULUP** 
 * **+RULUUR** 
-* **+RUNAR** 
 * **+RUR** 
 * **+RUSAAR** 
 * **+RUSAQ** 
-* **+RUSAR** 
 * **+RUTTUR** 
 * **+RUUSAAR**
 * **+RUUSAQ** 
@@ -2544,7 +2478,6 @@ i staden ei liste der kvar tag sto ein gong (nedanfor): docs/tagstrings.md
 * **+SIMA** 
 * **+SIMAAR** 
 * **+SINNAA** 
-* **+SINNAAA** 
 * **+SINNAANNGUR** 
 * **+SINNAAQ** 
 * **+SINNAR** 
@@ -2557,11 +2490,11 @@ i staden ei liste der kvar tag sto ein gong (nedanfor): docs/tagstrings.md
 * **+SSAAR** 
 * **+SSAMAAQ** 
 * **+SSAMAAR** 
+* **+SSAMAATE**
 * **+SSAQ** 
 * **+SSAQQIP** 
 * **+SSI** 
 * **+SSIP** 
-* **+SSUAQ** 
 * **+SSUSIQ** 
 * **+SUAQ** 
 * **+SUAR** 
@@ -2584,7 +2517,6 @@ i staden ei liste der kvar tag sto ein gong (nedanfor): docs/tagstrings.md
 * **+TARIAARUTE** 
 * **+TARIAQ** 
 * **+TARIAQAR** 
-* **+TARIAR** 
 * **+TASSAA** 
 * **+TE** 
 * **+TIGE** 
@@ -2602,9 +2534,6 @@ i staden ei liste der kvar tag sto ein gong (nedanfor): docs/tagstrings.md
 * **+T(S)IP** = sukkatsippoq, men: nillertippoq
 * **+TSIR** 
 * **+TTAAQ** 
-* **+TTAARLU** 
-* **+TTAARMI** 
-* **+TTUINNAR** 
 * **+TU** 
 * **+TUAQ** 
 * **+TUAR** 
@@ -2618,16 +2547,9 @@ i staden ei liste der kvar tag sto ein gong (nedanfor): docs/tagstrings.md
 * **+TURSUU** 
 * **+TURUJUSSUANNGUR** 
 * **+TURUJUSSUU** 
-* **+TURUJUSSUUSIMA** 
-* **+TURUJUSSUUSIMAGALUAR** 
-* **+TURUJUSSUUSSA** 
 * **+TURUJUU** 
 * **+TUSSAA** 
-* **+TUSSAAGALUAR** 
-* **+TUSSAANNGIKKALUAR** 
-* **+TUSSAANNGIT** 
 * **+TUSSANNGUR** 
-* **+TUSSAQ** 
 * **+TUU** 
 * **+TUUQ** 
 * **+TUUR** 
@@ -2637,7 +2559,6 @@ i staden ei liste der kvar tag sto ein gong (nedanfor): docs/tagstrings.md
 * **+UAAR** 
 * **+UKU** 
 * **+UKUA** 
-* **+UMA** 
 * **+UMI** 
 * **+UMMI** 
 * **+UMMIR** 
@@ -2649,6 +2570,7 @@ i staden ei liste der kvar tag sto ein gong (nedanfor): docs/tagstrings.md
 * **+USAP** 
 * **+USAQ** 
 * **+USAR** 
+* **+USIAQ** 
 * **+USIQ** 
 * **+UTE** 
 * **+UTIGE** 
@@ -2671,11 +2593,6 @@ i staden ei liste der kvar tag sto ein gong (nedanfor): docs/tagstrings.md
 * « ()
 
 * **%ROD** morfemgraense ved pegeroedderne
-* **+SUB**  Ungdomsformer
-* **+Arch**  archaiske former som agpâ (for anípâ)
-* **+Comp**  Tilfoejet 20100228. Anvendes ved +NIQ paa transitiver for skyld -neq ajor/saper/artor/nalu
-* **+Coll**  Tilfoejet 20100406 til kaldenavne, der ikke er godkendte fx Aaperaat, men Aaperaa+Coll
-* **+Loan**  Tilføjet 20100822 til visse udenlandske ord i hhv. LEXICON V-Loan og LEXICON C-Loan
 
 ### Vore morfofonemer
 
