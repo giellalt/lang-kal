@@ -247,46 +247,31 @@ Off-flag sættes i verbs på transitive verber med usandsynlig Refl. On-flag på
 
 * **@U.Refl.On@** 
 * **@U.Refl.Off@** 
-* **@C.Refl@** 
 
 * **@U.TruncTip.On@** 
 * **@U.TruncTip.Off@** 
-* **@C.TruncTip@** 
 
 Off-flag på verber som akuaa, der ikke må lave metatese på NIQ
-
-* **@U.Niq.Off@** 
-* **@U.Niq.On@** 
-* **@C.Niq@** 
 
 Nyt flag 20211214 for at forebygge *taakkuunngitsoq og *taannaanngitsut
 
 * **@U.DemPron.Sg@** 
 * **@U.DemPron.Pl@** 
-* **@C.DemPron@** 
 
 Off-flag på nominer, der SKAL opføre sig replacive som pilersaarusiorpoq og aqqusinniorpoq
 
 * **@U.Liur.Off@** 
 * **@U.Liur.On@** 
-* **@C.Liur@** 
 
 Off-flag i nouns og Off-flag i der-inf  når TUR og TUGAQ ikke må assibileres og On-flag, når de skal assibileres. Også for at forebygge assibilering efter HTR på nnip
 
 * **@U.Tur.Off@** 
 * **@U.Tur.On@** 
-* **@C.Tur@** 
 
 Flag specielt for at sikre additiv p-bøjning af ulloq i Trm@
 
 * **@U.Ulloq.Off@** 
-* **@U.Ulloq.On@** 
-* **@C.Ulloq@** 
-
-Flag til forebyggelse af manglende assibilering. P sættes i stem-filerne og C i der-infl
-
-* **@P.UsikkerAssibilering.ON@**  positive setting of UsikkerAssibilering = ON
-* **@C.UsikkerAssibilering@**  clear the UsikkerAssibilering feature back to neutral
+* **@U.Ulloq.On@**
 
 * **@U.epen.ON@** epentese
 * **@U.epen.OFF@** ingen epentese
@@ -809,9 +794,6 @@ with verbs if the verb is further derived into a noun again:
 
 | Flag | Explanation
 | --- | --- 
-|  @P.NeedNoun.ON@ | (Dis)allow compounds with verbs unless nominalised
-|  @D.NeedNoun.ON@ | (Dis)allow compounds with verbs unless nominalised
-|  @C.NeedNoun@ | (Dis)allow compounds with verbs unless nominalised
 
 For languages that allow compounding, the following flag diacritics are needed
 to control position-based compounding restrictions for nominals. Their use is
@@ -820,14 +802,14 @@ do no harm.
 
 | Flag | Explanation
 | --- | --- 
-|  @P.CmpFrst.FALSE@ | Require that words tagged as such only appear first
-|  @D.CmpPref.TRUE@ | Block such words from entering ENDLEX
-|  @P.CmpPref.FALSE@ | Block these words from making further compounds
-|  @D.CmpLast.TRUE@ | Block such words from entering R
-|  @D.CmpNone.TRUE@ | Combines with the next tag to prohibit compounding
-|  @U.CmpNone.FALSE@ | Combines with the prev tag to prohibit compounding
-|  @P.CmpOnly.TRUE@ | Sets a flag to indicate that the word has passed R
-|  @D.CmpOnly.FALSE@ | Disallow words coming directly from root.
+|  !@P.CmpFrst.FALSE@ | Require that words tagged as such only appear first
+|  !@D.CmpPref.TRUE@ | Block such words from entering ENDLEX
+|  !@P.CmpPref.FALSE@ | Block these words from making further compounds
+|  !@D.CmpLast.TRUE@ | Block such words from entering R
+|  !@D.CmpNone.TRUE@ | Combines with the next tag to prohibit compounding
+|  !@U.CmpNone.FALSE@ | Combines with the prev tag to prohibit compounding
+|  !@P.CmpOnly.TRUE@ | Sets a flag to indicate that the word has passed R
+|  !@D.CmpOnly.FALSE@ | Disallow words coming directly from root.
 
 Use the following flag diacritics to control downcasing of derived proper
 nouns (e.g. Finnish Pariisi -> pariisilainen). See e.g. North Sámi for how to use
@@ -836,8 +818,6 @@ given the proper use of these flags.
 
 | Flag | Explanation
 | --- | --- 
-|  @U.Cap.Obl@ | Allowing downcasing of derived names: deatnulasj.
-|  @U.Cap.Opt@ | Allowing downcasing of derived names: København > københavner.
 
 ## LEXICON Root  pointing to main parts of speech
 - **Nomen ;** 
