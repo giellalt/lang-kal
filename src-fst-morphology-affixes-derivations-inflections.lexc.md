@@ -161,13 +161,13 @@ PL 20180718. Følgende er et særligt lexicon til ip i stedet for tidligere LEXI
 
 * LEXICON XIiX  
 
-* LEXICON XIiX2  
+* LEXICON XIiX2 
 
 * LEXICON XIiPX  
 
 * LEXICON XIiPX2  
 
-* LEXICON XIiPX3  
+* LEXICON XIiPX2_inflections  
 
 * LEXICON XIiX_fleksiver  
 
@@ -189,7 +189,7 @@ PL 20180718. Følgende er et særligt lexicon til ip i stedet for tidligere LEXI
 
 * LEXICON gallar-iv2  
 
-* LEXICON gallar-iv3  
+* LEXICON gallar_iv2_inflections  
 
 * LEXICON flex-iv_ssa  
 
