@@ -4,11 +4,11 @@ All doc-comment documentation in one large file.
 
 ---
 
-# src-cg3-dependency.cg3.md 
+## src-cg3-dependency.cg3.md 
 
 
 
-#                 West Greenlandic Dependency Parser
+##                 West Greenlandic Dependency Parser
 
 * * *
 
@@ -16,13 +16,13 @@ All doc-comment documentation in one large file.
 
 ---
 
-# src-cg3-disambiguator.cg3.md 
+## src-cg3-disambiguator.cg3.md 
 
 
 
-#    W E S T   G R E E N L A N D I C   D I S A M B I G U A T O R  #
+##    W E S T   G R E E N L A N D I C   D I S A M B I G U A T O R  #
 
-# Delimiters, tags and sets
+## Delimiters, tags and sets
 
 * 	N  =
 * 	V  =
@@ -114,47 +114,47 @@ All doc-comment documentation in one large file.
 - **INNAQ** =
 - **INNAR** =
 
-##  Tags and sets #
+###  Tags and sets #
 
-### Positions and household
+#### Positions and household
 
 The following tags:
 BOS, EOS, CLB, Symbol, iSymbol, PUNCT, LEFT, RIGHT, COMMONAFFSTRING, EXCLMARK
 
-### Parts of speech with tags declared as single-membered LISTs
+#### Parts of speech with tags declared as single-membered LISTs
 
-### Grammar tags
+#### Grammar tags
 Gram/... and different specifications
 
 * LIST DivPron = Gram/Cong DivPron ;  = ?
 * LIST Gram/Ord = Gram/Ord Der/Ord ;   =  Ordinaltal #Hedder Der/Ord i den videre kæde.
 
-### Orthographic error tags
+#### Orthographic error tags
 * LIST Orth/Append = Orth/Append <append> ;  = readings added by CG (APPEND)
 * LIST SUB = Orth/Arch Orth/Alt Orth/Youth ;  common tag for all
 
-### Heur Prop case tags
+#### Heur Prop case tags
 
-### Heur der tags for iCase to block Abs Pl Heur/Prop analysis
+#### Heur der tags for iCase to block Abs Pl Heur/Prop analysis
 
-### Heur Verb tags to block Abs Sg Heur/Prop analysis
+#### Heur Verb tags to block Abs Sg Heur/Prop analysis
 
-### Heur GL final
+#### Heur GL final
 
-### Heur FOREIGN final prop
+#### Heur FOREIGN final prop
 
-### Heur FOREIGN initial prop
+#### Heur FOREIGN initial prop
 
-### Heur scan err
+#### Heur scan err
 
-### Heur Excl tags to block Abs Sg Heur/Prop analysis
+#### Heur Excl tags to block Abs Sg Heur/Prop analysis
 
-### Grammatical tags
+#### Grammatical tags
 Sg, Du, Pl, iSg, iDu, iPl, ALL_Sg, ALL_Pl, case forms, verbal inflection
 
-### #Diverse tags defineret i kal-pre2 (dog et par hybrider her i disambiguator)
+#### #Diverse tags defineret i kal-pre2 (dog et par hybrider her i disambiguator)
 
-### Derivatives
+#### Derivatives
 
 - **LIST IP = IP ("IP") ;** =
 
@@ -164,9 +164,9 @@ Sg, Du, Pl, iSg, iDu, iPl, ALL_Sg, ALL_Pl, case forms, verbal inflection
 - **LIST WFORM = "<.*>"r ;** = regulært udtryk
 - **LIST BFORM = ".*"r ;** = regulært udtryk
 
-# Sets
+## Sets
 
-## Alle ordklasser
+### Alle ordklasser
 
 * LIST WORD = N V Pali Conj Adv Interj Gram/Exclm Pron Prop Num ; 
 * SET POS = WORD - (<heur> <f:[0-9]+>r) ; 
@@ -183,7 +183,7 @@ Sg, Du, Pl, iSg, iDu, iPl, ALL_Sg, ALL_Pl, case forms, verbal inflection
 
 * SET AFFINGERET = ALLAP , ARAQ , ARSUK , IAR  , INNAQ , INNAR
 
-## Verb
+### Verb
 
 Ulike verbtyper.
 
@@ -231,7 +231,7 @@ Ulike verbtyper.
 - **SET OBJVERB = PEQQUTIGALUGU OR PILLUGU OR PISSUTIGALUGU OR AQQUSAARLUGU OR ATORLUGU OR ILAGALUGU OR MALILLUGU OR NAAPERTORLUGU OR SINNERLUGU OR TAMAKKERLUGU OR TIKILLUGU OR TUNNGAVIGALUGU ;** =
 - **LIST NONOBJVERB = ("agguar" QATE GIIP TIP Cont) ;** =
 
-## Nominer
+### Nominer
 Set for kasus, possessum, appellativ, ulike nomentyper
 
 - **SET KASUS = Abs OR Rel OR Trm OR Abl OR Lok OR Aeq OR Ins OR Via ;** =
@@ -275,7 +275,7 @@ Set for kasus, possessum, appellativ, ulike nomentyper
 
 - **LIST VERBALNOMEN = NIQ (/TUQ Der/vn N/l) SSUSIQ ;** =
 
-## Kombinationer af verber og nominer
+### Kombinationer af verber og nominer
 
 - **LIST IV1Sg = (Abs 1Sg) (V 1Sg) ;** =
 - **LIST IV2Sg = (Abs 2Sg) (V 2Sg) ;** =
@@ -381,22 +381,22 @@ Unification set til CONT og kongruente V ved intransitive V
 
 !!! Numeralier
 
-### Lexical sets
+#### Lexical sets
 
 - **LIST TASSA = "tassa" ("tass" Gram/Dem Interj);**
 
-#### Verbernes leksikalske klasser
+##### Verbernes leksikalske klasser
 
-### Semantic tags
+#### Semantic tags
 Gram/... and different specifications
 
 * LIST Sem/Hum = Sem/Hum <hum> ; 
 
-## Regelsektion
+### Regelsektion
 
-###  BEFORE-SECTIONS
+####  BEFORE-SECTIONS
 
-### Disambiguere morfemkombinationer
+#### Disambiguere morfemkombinationer
 
 Judithes afsnit start ### påbegyndt 20231006: sorter umulige morfemkombinationer fra
 
@@ -414,7 +414,7 @@ Judithes afsnit start ### påbegyndt 20231006: sorter umulige morfemkombinatione
 
 ---
 
-# src-cg3-functions.cg3.md 
+## src-cg3-functions.cg3.md 
 
 
 
@@ -458,7 +458,7 @@ Ny indholdsfortegnelse påbegyndt 20201015
 Begyndende udkommentering af REMOVE og SELECT, der kun skal stå i disambiguator. Vil blive udkommenteret med '#DATO' fx '#20210704'. Færdiggjort 20230726.
 Begyndende sletning hvor REMOVE og SELECT står med #
 
-## Regelsektion
+### Regelsektion
 
 Delimiter
 
@@ -468,10 +468,10 @@ Delimiter
 
 ---
 
-# src-fst-morphology-affixes-derivations-inflections.lexc.md 
+## src-fst-morphology-affixes-derivations-inflections.lexc.md 
 
 
-# Fil for at generere de centrale morfologiske processer i vor grønlandske analysator               
+## Fil for at generere de centrale morfologiske processer i vor grønlandske analysator               
 
 * LEXICON ZseqZ  qalaseq
 
@@ -1277,7 +1277,7 @@ Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers
 
 ---
 
-# src-fst-morphology-affixes-noun_to_noun.lexc.md 
+## src-fst-morphology-affixes-noun_to_noun.lexc.md 
 
 
 
@@ -1404,11 +1404,11 @@ gennemgangskatalog for up-stammer, der kræver replaciv sandhi
 
 ---
 
-# src-fst-morphology-affixes-numerals.lexc.md 
+## src-fst-morphology-affixes-numerals.lexc.md 
 
-#  Arabiske numeralier 
+##  Arabiske numeralier 
 
-## Inflection and derivation.
+### Inflection and derivation.
 
 ** Lexicon **num_C** for numerusmorfologi for ord på konsonant
 - **	%%	num_C ; ** tilfoejet loop 20090306 for at klare former som 83%-ii
@@ -1488,7 +1488,7 @@ gennemgangskatalog for up-stammer, der kræver replaciv sandhi
 
 ---
 
-# src-fst-morphology-affixes-propernouns.lexc.md 
+## src-fst-morphology-affixes-propernouns.lexc.md 
 
 
 
@@ -1809,11 +1809,11 @@ Nyt lexicon 20180615 Z2suaq_ateqZmorf
 
 ---
 
-# src-fst-morphology-affixes-symbols.lexc.md 
+## src-fst-morphology-affixes-symbols.lexc.md 
 
 
 
-# Symbol affixes
+## Symbol affixes
 
 * * *
 
@@ -1821,20 +1821,20 @@ Nyt lexicon 20180615 Z2suaq_ateqZmorf
 
 ---
 
-# src-fst-morphology-root.lexc.md 
+## src-fst-morphology-root.lexc.md 
 
-# Greenlandic morphological analyser
+## Greenlandic morphological analyser
 
 Fil for at generere de centrale morfologiske processer i vor grønlandske analysator
 
-# Multicharacter symbols
+## Multicharacter symbols
 
 * **AA+** = præfiks
 * **TA+** = præfiks
 
-## Tags for POS (primary tags)
+### Tags for POS (primary tags)
 
-### Main Word Classes
+#### Main Word Classes
 
 * **+encl** = clitic to separate clitics from suffixes with identical upper form in disambiguator.cg3 (TTAAQ)
 * **+N** = Noun
@@ -1849,9 +1849,9 @@ Fil for at generere de centrale morfologiske processer i vor grønlandske analys
 * **+Symbol** = independent symbols in the text stream, like £, €, ©
 * **+Arab** = pga- brug i ~/langtech/shared-mul/src/fst/stems/telephone.lexc 
 
-## Secondary tags
+### Secondary tags
 
-### Tags for Verbs
+#### Tags for Verbs
 
 * **+Gram/IV** = Intransitive Verb !PL 20180319 ny formalisme gennemført livm 20180324
 * **+Gram/TV** = Transitive Verb !PL 20180319 ny formalisme gennemført livm 20180324
@@ -1859,14 +1859,14 @@ Fil for at generere de centrale morfologiske processer i vor grønlandske analys
 * **+Gram/Db** = Double-transitive Verb. PL tilføjet 20180319
 * **+Gram/Exclm** = Exclamation !Flyttet fra primære tags 20180420 PL
 
-### Tags for Pronouns
+#### Tags for Pronouns
 
 * **+Gram/Int** = Interrogative Pronoun
 * **+Gram/Pers** = Personal Pronoun
 * **+Gram/Coref** = Reflexive Pronoun
 * **+Gram/Indef** = Indefinitive Pronoun
 
-### Tags for Other Word Classes
+#### Tags for Other Word Classes
 
 * **+Gram/Dem** = Demonstative pronoun, demonstrative adverb or demonstrative interjection
 * **+Gram/Cong** = Various Pronoun, eg. tamaq, kisi (personkongruensdeklination)
@@ -1874,7 +1874,7 @@ Fil for at generere de centrale morfologiske processer i vor grønlandske analys
 * **+Gram/ACR** = Acronyms
 * **+Gram/Adj** = Adjektiver optaget direkte inkl. ubøjet anvendelse før kerne
 
-### Semantics
+#### Semantics
 værdi i spillekort
 * **+Sem/dur** tid som periode ulloq=dag/day
 * **+Sem/event** fx Avannaata Qimussersua
@@ -1902,7 +1902,7 @@ værdi i spillekort
 * **+Sem/inst** =  Institution    
 * **+Sem/sick** =  Disease    
 
-### Grammar
+#### Grammar
 
 * **+Gram/Comp** = Composita !Særlig tag til NIQ ajor/saper/artor/nalu- konstruktioner ved transitive verber
 * **+Gram/Refl** = Reflexive, reciprocal or passive !asavoq
@@ -1945,7 +1945,7 @@ værdi i spillekort
 * **+Orth/shorti** = short i, benzina versus benziina  
 * **+Orth/ztos** = s used instead of z, bensiina
 
-### Derivation
+#### Derivation
 
 * **+Der/Vok** = Vocative
 * **+Der/Unk** = Ukendt morfem !Ukendte morfemer i ellers analyserede stammer for at få rigtig lemmaanalyse, som orsoq+NNAP+nv+UNK+vn:orsunnattaaq
@@ -1956,39 +1956,39 @@ værdi i spillekort
 * **+Der/xx** = Follows the enclitic suffix TUQ to be able to distinguish TUQ+xx from the derivational morpheme TUQ+vn in CG: qanortoq
 Citerede ordformer  jf. Kleinschmidt ^rpoĸ
 
-### Dialect
+#### Dialect
 * **+Dial/Ngr** = Northern dialect (such as ng for g; predictable dialectal changes might be dealt with in the postprosessor in stead)
 * **+Dial/Sgr** = Southern dialect (such as VVC for VVCC), aneeqavoq (and not aneeqqavoq)
 * **+Dial/Egr** = Eastern dialect
 * **+Dial/Vgr** = Western dialect (such as rng for rn)
 
-### Tags to mark loan word entries with a diverting orthography
+#### Tags to mark loan word entries with a diverting orthography
 That is, they need special treatment in e.g. speech syntesis.
 * **+OLang/DAN** = Danish stem: profet
 * **+OLang/ENG** = English stem: game
 
-### Orthograhy
+#### Orthograhy
 * **+Orth/Arch** = Archaic language, (stem, morpheme, flexion, or sandhi): tikisimavoq, asallutigik, agpâ (for anípâ)
 * **+Orth/Youth** = Youth language: asallutigu
 * **+Orth/Alt** = Substandard language (hyphens among other things…): isissavoq, Qaanaaq-mut, fabrikki, poor’lu
 * **+Orth/Hyph** = bindestreg ved låneord, for at kunne generere en bestemt form til Katersat
 * **+Orth/-Hyph** = uden bindestreg ved låneord, for at kunne generere en bestemt form til Katersat
 
-### Usage/error
+#### Usage/error
 * **+Use/-Spell** = Do not include in speller
 * **+Use/Hybrid** = For generating split hybrids. Should not be included in speller, analyser, or norm-generator
 * **+Err/Sub** = Not authorized spelling: 2-imik
 * **+Err/Orth !!**  tag, vi ikke bruger, men som optræder i de delte filer
 ≈ * **+Err/Orth !!**  tag, vi ikke bruger, men som optræder i de delte filer
 
-## Tags for Inflection
+### Tags for Inflection
 
-### Numerus
+#### Numerus
 * **+Sg** = Singularis
 * **+Du** = Dualis
 * **+Pl** = Pluralis
 
-### Kasus
+#### Kasus
 * **+Abs** = Absolutive
 * **+Rel** = Relative
 * **+Trm** = Terminalis
@@ -1998,11 +1998,11 @@ That is, they need special treatment in e.g. speech syntesis.
 * **+Via** = Vialis
 * **+Abl** = Ablative
 
-### Særlige 3./4. persons kasus med DivPron (Gram/Cong)
+#### Særlige 3./4. persons kasus med DivPron (Gram/Cong)
 * **+Nom** = Nominative
 * **+Akk** = Accusative
 
-### Modus
+#### Modus
 * **+Ind** = Indicative
 * **+Int** = Interrogative
 * **+Imp** = Imperative
@@ -2014,7 +2014,7 @@ That is, they need special treatment in e.g. speech syntesis.
 * **+ContNeg** = Negated Infinitive
 * **+IteCau** = Iterative (morphologically: Causative)
 
-### Verb person-numerus
+#### Verb person-numerus
 * **+1Sg** = Subject 1.person singular
 * **+2Sg** = Subject 2.person singular
 * **+3Sg** = Subject 3.person singular
@@ -2034,7 +2034,7 @@ That is, they need special treatment in e.g. speech syntesis.
 * **+3PlO** = Object 3.person plural
 * **+4PlO** = Object 4.person plural
 
-### Possesive tags - Possessormarkering i possessum
+#### Possesive tags - Possessormarkering i possessum
 * **+1SgPoss** = Possessor 1.person singular
 * **+2SgPoss** = Possessor 2.person singular
 * **+3SgPoss** = Possessor 3.person singular
@@ -2044,7 +2044,7 @@ That is, they need special treatment in e.g. speech syntesis.
 * **+3PlPoss** = Possessor 3.person plural
 * **+4PlPoss** = Possessor 4.person plural
 
-## Flag diacritics for Greenlandic
+### Flag diacritics for Greenlandic
 
 Flag diacritics til pluralis tantum subjekter
 
@@ -2135,7 +2135,7 @@ Flags for loan words, which must not go to N+Abs+Sg without derivation.
 (sannsynlegvis tidlegare taggstrengar A=B=C) ut desse og laga 
 i staden ei liste der kvar tag sto ein gong (nedanfor): docs/tagstrings.md
 
-# List of the so-called Greenlandic *tilhæng*, i.e., derivational affixes
+## List of the so-called Greenlandic *tilhæng*, i.e., derivational affixes
 
 * **+A** 
 * **+AA** 
@@ -2571,15 +2571,15 @@ i staden ei liste der kvar tag sto ein gong (nedanfor): docs/tagstrings.md
 * **+TEL** = pga. ~/langtech/shared-mul/src/fst/stems/telephone.lexc
 * **+Use/Circ** = pga. ~/langtech/shared-mul/src/fst/stems/telephone.lexc
 
-### Grænsesymbol
+#### Grænsesymbol
 
-## Symbols that need to be escaped on the lower side (towards twolc)
+### Symbols that need to be escaped on the lower side (towards twolc)
 * »
 * « ()
 
 * **%ROD** morfemgraense ved pegeroedderne
 
-### Vore morfofonemer
+#### Vore morfofonemer
 
 * **g2 g3 g4 c2 i2** 
 * **u2**  u som skal stå som u foran r: Puurunen.
@@ -2588,7 +2588,7 @@ ch til Heinrich/ Heinriup men kvæler alle ch-sekvenser. Udkommenteret 20181008
 
 * **+CLB +PUNCT +LEFT +RIGHT +MIDDLE** 
 
-### Vore magiske symboler
+#### Vore magiske symboler
 
 * **%ALTINF** Alternerende infinitiver ved rpoq
 * **%CLIT**  Klitika
@@ -2611,7 +2611,7 @@ ch til Heinrich/ Heinriup men kvæler alle ch-sekvenser. Udkommenteret 20181008
 * **%qaGEMIN** 
 * **%qoGEMIN** 
 
-## Language-independent flag diacritics
+### Language-independent flag diacritics
 
 We have manually optimised the structure of our lexicon using following
 flag diacritics to restrict morhpological combinatorics - only allow compounds
@@ -2644,7 +2644,7 @@ given the proper use of these flags.
 | Flag | Explanation
 | --- | --- 
 
-## LEXICON Root  pointing to main parts of speech
+### LEXICON Root  pointing to main parts of speech
 - **Nomen ;** 
 - **Verbum ;** 
 - **oqr ;**  partikler og pronominer
@@ -2662,11 +2662,11 @@ given the proper use of these flags.
 
 ---
 
-# src-fst-morphology-stems-nouns.lexc.md 
+## src-fst-morphology-stems-nouns.lexc.md 
 
-# Grønlandske nomener 
+## Grønlandske nomener 
 
-## Dokumentasjon for leksikonnavne:
+### Dokumentasjon for leksikonnavne:
 
 * Z = nomen
 * 1 = svag bøjning, p-bøjning
@@ -2708,7 +2708,7 @@ Leksikonet **Nomen** inneholder nomenstammerne.
 
 xxx 20170522 til former, som ikke kan læses men som har brug for en analyse i cg'en. Pluralis og singularis-kataloger er ikke medtaget.
 
-### Retningslinjer for låneord 
+#### Retningslinjer for låneord 
 
 Grundformen af ordet er den samme som i lånsproget (uden i):
 emblem N_Loan_GEM ; (og ikke emblemi)
@@ -2733,7 +2733,7 @@ enheder sendes til specielt unit-låneordskatalog
 
 ---
 
-# src-fst-morphology-stems-propernouns.lexc.md 
+## src-fst-morphology-stems-propernouns.lexc.md 
 
 
 
@@ -2745,7 +2745,7 @@ xxx 20170522 til former, som ikke kan læses men som har brug for en analyse i c
 
 ---
 
-# src-fst-morphology-stems-verbs.lexc.md 
+## src-fst-morphology-stems-verbs.lexc.md 
 
 
 
@@ -2757,7 +2757,7 @@ xxx 20170524 til verbalstammer, som ikke kan læses men som har brug for en anal
 
 ---
 
-# src-fst-transcriptions-transcriptor-abbrevs2text.lexc.md 
+## src-fst-transcriptions-transcriptor-abbrevs2text.lexc.md 
 
 
 
@@ -2779,7 +2779,7 @@ For example:
 
 ---
 
-# src-fst-transcriptions-transcriptor-numbers-digit2text.lexc.md 
+## src-fst-transcriptions-transcriptor-numbers-digit2text.lexc.md 
 
 
 
@@ -2795,11 +2795,11 @@ For example:
 
 ---
 
-# tools-grammarcheckers-grammarchecker.cg3.md 
+## tools-grammarcheckers-grammarchecker.cg3.md 
 
 
 
-#      G R E E N L A N D I C   G R A M M A R   C H E C K E R
+##      G R E E N L A N D I C   G R A M M A R   C H E C K E R
 
 ```
 In the catalogue for kal, do:
@@ -2813,29 +2813,29 @@ echo "e Nerisassiornermut soqutigisaqarpit?|sh modes/trace-kalgram.mode  # from 
 Or eventually, write
 `make check`
 
-## Tag declaration
+### Tag declaration
 
-### Import tag declarations
+#### Import tag declarations
 We import tag declaration from `../../src/cg3/disambiguator.cg3`
 
-## Rule section
+### Rule section
 
-### Speller suggestions rule
+#### Speller suggestions rule
 add &SUGGESTWF to any spelling suggestion
 that we actually want to suggest to the user.
 The simplest is to just add it to all spelled words:
 
 @OUTSIDE RULES@
 
-### Grammatical rules
+#### Grammatical rules
 
-#### Verb valency rules
-
-ADD:msyn-subj-rel-abs-poss
+##### Verb valency rules
 
 ADD:msyn-subj-rel-abs-poss
 
-### Simple punctuation rules
+ADD:msyn-subj-rel-abs-poss
+
+#### Simple punctuation rules
 
 Rules for quotation marks.
 
@@ -2845,11 +2845,11 @@ Rules for quotation marks.
 
 ---
 
-# tools-grammarcheckers-liststemplates.cg3.md 
+## tools-grammarcheckers-liststemplates.cg3.md 
 
 
 
-## Grammarchecker tags
+### Grammarchecker tags
 - LIST QMARK = QMARK ; 
 - MAPPING-PREFIX = & ; 
 
@@ -2889,9 +2889,9 @@ Rules for quotation marks.
 
 ---
 
-# tools-tokenisers-tokeniser-disamb-gt-desc.pmscript.md 
+## tools-tokenisers-tokeniser-disamb-gt-desc.pmscript.md 
 
-# Tokeniser for kal
+## Tokeniser for kal
 
 Usage:
 ```
@@ -2935,7 +2935,7 @@ ASCII digits
 so far:
 * U+F0B7 for "x in box"
 
-## Unknown handling
+### Unknown handling
 Unknowns are tagged ?? and treated specially with `hfst-tokenise`
 hfst-tokenise --giella-cg will treat such empty analyses as unknowns, and
 remove empty analyses from other readings. Empty readings are also
@@ -2954,9 +2954,9 @@ Finally we mark as a token any sequence making up a:
 
 ---
 
-# tools-tokenisers-tokeniser-gramcheck-gt-desc.pmscript.md 
+## tools-tokenisers-tokeniser-gramcheck-gt-desc.pmscript.md 
 
-# Grammar checker tokenisation for kal
+## Grammar checker tokenisation for kal
 
 Requires a recent version of HFST (3.10.0 / git revision>=3aecdbc)
 Then just:
@@ -3019,9 +3019,9 @@ Finally we mark as a token any sequence making up a:
 
 ---
 
-# tools-tokenisers-tokeniser-tts-cggt-desc.pmscript.md 
+## tools-tokenisers-tokeniser-tts-cggt-desc.pmscript.md 
 
-# TTS tokenisation for smj
+## TTS tokenisation for smj
 
 Requires a recent version of HFST (3.10.0 / git revision>=3aecdbc)
 Then just:
