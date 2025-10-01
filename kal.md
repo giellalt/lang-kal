@@ -423,7 +423,7 @@ W E S T   G R E E N L A N D I C   S Y N T A C T I C   F U N C T I O N S
 - Delimiters (line 47)
 - Tags and sets
 	- Positions and household (line 53)
-	- Parts of speech (line 60)
+	- Parteech (line 60)
 	- Derivatives (line 152)
 	- Tilhængspartikler (line 812)
 	- Syntactic and morphological sets
