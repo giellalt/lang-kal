@@ -1897,6 +1897,7 @@ værdi i spillekort
 * **+Sem/Aich** =  Animal, water   
 * **+Sem/Bveg** =  Plant, vegetable   
 * **+Sem/Hprof** =  Human, profession   
+* **+Sem/Lsem** =  Location, semantic   
 * **+Sem/cc-h** =  Object Countable, human-made  
 * **+Sem/domain** =  Domain    
 * **+Sem/therapy** =  Therapy    
