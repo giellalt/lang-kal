@@ -508,6 +508,7 @@ LIST-TAGS +=
 	@i->N		 # adled der står til inkorporeret objekt t.h. (incl ved LIK): "*angutinik ilaqarput", "*pingasuinnarnik pilutalik"
 	@i-N<		 # adled der står til inkorporeret objekt t.v. (incl ved LIK): "EX mangler"
 	@i->N>N #Ny tag 20210902 .. NUTAARLUINNARNIK atuarfiliornissamik pilersaaruteqarput.
+	@i-N<N<	 # adled der står til inkorporeret objekt t.v. men hvor verbalstammen er nominaliseret
 	@SUBJ_COMP	#Prædikat til subjekt/ subjective complement: "tassa *qajannaat"
 	@i-SUBJ_COMP< # adled der står til inkorporeret subjektsprædikativ (incl tassa i tassaavoq) t.v.: "uppernarsaatissat tassaapput *inqunarluinnarnera *illartarneralu"
 	@POSS>		 # possessor
@@ -1326,7 +1327,7 @@ SET NON_ORATIOOBLVERB = (/"aki"\ Gram/IV\ TUQ\ Der/vn\ SSAQ\ Der/nn/l) | (/"misi
 LIST TID_CONT = (/Gram/IV\ TIP\ Der/vv\ Gram/TV\ Gram/Refl\ V\ Cont/l) (/TIP\ Der/vv\ Gram/TV\ Gram/Refl\ V\ ContNeg/l) ;
 
 # 20190616 Begyndelsen af en ny LIST med de forholdsvis få inquit, der kan styre or. obl. med causativ
-LIST ORATIOOBLVERB_CAU = (/"eqqaa"\ Gram/TV\ TIP\ Der/vv\ \(Gram/Db\ \)?HTR\ Der/vv\ Gram/IV\ UTE\ Der/vn\ GE/l) "eqqaama" ("eqquma" Gram/IV VIK Der/vn GE) "erseqqissar" (/"erseqqip"\ Gram/IV\ SAR/l) (/"ilisima"\ Gram/IV\ TIP/l) ("ilisimatitsi" UTE 3SgO) (/"iluaqut"\ GE/l) (/"iner"\ Gram/IV\ NIQ\ Der/vn\ GE/l) "nalu" "nuannare" (/"pissut"\ U\ Der/nv\ Gram/IV\ NIRAR/l) "puigor" "puior" (/"quja"\ Gram/IV\ \(iSem/speak_affect\ \)?NAR/l) "qujamasuutige";
+LIST ORATIOOBLVERB_CAU = (/"eqqaa"\ Gram/TV\ TIP\ Der/vv\ \(Gram/Db\ \)?HTR\ Der/vv\ Gram/IV\ UTE\ Der/vn\ GE/l) "eqqaama" ("eqquma" Gram/IV VIK Der/vn GE) "erseqqissar" (/"erseqqip"\ Gram/IV\ SAR/l) (/"ilisima"\ Gram/IV\ TIP/l) ("ilisimatitsi" UTE 3SgO) (/"iluaqut"\ GE/l) (/"iner"\ Gram/IV\ NIQ\ Der/vn\ GE/l) "maluge" "nalu" "nuannare" (/"pissut"\ U\ Der/nv\ Gram/IV\ NIRAR/l) "puigor" "puior" (/"quja"\ Gram/IV\ \(iSem/speak_affect\ \)?NAR/l) "qujamasuutige";
 
 SET ATUARnTAQ_x = ("atuar") + TRANSVERB - TAQ - VIK - QATE ;
 SET ATUARnTAQ = ATUARnTAQ_x OR ("atuar" NIQAR); #vist aldrig intrans som inquit
@@ -3658,8 +3659,17 @@ SELECT:conjA Conj IF (*1 ("([a-z].*)"r) - CLB + $$KASUS)(*-1 ("$1"v) + $$KASUS) 
 (NEGATE 0 LU OR LI OR LUUNNIIT) #- Decembarip aallaqqaataani AAMMAlu decembarip qulingiluaani meeqqanut isiginnaagassiaqarumaarpoq.
 
 ;
+##soorlu + Conj
+REMOVE:1x1 ("soorlu") + Adv IF (0 ("soorlu") + Conj LINK -1 BOS OR KOMMA LINK 1 _TARGET_ LINK 1 (Abs  Sg) LINK 1 (Abs  Sg) LINK 1 EOS) ;
+#Paarngortutut isikkoqarpoq. Soorlumi uumasoq nipaarsaartorsuaq. Najungasui takuneqarsinnaapput. Pamiua mikisoq.
+#Nipersuara suli akerartuisoq gangimi tusaaneqarsinnaavoq. Soorlu uumasoq miaggoortoq.
+#Talini illugiissillugit eqillugu orfaarujoortilerpaa, soorlu meeraq sinnassagaq.
+##soorlu fungerer som sammenlignende konjunktion, men da der er ellipse af verballeddet, så er i denne forbindelse head sat til at være SLM_HNOUN - denne løsning synes bedre end Adv som @ADVL>N tuk SLM_HNOUN
 
-REMOVE:soorlu+Adv ("soorlu") + Conj IF (0 ("soorlu")+ Adv LINK NOT *1 V );# Sumiiffinni ornigarluarneqartuni Airbnb-iip sunniutaanik inissaaleqineq ajornartorsiutaalertarpoq *soorlu Spaniami, Italiami nunanilu kiattuni amerlasuuni.
+##soorlu+Adv
+REMOVE:1x2 ("soorlu") + Conj IF (0 ("soorlu")+ Adv LINK NOT *1 V )
+#(NEGATE -*1 Abs + Pl LINK **1 V + 3SgO BARRIER (Abs Sg) LINK 1 KOMMA LINK 1 _TARGET_  LINK 1 Abs)
+;# Sumiiffinni ornigarluarneqartuni Airbnb-iip sunniutaanik inissaaleqineq ajornartorsiutaalertarpoq *soorlu Spaniami, Italiami nunanilu kiattuni amerlasuuni.
 
 #SELECT:advB  ("aamma") + Adv IF (0 ("aamma") + LU OR ("aamma") + LI OR ("aamma") + LUUNNIIT) #- Decembarip aallaqqaataani aammalu decembarip qulingiluaani meeqqanut isiginnaagassiaqarumaarpoq.
 #;
@@ -6179,12 +6189,14 @@ REMOVE:0148 4PlPoss IF (NEGATE *0 V + 3Pl OR V + 4Pl)
 ;
 REMOVE:0148B 4PlPoss + Rel IF (0 Ins + Sg)(*1 INTRANSVERB BARRIER (*) - Hyb/1-2) ; #
 
-#REMOVE:0149 &&Xposs + Rel + Sg IF (*1 POSSESSUM + Abs LINK *1C INTRANSVERB + VFIN + &&Xposs BARRIER V)(NEGATE 1 3SgPoss + Abs LINK 1 TARIAQAR + NNGIT + Ind + 3Sg) ; #NEGATE pga. eksemplet på mærkelig syntaks i " .. anaanami imminorsimanera oqaluttuarisarialiortariaqanngilaq"
+REMOVE:0149x1 Rel + Pl IF (-1 BOS) (0 Rel + Sg LINK *1 Prop + Rel + Sg LINK 1 N + 3SgPoss LINK NOT *1 TRANSVERB + 3Pl BARRIER V) 
+;#Suleqatikutta Nuka Møllerip atuakkiaa ”Kalaallit aqqi” (2015) nassuiaatinik nuannersorpassuarnik imaqarpoq.
 
-REMOVE:0149 Rel + Sg IF (*1 POSSESSUM + Abs LINK *1C INTRANSVERB + VFIN BARRIER V)(NEGATE 1 3SgPoss + Abs LINK 1 TARIAQAR + NNGIT + Ind + 3Sg) #NEGATE pga. eksemplet på mærkelig syntaks i " .. anaanami imminorsimanera oqaluttuarisarialiortariaqanngilaq"
+REMOVE:0149 Rel + Sg IF (*1 POSSESSUM + Abs LINK *1C INTRANSVERB + VFIN BARRIER V)
+(NEGATE 1 3SgPoss + Abs LINK 1 TARIAQAR + NNGIT + Ind + 3Sg) #NEGATE pga. eksemplet på mærkelig syntaks i " .. anaanami imminorsimanera oqaluttuarisarialiortariaqanngilaq"
 (NEGATE 1 iPOSSESSUM OR Hyb/1-2 OR Rel + Sg) #Negate til DMI.dk-p nalunaaqqaneratuut 30 *grade missaaniikkaluartoq suli kianneroqaaq. og Radisep naaqqaatigippagu *orpiulluunniit naasoqartartup naaqqaatigippagu, pisinnaasaa tamaat naajartortinneqassaaq.
 (NEGATE *1 3SgPoss BARRIER (*) - OBLIQUE - Adv - Hyb/1-2 LINK *1 VFIN) #ILLUTTA ilua ipiitsuuvoq
-;  #PL 20190413 Genskrevet uden &&XPoss, som ikke gør noget godt herunder IKKE rammer det anførte eksempel
+; 
 
 #SELECT:0149TEST &&Objekt IF (*1 &&Objekt BARRIER V);
 
@@ -6357,6 +6369,7 @@ REMOVE:0182J ("soorlu") + Conj IF (-1 KOMMA LINK *-1 TRANSVERB BARRIER V)(1 (":"
 REMOVE:0182K ("soorlu") + Conj IF (*-1 LIK_QAR + VFIN BARRIER (*) - KOMMA LINK *1 ("soorlu" Adv) LINK *1 Abs LINK NEGATE *1 V); #Inunnik ataasiakkaanik suliniuteqartoqalerpoq, SOORLU tamatta nalunngisarput, Kim Godtfredsen.
 REMOVE:0182L ("soorlu") + Adv IF (-1 BOS) (0 ("soorlu") + Conj LINK *1  Ind BARRIER V OR CONJ-LU LINK *1 Ind BARRIER VFIN OR CONJ-LU ) ;# Soorlu ulapinnerulertarpugut aasaleraangat aamma ukialeraangat ukiup tungaanut taartalernera taanna sunniuteqartarpoq, aamma piareersimaffiginiartarparput, Isumaginninnermut Aqutsisoqarfimmi pisortaq Tusaanngamullu atassuteqartoq, Naja Lund Kielsen, oqarpoq.##Konservativt sprog ville have Par og ikke Ind.
 
+REMOVE:0183Ax1 ("soorlu") + Adv IF (0 ("soorlu") + Conj LINK -1 BOS OR KOMMA LINK 1 _TARGET_ LINK 1 (Abs  Sg) LINK 1 (Abs  Sg) LINK 1 EOS) ;
 
 SELECT:0183A Part OR Interj IF (-1 BOS)
 (NEGATE 0 DivPron + 4Pl LINK *1 V + 3Pl OR 4Pl)#Vælger "taama" Part frem for "taaq" N Rel Pl 1SgPoss o.lign.
@@ -6366,6 +6379,9 @@ SELECT:0183A Part OR Interj IF (-1 BOS)
 (NEGATE 0 ("soorlu") + Conj LINK **1 Par BARRIER V - %AmbiguøsPar LINK 1 TTAAQ LINK *1 VFIN)#SOORLU isigisat qalipagassaqqissut tappiffigisaqigai taamattaaq pinngortitat nipaannut tutsarilluinnarpoq.
 (NEGATE 0 ("uffa"))
 ;
+
+
+
 
 SELECT:0185A ("soorlu") - UNA - UKU IF (*1 Par OR Cont OR  ContNeg BARRIER V ) ;
 REMOVE:0185B ("soorlu") + Conj IF (-1 $$KASUS LINK 1 _TARGET_ + Adv LINK 1 $$KASUS)#Suliffeqarfissuit SOORLU Royal Arctic Line aamma Namminersornerullutik Oqartussat suleqatigiissapput.
@@ -8120,6 +8136,9 @@ SELECT:0555A Part OR Interj IF (-1 BOS OR (","))(*1C VFIN)(NEGATE 0 DivPron + 4P
 ;
 
 REMOVE:0555B Adv + ("soorlu") IF (0 ("soorlu") + Conj LINK *1 Par BARRIER V - %AmbiguøsPar LINK 1 TTAAQ LINK *1 VFIN); #SOORLU isigisat qalipagassaqqissut tappiffigisaqigai taamattaaq pinngortitat nipaannut tutsarilluinnarpoq.
+
+REMOVE:0555C ("soorlu") + Conj IF (0 ("soorlu") + Adv LINK -1 KOMMA LINK *-1 Abs LINK *1 _TARGET_ LINK 1 Abs LINK NOT *1 V );#Taamaattoq allamiut aqqi kalaallisut nipilerlugit taaneqarsinnaasut ikittuunngitsut nalunaarsugaatigaavut, *soorlu Taavi (uannga: David; hebræerisut isumaqartoq asasaq).
+
 
 #Nominer med tilhængspartikler
 REMOVE:Int0188 Prop + MI + Abs IF (*0 Abs - _TARGET_ BARRIER KOMMA)
