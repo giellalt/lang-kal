@@ -9,7 +9,7 @@
 	* +ALUK+Der/nn+INNAQ+Der/nn:%>%TRUNCaluinnaq tup- ; 
 
 - LEXICON Z1VZmorf  Derivationsmorfemer til nominer, der ender med vokal a, i, u 20200916 NN
-	 -  tpV ;   !PL20221117 nyt fortsættelseslex
+	 - tpV ;   !PL20221117 nyt fortsættelseslex
 
 * LEXICON Z1eqZmorf  Derivationsmorfemer til nominer på seq og leq
 	  * Z1eqZ ; 

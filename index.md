@@ -4,10 +4,10 @@
 ![Lemma count](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fgiellalt%2Flang-kal%2Fgh-pages%2Flemmacount.json)
 [![License](https://img.shields.io/github/license/giellalt/lang-kal)](https://github.com/giellalt/lang-kal/blob/main/LICENSE)
 [![Issues](https://img.shields.io/github/issues/giellalt/lang-kal)](https://github.com/giellalt/lang-kal/issues)
-[![Build Status](https://divvun-tc.giellalt.org/api/github/v1/repository/giellalt/lang-kal/main/badge.svg)](https://github.com/giellalt/lang-kal/actions)
+[![Build Status](https://builds.giellalt.org/api/badge/lang-kal?label=CI)](https://builds.giellalt.org/pipelines/lang-kal/builds/latest)
+[![Glottolog](https://img.shields.io/badge/Glottolog-green)](https://glottolog.org/resource/languoid/id/kala1399)
 
 This page documents the work on the [Kalaallisut language model](http://github.com/giellalt/lang-kal). 
-
 
 Based upon a cooperation between Oqaasileriffik (Grønlands
 sprogsekretariat) and Divvun & Giellatekno, Oqaasileriffik has built

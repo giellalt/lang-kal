@@ -515,8 +515,6 @@ Delimiter
 
 * LEXICON IV_r2 
 
-Uku qanoq IV-mod_C-imi ilanngunneqassappat?
-
 * LEXICON IV_k_stem   
 
 * LEXICON IV_k_agentiv  PL 20210111 type allappoq
@@ -1291,7 +1289,7 @@ Udkommenterede lexica - Flyttet til derivations-inflections.bak20200319 på Pers
 	* +ALUK+Der/nn+INNAQ+Der/nn:%>%TRUNCaluinnaq tup- ; 
 
 - LEXICON Z1VZmorf  Derivationsmorfemer til nominer, der ender med vokal a, i, u 20200916 NN
-	 -  tpV ;   !PL20221117 nyt fortsættelseslex
+	 - tpV ;   !PL20221117 nyt fortsættelseslex
 
 * LEXICON Z1eqZmorf  Derivationsmorfemer til nominer på seq og leq
 	  * Z1eqZ ; 
@@ -1893,6 +1891,7 @@ værdi i spillekort
 * **+Sem/Unit** = Unit !Til besværlige låneord som 'time' etc., der optræder absolut
 * **+Sem/Url** tag til adresser af typen www.ccc.cc
 * **+Sem/misse** tag til at markere usikker possessor for misse
+* **+Sem/month** =  Temporal, month
 
 * **+Sem/Aich** =  Animal, water   
 * **+Sem/Bveg** =  Plant, vegetable   

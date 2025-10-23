@@ -67,6 +67,7 @@ værdi i spillekort
 * **+Sem/Unit** = Unit !Til besværlige låneord som 'time' etc., der optræder absolut
 * **+Sem/Url** tag til adresser af typen www.ccc.cc
 * **+Sem/misse** tag til at markere usikker possessor for misse
+* **+Sem/month** =  Temporal, month
 
 * **+Sem/Aich** =  Animal, water   
 * **+Sem/Bveg** =  Plant, vegetable   

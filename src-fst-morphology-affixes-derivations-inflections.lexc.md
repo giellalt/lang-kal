@@ -43,8 +43,6 @@
 
 * LEXICON IV_r2 
 
-Uku qanoq IV-mod_C-imi ilanngunneqassappat?
-
 * LEXICON IV_k_stem   
 
 * LEXICON IV_k_agentiv  PL 20210111 type allappoq
