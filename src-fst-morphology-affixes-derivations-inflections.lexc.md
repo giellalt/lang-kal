@@ -402,6 +402,7 @@ PL20250910 slettet possessum i pluralis fra Gram/Ord
 * LEXICON Z2+lZ  
 
 * LEXICON tup  
+
 | --- 
 | --- 
 | ---
