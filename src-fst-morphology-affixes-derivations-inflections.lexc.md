@@ -392,6 +392,7 @@ PL20250910 slettet possessum i pluralis fra Gram/Ord
 | --- 
 
 * LEXICON Z2aqZ  
+
 | --- 
 
 * LEXICON UGALUAQ  
@@ -429,6 +430,7 @@ PL20250910 slettet possessum i pluralis fra Gram/Ord
 | --- 
 
 * LEXICON Z2+rZ  
+
 | --- 
 | ---
 | --- 

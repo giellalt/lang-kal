@@ -76,6 +76,7 @@ værdi i spillekort
 * **+Sem/cc-h** =  Object Countable, human-made  
 * **+Sem/domain** =  Domain    
 * **+Sem/therapy** =  Therapy    
+* **+Sem/tool** =  Tool    
 * **+Sem/inst** =  Institution    
 * **+Sem/sick** =  Disease    
 
