@@ -19,6 +19,7 @@
         * `transcriptions/`
             * [transcriptor-abbrevs2text.lexc](src-fst-transcriptions-transcriptor-abbrevs2text.lexc.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/fst/transcriptions/transcriptor-abbrevs2text.lexc))
             * [transcriptor-numbers-digit2text.lexc](src-fst-transcriptions-transcriptor-numbers-digit2text.lexc.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/fst/transcriptions/transcriptor-numbers-digit2text.lexc))
+            * [transcriptor-symbols2text.lexc](src-fst-transcriptions-transcriptor-symbols2text.lexc.html) ([src](https://github.com/giellalt/lang-kal/blob/main/src/fst/transcriptions/transcriptor-symbols2text.lexc))
 * `tools/`
     * `grammarcheckers/`
         * [grammarchecker.cg3](tools-grammarcheckers-grammarchecker.cg3.html) ([src](https://github.com/giellalt/lang-kal/blob/main/tools/grammarcheckers/grammarchecker.cg3))
