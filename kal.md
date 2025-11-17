@@ -2108,13 +2108,6 @@ Flag specielt for at sikre additiv p-bøjning af ulloq i Trm@
 
 Ad hoc til test af alternativ flag diacritics ved præfikser. Husk også den udkommenterede linie 'Kingumoorutit ;' i LEXICON Root
 
-Test af P- og D-flag til forebyggelse af rekusivitet ved TIP
-
-* **@P.TIP.ON@** 
-
-og blokeres af 
-* **@D.TIP@** 
-
 Test 20210504 af P- og R-flag for at generere både takornariat og takornarissat+Err/Sub
 
 * **@P.iaq.ON@** 
@@ -2133,6 +2126,10 @@ Flags for loan words, which must not go to N+Abs+Sg without derivation.
 * **@U.acro.poss.epent.v@** = acro + possessor + epenthetic v
 * **@U.acro.norm@** = acro + vanlig
 * **@C.acro.norm@**
+
+Test af P- og D-flag til forebyggelse af rekusivitet ved TIP
+* **@U.tip.ON@** 
+* **@U.tip.OFF@** 
 
 * **PJAT_FOR_AT_FAA_SKIDTET_TIL_AT_KOMPILERE**  en dummy, der kan kommenteres ind og ud, når make instisterer på 'nothing to do' efter bestemte fejltyper
 
