@@ -145,8 +145,6 @@ PL 20180718. Følgende er et særligt lexicon til ip i stedet for tidligere LEXI
 
 * LEXICON flex-iv_voq 
 
-* LEXICON flex-iv_voq2  
-
 * LEXICON pi_flex-iv_refl  Et særligt lex til pivaa + Refl for at begrænse overgenerering. Udkommenteringer må fjernes efterhånden som formerne faktisk dokumenteres
 
 * LEXICON pi_flex-iv_voq  et saerligt lexicon til dummy-pi, som ikke får derivationer
