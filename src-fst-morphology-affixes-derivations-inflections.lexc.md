@@ -404,11 +404,6 @@ PL20250910 slettet possessum i pluralis fra Gram/Ord
 
 | --- 
 | --- 
-| ---
-| --- 
-| ---
-| --- 
-| --- 
 | --- 
 
 * LEXICON tup_speciel  Kun til brug for NIQ som passiv ved transitive stammer
@@ -599,8 +594,6 @@ I Num2 til Num10 er flagging af NNGUR C-et pga. klokken
 * LEXICON HTR_schwa_SAQ_si   gennemgangsleksikon for schwa stammer. (ilisarsivoq)
 
 * LEXICON HTR_C_TAQ_si   (dvs. konsonantstammer men ikke med *r* (kingornuppaa - kingornussivoq - kingornutaq)
-
-* LEXICON HTR_C_TAQ_si_P   20100406 gennemgangsleksikon for pluralis tantum stammer med på ir-. (tallimakkaaqqippai - tallimakkaaqqitat - ??)
 
 * LEXICON HTR_k_TAQ_i_P   20180430 pluralis tantum stammer som kitserluppai
 
