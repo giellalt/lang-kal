@@ -591,8 +591,7 @@ i staden ei liste der kvar tag sto ein gong (nedanfor): docs/tagstrings.md
 * **+QQURTUUQ** 
 * **+QQUSAAR** 
 * **+QQUTE** 
-* **+QQUUQE**
-* **+QQUUR**
+* **+QQUUQE** 
 * **+QQUUTE** 
 * **+R** 
 * **+RAALLAK** 
