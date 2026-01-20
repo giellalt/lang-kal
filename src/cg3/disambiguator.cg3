@@ -1835,6 +1835,7 @@ LIST TUR-ABLE = "cigaret" "tupa" ;
 LIST UNAMBIGUOUS_NOUN = "<ajassaatit>" "<alussaatit>" ;
 LIST USPATIAL = "sanik" "ateq";
 LIST WEATHER = "alanngoq" "anori" "aput" "naqitsiniisaffik" "nuiaq" "seqineq" "sialuk" "sila" ;
+LIST WIND_DIRECTION = "samanngaq" "kiganngaq" "kananngaq" ;
 
 ### nominer SETs ###
 SET ATTRIBUTIV = ADJEKTIVISK - ("sakkutooq") | COLOUR | (/QAR\ Der\/nv\ \(Gram\/IV\ \)?TUQ\ /l) | ("IP" TUQ) ;
@@ -2099,6 +2100,10 @@ REMOVE:Arch0001 Orth/Arch + (/\(.*\)/r) (0 (VSTR:$1) - Orth/Arch)
 (NEGATE 0 TIP OR TAR)
 (NEGATE 0 ("erneq")) ; #Jude 20231009 eksempel: ORPEERNIARPOQ
 REMOVE:Gram (/nv\ Gram/IV\ Gram/IV\ V/l) + (/\(.*\)/r) (0 (/nv\ Gram/IV\ V/l) + (VSTR:$1)) ; #Jude 20231009 eksempel: AMEERNIARPOQ
+
+REMOVE:parti  (/"parti"\ OLang/DAN/l) + N + POSSESSUM3 OR (/"parti"\ OLang/DAN/l) + N + POSSESSUM4 IF (0 (/"parti"\ OLang/DAN\/l) - POSSESSUM)
+(NEGATE -1 Rel)
+;
 
 REMOVE:GramIV0001 (/Der/nv\ Gram/IV\ NIQ\ Der/vn\ \([A-Z]+\ \)?\(Der/nn\ \)?\N\ /l) + $$BFORM (0 (/Der/nv\ NIQ\ Der/vn\ \([A-Z]+\ \)?\(Der/nn\ \)?\N\ /l) + $$BFORM) ; #Jude 20231026
 
@@ -2544,6 +2549,8 @@ REMOVE:tidlig0586 2SgPoss (0 Abs + Pl LINK -1 Abs + Pl)
 
 REMOVE:tidlig0587 Abs + Pl IF (0 Abs + Sg + 2SgPoss LINK 1 V + 1Sg + 3SgO) ; #Aap eqqaamavara, aamma massakkut siunnersuutIT ajorinngilluinnarpara. #KL 20230831 suppl til 0586-NEGATE
 
+SELECT:tidlig0588 Abs + Pl IF (0 ("qaama" TUQ) OR ("taar" TUQ) LINK -1 COLOUR + Abs + Pl) ;#Kingullermik takuneqarami atorpai qarliit tungujortut taartut. 
+
 
 SET Cases = Lok | Ins | Abl | Trm | Aeq | Via ;
 REMOVE:miss ("miss.*"r) + Abs (0 Cases) (1 ("miss.*"r Adv)) ;
@@ -2735,9 +2742,8 @@ REMOVE:tidlig0037 (/"maap"\ Orth/Arch\ Gram/IV\ V\ Imp\ 2Sg/l) IF (0 ("maanna"))
 
 
 
-#CL-ADVL af typen tidsudtryk + Num + (manna Rel) + siuneq OR kinguneq
+#tidsudtryk + Num + (manna Rel) + siuneq OR kinguneq
 REMOVE:tidlig0042A Rel + SEASON IF (0 Abs + SEASON)(1 Num LINK 1 ("manna") + Rel LINK 1 ("kinguneq") OR ("siuneq"));#Demokraatit pilersaarut tassunga assingusoq UKIUT qulit matuma kingorna pinngitsoortippaat.
-
 
 
 REMOVE:tidlig0042B Rel + OTHERTIME IF (0 Abs + OTHERTIME)(1 Num LINK 1 ("manna") + Rel LINK 1 ("kinguneq") OR ("siuneq"));#Demokraatit pilersaarut tassunga assingusoq ULLUT qulit matuma kingorna pinngitsoortippaat.
@@ -5766,6 +5772,8 @@ REMOVE:0073 Rel + Pl IF (0 Abs + Pl LINK *1 INTRANSVERB + VFIN + 3Pl - Gram/Refl
 #Følgende kopieret ind fra Nomen eller nomen for ikke at få begge NIQ-former slettet af
 REMOVE:8534AE ("inuup") IF (0 (/"inuk"\ U\ Der/nv\ Gram/IV\ SIMA\ Der/vv\ Gram/IV\ NIQ/l));
 
+SELECT:0073Ex1 OTHERTIME + Abs + Pl IF (0 Rel + Pl LINK 1 iNum LINK 1 ("manna" Rel) LINK 1 ("kinguneq") OR ("siuneq") OR ("siornatigut") );
+
 
 REMOVE:0073E Abs + TIME IF (1 POSSESSUM3 - ADJEKTIVISK - Orth/Arch - ("Alluitsup Paa"))  #ikke NAAMMASSISUT nutaat (hvor nutak ikke må tage nutaaq's plads)
 (NEGATE -1 ("manna" Rel) LINK 1 _TARGET_ + ("siuneq") + POSSESSUM3 )#Taassumalli nunatsinnut nunasisuujartorlunilu ajoqersuiartortitaasup ukiut 300-t matuma SIORNA tikinnera Kommuneqarfik Sermersuumi malunnartinneqassanngilaq.
@@ -5901,8 +5909,16 @@ SELECT:0081 3PlPoss - MI IF (-1 ("\,"))(-2C 3PlPoss) #opremsning med komma
 ;
 SELECT:0082 3PlPoss + $$KASUS IF (0 CONJ-LU)(-1C 3PlPoss + $$KASUS); #3. led i opremsning med komma eller andet uden komma
 #Sikre possessum
-REMOVE:0083 PAK IF (0 VFIN ) ; #Vælg finit Vb frem for PAK+Pl hvis eneste VFIN. Skal komme før følgende SELECT
-SELECT:0084 3PlPoss IF (-1C Rel + Pl)(NEGATE *1 TRANSVERB + 3Pl)(NEGATE 0 ADJEKTIVISK)(NEGATE 0 N*)(NEGATE 0 ("ila") + GE + Ind)(NEGATE 0 ("siornatigut"))(NEGATE 0 Part) #siulittaasuisa nuannarineqarnersaat. Sidste NEGATE for at forhindre hit på 'allaat'
+REMOVE:0083 PAK IF (0 VFIN ) ; #Vælg finit Vb frem for PAK+Pl hvis eneste VFIN. Skal komme før følgende SELECT 0084
+
+SELECT:0084x1 Abs + Pl - POSSESSUM + iNum IF (-1 OTHERTIME + N) (0 N + Sg + 3PlPoss + iNum OR Rel + Pl + iNum LINK 1 ("manna" Rel) LINK 1 ("kinguneq") OR ("siuneq") OR ("siornatigut") ) ;
+
+SELECT:0084 3PlPoss IF (-1C Rel + Pl)
+(NEGATE *1 TRANSVERB + 3Pl)
+(NEGATE 0 ADJEKTIVISK)
+(NEGATE 0 N*)
+(NEGATE 0 ("ila") + GE + Ind)(NEGATE 0 ("siornatigut"))
+(NEGATE 0 Part) #siulittaasuisa nuannarineqarnersaat. Sidste NEGATE for at forhindre hit på 'allaat'
 (NEGATE 0 (".*logi"r) + Abs)#Ilisimatusarfimmi BIOLOGII pillugu ilinniarsinnaalernermut aningaasaateqarfik aningaasaliisoq
 ;
 
@@ -7425,7 +7441,12 @@ REMOVE:0228 ("kiisa") + Adv IF (0 ("kiisalu") + Conj); #kiisalu er aldrig adverb
 REMOVE:0229 KONJUNKTION + Adv IF (0 KONJUNKTION + Conj)(T:NexusVenstre LINK NOT 0 ORATIOOBLVERB)(T:NexusHøjre) ;
 #Variant til 2 nexuser uden eksplicit subjekt men med komma
 REMOVE:0229A KONJUNKTION + Adv IF (0 KONJUNKTION + Conj)(-1 KOMMA LINK -1 VFIN)(*1 VFIN) ;
-SELECT:0229B KONJUNKTION + Conj IF (-1 N + $$KASUS)(1 N + $$KASUS)(NEGATE 0 ("aamma") LINK -1 Abs + CONJ-LU LINK *1 NIR LINK 1 VFIN);#*** LINK NOT 0 NIQ + Abs LINK 1 ("ajor") OR ("saper")) ;
+SELECT:0229Bx1 ("aamma") + Adv IF (0 Conj LINK -1 NIQ + N + Ins LINK 1 _TARGET_ LINK 1 ADVERBIEL + Ins + Sg) ;#Upalungaarsimanermik aamma annerusumik suliaqartariaqarpugut, partiinilu ilaasortat suleqatigalugit.
+SELECT:0229B KONJUNKTION + Conj IF (-1 N + $$KASUS)(1 N + $$KASUS)(NEGATE 0 ("aamma") LINK -1 Abs + CONJ-LU LINK *1 NIR LINK 1 VFIN)
+
+;
+
+#*** LINK NOT 0 NIQ + Abs LINK 1 ("ajor") OR ("saper")) ;
 SELECT:0229C Conj IF (*1 GALUAR BARRIER VFIN)(-1 KOMMA OR CLB) #Anigaluarlungaluunniit qiianngilanga, aali minus 5 gradiugaluartoq.
 (NEGATE 0 ("soorlu") LINK 1 Aeq);
 #En meget smal regel til forebyggelse af paratakse mellem subjekt og følgende possessor
