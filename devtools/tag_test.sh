@@ -28,6 +28,10 @@ git ls-files -- "*.lexc" | xargs -n1 git blame -f | grep -P '\+\+[A-Z]'
 echo '\nChecking for use of equals sign instead of plus sign'
 git ls-files -- "*.lexc" | xargs -n1 git blame -f | grep -P '[a-z]+=[A-Z]+\+Der'
 
+echo '\nChecking for "TRUNC" error'
+git ls-files -- "*.lexc" | xargs -n1 git blame -f | grep -P 'TRUN[a-z]'
+
+
 #echo 'Checking for missing Der-tags:'
 #cat src/fst/stems/*lexc |cut -d '!' -f1 |grep '\+Der/.*;' |egrep -v 'Der([1234]|\+)'
 
