@@ -928,6 +928,8 @@ PL20250910 slettet possessum i pluralis fra Gram/Ord
 
 * LEXICON PronViaVb  
 
+* LEXICON Gram_Hyb_UR  
+
 * LEXICON part  
 
 * LEXICON timepart  nyt leksikon til tidspartiker, der kan viderederiveres (ullumiummat)
