@@ -206,8 +206,10 @@ Ulike verbtyper.
 - **SET CONT = Cont OR ContNeg;** =
 - **SET CONT_INTRANS = CONT - TRANSVERB ;** = Til brug i BARRIER
 - **SET CON_CAU = Con OR Cau ;** =
+
 - **LIST PASSIV = (GE SIMA) NIQAR (/Gram/TV (iSem/.* )?TAQ Der/vn (iSem/.* )?U/l) (/TIP Der/vv Gram/TV TAQ Der/vn N/l) (/Gram/Db TAQ Der/vn U/l);** =
 - **SET PASSIV_ALTERNATIV = NIQAR OR (/Gram/TV TAQ Der/vn U/l) OR (/Gram/TV (Gram/Refl )?Gram/IV NIQ Der/vn IRUTE/l) ;** = PL ny 20190630 fordi (GE SIMA) forekommer for farlig
+
 - **LIST NO_HTR = "allap" ;** = 20091108 - Verber, der ikke kan kombinere med HTR
 - **SET SchwaDerivativ = GE OR TARE OR QE OR SURE ;** =
 - **SET PERSON = 1Sg OR 2Sg OR 3Sg OR 4Sg OR 1Pl OR 2Pl OR 3Pl OR 4Pl ;** =
@@ -366,7 +368,6 @@ SUBJTRANSVERB er alle ovenfor
 - **LIST NÆPPE_OBJ = ("nuanner" TUQ) (/"toqqa" Gram/IV INNAR/l TUQ) ("isertuanngitsoq" Ins) ("isertuar" Ins);**
 - **LIST NÆPPE_SUBJ = ("nalinginnaq") ;**
 - **LIST NÆPPE_KOMPARATIV = (/"eqquup" Gram/IV TIP Der/vv Gram/TV HTR Der/vv Gram/IV NIQ/l) (/"unioqqup" Gram/IV TIP Der/vv Gram/TV HTR Der/vv Gram/IV NIQ/l);** Leksikaliseringer som normalt analyseres som NIQ+U frem for NIRU
-- **LIST AGENS_NOUN = ("katersugaq") ;**
 
 - **SET IVTVSUBJ& = IV_SUBJ& | SUBJTRANSVERB& ;**
 
