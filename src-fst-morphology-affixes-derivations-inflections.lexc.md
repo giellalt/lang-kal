@@ -1,3 +1,4 @@
+
 # Fil for at generere de centrale morfologiske processer i vor grønlandske analysator               
 
 * LEXICON ZseqZ  qalaseq
