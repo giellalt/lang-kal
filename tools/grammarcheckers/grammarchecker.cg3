@@ -59,7 +59,7 @@ INCLUDE STATIC liststemplates.cg3 ;
 
 BEFORE-SECTIONS
 #heuristic tags in order to correct other parts of sentence
-ADD <heur-prop> ("\\p{Lu}.*"r ?) (NEGATE -1 BOS) ;
+ADD <heur-prop> ("\\p{Lu}.*[^\\u2010].*"r ?) (NEGATE -1 BOS) ;
 ADD <heur-Abs-Sg> ("\\p{Lu}.*a"r ?) (-1 (/UTE\ Der/vn\ N\ Abs\ Sg/l)) ;
 #[Aqqama]: Inuit aqqinik qinnuteqaat Aqqama ilissinnut akuerisassatut ingerlateqqippara. Tunngavilersuutingineqarneri taajuutaavoq aammalu allattaasitaamut naapertuulluni.
 
@@ -191,14 +191,15 @@ ADD:msyn-abs-rel &msyn-abs-rel TARGET Abs (1 NIQ + SSAQ + 3SgPoss) ;
 COPY:msyn-abs-rel (Rel &SUGGEST) EXCEPT (Abs &msyn-abs-rel) BEFORE NUMERUS &msyn-abs-rel ;
 
 # Rel Poss
-WITH:msyn-abs-rel-pos Abs + Sg + compatible
-(1 3SgPoss LINK NOT 1* VFIN + 3Sg BARRIER BOS)
+WITH:msyn-abs-rel-pos Abs + (/\([SP][gl]\)/r) + compatible
+(1 (VSTR:3$1Poss) LINK NOT 1* VFIN + 3Sg BARRIER BOS)
 {
 ADD:msyn-abs-rel-pos &msyn-abs-rel-pos (*) ;  
 COPY (Rel &SUGGEST) EXCEPT (Abs &msyn-abs-rel-pos) BEFORE NUMERUS (*) ;
 ADDRELATION:msyn-abs-rel-pos ($2 RIGHT) (*) TO (1 (*)) ;
 } ;
 #Sila nillertinnerani aajuku HAGLÖFS-imiik iluatgiut atorsinnaasatit pigaagut, angutinut aamma peqarpugut. (sila -> silap)
+#filmiliortua uisakajaalernera (filmiliortua -> filmiliortuata)
 
 # Trm
 # NIQ+Trm atatillugu
