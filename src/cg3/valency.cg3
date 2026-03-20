@@ -1,4 +1,3 @@
-#ATHUGIÐ!
 #When open in CG3-IDE:
 #this file is in:
 #~/langtech/kal/src/cg3
@@ -38,116 +37,88 @@
 # ==================================================================== #
 
 
-###
-# archived examples from summer 2024 during Judithe Denbæk's visit to Tromsø
-###
-#LIST AG-ABS-A-V = "pangalip" ;
-
-#LIST AG-ABS-H-V = "arpap" ;
-
-#SUBSTITUTE (V) (V <AG-Abs-A>) TARGET AG-ABS-A-V;
-	##  qimmeq pangalilluni qanilliartorpoq
-
-#SUBSTITUTE (V) (V <AG-Abs-H>) TARGET AG-ABS-H-V;
-	## inuk arpalluni qanilliartorpoq
-###
-
-
-
-
-# ======================================================================================#
-# December 2024: the content below this line is done by Judithe Denbæk - Oqaasileriffik
-# ======================================================================================#
 
 INCLUDE STATIC ../../tools/grammarcheckers/liststemplates.cg3 ;
 
-
+###
 BEFORE-SECTIONS
+###
 
 
 
-#VERBS
-ADD <f:be_attribute_jpsych> AFTER ITR_pers OR noun_number be_attribute_jpsych ;
-ADD <f:be_attribute_jquant> AFTER ITR_pers OR noun_number be_attribute_jquant ;
-ADD <f:teach> AFTER objectmarking OR ITR_pers hum_hum ;
+### Section 1 ###
+### NOUNS ###
 
-ADD <§TH_@SUBJ-NULL_<H>_N_Pron_Prop> AFTER frame <f:be_attribute_jpsych>
-(0 (/[34][SP][gl]/r))
-(NOT 0* Abs)
-(NEGATE 0 sub-mood LINK -1* VFIN + objectmarking LINK -1* Rel + Sem/Hum) ;
+### Section 1.1 ###
+### ADPHRASE NOUNS + head w/verbal stems ###
+### INTRANS STEMS in head ###
 
+ADD:att_temp <X_be_attr_jtemp> Sem/wea (1 Sem/be_attribute + Sem/jtemp) ;
+ADD:link_attr_temp <linked> Sem/be_attribute + Sem/jtemp (-1 Sem/wea) ;
+#Sila nillertinnerani aajuku HAGLÖFS-imiik iluatgiut atorsinnaasatit pigaagut, angutinut aamma peqarpugut. (sila -> silap)
 
-
-SECTION
-
-
-#SEM ROLE VERBS
-ADD <§TH_@SUBJ_<H>_N_Abs> AFTER frame <f:be_attribute_jpsych> ;
-ADD <$TH_@SUBJ_<+countable>_N_Abs> AFTER frame <f:be_attribute_jquant> ;
-ADD <$AG_@SUBJ_<H>_N_Rel-§BEN_@OBJ_<H>_N_Abs> AFTER frame <f:teach> + objectmarking ;
-ADD <$AG_@SUBJ_<H>_N_Abs-§BEN_@OBJ_<H>_N_Ins> AFTER frame <f:teach> + ITR_pers ;
-
-
-
-#SEM ROLE NOUNS
-ADD §TH <H> + Abs + (/\([SP][gl]\)/r) (*1 <f:be_attribute_jpsych> + <§TH_@SUBJ_<H>_N_Abs> LINK 0 (VSTR:/^[1-4]$1$/r) - objectmarking) ;
-
-#<fn:be_attribute_.*>-based ADJECTIVAL NOUNS
-SUBSTITUTE (/<f:.*_\(j.*\)>/r) (<STEM:$1$2>v <$2>v) TARGET (<\(f:be_attribute.*_\)\(j.*\)>r) + TUQ + noun_number ;
-SUBSTITUTE <§TH_@SUBJ_<H>_N_Abs> <p:<H>_N_Prop> AFTER jsem <jpsych> ;
-
-
-SUBSTITUTE <$TH_@SUBJ_<+countable>_N_Abs> <p:<+countable>_N> AFTER jsem <jquant> ;
-
-TEMPLATE be_attribute_jpsych = -1* <H> + $$NUMERUS | <act>  + $$NUMERUS | <sem> + $$NUMERUS ;
-TEMPLATE be_attribute_jquant = -1* <+countable>  + $$NUMERUS ;
-
-#NOUNS + their verbal stems
-ADD <H> human | Pron + (/[12][SP][gl]/r) ;
-ADD (<dur> <per> <+countable>) duration ;
 #==
-ADD <X_be_attr-jtemp> Sem/wea (T:be_attr-jtemp) ;
-ADD <linked> Sem/be_attribute + Sem/jtemp (-1 Sem/wea) ;
-#==
-ADD <X_be_attribute_jpsych> <H> (1 <f:be_attribute_jpsych>) ;
-#==
-ADD <X_create_semantic> (/Sem/H.*/r) + (/\([SP][gl]\)/r) (1 Sem/create_semantic + TAQ + (VSTR:3$1Poss)) ; #akulliliaq titartagaa
-ADD <linked> Sem/create_semantic (-1 <X_create_semantic>) ;
-#==
-ADD <X_do> Sem/H (1 Sem/do) ;
-ADD <linked> Sem/do (-1 <X_do>) ;
-#==
-ADD <X_end> Sem/dur (1 Sem/end) ;
-ADD <linked> Sem/end (-1 Sem/dur) ;
-#==
-ADD <X_reach> quantifiable (1* Sem/reach BARRIER (*) - Gram/Dem) ;
-ADD <linked> Sem/reach (-1* <X_reach> BARRIER (*) - Gram/Dem) ;
-#==
-ADD <X_remove> Sem/f-an (1 Sem/remove) ;
-ADD <linked> Sem/remove (-1 <X_remove>) ;
-#==
-ADD <X_rush> human (1 Sem/rush) ;
-ADD <linked> Sem/rush (-1* <X_rush> BARRIER (*) - Gram/Dem) ;
+ADD:attr_psych <X_be_attribute_jpsych> <H> (1 <f:be_attribute_jpsych>) ;
+
 #==
 
-#NOUNS + their verbal stems: lexically specific
-ADD <X_nutser> ("taagor") + Sem/characterize (1 ("nutser") + Sem/turn_into) ;
-ADD <linked> ("nutser") + Sem/turn_into (-1 ("taagor") + Sem/characterize)  ;
+ADD:do <X_do> Sem/H (1 Sem/do) ;
+ADD:link_do <linked> Sem/do (-1 <X_do>) ;
+#meerannguagut soqqaarneri (meerannguagut -> meerannguatta)
 
-#NOUNS + their verbal stems: tag and/or morphologically specific
-ADD <X_NIRU> (*) (1 Abl LINK 1 NIRU) ;
-ADD <linked> NIRU (-1* <X_NIRU> BARRIER (*) - Abl) ;
+#==
 
+ADD:end <X_end> Sem/dur (1 Sem/end) ;
+ADD:link_end <linked> Sem/end (-1 Sem/dur) ;
+#qaammat naanerani qaammat -> qaammatip)
+
+#==
+
+ADD:reach <X_reach> quantifiable (1* Sem/reach BARRIER (*) - Gram/Dem) ;
+ADD:link_reach <linked> Sem/reach (-1* <X_reach> BARRIER (*) - Gram/Dem) ;
+#ukiukka tassunga killissimaneri (ukiukka -> ukiuma)
+
+#==
+
+ADD:rem <X_remove> Sem/f-an (1 Sem/remove) ;
+ADD:link_rem <linked> Sem/remove (-1 <X_remove>) ;
+#nutsakka piiarnissaannut (nutsakka -> nutsama)
+
+#==
+
+ADD:rush <X_rush> human (1 Sem/rush) ;
+ADD:link_rush <linked> Sem/rush (-1* <X_rush> BARRIER (*) - Gram/Dem) ;
+#filmiliortua uisakajaalernera (filmiliortua -> filmiliortuata)
+
+### Section 1.2 ###
+### ADPHRASE NOUNS + head w/verbal stems ###
+### TRANS STEMS in head ###
+
+ADD:crea_sem <X_create_semantic> (/Sem/H.*/r) + (/\([SP][gl]\)/r) (1 Sem/create_semantic + TAQ + (VSTR:3$1Poss)) ; #akulliliaq titartagaa
+ADD:link_crea_sem <linked> Sem/create_semantic (-1 <X_create_semantic>) ;
+#akulliliaq titartagaa (akulliliaq -> akulliliap)
+
+### Section 1.3 ###
+### ADPHRASE NOUNS + head w/verbal stems: lexically specific ###
+
+ADD:nutser <X_nutser> ("taagor") + Sem/characterize (1 ("nutser") + Sem/turn_into) ;
+ADD:link_nutser <linked> ("nutser") + Sem/turn_into (-1 ("taagor") + Sem/characterize)  ;
+#oqaatsit atorneqartartut kalaallisut taaguuserneqarnikuunngissorisakka nutserneri (taaguuserneqarnikuunngissorisakka -> taaguuserneqarnikuunngissorisama)
+
+### Section 1.4 ###
+### + head w/verbal stems: tag and/or morphologically specific ###
+
+ADD:niru <X_NIRU> (*) (1 Abl LINK 1 NIRU) ;
+ADD:link:niru <linked> NIRU (-1* <X_NIRU> BARRIER (*) - Abl) ;
+#qimuttuitsoq ussippaarsuarnit pingaartitaanerunera (qimuttuitsoq -> qimuttuitsup)
+
+
+
+
+###
+AFTER-SECTIONS
+###
 
 REMOVE (*) - <linked> - compatible ;
 REMOVE Use/-Spell - 1PlPoss ; #meerannguagut
 SUBSTITUTE (1PlPoss Orth/Alt Use/-Spell) (1PlPoss) TARGET 1PlPoss + Orth/Alt + Use/-Spell ;
-
-END
-#OLD templates copied from liststemplates.cg3
-
-#TEMPLATEs
-#TEMPLATE measuring-v = 1 ("taama") LINK 1 (/TIGE\ Der/vv\ Gram/IV\ TUQ\ Der/vn\ N/l) + measuring-sc-v + $$NUMERUS ;
-#TEMPLATE opinion-v = 1 ("taama") LINK 1 (/TIGE\ Der/vv\ Gram/IV\ TUQ\ Der/vn\ N/l) + opinion-sc-v + $$NUMERUS ;
-#TEMPLATE quantitative-v = 1 ("taama") LINK 1 (/TIGE\ Der/vv\ Gram/IV\ TUQ\ Der/vn\ N/l) + quantitative-sc-v + $$NUMERUS ;
-#necessary: [nunaqarfinnguami] taama inukitsigisumi pisiniarfeqanngilaq >< tupinnaqaaq [inuit] taama ipertutigisumi inuusinnaammata

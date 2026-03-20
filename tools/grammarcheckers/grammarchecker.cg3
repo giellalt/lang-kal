@@ -48,16 +48,13 @@
 
 
 
-#!! ## Tag declaration
 
-#!! ### Import tag declarations
-#!! We import tag declaration from `../../src/cg3/disambiguator.cg3`
 
 INCLUDE STATIC liststemplates.cg3 ;
 
 
 
-#!! ## Rule section
+
 
 BEFORE-SECTIONS
 #heuristic tags in order to correct other parts of sentence
@@ -70,24 +67,140 @@ ADD <sem-personalname> ("ateq") (0 (/3[SP][gl]Poss/r)) (-1 ("inuk" Rel)) ;
 
 SECTION
 
-#!! ### Speller suggestions rule
-#!! add &SUGGESTWF to any spelling suggestion
-#!! that we actually want to suggest to the user.
-#!! The simplest is to just add it to all spelled words:
 
-#€# = vi slår af får vi tester
-#€# ADD:spell-it-all (&typo &SUGGESTWF) (<spelled>) ;
-#€# #!! @RULENAME@
-#€#
-#€# #!! But perhaps you want to only suggest spellings of words that are not inside "quotes":
-#€#
-#€# ADD:spell-conservatively (&typo &SUGGESTWF) (<spelled>) IF (NEGATE -1 QMARK LINK 2 QMARK);
-#!! @RULENAME@
+### NOUNS ###
 
-#!! ### Grammatical rules
+#NOUNS THAT FUNCTION AS ADPHRASES TO A HEAD NOUN W/VERBAL STEM
 
-#!! #### Verb valency rules
+# Rel Poss
+#Sections 1.1-1.4 in: ~/langtech/kal/src/cg3/valency.cg3
+WITH:msyn-abs-rel-pos Abs + (/\([SP][gl]\)/r) + compatible
+(*1 (VSTR:3$1Poss) + <linked> BARRIER (*) - Gram/Dem - Abl LINK NOT 1* VFIN + (VSTR:3$1) BARRIER BOS)
+{
+ADD:msyn-abs-rel-pos &msyn-abs-rel-pos (*) ;  
+COPY:msyn-abs-rel-pos (Rel &SUGGEST) EXCEPT (Abs &msyn-abs-rel-pos) BEFORE NUMERUS Abs + &msyn-abs-rel-pos ;
+ADDRELATION:msyn-abs-rel-pos ($2 RIGHT) (*) TO (*1 (*) + <linked>) ;
+} ;
+### EXAMPLES: ###
+### example gathered from Facebook add, added to yaml test:
+#Sila nillertinnerani aajuku HAGLÖFS-imiik iluatgiut atorsinnaasatit pigaagut, angutinut aamma peqarpugut. (sila -> silap)
+### examples provided by Minik Jeremiassen from a personal collection of errors 20260318:
+#filmiliortua uisakajaalernera (filmiliortua -> filmiliortuata)
+#ukiukka tassunga killissimaneri (ukiukka -> ukiuma)
+#meerannguagut soqqaarneri (meerannguagut -> meerannguatta)
+#nutsakka piiarnissaannut (nutsakka -> nutsama)
+#oqaatsit atorneqartartut kalaallisut taaguuserneqarnikuunngissorisakka nutserneri (taaguuserneqarnikuunngissorisakka -> taaguuserneqarnikuunngissorisama)
+#qaammat naanerani qaammat -> qaammatip)
+#qimuttuitsoq ussippaarsuarnit pingaartitaanerunera (qimuttuitsoq -> qimuttuitsup)
+#akulliliaq titartagaa (akulliliaq -> akulliliap)
+###
+#errors.source.xml: CHECK
+#tests: CHECK
+###
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+###############
+### ARCHIVE ### 20260320
+###############
 
 
 ### relative > absolutive case, object w/poss - transitive verb
@@ -154,7 +267,7 @@ COPY:msyn-subj-rel-abs-poss (N Abs VSTR:$1 &SUGGEST) EXCEPT (N Rel VSTR:$1 &msyn
 #+CASE* cases in agreement
 
 
-### NOUNS ###
+
 
 # Abl
 #AD HOC phrase specific but extremely common
@@ -191,20 +304,6 @@ ADD:msyn-abs-rel &msyn-abs-rel TARGET Sem/Geo + Abs (1 ("sila") + 3SgPoss) ;
 #[Nuuk] silaa qanga ajorami
 ADD:msyn-abs-rel &msyn-abs-rel TARGET Abs (1 NIQ + SSAQ + 3SgPoss) ;
 COPY:msyn-abs-rel (Rel &SUGGEST) EXCEPT (Abs &msyn-abs-rel) BEFORE NUMERUS &msyn-abs-rel ;
-
-# Rel Poss
-WITH:msyn-abs-rel-pos Abs + (/\([SP][gl]\)/r) + compatible
-(*1 (VSTR:3$1Poss) + <linked> BARRIER (*) - Gram/Dem - Abl LINK NOT 1* VFIN + (VSTR:3$1) BARRIER BOS)
-{
-ADD:msyn-abs-rel-pos &msyn-abs-rel-pos (*) ;  
-COPY:msyn-abs-rel-pos (Rel &SUGGEST) EXCEPT (Abs &msyn-abs-rel-pos) BEFORE NUMERUS Abs + &msyn-abs-rel-pos ;
-ADDRELATION:msyn-abs-rel-pos ($2 RIGHT) (*) TO (*1 (*) + <linked>) ;
-} ;
-#Sila nillertinnerani aajuku HAGLÖFS-imiik iluatgiut atorsinnaasatit pigaagut, angutinut aamma peqarpugut. (sila -> silap)
-#filmiliortua uisakajaalernera (filmiliortua -> filmiliortuata)
-#ukiukka tassunga killissimaneri (ukiukka -> ukiuma)
-#meerannguagut soqqaarneri (meerannguagut -> meerannguatta)
-#nutsakka piiarnissaannut (nutsakka -> nutsama)
 
 # Trm
 # NIQ+Trm atatillugu
@@ -336,9 +435,8 @@ WITH (/TUQ\ Der/vn\ N\ /l) + $$NUMERUS + $$KASUS + ADJEKTIVISK IF
 
 END
 
-#These rules created a nightmare situation, check out later:
 
-#check out with sentence:
+
 #Ukiut tallimat qaagiummata aasit aatakassama attaava unnuami ilani sinilereersut mersorusaarluni silami qeraarpaluk tusaaleriannguarlugu tassa issiffarmi nikissinnaajunnaarsimavoq, uffalu eqqumalluni.
 
 ### agreement ###
@@ -404,46 +502,3 @@ COPY:msyn-subj-marking-abs-HTR (Abs SUGGEST) EXCEPT (Rel) BEFORE NUMERUS TARGET 
 SUBSTITUTE (&msyn-subj-marking-abs-HTR) (co&msyn-subj-marking-abs-HTR) TARGET (SUGGEST);
 MAP:LOCK_READING (SUGGEST) (SUGGEST);
 
-### end of nightmare situation
-
-
-
-
-
-
-
-
-#nedenstående virker selvsagt ikke. tegnsætningstegn genereres ikke for sig, og akronymer med heuristisk analyse kan heller ikke genereres.
-#SPLITCOHORT ("<$1>"v "$1"v <acro-apo> "<$2>"v "$2"v <acro-case>) ("<(\\p{Lu}+\\u0027)\(mik\)>"r ?) ;
-#SPLITCOHORT ("<$1>"v "$1"v <acro> "<$2>"v "$2"v <apo>) ("<(\\p{Lu}+)(\\u0027)>"r) (0 (<acro-apo>)) ;
-#ADD:apsthr-hyph (&apo-hyph) (<apo>) ;
-#COPY ("-"r <hyph> &SUGGEST) EXCEPT ("'"r <apo> &apo-hyph) TARGET (&apo-hyph) ;
-
-# The method is: Add &SUGGEST to a copied reading to *generate* a
-# suggestion form from that reading. The copy should contain the error
-# tag too – &-prefixed error tags are ignored when generating, but
-# used to create human-readable messages.
-
-#!! ### Simple punctuation rules
-
-#!! Rules for quotation marks.
-
-#€# = vi slår af får vi tester
-
-#€# ADD:use-guillemets (&guillemets) TARGET (""");
-#€# #!! @RULENAME@
-#€# COPY:left-guillemet ("«" &SUGGEST) EXCEPT (""") TARGET (&guillemets) ;
-#€# #!! @RULENAME@
-#€# COPY:right-guillemet ("»" &SUGGEST) EXCEPT (""") TARGET (&guillemets) ;
-#€# #!! @RULENAME@
-#€#
-#€# ADD:use-ellipsis (&ellipsis) TARGET ("...");
-#€# #!! @RULENAME@
-#€# COPY:use-ellipsis ("…" &SUGGEST) EXCEPT ("...") TARGET (&ellipsis) ;
-#€# #!! @RULENAME@
-
-
-#===========================================
-
-#JD: examples to look at later
-#Oqaluttualiornermi unammisitsinermi Niviaq Korneliussen ajugaasut ilagaat ilaatigut uanga, kalaallillu taalliortartup eqqumiitsuliortartullu Jessie Kleemannip [suleqatiginissaa] eqqugassaalluni.
