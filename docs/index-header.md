@@ -18,6 +18,7 @@ Center location data taken from [Glottolog](https://glottolog.org/). Area extent
 
 </div>
 
+
 This page documents the work on the [Kalaallisut language model](http://github.com/giellalt/lang-kal). 
 
 Based upon a cooperation between Oqaasileriffik (Grønlands
