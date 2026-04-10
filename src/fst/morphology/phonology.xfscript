@@ -44,7 +44,7 @@ define NonUvular [ Cns - Uvular ] ;
 echo << Vi definerer Dummy-symboler >>
 define Border [ %> | %< ] ;
 
-define Dummy [ Border | « | » | %^T | %CLIT | %STRUNC | %POSSESSORTRUNC | %PRONTRUNC | %ROD | %likTRUNC | %VCTRUNC | %CVqTRUNC | %VTRUNC | %EPENT | %PROP | %ALTINF | %ProgI | %^GEMS | %^GEMC | %^GEM | %^Loan | %GEMEQ ] ;
+define Dummy [ Border | « | » | %^T | %CLIT | %STRUNC | %POSSESSORTRUNC | %PRONTRUNC | %ROD | %likTRUNC | %^VCT | %CVqTRUNC | %VTRUNC | %EPENT | %PROP | %ALTINF | %ProgI | %^GEMS | %^GEMC | %^GEM | %^Loan | %GEMEQ ] ;
 
 echo << Vi definerer de ikke fonetisk betingede allomorfer >>
 define c2slet [ c2 -> 0 || Cns _ %> ] ;
@@ -113,8 +113,8 @@ define schwavaek [ i2 -> e ] ;
 
 define LIKtrunkering [ l i k -> 0 || _ %> %likTRUNC ] ;
 define CHtrunkering [ i c h %^T %> u p -> i u p ] ; !En snæver regel til at håndtere Heinrich/ Heinriup
-define VCtrunkering [ [ e | a | o ] ( [ q | r | k | n | t ] ) -> 0 || _ %> %VCTRUNC ] ; !n og t 20180309 aht. Algeriet, Kroatien m.fl. !Erstattet af forslag fra Sjur
-!define VCtrunkering [ e | a | o ] -> 0, [ e | a | o ] [ q | k | n | t ] -> 0 || _ %> %VCTRUNC ] ;
+define VCtrunkering [ [ e | a | o ] ( [ q | r | k | n | t ] ) -> 0 || _ %^VCT %> ] ; !n og t 20180309 aht. Algeriet, Kroatien m.fl. !Erstattet af forslag fra Sjur
+!define VCtrunkering [ e | a | o ] -> 0, [ e | a | o ] [ q | k | n | t ] -> 0 || _ %^VCT %> ] ;
 define SEQtrunkering [ [ g | s | n | m ] [ e | a ] ( Kra ) -> 0 || _ %> %CVqTRUNC ] ; !virker ikke ved fx NIQ fordi der efterlades morfemgrænse to gange. Forsøgt rettet med følgende særregel:
 define DobbeltmorfemgraenseVaek [ %> -> 0 || %> _ ] ;
 define Vtrunkering [ Vow (Cns) -> 0 || _ [ %> | %< ] %VTRUNC ] ;
@@ -156,7 +156,7 @@ echo << Vi definerer regressiv assimilation >>
 define mAssimilation [ NonUvular -> m || Vow _ %> m ] ; ! panik > panimmik
 !define nAssimilation [ NonUvular -> n || Vow _ [ %> | %POSSESSORTRUNC ] n ] ; !PL20230122 ændret for at undgå *arpatsipnani
 define nAssimilation [ NonUvular -> n || Vow _ [ %> | %POSSESSORTRUNC ] (%ALTINF) n ] ; !PL20230122 ændret for at undgå 
-define kAssimilation [ NonUvular -> k || Vow ( %> ) _ [ %> | %ROD ] (\Segment) k ] ; !morfemgraensemulighed tilfoejet 12.6.2007
+define kAssimilation [ NonUvular -> k || Vow ( %> ) _ (\Segment) [ %> | %ROD ] k ] ; !morfemgraensemulighed tilfoejet 12.6.2007
 define lAssimilation [ NonUvular -> l || Vow _ %> l ] ;
 define pAssimilation [ NonUvular -> p || Vow _ %> p ] ;
 define rAssimilation [ NonUvular -> r || Vow _ %> r ] ;
@@ -164,7 +164,7 @@ define sAssimilation [ NonUvular -> s || Vow _ [ %> | %ROD ] (\Segment) s ] ;
 define tAssimilation [ NonUvular -> t || Vow _ %> t ] ;
 define fAssimilation [ NonUvular -> f || Vow _ %> f ] ; !Tilfoejet 5.9.2007
 define vAssimilation [ NonUvular -> p || Vow _ %> v ] ;
-define qAssimilation [ Cns -> q || Vow _ %> (\Segment) q ] ;
+define qAssimilation [ Cns -> q || Vow _ (\Segment) %> q ] ;
 define gAssimilation [ [ g | g3 ] -> k || [p | k ] %> _ ] ;
 
 echo << Vi definerer så en del andre regler >>
@@ -185,17 +185,13 @@ define Qogeminering [ o q -> q u ||Vow _ %> %STRUNC ] ;
 define CnsReduktion [ Cns -> 0 || _ %> ( \Segment ) s s ] ;
 
 echo << Vi definerer vokalregler >>
-!define schwaC [ [ i2 | i3 ] -> i || _ %> ( %^T ) Cns ] ;
-!define schwaV [ [ i2 | i3 ] -> a || _ %> ( %^T ) Vow ] ;
-!define schwaNULL [ i3 -> 0 || t _ [ .#. | %CLIT ] ] ;
-!define Langradikalisering [ [ i %> e | i i | i %> ( %ProgI ) i ] -> e e, [ u %> o | u u | u %> ( Dummy ) u ] -> o o || _ ( %> ) ( \Segment ) Uvular ] ; !20100117 (pl) tilfoejet ( %ProgI ) paa venstre af hensyn til progressiv ass. ved i.
 
 !TEST 20231007 aht. Puurunen og kultuuri
-define Langradikalisering [ [ i %> e | i i | i %> ( %ProgI ) i ] -> e e, [ u %> o | u %> ( Dummy ) u ] -> o o || _ ( %> ) ( \Segment ) Uvular ] ; !20100117 (pl) tilfoejet ( %ProgI ) paa venstre af hensyn til progressiv ass. ved i.
+define Langradikalisering [ [ i %> e | i i | i %> ( %ProgI ) i ] -> e e, [ u %> o | u ( Dummy ) %> u ] -> o o || _ ( \Segment ) ( %> ) ( \Segment ) Uvular ] ; !20100117 (pl) tilfoejet ( %ProgI ) paa venstre af hensyn til progressiv ass. ved i.
 
-define uuLangradikalisering [ u u  -> o o || _  %>  ( \Segment ) Uvular ] ; 
+define uuLangradikalisering [ u u  -> o o || _ ( \Segment ) %> ( \Segment ) Uvular ] ; 
 
-define radikalisering [ i -> e, u -> o || _ %> ( \Segment ) Uvular ] ;
+define radikalisering [ i -> e, u -> o || _ ( \Segment ) %> ( \Segment ) Uvular ] ;
 
 !define EeafRadikalisering [ e e -> i i || _ ( %^T ) %> [ NonUvular | i | u | a ] ] ;
 define EeafRadikalisering [ [ e e | e i ] -> i i || _ ( %^T ) %> [ NonUvular | i | u | a ] ] ; !Aendret 12.6.2007 for fejl som *taareigaq
@@ -222,11 +218,11 @@ define gaqTrunkering2 [ o r %^T %> g a -> u %> g a ] ; !NY 12.6.2007
 define gaqTrunkering3 [ a r %^T %> g a -> a %> g a ] ; !NY 12.6.2007
 
 echo << Proprier med gammel retskrivning >>
-define roĸ1 [ r o ĸ %> %VCTRUNC u p -> r ĸ u p ] ; ! Aĸajaroĸ + Rel -> Aĸajarĸup
-define roĸ2 [ r o ĸ %> %VCTRUNC u m -> r ĸ u m ] ; ! Aĸajaroĸ + Trm -> Aĸajarĸumut
-!define raĸ1 [ r a ĸ %> %VCTRUNC a p -> r ĸ a p ] ; ! Panêraĸ + Rel -> Panêrĸap
-!define raĸ2 [ r a ĸ %> %VCTRUNC  a m -> r ĸ a m ] ; ! Panêraĸ + Trm -> Panêrĸamut
-define uaĸ [ u a ĸ %> %VCTRUNC u p -> û p ] ; ! suaĸ+Rel -> sûp og nguaĸ+Rel -> ngûp
+define roĸ1 [ r o ĸ %^VCT %> u p -> r ĸ u p ] ; ! Aĸajaroĸ + Rel -> Aĸajarĸup
+define roĸ2 [ r o ĸ %^VCT %> u m -> r ĸ u m ] ; ! Aĸajaroĸ + Trm -> Aĸajarĸumut
+!define raĸ1 [ r a ĸ %^VCT %> a p -> r ĸ a p ] ; ! Panêraĸ + Rel -> Panêrĸap
+!define raĸ2 [ r a ĸ %^VCT %> a m -> r ĸ a m ] ; ! Panêraĸ + Trm -> Panêrĸamut
+define uaĸ [ u a ĸ %^VCT %> u p -> û p ] ; ! suaĸ+Rel -> sûp og nguaĸ+Rel -> ngûp
 define ssuaĸ1 [ u a ĸ %> m -> u a r m] ; ! suaĸ+Trm -> ssuarmut/ -rmi etc.
 
 echo << Epenteseregler >>
@@ -290,15 +286,15 @@ InflBorderDel !define InflBorderDel [%^GEMS | %^GEMC | %^GEM | %^Loan | %GEMEQ ]
 .o.
 InflBorderDel2 !define InflBorderDel2 %< -> %> ; !normalization of morpheme boundary
 .o.
-roĸ1 ![ r o ĸ %> %VCTRUNC u p -> r ĸ u p ] ; ! Aĸajaroĸ + Rel -> Aĸajarĸup
+roĸ1 ![ r o ĸ %^VCT %> u p -> r ĸ u p ] ; ! Aĸajaroĸ + Rel -> Aĸajarĸup
 .o.
-roĸ2 ![ r o ĸ %> %VCTRUNC u m -> r ĸ u m ] ; ! Aĸajaroĸ + Trm -> Aĸajarĸumut
+roĸ2 ![ r o ĸ %^VCT %> u m -> r ĸ u m ] ; ! Aĸajaroĸ + Trm -> Aĸajarĸumut
 .o.
-!define raĸ1 ![ r a ĸ %> %VCTRUNC a p -> r ĸ a p ] ; ! Panêraĸ + Rel -> Panêrĸap
+!define raĸ1 ![ r a ĸ %^VCT %> a p -> r ĸ a p ] ; ! Panêraĸ + Rel -> Panêrĸap
 !.o.
-!define raĸ2 ![ r a ĸ %> %VCTRUNC  a m -> r ĸ a m ] ; ! Panêraĸ + Trm -> Panêrĸamut
+!define raĸ2 ![ r a ĸ %^VCT %> a m -> r ĸ a m ] ; ! Panêraĸ + Trm -> Panêrĸamut
 !.o.
-uaĸ ![ u a ĸ %> %VCTRUNC u p -> û p ] ; ! suaĸ+Rel -> sûp og nguaĸ+Rel -> ngûp
+uaĸ ![ u a ĸ %^VCT %> u p -> û p ] ; ! suaĸ+Rel -> sûp og nguaĸ+Rel -> ngûp
 .o.
 ssuaĸ1 ![ u a ĸ %> m -> u a r m] ; ! suaĸ+Trm -> ssuarmut/ -rmi etc.
 .o.
@@ -342,9 +338,9 @@ gaqTrunkering3 ![ a r %> %^T g a -> a %> g a ] ;
 .o.
 CHtrunkering ![ i c h %> %^T u p -> i u p ] ;
 !.o.
-!SUARtrunkering ! [ a r -> Ø || _ %> %VCTRUNC ] ; !Virker lige som lidt som VCTRUNKERING
+!SUARtrunkering ! [ a r -> Ø || _ %^VCT %> ] ; !Virker lige som lidt som VCTRUNKERING
 .o.
-VCtrunkering ![ [ e | a | o ] ( [ q | r | k | n | t ] ) -> 0 || _ %> %VCTRUNC ]
+VCtrunkering ![ [ e | a | o ] ( [ q | r | k | n | t ] ) -> 0 || _ %^VCT %> ]
 .o.
 SEQtrunkering ! define SEQtrunkering [ [ g | s | n | m ] [ e | a ] Kra -> 0 || _ %> %CVqTRUNC ] 13
 .o.

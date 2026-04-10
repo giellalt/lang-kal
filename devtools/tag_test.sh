@@ -31,6 +31,9 @@ git ls-files -- "*.lexc" | xargs -n1 git blame -f | grep -P '[a-z]+=[A-Z]+\+Der'
 echo '\nChecking for "TRUNC" error'
 git ls-files -- "*.lexc" | xargs -n1 git blame -f | grep -P 'TRUN[a-z]'
 
+echo '\nChecking for missing morpheme boundary symbol'
+git ls-files -- "*.lexc" | xargs -n1 git blame -f | grep -P ':%[a-z]'
+
 
 #echo 'Checking for missing Der-tags:'
 #cat src/fst/stems/*lexc |cut -d '!' -f1 |grep '\+Der/.*;' |egrep -v 'Der([1234]|\+)'
