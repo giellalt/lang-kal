@@ -44,7 +44,7 @@ define NonUvular [ Cns - Uvular ] ;
 echo << Vi definerer Dummy-symboler >>
 define Border [ %> | %< ] ;
 
-define Dummy [ Border | « | » | %^T | %^CLIT | %^ST | %^POSST | %PRONTRUNC | %ROD | %likTRUNC | %^VCT | %^CVqT | %^VT | %^EPH | %^PROP | %ALTINF | %^ProgI | %^GEMS | %^GEMC | %^GEM | %^Loan | %GEMEQ ] ;
+define Dummy [ Border | « | » | %^T | %^CLIT | %^ST | %^POSST | %ROD | %likTRUNC | %^VCT | %^CVqT | %^VT | %^EPH | %^PROP | %^ALTINF | %^ProgI | %^GEMS | %^GEMC | %^GEM | %^Loan | %^GEMEQ ] ;
 
 echo << Vi definerer de ikke fonetisk betingede allomorfer >>
 define c2slet [ c2 -> 0 || Cns _ %> ] ;
@@ -53,20 +53,20 @@ define Possessortrunc [ i t -> i || [ o | u | i | e ] (Cns) (%^T) %> _ %^POSST ]
 define PossessortruncLangvokal [ t -> 0 || a a q %^T Border i _ %^POSST ] ; ! PL20250512 snæver regel til bl.a. angajoqqaavi for *angajoqqaavit
 define Assibilering1 [ t -> s || i %^POSST _ ] ;
 define PossessortruncVaek [ %^POSST -> 0 ] ;
-define Prontrunc [ s -> 0 || u %> %PRONTRUNC _ ] ;
+!define Prontrunc [ s -> 0 || u %> _ ] ;
 define Pronvar1 [ u -> 0 || a %ROD _ u n ] ;
 define Pronvar2 [ v -> 0 || u _ %ROD u n g ] ;
 define Pronvar3 [ v %ROD -> g g || u _ u u n a ] ;
 !define Pronvar4 [ [ k | g ] %ROD %^T n n a -> n n g a ] ;
 define Pronvar5 [ v %ROD (%^T) Cns -> 0 || .#. u _ ] ;
-define Pronvar6 [ s -> 0 || u %ROD %PRONTRUNC _ u ] ;
-define AltNegInf [ n -> 0 || r %> %ALTINF _ a ] ;
+!define Pronvar6 [ s -> 0 || u %ROD _ u ] ;
+define AltNegInf [ n -> 0 || r %> %^ALTINF _ a ] ;
 
 echo << Vi definerer morfofonemiske regler >>
 
 echo << Vi definerer regler for geminering ved fleksion >>
 
-define geminationEQ l -> l l , s ->  t s  ||  [ Vow | %^T ] ( %> ) _ Vow Cns %GEMEQ %^T %> [Cns - q - r] ; !PL20200717
+define geminationEQ l -> l l , s ->  t s  ||  [ Vow | %^T ] ( %> ) _ Vow Cns %^GEMEQ %^T %> [Cns - q - r] ; !PL20200717
 define geminationC g -> [ g g ], [ i a ] -> [ i s s a ], [ i u ] -> [ i s s u ], j -> [ s s ], l -> [ l l ], m -> [ m m ], n -> [ n n ], [ n g ] -> [ n n g], r -> [ r r ], v -> [ f f ] || [ Vow | %^T ] ( %> ) _ Vow (Cns) %^GEMC %< %^T [Cns - q - r] ; !geminating continuants
 define geminationC2 a -> [ s s a ] || [ i | u ] _ Cns %^GEMC %^T %< [Cns - q - r] ; !geminating continuants; ulloriaq -> ullorissat, pakkaluaq -> pakkalussat
 define geminationC3 u -> [ s s u ] || [ i ] _ (Cns) %^GEMC %^T %< [Cns - q - r] ; !geminating continuants; niu -> nissut
@@ -81,7 +81,7 @@ define geminationLoan b -> [ b b i ], d -> [ d d i ], f -> [ f f i ], g -> [ g g
 define geminationLoan2 b %- -> [ b %- b i ], d -> [ d %- d i ], f -> [ f %- f i ], g -> [ g %- g i ], k -> [ k %- k i ], l -> [ l %- l i ], m -> [ m %- m i ], n -> [ n %- n i ], p -> [ p %- p i ], s -> [ s %- s i ], t -> [ t %- t i ] || _ %> %^Loan [ %^GEMS | %^GEMC | %^GEM ] ;
 
 !define InflBorderDel [%^GEMS | %^GEMC | %^GEM | %^Loan ] -> 0 ;
-define InflBorderDel [%^GEMS | %^GEMC | %^GEM | %^Loan | %GEMEQ ] -> 0 ;
+define InflBorderDel [%^GEMS | %^GEMC | %^GEM | %^Loan | %^GEMEQ ] -> 0 ;
 define InflBorderDel2 %< -> %> ; !normalization of morpheme boundary
 
 
@@ -154,7 +154,7 @@ define VokativAA [ %^CLIT -> %- || a _ a a .#.] ;
 
 echo << Vi definerer regressiv assimilation >>
 define mAssimilation [ NonUvular -> m || Vow _ %> m ] ; ! panik > panimmik
-define nAssimilation [ NonUvular -> n || Vow _ [ %> | %^POSST ] (%ALTINF) n ] ; !PL20230122 ændret for at undgå 
+define nAssimilation [ NonUvular -> n || Vow _ [ %> | %^POSST ] (%^ALTINF) n ] ; !PL20230122 ændret for at undgå 
 define kAssimilation [ NonUvular -> k || Vow ( %> ) _ (\Segment) [ %> | %ROD ] k ] ; !morfemgraensemulighed tilfoejet 12.6.2007
 define lAssimilation [ NonUvular -> l || Vow _ %> l ] ;
 define pAssimilation [ NonUvular -> p || Vow _ %> p ] ;
@@ -265,7 +265,7 @@ echo << Vi sætter ting sammen >>
 read regex [
 ! Lexicon ! Kommenter inn disse to linjer dersom du også læser inn leksikon-fst-en
 ! .o.     ! i begynnelsen av filen. Se kommentar øverst.
-geminationEQ ! l -> l l , s ->  t s  ||  [ Vow | %^T ] _ Vow Cns %GEMEQ %> %^T [Cns - q - r] ; !PL20200717
+geminationEQ ! l -> l l , s ->  t s  ||  [ Vow | %^T ] _ Vow Cns %^GEMEQ %> %^T [Cns - q - r] ; !PL20200717
 .o.
 geminationC !g -> [ g g ], j -> [ s s ], l -> [ l l ], n -> [ n n ], r -> [ r r ], v -> [ f f ] || Vow _ Vow (Cns) %^GEMC %> [Cns - q] ; !geminating continuants
 .o.
@@ -281,7 +281,7 @@ geminationLoan
 .o.
 geminationLoan2
 .o.
-InflBorderDel !define InflBorderDel [%^GEMS | %^GEMC | %^GEM | %^Loan | %GEMEQ ] -> 0 ;
+InflBorderDel !define InflBorderDel [%^GEMS | %^GEMC | %^GEM | %^Loan | %^GEMEQ ] -> 0 ;
 .o.
 InflBorderDel2 !define InflBorderDel2 %< -> %> ; !normalization of morpheme boundary
 .o.
@@ -307,7 +307,7 @@ Tmetatese ![ t i2 q -> q q || _ %> Vow ] ; 03-3
 .o.
 schwavaek ![ i2 -> e ] ; 03-4
 .o.
-AltNegInf ![ n -> 0 || r %> %ALTINF _ a ] ;
+AltNegInf ![ n -> 0 || r %> %^ALTINF _ a ] ;
 .o.
 c2slet ![ c2 -> 0 || Cns _ %> ] 04
 .o.
@@ -347,8 +347,8 @@ DobbeltmorfemgraenseVaek ! [ %> -> 0 || %> _ ] ; !midlertidigt udkommenteret, da
 .o.
 Vtrunkering ![ Vow (Cns) -> 0 || _ %^VT %> ] 14
 .o.
-Prontrunc ![ s -> 0 || u %> %PRONTRUNC _ ] 15
-.o.
+!Prontrunc ![ s -> 0 || u %> _ ] 15
+!.o.
 Pronvar1 ![ u -> 0 || a %ROD _ u n ] 16
 .o.
 Pronvar2 ![ v -> 0 || u _ %ROD u n g ] 17
@@ -359,8 +359,8 @@ Pronvar3 ![ v %ROD -> g g || u _ u u n a ] 18
 !.o.
 Pronvar5 ! [ v %ROD (%^T) Cns -> 0 || .#. u _ ] 20
 .o.
-Pronvar6 ![ s -> 0 || u %ROD %PRONTRUNC _ u ] 21
-.o.
+!Pronvar6 ![ s -> 0 || u %ROD _ u ] 21
+!.o.
 !xOprydning ![ x -> 0 || Cns %> _ ] 22
 !.o.
 !xpAssimilation ![ x -> p || [ a | i | u ] %> _ p ] 23
@@ -431,7 +431,7 @@ gAssimilation ![ g -> k || [p | k ] %> _ ]
 .o.
 mAssimilation ![ NonUvular -> m || Vow _ %> m ]
 .o.
-nAssimilation ! nAssimilation [ NonUvular -> n || Vow _ [ %> | %^POSST ] (%ALTINF) n ]
+nAssimilation ! nAssimilation [ NonUvular -> n || Vow _ [ %> | %^POSST ] (%^ALTINF) n ]
 .o.
 kAssimilation ! [ NonUvular -> k || Vow _ %> (\Segment) k ]
 .o.
