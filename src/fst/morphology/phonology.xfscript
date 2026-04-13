@@ -20,10 +20,6 @@
 ! define Lexicon ;
 
 echo << Vi definerer vokalerne... >>
-
-! define Vow [ a | e | i | i2 | o | u | u2 | í | á | ú | î | â | û | ê | ô | ĩ | ã | ũ ] ;
-! u2 er u i låneord, der ikke skal ændres til o foran r/q: Puurunen, Turunen
-
 define Vow [ a | e | i | i2 | o | u | í | á | ú | î | â | û | ê | ô | ĩ | ã | ũ ] ;
 
 echo << Vi definerer konsonanterne... >>
@@ -44,7 +40,7 @@ define NonUvular [ Cns - Uvular ] ;
 echo << Vi definerer Dummy-symboler >>
 define Border [ %> | %< ] ;
 
-define Dummy [ « | » | %^ALTINF | Border | %^CLIT | %^CVqT | %^EPH | %^GEM | %^GEMEQ | %^GEMS | %likTRUNC | %^Loan | %^POSST | %^ProgI | %^PROP | %^R | %ROD | %^ST | %^T | %^VCT | %^VT ] ;
+define Dummy [ « | » | %^ALTINF | Border | %^CLIT | %^CVqT | %^EPH | %^GEM | %^GEMEQ | %^GEMS | %^Loan | %^POSST | %^ProgI | %^PROP | %^R | %ROD | %^ST | %^T | %^VCT | %^VT ] ;
 
 echo << Vi definerer de ikke fonetisk betingede allomorfer >>
 define c2slet [ c2 -> 0 || Cns _ %> ] ;
@@ -95,20 +91,14 @@ define Gaffix4 [ g3 -> j || [ a | u ] %> _ u ] ;
 define G4regel1 [ g4 -> 0 || [ i | u  ] %> _ ] ;
 define G4regel2 [ g4 -> j || a %> _ ] ;
 
-!u2 introduceret 30.6. for at håndtere låneord som Puurunen, der ikke skal blive Poorunen
-!define U2regel [ u2 -> u ] ;
-
 
 !i2 introduceret 4.juni for at haandtere ateq, tupeq, aleq typer i samme paradigme
 define oLmetatese [ u l i2 q -> o r l || _ %> Vow ] ;
-!define Lmetatese [ l i2 q -> r l || _ %> Vow ] ;
 define Lmetatese [ l i2 q -> %> r l || _ %> Vow ] ; !morfemgrænse tilføjet 20170908
-!define Pmetatese [ u p i2 q -> o q q || _ %> Vow ] ;
 define Pmetatese [ p i2 q -> %> q q || _ %> Vow ] ; !morfemgrænse tilføjet 20170908
 define Tmetatese [ t i2 q -> %> q q || _ %> Vow ] ; !den mærkelige morfemgrænse tilføjet 20170628 for at forebygge *qiqqa
 define schwavaek [ i2 -> e ] ;
 
-define LIKtrunkering [ l i k -> 0 || _ %> %likTRUNC ] ;
 define CHtrunkering [ i c h %^T %> u p -> i u p ] ; !En snæver regel til at håndtere Heinrich/ Heinriup
 define VCtrunkering [ [ e | a | o ] ( [ q | r | k | n | t ] ) -> 0 || _ %^VCT %> ] ; !n og t 20180309 aht. Algeriet, Kroatien m.fl. !Erstattet af forslag fra Sjur
 !define VCtrunkering [ e | a | o ] -> 0, [ e | a | o ] [ q | k | n | t ] -> 0 || _ %^VCT %> ] ;
@@ -257,7 +247,6 @@ define IngenArkefonemer [ g2 -> g, g3 -> 0, g4 -> 0 ] ;
 define DummyDeletion [ Dummy -> 0 ] ;
 define vSlet [ v -> 0 || u %> _ [ i | e | a ] ] ; !En rent ortografisk regel
 define jSlet [ j -> 0 || i %> _ ] ; !Tilfoejet 26.5.08
-!define v2Slet [ v2 -> v ] ;
 
 echo << Vi sætter ting sammen >>
 
@@ -319,8 +308,6 @@ PossessortruncVaek ![ %^POSST -> 0 ] 09
 clitkgNasalering ![ k %^CLIT g2 (->) n n g ] !!optionel regel til dobbeltform inunngooq før inugooq
 .o.
 kgFusion  ![ [ p | k ] %> (%^T) g2 -> g ] ;
-.o.
-LIKtrunkering ![ l i k -> 0 || _ %> %likTRUNC ] 11
 .o.
 gaqTrunkering1 ![ e r %> %^T g a -> i %> g a ] ; !flyttet den 11.6. fra linie 231 for at få ..likkat i stedet for *..lerkat
 .o.
@@ -520,8 +507,6 @@ Gaffix3 ![ g3 -> 0 || i %> _ u ] ;
 .o.
 Gaffix4 ![ g3 -> j || [ a | u ] %> _ u ] ;
 .o.
-!U2regel ![ u2 -> u ] ;
-!.o.
 !IngenArkefonemer ![ t2 -> t, g2 -> g, g3 -> 0, g4 -> 0  ]
 !.o.
 IngenArkefonemer ![ g2 -> g, g3 -> 0, g4 -> 0  ]
@@ -536,8 +521,6 @@ TripleUReduktion ![ u u -> u || _ %> u ] ;
 .o.
 vSlet ![ v -> 0 || u %> _ [ i | e | a ] ] ; !En rent ortografisk regel
 .o.
-!v2Slet  ! [ v2 -> v ] ;
-!.o.
 DummyDeletion ] ; ![ Dummy -> 0 ]
 
 !.o.
