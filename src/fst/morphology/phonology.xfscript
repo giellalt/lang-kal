@@ -44,7 +44,7 @@ define NonUvular [ Cns - Uvular ] ;
 echo << Vi definerer Dummy-symboler >>
 define Border [ %> | %< ] ;
 
-define Dummy [ « | » | %^ALTINF | Border | %^CLIT | %^CVqT | %^EPH | %^GEM | %^GEMC | %^GEMEQ | %^GEMS | %likTRUNC | %^Loan | %^POSST | %^ProgI | %^PROP | %^R | %ROD | %^ST | %^T | %^VCT | %^VT ] ;
+define Dummy [ « | » | %^ALTINF | Border | %^CLIT | %^CVqT | %^EPH | %^GEM | %^GEMEQ | %^GEMS | %likTRUNC | %^Loan | %^POSST | %^ProgI | %^PROP | %^R | %ROD | %^ST | %^T | %^VCT | %^VT ] ;
 
 echo << Vi definerer de ikke fonetisk betingede allomorfer >>
 define c2slet [ c2 -> 0 || Cns _ %> ] ;
@@ -67,9 +67,6 @@ echo << Vi definerer morfofonemiske regler >>
 echo << Vi definerer regler for geminering ved fleksion >>
 
 define geminationEQ l -> l l , s ->  t s  ||  [ Vow | %^T ] ( %> ) _ Vow Cns %^GEMEQ %^T %> [Cns - q - r] ; !PL20200717
-define geminationC g -> [ g g ], [ i a ] -> [ i s s a ], [ i u ] -> [ i s s u ], j -> [ s s ], l -> [ l l ], m -> [ m m ], n -> [ n n ], [ n g ] -> [ n n g], r -> [ r r ], v -> [ f f ] || [ Vow | %^T ] ( %> ) _ Vow (Cns) %^GEMC %< %^T [Cns - q - r] ; !geminating continuants
-define geminationC2 a -> [ s s a ] || [ i | u ] _ Cns %^GEMC %^T %< [Cns - q - r] ; !geminating continuants; ulloriaq -> ullorissat, pakkaluaq -> pakkalussat
-define geminationC3 u -> [ s s u ] || [ i ] _ (Cns) %^GEMC %^T %< [Cns - q - r] ; !geminating continuants; niu -> nissut
 
 define geminationS (r) g -> [ k k ], j -> [ t s ], s -> [ t s ], m -> [ m m ], n -> [ n n ], [ n g ] -> [ n n g], q -> [ q q ], r -> [ q q ], t -> [ t t ], v -> [ p p ] || [ Vow | %^T ] ( %> ) _ Vow (Cns) %^GEMS %^T %< [Cns - q - r] ; !geminating stops
 
@@ -77,11 +74,11 @@ define geminationfusion g a q %^GEMS %^T %> l -> k k || [ Segment - r - q ] _ [ 
 
 echo << Vi definerer regler for geminering ved låneord >>
 
-define geminationLoan b -> [ b b i ], d -> [ d d i ], f -> [ f f i ], g -> [ g g i ], k -> [ k k i ], l -> [ l l i ], m -> [ m m i ], n -> [ n n i ], p -> [ p p i ], s -> [ s s i ], t -> [ t t i ] || _ %> %^Loan [ %^GEMS | %^GEMC | %^GEM ] ;
-define geminationLoan2 b %- -> [ b %- b i ], d -> [ d %- d i ], f -> [ f %- f i ], g -> [ g %- g i ], k -> [ k %- k i ], l -> [ l %- l i ], m -> [ m %- m i ], n -> [ n %- n i ], p -> [ p %- p i ], s -> [ s %- s i ], t -> [ t %- t i ] || _ %> %^Loan [ %^GEMS | %^GEMC | %^GEM ] ;
+define geminationLoan b -> [ b b i ], d -> [ d d i ], f -> [ f f i ], g -> [ g g i ], k -> [ k k i ], l -> [ l l i ], m -> [ m m i ], n -> [ n n i ], p -> [ p p i ], s -> [ s s i ], t -> [ t t i ] || _ %> %^Loan [ %^GEMS | %^GEM ] ;
+define geminationLoan2 b %- -> [ b %- b i ], d -> [ d %- d i ], f -> [ f %- f i ], g -> [ g %- g i ], k -> [ k %- k i ], l -> [ l %- l i ], m -> [ m %- m i ], n -> [ n %- n i ], p -> [ p %- p i ], s -> [ s %- s i ], t -> [ t %- t i ] || _ %> %^Loan [ %^GEMS | %^GEM ] ;
 
-!define InflBorderDel [%^GEMS | %^GEMC | %^GEM | %^Loan ] -> 0 ;
-define InflBorderDel [%^GEMS | %^GEMC | %^GEM | %^Loan | %^GEMEQ ] -> 0 ;
+!define InflBorderDel [%^GEMS | %^GEM | %^Loan ] -> 0 ;
+define InflBorderDel [%^GEMS | %^GEM | %^Loan | %^GEMEQ ] -> 0 ;
 define InflBorderDel2 %< -> %> ; !normalization of morpheme boundary
 
 
@@ -269,12 +266,6 @@ read regex [
 ! .o.     ! i begynnelsen av filen. Se kommentar øverst.
 geminationEQ ! l -> l l , s ->  t s  ||  [ Vow | %^T ] _ Vow Cns %^GEMEQ %> %^T [Cns - q - r] ; !PL20200717
 .o.
-geminationC !g -> [ g g ], j -> [ s s ], l -> [ l l ], n -> [ n n ], r -> [ r r ], v -> [ f f ] || Vow _ Vow (Cns) %^GEMC %> [Cns - q] ; !geminating continuants
-.o.
-geminationC2
-.o.
-geminationC3
-.o.
 geminationS !(r) g -> [ k k ], j -> [ t s ], s -> [ t s ], m -> [ m m ], n -> [ n n ], [ n g ] -> [ n n g], q -> [ q q ], r -> [ q q ], t -> [ t t ], v -> [ p p ] || [ Vow | %^T ] _ Vow (Cns) %^GEMS %< %^T [Cns - q - r] ; !geminating stops
 .o.
 geminationfusion !a q %^GEMS %> %^T l -> 0 || k k _ [ e | i ] ;
@@ -283,7 +274,7 @@ geminationLoan
 .o.
 geminationLoan2
 .o.
-InflBorderDel !define InflBorderDel [%^GEMS | %^GEMC | %^GEM | %^Loan | %^GEMEQ ] -> 0 ;
+InflBorderDel !define InflBorderDel [%^GEMS | %^GEM | %^Loan | %^GEMEQ ] -> 0 ;
 .o.
 InflBorderDel2 !define InflBorderDel2 %< -> %> ; !normalization of morpheme boundary
 .o.
