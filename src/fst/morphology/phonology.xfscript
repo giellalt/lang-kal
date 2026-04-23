@@ -20,7 +20,7 @@
 ! define Lexicon ;
 
 echo << Vi definerer vokalerne... >>
-define Vow [ a | e | i | i2 | o | u | í | á | ú | î | â | û | ê | ô | ĩ | ã | ũ ] ;
+define Vow [ a | e | i | i2 | i3 | o | u | í | á | ú | î | â | û | ê | ô | ĩ | ã | ũ ] ;
 
 echo << Vi definerer konsonanterne... >>
 define Cns [ c2 | c | d | f | g | g2 | g3 | g4 | h | j | ĸ | k | l | m |
@@ -40,7 +40,7 @@ define NonUvular [ Cns - Uvular ] ;
 echo << Vi definerer Dummy-symboler >>
 define Border [ %> | %< ] ;
 
-define Dummy [ « | » | %^ALTINF | Border | %^CLIT | %^CVqT | %^EPH | %^GEM | %^GEMEQ | %^GEMS | %^Loan | %^POSST | %^ProgI | %^PROP | %^R | %^ST | %^T | %^VCT | %^VT ] ;
+define Dummy [ « | » | %^ | %^ALTINF | Border | %^CLIT | %^CVqT | %^EPH | %^GEM | %^GEMEQ | %^GEMS | %^Loan | %^POSST | %^ProgI | %^PROP | %^R | %^ST | %^T | %^VCT | %^VT ] ;
 
 echo << Vi definerer de ikke fonetisk betingede allomorfer >>
 define c2slet [ c2 -> 0 || Cns _ %> ] ;
@@ -92,7 +92,28 @@ define oLmetatese [ u l i2 q -> o r l || _ %> Vow ] ;
 define Lmetatese [ l i2 q -> %> r l || _ %> Vow ] ; !morfemgrænse tilføjet 20170908
 define Pmetatese [ p i2 q -> %> q q || _ %> Vow ] ; !morfemgrænse tilføjet 20170908
 define Tmetatese [ t i2 q -> %> q q || _ %> Vow ] ; !den mærkelige morfemgrænse tilføjet 20170628 for at forebygge *qiqqa
-define schwavaek [ i2 -> e ] ;
+!define schwavaek [ i2 -> e ] ;
+
+!the normal schwa called i2 noun_to_noun.lexc: 0:i2 before verbalizers, stem final null in Abs Sg
+define schwaltot l -> [ l | %^l ] || t i2 %^T %> _ [{er}|{eri}|{ersor}|{iup}|{iuup}|{ior}] ( %^T ) %> ; 
+!fusion t+schwa+l -> t+l=s (certain suffixes w/initial l): 
+!+LIR+Der/nv -ssutilerpaa -ssuserpaa (naqissuserpaa), +LIUR+Der/nv -ssutiliorpoq, -ssusiorpoq (akissusiorpoq)
+
+define schwatoX i2 -> 0 || t _ %^T %> %^l [{er}|{eri}|{ersor}|{iup}|{iuup}|{ior}] ( %^T ) %> ,,
+                i2 -> i || _ ( %^T ) ( %> ) NonUvular ,, 
+                i2 -> e || _ ( %^T ) ( %> ) Uvular ,, 
+                i2 -> a || _ ( %^T ) ( %> ) Vow ,, 
+                i2 -> 0 || _ .#. ;
+define fricat %^l -> s || %^T %> _ [{er}|{eri}|{ersor}|{iup}|{iuup}|{ior}] ( %^T ) [%>|%<] ; !-ssuserpaa
+
+!schwa 2 called i3, nouns.lexc i3 (Z1eZmorf) where the stem final schwa is 'i' and not null in Abs Sg
+!TODO later: inflections, i3 -> a is not optimal at the moment by 3SgPoss for example, it is handled w/Vow deletion
+define schwa2toX i3 -> i || _ %^T %> %^ProgI ,,
+                 i3 -> i || _ ( %^T ) ([%>|%<]) NonUvular ,,
+                 i3 -> e || _ ( %^T ) ([%>|%<]) Uvular ,,
+                 i3 -> a || _ ( %^T ) ([%>|%<]) Vow ,,
+                 i3 -> i || _ .#. ;
+
 
 define CHtrunkering [ i c h %^T %> u p -> i u p ] ; !En snæver regel til at håndtere Heinrich/ Heinriup
 define VCtrunkering [ [ e | a | o ] ( [ q | r | k | n | t ] ) -> 0 || _ %^VCT %> ] ; !n og t 20180309 aht. Algeriet, Kroatien m.fl. !Erstattet af forslag fra Sjur
@@ -282,7 +303,15 @@ Pmetatese ![ p i2 q -> q q || _ %> Vow ] ; 03-2
 .o.
 Tmetatese ![ t i2 q -> q q || _ %> Vow ] ; 03-3
 .o.
-schwavaek ![ i2 -> e ] ; 03-4
+!schwavaek ![ i2 -> e ] ; 03-4
+!.o.
+schwaltot
+.o.
+schwatoX
+.o.
+fricat
+.o.
+schwa2toX
 .o.
 AltNegInf ![ n -> 0 || r %> %^ALTINF _ a ] ;
 .o.
