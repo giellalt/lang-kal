@@ -24,7 +24,7 @@ define Vow [ a | e | i | i2 | i3 | o | u | í | á | ú | î | â | û | ê | ô
 
 echo << Vi definerer konsonanterne... >>
 define Cns [ c2 | c | d | f | g | g2 | g3 | g4 | h | j | ĸ | k | l | m |
-             n | p | q | r | s | t | v ]  ;  
+             n | p | q | r | r2 | s | t | v ]  ;  
 
 ! These symbols will be turned into real quotes by a separate processing step;
 ! the quasi-rule here is just to silence a warning in (hfst-)xfst.
@@ -40,16 +40,17 @@ define NonUvular [ Cns - Uvular ] ;
 echo << Vi definerer Dummy-symboler >>
 define Border [ %> | %< ] ;
 
-define Dummy [ « | » | %^ | %^ALTINF | Border | %^CLIT | %^CVqT | %^EPH | %^GEM | %^GEMEQ | %^GEMS | %^Loan | %^POSST | %^ProgI | %^PROP | %^R | %^ST | %^T | %^VCT | %^VT ] ;
+define Dummy [ « | » | %^ | %^ALTINF | Border | %^CLIT | %^CVqT | %^EPH | %^GEM | %^GEMEQ | %^GEMS | %^Loan | %^POSST | %^ProgI | %^PROP | %^ST | %^T | %^VCT | %^VT ] ;
 
 echo << Vi definerer de ikke fonetisk betingede allomorfer >>
 define c2slet [ c2 -> 0 || Cns _ %> ] ;
 define IndikativVu [ v -> p || [ p | r ] %> _ [ u | i | a | o ] ] ;
 define Possessortrunc [ i t -> i || [ o | u | i | e ] (Cns) (%^T) %> _ %^POSST ] ;
 define PossessortruncLangvokal [ t -> 0 || a a q %^T Border i _ %^POSST ] ; ! PL20250512 snæver regel til bl.a. angajoqqaavi for *angajoqqaavit
-define Assibilering1 [ t -> s || i %^POSST _ ] ;
+
+
+
 define PossessortruncVaek [ %^POSST -> 0 ] ;
-!define Prontrunc [ s -> 0 || u %> _ ] ;
 
 define AltNegInf [ n -> 0 || r %> %^ALTINF _ a ] ;
 
@@ -98,7 +99,6 @@ define geminationLoan2 b %- -> [ b %- b i ],
                        s -> [ s %- s i ], 
                        t -> [ t %- t i ] || _ %> %^Loan [ %^GEMS | %^GEM ] ;
 
-!define InflBorderDel [%^GEMS | %^GEM | %^Loan ] -> 0 ;
 define InflBorderDel [%^GEMS | %^GEM | %^Loan | %^GEMEQ ] -> 0 ;
 define InflBorderDel2 %< -> %> ; !normalization of morpheme boundary
 
@@ -107,70 +107,83 @@ echo << Nogle arkifonemer >>
 
 !g3 tilfoejet 3.juni Konsekvensretning i IngenArkefonemer, gAssimilation, qgFusion
 
-define Gaffix1 [ g3 i -> 0 || i %> _ ] ;
-define Gaffix2 [ g3 i -> j || [ u | a ] %> _ ] ;
-define Gaffix3 [ g3 -> 0 || i %> _ u ] ;
-define Gaffix4 [ g3 -> j || [ a | u ] %> _ u ] ;
+define g3toX [ g3 i -> 0 || i %> _ ,,
+               g3 i -> j || [ u | a ] %> _ ,,
+               g3 -> 0 || i %> _ u ,,
+               g3 -> j || [ a | u ] %> _ u ] ;
 
 !g4uk introduceret 7.6. for specifikt at haandtere dobbeltformer som takuuk og takujuk
-define G4regel1 [ g4 -> 0 || [ i | u  ] %> _ ] ;
-define G4regel2 [ g4 -> j || a %> _ ] ;
-
+define g4toX [ g4 -> 0 || [ i | u  ] %> _ ,,
+               g4 -> j || a %> _ ] ;
 
 !i2 introduceret 4.juni for at haandtere ateq, tupeq, aleq typer i samme paradigme
-define oLmetatese [ u l i2 q -> o r l || _ %> Vow ] ;
-define Lmetatese [ l i2 q -> %> r l || _ %> Vow ] ; !morfemgrænse tilføjet 20170908
-define Pmetatese [ p i2 q -> %> q q || _ %> Vow ] ; !morfemgrænse tilføjet 20170908
-define Tmetatese [ t i2 q -> %> q q || _ %> Vow ] ; !den mærkelige morfemgrænse tilføjet 20170628 for at forebygge *qiqqa
-!define schwavaek [ i2 -> e ] ;
+
+define metatese [ [ u l i2 q ] -> [ o r l ],
+                  [ l i2 q ] -> %> [ r l ],
+                  [ p i2 q ] -> %> [ q q ],
+                  [ t i2 q ] -> %> [ q q ] || _ %> Vow ] ; !den mærkelige morfemgrænse tilføjet 20170628 for at forebygge *qiqqa
 
 !the normal schwa called i2 noun_to_noun.lexc: 0:i2 before verbalizers, stem final null in Abs Sg
-define schwaltot l -> [ l | %^l ] || t i2 %^T %> _ [{er}|{eri}|{ersor}|{iup}|{iuup}|{ior}] ( %^T ) %> ; 
+define schwaltos l -> [ l | %^l ] || t i2 %^T %> _ [{er}|{eri}|{ersor}|{iup}|{iuup}|{ior}] ( %^T ) %> ; 
 !fusion t+schwa+l -> t+l=s (certain suffixes w/initial l): 
 !+LIR+Der/nv -ssutilerpaa -ssuserpaa (naqissuserpaa), +LIUR+Der/nv -ssutiliorpoq, -ssusiorpoq (akissusiorpoq)
 
-define schwatoX i2 -> 0 || t _ %^T %> %^l [{er}|{eri}|{ersor}|{iup}|{iuup}|{ior}] ( %^T ) %> ,,
-                i2 -> i || _ ( %^T ) ( %> ) NonUvular ,, 
-                i2 -> e || _ ( %^T ) ( %> ) Uvular ,, 
-                i2 -> a || _ ( %^T ) ( %> ) Vow ,, 
-                i2 -> 0 || _ .#. ;
+define schwatoX [ i2 -> 0 || t _ %^T %> %^l [{er}|{eri}|{ersor}|{iup}|{iuup}|{ior}] ( %^T ) %> ,,
+                  i2 -> i || _ ( %^T ) ( %> ) NonUvular ,, 
+                  i2 -> e || _ ( %^T ) ( %> ) Uvular ,, 
+                  i2 -> a || _ ( %^T ) ( %> ) Vow ,, 
+                  i2 -> 0 || _ .#. ] ;
 define fricat %^l -> s || %^T %> _ [{er}|{eri}|{ersor}|{iup}|{iuup}|{ior}] ( %^T ) [%>|%<] ; !-ssuserpaa
 
 !schwa 2 called i3, nouns.lexc i3 (Z1eZmorf) where the stem final schwa is 'i' and not null in Abs Sg
 !TODO later: inflections, i3 -> a is not optimal at the moment by 3SgPoss for example, it is handled w/Vow deletion
-define schwa2toX i3 -> i || _ %^T %> %^ProgI ,,
-                 i3 -> i || _ ( %^T ) ([%>|%<]) NonUvular ,,
-                 i3 -> e || _ ( %^T ) ([%>|%<]) Uvular ,,
-                 i3 -> a || _ ( %^T ) ([%>|%<]) Vow ,,
-                 i3 -> i || _ .#. ;
+define schwa2toX [ i3 -> i || _ %^T %> %^ProgI ,,
+                   i3 -> i || _ ( %^T ) ([%>|%<]) NonUvular ,,
+                   i3 -> e || _ ( %^T ) ([%>|%<]) Uvular ,,
+                   i3 -> a || _ ( %^T ) ([%>|%<]) Vow ,,
+                   i3 -> i || _ .#. ] ;
 
 
 define CHtrunkering [ i c h %^T %> u p -> i u p ] ; !En snæver regel til at håndtere Heinrich/ Heinriup
 define VCtrunkering [ [ e | a | o ] ( [ q | r | k | n | t ] ) -> 0 || _ %^VCT %> ] ; !n og t 20180309 aht. Algeriet, Kroatien m.fl. !Erstattet af forslag fra Sjur
-!define VCtrunkering [ e | a | o ] -> 0, [ e | a | o ] [ q | k | n | t ] -> 0 || _ %^VCT %> ] ;
 define SEQtrunkering [ [ g | s | n | m ] [ e | a ] ( Kra ) -> 0 || _ %^CVqT %> ] ; !virker ikke ved fx NIQ fordi der efterlades morfemgrænse to gange. Forsøgt rettet med følgende særregel:
 define DobbeltmorfemgraenseVaek [ %> -> 0 || %> _ ] ;
 define Vtrunkering [ Vow (Cns) -> 0 || _ %^VT [ %> | %< ] ] ;
 
-define recessiveR 	%^R -> 0 || Cns %> _ ,,
-					%^R -> r || Vow %> _ ; 
+define recessiveR [ r2 -> 0 || Cns %> _ ,,
+					r2 -> r || Vow %> _ ] ;
+
+define assibilering [ t -> s || t %> _ [ i | e ] ,,
+                      t -> s || i %^POSST _ ] ;
+
 echo << Vi definerer tilhængspartiklernes lydregler >>
+
+
+define VokativAA [ %^CLIT -> %- || a _ a a .#.] ;
+
 define clitkgNasalering [ k %^CLIT g2 (->) n n g ] ;
+define clitisNasalisering [ k -> [ n g ] || _ ( %> ) %^CLIT Vow ] ;
+
 define clitkgFusion [ k %^CLIT g2 -> g ] ;
+
 define clitqgFusion [ [ r | q ] %^CLIT g2 -> r ] ;
-define Tclitisg1 [ [ t | p ] -> n || _ %^CLIT g2 ] ;
 define Tclitisg2 [ g2 -> n g || n %^CLIT _ ] ;
+
+define Tclitisg1 [ [ t | p ] -> n || _ %^CLIT g2 ] ;
+
 define TclitisU [ t -> n || _ %^CLIT [ u | a ] ] ;
 ! Tilfoejet efter 16.10. (13.11.06)
 define Pclitis [ p -> m || _ %^CLIT Vow ] ;
+
 define clitisLAssimilation [ NonUvular -> l || _ ( %> ) %^CLIT l ] ;
 define clitisMAssimilation [ NonUvular -> m || _ ( %> ) %^CLIT m ] ;
+define clitis3cons [ NonUvular -> 0 || _ %^CLIT t t ] ;
+
 define clitisVAssimilation [ Vow -> a || a ( %> ) %^CLIT _ ] ;
 define clitisQFrikativisering [ q -> r || _ ( %> ) %^CLIT [ m | l ] ] ;
-define clitisNasalisering [ k -> n g || _ ( %> ) %^CLIT Vow ] ;
-define clitis3cons [ NonUvular -> 0 || _ %^CLIT t t ] ;
-!define clitisAass [ [ u | o | i | e ] -> a || a _ %^CLIT ] ;
-!Aendret 19.5. for at forebygge at Farao+LI bliver *Faraali uden at spolere asavai+LI -> asavaali
+
+
+
 define clitisAass [ i -> a || a _ %^CLIT ] ;
 define clitisoafRadikalisering [ o -> u || _ %^CLIT [ NonUvular | i | u | a ] ] ;
 !Tilfoejet 19.5. for at goere Farao+LI -> Farauli
@@ -180,9 +193,9 @@ define Vepentese [ %^EPH -> i || [Cns | %-] _ %^CLIT ] ;
 define ttaaqReduktion [ t -> 0 || Uvular %^CLIT _ t a a ] ;
 
 !Tilfoejet efter 16.10 (13.11.)
-define ttaaqAssibilering [ t t -> s s || i %^CLIT _ ] ;
 
-define VokativAA [ %^CLIT -> %- || a _ a a .#.] ;
+define ttaaqAssibilering [ [ t t ] -> [ s s ] || i %^CLIT _ ] ;
+
 
 ! Assimilationsregler
 ! - - - - - - - - - -
@@ -190,30 +203,29 @@ define VokativAA [ %^CLIT -> %- || a _ a a .#.] ;
 echo << Vi definerer regressiv assimilation >>
 
 define gtok [ g | g3 ] -> k || [p | k ] %> _ ;
-define regrass NonUvular -> p || Vow _ %> v ,, !regressiv assimilation - konsonanter
-               NonUvular -> m || Vow _ %> m ,,
-               NonUvular -> n || Vow _ [ %> | %^POSST ] (%^ALTINF) n ,,
-               NonUvular -> k || Vow ( %> ) _ (\Segment) [%>|%<] k ,,
-               NonUvular -> l || Vow _ %> l ,,
-               NonUvular -> f || Vow _ %> f ,,
-               NonUvular -> p || Vow _ %> p ,,
-               NonUvular -> r || Vow _ %> r ,,
-               NonUvular -> s || Vow _ [ %> ] (\Segment) s ,,
-               NonUvular -> t || Vow _ %> t ;
-
+define regrass [ NonUvular -> p || Vow _ %> v ,, !regressiv assimilation - konsonanter
+                 NonUvular -> m || Vow _ %> m ,,
+                 NonUvular -> n || Vow _ [ %> | %^POSST ] (%^ALTINF) n ,,
+                 NonUvular -> k || Vow ( %> ) _ (\Segment) [%>|%<] k ,,
+                 NonUvular -> l || Vow _ %> l ,,
+                 NonUvular -> f || Vow _ %> f ,,
+                 NonUvular -> p || Vow _ %> p ,,
+                 NonUvular -> r || Vow _ %> r ,,
+                 NonUvular -> s || Vow _ [ %> ] (\Segment) s ,,
+                 NonUvular -> t || Vow _ %> t ] ;
 define ctoq Cns -> q || Vow _ (\Segment) %> q ;
 
 
 echo << Vi definerer så en del andre regler >>
 
 define kgFusion [ [ p | k ] (%^T) %> g2 -> g ] ;
-!define qgFusion [ [ r | q ] (\Segment) %> [ g | g2 ] -> r ] ;
+
 !Aendret 19.2. for at tage hoejde for *mukagitsi -> mukaritsi
 define qgFusion [ [ r | q ] ( %^T ) %> [ g | g2 | g3 ] -> r ] ;
-!define frikativisering [ q -> r || Vow _ [ %> Segment | %^CLIT ] ] ; !Erstattet af følgende 20180813
+
 define frikativisering [ Kra -> r || Vow _ [ %> Segment | %^CLIT ] ] ;
 !tilfoejet Vow 4.juni for at forebygge at toqqit -> *toqrit
-!define frikativisering [ q -> r || _ %> Segment ] ;
+
 !Funker ikke, fordi ajoqaaq -> ajoraaq
 define trunkering [ Cns -> 0 || _ %^T ( %> ) ] ;
 define TruncVaek [ %^T -> 0 ] ;
@@ -230,7 +242,7 @@ define uuLangradikalisering [ u u  -> o o || _ ( \Segment ) %> ( \Segment ) Uvul
 
 define radikalisering [ i -> e, u -> o || _ ( \Segment ) %> ( \Segment ) Uvular ] ;
 
-!define EeafRadikalisering [ e e -> i i || _ ( %^T ) %> [ NonUvular | i | u | a ] ] ;
+
 define EeafRadikalisering [ [ e e | e i ] -> i i || _ ( %^T ) %> [ NonUvular | i | u | a ] ] ; !Aendret 12.6.2007 for fejl som *taareigaq
 define OoafRadikalisering [ o o -> u u || _ ( %^T ) %> [ NonUvular | e | i | u | a ] ] ;
 !Ny regel 20100926 for at håndtere fejl som *naammattougaqarpoq
@@ -241,15 +253,17 @@ define oafRadikalisering [ o -> u || _ ( %^T ) %> [ NonUvular | i | e | u | a ] 
 define progressivVassimilering [ [ u | o | i | e ] -> a || a %> ( %^T ) _  ( %>) ( Dummy ) Cns ] ;
 !20100117 (pl) ProgI for at haandtere allaffeeraq men viinniaraq
 define ProgressivIA [ Vow (->) e || [ e | i ] ( %^T ) %> %^ProgI _ Uvular ] ;
-define ProgressivIU [ u (->) i ||  i  ( %^T ) %> %^ProgI _ ] ;
-define ProgressivICU [ u (->) i || [ e | i ] Cns %^T %> %^ProgI _] ;
-define ProgressivIrU [ u (->) i || e Uvular %^T %> %^ProgI _] ;
+
+define progru [ u (->) i ||  i  ( %^T ) %> %^ProgI _ ,,
+                u (->) i || [ e | i ] Cns %^T %> %^ProgI _ ,,
+                u (->) i || e Uvular %^T %> %^ProgI _ ] ;
 
 define ProgIVaek [ %^ProgI -> 0 ] ;
-define tAssibilering [ t -> s || t %> _ [ i | e ] ] ;
+
 !tilfoejet efter 16.10. for skyld innar efter langt a. Skal komme foer aVepentese
 define c2v [ c2 %> v -> p p || Vow _ Vow ] ;
 !tilfoejet efter 16.10. (17.11.06) for at bringe LIR-TAQ uden om qgFusion
+
 define gaqTrunkering1 [ e r %^T %> g a -> i %> g a ] ; !Flyttet 11.6.2007 og samtidig er %> indføjet paa hoejre side
 define gaqTrunkering2 [ o r %^T %> g a -> u %> g a ] ; !NY 12.6.2007
 define gaqTrunkering3 [ a r %^T %> g a -> a %> g a ] ; !NY 12.6.2007
@@ -257,8 +271,7 @@ define gaqTrunkering3 [ a r %^T %> g a -> a %> g a ] ; !NY 12.6.2007
 echo << Proprier med gammel retskrivning >>
 define roĸ1 [ r o ĸ %^VCT %> u p -> r ĸ u p ] ; ! Aĸajaroĸ + Rel -> Aĸajarĸup
 define roĸ2 [ r o ĸ %^VCT %> u m -> r ĸ u m ] ; ! Aĸajaroĸ + Trm -> Aĸajarĸumut
-!define raĸ1 [ r a ĸ %^VCT %> a p -> r ĸ a p ] ; ! Panêraĸ + Rel -> Panêrĸap
-!define raĸ2 [ r a ĸ %^VCT %> a m -> r ĸ a m ] ; ! Panêraĸ + Trm -> Panêrĸamut
+
 define uaĸ [ u a ĸ %^VCT %> u p -> û p ] ; ! suaĸ+Rel -> sûp og nguaĸ+Rel -> ngûp
 define ssuaĸ1 [ u a ĸ %> m -> u a r m] ; ! suaĸ+Trm -> ssuarmut/ -rmi etc.
 
@@ -271,7 +284,6 @@ define iGepentese [ [ i | eTruncVaek ] ( %> ) [ i | e ] %> i n n a -> i i g i n 
 define iVepentese [ [ i | e ] ( %> ) [ i | e ] %> -> i i v || _ [ i | e ] ] ; !fjernet \n i betingelsen (|| _ [ i | e ] \n ] -> || _ [ i | e ] ] )
 define aJepentese [ %> -> j || a a _ a l l a ] ; ! 20250825 en undtagelse af j epentese ved aa + a v/+ALLAP+Der/vv nangaajallappoq, *nangaavallappoq
 define aVepentese [ %> -> v || a a _ [ a | i ] ] ;
-!define iVepentese [ %> -> v || [ i | e ] ( %> ) [ i | e ] _ [ i | e ] ] ; !aendret 16.9.07
 !helt ny regel tilføjet 27.9. for at haandtere qallunaajuvoq og mattusuujuvoq. Skal komme foer progressivVassimilering
 
 define AAjEpentese1 [ [ r | q ] %^T %> u -> %> j u ||  a a  _ ] ; !RETTET 8.3.2011
@@ -291,7 +303,6 @@ define TripleUReduktion [ u u -> u || _ %> u ] ;
 
 echo << Vi rydder op >>
 
-!define IngenArkefonemer [ t2 -> t, g2 -> g, g3 -> 0 ] ;
 define IngenArkefonemer [ g2 -> g, g3 -> 0, g4 -> 0 ] ;
 define DummyDeletion [ Dummy -> 0 ] ;
 define vSlet [ v -> 0 || u %> _ [ i | e | a ] ] ; !En rent ortografisk regel
@@ -320,25 +331,13 @@ roĸ1 ![ r o ĸ %^VCT %> u p -> r ĸ u p ] ; ! Aĸajaroĸ + Rel -> Aĸajarĸup
 .o.
 roĸ2 ![ r o ĸ %^VCT %> u m -> r ĸ u m ] ; ! Aĸajaroĸ + Trm -> Aĸajarĸumut
 .o.
-!define raĸ1 ![ r a ĸ %^VCT %> a p -> r ĸ a p ] ; ! Panêraĸ + Rel -> Panêrĸap
-!.o.
-!define raĸ2 ![ r a ĸ %^VCT %> a m -> r ĸ a m ] ; ! Panêraĸ + Trm -> Panêrĸamut
-!.o.
 uaĸ ![ u a ĸ %^VCT %> u p -> û p ] ; ! suaĸ+Rel -> sûp og nguaĸ+Rel -> ngûp
 .o.
 ssuaĸ1 ![ u a ĸ %> m -> u a r m] ; ! suaĸ+Trm -> ssuarmut/ -rmi etc.
 .o.
-oLmetatese ![ u l i2 q -> o r l || _ %> Vow ] ;
+metatese
 .o.
-Lmetatese ![ l i2 q -> r l || _ %> Vow ] ; 03-1
-.o.
-Pmetatese ![ p i2 q -> q q || _ %> Vow ] ; 03-2
-.o.
-Tmetatese ![ t i2 q -> q q || _ %> Vow ] ; 03-3
-.o.
-!schwavaek ![ i2 -> e ] ; 03-4
-!.o.
-schwaltot
+schwaltos
 .o.
 schwatoX
 .o.
@@ -358,8 +357,6 @@ Possessortrunc ![ i t -> i || [ e | u | i ] (Cns) %> (%^T) _ %^POSST] 07
 .o.
 PossessortruncLangvokal ![ i t -> i || a a q %< %^T _ %^POSST ] ; ! PL20250512 snæver regel til bl.a. angajoqqaavi for *angajoqqaavit
 .o.
-Assibilering1 ![ t -> s || i %^POSST _ ] 08
-.o.
 PossessortruncVaek ![ %^POSST -> 0 ] 09
 .o.
 clitkgNasalering ![ k %^CLIT g2 (->) n n g ] !!optionel regel til dobbeltform inunngooq før inugooq
@@ -373,8 +370,6 @@ gaqTrunkering2 ! [ o r %> %^T g a -> u %> g a ]
 gaqTrunkering3 ![ a r %> %^T g a -> a %> g a ] ;
 .o.
 CHtrunkering ![ i c h %> %^T u p -> i u p ] ;
-!.o.
-!SUARtrunkering ! [ a r -> Ø || _ %^VCT %> ] ; !Virker lige som lidt som VCTRUNKERING
 .o.
 VCtrunkering ![ [ e | a | o ] ( [ q | r | k | n | t ] ) -> 0 || _ %^VCT %> ]
 .o.
@@ -402,8 +397,6 @@ OOjEpentese1 ![ [ r | q ] %> %^T u -> %> j u ||  o o  _ ] ;
 .o.
 UUjEpentese  ![ k %> %^T u -> %> j u ||  u u  _ ] ;
 .o.
-ProgressivIrU ![ u (->) i || e Uvular %> %^T %^ProgI _] (SKAL komme før trunkering)
-.o.
 AAjEpentese2 ![ k %> %^T u -> %> j u ||  a a  _ ] ; !aak-U aaju-
 .o.
 AAjEpentese3
@@ -415,9 +408,7 @@ qgFusion ! [ [ r | q ] %> ( %^T ) [ g | g2 | g3 ] -> r ]
 .o.
 ProgressivIA ! [ Vow (->) e || [ e | i ] %> ( %^T ) %^ProgI _ Uvular ] ;
 .o.
-ProgressivIU ! [ u (->) i ||  i  %> ( %^T ) %^ProgI _ ]
-.o.
-ProgressivICU ! [ u (->) i || [ e | i ] Cns  %> %^T %^ProgI _] ;
+progru
 .o.
 ProgIVaek ! [ %^ProgI -> 0 ] ;
 .o.
@@ -442,6 +433,8 @@ clitisoafRadikalisering ![ o -> u || _ %^CLIT [ NonUvular | i | u | a ] ] ;
 gtok
 .o.
 regrass
+.o.
+assibilering
 .o.
 ctoq
 .o.
@@ -505,27 +498,11 @@ aasiit2Vokal ![ a ( %> ) ( %^T ) a -> a a j || _ %^CLIT a a ]
 .o.
 aasiit1Vokal ![ a -> 0 || _ %^CLIT a a ]
 .o.
-!kaNasalisering ![ k %> a -> n g a ]
-!.o.
-!kiNasalisering ![ k %> i -> n g i ]
-!.o.
-G4regel1 ![ g4 -> 0 || [ i | u  ] %> _ ] ;
+g4toX
 .o.
-G4regel2 ![ g4 -> j || a %> _ ] ;
+g3toX
 .o.
-Gaffix1 ![ g3 i -> 0 || i %> _ ] ;
-.o.
-Gaffix2 ![ g3 i -> j || [ u | a ] %> _ ] ;
-.o.
-Gaffix3 ![ g3 -> 0 || i %> _ u ] ;
-.o.
-Gaffix4 ![ g3 -> j || [ a | u ] %> _ u ] ;
-.o.
-!IngenArkefonemer ![ t2 -> t, g2 -> g, g3 -> 0, g4 -> 0  ]
-!.o.
 IngenArkefonemer ![ g2 -> g, g3 -> 0, g4 -> 0  ]
-.o.
-tAssibilering ![ t -> s || t %> _ [ i | e ] ]  en rent ortografisk regel
 .o.
 CnsReduktion ! [ Cns -> 0 || _ %> ( \Segment ) s s ] ;
 .o.
