@@ -57,16 +57,46 @@ echo << Vi definerer morfofonemiske regler >>
 
 echo << Vi definerer regler for geminering ved fleksion >>
 
-define geminationEQ l -> l l , s ->  t s  ||  [ Vow | %^T ] ( %> ) _ Vow Cns %^GEMEQ %^T %> [Cns - q - r] ; !PL20200717
+define geminationEQ l -> [ l l ], 
+                    s -> [ t s ] || [ Vow | %^T ] ( %> ) _ Vow Cns %^GEMEQ %^T %> [Cns - q - r] ; !PL20200717
 
-define geminationS (r) g -> [ k k ], j -> [ t s ], s -> [ t s ], m -> [ m m ], n -> [ n n ], [ n g ] -> [ n n g], q -> [ q q ], r -> [ q q ], t -> [ t t ], v -> [ p p ] || [ Vow | %^T ] ( %> ) _ Vow (Cns) %^GEMS %^T %< [Cns - q - r] ; !geminating stops
+define geminationS (r) g -> [ k k ], 
+                       j -> [ t s ],  
+                       m -> [ m m ], 
+                       n -> [ n n ], 
+                       [ n g ] -> [ n n g ], 
+                       q -> [ q q ], 
+                       r -> [ q q ],
+                       s -> [ t s ], 
+                       t -> [ t t ], 
+                       v -> [ p p ] || [ Vow | %^T ] ( %> ) _ Vow (Cns) %^GEMS %^T %< [Cns - q - r] ; !geminating stops
 
 define geminationfusion g a q %^GEMS %^T %> l -> k k || [ Segment - r - q ] _ [ e | i ] [ Cns - k ]; !fusion, e.g. naalakkersuisoq
 
 echo << Vi definerer regler for geminering ved låneord >>
 
-define geminationLoan b -> [ b b i ], d -> [ d d i ], f -> [ f f i ], g -> [ g g i ], k -> [ k k i ], l -> [ l l i ], m -> [ m m i ], n -> [ n n i ], p -> [ p p i ], s -> [ s s i ], t -> [ t t i ] || _ %> %^Loan [ %^GEMS | %^GEM ] ;
-define geminationLoan2 b %- -> [ b %- b i ], d -> [ d %- d i ], f -> [ f %- f i ], g -> [ g %- g i ], k -> [ k %- k i ], l -> [ l %- l i ], m -> [ m %- m i ], n -> [ n %- n i ], p -> [ p %- p i ], s -> [ s %- s i ], t -> [ t %- t i ] || _ %> %^Loan [ %^GEMS | %^GEM ] ;
+define geminationLoan b -> [ b b i ], 
+                      d -> [ d d i ], 
+                      f -> [ f f i ], 
+                      g -> [ g g i ], 
+                      k -> [ k k i ], 
+                      l -> [ l l i ], 
+                      m -> [ m m i ], 
+                      n -> [ n n i ], 
+                      p -> [ p p i ], 
+                      s -> [ s s i ], 
+                      t -> [ t t i ] || _ %> %^Loan [ %^GEMS | %^GEM ] ;
+define geminationLoan2 b %- -> [ b %- b i ], 
+                       d -> [ d %- d i ], 
+                       f -> [ f %- f i ], 
+                       g -> [ g %- g i ], 
+                       k -> [ k %- k i ], 
+                       l -> [ l %- l i ], 
+                       m -> [ m %- m i ], 
+                       n -> [ n %- n i ], 
+                       p -> [ p %- p i ], 
+                       s -> [ s %- s i ], 
+                       t -> [ t %- t i ] || _ %> %^Loan [ %^GEMS | %^GEM ] ;
 
 !define InflBorderDel [%^GEMS | %^GEM | %^Loan ] -> 0 ;
 define InflBorderDel [%^GEMS | %^GEM | %^Loan | %^GEMEQ ] -> 0 ;
@@ -158,18 +188,21 @@ define VokativAA [ %^CLIT -> %- || a _ a a .#.] ;
 ! - - - - - - - - - -
 
 echo << Vi definerer regressiv assimilation >>
-define mAssimilation [ NonUvular -> m || Vow _ %> m ] ; ! panik > panimmik
-define nAssimilation [ NonUvular -> n || Vow _ [ %> | %^POSST ] (%^ALTINF) n ] ; !PL20230122 ændret for at undgå 
-define kAssimilation [ NonUvular -> k || Vow ( %> ) _ (\Segment) [ %> ] k ] ; !morfemgraensemulighed tilfoejet 12.6.2007
-define lAssimilation [ NonUvular -> l || Vow _ %> l ] ;
-define pAssimilation [ NonUvular -> p || Vow _ %> p ] ;
-define rAssimilation [ NonUvular -> r || Vow _ %> r ] ;
-define sAssimilation [ NonUvular -> s || Vow _ [ %> ] (\Segment) s ] ;
-define tAssimilation [ NonUvular -> t || Vow _ %> t ] ;
-define fAssimilation [ NonUvular -> f || Vow _ %> f ] ; !Tilfoejet 5.9.2007
-define vAssimilation [ NonUvular -> p || Vow _ %> v ] ;
-define qAssimilation [ Cns -> q || Vow _ (\Segment) %> q ] ;
-define gAssimilation [ [ g | g3 ] -> k || [p | k ] %> _ ] ;
+
+define gtok [ g | g3 ] -> k || [p | k ] %> _ ;
+define regrass NonUvular -> p || Vow _ %> v ,, !regressiv assimilation - konsonanter
+               NonUvular -> m || Vow _ %> m ,,
+               NonUvular -> n || Vow _ [ %> | %^POSST ] (%^ALTINF) n ,,
+               NonUvular -> k || Vow ( %> ) _ (\Segment) [%>|%<] k ,,
+               NonUvular -> l || Vow _ %> l ,,
+               NonUvular -> f || Vow _ %> f ,,
+               NonUvular -> p || Vow _ %> p ,,
+               NonUvular -> r || Vow _ %> r ,,
+               NonUvular -> s || Vow _ [ %> ] (\Segment) s ,,
+               NonUvular -> t || Vow _ %> t ;
+
+define ctoq Cns -> q || Vow _ (\Segment) %> q ;
+
 
 echo << Vi definerer så en del andre regler >>
 
@@ -351,13 +384,6 @@ DobbeltmorfemgraenseVaek ! [ %> -> 0 || %> _ ] ; !midlertidigt udkommenteret, da
 .o.
 Vtrunkering ![ Vow (Cns) -> 0 || _ %^VT %> ] 14
 .o.
-
-!xOprydning ![ x -> 0 || Cns %> _ ] 22
-!.o.
-!xpAssimilation ![ x -> p || [ a | i | u ] %> _ p ] 23
-!.o.
-!xmAssimilation ![ x -> m || [ a | i | u ] %> _ m ] 24
-!.o.
 Qageminering ![ a q -> q a ||Vow _ %> %^ST ] ; 25
 .o.
 Qogeminering ![ o q -> q u ||Vow _ %> %^ST ] ; 26
@@ -387,11 +413,6 @@ trunkering ![ Cns -> 0 || _ [ %> ] %^T ] ;
 qgFusion ! [ [ r | q ] %> ( %^T ) [ g | g2 | g3 ] -> r ]
 !rettet 060315 for at undgå Vr%>%^Tguk -> Vguk
 .o.
-!Impvar1 ![ g -> j || [ u | a ] %> _ u k ] ; 29
-!.o.
-!Impvar2 ![ g -> 0 || i %> _ u k ] ; 30
-!gEpentese ![ i ( %> ) i %> %^T i -> i i g i ] ;
-!.o.
 ProgressivIA ! [ Vow (->) e || [ e | i ] %> ( %^T ) %^ProgI _ Uvular ] ;
 .o.
 ProgressivIU ! [ u (->) i ||  i  %> ( %^T ) %^ProgI _ ]
@@ -418,29 +439,11 @@ Tclitisg2 ![ g2 -> n g || n %^CLIT _ ] ; 35
 .o.
 clitisoafRadikalisering ![ o -> u || _ %^CLIT [ NonUvular | i | u | a ] ] ;
 .o.
-vAssimilation ![ NonUvular -> p || Vow _ %> v ] 37
+gtok
 .o.
-gAssimilation ![ g -> k || [p | k ] %> _ ]
+regrass
 .o.
-mAssimilation ![ NonUvular -> m || Vow _ %> m ]
-.o.
-nAssimilation ! nAssimilation [ NonUvular -> n || Vow _ [ %> | %^POSST ] (%^ALTINF) n ]
-.o.
-kAssimilation ! [ NonUvular -> k || Vow _ %> (\Segment) k ]
-.o.
-lAssimilation ![ NonUvular -> l || Vow _ %> l ]
-.o.
-fAssimilation
-.o.
-pAssimilation ![ NonUvular -> p || Vow _ %> p ]
-.o.
-rAssimilation ![ NonUvular -> r || Vow _ %> r ]
-.o.
-sAssimilation ![ NonUvular -> s || Vow _ %> (\Segment) s ] ;
-.o.
-tAssimilation ![ NonUvular -> t || Vow _ %> t ]
-.o.
-qAssimilation ![ Cns -> q || Vow _ %> (\Segment) q ]
+ctoq
 .o.
 Langradikalisering  ! [ [ i %> e | i i | i %> ( %^ProgI ) i ] -> e e, [ u %> o | u %> ( Dummy ) u ] -> o o || _ ( %> ) ( \Segment ) Uvular ] ; !20100117 (pl) tilfoejet ( %^ProgI ) paa venstre af hensyn til progressiv ass. ved i.
 .o.
