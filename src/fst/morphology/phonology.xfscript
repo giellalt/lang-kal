@@ -42,7 +42,7 @@ define OpenVowel [e|o] ;
 
 echo << Vi definerer Dummy-symboler >>
 define Border [ %> | %< ] ;
-define Dummy [ « | » | %^ | %^ALTINF | Border | %^CLIT | %^CVqT | %^EPH | %^GEM | %^GEMEQ | %^GEMS | %^Loan | %^POSST | %^ProgI | %^PROP | %^ST | %^T | %^VCT | %^VT ] ;
+define Dummy [ « | » | %^ | %^ALTINF | Border | %^CLIT | %^CVqT | %^EPH | %^FUS | %^GEM | %^GEMEQ | %^GEMS | %^Loan | %^POSST | %^ProgI | %^PROP | %^ST | %^T | %^VCT | %^VT ] ;
 define InflBorderDel [%^GEMS | %^GEM | %^Loan | %^GEMEQ ] -> 0 ;
 define InflBorderDel2 %< -> %> ; !normalization of morpheme boundary
 define PossessortruncVaek [ %^POSST -> 0 ] ;
@@ -70,7 +70,7 @@ define AltNegInf [ n -> 0 || r %> %^ALTINF _ a ] ;
 
 echo << Vi definerer regler for geminering ved fleksion >>
 define geminationEQ l -> [ l l ], 
-                    s -> [ t s ] || [ Vow | %^T ] ( %> ) _ Vow Cns %^GEMEQ %^T %> [Cns - q - r] ; !PL20200717
+                    s -> [ t s ] || [ Vow | %^T ] ( %> ) _ Vow Cns %^GEMEQ %^T %> NonUvular ; !PL20200717
 
 define geminationS (r) g -> [ k k ], 
                        j -> [ t s ],  
@@ -81,7 +81,7 @@ define geminationS (r) g -> [ k k ],
                        r -> [ q q ],
                        s -> [ t s ], 
                        t -> [ t t ], 
-                       v -> [ p p ] || [ Vow | %^T ] ( %> ) _ Vow (Cns) %^GEMS %^T %< [Cns - q - r] ; !geminating stops
+                       v -> [ p p ] || [ Vow | %^T ] ( %> ) _ Vow (Cns) %^GEMS %^T %< NonUvular ; !geminating stops
 
 define geminationfusion g a q %^GEMS %^T %> l -> k k || [ Segment - r - q ] _ [ e | i ] [ Cns - k ]; !fusion, e.g. naalakkersuisoq
 !ikke fusion, replaciv: stammefinal VC slettes gaq -> g, 
@@ -115,7 +115,9 @@ define geminationLoan2 b %- -> [ b %- b i ],
 
 echo << Nogle arkifonemer >>
 
-!g3 tilfoejet 3.juni Konsekvensretning i IngenArkefonemer, gAssimilation, qgFusion
+define g2toX [ g2 -> [ n g ] || n %^CLIT _ ,,
+               g2 -> %^FUS [g| n n g ] || k %^CLIT _ ,,
+               g2 -> %^FUS r || Uvular %^CLIT _ ] ;
 
 define g3toX [ g3 i -> 0 || i %> _ ,,
                g3 i -> j || [ u | a ] %> _ ,,
@@ -168,15 +170,9 @@ define assibilering [ t -> s || t %> _ [ i | e ] ,,
 
 echo << Vi definerer tilhængspartiklernes lydregler >>
 
-define VokativAA [ %^CLIT -> %- || a _ a a .#.] ;
-
-define clitkgNasalering [ k %^CLIT g2 (->) n n g ] ;
 define clitisNasalisering [ k -> [ n g ] || _ ( %> ) %^CLIT Vow ] ;
 
-define clitkgFusion [ k %^CLIT g2 -> g ] ;
 
-define clitqgFusion [ [ r | q ] %^CLIT g2 -> r ] ;
-define Tclitisg2 [ g2 -> n g || n %^CLIT _ ] ;
 
 define Tclitisg1 [ [ t | p ] -> n || _ %^CLIT g2 ] ;
 
@@ -184,8 +180,6 @@ define TclitisU [ t -> n || _ %^CLIT [ u | a ] ] ;
 ! Tilfoejet efter 16.10. (13.11.06)
 define Pclitis [ p -> m || _ %^CLIT Vow ] ;
 
-define clitisLAssimilation [ NonUvular -> l || _ ( %> ) %^CLIT l ] ;
-define clitisMAssimilation [ NonUvular -> m || _ ( %> ) %^CLIT m ] ;
 define clitis3cons [ NonUvular -> 0 || _ %^CLIT t t ] ;
 
 define clitisVAssimilation [ Vow -> a || a ( %> ) %^CLIT _ ] ;
@@ -194,11 +188,9 @@ define clitisQFrikativisering [ q -> r || _ ( %> ) %^CLIT [ m | l ] ] ;
 
 
 define clitisAass [ i -> a || a _ %^CLIT ] ;
-define clitisoafRadikalisering [ o -> u || _ %^CLIT [ NonUvular | i | u | a ] ] ;
 !Tilfoejet 19.5. for at goere Farao+LI -> Farauli
 define aasiit1Vokal [ a -> 0 || _ %^CLIT a a s ] ; !s tilfoejet 26.6. for at forebygge tikippaa = *Int+AA
 define aasiit2Vokal [ a ( %^T ) ( %> ) a -> a a j || _ %^CLIT a a ] ;
-define Vepentese [ %^EPH -> i || [Cns | %-] _ %^CLIT ] ;
 define ttaaqReduktion [ t -> 0 || Uvular %^CLIT _ t a a ] ;
 
 !Tilfoejet efter 16.10 (13.11.)
@@ -214,16 +206,17 @@ echo << Vi definerer regressiv assimilation >>
 define gtok [ g | g3 ] -> k || [p | k ] %> _ ;
 define regrass [ NonUvular -> p || Vow _ %> v ,, !regressiv assimilation - konsonanter
                  NonUvular -> m || Vow _ %> m ,,
-                 NonUvular -> n || Vow _ [ %> | %^POSST ] (%^ALTINF) n ,,
-                 NonUvular -> k || Vow ( %> ) _ (\Segment) [%>|%<] k ,,
+                 NonUvular -> m || _ (%>) %^CLIT m ,,
+                 NonUvular -> n || Vow _ [%>|%^POSST] (%^ALTINF) n ,,
+                 NonUvular -> k || Vow (%>) _ (\Segment) [%>|%<] k ,,
                  NonUvular -> l || Vow _ %> l ,,
+                 NonUvular -> l || _ (%>) %^CLIT l ,,
                  NonUvular -> f || Vow _ %> f ,,
                  NonUvular -> p || Vow _ %> p ,,
                  NonUvular -> r || Vow _ %> r ,,
                  NonUvular -> s || Vow _ [ %> ] (\Segment) s ,,
                  NonUvular -> t || Vow _ %> t ] ;
 define ctoq Cns -> q || Vow _ (\Segment) %> q ;
-
 
 echo << Vi definerer så en del andre regler >>
 define gaqTrunc [ r -> 0 || [a|e|o] _ %^T %> g a ] ;
@@ -238,6 +231,7 @@ define frikativisering [ Kra -> r || Vow _ [ %> Segment | %^CLIT ] ] ;
 
 !Funker ikke, fordi ajoqaaq -> ajoraaq
 define trunkering [ Cns -> 0 || _ %^T ( %> ) ] ;
+define fus [ [k|Uvular] -> 0 || _ %^CLIT %^FUS ] ;
 define TruncVaek [ %^T -> 0 ] ;
 define Qageminering [ a q -> q a ||Vow _ %> %^ST ] ;
 define Qogeminering [ o q -> q u ||Vow _ %> %^ST ] ;
@@ -256,8 +250,8 @@ define VowelLowering [ [ i i ] -> [ e e ] ,                                     
 define VowelRaising  [ [ e e ] -> [ i i ] ,                                                !*taareigaq
                      [ o o ] -> [ u u ] ,
                      o -> u ,                                
-                     [ o u ] -> [ u u ] || _ (%^T) %> [NonUvular|CloseVowel|a] ] ;        !*naammattougaqarpoq
-define VowelRaising2 [ e -> i || _ (%^T) %> (%^CLIT) [NonUvular|CloseVowel|a| o %> ] ] ;  !o grundet qimmiorusup-
+                     [ o u ] -> [ u u ] || _ (%^T) [%>|%^CLIT] [NonUvular|CloseVowel|a] ] ;         !*naammattougaqarpoq, Farao+LI -> Farauli
+define VowelRaising2 [ e -> i || _ (%^T) %> (%^CLIT) [NonUvular|CloseVowel|a| o %> ] ] ;   !o grundet qimmiorusup-
 define VowelRaising3 [ o -> u || _ (%^T) %> e ] ;                                          !xxsueruppoq
 
 
@@ -276,24 +270,26 @@ define c2v [ c2 %> v -> p p || Vow _ Vow ] ;
 !tilfoejet efter 16.10. (17.11.06) for at bringe LIR-TAQ uden om qgFusion
 
 
-echo << Epenteseregler >>
+echo << Insættelser, epentese eller bindestreg >>
 
-define epenB4trc [ 0 -> j || a Vow [ %> | %^CLIT ] _ [o|u] ,,                    !eqqaajortorpai, *eqqaaartorpai
-                   0 -> j || {aa} ([k|q|r]) %^T %> _ u ,,                        !aak-U aaju-, aanaaavoq -> aanaajuvoq
-                   0 -> j || a Vow p ( %^CLIT ) %^T ( %> ) _ [o|u] ,,            !eqqaajutigaa, *eqqaaatigaa
-                   0 -> j || {oo} [q|r] %^T %> _ u ,,                            !qallunaajuvoq, mattusuujuvoq, (før progressivVassimilering)
-                   0 -> j || {uu} k %^T %> _ u ] ;
+define insertB4trc [ 0 -> j || a Vow [ %> | %^CLIT ] _ [o|u] ,,                    !eqqaajortorpai, *eqqaaartorpai
+                     0 -> j || {aa} ([k|q|r]) %^T %> _ u ,,                        !aak-U aaju-, aanaaavoq -> aanaajuvoq
+                     0 -> j || a Vow p ( %^CLIT ) %^T ( %> ) _ [o|u] ,,            !eqqaajutigaa, *eqqaaatigaa
+                     0 -> j || {oo} [q|r] %^T %> _ u ,,                            !qallunaajuvoq, mattusuujuvoq, (før progressivVassimilering)
+                     0 -> j || {uu} k %^T %> _ u ] ;
 
-define epenAFTtrc [ 0 -> g || a (%>) Vow (Segment) (Dummy) %> _ {inna} ,,
-                    0 -> g || i (%>) [e|i] (Segment) (Dummy) %> _ {inna} ,,
-                    0 -> g || [o|u] (%>) [o|u] (Segment) (Dummy) %> _ {inna} ,,
-                    0 -> j || {aa} (Segment) (Dummy) %> _ {alla} ,,              !nangaajallappoq, *nangaavallappoq
-                    0 -> v || {aa} (%>) _ [a|i] ,,
-                    0 -> v || [e|i] (%>) [e|i] _ [e|i] ,,
-                    0 -> j || a (%^T) %> i _ a ,,                                !Særlig regel til IAR+nv+HTR+vv efter a
-                    0 -> j || a %> i %^CLIT _ {aa} ,,                            !Snæver regel for ..gai+AASIIT
-                    0 -> j || a %> i _ a %> i ] ;
-
+define insertAFTtrc [ 0 -> g || a (%>) Vow (Segment) (Dummy) %> _ {inna} ,,
+                      0 -> g || i (%>) [e|i] (Segment) (Dummy) %> _ {inna} ,,
+                      0 -> g || [o|u] (%>) [o|u] (Segment) (Dummy) %> _ {inna} ,,
+                      0 -> j || {aa} (Segment) (Dummy) %> _ {alla} ,,              !nangaajallappoq, *nangaavallappoq
+                      0 -> v || {aa} (%>) _ [a|i] ,,
+                      0 -> v || [e|i] (%>) [e|i] _ [e|i] ,,
+                      0 -> j || a (%^T) %> i _ a ,,                                !Særlig regel til IAR+nv+HTR+vv efter a
+                      0 -> j || a %> i %^CLIT _ {aa} ,,                            !Snæver regel for ..gai+AASIIT
+                      0 -> j || a %> i _ a %> i ,,
+                      0 -> i || [Cns|%-] %^EPH _ %^CLIT ,,
+                      0 -> j || a ( %^T ) ( %> ) a _ %^CLIT a a ,,
+                      0 -> %- || a %^CLIT _ a a .#. ] ;
 
 echo << Vi definerer meget sene reduktionsregler >>
 
@@ -313,9 +309,9 @@ echo << Vi sætter ting sammen >>
 read regex [
 ! Lexicon ! Kommenter inn disse to linjer dersom du også læser inn leksikon-fst-en
 ! .o.     ! i begynnelsen av filen. Se kommentar øverst.
-geminationEQ ! l -> l l , s ->  t s  ||  [ Vow | %^T ] _ Vow Cns %^GEMEQ %> %^T [Cns - q - r] ; !PL20200717
+geminationEQ ! l -> l l , s ->  t s  ||  [ Vow | %^T ] _ Vow Cns %^GEMEQ %> %^T NonUvular ; !PL20200717
 .o.
-geminationS !(r) g -> [ k k ], j -> [ t s ], s -> [ t s ], m -> [ m m ], n -> [ n n ], [ n g ] -> [ n n g], q -> [ q q ], r -> [ q q ], t -> [ t t ], v -> [ p p ] || [ Vow | %^T ] _ Vow (Cns) %^GEMS %< %^T [Cns - q - r] ; !geminating stops
+geminationS !(r) g -> [ k k ], j -> [ t s ], s -> [ t s ], m -> [ m m ], n -> [ n n ], [ n g ] -> [ n n g], q -> [ q q ], r -> [ q q ], t -> [ t t ], v -> [ p p ] || [ Vow | %^T ] _ Vow (Cns) %^GEMS %< %^T NonUvular ; !geminating stops
 .o.
 geminationfusion !a q %^GEMS %> %^T l -> 0 || k k _ [ e | i ] ;
 .o.
@@ -359,8 +355,6 @@ PossessortruncLangvokal ![ i t -> i || a a q %< %^T _ %^POSST ] ; ! PL20250512 s
 .o.
 PossessortruncVaek ![ %^POSST -> 0 ] 09
 .o.
-clitkgNasalering ![ k %^CLIT g2 (->) n n g ] !!optionel regel til dobbeltform inunngooq før inugooq
-.o.
 gaqTrunc
 .o.
 kgFusion  ![ [ p | k ] %> (%^T) g2 -> g ] ;
@@ -381,9 +375,15 @@ recessiveR
 .o.
 frikativisering ![ q -> r || Vow _ [ %> Segment | %^CLIT ] ] ;
 .o.
-epenB4trc
+insertB4trc
+.o.
+Tclitisg1 ![ [ t | p ] -> n || _ %^CLIT g2 ] 34
+.o.
+g2toX
 .o.
 trunkering ![ Cns -> 0 || _ [ %> ] %^T ] ;
+.o.
+fus
 .o.
 qgFusion ! [ [ r | q ] %> ( %^T ) [ g | g2 | g3 ] -> r ]
 !rettet 060315 for at undgå Vr%>%^Tguk -> Vguk
@@ -397,20 +397,6 @@ ProgIVaek ! [ %^ProgI -> 0 ] ;
 TruncVaek ! [ %^T -> 0 ] ; 31
 .o.
 ttaaqAssibilering ![ t t -> s s || i %^CLIT _ ] !flyttet fra linie 320 hertil  for at forbygge at
-.o. !epentetisk i bevirker assibileringen
-Vepentese ![ %^EPH -> i || Cns _ %^CLIT ]
-.o.
-VokativAA
-.o.
-clitkgFusion ![ k %^CLIT g2 -> g ] 32
-.o.
-clitqgFusion ![ [ r | q ] %^CLIT g2 -> r ] ; 33
-.o.
-Tclitisg1 ![ [ t | p ] -> n || _ %^CLIT g2 ] 34
-.o.
-Tclitisg2 ![ g2 -> n g || n %^CLIT _ ] ; 35
-.o.
-clitisoafRadikalisering ![ o -> u || _ %^CLIT [ NonUvular | i | u | a ] ] ;
 .o.
 gtok
 .o.
@@ -428,17 +414,13 @@ VowelRaising2
 .o.
 VowelRaising3
 .o.
-epenAFTtrc
+insertAFTtrc
 .o.
 progressivVassimilering ![ [ u | o | i | e ] -> a || a %> ( %^T ) _  ( %> ) Cns ] ;
 .o.
 ttaaqReduktion ![ t -> 0 || Uvular %^CLIT _ t a a ] ;
 .o.
 TclitisU ![ t -> n || _ %^CLIT [ u | a ] ]
-.o.
-clitisLAssimilation ![ Cns -> l || _ %^CLIT l ]
-.o.
-clitisMAssimilation ![ Cns -> m || _ %^CLIT m ]
 .o.
 clitisVAssimilation ![ Vow -> a || a %^CLIT _ ]
 .o.
@@ -451,8 +433,6 @@ clitisNasalisering ! [ k -> n g || _ %^CLIT Vow ]
 Pclitis ![ p -> m || _ %^CLIT Vow ] ;
 .o.
 clitisAass ![ Vow -> a || a _ %^CLIT ] ;
-.o.
-aasiit2Vokal ![ a ( %> ) ( %^T ) a -> a a j || _ %^CLIT a a ]
 .o.
 aasiit1Vokal ![ a -> 0 || _ %^CLIT a a ]
 .o.
