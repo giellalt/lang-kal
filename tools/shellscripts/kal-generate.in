@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use utf8;
 use IPC::Cmd qw(can_run);
+use IPC::Open2;
 use FindBin qw($Bin);
 
 BEGIN {
@@ -88,21 +89,34 @@ my $mp = join('|', @m);
 my $ap = join('|', @a);
 my $i = 'i';
 
-open(my $fh, '|-', $t) or die $!;
-binmode($fh, ':encoding(UTF-8)');
-autoflush $fh 1;
+open2(*OUT, *IN, $t) or die $!;
+binmode(OUT, ':encoding(UTF-8)');
+binmode(IN, ':encoding(UTF-8)');
+autoflush OUT 1;
+autoflush IN 1;
+
+sub uniq {
+   my %seen;
+   return grep { !$seen{$_}++ } @_;
+}
 
 while (<STDIN>) {
-   chomp;
-
+   # Skip <s> and </s> markers, and stream commands
+   if (m@^</?s[ >]@ || m@^<STREAMCMD@) {
+      print;
+      next;
+   }
    # Skip CG wordforms
    if (/^"<.+>"/) {
       next;
    }
    # Skip empty lines
    if (/^\s*$/) {
+      print;
       next;
    }
+
+   chomp;
 
    # Turn CG readings into FST lines, minding that baseforms can have spaces in them
    if (m@^\s+"([^\n]+?"?[^"]*)"@) {
@@ -128,5 +142,17 @@ while (<STDIN>) {
    while (s@\+[^+/]+/[^+/]+\+@+@g) {}
    while (s@\+[^+/]+/[^+/]+$@@g) {}
 
-   print $fh "$_\n";
+   my $out = '';
+   my $nonce = '<nonce-'.rand().'>';
+   print IN "$_\n$nonce\n";
+   while ($out !~ /\Q$nonce\E/) {
+      $out .= <OUT>;
+   }
+   $out =~ s@\Q$nonce\E\s*@@sg;
+   $out =~ s@\n\+\?\n@\n@g;
+   $out =~ s@\n\n+@\n@g;
+
+   my @ls = sort(uniq(split(/\n+/, $out)));
+
+   print join("\n", @ls)."\n";
 }
