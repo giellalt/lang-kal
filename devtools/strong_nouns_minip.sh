@@ -14,6 +14,8 @@ ZVEQZ="aaveq"		# lemma5
 Z2AQZ="anorersuaq"	# lemma6
 Z2TUPEQZ="tupeq"	# lemma7
 Z2I2Z="nateq"		# lemma8
+Z2_RZ="seqineq"		# lemma9
+Z2_LZ="ipulik"		# lemma10
 
 TUP_FILE="src/fst/morphology/test/test-tup-inflections.txt"				# form1 (tup_inflections)
 TUPTR_FILE="src/fst/morphology/test/test-tup-tr-inflections.txt"		# form2 (tup_tr_inflections)
@@ -22,6 +24,8 @@ ZVEQZ_FILE="src/fst/morphology/test/test-Z2veqZ-inflections.txt"		# form4 (Z2veq
 Z2AQZ_FILE="src/fst/morphology/test/test-Z2aqZ-inflections.txt"			# form5 (Z2aqZ_inflections)
 Z2TUPEQZ_FILE="src/fst/morphology/test/test-Z2tupeqZ-inflections.txt"	# form6 (Z2tupeqZ_inflections)
 Z2I2Z_FILE="src/fst/morphology/test/test-Z2i2Z-inflections.txt"			# form7 (Z2i2Z_inflections)
+Z2_RZ_FILE="src/fst/morphology/test/test-Z2_rZ-inflections.txt"			# form8 (Z2_rZ_inflections)
+Z2_LZ_FILE="src/fst/morphology/test/test-Z2_lZ-inflections.txt"			# form9 (Z2_lZ_infl)
 
 for lemma1 in $(echo $Z2ZMORF);
 do
@@ -71,6 +75,20 @@ do
  do
   echo "${lemma8}${form7}" | $HLOOKUP $GTLANGS/kal/src/fst/generator-gt-desc.hfstol
  done
+ for lemma9 in $(echo $Z2_RZ);
+do
+ for form8 in $(cat $Z2_RZ_FILE);
+ do
+  echo "${lemma9}${form8}" | $HLOOKUP $GTLANGS/kal/src/fst/generator-gt-desc.hfstol
+ done
+ for lemma10 in $(echo $Z2_LZ);
+do
+ for form9 in $(cat $Z2_LZ_FILE);
+ do
+  echo "${lemma10}${form9}" | $HLOOKUP $GTLANGS/kal/src/fst/generator-gt-desc.hfstol
+ done
+done
+done
 done
 done
 done
