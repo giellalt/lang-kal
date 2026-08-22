@@ -493,6 +493,7 @@ LIST-TAGS +=
 	@SUBJ>+SUB		 # subjekt med pred t.h. men forkert kasus
 	@<SUBJ		 # subjekt med pred t.v.
 	@AGENS		# agens ved PASSIV dannet med NIQAR og TAQ uden possessor og TAQ=U
+	@<AGENS # agens ved PASSIV dannet med NIQAR til venstre for AGENS
 	@i-AGENS		# NY 20200917 PINNGORTITALERIFFIMMIT kaammattuutigineqartut tunngavigalugit
 	@OBJ>		 # objekt med pred t.h.
 	@<OBJ		 # objekt med pred t.v.
@@ -1077,6 +1078,7 @@ SET ADVERBIEL = Adv | Pali | %AdverbielHyb | ADV_INNAQ - POSSESSUM |
 (/"assingu"\ Gram/IV\ TUQ\ Der/vn\ N\ Ins\ Sg/l) |
 ("ataaseer") + CONT |
 ("ataaseq") + Ins - Num - AFFINGERET |
+(/"ata"\ Gram/IV\ TUQ\ Der/vn\ INNAQ\ Der/nn\ N\ Ins\ Sg/l) |
 (/"ata"\ TUAR\ Der/vv\ Gram/IV\ TUQ\ Der/vn\ N\ Ins\ Sg/l) |
 (/"ataavartoq"\ N\ Ins\ Sg/l) |
 (/"attuuma"\ Gram/IV\ UTE\ Der/vn\ QAR\ Der/nv\ Gram/IV\ NNGIT\ Der/vv\ Gram/IV\ TUQ\ Der/vn\ N\ Ins/l) |
@@ -1918,7 +1920,7 @@ SET NOT-FIRST = WORD - FIRSTNAME ;
 LIST DISTANCEVERB = "ungasip" "qanip" ;
 LIST EVALUERENDE_VERBER = "kajungeraa" ; #verber med semantik der betinger objekt efter NIQ+Ins/Abl
 LIST LEX_VERB = "nungullar" (/"anersaar"\ Gram/IV\ TUR/l) ; #Jude 20230908 sikre leksikaliserede verbalstammer
-LIST HVVERB = Gram/HV "naammattoorsi" "pulaar";
+LIST HVVERB = Gram/HV "naammattoorsi" ;
 LIST INSOBJVERB = LIUR (/".*nior"/r) RAAR (/\ SI\ Der\/nv/l) SSIP TAAR SIUR (/\ TUR\ Der\/nv/l) ("sutor") ;# (/__LIR\ Der\/nv__/l) udkommenteret PL20210314
 LIST IntransTrans = "neri" "ilassior" Gram/HV ; #Set til disambiguering af Ins, VIP vs. HTR mv.
 LIST NAAR_VERBER = "angi" ("aki" KIP) "amerla" "isorartu" "kingusip" "miki" "oqip" "sivikip" "siusip" ; #stammer, der kan tage NAAR. Alle andre slettes
@@ -1937,7 +1939,9 @@ LIST WEATHERVERB = (/"aarlere"\ Gram/TV\ NAR/l) "anorersuar" "anorler" (/"aput"\
 
 ### verber SETs ###
 SET HUMVERB = humverb OR ORATIOOBLVERB OR <fn:Remove> OR <fn:Take/Bring> OR <fn:Put> OR <fn:Hunt>; # alle verb  der vil ha humane subj
+
 SET HVVERB_UdenLeksikalisering = HVVERB - (/"allap"\ Gram/HV\ Gram/IV\ USIQ\ Der/vn\ GE\ Der/nv\ Gram/TV\ TAQ/l) - (/"atuar"\ Gram/HV\ Gram/IV\ TUQ/l) - (/"atuar"\ Gram/HV\ Gram/IV\ VIK/l); #forebygger hit på ikke-HV, hvori HV-stammer indgår som i allaaserisaqarpoq
+
 SET TEMPUSVERB = UGEDAGE | ("ilaanneeriar") | ("imaali" LLAR) | ("naa" LIR) | ("qaanger") | ("qaangiup") | ("qaqutigut" U) | ("qiteqqup") | ("sivitsor" NNGIT) | ("taamaali") | ("taarsi" LIR) | ("ukiar") | ("ukioq" U) | ("unnuaq" U) | ("unnup") | (/[1234567890]\.[1234567890]{2}/l) + NNGUR ;
 
 ### affixer og eknlitika LISTs ###
@@ -5481,6 +5485,8 @@ REMOVE:0063H Par + 3Pl - RIIR - GALUAR IF (0 Abs + Pl LINK *1 Ins BARRIER V - CO
 
 SELECT:0063E Abs + Pl + Num IF ( 0 Rel + Pl + Num LINK -*1 Abs + Pl LINK *1 _TARGET_ LINK 1 NATIONALITY + Rel + Pl) ;#Arnat akuersiteqqaarnagit naartunaveersaammik spiralilersorneqartut 142-t danskit naalagaaffiannit inuit pisinnaatitaaffiinik unioqqutitsisoqarnera pissutigalugu taarsiffigitinnissaminnik 2023-mi piumasaqarput.
 
+SELECT:0063F Abs + Pl IF (-1 BOS) (0 Rel + Pl LINK 1 Rel + Pl LINK 1 3PlPoss LINK 1 INTRANSVERB + Con + 4Pl OR INTRANSVERB + Cau + 4Pl LINK *1 VFIN); #Kommunit meeqqat atuarfiannik pitsannguissagunik ulluunerani paaqqinniffiit qiviartariaqarpaat.
+
 #Possessorer med mange deltagere. ADJEKTIVISK undtaget fra 3PlPoss for at nedbringe antallet af fejlanalyserede tup- pluralis fx INNAQ
 REMOVE:opremsning05 Abs + Pl - Num IF (0 Rel + Pl LINK *1 3PlPoss - ("Kalaallit Nunaat") - ("nuna" 3PlPoss) - Orth/Arch BARRIER  (*) - KOMMA - %AmbiguøsN - CONJ-C - OBLIQUE)
 (NEGATE 1 LU + 3PlPoss LINK *1 3PlO BARRIER V)#Taamaammat innuttaasut suliffeqarfiillu politiinit piumaffigineqarput ATORTUT assigisinnaasaallu isumannaatsumik inisseqqullugit anorersuarmiit tingitaaqqunagit, inunnut allanullu eqqaaniittunut navianarsinnaammat
@@ -5621,6 +5627,8 @@ REMOVE:0044E ("isu") + MAA IF (0 ("isuma"));
 REMOVE:0044Fx1 Par IF (0 N + Abs + $$NUMERUS + ("IR") + Hyb/2-2 LINK -*1 N + Abs + $$NUMERUS LINK NOT *0 ORATIOOBLVERB + V OR ("oqar") + V)
 (NEGATE -*1 ("naak" Conj) )#Naak ujaqqat qaqqameeqqileraluartut, kikkunnit pigineqarnersut suli akerleriissutaavoq.
 ; #- Oqaasiliortut pillugit inatsisartut inatsisaat nr. 5, 1. juni 2017-imeersoq
+
+REMOVE:0044Fx2 Par + 3Pl IF (0 Abs + Pl LINK -*1 Abs + Pl + 1SgPoss  BARRIER (*) - Hyb/1-2 LINK -1 Interj);#Aluu suleqatikka Nuummiittut.
 
 REMOVE:0044F N IF (*-1 Abs + &&IV_SUBJ& LINK *1 _TARGET_ + Par + &&IV_SUBJ& LINK NEGATE *0 VFIN OR ("tassa"))(1 EOS)#19-inik ukiulik Nuummi ujarneqartoq.
 (NEGATE *-1 Abs + LIK LINK *1 _TARGET_ + ADJEKTIVISK BARRIER (*) - Abs - KOMMA)#Naasoq pingasuinnarnik sikkersumigut pilutalik, naasuarannguaq NIKANARTOQ.
@@ -8639,6 +8647,8 @@ REMOVE:0549L Par IF (1 TUQ + Abs + CONJ-LU) #Anori NILLERTOQ masannartorlu suli 
 
 SELECT:0549M Par + GALUAR IF (-1 Abs)(1 ("taama") + IP + Par LINK *1 VFIN); #Ineeqqanninngaanniit uffarfimmut meterit arlalippassuunngikkaluartut taamaattoq aqqussua sapingajappara.
 
+SELECT:0549Nx2 Par + 3Sg IF (0 Abs + Sg LINK -*1 CONJ-C LINK -1 Par + 3Sg) (*1 ORATIOOBLVERB BARRIER V - Par);#Nalunaarusiap ilisimatusarusuttoqartorujussuusoq kalaallinilli suleqateqarneq qaqutigoortuusoq aamma USA-mit soqutiginninneq annikilliartortoq takutippaa.
+
 SELECT:0549Nx1 Abs + Sg IF (0 Par + 3Sg LINK 1 ("kiisalu") OR ("aamma") ) ;#Aamma Doris Jakobsen Jensen Aka Hansenitulli Siumut tunuliaqutaralugu *qinigassanngortittoq kiisalu Naleqqamit qinigassanngortittoq Najannguaq Hegelund Facebookimit aamma mattunneqarput.
 
 REMOVE:0549Nx (/"issip"\ Gram/IV\ V\ Par\ 3Sg\ %AmbiguøsPar/l) IF (0 (/"issip"\ Gram/IV\ TUQ\ Der/vn\ N\ Abs\ Sg/l) LINK 1 N + Abs );
@@ -8886,6 +8896,8 @@ SELECT:Sel0016 Aeq + Pl IF (1C Aeq + Pl);
 SELECT:1640 ("allaat") + Part #Skal håndteres før 1641
 (NEGATE -1 Ins);
 
+REMOVE:8599AM (/"ate"\ N\ Rel\ Sg\ 3SgPoss/l) IF (0 (/"ataata"\ N\ Abs\ Sg/l) LINK NOT *1 3SgPoss) ;#Sooruna ilaanni anaana taamaattartoq? Ataatalu aperigaanni oqaaseqassanani.
+
 SELECT:1641A 3SgPoss IF (0 3PlPoss)(-1 Rel + Sg )
 (NEGATE -1 Rel + Sg LINK *1 TRANSVERB + 3Sg BARRIER V)
 (NEGATE 0 3PlPoss LINK -1 Rel + Pl)  #To NEGATE tilføjet 20140824, fordi OBJ blev *POSS og fordi korrekt pluralis POSS undertiden slettet
@@ -8894,6 +8906,12 @@ SELECT:1641A 3SgPoss IF (0 3PlPoss)(-1 Rel + Sg )
 (NEGATE -1 (/"aki"\ SSAQ\ Der/nn\ UTE\ Der/nn\ KIP\ Der/nv\ Gram/IV\ TUQ/l) + Rel + Pl)#Amarngivat siulersuisuini ilaasortaasimavoq akissaatikitsullu MEERAASA atuanngiffeqarlutik angalanissaannut aningaasaateqarfinnut qinnuteqaasiornernut ikiuuttarsimalluni.
 
 ;
+
+SELECT:1641Ax1 (/TUQ\ Der/vn\ QAR\ Der/nv\ Gram/IV\ NIQ\ Der/vn\ N/l) + Rel + Sg + 3SgPoss IF (0 (/TUQ\ Der/vn\ QAR\ Der/nv\ Gram/IV\ NIQ\ Der/vn\ N/l) + Rel + Sg + 3PlPoss);
+
+SELECT:1641Ax2 Rel + Sg + 3SgPoss IF (0 Rel + Sg + 3PlPoss)(NOT -*1 Rel + Pl BARRIER 3PlPoss) 
+(NEGATE -1 Rel + Sg + CONJ-LU LINK -1 Rel + Sg) #Uuttortaanernut immap itissusai sinerissallu killingi pillugit paasissutissanik sukumiisunik, pilersaarusiornerup imarsiornerullu isumannaassusaata pitsaanerulersinnissaannut atorneqarsinnaasunik, katersinissaq siunertaavoq.
+;#Tamanna Amerikamiut præsidentiata, Donald Trumpip Kalaallit Nunaata USA-mut ilaalernissaanik kissaateqartuarnerata kinguneraa.
 
 #En generel sletteregel, der forudsætter at 1641A har disambigueret 3PlPoss væk
 REMOVE:1641B Rel + Pl IF (0 Rel + Sg)
@@ -9160,7 +9178,8 @@ REMOVE:1705 (TUQ INNAQ N) + Abs + Pl + POSSESSUM IF (NEGATE *-1C Rel + Pl BARRIE
 #SELECT:0146 Rel + Sg + 4SgPoss IF (*1 TRANSVERB + 3Sg OR TRANSVERB + 4Sg BARRIER V)(NEGATE 0 Cau + 4Sg)(NEGATE 1 POSSESSUM + 3SgPoss); # TAQ + 4Sg undertiden homonym med Cau + 4Sg og som possessor håndteres den af den følgende regel
 
 SELECT:1707 ("oqaaseq") + Rel + Pl + 4SgPoss IF (1 POSSESSUM + 3PlPoss - Lok)(NEGATE 0 Cau + 4Sg); #Specialfald fordi oqaaseq oftest pluralis
-SELECT:1708 Rel + Sg + 4SgPoss IF (1 POSSESSUM + 3SgPoss - Lok)(NEGATE 0 Cau + 4Sg)(NEGATE 0 PLACE OR Lok) # TAQ + 4SgPoss undertiden homonym med Cau + 4Sg. -Lok fordi alt for mange hit på homonyme Abs+4SgPoss og Lok+3SgPoss. Flyttet til efter Par-reglerne, da fejl pga. U+Par blandes med Aeq+3SgPoss
+SELECT:1708 Rel + Sg + 4SgPoss IF (1 POSSESSUM + 3SgPoss - Lok)(NEGATE 0 Cau + 4Sg)
+(NEGATE 0 PLACE OR Lok) # TAQ + 4SgPoss undertiden homonym med Cau + 4Sg. -Lok fordi alt for mange hit på homonyme Abs+4SgPoss og Lok+3SgPoss. Flyttet til efter Par-reglerne, da fejl pga. U+Par blandes med Aeq+3SgPoss
 (NEGATE 0 ("assak")); #bliver slettet fordi alternativet er assaq
 
 #Pronominer
@@ -10387,6 +10406,7 @@ REMOVE:8599AI (/"aak"\ QAR\ Der/nv\ Gram/IV/l) IF (0 (/"aaq"\ QAR\ Der/nv\ Gram/
 REMOVE:8599AJ ("iseq" Pl) IF (0 ("isi" Pl)); #..ISIKASIILU perlilingaaramik qernertuinnaat.
 REMOVE:8599AK (/"alla"\ TAQ\ Der/nn\ N\ Abs\ Sg\ 3PlPoss/l) IF (0 (/"allap"\ Gram/TV\ TAQ\ Der/vn\ N\ Abs\ Sg\ 3PlPoss/l) );#... ajoqusertoqarsimanera nalunaarutigineqarpoq, X-imi *allataat ilaatigut taama imaqarpoq.
 REMOVE:8599AL (/"qaammat"\ Sem/dur/l Sg) IF (0 (/"qaammat"\ Sem/Lstar/l) + Sg LINK -**1 Sem/Geo + Prop LINK *1 _TARGET_ LINK *1 Sem/Geo + Prop OR ("seqineq") );
+REMOVE:8599AM (/"ate"\ N\ Rel\ Sg\ 3SgPoss/l) IF (0 (/"ataata"\ N\ Abs\ Sg/l) LINK NOT *1 3SgPoss) ;
 
 
 #Nomen eller pron
