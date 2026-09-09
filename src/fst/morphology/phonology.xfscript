@@ -173,12 +173,16 @@ define schwa2toX [ i3 -> i || _ %^T %> %^ProgI ,,
 echo <<< Alternations - Consonants >>>
 echo <<< Recessive consonants >>>
 
-define recessiveAFTCns [ r2 -> 0 ,
-                     %{t2%} -> 0 || Cns [%>|%^CLIT] _ ] ;   !{t2} because neither t2 nor ^t2 would work
+define recessiveAFTCns [ [ r2|%{t2%}|f2 ] -> 0 || Cns [%>|%^CLIT] _ ] ;   !{t2} because neither t2 nor ^t2 would work
 
 define recessiveAFTVow [ r2 -> r ,
-                     %{t2%} -> t || Vow [%>|%^CLIT] _ ] ;  !{t2} because neither t2 nor ^t2 would work
+                     %{t2%} -> t ,
+                     f2 -> f || Vow [%>|%^CLIT] _ ] ;  !{t2} because neither t2 nor ^t2 would work
 
+echo <<< morphophonemic alternations >>>>
+
+define alternatingT [ t3 -> t || Cns %> _ ,,
+                      t3 -> s || Vow %> _ ] ;
 
 echo <<< Nasalization >>>
 
@@ -211,6 +215,8 @@ define c2v [ c2 %> v -> p p || Vow _ Vow ] ;
 
 define IndikativVu [ v -> p || [ p|r ] %> _ [ u|i|a|o ] ] ;
 
+define vtop [ v2 -> v || _ %> Vow ,,
+              v2 -> p || _ %> Con ] ;
 
 echo <<< Regressive consonant assimilation >>>
 
@@ -404,6 +410,8 @@ c2v ![ c2 %> v -> p p || Vow _ Vow ] 05
 .o.
 IndikativVu ![ v -> p || [ p|r ] %> _ [ u|i|a|o ] ] 06
 .o.
+vtop
+.o.
 Possessortrunc ![ i t -> i || [ e|u|i ] (Cns) %> (%^T) _ %^POSST] 07
 .o.
 PossessortruncLangvokal ![ i t -> i || a a q %< %^T _ %^POSST ] ; ! PL20250512 snæver regel til bl.a. angajoqqaavi for *angajoqqaavit
@@ -443,6 +451,8 @@ schwa2toX
 recessiveAFTCns
 .o.
 recessiveAFTVow
+.o.
+alternatingT
 .o.
 fus
 .o.
