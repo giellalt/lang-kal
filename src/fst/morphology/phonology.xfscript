@@ -31,7 +31,7 @@ define Vow [ a|e|i|i2|i3|o|u|í|á|ú|î|â|û|ê|ô|ĩ|ã|ũ ] ;
 
 echo <<< Consonants >>>
 define Cns [ c2|c|d|f|f2|g|g2|g3|g4|g5|h|j|j2|ĸ|k|l|m |
-             n|p|q|r|r2|s|t|%{t2%}|t3|v|v2 ]  ;  
+             n|n2|p|q|r|r2|s|t|%{t2%}|t3|v|v2 ]  ;  
 
 
 echo <<< Segments >>>
@@ -139,7 +139,7 @@ define VowelRaising3 [ o -> u || _ ( %^T ) %> e ] ;                             
 
 echo <<< Progressive Vowel Assimilation >>>
 
-define progressivVassimilering [ [ u|o|i|e ] -> a || a (%^T) [ %>|%< ] (%^ProgI) _ (%^T) (%>) (Dummy) Cns ,,
+define progressivVassimilering [ [ u|o|i|e ] -> a || a (%^T) [ %>|%< ] (%^ProgI) _ (%^T) ([ %>|%< ]) (Dummy) Cns ,,
                                            u -> a || a %^T %> _ g (%^T) %> {inna} ] ; !kinguarsaat^T%>u
 
 define htrass [ i -> a || a (Cns) %^T %> _ %> ] ; ! HTR i asaiartortariaaruppoq -> asaajartortariaaruppoq, før g5j2 +GIARTUR+Der/vv
@@ -197,6 +197,12 @@ define recessiveAFTVow [ r2 -> r ,
                      %{t2%} -> t ,
                      f2 -> f || Vow [%>|%^CLIT] _ ] ;  !{t2} because neither t2 nor ^t2 would work
 
+!recessive konsonanter ved modi
+define c2toX [ c2 -> l || Vow %< _ l u ,,
+               c2 -> m || Vow %< _ m a ,,
+               c2 -> p || Vow %< _ p a ,,
+               c2 -> 0 || Cns %< _ ] .o. [ c2 -> 0 ] ;
+
 echo <<< morphophonemic alternations >>>>
 
 define alternatingT [ t3 -> s || [ {er} | g2 i p | g2 i i p |  {qip} | {rip} | {sip} | {vip} | {manip} ] %> _ [ o|u ] ([ q|r ]) (%^T) ([ %>|%< ]) ,, !erinagissoq, peqqissoq, qaallorissoq, qaffasissoq, pillagunavissoq, silagissutut, manissoq
@@ -204,6 +210,8 @@ define alternatingT [ t3 -> s || [ {er} | g2 i p | g2 i i p |  {qip} | {rip} | {
                       t3 -> t || Cns %> _ ,,
                       t3 -> s || Vow %> _ ,,
                       t3 -> s || [ a|i|u ] %< _ ] ;
+
+define n2toX [ n2 -> [ g|n ] || _ a %< [ {ta}|{tik}|{si} ] ] .o. [ n2 -> n ] ; !+ContNeg
 
 echo <<< Nasalization >>>
 
@@ -231,12 +239,6 @@ define frikativisering [ Kra -> r || Vow _ [%> Segment|%^CLIT] ,,
 
 
 echo <<< Stopping >>>
-!tilfoejet efter 16.10. for skyld innar efter langt a. Skal komme foer aVepentese
-
-define c2toX [ c2 -> m || Vow %< _ m a ,,
-               c2 -> p || Vow %< _ p a ,,
-               c2 -> 0 || Cns %< _ ] ;
-!tilfoejet efter 16.10. (17.11.06) for at bringe LIR-TAQ uden om qgFusion
 
 define IndikativVu [ v -> p || [ p|r ] [ %<|%> ] _ [ u|i|a|o ] ] ; !%> ved +VALLAAR+Der/vv
 
@@ -498,6 +500,8 @@ insertAFTtrc
 progressivVassimilering ![ [ u|o|i|e ] -> a || a %> ( %^T ) _  ( %> ) Cns ] ;
 .o.
 c2toX
+.o.
+n2toX
 .o.
 vtop
 .o.
