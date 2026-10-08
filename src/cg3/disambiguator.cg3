@@ -2722,12 +2722,13 @@ REMOVE:tidlig0005 ("ila") + Via + POSSESSUM3 IF (0 ("ilaatigut") + Adv);#Taakkua
 
 #"IP" skaber mange problemer
 REMOVE:tidlig0006A ("IP")
-(NEGATE -1 Lok);
+(NEGATE -1 Lok OR Aeq);
 REMOVE:tidlig0006B ("ip")
 (NEGATE -1 ("qanoq") OR ("taama") OR ("ima") OR ("immikkut") OR Lok OR Aeq)
 (NEGATE 0 VFIN LINK 1 ("soorlu")) ;
 REMOVE:tidlig0006C ("imaq") IF (-1 Aeq);
-REMOVE:tidlig0006D ("IP") - Hyb/2-2;
+REMOVE:tidlig0006D ("IP") - Hyb/2-2
+(NEGATE -1 Aeq);
 
 
 #Ambiguitet mellem DMI og *DMi+Orth/Alt. Reglen er ad hoc og må kunne gøres mere generel
@@ -6046,6 +6047,8 @@ SELECT:0070 Rel + Pl - Num - POSSESSUM12 IF (1C 3PlPossUdenMWE)(NEGATE 1 ("siune
 (NEGATE 0 (NIQ Sg Lok) - HUM LINK 1 3PlPoss + Abs + &&IV_SUBJ& LINK 1 V + &&IV_SUBJ&)#- Meeqqat taakkua sisamat qitinnermik festivalimi soqutiginnilluinnarlutik peqataapput , qitinnermillu TAKUTITSINERMI piginnaasaqarluarnerat takuneqarsinnaammat , piginnaasaminnik ineriartortitseqqissinnaanissaannik periarfissinniarpavut , Norgemi qitinnermik ilinniarfimmeersoq Kristin Berg oqarpoq .
 ; #iluaqutaasumik
 
+SELECT:0070x1 Rel + Pl IF (0 Abs + Pl - Num LINK 1 Rel + Pl LINK 1 3PlPoss - Rel LINK 1 3PlPoss) ;#- *mittarfissualiornerit innuttaasut aningaasaqarnerannut iluaqutaanerat isigigaanni, mittarfissualiornerit iluatsilluarput, Justus Hansen oqarpoq. 
+
 REMOVE:opremsning20A Abs + Pl IF (NOT -1 N + Abs + Pl) (-1 ("aamma")) (0 Rel + Pl LINK *1 Rel + Pl BARRIER (*) - OBLIQUE LINK 1 3PlPoss )  
 ;#Raajaqassuseq uumassusilinnik misissuinerit, pisarineqartartut amerlassusaat aamma *saarulliit raajanik nerisaqartut amerlassusaat aallaavigalugit naatsorsorneqartarpoq.##kan først stå her da først her er nerisaqartut analyseret som N
 
@@ -7379,7 +7382,7 @@ SELECT:0384E 3PlO + CON_CAU IF (*1 3PlPoss LINK NEGATE -1 Rel + Pl); #ISIGILLUAL
 SELECT:0385 Ind + 3Sg + 3SgO IF (NEGATE *0 VFIN)(*-1 Rel + Sg LINK *1 Abs + Sg BARRIER VFIN LINK *1 _TARGET_)
 (NEGATE 0 Par + 3Sg + 3SgO LINK *-1 NEXUS); #Soorluluunniit ikiaroornartoq puigortariga – soorluluunniimmi Nipip pisariaqartitara TAARSERTARAA.
 SELECT:0386 Ind + 3Sg + 3PlO IF (NEGATE *0 VFIN)(*-1 Rel + Sg LINK *1 Abs + Pl BARRIER VFIN LINK *1 _TARGET_) ;
-SELECT:0387 Ind + 3Pl + 3SgO IF (NEGATE *0 VFIN)(*-1 Rel + Pl LINK *1 Abs + Sg BARRIER VFIN LINK *1 _TARGET_)
+SELECT:0387 Ind + 3Pl + 3SgO IF (NEGATE *0 VFIN)(*-1 Rel + Pl LINK *1 Abs + Sg - (/"kinguneq"\ N\ Abs\ Sg\ 3SgPoss/l) BARRIER VFIN LINK *1 _TARGET_)
 (NEGATE 0 INTRANSVERB + 3Pl); #...ullorsuaq ualersuarlu NAASARAAT...
 SELECT:0388 Ind + 3Pl + 3PlO IF (NEGATE *0 VFIN)(*-1 Rel + Pl LINK *1C Abs + Pl BARRIER VFIN LINK *1 _TARGET_)
 (NEGATE 0 INTRANSVERB + &&IV_SUBJ& LINK *-1 Abs + &&IV_SUBJ&) #må ikke slette Meeqqat UMIARSUAARTULEQAAT
@@ -9851,8 +9854,8 @@ REMOVE:2566 (/N\ Abs\ Pl\ 3PlPoss/l) + &&IV_SUBJ& IF (-1 BOS) (*1 V + &&IV_SUBJ&
 ;
 #Umimmaat 1989-imiilli piniagaapput.
 
-# Halvtransitive sætninger
-#REMOVE:5627 TIP + INTRANSVERB IF (0 HTR)(-1 Ins) ;
+REMOVE:2567 Rel + Pl + 3SgPoss IF (0 Rel + Pl + 3PlPoss LINK -*1 Rel + Pl BARRIER (*) - OBLIQUE ) ;#- Tuniniaasinnaajunnaarsitsineq politikerit ingerlaannartumik iliuuseqarnissamut *sakkussaasa ilagaat. 
+
 
 # NP-er
 # -----
@@ -11616,7 +11619,9 @@ REMOVE:5574 ("kingu") + SI IF (0 ("kingusip")) ;
 SELECT:5575 SURE IF (0 GE)(0 2Sg + 1SgO) ; #'Du mener om mig' mere sandsynlig end 'du har mig'
 REMOVE:5576 IR IF (0 IP)(NEGATE -1 Abl); #Usikker regel, men lokalis må være langt mere frekvent end ablativ
 SELECT:5577 GISSAAR ;
-SELECT:5578A ("ilip") IF (0 ("ili") LINK *0 FOOD);
+SELECT:5578A ("ilip") IF (0 ("ili") LINK *0 FOOD) (NEGATE -1 Aeq);
+SELECT:5578Ax2 ("inneq") IF (0 ("IP") + NIQ LINK 1 ("isi") );#Margrethe parnaarussivimmiitillugu ajortup saqqummerfigaa uumasupiluttut innermik isilittut qanerujussuaqartutullu isikkoqarluni.
+SELECT:5578Ax1 ("IP") IF (0 ("ili") LINK -1 Aeq) ;#Imigassamik tuniniaaneq inerteqqutaajunnaarpat ajornartorsiutaasut arriitsunnguamik siornatigutut *ileqqissapput. 
 REMOVE:5578B ("ilip") IF (0 ("ili")); #normalt er det kun mad, der brænder på
 REMOVE:5579 RIAQ + TU IF (0 GIARTUR) ;
 REMOVE:5580 QQAR IF (0 QQA);
@@ -12690,7 +12695,8 @@ REMOVE:9968TX VFIN + 3SgO IF (*1 Abs LINK *1 Conj OR LU LINK *1 Abs LINK NEGATE 
 (NEGATE 0 VFIN + GE OR ("isige") LINK *-1 Rel BARRIER (*) - Adv - OBLIQUE LINK *-1 Abs + Sg BARRIER V)#Palasip illuaniit nakorsap illua ungasinngilaq, taamaakkaluartorli aqqutini nakorsap sivisoorujussuartut ISIGAA, sukkalisaarnerullunili ingerlalerami palasi nulialu paniallu puiorpai, isumaannarmigullu assut palasi kamaappaa oqaluppallaaqimmat.
 ;
 
-REMOVE:9968T VFIN + 3PlO IF (0 3SgO LINK *1 Abs + Sg - 2SgPoss LINK NEGATE *1 VFIN + 3Sg) #EQQAALERPAALU ippassaq imminnut attuutivillutik karakteeritik isiginnaajutigalugit atuarfimmiit aniartornerminni Frank nukappiararlu alla naapikkamikkit Frankip illakululluni oqarnera:
+##Obj efter verballed
+REMOVE:9968T VFIN + 3PlO IF (0 3SgO LINK *1 Abs + Sg - 2SgPoss BARRIER CONJ-LU LINK NEGATE *1 VFIN + 3Sg BARRIER KOMMA) #EQQAALERPAALU ippassaq imminnut attuutivillutik karakteeritik isiginnaajutigalugit atuarfimmiit aniartornerminni Frank nukappiararlu alla naapikkamikkit Frankip illakululluni oqarnera:
 (NEGATE *1 Abs + Pl LINK NEGATE *1 INTRANSVERB + 3Pl BARRIER VFIN)#Taakkua saniatigut politikkikkut aalajangikkanik aamma suliaqartoqarpoq, taakkua ILAGAAT qarasaasiaq atorlugu oqaasilerinermi atortussiorneq, nutserusiorneq kiisalu tusagassiutinut toqqaannartumik oqaatsitigut kiffartuussineq.
 (NEGATE *1 Abs LINK *1 Conj OR LU LINK *1 Abs LINK NEGATE *1 INTRANSVERB + 3Pl BARRIER VFIN)#Taakkua saniatigut politikkikkut aalajangikkanik aamma suliaqartoqarpoq, taakkua ILAGAAT qarasaasiaq atorlugu oqaasilerinermi atortussiorneq, nutserusiorneq kiisalu tusagassiutinut toqqaannartumik oqaatsitigut kiffartuussineq.
 (NEGATE -1 Abs + Pl)#Tassa imaappoq, kukkunersiuisut naatsorsuutit AKUERAAT, naatsorsuutilli ilaat akisussaaffiginngikkitsik erseqqissaatigalugu.
@@ -12827,7 +12833,10 @@ REMOVE:9968BT 3SgO IF (*-1 (Abs Pl) LINK NEGATE *0 (Abs Sg) BARRIER _TARGET_) #A
 (NEGATE *-1 Rel LINK -1 Abs + Sg) #Uumasut ilarpassui Canadap Alaskallu issittuanni ingerlaartarput, tuttullu siunissaat nunap inoqqaavisa pingaartumik ERNUMASSUTIGAAT.
 (NEGATE 0 ORATIOOBLVERB LINK -1 (/TUQ\ Der/vn\ QAR\ Der/nv\ Gram/IV\ \(SIMA\ Der/vv\ SSA\ Der/vv\ Gram/IV\ \)?V\ Par\ 3Sg/l))#Politiit imigassartorsimalluni ajutoortoqarsimassasoq ILIMAGAAT.
 (NEGATE *-1 ORATIOOBLVERB LINK 1 Rel + Pl LINK *1 Par + 3Pl BARRIER (*) - (Rel Pl) - %AmbiguøsN)#Nalunngilaa nukappiaqqat arlallit QANINNIARTARSIMAGALUARAAT, soorluli aalajangersimasumik soqutigisaqarnera malunnarsimanani.
+(NEGATE 0 ORATIOOBLVERB  LINK -1 NIR + Par + 3Sg)
 ;
+
+REMOVE:9968BTx1 ORATIOOBLVERB + 3PlO IF (0 ORATIOOBLVERB + 3SgO LINK -1 NIR + Par + 3Sg);#Immikkut ilisimasallit kalaallit niviarsiaqqat arnallu tusindilikkuutaat spiralilersorneqarmata inuit pisinnaatitaaffiinik qanoq unioqqutitsisoqarsimanersoq *misissorpaat – minnerunngitsumillu una: Inuiannik nungusaanerua?
 
 REMOVE:9968BU 3PlO IF (0 ORATIOOBLVERB + 3Pl + 3SgO LINK -1 CONT + 4Pl); #Angallataatit piffimmiit piffimmut sukkasuumik periataarsinnaanngimmata, politiit ullutsinnut naleqqunnerusunik angallateqalerniarlutik AALAJANGERPAAT.
 
@@ -12837,7 +12846,7 @@ REMOVE:9968BV 3PlO IF (0 ORATIOOBLVERB LINK *-1 Par + &&IV_SUBJ& LINK *-1 Abs + 
 REMOVE:9968BW 3PlO IF (0 (/TAQ\ Der/vn\ \(SSAQ\ Der/nn\ \)?QAR\ Der/nv\ Gram/IV\ NNGIT\ Der/vv\ Gram/IV\ SURE/l) + 3SgO LINK NOT -1 (Abs Pl))#Eqqartuussissuserisullu tassunga atatillugu SULIASSANNGORTITASSAQANNGISSORAAT, Mikael Petersen tusagassiuutinut nalunaarummi allappoq.
 ;
 
-REMOVE:9968BX 3PlO IF (0 VFIN + 3SgO LINK *-1 Rel LINK -1 Abs + Sg) #Uumasut ilarpassui Canadap Alaskallu issittuanni ingerlaartarput, tuttullu siunissaat nunap inoqqaavisa pingaartumik ERNUMASSUTIGAAT.
+REMOVE:9968BX 3PlO IF (0 VFIN + 3SgO LINK *-1 Rel LINK -1 Abs + Sg - (/"kinguneq"\ N\ Abs\ Sg\ 3SgPoss/l)) #Uumasut ilarpassui Canadap Alaskallu issittuanni ingerlaartarput, tuttullu siunissaat nunap inoqqaavisa pingaartumik ERNUMASSUTIGAAT.
 ;
 
 REMOVE:9968BY VFIN + 3PlO IF (0 ORATIOOBLVERB + 3SgO LINK -1 (/TUQ\ Der/vn\ QAR\ Der/nv\ Gram/IV\ \(SIMA\ Der/vv\ SSA\ Der/vv\ Gram/IV\ \)?V\ Par\ 3Sg/l));#Politiit imigassartorsimalluni ajutoortoqarsimassasoq ILIMAGAAT.
@@ -12898,6 +12907,8 @@ REMOVE:9970W Par IF (0 (/"sinneq"\ QAR\ Der/nv\ Gram/IV\ TUQ/l) + $$KASUS LINK -
 
 SELECT:9970Åa Rel + Pl IF (0 Abs + Pl) (-1 Conj LINK -1 NIQ + Abs LINK *1 _TARGET_ + Der/vn - NIQ + Pl LINK *1 3PlPoss BARRIER (*) - OBLIQUE - CONT); #Kalaallit Nunaanni silap pissusia nillertoq, inissisimaffia, erngup nukinganik nukissiorfinnut periarfissarissaarnera, nunap ilaani saffiugassaqarnera kiisalu innuttaasut imminnut ungasillutik najugaqarnerat, teknologiimik suliffissuit utaqqisinnaanngitsut misilittaaviginissaanut tulluarluinnartut, immikkut ilisimasalik oqarpoq.
 
+SELECT:9970Åb Abs + Pl IF (0 Rel + Pl  LINK -1 Prop + Rel + Pl LINK 1 _TARGET_ LINK *1 VFIN + TRANSVERB + 3Pl + 3PlO) ;
+
 REMOVE:9970Å Rel + Pl IF (0 Abs + Pl LINK *1 INTRANSVERB + 3Pl ) #PAASISSUTISSAT taakkua ilaatigut Naalakkersuisut siulittaasuannut, Kim Kielsenimut Air Greenlandillu siulersuisuini ilaasortanut arlalinnut tunngasut, aviisi Jyllands-Posten allappoq.
 (NEGATE *1 3PlPoss BARRIER (*) - %AmbiguøsN - Num - Gram/Cong - OBLIQUE - KOMMA - Par - Rel)
 (NEGATE *1 TRANSVERB + 3Pl BARRIER V)
@@ -12913,8 +12924,6 @@ REMOVE:9970Å Rel + Pl IF (0 Abs + Pl LINK *1 INTRANSVERB + 3Pl ) #PAASISSUTISSA
 
 ;
 
-REMOVE:9970Åx1  Abs + Pl IF (0 Rel + Pl LINK *1 N + Abs + Sg + 3PlPoss LINK 1 ORATIOOBLVERB + V + 3SgO) ;
-#Inuillu qanoq amerlatigisut ulluinnarni pinngortitamik atuisarnerat takullugu nuannersorujussuuvoq, taanna oqarpoq, nangillunilu:
 
 REMOVE:9970Å1 Abs + Pl IF (0 Rel + Pl Link 1 Num Link 1 ("akunneq"));
 
@@ -13218,6 +13227,18 @@ REMOVE:9970_3SgPossE 1SgPoss IF (0 3SgPoss LINK -1 Rel + Sg LINK -1 Rel + Sg)(1 
 REMOVE:9970_1SgPoss 1SgPoss IF (0 3SgPoss LINK NOT *0 V + 1Sg OR V + 1SgO);
 
 REMOVE:9971x1 Abs + Pl IF (0 Par + 3Pl LINK 1 EOS) (-*1 VFIN + ORATIOOBLVERB BARRIER VFIN LINK -1 BOS) ;
+
+
+##-----------------------
+##subjektsmarkering og objektsmarkering i verballed
+
+REMOVE:9972a 3PlO IF (1 EOS) (0 3SgO LINK -1 Abs + Sg LINK -1 KOMMA LINK -1 Abs + Pl LINK -1 U + V);#- Naami, taamaassorinngilara. Suliaminnut ilisimasaqarluarlutillu ilinniagartuujupput pikkorissut, suliassartillu *naammassivaat.
+
+REMOVE:9972b 3SgO IF (0 3PlO LINK -*1 Abs + Pl - OTHERTIME BARRIER V) 
+(NEGATE -1 Abs + Sg LINK -1 KOMMA LINK -1 Abs + Pl LINK -1 U + V)
+;
+
+
 
 ##################################################
 
