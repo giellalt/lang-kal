@@ -60,7 +60,6 @@ define ssuaĸ1 [ ĸ -> r || u a _ %< m ] ;                !suaĸ+Trm -> ssuarmut
 
 
 echo <<< Sound alternations >>>
-define AltNegInf [ n -> 0 || r %< %^ALTINF _ a ] ;
 
 define g2toX [ g2 -> %^FUS [ n n g ] || [k|p|t] %^CLIT _ ,,          !g2-1
                g2 -> g               || Uvular [%>|%<|%^CLIT] _ ,,   !g2-2
@@ -126,15 +125,12 @@ define VowelLowering [ [ i (%^T) (%>) i ]     -> [ e e ] ,                      
                        u -> o ,                                                             !*saniatiguorpugut
                        i -> e || _ (\Segment) ([ %^CVqT|%^T ]) [ %>|%< ] (%^ProgI) (\Segment|OpenVowel) Uvular ] ;
 
-define VowelRaising  [ [ e e ] -> [ i i ] ,                                                 !*taareigaq
-                       [ o o ] -> [ u u ] ,
-                             o -> u ,                                
-                       [ o u ] -> [ u u ] || _ (%^T) [%>|%<|%^CLIT] ([ g|%^ProgI ]) [NonUvular|CloseVowel|a] ] ; !*naammattougaqarpoq, Farao+LI -> Farauli
-
-define VowelRaising2 [ e -> i || _ ( %^T ) %> ([%^CLIT|%^ProgI]) [NonUvular|CloseVowel|a| o %> ] ,,
-                       e -> i || _ ( %^T ) %< [ NonUvular|CloseVowel|a ] ] ;    !o grundet qimmiorusup-
-
-define VowelRaising3 [ o -> u || _ ( %^T ) %> e ] ;                                           !xxsueruppoq
+define VowelRaising [ [ e e ] -> [ i i ] || _ (%^T) [ %>|%< ] [ NonUvular|CloseVowel ] ,, !*taareigaq
+                      [ o o ] -> [ u u ] || _ (%^T) [ %>|%< ] [ NonUvular|CloseVowel|a ] ,,
+                      e -> i             || [ Cns|u ] _ (%^T) [ %>|%< ] (%^ProgI) [ NonUvular|CloseVowel|a ] ,, !qimmiusaarpoq
+                      e -> i             || i %^T %> _ %^T %> NonUvular ,, !+Gram/Hyb+IR
+                      o -> u             || u %^T %> _ %^T %> NonUvular ,, !+Gram/Hyb+UR+Der/n
+                      o -> u             || [ Cns|CloseVowel ] _ (%^T) [ %>|%<|%^CLIT ] (%^ProgI) [ NonUvular|CloseVowel|a|e ] ] ; !takitigisokkaarlugit -> takitigisukkaarlugit, !xxsueruppoq
 
 
 echo <<< Progressive Vowel Assimilation >>>
@@ -217,7 +213,7 @@ define alternatingT [ t3 -> s       || [ {er} | g2 i p | g2 i i p |  {qip} | {ri
                       t3 -> t       || [ a|o ] r %< _ [ a|u ] ,,
                       t3 -> t       || p %< _ ] .o. [ [ p %^ %< t3 u ] -> [ t s u ] ] ;
 
-define n2toX [ n2 -> [ g2|n ] || _ a %< [ {ni}|{ta}|{tik}|{si} ] ] .o. [ n2 -> n ] ; !+ContNeg
+define n2toX [ n2 -> n || {ssa} %< _ ] .o. [ n2 -> [ g2|n ] || _ a (%<) [ {ni}|{ta}|{tik}|{si} ] ] .o. [ n2 -> n ] ; !+ContNeg [20261014 (%<) midlertidigt da AltNegInf og ^ALTINF sløjfet]
 
 echo <<< Nasalization >>>
 
@@ -248,17 +244,18 @@ echo <<< Stopping >>>
 
 define IndikativVu [ v -> p || [ p|r ] [ %<|%> ] _ [ u|i|a|o ] ] ; !%> ved +VALLAAR+Der/vv
 
-define vtop [ v2 -> 0       || u %> _ ,,                                                  !+VALLAAQ+Der/vn
-              v2 -> v       || [ a|i ] %> _ ,,                                            !+VALLAAQ+Der/vn
-              v2 -> p       || Cns %> _ ,,                                                !+VALLAAQ+Der/vn
-              v2 -> v       || [ a|i|u ] %< _ u %< [ {gut}|{nga}|Uvular|{si}|{tit} ] ,,   !+Ind: +1Sg +2Sg +3Sg verb_itr_pers_num | ændret q til Uvular grundet frikativisering
-              v2 -> p       || Cns %< _ u %< [ {gut}|{nga}|Uvular|{si}|t|{tit} ] ,,       !+Ind: +1Sg +2Sg +3Sg verb_itr_pers_num
-              v2 -> [ p p ] || Vow %< _ u %< t [ [? - i]|.#. ] ,,                         !+Ind: +3Pl verb_itr_pers_num
-              v2 -> v       || [ a|i ] %< _ [ a .#. | a [? - t] |{isi}|{iit}|{it} ] ,,    !+Int: +2Sg +2Pl +3Sg
-              v2 -> 0       || u %< _ [ a .#. | a [? - t] |{isi}|{iit}|{it} ] ,,          !+Int: +2Sg +2Pl +3Sg
-              v2 -> p       || i p %< _ {it} ,,                                           !+Int: +2Sg
-              v2 -> p       || Cns %< _ ,,
-              v2 -> [ p p ] || Vow %< _ a t ] ;                                           !+Int: +3Pl
+define vtoX   [ [ s s a %< v2 u %< ] -> [ s s a %< a %< ] || _ [ {gut}|{nga}|Uvular|{si}|{tit} ] ] .o.
+              [ v2 -> 0       || u %> _ ,,                                                  !+VALLAAQ+Der/vn
+                v2 -> v       || [ a|i ] %> _ ,,                                            !+VALLAAQ+Der/vn
+                v2 -> p       || Cns %> _ ,,                                                !+VALLAAQ+Der/vn
+                v2 -> v       || [ a|i|u ] %< _ u %< [ {gut}|{nga}|Uvular|{si}|{tit} ] ,,   !+Ind: +1Sg +2Sg +3Sg verb_itr_pers_num | ændret q til Uvular grundet frikativisering
+                v2 -> p       || Cns %< _ u %< [ {gut}|{nga}|Uvular|{si}|t|{tit} ] ,,       !+Ind: +1Sg +2Sg +3Sg verb_itr_pers_num
+                v2 -> [ p p ] || Vow %< _ u %< t [ [? - i]|.#. ] ,,                         !+Ind: +3Pl verb_itr_pers_num
+                v2 -> v       || [ a|i ] %< _ [ a .#. | a [? - t] |{isi}|{iit}|{it} ] ,,    !+Int: +2Sg +2Pl +3Sg
+                v2 -> 0       || u %< _ [ a .#. | a [? - t] |{isi}|{iit}|{it} ] ,,          !+Int: +2Sg +2Pl +3Sg
+                v2 -> p       || i p %< _ {it} ,,                                           !+Int: +2Sg
+                v2 -> p       || Cns %< _ ,,
+                v2 -> [ p p ] || Vow %< _ a t ] ;                                           !+Int: +3Pl
 
 echo <<< Regressive consonant assimilation >>>
 
@@ -337,13 +334,10 @@ define schwacaret [ i2 -> 0 || _ %^ ] ; !fjernet i2 -> i || _ %^ %^ %> g5 ,, -> 
 !together with the caretcaret rule further down
 !######
 
-define gaqTrunc [ r -> 0 || [a|e|o] _ %^T %> g a ] ;
-
-define CnsReduktion [ Cns -> 0 || _ %> ( \Segment ) s s ] ;
 
 define trunkering [ Cns -> 0 || _ %^T ( [ %>|%< ] ) ] ;
 
-define fus [ [k|p|t|Uvular] -> 0 || _ [%>|%<|%^CLIT] %^FUS ] ;
+define fus [ [ k|p|t|Uvular ] -> 0 || _ [ %>|%<|%^CLIT ] %^FUS ] ;
 
 define Possessortrunc [ i t -> i || [ o|u|i|e ] (Cns) (%^T) %< _ %^POSST ] ;
 
@@ -442,8 +436,6 @@ metagem
 .o.
 htrass
 .o.
-AltNegInf ![ n -> 0 || r %> %^ALTINF _ a ] ;
-.o.
 IndikativVu ![ v -> p || [ p|r ] %> _ [ u|i|a|o ] ] 06
 .o.
 Possessortrunc ![ i t -> i || [ e|u|i ] (Cns) %> (%^T) _ %^POSST] 07
@@ -486,8 +478,6 @@ recessiveAFTVow
 .o.
 alternatingT
 .o.
-gaqTrunc
-.o.
 trunkering ![ Cns -> 0 || _ [ %> ] %^T ] ;
 .o.
 ProgressivIA ! [ Vow (->) e || [ e|i ] %> ( %^T ) %^ProgI _ Uvular ] ;
@@ -514,23 +504,17 @@ fus
 .o.
 gtor
 .o.
-vtop
+vtoX
 .o.
 VowelLowering
 .o.
 VowelRaising
-.o.
-VowelRaising2
-.o.
-VowelRaising3
 .o.
 clitisVAssimilation ![ Vow -> a || a %^CLIT _ ]
 .o.
 clitisAass ![ Vow -> a || a _ %^CLIT ] ;
 .o.
 aasiit1Vokal ![ a -> 0 || _ %^CLIT a a ]
-.o.
-CnsReduktion ! [ Cns -> 0 || _ %> ( \Segment ) s s ] ;
 .o.
 jSlet
 .o.
