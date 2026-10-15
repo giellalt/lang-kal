@@ -80,7 +80,7 @@ define g3toX [ g3 -> 0 || i      %> _ u ,,  !g3-1
 
 
 !g4uk introduceret 7.6. for specifikt at haandtere dobbeltformer som takuuk og takujuk
-define g4toX [ g4 -> 0 || [i|u]  %< _ ,,  !g4-1
+define g4toX [ g4 -> 0 || [i2|i|u]  %< _ ,,  !g4-1
                g4 -> j || a      %< _ ,,  !g4-2
                g4 -> g || Uvular %< _ ] ; !g4-3
 !g4 bruges ved +Imp:
@@ -162,8 +162,10 @@ define schwaltos [ l -> [ l|%^l ] || t i2 %^T %> _ [{er}|{eri}|{ersor}|{iup}|{iu
 define schwatoX [ i2 -> 0 || t _ %^T %> %^l [{er}|{eri}|{ersor}|{iup}|{iuup}|{ior}] ( %^T ) [%>|%<|.#.] ,,
                   i2 -> 0 || t _ %^T %> %^l [ i a | i i ] ,,
                   i2 -> 0 || t _ %> r2 ,,
-                  i2 -> i || _ ( %^T ) ( [ %>|%< ] ) NonUvular ,,  !%< grundet opstillingen ved +LIK+Dernn
+                  i2 -> i || _ ( %^T ) ( [ %>|%< ] ) [ NonUvular-c2-v2] ,,  !%< grundet opstillingen ved +LIK+Dernn
+                  i2 -> i || _ %< c2 [ m|p ] ,,
                   i2 -> i || _ %^ %^ %> g5 j2 ,,
+                  i2 -> i || _ %< i t ,,
                   i2 -> e || _ ( %^T ) ( %> ) Uvular ,, 
                   i2 -> i || _ ( %^T ) ( %> ) ( %^ProgI ) Vow ,,
                   i2 -> a || _ ( %^T ) ( %> ) Vow ,,
@@ -193,10 +195,12 @@ define recessiveAFTVow [ r2 -> r ,
                      f2 -> f || Vow [%>|%^CLIT] _ ] ;  !{t2} because neither t2 nor ^t2 would work
 
 !recessive konsonanter ved modi
-define c2toX [ c2 -> l || Vow %< _ l u ,,
+define c2toX [ c2 -> l || [Vow-i2] %< _ l u ,,
                c2 -> m || Vow %< _ m a ,,
                c2 -> p || Vow %< _ p a ,,
-               c2 -> 0 || Cns %< _ ] .o. [ c2 -> 0 ] ;
+               c2 -> 0 || Cns %< _ ] .o. 
+               [ [ i2 %< c2 l u ] -> [ a %< l u ] ] .o. 
+               [ c2 -> 0 ] ;
 
 echo <<< morphophonemic alternations >>>>
 
@@ -243,7 +247,12 @@ echo <<< Stopping >>>
 
 define IndikativVu [ v -> p || [ p|r ] [ %<|%> ] _ [ u|i|a|o ] ] ; !%> ved +VALLAAR+Der/vv
 
-define vtoX   [ [ q i n a %< v2 u %< ] -> [ [ q i n a %< v u %< ]|[ q i n a %< a %< ] ] || _ [ {gut}|{nga}|Uvular|{si}|{tit} ] ] .o.
+define vtoX   [ [ i2 %< v2 u %< ] -> [ a %< a %< ]             || _ [ {gut}|{nga}|Uvular|{si}|t .#.|{tit} ] ,,
+              [ i2 %< v2 i ] -> [ [ a %< a ]|[ i %< v i ] ]    || _ t ,,
+              [ i2 %< v2 i ] -> [ a %< a ]                     || _ {si} ,, 
+              [ i2 %< v2 a ] -> [ [ a %< a ]|[ i %< v a ] ]    || _ .#. ,, 
+              [ i2 %< v2 a ] -> [ [ a %< a ]|[ i %< p p a ] ]  || _ t .#. ] .o.
+              [ [ q i n a %< v2 u %< ] -> [ [ q i n a %< v u %< ]|[ q i n a %< a %< ] ] || _ [ {gut}|{nga}|Uvular|{si}|{tit} ] ] .o.
               [ [ s s a %< v2 u %< ] -> [ s s a %< a %< ] || _ [ {gut}|{nga}|Uvular|{si}|{tit} ] ] .o.
               [ v2 -> 0       || u %> _ ,,                                                  !+VALLAAQ+Der/vn
                 v2 -> v       || [ a|i ] %> _ ,,                                            !+VALLAAQ+Der/vn
@@ -272,8 +281,8 @@ define regrass [ NonUvular -> p || Vow _ (%^T) [ %>|%< ] v ,, !regressiv assimil
                  NonUvular -> p || Vow _ (%^T) [ %>|%< ] p ,,
                  NonUvular -> r || Vow _ (%^T) %> r ,,
                  NonUvular -> s || Vow _ (%^T) [ %>|%< ] (\Segment) s ,,
-                 NonUvular -> t || Vow _ (%^T) [%>|%<|%^CLIT] t ] ;
-define ctoq Cns -> q || Vow _ (\Segment) (%^T) [ %>|%< ] q ;
+                 NonUvular -> t || Vow _ (%^T) [%>|%<|%^CLIT] t ] .o.
+                       [ r -> q || _ %^VCT %< q ] ; !ikke regressiv assimilation per se, burde laves om til geminering senere
 
 
 echo <<< Gemination >>>
@@ -483,8 +492,6 @@ trunkering ![ Cns -> 0 || _ [ %> ] %^T ] ;
 ProgressivIA ! [ Vow (->) e || [ e|i ] %> ( %^T ) %^ProgI _ Uvular ] ;
 .o.
 progru
-.o.
-ctoq
 .o.
 insertAFTtrc
 .o.
