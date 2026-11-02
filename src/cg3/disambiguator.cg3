@@ -432,7 +432,7 @@ LIST-TAGS +=
 	LLUINNAR #alternativ form/ fejl i fst. Skal findes og fjernes
 	LUP
 	MINIQ MISAAR MIUQ MIU
-	NAAR NAR NASUGE NASURE NAVIAR NGA NIAQ NIAR NIARSARE NIKUQ NIKUU NIP NIQ NIQ_AJUR NIQ_SAPIR NIQSSAQ NIRSAQ NIRPAAQ NIRLUP NIQAR NIRU NIR NIRAR NISAQ NIUTAA NIUTE NGAAR NGAJAK NGAJAP NNAAQ NNGIR NNGIT NNGUAQ NNGUARSI NNGUATSIAR NNGUR
+	NAAR NAR NASUGE NASURE NAVIAR NGA NIAQ NIAR NIARSARE NIKUQ NIKUU NIP NIQ NIQAR NIQ_AJUR NIQ_SAPIR NIQSSAQ NIRLUP NIRPAA NIRPAAQ NIRSAQ NIRU NIR NIRAR NISAQ NIUTAA NIUTE NGAAR NGAJAK NGAJAP NNAAQ NNGIR NNGIT NNGUAQ NNGUARSI NNGUATSIAR NNGUR
 	PAJAAR PALAAQ PALAAR PALLAK PALLAP PALUK PALUP PAK PASIP PIAQ PIAR
 	QAR QATE QATIGIIT QATTAAR QE QINA QQA QQAAQ QQAAR QQAJAR QQAR QQIP QQISSAAR QQU QQUSAAR
 	R RAAR RALAAQ RAR
@@ -2244,7 +2244,11 @@ REMOVE:MorfLoc0008 SEM/inst (0 SEM/Hprof + LocSuf + LocVr) ; #Jude 20231013
 REMOVE:MorfLoc0009 SEM/furn OR SEM/Hprof (0 SEM/Lh + LocVr OR SEM/Lh + LocSuf + LocVr) ; #Jude 20231013
 
 #LIR
-REMOVE:MorfLIRnv (/QATE\ Der/nn\ GIIT\ Der/nn\ LIR\ Der/nv/l) ; # bare generelt usandsynligt, og eksempel: naalakkersuisoqatigiilernerata
+REMOVE:MorfLIRnv1 (/QATE\ Der/nn\ GIIT\ Der/nn\ LIR\ Der/nv/l) ; # bare generelt usandsynligt, og eksempel: naalakkersuisoqatigiilernerata
+
+REMOVE:MorfLIRnv2 (/"paat"\ LIR\ Der/nv/l) IF (0 ("paasi")); #paasigaanni
+
+REMOVE:MorfLIRnv3 (/SIMA\ Der/vv\ Gram/TV\ Gram/Refl\ UTE\ Der/vn\ LIR\ Der/nv\ \(Gram/[IT]V\ Gram/Refl\ \)?Gram/IV\ V\ Ind\ 3Pl/l) IF (0 (/"piorsar"\ Gram/TV\ /l) OR (/"pior"\ Gram/IV\ SAR\ Der/vv\ /l) ) ; #piorsarsimassuserput
 
 #NGA
 REMOVE:MorfNGA (/NGA\ Der/[nv]v\ Gram/IV\ USIQ\ Der/vn/l) ; #aningaasivini
@@ -2378,6 +2382,8 @@ REMOVE:MorfINNAQvn2 (/TIP\ Der/vv\ Gram/TV\ INNAQ\ Der/vn/l) ; #tunniutiinnarpas
 
 REMOVE:MorfNIQPAK (/NIQ\ Der/vn\ PAK\ Der/nn/l) IF (0 NIRPAAQ) ; #20260902 flyttet herop, da SELECT regler blokerer for fjernelse
 
+REMOVE:MorfNIRPAAQ (/NIRPAAQ\ Der/vn\ U\ Der/nv/l) IF (0 NIRPAA) ;
+
 REMOVE:MorfPASIP PASIP IF (0 ("avannarpasip")) ; #avannarpasissuani nordlig og ikke ligne nord
 
 REMOVE:MorfQQAAQ QQAAQ IF (0 (/QQAAR\ Der/vv\ \(Gram/[TI]V\ \)?[LIR|NNGIT]/l)) ; #peqqissitseeqqaalerpunga
@@ -2411,13 +2417,22 @@ REMOVE:MorfContNeg ContNeg IF (0 Lok OR Rel) ; #aasaanerani, imminornerata
 ### Person + Numerus
 REMOVE:Morf4SgO 4SgO IF (0 ("ataasiar")) ;
 
+REMOVE:MorfPar4Sg3PlO (/Par\ 4Sg\ 3PlO/l) IF (-1C Cont + 3SgO OR ("ataaseq") + N + Trm + Sg OR Abs + Sg OR Trm + Sg) ; #nuna tamakkerlugu isigissagaanni, ataatsimut isigissagaanni
+
+REMOVE:MorfPar4Sg (/Par\ 4Sg/l) + INTRANSVERB IF (0 (/Par\ 4Sg\ 3SgO/l) LINK -1 (/Par\ 3Sg/l)) ;
+
 ### Possessormarkering
 REMOVE:MorfPoss 1SgPoss OR 2SgPoss IF (0 ("arlaaq")) ; #arlaannik
+
+REMOVE:Morf2SgPoss (/"kalerrisaar"\ Gram/IV\ UTE\ Der/vn\ N\ Abs\ Sg\ 2SgPoss/l) IF (-1 Lok) ;
 
 REMOVE:MorfDU 1Du IF (0 1Pl) ; #qilanaarpugullu
 
 ### gramtags
 #REMOVE:Gram_Int Gram/Int IF (0 Gram/Indef LINK 0 ("suna") LINK NEGATE 1* ("?")) ;
+
+### stammer
+REMOVE:ingerlaannaq ("ingerla") OR ("ingerlap") IF (0 ("ingerlaannaq")) ;
 
 ### Judithes afsnit slut ###
 
@@ -2628,6 +2643,7 @@ REMOVE:0001BO ("aak") + 1SgPoss IF (0 ("aamma"));
 REMOVE:0001BP ("aaq") + 1SgPoss IF (0 ("aamma"));
 REMOVE:0001BQ Par + 3Pl + 4SgO IF (0 GAANNI)#Ajutuulernermi kalerrisaarutit nutaat ATUSSAGAANNI radiomik atuisinnaanermut allagartaqartariaqarpoq.
 (NEGATE *1 VFIN + 3Sg LINK *0 Abs + Sg - 2SgPoss - Orth/Arch - (/NIQ\ Der/vn\ N\ Abs\ Sg\ MI/l) BARRIER V)
+(NEGATE -1 Par + 3Sg)
 ;
 REMOVE:0001BR ("inuiaqat") + GIIT + OBLIQUE + (/[12]SgPoss/l) IF (0 OBLIQUE - POSSESSUM)
 (NEGATE -1 ("uanga") OR ("illit"));
@@ -3126,8 +3142,9 @@ SELECT:tidlig0142Ax1 4SgPoss + &&TV_OBJ& IF (-1 N + Rel + Sg LINK -1 BOS) (1 V +
 ;#Arnaata naammassiniagassani naammassisimalerpagit paarlaakkumaarpugut.
 
 
-REMOVE:tidlig0142A 4SgPoss IF (*1 V + (/[12][SP][gl]/r) - (Int 2Sg MI) BARRIER V)#SILARLUTTUMI ninngusuunissaat saniatigullu sukkasuunissaat pisariaqartipparput, politimesteri oqarpoq.
+REMOVE:tidlig0142A 4SgPoss IF (*1 V + (/[12][SP][gl]/r) - (Int 2Sg MI) - Imp BARRIER V)#SILARLUTTUMI ninngusuunissaat saniatigullu sukkasuunissaat pisariaqartipparput, politimesteri oqarpoq.
 #(NEGATE *1 CONT + 2Sg LINK 0 4Pl BARRIER V LINK *1 V + 3Pl)#Emiliekkut QATANNGUTISIANILU Jane kamaattarlutillu nuannaartarlutillu pinnguaqatigiittarput.
+(NEGATE 0 ("nammineq"))
 (NEGATE *1 CONT + 2Sg LINK 0 4Pl LINK NOT *1 V + 3Pl BARRIER _TARGET_)##warning: skal ændres til ??? Emiliekkut QATANNGUTISIANILU Jane kamaattarlutillu nuannaartarlutillu pinnguaqatigiittarput.
 (NEGATE 0 (/"pi"\ Gram/IV\ SSUSIQ\ Der/vn\ SSAQ\ Der/nn\ N\ Aeq\ Sg\ 4SgPoss/l) LINK 1 ("ili") OR ("ip") OR ("ilior"))#Fastelavnsfesteqareernerup kingorna ilinniartitsisut inaata PISSUSISSAMISUT ilinissaa piumasarissuara, ataasinngorneq 28. februar 2022 ullaarnaniit pikkorissarfittut atussagatsigu.
 (NEGATE *1 V + iN) #Anersaarusukkaluarpoq, TIMINILU sukattooqattaartoq nikisikkusukkaluarlugu.
@@ -5176,6 +5193,7 @@ REMOVE:0043AZ U + Par IF (-1 Abs + Sg LINK -1 Gram/Dem LINK -1 BOS OR KOMMA)(*1 
 REMOVE:0043AZ U + Par IF (-1 Abs + Sg LINK -1 BOS OR KOMMA)(*1 ORATIOOBLVERB LINK *1 Par OR Cont ) 
 (NEGATE *-1 ORATIOOBLVERB - U + VFIN LINK *1 _TARGET_ LINK NOT *1 VFIN)#Ilisimatiinnarpara nersussuaq uumasumut aalajangersimasumut *taaguutaasoq, nersutilli tassaasut nunamiut sisamanik niullit (ilisimasallit pitsaanerusumik nassuiarsinnaasaat), soorlu Kleinschmidtip nersut taamangajak nassuiarsimagaa (1871: qupp. 245).
 #minus U: Silaannarmik mingutsitsinerup issittumut sunniutaanik *misissuisuupput naalagaaffiit issittumiittortallit issittumiittullu arfineq pingasut, tassaasut Danmark, USA, Canada, Rusland, Island, Norge, Finland aamma Sverige.
+(NEGATE 1 ORATIOOBLVERB)
 ;
 
 #I or.obl. er adled til subjekt fulgt af Par vanskelige at adskille. Følgende antager, at to konsekutive CL-CIT uden konjunktion ikke er sandsynlig undtagen ifm opremsninger
@@ -6738,7 +6756,8 @@ REMOVE:0140 Via + 3PlPoss IF (0 3SgPoss)(NEGATE -1 Pl + Rel)
 (NEGATE *-1 Rel + Pl BARRIER (*) - Ins - ("'") - ("""))#Taannali aatsaat 'savalimmiormiut kalaallillu oqartussaasuisa' imarisaanik AKUERSINERISIGUT atuutilissasoq, isumaqatigiissummi allassimavoq.
 (NEGATE 0 ("isi")); #Qujanartumik imminut takusinnaallunga utoqqatserfigisarakkit, ISAATIGUT toqqarlugit isigalugit neriorsortarpakka pissusera eqqumaffiginerulerniarlugu aqunnerusinnaalerniarlugulu.
 
-REMOVE:0141 Lok + Aeq IF (0 Aeq + 4SgPoss)(*1 TRANSVERB + 3Sg) ;
+REMOVE:0141 Lok + Aeq IF (0 Aeq + 4SgPoss)(*1 TRANSVERB + 3Sg)
+(NEGATE 0 ("nammineq")) ;
 
 REMOVE:0148 4PlPoss IF (NEGATE *0 V + 3Pl OR V + 4Pl)
 (NEGATE 0 ("meeraq") LINK 1 3PlPoss LINK *1 V + 3Sg OR V + 4Sg) # Må ikke slette 'Sg Vb deres børns N'
@@ -8508,7 +8527,8 @@ REMOVE:0497D Abs + Sg IF (*-1 Abs + &&IV_SUBJ& LINK *1 _TARGET_ + Par + &&IV_SUB
 
 REMOVE:0497E Abs + Sg IF (*-1 Abs + &&IV_SUBJ& LINK *1 _TARGET_ + Par + &&IV_SUBJ& BARRIER (*) - Lok LINK 1 ("oqaatige") + CONT); #Fru Jensenip annilaarnermit anniarnermillu silaqarpiarsimanngeriarami, ernutannguani inigisaminni KISIMIITTOQ oqaatigissallugu puigorsimavaa.
 
-REMOVE:0497F Par IF (0 Abs + Sg + INDERIVERENDE_TITEL); #Ilinniartitsisut kattuffianni SIULITTAASOQ, Sivso Dorph isumaqarpoq ajornartorsiut tassaasoq, meeqqat atuarfii pillugit inatsit erseqqarluppallaartoq.
+REMOVE:0497F Par + (/^\(3[SP][gl]\)$/r) IF (0 Abs + Sg + INDERIVERENDE_TITEL)
+(NEGATE 1 ORATIOOBLVERB + Gram/Gaanni + (VSTR:$1O)); #Ilinniartitsisut kattuffianni SIULITTAASOQ, Sivso Dorph isumaqarpoq ajornartorsiut tassaasoq, meeqqat atuarfii pillugit inatsit erseqqarluppallaartoq.
 
 #ikke-disambigueret Num+Sg kan spolere regel 0497H
 REMOVE:0497G Abs + Sg + Hyb/2-2 IF (*-1 BOS LINK *1 Num + Sg + Abs BARRIER (*) - Rel - OBLIQUE LINK 1 Sem/Unit LINK *1 _TARGET_ + Par + GALUAR + 3Sg BARRIER (*) - Hyb/1-2 LINK *1 VFIN);#30 gradit missaaniIKKALUARTOQ suli kianneroqaaq.
@@ -9470,6 +9490,8 @@ REMOVE:Int0213 (/__Gram\/IV\ NIQ\ Der\/vn\ N__/l) + Gram/Comp IF (1 TRANSVERB)(N
 # De overordnede modi
 #Først disambigueres Refl fra tilsvarende IV
 REMOVE:1827 ("(.*)"r) + (/Gram/TV\ Gram/Refl\ V/l) IF (0 (VSTR:"$1"r) + (/Gram/IV\ V/l))
+(NEGATE 0 ("kapi"))
+(NEGATE 0 (/Gram/Refl\ VIK\ Der/vn/l))
 (NEGATE *-1 ("immi") OR ("nammineq") BARRIER V)# ikke slette Refl, der skal være refl
  ;
 REMOVE:1828 (Int) IF (*1 Ind - ("apere")) ;
@@ -10880,6 +10902,7 @@ REMOVE:TAAR+vv (/Gram/IV\ TAAR\ Der/vv\ Gram/IV/l) + OTHERTIME IF (0 (/TAAR\ Der
 REMOVE:5200CY ("qarsoq" NGA) IF (0 ("qarsor" NGA) LINK 0 (/[12][SP][gl]/r));
 REMOVE:5200CZ (/"arnaq"\ T\ Der/nv\ NIAR/l) IF (0 (/"arnar"\ Gram/IV\ NIAR/l) ) ;
 REMOVE:5200CÆ ("arnar") IF (0 (/"arnaq"\ \(Sem/H\ \)?NGA\ Der/nv/l)); #ARNANGAQAATIT, kusanaqaatit.
+REMOVE:5200CØ TUQ IF (0 Par + (/^\(3[SP][gl]\)$/r) LINK 1 ORATIOOBLVERB + Gram/Gaanni + (VSTR:$1O)) ; #Inuk takornartaq sanilerisap angallataanik misissuisoq takugaanni taanna peeqquneqarsinnaavoq.
 
 # Verbum eller verbum?
 REMOVE:5200CA ("ima") + U IF (0 ("imaap"));
@@ -13409,7 +13432,7 @@ SELECT:9965D (/Gram\/TV\ TUQ\ Der\/vn\ N/l) + Aeq IF (1 TRANSVERB)
 
 ; #isiginngitsutut illugit
 
-REMOVE:9965E (/Gram\/TV\ \(Gram/Refl\ \)?VIK\ /l) IF (0 Gram/IV + VIK) ; #20180402 MEGET bred regel, der sikkert skal revideres
+REMOVE:9965E (/Gram\/TV\ \(Gram/Refl\ \)?VIK\ /l) IF (0 (/Gram/IV\ VIK/l)) ; #20180402 MEGET bred regel, der sikkert skal revideres
 
 SELECT:9965G TRANSVERB IF (NEGATE 0 POSSESSUM) (*-1 Rel BARRIER POSSESSUM OR iPOSSESSUM)(NEGATE *0 TRANSVERB) #Hvis der er et relativt subjekt, må verbet være transitivt.
 (NEGATE 0 INTRANSVERB + &&IV_SUBJ& LINK *-1 Abs + &&IV_SUBJ&)# men må ikke slette intransitiv med subjekt til venstre Meeqqat utoqqaallu UMIARSUAARTULEQAAT.
@@ -13491,7 +13514,10 @@ REMOVE:9968E (/\"misige\"\ Gram\/TV/l) + TRANSVERB IF (0 (/\"misige\"\ Gram\/IV/
 REMOVE:9968F (/\"qui\"\ Gram\/TV\/l) IF (NEGATE *-1 Abs BARRIER V) ; #skal have objekt
 REMOVE:9968G (/\"ata\"\ Gram\/TV\ TIP\ /l) IF (-1 Trm) ; #skal have objekt #Line 429: Suliamut atatillugu inuit arlallit tigusaareerput,
 REMOVE:9968H (/\"pulaar\"\ Gram\/TV/l) IF (-1 Trm) ;
-REMOVE:9968I Gram/TV + Par + 4Sg + 3SgO IF (0 Gram/IV + Par + 4Sg)(NEGATE *0 Abs + Sg BARRIER V) ; #PL 20190410 Par+4Sg og Par+4Sg+3SgO ens semantik så primært stochastisk
+REMOVE:9968I Gram/TV + Par + 4Sg + 3SgO IF (0 Gram/IV + Par + 4Sg)
+(NEGATE -1 Par + 3Sg)
+(NEGATE *0 Abs + Sg BARRIER V)
+(NEGATE -1 N + Gram/ACR + Abs) ; #PL 20190410 Par+4Sg og Par+4Sg+3SgO ens semantik så primært stochastisk
 REMOVE:9968J (/\"ajor\"\ Gram\/TV\ NAR__/l) IF (0 (/\"ajor\"\ Gram\/IV\ NAR__/l)) ; #PL 20190412 ajornarpoq ikke Gram/TV
 REMOVE:9968K (/\"nalu\"\ Gram\/IV\ NIRAR__/l) IF (0 (/\"nalu\"\ Gram\/TV\ NIRAR__/l)) ; #PL 20190413 nalu grundliggende primært transitiv
 
@@ -13904,7 +13930,8 @@ REMOVE:9969EO Lok + Pl IF (0 Abs + Pl + 4SgPoss LINK *1 3PlO BARRIER V); #Titart
 
 REMOVE:9969EP Abs + Pl IF (0 Rel + Pl LINK 1 Num + Rel LINK 1 Num + Rel + CONJ-LU LINK 1 ("akunneq") + 3PlPoss LINK 1 ADLED + Rel + Pl LINK NEGATE 0 Abs + Pl); #Timarit.is-imit pissarsiarineqartut ilaat katersuinermi aallarniutigineqarsimapput, ukiunilu siullerni marlunni ATUAGAGDLIUTIT 1952-ip 1955-illu akornanni saqqummersartut oqaasertaat Oqaasileriffiup allattaasitaamut nuutsissutaa atorlugu katersorneqarsimapput.
 
-REMOVE:9969EQ Par IF (0 TUQ LINK *1 Par - CONJ-C BARRIER (*) - OBLIQUE); #Taakku ilaata kiassaat SUPOORTOQ ikuallalerneranut aallartitsisuusinnaasoq oqaatigaa.
+REMOVE:9969EQ Par + (/^\(3[SP][gl]\)$/r) IF (0 TUQ LINK *1 Par - CONJ-C BARRIER (*) - OBLIQUE)
+(NEGATE 1 ORATIOOBLVERB + Gram/Gaanni + (VSTR:$1O)); #Taakku ilaata kiassaat SUPOORTOQ ikuallalerneranut aallartitsisuusinnaasoq oqaatigaa.
 
 REMOVE:9969ER Abs + Pl IF (0 Rel + Pl LINK *-1 Rel + Pl BARRIER POSSESSUM3 LINK NOT 0 Abs + Pl LINK *-1 Abs + Pl)(*1 TRANSVERB + 3Pl + 3PlO); #Tamakkuli tamaasa ikinngutigiit TIKERLAAT SINNARTOORSIMASUT isiginngitsutut ippaat.
 
