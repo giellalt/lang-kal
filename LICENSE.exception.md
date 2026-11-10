@@ -1,0 +1,8 @@
+This repository is licensed under the GNU GPL version 3 or later, provided in
+the LICENSE file.
+
+As additional permission under section 7, you are allowed to distribute the
+software through an app store, even if that store has restrictive terms and
+conditions that are incompatible with the GPL, provided that the source is
+also available under the GPL with or without this permission through a
+channel without those restrictive terms and conditions.
