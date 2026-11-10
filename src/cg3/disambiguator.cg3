@@ -12578,6 +12578,8 @@ SELECT:9945D ("(.*[a-z])"r) IF (<**-1C ("$1"v))
 (NEGATE 0 ("aningaasivik"))#Angutip taxap matua ammariarlugu taxartartoq savimmik qunusaarsinnarlugu ANINGAASIVIANIK arsaarsimavaa.
 (NEGATE 0 ("ator") + V LINK **-1C ("ator") + N)#Spiralit taamani atorneqartut naartusinnaajunnaartitsisinnaasimammata niviarsiaqqanut ukiukitsunut ATUGASSIAASIMANNGITSUT, taanna oqarpoq.
 (NEGATE 0 ("saap") + TUQ) #KW11012023 Jeg ved ikke, hvad denne regel gør, men der skal være en undtagelse.
+(NEGATE 0 ("imeq") + (/i?Sem/take/r) LINK 0 (/"imer"\ Gram/[IT]V\ i?Sem/vdrink\ TAR/l))
+
 ;
 
 REMOVE:9945D ("(.*)[a-z]"r) IF (<**-1C ("$1"v)) #Vælg den korte streng, hvis der er en magen til den til venstre for den. #utaqqip vs. utaqqi
@@ -14951,6 +14953,11 @@ REMOVE:Sem1335 (/i?Sem/cc.*/r) IF (0 (/"ersip"\ Gram/IV\ NNGIT\ Der/vv\ Gram/IV\
 REMOVE:Sem1340 (Sem/lack) IF (0 ("oqaaseq" SSAQ IRUTE Sem/vtalk)); 
 REMOVE:Sem1345 (/i?Sem/try_to/r) IF (0 (/"arnar"\ Gram/IV\ NIAR\ Der/vv\ Gram/IV\ iSem/socialize/l)); 
 REMOVE:Sem1350 (/i?Sem/Lstar/r) IF (0 ("qaammat") + (/i?Sem/dur/r) - (/i?Sem/Lstar/r) LINK -1 MAANED) ;
+REMOVE:Sem1355 ("imeq") + (/i?Sem/take/r) IF (0 (/"imer"\ Gram/[IT]V\ i?Sem/vdrink\ TAR/l))
+;
+REMOVE:Sem1356 ("imer") + (/i?Sem/take/r) IF (0 (/"imer"\ Gram/[IT]V\ i?Sem/vdrink\ TAR/l))
+(NEGATE *0 ("kuuk") OR (/"imer"\ Gram/IV\ \(i?Sem/vdrink\ \)?TAR\ Der/vv\ Gram/IV\ \(i?Sem/do\ \)?UTE\ Der/vn/l)) #Imertaammik imermik nutaggarimmik IMERTARPOQ, naasorlu imerterlugu .
+;
 
 REMOVE:Sem9999 (/Heur/Cont/l); #Fjerner alle uleksikaliserede læsninger for ord med leksikaliseret kontemporativ.
 
@@ -15007,7 +15014,12 @@ SELECT:XX2 Rel + Pl IF (0 Abs + Pl LINK *1 N + NIQ + 3PlPoss BARRIER (*) - ("\("
 # AFSNIT TIL AT VÆLGE LONGEST MATCHES #
 #Skriv regel, som fjerner morfemets læsninger. Virker kun, hvis der er alternativer, som så bliver valgt. Hvis longest match ikke giver mening, skriv negate og lav undtagelse i forrige afsnit.
 
-#FØRST DE ENKELTE, SÅ FORBINDELSERNE
+#FØRST ET PAR HYPPIGE PROBLEMER, SÅ FORBINDELSERNE
+REMOVE:pujoqLIR (/"pujoq"\ \(i?Sem/.*\ \)?TAQ\ Der/nn\ LIR/l) IF (0 (/"pujortar"\ Gram/IV\ \(i?Sem/.*\ \)?TAR/l))#Eqqaamaviuk taamani imertalersimallutillu PUJORTARTALERSIMASUTIT paaseqqaarakku?
+;
+REMOVE:pujortaqLIR (/"pujortaq"\ TAQ\ Der/nn\ LIR/l) IF (0 (/"pujortar"\ Gram/IV\ \(i?Sem/.*\ \)?TAR\ Der/vv\ Gram/IV\ \(i?Sem/.*\ \)?LIR\ Der/vv\ Gram/IV/l)); #Eqqaamaviuk taamani imertalersimallutillu PUJORTARTALERSIMASUTIT paaseqqaarakku?
+
+REMOVE:imeqLIR (/"imeq"\ \(i?Sem/.*\ \)?TAQ\ Der/nn\ LIR/l) IF (0 (/"imer"\ Gram/IV\ \(i?Sem/vdrink\ \)?TAR/l)); #Eqqaamaviuk taamani IMERTALERSIMALLUTILLU pujortartalersimasutit paaseqqaarakku?
 
 REMOVE:LM_ARAQ (/ARAQ\ Der/nn\ i?Sem/f/l);
 REMOVE:LM_ARSUK (/ARSUK\ Der/nn\ i?Sem/f/l);
@@ -15019,7 +15031,10 @@ REMOVE:LM_INNAQ (/INNAQ\ Der/nn\ i?Sem/ac/l);
 REMOVE:LM_INNAR (/INNAR\ Der/vv\ \Gram/[IT]V\ i?Sem/persist/l);
 REMOVE:LM_IRUTE (/IRUTE\ Der/nv\ Gram/IV\ i?Sem/lose/l);
 REMOVE:LM_LIRnv (/LIR\ Der/nv\ Gram/TV\ i?Sem/supply/l);
-REMOVE:LM_LIRvv (/LIR\ Der/vv\ Gram/[IT]V\ i?Sem/begin/l);
+REMOVE:LM_LIRvv (/LIR\ Der/vv\ Gram/[IT]V\ i?Sem/begin/l)
+(NEGATE 0 (/"imeq"\ \(i?Sem/cm-liq\ \)?TAQ\ Der/nn\ LIR/l) LINK 0 (/"imer"\ Gram/IV\ \(i?Sem/vdrink\ \)?TAR/l))#Eqqaamaviuk taamani IMERTALERSIMALLUTILLU pujortartalersimasutit paaseqqaarakku?
+(NEGATE 0 (/"pujoq"\ \(i?Sem/.*\ \)?TAQ\ Der/nn\ LIR/l) LINK 0 (/"pujortar"\ Gram/IV\ \(i?Sem/.*\ \)?TAR/l))#Eqqaamaviuk taamani imertalersimallutillu PUJORTARTALERSIMASUTIT paaseqqaarakku?
+;
 REMOVE:LM_LIRvv2 (/LIR\ Der/vv\ Gram/[IT]V\ i?Sem/begin\ .*LIR\ Der/vv\ Gram/[IT]V\ i?Sem/begin/l);
 REMOVE:LM_LIRI (/LIRI\ Der/nv\ Gram/IV\ i?Sem/do/l) OR (/LIRI\ Der/nv\ Gram/IV\ i?Sem/pain/l);
 REMOVE:LM_LIUR (/LIUR\ Der/nv\ Gram/IV\ iSem/cause/l) OR (/LIUR\ Der/nv\ Gram/IV\ iSem/make/l);
@@ -15035,7 +15050,9 @@ REMOVE:LM_SIUR (/SIUR\ Der/nv\ Gram/IV\ i?Sem/do_leisure\ i?Sem/occ/l);
 REMOVE:LM_SSAQ (/SSAQ\ Der/nn\ i?Sem/temp/l);
 REMOVE:LM_SUAQ (/SUAQ\ Der/nn\ i?Sem/f/l);
 REMOVE:LM_TAQ (/TAQ\ Der/vn\ i?Sem/ac/l);
-REMOVE:LM_TAR (/TAR\ Der/vv\ Gram/[IT]V\ i?Sem/do/l);
+REMOVE:LM_TAR (/TAR\ Der/vv\ Gram/[IT]V\ i?Sem/do/l)
+(NEGATE 0 (/"pujoq"\ \(i?Sem/.*\ \)?TAQ\ Der/nn\ LIR/l) LINK 0 (/"pujortar"\ Gram/IV\ \(i?Sem/.*\ \)?TAR/l))#Eqqaamaviuk taamani imertalersimallutillu PUJORTARTALERSIMASUTIT paaseqqaarakku?
+;
 REMOVE:LM_TIP (/TIP\ Der/vv\ Gram/TV\ \(Gram/Pass\ \)?i?Sem/cause/l);
 REMOVE:LM_TUQ (/TUQ\ Der/vn\ i?Sem/H\ /l) OR (/TUQ\ Der/vn\ i?Sem/cc/l); #Pas på! Fjerner alle TUQ-læsninger, hvis det stadigvæk er udisambigueret fra Par!!!
 REMOVE:LM_U (/U\ Der/nv\ Gram/IV\ i?Sem/be_copula/l);
