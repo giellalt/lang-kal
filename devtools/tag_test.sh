@@ -37,6 +37,10 @@ git ls-files -- "*.lexc" | xargs -n1 git blame -f | grep -P ':%[a-z]'
 echo '\nChecking for missing space before entry terminator'
 git ls-files -- "*.lexc" | xargs -n1 git blame -f | grep -P '\S;'
 
+
+echo '\nChecking for missing plus sign bedore derivational suffix at the beginning of a line'
+git ls-files -- "*.lexc" | xargs -n1 git blame -f | grep -P '^[A-Z]+\Der'
+
 #echo 'Checking for missing Der-tags:'
 #cat src/fst/stems/*lexc |cut -d '!' -f1 |grep '\+Der/.*;' |egrep -v 'Der([1234]|\+)'
 
